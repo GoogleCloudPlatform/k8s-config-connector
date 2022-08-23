@@ -834,7 +834,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -914,7 +914,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -994,7 +994,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1074,7 +1074,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1154,7 +1154,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1234,7 +1234,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1506,7 +1506,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The custom info type to annotate the surrogate with. This annotation will be applied to the surrogate by prefixing it with the name of the custom info type followed by the number of characters comprising the surrogate. The following scheme defines the format: {info type name}({surrogate character count}):{surrogate} For example, if the name of custom info type is 'MY_TOKEN_INFO_TYPE' and the surrogate is 'abc', the full replacement value will be: 'MY_TOKEN_INFO_TYPE(3):abc' This annotation identifies the surrogate when inspecting content using the custom info type 'Surrogate'. This facilitates reversal of the surrogate when it occurs in free text. Note: For record transformations where the entire cell in a table is being transformed, surrogates are not mandatory. Surrogates are used to denote the location of the token and are necessary for re-identification in free form text. In order for inspection to work properly, the name of this info type must not occur naturally anywhere in your data; otherwise, inspection may either - reverse a surrogate that does not correspond to an actual identifier - be unable to parse the surrogate and result in an error Therefore, choose your custom info type name carefully after considering what your data looks like. One way to select a name that has a high chance of yielding reliable detection is to include one or more unicode characters that are highly improbable to exist in your data. For example, assuming your data is entered from a regular ASCII keyboard, the symbol with the hex code point 29DD might be used like so: ⧝MY_TOKEN_TYPE.{% endverbatim %}</p>
+            <p>{% verbatim %}The custom info type to annotate the surrogate with. This annotation will be applied to the surrogate by prefixing it with the name of the custom info type followed by the number of characters comprising the surrogate. The following scheme defines the format: {info type name}({surrogate character count}):{surrogate} For example, if the name of custom info type is &#39;MY_TOKEN_INFO_TYPE&#39; and the surrogate is &#39;abc&#39;, the full replacement value will be: &#39;MY_TOKEN_INFO_TYPE(3):abc&#39; This annotation identifies the surrogate when inspecting content using the custom info type &#39;Surrogate&#39;. This facilitates reversal of the surrogate when it occurs in free text. Note: For record transformations where the entire cell in a table is being transformed, surrogates are not mandatory. Surrogates are used to denote the location of the token and are necessary for re-identification in free form text. In order for inspection to work properly, the name of this info type must not occur naturally anywhere in your data; otherwise, inspection may either - reverse a surrogate that does not correspond to an actual identifier - be unable to parse the surrogate and result in an error Therefore, choose your custom info type name carefully after considering what your data looks like. One way to select a name that has a high chance of yielding reliable detection is to include one or more unicode characters that are highly improbable to exist in your data. For example, assuming your data is entered from a regular ASCII keyboard, the symbol with the hex code point 29DD might be used like so: ⧝MY_TOKEN_TYPE.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1668,7 +1668,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The 'tweak', a context may be used for higher security since the same identifier in two different contexts won't be given the same surrogate. If the context is not set, a default tweak will be used. If the context is set but: 1. there is no record present when transforming a given value or 1. the field is not present when transforming a given value, a default tweak will be used. Note that case (1) is expected when an `InfoTypeTransformation` is applied to both structured and non-structured `ContentItem`s. Currently, the referenced field may be of value type integer or string. The tweak is constructed as a sequence of bytes in big endian byte order such that: - a 64 bit integer is encoded followed by a single byte of value 1 - a string is encoded in UTF-8 format followed by a single byte of value 2{% endverbatim %}</p>
+            <p>{% verbatim %}The &#39;tweak&#39;, a context may be used for higher security since the same identifier in two different contexts won&#39;t be given the same surrogate. If the context is not set, a default tweak will be used. If the context is set but: 1. there is no record present when transforming a given value or 1. the field is not present when transforming a given value, a default tweak will be used. Note that case (1) is expected when an `InfoTypeTransformation` is applied to both structured and non-structured `ContentItem`s. Currently, the referenced field may be of value type integer or string. The tweak is constructed as a sequence of bytes in big endian byte order such that: - a 64 bit integer is encoded followed by a single byte of value 1 - a string is encoded in UTF-8 format followed by a single byte of value 2{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1800,7 +1800,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}This is supported by mapping these to the alphanumeric characters that the FFX mode natively supports. This happens before/after encryption/decryption. Each character listed must appear only once. Number of characters must be in the range [2, 95]. This must be encoded as ASCII. The order of characters does not matter. The full list of allowed characters is: ``0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ~`!@#$%^&*()_-+={[}]|:;"'<,>.?/``{% endverbatim %}</p>
+            <p>{% verbatim %}This is supported by mapping these to the alphanumeric characters that the FFX mode natively supports. This happens before/after encryption/decryption. Each character listed must appear only once. Number of characters must be in the range [2, 95]. This must be encoded as ASCII. The order of characters does not matter. The full list of allowed characters is: ``0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ~`!@#$%^&amp;*()_-&#43;={[}]|:;&#34;&#39;&lt;,&gt;.?/``{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1820,7 +1820,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The custom infoType to annotate the surrogate with. This annotation will be applied to the surrogate by prefixing it with the name of the custom infoType followed by the number of characters comprising the surrogate. The following scheme defines the format: info_type_name(surrogate_character_count):surrogate For example, if the name of custom infoType is 'MY_TOKEN_INFO_TYPE' and the surrogate is 'abc', the full replacement value will be: 'MY_TOKEN_INFO_TYPE(3):abc' This annotation identifies the surrogate when inspecting content using the custom infoType [`SurrogateType`](https://cloud.google.com/dlp/docs/reference/rest/v2/InspectConfig#surrogatetype). This facilitates reversal of the surrogate when it occurs in free text. In order for inspection to work properly, the name of this infoType must not occur naturally anywhere in your data; otherwise, inspection may find a surrogate that does not correspond to an actual identifier. Therefore, choose your custom infoType name carefully after considering what your data looks like. One way to select a name that has a high chance of yielding reliable detection is to include one or more unicode characters that are highly improbable to exist in your data. For example, assuming your data is entered from a regular ASCII keyboard, the symbol with the hex code point 29DD might be used like so: ⧝MY_TOKEN_TYPE{% endverbatim %}</p>
+            <p>{% verbatim %}The custom infoType to annotate the surrogate with. This annotation will be applied to the surrogate by prefixing it with the name of the custom infoType followed by the number of characters comprising the surrogate. The following scheme defines the format: info_type_name(surrogate_character_count):surrogate For example, if the name of custom infoType is &#39;MY_TOKEN_INFO_TYPE&#39; and the surrogate is &#39;abc&#39;, the full replacement value will be: &#39;MY_TOKEN_INFO_TYPE(3):abc&#39; This annotation identifies the surrogate when inspecting content using the custom infoType [`SurrogateType`](https://cloud.google.com/dlp/docs/reference/rest/v2/InspectConfig#surrogatetype). This facilitates reversal of the surrogate when it occurs in free text. In order for inspection to work properly, the name of this infoType must not occur naturally anywhere in your data; otherwise, inspection may find a surrogate that does not correspond to an actual identifier. Therefore, choose your custom infoType name carefully after considering what your data looks like. One way to select a name that has a high chance of yielding reliable detection is to include one or more unicode characters that are highly improbable to exist in your data. For example, assuming your data is entered from a regular ASCII keyboard, the symbol with the hex code point 29DD might be used like so: ⧝MY_TOKEN_TYPE{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2012,7 +2012,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}Required. Size of each bucket (except for minimum and maximum buckets). So if `lower_bound` = 10, `upper_bound` = 89, and `bucket_size` = 10, then the following buckets would be used: -10, 10-20, 20-30, 30-40, 40-50, 50-60, 60-70, 70-80, 80-89, 89+. Precision up to 2 decimals works.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Size of each bucket (except for minimum and maximum buckets). So if `lower_bound` = 10, `upper_bound` = 89, and `bucket_size` = 10, then the following buckets would be used: -10, 10-20, 20-30, 30-40, 40-50, 50-60, 60-70, 70-80, 80-89, 89&#43;. Precision up to 2 decimals works.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2022,7 +2022,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. Lower bound value of buckets. All values less than `lower_bound` are grouped together into a single bucket; for example if `lower_bound` = 10, then all values less than 10 are replaced with the value "-10".{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Lower bound value of buckets. All values less than `lower_bound` are grouped together into a single bucket; for example if `lower_bound` = 10, then all values less than 10 are replaced with the value &#34;-10&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2052,7 +2052,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2132,7 +2132,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2182,7 +2182,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. Upper bound value of buckets. All values greater than upper_bound are grouped together into a single bucket; for example if `upper_bound` = 89, then all values greater than 89 are replaced with the value "89+".{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Upper bound value of buckets. All values greater than upper_bound are grouped together into a single bucket; for example if `upper_bound` = 89, then all values greater than 89 are replaced with the value &#34;89&#43;&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2212,7 +2212,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2292,7 +2292,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2392,7 +2392,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2472,7 +2472,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2692,7 +2692,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2772,7 +2772,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2832,7 +2832,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Required. Input field(s) to apply the transformation to. When you have columns that reference their position within a list, omit the index from the FieldId. FieldId name matching ignores the index. For example, instead of "contact.nums[0].type", use "contact.nums.type".{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Input field(s) to apply the transformation to. When you have columns that reference their position within a list, omit the index from the FieldId. FieldId name matching ignores the index. For example, instead of &#34;contact.nums[0].type&#34;, use &#34;contact.nums.type&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2992,7 +2992,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3072,7 +3072,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3152,7 +3152,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3232,7 +3232,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3312,7 +3312,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3392,7 +3392,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3664,7 +3664,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The custom info type to annotate the surrogate with. This annotation will be applied to the surrogate by prefixing it with the name of the custom info type followed by the number of characters comprising the surrogate. The following scheme defines the format: {info type name}({surrogate character count}):{surrogate} For example, if the name of custom info type is 'MY_TOKEN_INFO_TYPE' and the surrogate is 'abc', the full replacement value will be: 'MY_TOKEN_INFO_TYPE(3):abc' This annotation identifies the surrogate when inspecting content using the custom info type 'Surrogate'. This facilitates reversal of the surrogate when it occurs in free text. Note: For record transformations where the entire cell in a table is being transformed, surrogates are not mandatory. Surrogates are used to denote the location of the token and are necessary for re-identification in free form text. In order for inspection to work properly, the name of this info type must not occur naturally anywhere in your data; otherwise, inspection may either - reverse a surrogate that does not correspond to an actual identifier - be unable to parse the surrogate and result in an error Therefore, choose your custom info type name carefully after considering what your data looks like. One way to select a name that has a high chance of yielding reliable detection is to include one or more unicode characters that are highly improbable to exist in your data. For example, assuming your data is entered from a regular ASCII keyboard, the symbol with the hex code point 29DD might be used like so: ⧝MY_TOKEN_TYPE.{% endverbatim %}</p>
+            <p>{% verbatim %}The custom info type to annotate the surrogate with. This annotation will be applied to the surrogate by prefixing it with the name of the custom info type followed by the number of characters comprising the surrogate. The following scheme defines the format: {info type name}({surrogate character count}):{surrogate} For example, if the name of custom info type is &#39;MY_TOKEN_INFO_TYPE&#39; and the surrogate is &#39;abc&#39;, the full replacement value will be: &#39;MY_TOKEN_INFO_TYPE(3):abc&#39; This annotation identifies the surrogate when inspecting content using the custom info type &#39;Surrogate&#39;. This facilitates reversal of the surrogate when it occurs in free text. Note: For record transformations where the entire cell in a table is being transformed, surrogates are not mandatory. Surrogates are used to denote the location of the token and are necessary for re-identification in free form text. In order for inspection to work properly, the name of this info type must not occur naturally anywhere in your data; otherwise, inspection may either - reverse a surrogate that does not correspond to an actual identifier - be unable to parse the surrogate and result in an error Therefore, choose your custom info type name carefully after considering what your data looks like. One way to select a name that has a high chance of yielding reliable detection is to include one or more unicode characters that are highly improbable to exist in your data. For example, assuming your data is entered from a regular ASCII keyboard, the symbol with the hex code point 29DD might be used like so: ⧝MY_TOKEN_TYPE.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3826,7 +3826,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The 'tweak', a context may be used for higher security since the same identifier in two different contexts won't be given the same surrogate. If the context is not set, a default tweak will be used. If the context is set but: 1. there is no record present when transforming a given value or 1. the field is not present when transforming a given value, a default tweak will be used. Note that case (1) is expected when an `InfoTypeTransformation` is applied to both structured and non-structured `ContentItem`s. Currently, the referenced field may be of value type integer or string. The tweak is constructed as a sequence of bytes in big endian byte order such that: - a 64 bit integer is encoded followed by a single byte of value 1 - a string is encoded in UTF-8 format followed by a single byte of value 2{% endverbatim %}</p>
+            <p>{% verbatim %}The &#39;tweak&#39;, a context may be used for higher security since the same identifier in two different contexts won&#39;t be given the same surrogate. If the context is not set, a default tweak will be used. If the context is set but: 1. there is no record present when transforming a given value or 1. the field is not present when transforming a given value, a default tweak will be used. Note that case (1) is expected when an `InfoTypeTransformation` is applied to both structured and non-structured `ContentItem`s. Currently, the referenced field may be of value type integer or string. The tweak is constructed as a sequence of bytes in big endian byte order such that: - a 64 bit integer is encoded followed by a single byte of value 1 - a string is encoded in UTF-8 format followed by a single byte of value 2{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3958,7 +3958,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}This is supported by mapping these to the alphanumeric characters that the FFX mode natively supports. This happens before/after encryption/decryption. Each character listed must appear only once. Number of characters must be in the range [2, 95]. This must be encoded as ASCII. The order of characters does not matter. The full list of allowed characters is: ``0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ~`!@#$%^&*()_-+={[}]|:;"'<,>.?/``{% endverbatim %}</p>
+            <p>{% verbatim %}This is supported by mapping these to the alphanumeric characters that the FFX mode natively supports. This happens before/after encryption/decryption. Each character listed must appear only once. Number of characters must be in the range [2, 95]. This must be encoded as ASCII. The order of characters does not matter. The full list of allowed characters is: ``0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ~`!@#$%^&amp;*()_-&#43;={[}]|:;&#34;&#39;&lt;,&gt;.?/``{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3978,7 +3978,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The custom infoType to annotate the surrogate with. This annotation will be applied to the surrogate by prefixing it with the name of the custom infoType followed by the number of characters comprising the surrogate. The following scheme defines the format: info_type_name(surrogate_character_count):surrogate For example, if the name of custom infoType is 'MY_TOKEN_INFO_TYPE' and the surrogate is 'abc', the full replacement value will be: 'MY_TOKEN_INFO_TYPE(3):abc' This annotation identifies the surrogate when inspecting content using the custom infoType [`SurrogateType`](https://cloud.google.com/dlp/docs/reference/rest/v2/InspectConfig#surrogatetype). This facilitates reversal of the surrogate when it occurs in free text. In order for inspection to work properly, the name of this infoType must not occur naturally anywhere in your data; otherwise, inspection may find a surrogate that does not correspond to an actual identifier. Therefore, choose your custom infoType name carefully after considering what your data looks like. One way to select a name that has a high chance of yielding reliable detection is to include one or more unicode characters that are highly improbable to exist in your data. For example, assuming your data is entered from a regular ASCII keyboard, the symbol with the hex code point 29DD might be used like so: ⧝MY_TOKEN_TYPE{% endverbatim %}</p>
+            <p>{% verbatim %}The custom infoType to annotate the surrogate with. This annotation will be applied to the surrogate by prefixing it with the name of the custom infoType followed by the number of characters comprising the surrogate. The following scheme defines the format: info_type_name(surrogate_character_count):surrogate For example, if the name of custom infoType is &#39;MY_TOKEN_INFO_TYPE&#39; and the surrogate is &#39;abc&#39;, the full replacement value will be: &#39;MY_TOKEN_INFO_TYPE(3):abc&#39; This annotation identifies the surrogate when inspecting content using the custom infoType [`SurrogateType`](https://cloud.google.com/dlp/docs/reference/rest/v2/InspectConfig#surrogatetype). This facilitates reversal of the surrogate when it occurs in free text. In order for inspection to work properly, the name of this infoType must not occur naturally anywhere in your data; otherwise, inspection may find a surrogate that does not correspond to an actual identifier. Therefore, choose your custom infoType name carefully after considering what your data looks like. One way to select a name that has a high chance of yielding reliable detection is to include one or more unicode characters that are highly improbable to exist in your data. For example, assuming your data is entered from a regular ASCII keyboard, the symbol with the hex code point 29DD might be used like so: ⧝MY_TOKEN_TYPE{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4170,7 +4170,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}Required. Size of each bucket (except for minimum and maximum buckets). So if `lower_bound` = 10, `upper_bound` = 89, and `bucket_size` = 10, then the following buckets would be used: -10, 10-20, 20-30, 30-40, 40-50, 50-60, 60-70, 70-80, 80-89, 89+. Precision up to 2 decimals works.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Size of each bucket (except for minimum and maximum buckets). So if `lower_bound` = 10, `upper_bound` = 89, and `bucket_size` = 10, then the following buckets would be used: -10, 10-20, 20-30, 30-40, 40-50, 50-60, 60-70, 70-80, 80-89, 89&#43;. Precision up to 2 decimals works.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4180,7 +4180,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. Lower bound value of buckets. All values less than `lower_bound` are grouped together into a single bucket; for example if `lower_bound` = 10, then all values less than 10 are replaced with the value "-10".{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Lower bound value of buckets. All values less than `lower_bound` are grouped together into a single bucket; for example if `lower_bound` = 10, then all values less than 10 are replaced with the value &#34;-10&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4210,7 +4210,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4290,7 +4290,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4340,7 +4340,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. Upper bound value of buckets. All values greater than upper_bound are grouped together into a single bucket; for example if `upper_bound` = 89, then all values greater than 89 are replaced with the value "89+".{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Upper bound value of buckets. All values greater than upper_bound are grouped together into a single bucket; for example if `upper_bound` = 89, then all values greater than 89 are replaced with the value &#34;89&#43;&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4370,7 +4370,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4450,7 +4450,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4550,7 +4550,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4630,7 +4630,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4780,7 +4780,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4860,7 +4860,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4940,7 +4940,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5020,7 +5020,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5100,7 +5100,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5180,7 +5180,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5452,7 +5452,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The custom info type to annotate the surrogate with. This annotation will be applied to the surrogate by prefixing it with the name of the custom info type followed by the number of characters comprising the surrogate. The following scheme defines the format: {info type name}({surrogate character count}):{surrogate} For example, if the name of custom info type is 'MY_TOKEN_INFO_TYPE' and the surrogate is 'abc', the full replacement value will be: 'MY_TOKEN_INFO_TYPE(3):abc' This annotation identifies the surrogate when inspecting content using the custom info type 'Surrogate'. This facilitates reversal of the surrogate when it occurs in free text. Note: For record transformations where the entire cell in a table is being transformed, surrogates are not mandatory. Surrogates are used to denote the location of the token and are necessary for re-identification in free form text. In order for inspection to work properly, the name of this info type must not occur naturally anywhere in your data; otherwise, inspection may either - reverse a surrogate that does not correspond to an actual identifier - be unable to parse the surrogate and result in an error Therefore, choose your custom info type name carefully after considering what your data looks like. One way to select a name that has a high chance of yielding reliable detection is to include one or more unicode characters that are highly improbable to exist in your data. For example, assuming your data is entered from a regular ASCII keyboard, the symbol with the hex code point 29DD might be used like so: ⧝MY_TOKEN_TYPE.{% endverbatim %}</p>
+            <p>{% verbatim %}The custom info type to annotate the surrogate with. This annotation will be applied to the surrogate by prefixing it with the name of the custom info type followed by the number of characters comprising the surrogate. The following scheme defines the format: {info type name}({surrogate character count}):{surrogate} For example, if the name of custom info type is &#39;MY_TOKEN_INFO_TYPE&#39; and the surrogate is &#39;abc&#39;, the full replacement value will be: &#39;MY_TOKEN_INFO_TYPE(3):abc&#39; This annotation identifies the surrogate when inspecting content using the custom info type &#39;Surrogate&#39;. This facilitates reversal of the surrogate when it occurs in free text. Note: For record transformations where the entire cell in a table is being transformed, surrogates are not mandatory. Surrogates are used to denote the location of the token and are necessary for re-identification in free form text. In order for inspection to work properly, the name of this info type must not occur naturally anywhere in your data; otherwise, inspection may either - reverse a surrogate that does not correspond to an actual identifier - be unable to parse the surrogate and result in an error Therefore, choose your custom info type name carefully after considering what your data looks like. One way to select a name that has a high chance of yielding reliable detection is to include one or more unicode characters that are highly improbable to exist in your data. For example, assuming your data is entered from a regular ASCII keyboard, the symbol with the hex code point 29DD might be used like so: ⧝MY_TOKEN_TYPE.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5614,7 +5614,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The 'tweak', a context may be used for higher security since the same identifier in two different contexts won't be given the same surrogate. If the context is not set, a default tweak will be used. If the context is set but: 1. there is no record present when transforming a given value or 1. the field is not present when transforming a given value, a default tweak will be used. Note that case (1) is expected when an `InfoTypeTransformation` is applied to both structured and non-structured `ContentItem`s. Currently, the referenced field may be of value type integer or string. The tweak is constructed as a sequence of bytes in big endian byte order such that: - a 64 bit integer is encoded followed by a single byte of value 1 - a string is encoded in UTF-8 format followed by a single byte of value 2{% endverbatim %}</p>
+            <p>{% verbatim %}The &#39;tweak&#39;, a context may be used for higher security since the same identifier in two different contexts won&#39;t be given the same surrogate. If the context is not set, a default tweak will be used. If the context is set but: 1. there is no record present when transforming a given value or 1. the field is not present when transforming a given value, a default tweak will be used. Note that case (1) is expected when an `InfoTypeTransformation` is applied to both structured and non-structured `ContentItem`s. Currently, the referenced field may be of value type integer or string. The tweak is constructed as a sequence of bytes in big endian byte order such that: - a 64 bit integer is encoded followed by a single byte of value 1 - a string is encoded in UTF-8 format followed by a single byte of value 2{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5746,7 +5746,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}This is supported by mapping these to the alphanumeric characters that the FFX mode natively supports. This happens before/after encryption/decryption. Each character listed must appear only once. Number of characters must be in the range [2, 95]. This must be encoded as ASCII. The order of characters does not matter. The full list of allowed characters is: ``0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ~`!@#$%^&*()_-+={[}]|:;"'<,>.?/``{% endverbatim %}</p>
+            <p>{% verbatim %}This is supported by mapping these to the alphanumeric characters that the FFX mode natively supports. This happens before/after encryption/decryption. Each character listed must appear only once. Number of characters must be in the range [2, 95]. This must be encoded as ASCII. The order of characters does not matter. The full list of allowed characters is: ``0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ~`!@#$%^&amp;*()_-&#43;={[}]|:;&#34;&#39;&lt;,&gt;.?/``{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5766,7 +5766,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The custom infoType to annotate the surrogate with. This annotation will be applied to the surrogate by prefixing it with the name of the custom infoType followed by the number of characters comprising the surrogate. The following scheme defines the format: info_type_name(surrogate_character_count):surrogate For example, if the name of custom infoType is 'MY_TOKEN_INFO_TYPE' and the surrogate is 'abc', the full replacement value will be: 'MY_TOKEN_INFO_TYPE(3):abc' This annotation identifies the surrogate when inspecting content using the custom infoType [`SurrogateType`](https://cloud.google.com/dlp/docs/reference/rest/v2/InspectConfig#surrogatetype). This facilitates reversal of the surrogate when it occurs in free text. In order for inspection to work properly, the name of this infoType must not occur naturally anywhere in your data; otherwise, inspection may find a surrogate that does not correspond to an actual identifier. Therefore, choose your custom infoType name carefully after considering what your data looks like. One way to select a name that has a high chance of yielding reliable detection is to include one or more unicode characters that are highly improbable to exist in your data. For example, assuming your data is entered from a regular ASCII keyboard, the symbol with the hex code point 29DD might be used like so: ⧝MY_TOKEN_TYPE{% endverbatim %}</p>
+            <p>{% verbatim %}The custom infoType to annotate the surrogate with. This annotation will be applied to the surrogate by prefixing it with the name of the custom infoType followed by the number of characters comprising the surrogate. The following scheme defines the format: info_type_name(surrogate_character_count):surrogate For example, if the name of custom infoType is &#39;MY_TOKEN_INFO_TYPE&#39; and the surrogate is &#39;abc&#39;, the full replacement value will be: &#39;MY_TOKEN_INFO_TYPE(3):abc&#39; This annotation identifies the surrogate when inspecting content using the custom infoType [`SurrogateType`](https://cloud.google.com/dlp/docs/reference/rest/v2/InspectConfig#surrogatetype). This facilitates reversal of the surrogate when it occurs in free text. In order for inspection to work properly, the name of this infoType must not occur naturally anywhere in your data; otherwise, inspection may find a surrogate that does not correspond to an actual identifier. Therefore, choose your custom infoType name carefully after considering what your data looks like. One way to select a name that has a high chance of yielding reliable detection is to include one or more unicode characters that are highly improbable to exist in your data. For example, assuming your data is entered from a regular ASCII keyboard, the symbol with the hex code point 29DD might be used like so: ⧝MY_TOKEN_TYPE{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5958,7 +5958,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}Required. Size of each bucket (except for minimum and maximum buckets). So if `lower_bound` = 10, `upper_bound` = 89, and `bucket_size` = 10, then the following buckets would be used: -10, 10-20, 20-30, 30-40, 40-50, 50-60, 60-70, 70-80, 80-89, 89+. Precision up to 2 decimals works.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Size of each bucket (except for minimum and maximum buckets). So if `lower_bound` = 10, `upper_bound` = 89, and `bucket_size` = 10, then the following buckets would be used: -10, 10-20, 20-30, 30-40, 40-50, 50-60, 60-70, 70-80, 80-89, 89&#43;. Precision up to 2 decimals works.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5968,7 +5968,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. Lower bound value of buckets. All values less than `lower_bound` are grouped together into a single bucket; for example if `lower_bound` = 10, then all values less than 10 are replaced with the value "-10".{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Lower bound value of buckets. All values less than `lower_bound` are grouped together into a single bucket; for example if `lower_bound` = 10, then all values less than 10 are replaced with the value &#34;-10&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5998,7 +5998,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6078,7 +6078,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6128,7 +6128,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. Upper bound value of buckets. All values greater than upper_bound are grouped together into a single bucket; for example if `upper_bound` = 89, then all values greater than 89 are replaced with the value "89+".{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Upper bound value of buckets. All values greater than upper_bound are grouped together into a single bucket; for example if `upper_bound` = 89, then all values greater than 89 are replaced with the value &#34;89&#43;&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6158,7 +6158,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6238,7 +6238,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6338,7 +6338,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6418,7 +6418,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6628,7 +6628,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6708,7 +6708,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6848,7 +6848,7 @@ Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (form
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[WARNING] Organization not yet supported in Config Connector, use 'external' field to reference existing resources.
+            <p>{% verbatim %}[WARNING] Organization not yet supported in Config Connector, use &#39;external&#39; field to reference existing resources.
 Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
         </td>
     </tr>
@@ -6945,7 +6945,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6973,7 +6973,7 @@ updateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7027,14 +7027,14 @@ updateTime: string
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -7045,46 +7045,46 @@ metadata:
   name: dlpdeidentifytemplate-sample-infotypedeidentifytemplate
 spec:
   projectRef:
-    # Replace "${PROJECT_ID?}" with your project ID
-    external: "projects/${PROJECT_ID?}"
-  displayName: "sample-template"
-  description: "A sample deidentify template"
+    # Replace &#34;${PROJECT_ID?}&#34; with your project ID
+    external: &#34;projects/${PROJECT_ID?}&#34;
+  displayName: &#34;sample-template&#34;
+  description: &#34;A sample deidentify template&#34;
   deidentifyConfig:
     infoTypeTransformations:
       transformations:
       - infoTypes:
-        - name: "PHONE_NUMBER"
-        - name: "AGE"
+        - name: &#34;PHONE_NUMBER&#34;
+        - name: &#34;AGE&#34;
         primitiveTransformation:
           replaceConfig:
             newValue:
               integerValue: 9
       - infoTypes:
-        - name: "SALARY"
+        - name: &#34;SALARY&#34;
         primitiveTransformation:
           replaceConfig:
             newValue:
               floatValue: 192168.01
       - infoTypes:
-        - name: "HOME_PAGE"
+        - name: &#34;HOME_PAGE&#34;
         primitiveTransformation:
           replaceConfig:
             newValue:
-              stringValue: "https://www.example.com/"
+              stringValue: &#34;https://www.example.com/&#34;
       - infoTypes:
-        - name: "RETIRED"
+        - name: &#34;RETIRED&#34;
         primitiveTransformation:
           replaceConfig:
             newValue:
               booleanValue: true
       - infoTypes:
-        - name: "LAST_LOGIN"
+        - name: &#34;LAST_LOGIN&#34;
         primitiveTransformation:
           replaceConfig:
             newValue:
-              timestampValue: "2014-10-02T15:01:23Z"
+              timestampValue: &#34;2014-10-02T15:01:23Z&#34;
       - infoTypes:
-        - name: "START_TIME"
+        - name: &#34;START_TIME&#34;
         primitiveTransformation:
           replaceConfig:
             newValue:
@@ -7094,7 +7094,7 @@ spec:
                 seconds: 0
                 nanos: 0
       - infoTypes:
-        - name: "DATE_OF_BIRTH"
+        - name: &#34;DATE_OF_BIRTH&#34;
         primitiveTransformation:
           replaceConfig:
             newValue:
@@ -7103,58 +7103,58 @@ spec:
                 month: 1
                 day: 1
       - infoTypes:
-        - name: "PAYDAY"
+        - name: &#34;PAYDAY&#34;
         primitiveTransformation:
           replaceConfig:
             newValue:
-              dayOfWeekValue: "FRIDAY"
+              dayOfWeekValue: &#34;FRIDAY&#34;
       - infoTypes:
-        - name: "HEIGHT"
+        - name: &#34;HEIGHT&#34;
         primitiveTransformation:
           redactConfig: {}
       - infoTypes:
-        - name: "EMAIL_ADDRESS"
-        - name: "LAST_NAME"
+        - name: &#34;EMAIL_ADDRESS&#34;
+        - name: &#34;LAST_NAME&#34;
         primitiveTransformation:
           characterMaskConfig:
-            maskingCharacter: "X"
+            maskingCharacter: &#34;X&#34;
             numberToMask: 4
             reverseOrder: true
             charactersToIgnore:
-            - charactersToSkip: "#"
-            - commonCharactersToIgnore: "PUNCTUATION"
+            - charactersToSkip: &#34;#&#34;
+            - commonCharactersToIgnore: &#34;PUNCTUATION&#34;
       - infoTypes:
-        - name: "HOME_ADDRESS"
+        - name: &#34;HOME_ADDRESS&#34;
         primitiveTransformation:
           cryptoReplaceFfxFpeConfig:
             context:
-              name: "sometweak"
+              name: &#34;sometweak&#34;
             cryptoKey:
               transient:
-                name: "beep"
+                name: &#34;beep&#34;
             surrogateInfoType:
-              name: "abc"
-            commonAlphabet: "NUMERIC"
+              name: &#34;abc&#34;
+            commonAlphabet: &#34;NUMERIC&#34;
       - infoTypes:
-        - name: "BANK_ACCOUNT_NUMBER"
+        - name: &#34;BANK_ACCOUNT_NUMBER&#34;
         primitiveTransformation:
           cryptoReplaceFfxFpeConfig:
             cryptoKey:
               unwrapped:
-                key: "vJZQm1FyV4BdF99nlcUYNA=="
-            customAlphabet: "~`!@#$%^&*()_-+={[}]|:;\"'<,>.?/"
+                key: &#34;vJZQm1FyV4BdF99nlcUYNA==&#34;
+            customAlphabet: &#34;~`!@#$%^&amp;*()_-&#43;={[}]|:;\&#34;&#39;&lt;,&gt;.?/&#34;
       - infoTypes:
-        - name: "BILLING_ADDRESS"
+        - name: &#34;BILLING_ADDRESS&#34;
         primitiveTransformation:
           cryptoReplaceFfxFpeConfig:
             cryptoKey:
               kmsWrapped:
-                wrappedKey: "vJZQm1FyV4BdF99nlcUYNA=="
+                wrappedKey: &#34;vJZQm1FyV4BdF99nlcUYNA==&#34;
                 cryptoKeyRef:
-                  name: "dlpdeidentifytemplate-dep-infotypedeidentifytemplate"
+                  name: &#34;dlpdeidentifytemplate-dep-infotypedeidentifytemplate&#34;
             radix: 4
       - infoTypes:
-        - name: "FIRST_NAME"
+        - name: &#34;FIRST_NAME&#34;
         primitiveTransformation:
           fixedSizeBucketingConfig:
             lowerBound:
@@ -7163,7 +7163,7 @@ spec:
               integerValue: 9
             bucketSize: 2.5
       - infoTypes:
-        - name: "MIDDLE_NAME"
+        - name: &#34;MIDDLE_NAME&#34;
         primitiveTransformation:
           bucketingConfig:
             buckets:
@@ -7174,67 +7174,67 @@ spec:
               replacementValue:
                 integerValue: 6
       - infoTypes:
-        - name: "EYE_COLOR"
+        - name: &#34;EYE_COLOR&#34;
         primitiveTransformation:
           replaceWithInfoTypeConfig: {}
       - infoTypes:
-        - name: "START_DATE"
+        - name: &#34;START_DATE&#34;
         primitiveTransformation:
           timePartConfig:
-            partToExtract: "YEAR"
+            partToExtract: &#34;YEAR&#34;
       - infoTypes:
-        - name: "CREDIT_CARD_NUMBER"
+        - name: &#34;CREDIT_CARD_NUMBER&#34;
         primitiveTransformation:
           cryptoDeterministicConfig:
             context:
-              name: "sometweak"
+              name: &#34;sometweak&#34;
             cryptoKey:
               transient:
-                name: "beep"
+                name: &#34;beep&#34;
             surrogateInfoType:
-              name: "abc"
+              name: &#34;abc&#34;
       - infoTypes:
-        - name: "LAST_VACATION"
+        - name: &#34;LAST_VACATION&#34;
         primitiveTransformation:
           dateShiftConfig:
             upperBoundDays: 3
             lowerBoundDays: 2
             context:
-              name: "def"
+              name: &#34;def&#34;
             cryptoKey:
               transient:
-                name: "beep"
+                name: &#34;beep&#34;
 ---
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSCryptoKey
 metadata:
   name: dlpdeidentifytemplate-dep-infotypedeidentifytemplate
 spec:
-  location: "global"
+  location: &#34;global&#34;
   keyRingRef:
-    name: "dlpdeidentifytemplate-dep-infotypedeidentifytemplate"
-  purpose: "ENCRYPT_DECRYPT"
+    name: &#34;dlpdeidentifytemplate-dep-infotypedeidentifytemplate&#34;
+  purpose: &#34;ENCRYPT_DECRYPT&#34;
 ---
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSKeyRing
 metadata:
   name: dlpdeidentifytemplate-dep-infotypedeidentifytemplate
 spec:
-  location: "global"
+  location: &#34;global&#34;
 ```
 
 ### Record Deidentify Template
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -7245,26 +7245,26 @@ metadata:
   name: dlpdeidentifytemplate-sample-recorddeidentifytemplate
 spec:
   organizationRef:
-    # Replace "${ORG_ID?}" with the numeric ID for your organization
-    external: "organizations/${ORG_ID?}"
-  location: "us-west2"
-  displayName: "sample-template"
-  description: "A sample deidentify template"
+    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
+    external: &#34;organizations/${ORG_ID?}&#34;
+  location: &#34;us-west2&#34;
+  displayName: &#34;sample-template&#34;
+  description: &#34;A sample deidentify template&#34;
   deidentifyConfig:
     recordTransformations:
       fieldTransformations:
       - fields:
-        - name: "SPECIES"
+        - name: &#34;SPECIES&#34;
         condition:
           expressions:
-            logicalOperator: "AND"
+            logicalOperator: &#34;AND&#34;
             conditions:
               conditions:
               - field:
-                  name: "BREED"
-                operator: "NOT_EQUAL_TO"
+                  name: &#34;BREED&#34;
+                operator: &#34;NOT_EQUAL_TO&#34;
                 value:
-                  stringValue: "PUG"
+                  stringValue: &#34;PUG&#34;
         primitiveTransformation:
           redactConfig: {}
 ```

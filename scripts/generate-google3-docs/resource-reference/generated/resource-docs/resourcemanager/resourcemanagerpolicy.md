@@ -441,7 +441,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -469,7 +469,7 @@ updateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -504,7 +504,7 @@ updateTime: string
         <td><code>updateTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds, representing when the variable was last updated. Example: "2016-10-09T12:33:37.578138407Z".{% endverbatim %}</p>
+            <p>{% verbatim %}The timestamp in RFC3339 UTC &#34;Zulu&#34; format, accurate to nanoseconds, representing when the variable was last updated. Example: &#34;2016-10-09T12:33:37.578138407Z&#34;.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -516,14 +516,14 @@ updateTime: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -535,7 +535,7 @@ metadata:
 spec:
   folderRef:
     name: resourcemanagerpolicy-dep-folder
-  constraint: "constraints/compute.disableSerialPortAccess"
+  constraint: &#34;constraints/compute.disableSerialPortAccess&#34;
   booleanPolicy:
     enforced: true
 ---
@@ -543,8 +543,8 @@ apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Folder
 metadata:
   annotations:
-    # Replace "${ORG_ID?}" with the numeric ID for your organization
-    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
+    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: &#34;${ORG_ID?}&#34;
   name: resourcemanagerpolicy-dep-folder
 spec:
   displayName: Organization Policy Sample
@@ -554,14 +554,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -572,9 +572,9 @@ metadata:
   name: resourcemanagerpolicy-sample-org
 spec:
   organizationRef:
-    # Replace "${ORG_ID?}" with the numeric ID for your organization
-    external: "${ORG_ID?}"
-  constraint: "constraints/compute.disableSerialPortAccess"
+    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
+    external: &#34;${ORG_ID?}&#34;
+  constraint: &#34;constraints/compute.disableSerialPortAccess&#34;
   booleanPolicy:
     enforced: true
 ```
@@ -583,14 +583,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -602,7 +602,7 @@ metadata:
 spec:
   projectRef:
     name: resourcemanagerpolicy-dep-proj
-  constraint: "constraints/compute.disableSerialPortAccess"
+  constraint: &#34;constraints/compute.disableSerialPortAccess&#34;
   booleanPolicy:
     enforced: true
 ---
@@ -610,14 +610,14 @@ apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
 metadata:
   annotations:
-    # Replace "${ORG_ID?}" with the numeric ID for your folder
-    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
+    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your folder
+    cnrm.cloud.google.com/organization-id: &#34;${ORG_ID?}&#34;
   name: resourcemanagerpolicy-dep-proj
 spec:
   name: Org Policy Sample
   billingAccountRef:
-    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-    external: "${BILLING_ACCOUNT_ID?}"
+    # Replace &#34;${BILLING_ACCOUNT_ID?}&#34; with the numeric ID for your billing account
+    external: &#34;${BILLING_ACCOUNT_ID?}&#34;
 ```
 
 

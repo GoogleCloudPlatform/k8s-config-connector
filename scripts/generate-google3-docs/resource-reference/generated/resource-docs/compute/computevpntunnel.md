@@ -153,7 +153,7 @@ Acceptable IKE versions are 1 or 2. Default version is 2.{% endverbatim %}</p>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}Immutable. Local traffic selector to use when establishing the VPN tunnel with
 peer VPN gateway. The value should be a CIDR formatted string,
-for example '192.168.0.0/16'. The ranges should be disjoint.
+for example &#39;192.168.0.0/16&#39;. The ranges should be disjoint.
 Only IPv4 is supported.{% endverbatim %}</p>
         </td>
     </tr>
@@ -277,7 +277,7 @@ same VPN gateway interface ID in the peer GCP VPN gateway.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The region where the tunnel is located. If unset, is set to the region of 'target_vpn_gateway'.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The region where the tunnel is located. If unset, is set to the region of &#39;target_vpn_gateway&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -289,7 +289,7 @@ same VPN gateway interface ID in the peer GCP VPN gateway.{% endverbatim %}</p>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}Immutable. Remote traffic selector to use when establishing the VPN tunnel with
 peer VPN gateway. The value should be a CIDR formatted string,
-for example '192.168.0.0/16'. The ranges should be disjoint.
+for example &#39;192.168.0.0/16&#39;. The ranges should be disjoint.
 Only IPv4 is supported.{% endverbatim %}</p>
         </td>
     </tr>
@@ -371,7 +371,7 @@ gateway and the peer VPN gateway.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value of the field. Cannot be used if 'valueFrom' is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Value of the field. Cannot be used if &#39;valueFrom&#39; is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -381,7 +381,7 @@ gateway and the peer VPN gateway.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Source for the field's value. Cannot be used if 'value' is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Source for the field&#39;s value. Cannot be used if &#39;value&#39; is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -391,7 +391,7 @@ gateway and the peer VPN gateway.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource's namespace.{% endverbatim %}</p>
+            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource&#39;s namespace.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -543,7 +543,7 @@ tunnelId: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -571,7 +571,7 @@ tunnelId: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -647,14 +647,14 @@ internally during updates.{% endverbatim %}</p>
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -666,7 +666,7 @@ metadata:
   labels:
     foo: bar
 spec:
-  peerIp: "15.0.0.120"
+  peerIp: &#34;15.0.0.120&#34;
   region: us-central1
   sharedSecret:
     valueFrom:
@@ -676,30 +676,30 @@ spec:
   targetVPNGatewayRef:
     name: computevpntunnel-dep
   localTrafficSelector:
-   - "192.168.0.0/16"
+   - &#34;192.168.0.0/16&#34;
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
   name: computevpntunnel-dep
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
 spec:
   location: us-central1
-  description: "a test regional address"
+  description: &#34;a test regional address&#34;
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   name: computevpntunnel-dep1
 spec:
-  description: "A regional forwarding rule"
+  description: &#34;A regional forwarding rule&#34;
   target:
     targetVPNGatewayRef:
       name: computevpntunnel-dep
-  ipProtocol: "ESP"
+  ipProtocol: &#34;ESP&#34;
   location: us-central1
   ipAddress:
     addressRef:
@@ -709,15 +709,15 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   name: computevpntunnel-dep2
 spec:
-  description: "A regional forwarding rule"
+  description: &#34;A regional forwarding rule&#34;
   target:
     targetVPNGatewayRef:
       name: computevpntunnel-dep
-  ipProtocol: "UDP"
-  portRange: "500"
+  ipProtocol: &#34;UDP&#34;
+  portRange: &#34;500&#34;
   location: us-central1
   ipAddress:
     addressRef:
@@ -727,15 +727,15 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   name: computevpntunnel-dep3
 spec:
-  description: "A regional forwarding rule"
+  description: &#34;A regional forwarding rule&#34;
   target:
     targetVPNGatewayRef:
       name: computevpntunnel-dep
-  ipProtocol: "UDP"
-  portRange: "4500"
+  ipProtocol: &#34;UDP&#34;
+  portRange: &#34;4500&#34;
   location: us-central1
   ipAddress:
     addressRef:
@@ -764,7 +764,7 @@ kind: Secret
 metadata:
   name: computevpntunnel-dep
 stringData:
-  sharedSecret: "a secret message"
+  sharedSecret: &#34;a secret message&#34;
 ```
 
 

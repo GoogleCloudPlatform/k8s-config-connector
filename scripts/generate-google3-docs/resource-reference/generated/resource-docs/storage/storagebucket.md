@@ -181,7 +181,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The bucket's Cross-Origin Resource Sharing (CORS) configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}The bucket&#39;s Cross-Origin Resource Sharing (CORS) configuration.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -211,7 +211,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The list of HTTP methods on which to include CORS response headers, (GET, OPTIONS, POST, etc) Note: "*" is permitted in the list of methods, and means "any method".{% endverbatim %}</p>
+            <p>{% verbatim %}The list of HTTP methods on which to include CORS response headers, (GET, OPTIONS, POST, etc) Note: &#34;*&#34; is permitted in the list of methods, and means &#34;any method&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -231,7 +231,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The list of Origins eligible to receive CORS response headers. Note: "*" is permitted in the list of origins, and means "any Origin".{% endverbatim %}</p>
+            <p>{% verbatim %}The list of Origins eligible to receive CORS response headers. Note: &#34;*&#34; is permitted in the list of origins, and means &#34;any Origin&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -281,7 +281,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The bucket's encryption configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}The bucket&#39;s encryption configuration.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -331,7 +331,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The bucket's Lifecycle Rules configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}The bucket&#39;s Lifecycle Rules configuration.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -351,7 +351,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The Lifecycle Rule's action configuration. A single block of this type is supported.{% endverbatim %}</p>
+            <p>{% verbatim %}The Lifecycle Rule&#39;s action configuration. A single block of this type is supported.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -381,7 +381,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The Lifecycle Rule's condition configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}The Lifecycle Rule&#39;s condition configuration.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -522,7 +522,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Match to live and/or archived objects. Unversioned buckets have only live objects. Supported values include: "LIVE", "ARCHIVED", "ANY".{% endverbatim %}</p>
+            <p>{% verbatim %}Match to live and/or archived objects. Unversioned buckets have only live objects. Supported values include: &#34;LIVE&#34;, &#34;ARCHIVED&#34;, &#34;ANY&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -542,7 +542,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The bucket's Access & Storage Logs configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}The bucket&#39;s Access &amp; Storage Logs configuration.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -562,7 +562,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The object prefix for log objects. If it's not provided, by default Google Cloud Storage sets this to this bucket's name.{% endverbatim %}</p>
+            <p>{% verbatim %}The object prefix for log objects. If it&#39;s not provided, by default Google Cloud Storage sets this to this bucket&#39;s name.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -602,7 +602,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Configuration of the bucket's data retention policy for how long objects in the bucket should be retained.{% endverbatim %}</p>
+            <p>{% verbatim %}Configuration of the bucket&#39;s data retention policy for how long objects in the bucket should be retained.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -612,7 +612,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}If set to true, the bucket will be locked and permanently restrict edits to the bucket's retention policy.  Caution: Locking a bucket is an irreversible action.{% endverbatim %}</p>
+            <p>{% verbatim %}If set to true, the bucket will be locked and permanently restrict edits to the bucket&#39;s retention policy.  Caution: Locking a bucket is an irreversible action.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -652,7 +652,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The bucket's Versioning configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}The bucket&#39;s Versioning configuration.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -682,7 +682,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Behaves as the bucket's directory index where missing objects are treated as potential directories.{% endverbatim %}</p>
+            <p>{% verbatim %}Behaves as the bucket&#39;s directory index where missing objects are treated as potential directories.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -727,7 +727,7 @@ url: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -755,7 +755,7 @@ url: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -790,7 +790,7 @@ url: string
         <td><code>url</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The base URL of the bucket, in the format gs://<bucket-name>.{% endverbatim %}</p>
+            <p>{% verbatim %}The base URL of the bucket, in the format gs://&lt;bucket-name&gt;.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -802,14 +802,14 @@ url: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -818,9 +818,9 @@ apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
 metadata:
   annotations:
-    cnrm.cloud.google.com/force-destroy: "false"
+    cnrm.cloud.google.com/force-destroy: &#34;false&#34;
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
   name: ${PROJECT_ID?}-sample
 spec:
@@ -832,9 +832,9 @@ spec:
   versioning:
     enabled: true
   cors:
-    - origin: ["http://example.appspot.com"]
-      responseHeader: ["Content-Type"]
-      method: ["GET", "HEAD", "DELETE"]
+    - origin: [&#34;http://example.appspot.com&#34;]
+      responseHeader: [&#34;Content-Type&#34;]
+      method: [&#34;GET&#34;, &#34;HEAD&#34;, &#34;DELETE&#34;]
       maxAgeSeconds: 3600
   uniformBucketLevelAccess: true
 ```

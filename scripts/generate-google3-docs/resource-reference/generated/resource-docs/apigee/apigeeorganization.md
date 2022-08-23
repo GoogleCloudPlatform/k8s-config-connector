@@ -250,7 +250,7 @@ Allowed value: The Google Cloud resource name of a `ComputeNetwork` resource (fo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. Name of the GCP project in which to associate the Apigee organization. Pass the information as a query parameter using the following structure in your request: projects/<project> Authorization requires the following IAM permission on the specified resource parent: apigee.organizations.create
+            <p>{% verbatim %}Required. Name of the GCP project in which to associate the Apigee organization. Pass the information as a query parameter using the following structure in your request: projects/&lt;project&gt; Authorization requires the following IAM permission on the specified resource parent: apigee.organizations.create
 
 Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).{% endverbatim %}</p>
         </td>
@@ -312,7 +312,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Cloud KMS key name used for encrypting the data that is stored and replicated across runtime instances. Update is not allowed after the organization is created. Required when (#RuntimeType) is `TRIAL`, a Google-Managed encryption key will be used. For example: "projects/foo/locations/us/keyRings/bar/cryptoKeys/baz". **Note:** Not supported for Apigee hybrid.
+            <p>{% verbatim %}Cloud KMS key name used for encrypting the data that is stored and replicated across runtime instances. Update is not allowed after the organization is created. Required when (#RuntimeType) is `TRIAL`, a Google-Managed encryption key will be used. For example: &#34;projects/foo/locations/us/keyRings/bar/cryptoKeys/baz&#34;. **Note:** Not supported for Apigee hybrid.
 
 Allowed value: The Google Cloud resource name of a `KMSCryptoKey` resource (format: `{{selfLink}}`).{% endverbatim %}</p>
         </td>
@@ -399,7 +399,7 @@ subscriptionType: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -427,7 +427,7 @@ subscriptionType: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -516,14 +516,14 @@ subscriptionType: string
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -535,16 +535,16 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID
-    external: "projects/${PROJECT_ID?}"
-  displayName: "basic-organization"
-  description: "A sample organization"
+    external: &#34;projects/${PROJECT_ID?}&#34;
+  displayName: &#34;basic-organization&#34;
+  description: &#34;A sample organization&#34;
   properties:
-    features.mart.connect.enabled: "false"
-    features.hybrid.enabled: "true"
-  analyticsRegion: "us-west1"
+    features.mart.connect.enabled: &#34;false&#34;
+    features.hybrid.enabled: &#34;true&#34;
+  analyticsRegion: &#34;us-west1&#34;
   authorizedNetworkRef:
-    name: "apigeeorganization-dep"
-  runtimeType: "CLOUD"
+    name: &#34;apigeeorganization-dep&#34;
+  runtimeType: &#34;CLOUD&#34;
   addonsConfig:
     advancedApiOpsConfig:
       enabled: true
@@ -556,7 +556,7 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
-  name: "apigeeorganization-dep"
+  name: &#34;apigeeorganization-dep&#34;
 spec:
   autoCreateSubnetworks: false
   description: A sample authorized network for an apigee organization

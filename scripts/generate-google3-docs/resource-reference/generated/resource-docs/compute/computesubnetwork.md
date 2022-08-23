@@ -159,9 +159,9 @@ non-overlapping within a network. Only IPv4 is supported.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The access type of IPv6 address this subnet holds. It's immutable and can only be specified during creation
+            <p>{% verbatim %}Immutable. The access type of IPv6 address this subnet holds. It&#39;s immutable and can only be specified during creation
 or the first time the subnet is updated into IPV4_IPV6 dual stack. If the ipv6_type is EXTERNAL then this subnet
-cannot enable direct path. Possible values: ["EXTERNAL", "INTERNAL"].{% endverbatim %}</p>
+cannot enable direct path. Possible values: [&#34;EXTERNAL&#34;, &#34;INTERNAL&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -172,8 +172,8 @@ cannot enable direct path. Possible values: ["EXTERNAL", "INTERNAL"].{% endverba
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Denotes the logging options for the subnetwork flow logs. If logging is enabled
-logs will be exported to Stackdriver. This field cannot be set if the 'purpose' of this
-subnetwork is 'INTERNAL_HTTPS_LOAD_BALANCER'.{% endverbatim %}</p>
+logs will be exported to Stackdriver. This field cannot be set if the &#39;purpose&#39; of this
+subnetwork is &#39;INTERNAL_HTTPS_LOAD_BALANCER&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -186,7 +186,7 @@ subnetwork is 'INTERNAL_HTTPS_LOAD_BALANCER'.{% endverbatim %}</p>
             <p>{% verbatim %}Can only be specified if VPC flow logging for this subnetwork is enabled.
 Toggles the aggregation interval for collecting flow logs. Increasing the
 interval time will reduce the amount of generated flow logs for long
-lasting connections. Default is an interval of 5 seconds per connection. Default value: "INTERVAL_5_SEC" Possible values: ["INTERVAL_5_SEC", "INTERVAL_30_SEC", "INTERVAL_1_MIN", "INTERVAL_5_MIN", "INTERVAL_10_MIN", "INTERVAL_15_MIN"].{% endverbatim %}</p>
+lasting connections. Default is an interval of 5 seconds per connection. Default value: &#34;INTERVAL_5_SEC&#34; Possible values: [&#34;INTERVAL_5_SEC&#34;, &#34;INTERVAL_30_SEC&#34;, &#34;INTERVAL_1_MIN&#34;, &#34;INTERVAL_5_MIN&#34;, &#34;INTERVAL_10_MIN&#34;, &#34;INTERVAL_15_MIN&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -198,7 +198,7 @@ lasting connections. Default is an interval of 5 seconds per connection. Default
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Export filter used to define which VPC flow logs should be logged, as as CEL expression. See
 https://cloud.google.com/vpc/docs/flow-logs#filtering for details on how to format this field.
-The default value is 'true', which evaluates to include everything.{% endverbatim %}</p>
+The default value is &#39;true&#39;, which evaluates to include everything.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -224,7 +224,7 @@ half of all collected logs are reported.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Can only be specified if VPC flow logging for this subnetwork is enabled.
 Configures whether metadata fields should be added to the reported VPC
-flow logs. Default value: "INCLUDE_ALL_METADATA" Possible values: ["EXCLUDE_ALL_METADATA", "INCLUDE_ALL_METADATA", "CUSTOM_METADATA"].{% endverbatim %}</p>
+flow logs. Default value: &#34;INCLUDE_ALL_METADATA&#34; Possible values: [&#34;EXCLUDE_ALL_METADATA&#34;, &#34;INCLUDE_ALL_METADATA&#34;, &#34;CUSTOM_METADATA&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -235,7 +235,7 @@ flow logs. Default value: "INCLUDE_ALL_METADATA" Possible values: ["EXCLUDE_ALL_
         <td>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}List of metadata fields that should be added to reported logs.
-Can only be specified if VPC flow logs for this subnetwork is enabled and "metadata" is set to CUSTOM_METADATA.{% endverbatim %}</p>
+Can only be specified if VPC flow logs for this subnetwork is enabled and &#34;metadata&#34; is set to CUSTOM_METADATA.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -321,7 +321,7 @@ access Google APIs and services by using Private Google Access.{% endverbatim %}
 INTERNAL_HTTPS_LOAD_BALANCER is a user-created subnetwork that is
 reserved for Internal HTTP(S) Load Balancing.
 
-If set to INTERNAL_HTTPS_LOAD_BALANCER you must also set the 'role' field.{% endverbatim %}</p>
+If set to INTERNAL_HTTPS_LOAD_BALANCER you must also set the &#39;role&#39; field.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -355,7 +355,7 @@ If set to INTERNAL_HTTPS_LOAD_BALANCER you must also set the 'role' field.{% end
 purpose = INTERNAL_HTTPS_LOAD_BALANCER. The value can be set to ACTIVE
 or BACKUP. An ACTIVE subnetwork is one that is currently being used
 for Internal HTTP(S) Load Balancing. A BACKUP subnetwork is one that
-is ready to be promoted to ACTIVE or is currently draining. Possible values: ["ACTIVE", "BACKUP"].{% endverbatim %}</p>
+is ready to be promoted to ACTIVE or is currently draining. Possible values: [&#34;ACTIVE&#34;, &#34;BACKUP&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -412,7 +412,7 @@ must be unique within the subnetwork.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The stack type for this subnet to identify whether the IPv6 feature is enabled or not.
-If not specified IPV4_ONLY will be used. Possible values: ["IPV4_ONLY", "IPV4_IPV6"].{% endverbatim %}</p>
+If not specified IPV4_ONLY will be used. Possible values: [&#34;IPV4_ONLY&#34;, &#34;IPV4_IPV6&#34;].{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -451,7 +451,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -479,7 +479,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -555,14 +555,14 @@ outside this subnetwork.{% endverbatim %}</p>
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -571,7 +571,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   name: computesubnetwork-sample
 spec:
   ipCidrRange: 10.2.0.0/16

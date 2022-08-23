@@ -236,7 +236,7 @@ see the [official documentation](https://cloud.google.com/nat/docs/overview#spec
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Specifies the desired filtering of logs on this NAT. Possible values: ["ERRORS_ONLY", "TRANSLATIONS_ONLY", "ALL"].{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies the desired filtering of logs on this NAT. Possible values: [&#34;ERRORS_ONLY&#34;, &#34;TRANSLATIONS_ONLY&#34;, &#34;ALL&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -268,8 +268,8 @@ This field can only be set when enableDynamicPortAllocation is enabled.{% endver
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}How external IPs should be allocated for this NAT. Valid values are
-'AUTO_ONLY' for only allowing NAT IPs allocated by Google Cloud
-Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible values: ["MANUAL_ONLY", "AUTO_ONLY"].{% endverbatim %}</p>
+&#39;AUTO_ONLY&#39; for only allowing NAT IPs allocated by Google Cloud
+Platform, or &#39;MANUAL_ONLY&#39; for only user-allocated NAT IP addresses. Possible values: [&#34;MANUAL_ONLY&#34;, &#34;AUTO_ONLY&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -390,15 +390,15 @@ Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible va
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}How NAT should be configured per Subnetwork.
-If 'ALL_SUBNETWORKS_ALL_IP_RANGES', all of the
+If &#39;ALL_SUBNETWORKS_ALL_IP_RANGES&#39;, all of the
 IP ranges in every Subnetwork are allowed to Nat.
-If 'ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES', all of the primary IP
+If &#39;ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES&#39;, all of the primary IP
 ranges in every Subnetwork are allowed to Nat.
-'LIST_OF_SUBNETWORKS': A list of Subnetworks are allowed to Nat
+&#39;LIST_OF_SUBNETWORKS&#39;: A list of Subnetworks are allowed to Nat
 (specified in the field subnetwork below). Note that if this field
 contains ALL_SUBNETWORKS_ALL_IP_RANGES or
 ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES, then there should not be any
-other RouterNat section in any Router for this network in this region. Possible values: ["ALL_SUBNETWORKS_ALL_IP_RANGES", "ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES", "LIST_OF_SUBNETWORKS"].{% endverbatim %}</p>
+other RouterNat section in any Router for this network in this region. Possible values: [&#34;ALL_SUBNETWORKS_ALL_IP_RANGES&#34;, &#34;ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES&#34;, &#34;LIST_OF_SUBNETWORKS&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -409,7 +409,7 @@ other RouterNat section in any Router for this network in this region. Possible 
         <td>
             <p><code class="apitype">list (object)</code></p>
             <p>{% verbatim %}One or more subnetwork NAT configurations. Only used if
-'source_subnetwork_ip_ranges_to_nat' is set to 'LIST_OF_SUBNETWORKS'.{% endverbatim %}</p>
+&#39;source_subnetwork_ip_ranges_to_nat&#39; is set to &#39;LIST_OF_SUBNETWORKS&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -431,7 +431,7 @@ other RouterNat section in any Router for this network in this region. Possible 
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}List of the secondary ranges of the subnetwork that are allowed
 to use NAT. This can be populated only if
-'LIST_OF_SECONDARY_IP_RANGES' is one of the values in
+&#39;LIST_OF_SECONDARY_IP_RANGES&#39; is one of the values in
 sourceIpRangesToNat.{% endverbatim %}</p>
         </td>
     </tr>
@@ -454,8 +454,8 @@ sourceIpRangesToNat.{% endverbatim %}</p>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}List of options for which source IPs in the subnetwork
 should have NAT enabled. Supported values include:
-'ALL_IP_RANGES', 'LIST_OF_SECONDARY_IP_RANGES',
-'PRIMARY_IP_RANGE'.{% endverbatim %}</p>
+&#39;ALL_IP_RANGES&#39;, &#39;LIST_OF_SECONDARY_IP_RANGES&#39;,
+&#39;PRIMARY_IP_RANGE&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -570,7 +570,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -598,7 +598,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -631,14 +631,14 @@ observedGeneration: integer
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -658,7 +658,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   name: computerouternat-dep-forallsubnets
 spec:
   routingMode: REGIONAL
@@ -679,14 +679,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -711,7 +711,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   name: computerouternat-dep-forlistofsubnets
 spec:
   routingMode: REGIONAL
@@ -731,7 +731,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   name: computerouternat-dep-forlistofsubnets
 spec:
   description: My subnet
@@ -745,14 +745,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -781,7 +781,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   name: computerouternat-dep-withmanualnatips
 spec:
   routingMode: REGIONAL

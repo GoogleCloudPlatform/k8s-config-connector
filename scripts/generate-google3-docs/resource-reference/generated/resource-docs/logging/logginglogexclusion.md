@@ -144,7 +144,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[WARNING] BillingAccount not yet supported in Config Connector, use 'external' field to reference existing resources.
+            <p>{% verbatim %}[WARNING] BillingAccount not yet supported in Config Connector, use &#39;external&#39; field to reference existing resources.
 Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
         </td>
     </tr>
@@ -185,7 +185,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. An (https://cloud.google.com/logging/docs/view/advanced-queries#sample), you can exclude less than 100% of the matching log entries. For example, the following query matches 99% of low-severity log entries from Google Cloud Storage buckets: `"resource.type=gcs_bucket severity{% endverbatim %}</p>
+            <p>{% verbatim %}Required. An (https://cloud.google.com/logging/docs/view/advanced-queries#sample), you can exclude less than 100% of the matching log entries. For example, the following query matches 99% of low-severity log entries from Google Cloud Storage buckets: `&#34;resource.type=gcs_bucket severity{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -255,7 +255,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[WARNING] Organization not yet supported in Config Connector, use 'external' field to reference existing resources.
+            <p>{% verbatim %}[WARNING] Organization not yet supported in Config Connector, use &#39;external&#39; field to reference existing resources.
 Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
         </td>
     </tr>
@@ -349,7 +349,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -377,7 +377,7 @@ updateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -424,14 +424,14 @@ updateTime: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -442,24 +442,24 @@ metadata:
   name: logginglogexclusion-sample-billing
 spec:
   billingAccountRef:
-    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-    external: "billingAccounts/${BILLING_ACCOUNT_ID?}"
-  description: "A billing log exclusion"
-  filter: "resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)"
+    # Replace &#34;${BILLING_ACCOUNT_ID?}&#34; with the numeric ID for your billing account
+    external: &#34;billingAccounts/${BILLING_ACCOUNT_ID?}&#34;
+  description: &#34;A billing log exclusion&#34;
+  filter: &#34;resource.type=gcs_bucket severity&lt;ERROR sample(insertId, 0.99)&#34;
 ```
 
 ### Folder Exclusion
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -471,8 +471,8 @@ metadata:
 spec:
   folderRef:
     name: logginglogexclusion-dep-folder
-  description: "A folder log exclusion"
-  filter: "resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)"
+  description: &#34;A folder log exclusion&#34;
+  filter: &#34;resource.type=gcs_bucket severity&lt;ERROR sample(insertId, 0.99)&#34;
 ---
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Folder
@@ -480,8 +480,8 @@ metadata:
   name: logginglogexclusion-dep-folder
 spec:
   organizationRef:
-    # Replace "${ORG_ID?}" with the numeric ID for your organization
-    external: "${ORG_ID?}"
+    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
+    external: &#34;${ORG_ID?}&#34;
   displayName: Folder Log Exclusion Sample
 ```
 
@@ -489,14 +489,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -507,24 +507,24 @@ metadata:
   name: logginglogexclusion-sample-org
 spec:
   organizationRef:
-    # Replace "${ORG_ID?}" with the numeric ID for your organization
-    external: "organizations/${ORG_ID?}"
-  description: "An organization log exclusion"
-  filter: "resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)"
+    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
+    external: &#34;organizations/${ORG_ID?}&#34;
+  description: &#34;An organization log exclusion&#34;
+  filter: &#34;resource.type=gcs_bucket severity&lt;ERROR sample(insertId, 0.99)&#34;
 ```
 
 ### Project Exclusion
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -536,8 +536,8 @@ metadata:
 spec:
   projectRef:
     name: logginglogexclusion-dep-proj
-  description: "A project log exclusion"
-  filter: "resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)"
+  description: &#34;A project log exclusion&#34;
+  filter: &#34;resource.type=gcs_bucket severity&lt;ERROR sample(insertId, 0.99)&#34;
 ---
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
@@ -546,11 +546,11 @@ metadata:
 spec:
   name: Project Log Exclusion Sample
   organizationRef:
-    # Replace "${ORG_ID?}" with the numeric ID for your organization
-    external: "${ORG_ID?}"
+    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
+    external: &#34;${ORG_ID?}&#34;
   billingAccountRef:
-    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-    external: "${BILLING_ACCOUNT_ID?}"
+    # Replace &#34;${BILLING_ACCOUNT_ID?}&#34; with the numeric ID for your billing account
+    external: &#34;${BILLING_ACCOUNT_ID?}&#34;
 ```
 
 

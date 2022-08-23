@@ -119,7 +119,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}User-specified flag to indicate which mode to use for advertisement. Default value: "DEFAULT" Possible values: ["DEFAULT", "CUSTOM"].{% endverbatim %}</p>
+            <p>{% verbatim %}User-specified flag to indicate which mode to use for advertisement. Default value: &#34;DEFAULT&#34; Possible values: [&#34;DEFAULT&#34;, &#34;CUSTOM&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -216,7 +216,7 @@ will have the same local ASN.{% endverbatim %}</p>
             <p>{% verbatim %}The interval in seconds between BGP keepalive messages that are sent to the peer.
 Hold time is three times the interval at which keepalive messages are sent, and the hold time is the
 maximum number of seconds allowed to elapse between successive keepalive messages that BGP receives from a peer.
-BGP will use the smaller of either the local hold time value or the peer's hold time value as the hold time for
+BGP will use the smaller of either the local hold time value or the peer&#39;s hold time value as the hold time for
 the BGP connection between the two peers. If set, this value must be between 20 and 60. The default is 20.{% endverbatim %}</p>
         </td>
     </tr>
@@ -335,7 +335,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -363,7 +363,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -410,14 +410,14 @@ selfLink: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -437,13 +437,13 @@ spec:
     advertisedGroups:
       - ALL_SUBNETS
     advertisedIpRanges:
-      - range: "1.2.3.4"
+      - range: &#34;1.2.3.4&#34;
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   name: computerouter-dep
 spec:
   routingMode: REGIONAL

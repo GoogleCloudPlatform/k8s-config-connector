@@ -296,7 +296,7 @@ entirely by the regular perimeter that resource is in.
 Perimeter Bridges are typically useful when building more complex
 topologies with many independent perimeters that need to share some data
 with a common perimeter, but should not be able to share data among
-themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER_TYPE_REGULAR", "PERIMETER_TYPE_BRIDGE"].{% endverbatim %}</p>
+themselves. Default value: &#34;PERIMETER_TYPE_REGULAR&#34; Possible values: [&#34;PERIMETER_TYPE_REGULAR&#34;, &#34;PERIMETER_TYPE_BRIDGE&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -319,7 +319,7 @@ themselves. Default value: "PERIMETER_TYPE_REGULAR" Possible values: ["PERIMETER
             <p>{% verbatim %}Proposed (or dry run) ServicePerimeter configuration.
 This configuration allows to specify and test ServicePerimeter configuration
 without enforcing actual access restrictions. Only allowed to be set when
-the 'useExplicitDryRunSpec' flag is set.{% endverbatim %}</p>
+the &#39;useExplicitDryRunSpec&#39; flag is set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -408,7 +408,7 @@ a perimeter bridge.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Defines conditions on the source of a request causing this 'EgressPolicy' to apply.{% endverbatim %}</p>
+            <p>{% verbatim %}Defines conditions on the source of a request causing this &#39;EgressPolicy&#39; to apply.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -491,8 +491,8 @@ address should represent individual user or service account only.{% endverbatim 
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Specifies the type of identities that are allowed access to outside the 
-perimeter. If left unspecified, then members of 'identities' field will 
-be allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "ANY_USER_ACCOUNT", "ANY_SERVICE_ACCOUNT"].{% endverbatim %}</p>
+perimeter. If left unspecified, then members of &#39;identities&#39; field will 
+be allowed access. Possible values: [&#34;IDENTITY_TYPE_UNSPECIFIED&#34;, &#34;ANY_IDENTITY&#34;, &#34;ANY_USER_ACCOUNT&#34;, &#34;ANY_SERVICE_ACCOUNT&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -502,8 +502,8 @@ be allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY"
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Defines the conditions on the 'ApiOperation' and destination resources that 
-cause this 'EgressPolicy' to apply.{% endverbatim %}</p>
+            <p>{% verbatim %}Defines the conditions on the &#39;ApiOperation&#39; and destination resources that 
+cause this &#39;EgressPolicy&#39; to apply.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -515,7 +515,7 @@ cause this 'EgressPolicy' to apply.{% endverbatim %}</p>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}A list of external resources that are allowed to be accessed. A request
 matches if it contains an external resource in this list (Example:
-s3://bucket/path). Currently '*' is not allowed.{% endverbatim %}</p>
+s3://bucket/path). Currently &#39;*&#39; is not allowed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -535,7 +535,7 @@ s3://bucket/path). Currently '*' is not allowed.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}A list of 'ApiOperations' that this egress rule applies to. A request matches 
+            <p>{% verbatim %}A list of &#39;ApiOperations&#39; that this egress rule applies to. A request matches 
 if it contains an operation/service in this list.{% endverbatim %}</p>
         </td>
     </tr>
@@ -557,9 +557,9 @@ if it contains an operation/service in this list.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">list (object)</code></p>
             <p>{% verbatim %}API methods or permissions to allow. Method or permission must belong 
-to the service specified by 'serviceName' field. A single MethodSelector 
-entry with '*' specified for the 'method' field will allow all methods 
-AND permissions for the service specified in 'serviceName'.{% endverbatim %}</p>
+to the service specified by &#39;serviceName&#39; field. A single MethodSelector 
+entry with &#39;*&#39; specified for the &#39;method&#39; field will allow all methods 
+AND permissions for the service specified in &#39;serviceName&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -579,8 +579,8 @@ AND permissions for the service specified in 'serviceName'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value for 'method' should be a valid method name for the corresponding 
-'serviceName' in 'ApiOperation'. If '*' used as value for method, 
+            <p>{% verbatim %}Value for &#39;method&#39; should be a valid method name for the corresponding 
+&#39;serviceName&#39; in &#39;ApiOperation&#39;. If &#39;*&#39; used as value for method, 
 then ALL methods and permissions are allowed.{% endverbatim %}</p>
         </td>
     </tr>
@@ -592,7 +592,7 @@ then ALL methods and permissions are allowed.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Value for permission should be a valid Cloud IAM permission for the 
-corresponding 'serviceName' in 'ApiOperation'.{% endverbatim %}</p>
+corresponding &#39;serviceName&#39; in &#39;ApiOperation&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -602,9 +602,9 @@ corresponding 'serviceName' in 'ApiOperation'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of the API whose methods or permissions the 'IngressPolicy' or 
-'EgressPolicy' want to allow. A single 'ApiOperation' with serviceName 
-field set to '*' will allow all methods AND permissions for all services.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of the API whose methods or permissions the &#39;IngressPolicy&#39; or 
+&#39;EgressPolicy&#39; want to allow. A single &#39;ApiOperation&#39; with serviceName 
+field set to &#39;*&#39; will allow all methods AND permissions for all services.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -625,7 +625,7 @@ field set to '*' will allow all methods AND permissions for all services.{% endv
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}(Optional) A list of resources, currently only projects in the form
-"projects/{project_number}". A request
+&#34;projects/{project_number}&#34;. A request
 matches if it contains a resource in this list.{% endverbatim %}</p>
         </td>
     </tr>
@@ -676,9 +676,9 @@ matches if it contains a resource in this list.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}List of 'IngressPolicies' to apply to the perimeter. A perimeter may
-have multiple 'IngressPolicies', each of which is evaluated
-separately. Access is granted if any 'Ingress Policy' grants it.
+            <p>{% verbatim %}List of &#39;IngressPolicies&#39; to apply to the perimeter. A perimeter may
+have multiple &#39;IngressPolicies&#39;, each of which is evaluated
+separately. Access is granted if any &#39;Ingress Policy&#39; grants it.
 Must be empty for a perimeter bridge.{% endverbatim %}</p>
         </td>
     </tr>
@@ -699,7 +699,7 @@ Must be empty for a perimeter bridge.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Defines the conditions on the source of a request causing this 'IngressPolicy'
+            <p>{% verbatim %}Defines the conditions on the source of a request causing this &#39;IngressPolicy&#39;
 to apply.{% endverbatim %}</p>
         </td>
     </tr>
@@ -783,8 +783,8 @@ address should represent individual user or service account only.{% endverbatim 
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Specifies the type of identities that are allowed access from outside the 
-perimeter. If left unspecified, then members of 'identities' field will be 
-allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "ANY_USER_ACCOUNT", "ANY_SERVICE_ACCOUNT"].{% endverbatim %}</p>
+perimeter. If left unspecified, then members of &#39;identities&#39; field will be 
+allowed access. Possible values: [&#34;IDENTITY_TYPE_UNSPECIFIED&#34;, &#34;ANY_IDENTITY&#34;, &#34;ANY_USER_ACCOUNT&#34;, &#34;ANY_SERVICE_ACCOUNT&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -794,7 +794,7 @@ allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Sources that this 'IngressPolicy' authorizes access from.{% endverbatim %}</p>
+            <p>{% verbatim %}Sources that this &#39;IngressPolicy&#39; authorizes access from.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -863,7 +863,7 @@ the perimeter.{% endverbatim %}</p>
             <p>{% verbatim %}(Optional) A Google Cloud resource that is allowed to ingress the
 perimeter. Requests from these resources will be allowed to access
 perimeter data. Currently only projects are allowed. Format
-"projects/{project_number}" The project may be in any Google Cloud
+&#34;projects/{project_number}&#34; The project may be in any Google Cloud
 organization, not just the organization that the perimeter is defined in.{% endverbatim %}</p>
         </td>
     </tr>
@@ -904,8 +904,8 @@ organization, not just the organization that the perimeter is defined in.{% endv
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Defines the conditions on the 'ApiOperation' and request destination that cause
-this 'IngressPolicy' to apply.{% endverbatim %}</p>
+            <p>{% verbatim %}Defines the conditions on the &#39;ApiOperation&#39; and request destination that cause
+this &#39;IngressPolicy&#39; to apply.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -915,8 +915,8 @@ this 'IngressPolicy' to apply.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}A list of 'ApiOperations' the sources specified in corresponding 'IngressFrom' 
-are allowed to perform in this 'ServicePerimeter'.{% endverbatim %}</p>
+            <p>{% verbatim %}A list of &#39;ApiOperations&#39; the sources specified in corresponding &#39;IngressFrom&#39; 
+are allowed to perform in this &#39;ServicePerimeter&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -937,9 +937,9 @@ are allowed to perform in this 'ServicePerimeter'.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">list (object)</code></p>
             <p>{% verbatim %}API methods or permissions to allow. Method or permission must belong to 
-the service specified by serviceName field. A single 'MethodSelector' entry 
-with '*' specified for the method field will allow all methods AND 
-permissions for the service specified in 'serviceName'.{% endverbatim %}</p>
+the service specified by serviceName field. A single &#39;MethodSelector&#39; entry 
+with &#39;*&#39; specified for the method field will allow all methods AND 
+permissions for the service specified in &#39;serviceName&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -960,7 +960,7 @@ permissions for the service specified in 'serviceName'.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Value for method should be a valid method name for the corresponding 
-serviceName in 'ApiOperation'. If '*' used as value for 'method', then 
+serviceName in &#39;ApiOperation&#39;. If &#39;*&#39; used as value for &#39;method&#39;, then 
 ALL methods and permissions are allowed.{% endverbatim %}</p>
         </td>
     </tr>
@@ -972,7 +972,7 @@ ALL methods and permissions are allowed.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Value for permission should be a valid Cloud IAM permission for the 
-corresponding 'serviceName' in 'ApiOperation'.{% endverbatim %}</p>
+corresponding &#39;serviceName&#39; in &#39;ApiOperation&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -982,9 +982,9 @@ corresponding 'serviceName' in 'ApiOperation'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of the API whose methods or permissions the 'IngressPolicy' or 
-'EgressPolicy' want to allow. A single 'ApiOperation' with 'serviceName' 
-field set to '*' will allow all methods AND permissions for all services.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of the API whose methods or permissions the &#39;IngressPolicy&#39; or 
+&#39;EgressPolicy&#39; want to allow. A single &#39;ApiOperation&#39; with &#39;serviceName&#39; 
+field set to &#39;*&#39; will allow all methods AND permissions for all services.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1005,7 +1005,7 @@ field set to '*' will allow all methods AND permissions for all services.{% endv
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}A list of resources, currently only projects in the form
-"projects/{project_number}", protected by this ServicePerimeter
+&#34;projects/{project_number}&#34;, protected by this ServicePerimeter
 that are allowed to be accessed by sources defined in the
 corresponding IngressFrom. A request matches if it contains a
 resource in this list.{% endverbatim %}</p>
@@ -1121,8 +1121,8 @@ Currently only projects are allowed.{% endverbatim %}</p>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}GCP services that are subject to the Service Perimeter
 restrictions. Must contain a list of services. For example, if
-'storage.googleapis.com' is specified, access to the storage
-buckets inside the perimeter must meet the perimeter's access
+&#39;storage.googleapis.com&#39; is specified, access to the storage
+buckets inside the perimeter must meet the perimeter&#39;s access
 restrictions.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1155,7 +1155,7 @@ Perimeter.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}The list of APIs usable within the Service Perimeter.
-Must be empty unless 'enableRestriction' is True.{% endverbatim %}</p>
+Must be empty unless &#39;enableRestriction&#39; is True.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1176,7 +1176,7 @@ Must be empty unless 'enableRestriction' is True.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Whether to restrict API calls within the Service Perimeter to the
-list of APIs specified in 'allowedServices'.{% endverbatim %}</p>
+list of APIs specified in &#39;allowedServices&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1277,7 +1277,7 @@ a perimeter bridge.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Defines conditions on the source of a request causing this 'EgressPolicy' to apply.{% endverbatim %}</p>
+            <p>{% verbatim %}Defines conditions on the source of a request causing this &#39;EgressPolicy&#39; to apply.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1360,8 +1360,8 @@ address should represent individual user or service account only.{% endverbatim 
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Specifies the type of identities that are allowed access to outside the 
-perimeter. If left unspecified, then members of 'identities' field will 
-be allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "ANY_USER_ACCOUNT", "ANY_SERVICE_ACCOUNT"].{% endverbatim %}</p>
+perimeter. If left unspecified, then members of &#39;identities&#39; field will 
+be allowed access. Possible values: [&#34;IDENTITY_TYPE_UNSPECIFIED&#34;, &#34;ANY_IDENTITY&#34;, &#34;ANY_USER_ACCOUNT&#34;, &#34;ANY_SERVICE_ACCOUNT&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1371,8 +1371,8 @@ be allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY"
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Defines the conditions on the 'ApiOperation' and destination resources that 
-cause this 'EgressPolicy' to apply.{% endverbatim %}</p>
+            <p>{% verbatim %}Defines the conditions on the &#39;ApiOperation&#39; and destination resources that 
+cause this &#39;EgressPolicy&#39; to apply.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1384,7 +1384,7 @@ cause this 'EgressPolicy' to apply.{% endverbatim %}</p>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}A list of external resources that are allowed to be accessed. A request
 matches if it contains an external resource in this list (Example:
-s3://bucket/path). Currently '*' is not allowed.{% endverbatim %}</p>
+s3://bucket/path). Currently &#39;*&#39; is not allowed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1404,7 +1404,7 @@ s3://bucket/path). Currently '*' is not allowed.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}A list of 'ApiOperations' that this egress rule applies to. A request matches 
+            <p>{% verbatim %}A list of &#39;ApiOperations&#39; that this egress rule applies to. A request matches 
 if it contains an operation/service in this list.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1426,9 +1426,9 @@ if it contains an operation/service in this list.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">list (object)</code></p>
             <p>{% verbatim %}API methods or permissions to allow. Method or permission must belong 
-to the service specified by 'serviceName' field. A single MethodSelector 
-entry with '*' specified for the 'method' field will allow all methods 
-AND permissions for the service specified in 'serviceName'.{% endverbatim %}</p>
+to the service specified by &#39;serviceName&#39; field. A single MethodSelector 
+entry with &#39;*&#39; specified for the &#39;method&#39; field will allow all methods 
+AND permissions for the service specified in &#39;serviceName&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1448,8 +1448,8 @@ AND permissions for the service specified in 'serviceName'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value for 'method' should be a valid method name for the corresponding 
-'serviceName' in 'ApiOperation'. If '*' used as value for method, 
+            <p>{% verbatim %}Value for &#39;method&#39; should be a valid method name for the corresponding 
+&#39;serviceName&#39; in &#39;ApiOperation&#39;. If &#39;*&#39; used as value for method, 
 then ALL methods and permissions are allowed.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1461,7 +1461,7 @@ then ALL methods and permissions are allowed.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Value for permission should be a valid Cloud IAM permission for the 
-corresponding 'serviceName' in 'ApiOperation'.{% endverbatim %}</p>
+corresponding &#39;serviceName&#39; in &#39;ApiOperation&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1471,9 +1471,9 @@ corresponding 'serviceName' in 'ApiOperation'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of the API whose methods or permissions the 'IngressPolicy' or 
-'EgressPolicy' want to allow. A single 'ApiOperation' with serviceName 
-field set to '*' will allow all methods AND permissions for all services.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of the API whose methods or permissions the &#39;IngressPolicy&#39; or 
+&#39;EgressPolicy&#39; want to allow. A single &#39;ApiOperation&#39; with serviceName 
+field set to &#39;*&#39; will allow all methods AND permissions for all services.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1494,7 +1494,7 @@ field set to '*' will allow all methods AND permissions for all services.{% endv
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}(Optional) A list of resources, currently only projects in the form
-"projects/{project_number}". A request
+&#34;projects/{project_number}&#34;. A request
 matches if it contains a resource in this list.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1545,9 +1545,9 @@ matches if it contains a resource in this list.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}List of 'IngressPolicies' to apply to the perimeter. A perimeter may
-have multiple 'IngressPolicies', each of which is evaluated
-separately. Access is granted if any 'Ingress Policy' grants it.
+            <p>{% verbatim %}List of &#39;IngressPolicies&#39; to apply to the perimeter. A perimeter may
+have multiple &#39;IngressPolicies&#39;, each of which is evaluated
+separately. Access is granted if any &#39;Ingress Policy&#39; grants it.
 Must be empty for a perimeter bridge.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1568,7 +1568,7 @@ Must be empty for a perimeter bridge.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Defines the conditions on the source of a request causing this 'IngressPolicy'
+            <p>{% verbatim %}Defines the conditions on the source of a request causing this &#39;IngressPolicy&#39;
 to apply.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1652,8 +1652,8 @@ address should represent individual user or service account only.{% endverbatim 
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Specifies the type of identities that are allowed access from outside the 
-perimeter. If left unspecified, then members of 'identities' field will be 
-allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "ANY_USER_ACCOUNT", "ANY_SERVICE_ACCOUNT"].{% endverbatim %}</p>
+perimeter. If left unspecified, then members of &#39;identities&#39; field will be 
+allowed access. Possible values: [&#34;IDENTITY_TYPE_UNSPECIFIED&#34;, &#34;ANY_IDENTITY&#34;, &#34;ANY_USER_ACCOUNT&#34;, &#34;ANY_SERVICE_ACCOUNT&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1663,7 +1663,7 @@ allowed access. Possible values: ["IDENTITY_TYPE_UNSPECIFIED", "ANY_IDENTITY", "
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Sources that this 'IngressPolicy' authorizes access from.{% endverbatim %}</p>
+            <p>{% verbatim %}Sources that this &#39;IngressPolicy&#39; authorizes access from.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1732,7 +1732,7 @@ the perimeter.{% endverbatim %}</p>
             <p>{% verbatim %}(Optional) A Google Cloud resource that is allowed to ingress the
 perimeter. Requests from these resources will be allowed to access
 perimeter data. Currently only projects are allowed. Format
-"projects/{project_number}" The project may be in any Google Cloud
+&#34;projects/{project_number}&#34; The project may be in any Google Cloud
 organization, not just the organization that the perimeter is defined in.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1773,8 +1773,8 @@ organization, not just the organization that the perimeter is defined in.{% endv
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Defines the conditions on the 'ApiOperation' and request destination that cause
-this 'IngressPolicy' to apply.{% endverbatim %}</p>
+            <p>{% verbatim %}Defines the conditions on the &#39;ApiOperation&#39; and request destination that cause
+this &#39;IngressPolicy&#39; to apply.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1784,8 +1784,8 @@ this 'IngressPolicy' to apply.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}A list of 'ApiOperations' the sources specified in corresponding 'IngressFrom' 
-are allowed to perform in this 'ServicePerimeter'.{% endverbatim %}</p>
+            <p>{% verbatim %}A list of &#39;ApiOperations&#39; the sources specified in corresponding &#39;IngressFrom&#39; 
+are allowed to perform in this &#39;ServicePerimeter&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1806,9 +1806,9 @@ are allowed to perform in this 'ServicePerimeter'.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">list (object)</code></p>
             <p>{% verbatim %}API methods or permissions to allow. Method or permission must belong to 
-the service specified by serviceName field. A single 'MethodSelector' entry 
-with '*' specified for the method field will allow all methods AND 
-permissions for the service specified in 'serviceName'.{% endverbatim %}</p>
+the service specified by serviceName field. A single &#39;MethodSelector&#39; entry 
+with &#39;*&#39; specified for the method field will allow all methods AND 
+permissions for the service specified in &#39;serviceName&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1829,7 +1829,7 @@ permissions for the service specified in 'serviceName'.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Value for method should be a valid method name for the corresponding 
-serviceName in 'ApiOperation'. If '*' used as value for 'method', then 
+serviceName in &#39;ApiOperation&#39;. If &#39;*&#39; used as value for &#39;method&#39;, then 
 ALL methods and permissions are allowed.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1841,7 +1841,7 @@ ALL methods and permissions are allowed.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Value for permission should be a valid Cloud IAM permission for the 
-corresponding 'serviceName' in 'ApiOperation'.{% endverbatim %}</p>
+corresponding &#39;serviceName&#39; in &#39;ApiOperation&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1851,9 +1851,9 @@ corresponding 'serviceName' in 'ApiOperation'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of the API whose methods or permissions the 'IngressPolicy' or 
-'EgressPolicy' want to allow. A single 'ApiOperation' with 'serviceName' 
-field set to '*' will allow all methods AND permissions for all services.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of the API whose methods or permissions the &#39;IngressPolicy&#39; or 
+&#39;EgressPolicy&#39; want to allow. A single &#39;ApiOperation&#39; with &#39;serviceName&#39; 
+field set to &#39;*&#39; will allow all methods AND permissions for all services.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1874,7 +1874,7 @@ field set to '*' will allow all methods AND permissions for all services.{% endv
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}A list of resources, currently only projects in the form
-"projects/{project_number}", protected by this ServicePerimeter
+&#34;projects/{project_number}&#34;, protected by this ServicePerimeter
 that are allowed to be accessed by sources defined in the
 corresponding IngressFrom. A request matches if it contains a
 resource in this list.{% endverbatim %}</p>
@@ -1990,8 +1990,8 @@ Currently only projects are allowed.{% endverbatim %}</p>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}GCP services that are subject to the Service Perimeter
 restrictions. Must contain a list of services. For example, if
-'storage.googleapis.com' is specified, access to the storage
-buckets inside the perimeter must meet the perimeter's access
+&#39;storage.googleapis.com&#39; is specified, access to the storage
+buckets inside the perimeter must meet the perimeter&#39;s access
 restrictions.{% endverbatim %}</p>
         </td>
     </tr>
@@ -2024,7 +2024,7 @@ Perimeter.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}The list of APIs usable within the Service Perimeter.
-Must be empty unless 'enableRestriction' is True.{% endverbatim %}</p>
+Must be empty unless &#39;enableRestriction&#39; is True.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2045,7 +2045,7 @@ Must be empty unless 'enableRestriction' is True.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Whether to restrict API calls within the Service Perimeter to the
-list of APIs specified in 'allowedServices'.{% endverbatim %}</p>
+list of APIs specified in &#39;allowedServices&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2069,8 +2069,8 @@ list of APIs specified in 'allowedServices'.{% endverbatim %}</p>
 for all Service Perimeters, and that spec is identical to the status for those
 Service Perimeters. When this flag is set, it inhibits the generation of the
 implicit spec, thereby allowing the user to explicitly provide a
-configuration ("spec") to use in a dry-run version of the Service Perimeter.
-This allows the user to test changes to the enforced config ("status") without
+configuration (&#34;spec&#34;) to use in a dry-run version of the Service Perimeter.
+This allows the user to test changes to the enforced config (&#34;status&#34;) without
 actually enforcing them. This testing is done through analyzing the differences
 between currently enforced and suggested restrictions. useExplicitDryRunSpec must
 bet set to True if any of the fields in the spec are set to non-default values.{% endverbatim %}</p>
@@ -2106,7 +2106,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2134,7 +2134,7 @@ updateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2181,14 +2181,14 @@ updateTime: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -2198,9 +2198,9 @@ metadata:
   name: serviceperimetersample
 spec:
   # Config for DRY-RUN
-  # To use this 'useExplicitDryRunSpec' must be set to 'true'
-  # Replace "${ACCESS_POLICY_NUMBER}" with the numeric ID for your Access Policy
-  # Replace "${PROJECT_NUMBERx}" with the appropriate `project number` for the project to be protected by the perimeter
+  # To use this &#39;useExplicitDryRunSpec&#39; must be set to &#39;true&#39;
+  # Replace &#34;${ACCESS_POLICY_NUMBER}&#34; with the numeric ID for your Access Policy
+  # Replace &#34;${PROJECT_NUMBERx}&#34; with the appropriate `project number` for the project to be protected by the perimeter
   spec:
     # List of Access Levels to be applied for this perimeter
     accessLevels:
@@ -2208,17 +2208,17 @@ spec:
     # List of projects to be included in this perimeter
     resources:
     - projectRef:
-        external: "projects/${PROJECT_NUMBER1}"
+        external: &#34;projects/${PROJECT_NUMBER1}&#34;
     - projectRef:
-        external: "projects/${PROJECT_NUMBER2}"
+        external: &#34;projects/${PROJECT_NUMBER2}&#34;
     # List of restricted services
     restrictedServices:
-    - "storage.googleapis.com"
+    - &#34;storage.googleapis.com&#34;
     # List of services that could be accessed from within the perimeter
     vpcAccessibleServices:
       allowedServices:
-      - "storage.googleapis.com"
-      - "pubsub.googleapis.com"
+      - &#34;storage.googleapis.com&#34;
+      - &#34;pubsub.googleapis.com&#34;
       enableRestriction: true
     egressPolicies:
     - egressFrom:
@@ -2227,7 +2227,7 @@ spec:
     - egressTo:
         resources:
         - projectRef:
-            external: "projects/${PROJECT_NUMBER1}"
+            external: &#34;projects/${PROJECT_NUMBER1}&#34;
     ingressPolicies:
     - ingressFrom:
         identities:
@@ -2238,25 +2238,25 @@ spec:
       ingressTo:
         resources:
         - projectRef:
-            external: "projects/${PROJECT_NUMBER2}"
+            external: &#34;projects/${PROJECT_NUMBER2}&#34;
   # Config to ENFORCE
   # Config items are repeated as above for DRY-RUN
-  # Replace "${ACCESS_POLICY_NUMBER}" with the numeric ID for your Access Policy
-  # Replace "${PROJECT_NUMBERx}" with the appropriate `project number` for the project to be protected by the perimeter
+  # Replace &#34;${ACCESS_POLICY_NUMBER}&#34; with the numeric ID for your Access Policy
+  # Replace &#34;${PROJECT_NUMBERx}&#34; with the appropriate `project number` for the project to be protected by the perimeter
   status:
     accessLevels:
     - name: serviceperimeterdep2
     resources:
     - projectRef:
-        external: "projects/${PROJECT_NUMBER3}"
+        external: &#34;projects/${PROJECT_NUMBER3}&#34;
     - projectRef:
-        external: "projects/${PROJECT_NUMBER4}"
+        external: &#34;projects/${PROJECT_NUMBER4}&#34;
     restrictedServices:
-    - "bigquery.googleapis.com"
+    - &#34;bigquery.googleapis.com&#34;
     vpcAccessibleServices:
       allowedServices:
-      - "bigquery.googleapis.com"
-      - "logging.googleapis.com"
+      - &#34;bigquery.googleapis.com&#34;
+      - &#34;logging.googleapis.com&#34;
       enableRestriction: true
   title: Service Perimeter created by Config Connector
   useExplicitDryRunSpec: true
@@ -2275,13 +2275,13 @@ apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
 kind: AccessContextManagerAccessLevel
 metadata:
   annotations:
-    # Replace "${ORG_ID?}" with the numeric ID for your organization
-    cnrm.cloud.google.com/organization-id: "${ORG_ID}"
+    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: &#34;${ORG_ID}&#34;
   name: serviceperimeterdep1
 spec:
   accessPolicyRef:
-    # Replace "${ACCESS_POLICY_NUMBER}" with the numeric ID for your Access Policy 
-    external: "accessPolicies/${ACCESS_POLICY_NUMBER}"
+    # Replace &#34;${ACCESS_POLICY_NUMBER}&#34; with the numeric ID for your Access Policy 
+    external: &#34;accessPolicies/${ACCESS_POLICY_NUMBER}&#34;
   title: Service Perimeter Dependency ACL1
   basic:
     conditions:
@@ -2292,13 +2292,13 @@ apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
 kind: AccessContextManagerAccessLevel
 metadata:
   annotations:
-    # Replace "${ORG_ID?}" with the numeric ID for your organization
-    cnrm.cloud.google.com/organization-id: "${ORG_ID}"
+    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: &#34;${ORG_ID}&#34;
   name: serviceperimeterdep2
 spec:
   accessPolicyRef:
-    # Replace "${ACCESS_POLICY_NUMBER}" with the numeric ID for your Access Policy 
-    external: "accessPolicies/${ACCESS_POLICY_NUMBER}"
+    # Replace &#34;${ACCESS_POLICY_NUMBER}&#34; with the numeric ID for your Access Policy 
+    external: &#34;accessPolicies/${ACCESS_POLICY_NUMBER}&#34;
   title: Service Perimeter Dependency ACL2
   basic:
     conditions:
@@ -2309,16 +2309,16 @@ apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
   annotations:
-    # Replace "${ORG_ID?}" with the numeric ID for your organization
-    cnrm.cloud.google.com/organization-id: "${ORG_ID}"
+    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: &#34;${ORG_ID}&#34;
   name: serviceperimeterengressdep
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
   annotations:
-    # Replace "${ORG_ID?}" with the numeric ID for your organization
-    cnrm.cloud.google.com/organization-id: "${ORG_ID}"
+    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: &#34;${ORG_ID}&#34;
   name: serviceperimeteringressdep
 ```
 

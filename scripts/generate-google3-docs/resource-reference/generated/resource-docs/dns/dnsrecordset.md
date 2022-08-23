@@ -277,7 +277,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -305,7 +305,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -338,14 +338,14 @@ observedGeneration: integer
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -355,34 +355,34 @@ kind: DNSRecordSet
 metadata:
   name: dnsrecordset-sample-a
 spec:
-  name: "www.example.com."
-  type: "A"
+  name: &#34;www.example.com.&#34;
+  type: &#34;A&#34;
   ttl: 300
   managedZoneRef:
     name: dnsrecordset-dep-a
   rrdatas:
-  - "8.8.8.8"
+  - &#34;8.8.8.8&#34;
 ---
 apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
 metadata:
   name: dnsrecordset-dep-a
 spec:
-  dnsName: "example.com."
+  dnsName: &#34;example.com.&#34;
 ```
 
 ### DNS A Record Set With Compute Address Reference
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -392,7 +392,7 @@ kind: DNSRecordSet
 metadata:
   name: dnsrecordset-sample-computeaddressreference
 spec:
-  name: "www.compute-address-reference-example.com."
+  name: &#34;www.compute-address-reference-example.com.&#34;
   type: A
   ttl: 300
   managedZoneRef:
@@ -428,21 +428,21 @@ kind: DNSManagedZone
 metadata:
   name: dnsrecordset-dep-computeaddressreference
 spec:
-  dnsName: "compute-address-reference-example.com."
+  dnsName: &#34;compute-address-reference-example.com.&#34;
 ```
 
 ### DNS Aaaa Record Set
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -452,34 +452,34 @@ kind: DNSRecordSet
 metadata:
   name: dnsrecordset-sample-aaaa
 spec:
-  name: "www.example.com."
-  type: "AAAA"
+  name: &#34;www.example.com.&#34;
+  type: &#34;AAAA&#34;
   ttl: 300
   managedZoneRef:
     name: dnsrecordset-dep-aaaa
   rrdatas:
-  - "8888:8888:8888:8888::"
+  - &#34;8888:8888:8888:8888::&#34;
 ---
 apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
 metadata:
   name: dnsrecordset-dep-aaaa
 spec:
-  dnsName: "example.com."
+  dnsName: &#34;example.com.&#34;
 ```
 
 ### DNS Cname Record Set
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -489,34 +489,34 @@ kind: DNSRecordSet
 metadata:
   name: dnsrecordset-sample-cname
 spec:
-  name: "*.example.com."
-  type: "CNAME"
+  name: &#34;*.example.com.&#34;
+  type: &#34;CNAME&#34;
   ttl: 300
   managedZoneRef:
     name: dnsrecordset-dep-cname
   rrdatas:
-  - ".www.example.com."
+  - &#34;.www.example.com.&#34;
 ---
 apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
 metadata:
   name: dnsrecordset-dep-cname
 spec:
-  dnsName: "example.com."
+  dnsName: &#34;example.com.&#34;
 ```
 
 ### DNS Mx Record Set
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -526,38 +526,38 @@ kind: DNSRecordSet
 metadata:
   name: dnsrecordset-sample-mx
 spec:
-  name: "mail.example.com."
-  type: "MX"
+  name: &#34;mail.example.com.&#34;
+  type: &#34;MX&#34;
   ttl: 300
   managedZoneRef:
     name: dnsrecordset-dep-mx
   rrdatas:
-  - "5 gmr-stmp-in.l.google.com."
-  - "10 alt1.gmr-stmp-in.l.google.com."
-  - "10 alt2.gmr-stmp-in.l.google.com."
-  - "10 alt3.gmr-stmp-in.l.google.com."
-  - "10 alt4.gmr-stmp-in.l.google.com."
+  - &#34;5 gmr-stmp-in.l.google.com.&#34;
+  - &#34;10 alt1.gmr-stmp-in.l.google.com.&#34;
+  - &#34;10 alt2.gmr-stmp-in.l.google.com.&#34;
+  - &#34;10 alt3.gmr-stmp-in.l.google.com.&#34;
+  - &#34;10 alt4.gmr-stmp-in.l.google.com.&#34;
 ---
 apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
 metadata:
   name: dnsrecordset-dep-mx
 spec:
-  dnsName: "example.com."
+  dnsName: &#34;example.com.&#34;
 ```
 
 ### DNS Ns Record Set
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -567,37 +567,37 @@ kind: DNSRecordSet
 metadata:
   name: dnsrecordset-sample-ns
 spec:
-  name: "example.com."
-  type: "NS"
+  name: &#34;example.com.&#34;
+  type: &#34;NS&#34;
   ttl: 300
   managedZoneRef:
     name: dnsrecordset-dep-ns
   rrdatas:
-  - "ns-cloud-a1.googledomains.com."
-  - "ns-cloud-a2.googledomains.com."
-  - "ns-cloud-a3.googledomains.com."
-  - "ns-cloud-a4.googledomains.com."
+  - &#34;ns-cloud-a1.googledomains.com.&#34;
+  - &#34;ns-cloud-a2.googledomains.com.&#34;
+  - &#34;ns-cloud-a3.googledomains.com.&#34;
+  - &#34;ns-cloud-a4.googledomains.com.&#34;
 ---
 apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
 metadata:
   name: dnsrecordset-dep-ns
 spec:
-  dnsName: "example.com."
+  dnsName: &#34;example.com.&#34;
 ```
 
 ### DNS Srv Record Set
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -607,34 +607,34 @@ kind: DNSRecordSet
 metadata:
   name: dnsrecordset-sample-srv
 spec:
-  name: "_example._tcp.example.com."
-  type: "SRV"
+  name: &#34;_example._tcp.example.com.&#34;
+  type: &#34;SRV&#34;
   ttl: 300
   managedZoneRef:
     name: dnsrecordset-dep-srv
   rrdatas:
-  - "0 0 9 tcpserver.cnrm-dns-example.com."
+  - &#34;0 0 9 tcpserver.cnrm-dns-example.com.&#34;
 ---
 apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
 metadata:
   name: dnsrecordset-dep-srv
 spec:
-  dnsName: "example.com."
+  dnsName: &#34;example.com.&#34;
 ```
 
 ### DNS Txt Record Set
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -644,36 +644,36 @@ kind: DNSRecordSet
 metadata:
   name: dnsrecordset-sample-txt
 spec:
-  name: "example.com."
-  type: "TXT"
+  name: &#34;example.com.&#34;
+  type: &#34;TXT&#34;
   ttl: 300
   managedZoneRef:
     name: dnsrecordset-dep-txt
   rrdatas:
-  - "\"This is a sample DNS text record string\""
-  - "Text records are normally split on spaces"
-  - "To prevent this, \"quote your text like this\""
+  - &#34;\&#34;This is a sample DNS text record string\&#34;&#34;
+  - &#34;Text records are normally split on spaces&#34;
+  - &#34;To prevent this, \&#34;quote your text like this\&#34;&#34;
 ---
 apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
 metadata:
   name: dnsrecordset-dep-txt
 spec:
-  dnsName: "example.com."
+  dnsName: &#34;example.com.&#34;
 ```
 
 ### Dnssec Dnskey Record Set
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -683,36 +683,36 @@ kind: DNSRecordSet
 metadata:
   name: dnsrecordset-sample-dnssecdnskey
 spec:
-  name: "secure.example.com."
-  type: "DNSKEY"
+  name: &#34;secure.example.com.&#34;
+  type: &#34;DNSKEY&#34;
   ttl: 300
   managedZoneRef:
     name: dnsrecordset-dep-dnssecdnskey
   rrdatas:
-  - "256 3 8 AwEAAcAPhPM4CQHqg6hZ49y2P3IdKZuF44QNCc50vjATD7W+je4va6djY5JpnNP0pIohKNYiCFap/b4Y9jjJGSOkOfkfBR8neI7X5LisMEGUjwRcrG8J9UYP1S1unTNqRcWyDYFH2q3KnIO08zImh5DiFt8yfCdKoqZUN1dup5hy0UWz"
+  - &#34;256 3 8 AwEAAcAPhPM4CQHqg6hZ49y2P3IdKZuF44QNCc50vjATD7W&#43;je4va6djY5JpnNP0pIohKNYiCFap/b4Y9jjJGSOkOfkfBR8neI7X5LisMEGUjwRcrG8J9UYP1S1unTNqRcWyDYFH2q3KnIO08zImh5DiFt8yfCdKoqZUN1dup5hy0UWz&#34;
 ---
 apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
 metadata:
   name: dnsrecordset-dep-dnssecdnskey
 spec:
-  dnsName: "secure.example.com."
+  dnsName: &#34;secure.example.com.&#34;
   dnssecConfig:
-    state: "transfer"
+    state: &#34;transfer&#34;
 ```
 
 ### Dnssec Ds Record Set
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -722,36 +722,36 @@ kind: DNSRecordSet
 metadata:
   name: dnsrecordset-sample-dnssecds
 spec:
-  name: "host.secure.example.com."
-  type: "DS"
+  name: &#34;host.secure.example.com.&#34;
+  type: &#34;DS&#34;
   ttl: 300
   managedZoneRef:
     name: dnsrecordset-dep-dnssecds
   rrdatas:
-  - "31523 5 1 c8761ba5defc26ac7b78e076d7c47fa9f86b9fba"
+  - &#34;31523 5 1 c8761ba5defc26ac7b78e076d7c47fa9f86b9fba&#34;
 ---
 apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
 metadata:
   name: dnsrecordset-dep-dnssecds
 spec:
-  dnsName: "secure.example.com."
+  dnsName: &#34;secure.example.com.&#34;
   dnssecConfig:
-    state: "on"
+    state: &#34;on&#34;
 ```
 
 ### Dnssec Ipsecvpnkey Record Set
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -761,36 +761,36 @@ kind: DNSRecordSet
 metadata:
   name: dnsrecordset-sample-dnssecipsecvpnkey
 spec:
-  name: "service.secure.example.com."
-  type: "IPSECKEY"
+  name: &#34;service.secure.example.com.&#34;
+  type: &#34;IPSECKEY&#34;
   ttl: 300
   managedZoneRef:
     name: dnsrecordset-dep-dnssecipsecvpnkey
   rrdatas:
-  - "10 1 2 192.0.2.3 AQNRU3mG7TVTO2BkR47usntb102uFJtugbo6BSGvgqt4AQ=="
+  - &#34;10 1 2 192.0.2.3 AQNRU3mG7TVTO2BkR47usntb102uFJtugbo6BSGvgqt4AQ==&#34;
 ---
 apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
 metadata:
   name: dnsrecordset-dep-dnssecipsecvpnkey
 spec:
-  dnsName: "secure.example.com."
+  dnsName: &#34;secure.example.com.&#34;
   dnssecConfig:
-    state: "on"
+    state: &#34;on&#34;
 ```
 
 ### Dnssec Sshfp Record Set
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -800,22 +800,22 @@ kind: DNSRecordSet
 metadata:
   name: dnsrecordset-sample-dnssecsshfp
 spec:
-  name: "host.secure.example.com."
-  type: "SSHFP"
+  name: &#34;host.secure.example.com.&#34;
+  type: &#34;SSHFP&#34;
   ttl: 300
   managedZoneRef:
     name: dnsrecordset-dep-dnssecsshfp
   rrdatas:
-  - "2 1 123456789abcdef67890123456789abcdef67890"
+  - &#34;2 1 123456789abcdef67890123456789abcdef67890&#34;
 ---
 apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
 metadata:
   name: dnsrecordset-dep-dnssecsshfp
 spec:
-  dnsName: "secure.example.com."
+  dnsName: &#34;secure.example.com.&#34;
   dnssecConfig:
-    state: "on"
+    state: &#34;on&#34;
 ```
 
 

@@ -99,11 +99,11 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The charset value. See MySQL's
+            <p>{% verbatim %}The charset value. See MySQL&#39;s
 [Supported Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-charsets.html)
-and Postgres' [Character Set Support](https://www.postgresql.org/docs/9.6/static/multibyte.html)
+and Postgres&#39; [Character Set Support](https://www.postgresql.org/docs/9.6/static/multibyte.html)
 for more details and supported values. Postgres databases only support
-a value of 'UTF8' at creation time.{% endverbatim %}</p>
+a value of &#39;UTF8&#39; at creation time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -113,11 +113,11 @@ a value of 'UTF8' at creation time.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The collation value. See MySQL's
+            <p>{% verbatim %}The collation value. See MySQL&#39;s
 [Supported Character Sets and Collations](https://dev.mysql.com/doc/refman/5.7/en/charset-charsets.html)
-and Postgres' [Collation Support](https://www.postgresql.org/docs/9.6/static/collation.html)
+and Postgres&#39; [Collation Support](https://www.postgresql.org/docs/9.6/static/collation.html)
 for more details and supported values. Postgres databases only support
-a value of 'en_US.UTF8' at creation time.{% endverbatim %}</p>
+a value of &#39;en_US.UTF8&#39; at creation time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -199,7 +199,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -227,7 +227,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -267,14 +267,14 @@ selfLink: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -283,7 +283,7 @@ apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLDatabase
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   name: sqldatabase-sample
 spec:
   charset: utf8mb4

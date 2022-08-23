@@ -128,7 +128,7 @@ PARTNER type this will Pre-Activate the interconnect attachment.{% endverbatim %
 For attachments of type DEDICATED, the user can set the bandwidth.
 For attachments of type PARTNER, the Google Partner that is operating the interconnect must set the bandwidth.
 Output only for PARTNER type, mutable for PARTNER_PROVIDER and DEDICATED,
-Defaults to BPS_10G Possible values: ["BPS_50M", "BPS_100M", "BPS_200M", "BPS_300M", "BPS_400M", "BPS_500M", "BPS_1G", "BPS_2G", "BPS_5G", "BPS_10G", "BPS_20G", "BPS_50G"].{% endverbatim %}</p>
+Defaults to BPS_10G Possible values: [&#34;BPS_50M&#34;, &#34;BPS_100M&#34;, &#34;BPS_200M&#34;, &#34;BPS_300M&#34;, &#34;BPS_400M&#34;, &#34;BPS_500M&#34;, &#34;BPS_1G&#34;, &#34;BPS_2G&#34;, &#34;BPS_5G&#34;, &#34;BPS_10G&#34;, &#34;BPS_20G&#34;, &#34;BPS_50G&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -143,7 +143,7 @@ of cloudRouterIpAddress and customerRouterIpAddress for this attachment.
 All prefixes must be within link-local address space (169.254.0.0/16)
 and must be /29 or shorter (/28, /27, etc). Google will attempt to select
 an unused /29 from the supplied candidate prefix(es). The request will
-fail if all possible /29s are in use on Google's edge. If not supplied,
+fail if all possible /29s are in use on Google&#39;s edge. If not supplied,
 Google will randomly select an unused /29 from all of link-local space.{% endverbatim %}</p>
         </td>
     </tr>
@@ -202,7 +202,7 @@ traffic to, or receive traffic from, such an attachment. To use
 IPsec-encrypted Cloud Interconnect create the attachment using this
 option.
 
-Not currently available publicly. Default value: "NONE" Possible values: ["NONE", "IPSEC"].{% endverbatim %}</p>
+Not currently available publicly. Default value: &#34;NONE&#34; Possible values: [&#34;NONE&#34;, &#34;IPSEC&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -212,7 +212,7 @@ Not currently available publicly. Default value: "NONE" Possible values: ["NONE"
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. URL of the underlying Interconnect object that this attachment's
+            <p>{% verbatim %}Immutable. URL of the underlying Interconnect object that this attachment&#39;s
 traffic will traverse through. Required if type is DEDICATED, must not
 be set if type is PARTNER.{% endverbatim %}</p>
         </td>
@@ -240,18 +240,18 @@ has the encryption option as IPSEC.
 
 The addresses must be RFC 1918 IP address ranges. When creating HA
 VPN gateway over the interconnect attachment, if the attachment is
-configured to use an RFC 1918 IP address, then the VPN gateway's IP
+configured to use an RFC 1918 IP address, then the VPN gateway&#39;s IP
 address will be allocated from the IP address range specified
 here.
 
-For example, if the HA VPN gateway's interface 0 is paired to this
+For example, if the HA VPN gateway&#39;s interface 0 is paired to this
 interconnect attachment, then an RFC 1918 IP address for the VPN
 gateway interface 0 will be allocated from the IP address specified
 for this interconnect attachment.
 
 If this field is not specified for interconnect attachment that has
 encryption option as IPSEC, later on when creating HA VPN gateway on
-this interconnect attachment, the HA VPN gateway's IP address will
+this interconnect attachment, the HA VPN gateway&#39;s IP address will
 be allocated from regional external IP address pool.{% endverbatim %}</p>
         </td>
     </tr>
@@ -326,7 +326,7 @@ this interconnect attachment. Currently, only 1440 and 1500 are allowed. If not 
             <p>{% verbatim %}The Cloud Router to be used for dynamic routing. This router must
 be in the same region as this ComputeInterconnectAttachment. The
 ComputeInterconnectAttachment will automatically connect the
-interconnect to the network & region within which the Cloud Router
+interconnect to the network &amp; region within which the Cloud Router
 is configured.{% endverbatim %}</p>
         </td>
     </tr>
@@ -368,7 +368,7 @@ is configured.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The type of InterconnectAttachment you wish to create. Defaults to
-DEDICATED. Possible values: ["DEDICATED", "PARTNER", "PARTNER_PROVIDER"].{% endverbatim %}</p>
+DEDICATED. Possible values: [&#34;DEDICATED&#34;, &#34;PARTNER&#34;, &#34;PARTNER_PROVIDER&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -420,7 +420,7 @@ state: string
         <td><code>cloudRouterIpAddress</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}IPv4 address + prefix length to be configured on Cloud Router
+            <p>{% verbatim %}IPv4 address &#43; prefix length to be configured on Cloud Router
 Interface for this interconnect attachment.{% endverbatim %}</p>
         </td>
     </tr>
@@ -428,7 +428,7 @@ Interface for this interconnect attachment.{% endverbatim %}</p>
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -456,7 +456,7 @@ Interface for this interconnect attachment.{% endverbatim %}</p>
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -484,7 +484,7 @@ Interface for this interconnect attachment.{% endverbatim %}</p>
         <td><code>customerRouterIpAddress</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}IPv4 address + prefix length to be configured on the customer
+            <p>{% verbatim %}IPv4 address &#43; prefix length to be configured on the customer
 router subinterface for this interconnect attachment.{% endverbatim %}</p>
         </td>
     </tr>
@@ -509,7 +509,7 @@ Google or otherwise to debug backend connectivity issues.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}[Output only for type PARTNER. Not present for DEDICATED]. The opaque
 identifier of an PARTNER attachment used to initiate provisioning with
-a selected partner. Of the form "XXXXX/region/domain".{% endverbatim %}</p>
+a selected partner. Of the form &#34;XXXXX/region/domain&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -548,7 +548,7 @@ Google and the customer, going to and from this network and region.{% endverbati
         <td><code>state</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[Output Only] The current state of this attachment's functionality.{% endverbatim %}</p>
+            <p>{% verbatim %}[Output Only] The current state of this attachment&#39;s functionality.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -560,14 +560,14 @@ Google and the customer, going to and from this network and region.{% endverbati
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -593,7 +593,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   name: computeinterconnectattachment-dep
 spec:
   routingMode: REGIONAL

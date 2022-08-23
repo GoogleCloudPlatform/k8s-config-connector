@@ -109,7 +109,7 @@ queryScope: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The Firestore database id. Defaults to '"(default)"'.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The Firestore database id. Defaults to &#39;&#34;(default)&#34;&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -120,11 +120,11 @@ queryScope: string
         <td>
             <p><code class="apitype">list (object)</code></p>
             <p>{% verbatim %}Immutable. The fields supported by this index. The last field entry is always for
-the field path '__name__'. If, on creation, '__name__' was not
+the field path &#39;__name__&#39;. If, on creation, &#39;__name__&#39; was not
 specified as the last field, it will be added automatically with the
 same direction as that of the last field defined. If the final field
-in a composite index is not directional, the '__name__' will be
-ordered '"ASCENDING"' (unless explicitly specified otherwise).{% endverbatim %}</p>
+in a composite index is not directional, the &#39;__name__&#39; will be
+ordered &#39;&#34;ASCENDING&#34;&#39; (unless explicitly specified otherwise).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -144,8 +144,8 @@ ordered '"ASCENDING"' (unless explicitly specified otherwise).{% endverbatim %}<
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Indicates that this field supports operations on arrayValues. Only one of 'order' and 'arrayConfig' can
-be specified. Possible values: ["CONTAINS"].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Indicates that this field supports operations on arrayValues. Only one of &#39;order&#39; and &#39;arrayConfig&#39; can
+be specified. Possible values: [&#34;CONTAINS&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -165,8 +165,8 @@ be specified. Possible values: ["CONTAINS"].{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Indicates that this field supports ordering by the specified order or comparing using =, <, <=, >, >=.
-Only one of 'order' and 'arrayConfig' can be specified. Possible values: ["ASCENDING", "DESCENDING"].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Indicates that this field supports ordering by the specified order or comparing using =, &lt;, &lt;=, &gt;, &gt;=.
+Only one of &#39;order&#39; and &#39;arrayConfig&#39; can be specified. Possible values: [&#34;ASCENDING&#34;, &#34;DESCENDING&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -176,7 +176,7 @@ Only one of 'order' and 'arrayConfig' can be specified. Possible values: ["ASCEN
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The scope at which a query is run. Default value: "COLLECTION" Possible values: ["COLLECTION", "COLLECTION_GROUP"].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The scope at which a query is run. Default value: &#34;COLLECTION&#34; Possible values: [&#34;COLLECTION&#34;, &#34;COLLECTION_GROUP&#34;].{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -208,7 +208,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -236,7 +236,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -258,7 +258,7 @@ observedGeneration: integer
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}A server defined name for this index. Format:
-'projects/{{project}}/databases/{{database}}/collectionGroups/{{collection}}/indexes/{{server_generated_id}}'.{% endverbatim %}</p>
+&#39;projects/{{project}}/databases/{{database}}/collectionGroups/{{collection}}/indexes/{{server_generated_id}}&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -277,14 +277,14 @@ observedGeneration: integer
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.

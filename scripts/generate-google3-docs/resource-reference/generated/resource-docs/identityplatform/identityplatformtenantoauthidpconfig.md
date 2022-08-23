@@ -136,7 +136,7 @@ tenantRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value of the field. Cannot be used if 'valueFrom' is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Value of the field. Cannot be used if &#39;valueFrom&#39; is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -146,7 +146,7 @@ tenantRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Source for the field's value. Cannot be used if 'value' is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Source for the field&#39;s value. Cannot be used if &#39;value&#39; is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -156,7 +156,7 @@ tenantRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource's namespace.{% endverbatim %}</p>
+            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource&#39;s namespace.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -186,7 +186,7 @@ tenantRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The config's display name set by developers.{% endverbatim %}</p>
+            <p>{% verbatim %}The config&#39;s display name set by developers.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -236,7 +236,7 @@ tenantRef:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}If true, authorization code is returned from IdP's authorization endpoint.{% endverbatim %}</p>
+            <p>{% verbatim %}If true, authorization code is returned from IdP&#39;s authorization endpoint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -246,7 +246,7 @@ tenantRef:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}If true, ID token is returned from IdP's authorization endpoint.{% endverbatim %}</p>
+            <p>{% verbatim %}If true, ID token is returned from IdP&#39;s authorization endpoint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -256,7 +256,7 @@ tenantRef:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}If true, access token is returned from IdP's authorization endpoint.{% endverbatim %}</p>
+            <p>{% verbatim %}If true, access token is returned from IdP&#39;s authorization endpoint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -331,7 +331,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -359,7 +359,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -392,14 +392,14 @@ observedGeneration: integer
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -411,12 +411,12 @@ metadata:
     foo: bar
   name: identityplatformtenantoauthidpconfig-sample
 spec:
-  resourceID: "oidc.tenant-oauth-idp-config-sample" # Must start with 'oidc.'
+  resourceID: &#34;oidc.tenant-oauth-idp-config-sample&#34; # Must start with &#39;oidc.&#39;
   tenantRef:
     name: identityplatformtenantoauthidpconfig-dep
-  displayName: "sample tenant oauth idp config"
-  clientId: "client-id"
-  issuer: "issuer"
+  displayName: &#34;sample tenant oauth idp config&#34;
+  clientId: &#34;client-id&#34;
+  issuer: &#34;issuer&#34;
   enabled: true
   clientSecret:
     valueFrom:
@@ -429,21 +429,21 @@ kind: IdentityPlatformTenant
 metadata:
   name: identityplatformtenantoauthidpconfig-dep
 spec:
-  displayName: "test-tenant"
+  displayName: &#34;test-tenant&#34;
   allowPasswordSignup: true
   enableAnonymousUser: false
   mfaConfig:
-    state: "ENABLED"
+    state: &#34;ENABLED&#34;
   testPhoneNumbers:
-    "+12345678901": "123451"
-    "+16505550000": "123450"
+    &#34;&#43;12345678901&#34;: &#34;123451&#34;
+    &#34;&#43;16505550000&#34;: &#34;123450&#34;
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: identityplatformtenantoauthidpconfig-dep
 stringData:
-  clientSecret: "secret1"
+  clientSecret: &#34;secret1&#34;
 ```
 
 

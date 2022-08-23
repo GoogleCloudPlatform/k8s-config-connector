@@ -461,7 +461,7 @@ rollout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}List of inventory filters for the resource group. The resources in this resource group are applied to the target VM if it satisfies at least one of the following inventory filters. For example, to apply this resource group to VMs running either `RHEL` or `CentOS` operating systems, specify 2 items for the list with following values: inventory_filters[0].os_short_name='rhel' and inventory_filters[1].os_short_name='centos' If the list is empty, this resource group will be applied to the target VM unconditionally.{% endverbatim %}</p>
+            <p>{% verbatim %}List of inventory filters for the resource group. The resources in this resource group are applied to the target VM if it satisfies at least one of the following inventory filters. For example, to apply this resource group to VMs running either `RHEL` or `CentOS` operating systems, specify 2 items for the list with following values: inventory_filters[0].os_short_name=&#39;rhel&#39; and inventory_filters[1].os_short_name=&#39;centos&#39; If the list is empty, this resource group will be applied to the target VM unconditionally.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -531,7 +531,7 @@ rollout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}What to run to bring this resource into the desired state. An exit code of 100 indicates "success", any other exit code indicates a failure running enforce.{% endverbatim %}</p>
+            <p>{% verbatim %}What to run to bring this resource into the desired state. An exit code of 100 indicates &#34;success&#34;, any other exit code indicates a failure running enforce.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -691,7 +691,7 @@ rollout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. What to run to validate this resource is in the desired state. An exit code of 100 indicates "in desired state", and exit code of 101 indicates "not in desired state". Any other exit code indicates a failure running validate.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. What to run to validate this resource is in the desired state. An exit code of 100 indicates &#34;in desired state&#34;, and exit code of 101 indicates &#34;not in desired state&#34;. Any other exit code indicates a failure running validate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1051,7 +1051,7 @@ rollout:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Whether dependencies should also be installed. - install when false: `dpkg -i package` - install when true: `apt-get update && apt-get -y install package.deb`{% endverbatim %}</p>
+            <p>{% verbatim %}Whether dependencies should also be installed. - install when false: `dpkg -i package` - install when true: `apt-get update &amp;&amp; apt-get -y install package.deb`{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1851,7 +1851,7 @@ uid: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1879,7 +1879,7 @@ uid: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1907,7 +1907,7 @@ uid: string
         <td><code>etag</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The etag for this OS policy assignment. If this is provided on update, it must match the server's etag.{% endverbatim %}</p>
+            <p>{% verbatim %}The etag for this OS policy assignment. If this is provided on update, it must match the server&#39;s etag.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1961,14 +1961,14 @@ uid: string
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1980,158 +1980,158 @@ metadata:
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: "projects/${PROJECT_ID?}"
-  location: "us-west2-a"
-  description: "A test os policy assignment"
+     external: &#34;projects/${PROJECT_ID?}&#34;
+  location: &#34;us-west2-a&#34;
+  description: &#34;A test os policy assignment&#34;
   osPolicies:
-  - id: "policy"
-    description: "A test os policy"
-    mode: "VALIDATION"
+  - id: &#34;policy&#34;
+    description: &#34;A test os policy&#34;
+    mode: &#34;VALIDATION&#34;
     resourceGroups:
     - inventoryFilters:
-      - osShortName: "centos"
-        osVersion: "8.*"
+      - osShortName: &#34;centos&#34;
+        osVersion: &#34;8.*&#34;
       resources:
-      - id: "apt"
+      - id: &#34;apt&#34;
         pkg:
-          desiredState: "INSTALLED"
+          desiredState: &#34;INSTALLED&#34;
           apt:
-            name: "bazel"
-      - id: "deb1"
+            name: &#34;bazel&#34;
+      - id: &#34;deb1&#34;
         pkg:
-          desiredState: "INSTALLED"
+          desiredState: &#34;INSTALLED&#34;
           deb:
             source:
-              localPath: "$HOME/package.deb"
-      - id: "deb2"
+              localPath: &#34;$HOME/package.deb&#34;
+      - id: &#34;deb2&#34;
         pkg:
-          desiredState: "INSTALLED"
+          desiredState: &#34;INSTALLED&#34;
           deb:
             pullDeps: true
             source:
               allowInsecure: true
               remote:
-                uri: "ftp.us.debian.org/debian/package.deb"
-                sha256Checksum: "3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025"
-      - id: "deb3"
+                uri: &#34;ftp.us.debian.org/debian/package.deb&#34;
+                sha256Checksum: &#34;3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025&#34;
+      - id: &#34;deb3&#34;
         pkg:
-          desiredState: "INSTALLED"
+          desiredState: &#34;INSTALLED&#34;
           deb:
             pullDeps: true
             source:
               gcs:
-                bucket: "test-bucket"
-                object: "test-object"
+                bucket: &#34;test-bucket&#34;
+                object: &#34;test-object&#34;
                 generation: 1
-      - id: "yum"
+      - id: &#34;yum&#34;
         pkg:
-          desiredState: "INSTALLED"
+          desiredState: &#34;INSTALLED&#34;
           yum:
-            name: "gstreamer-plugins-base-devel.x86_64"
-      - id: "zypper"
+            name: &#34;gstreamer-plugins-base-devel.x86_64&#34;
+      - id: &#34;zypper&#34;
         pkg:
-          desiredState: "INSTALLED"
+          desiredState: &#34;INSTALLED&#34;
           zypper:
-            name: "gcc"
-      - id: "rpm1"
+            name: &#34;gcc&#34;
+      - id: &#34;rpm1&#34;
         pkg:
-          desiredState: "INSTALLED"
+          desiredState: &#34;INSTALLED&#34;
           rpm:
             pullDeps: true
             source:
-              localPath: "$HOME/package.rpm"
-      - id: "rpm2"
+              localPath: &#34;$HOME/package.rpm&#34;
+      - id: &#34;rpm2&#34;
         pkg:
-          desiredState: "INSTALLED"
+          desiredState: &#34;INSTALLED&#34;
           rpm:
             source:
               allowInsecure: true
               remote:
-                uri: "https://mirror.jaleco.com/centos/8.3.2011/BaseOS/x86_64/os/Packages/efi-filesystem-3-2.el8.noarch.rpm"
-                sha256Checksum: "3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025"
-      - id: "rpm3"
+                uri: &#34;https://mirror.jaleco.com/centos/8.3.2011/BaseOS/x86_64/os/Packages/efi-filesystem-3-2.el8.noarch.rpm&#34;
+                sha256Checksum: &#34;3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025&#34;
+      - id: &#34;rpm3&#34;
         pkg:
-          desiredState: "INSTALLED"
+          desiredState: &#34;INSTALLED&#34;
           rpm:
             source:
               gcs:
-                bucket: "test-bucket"
-                object: "test-object"
+                bucket: &#34;test-bucket&#34;
+                object: &#34;test-object&#34;
                 generation: 1
     - resources:
-      - id: "apt-to-deb"
+      - id: &#34;apt-to-deb&#34;
         pkg:
-          desiredState: "INSTALLED"
+          desiredState: &#34;INSTALLED&#34;
           apt:
-            name: "bazel"
-      - id: "deb-local-path-to-gcs"
+            name: &#34;bazel&#34;
+      - id: &#34;deb-local-path-to-gcs&#34;
         pkg:
-          desiredState: "INSTALLED"
+          desiredState: &#34;INSTALLED&#34;
           deb:
             source:
-              localPath: "$HOME/package.deb"
-      - id: "googet"
+              localPath: &#34;$HOME/package.deb&#34;
+      - id: &#34;googet&#34;
         pkg:
-          desiredState: "INSTALLED"
+          desiredState: &#34;INSTALLED&#34;
           googet:
-            name: "gcc"
-      - id: "msi1"
+            name: &#34;gcc&#34;
+      - id: &#34;msi1&#34;
         pkg:
-          desiredState: "INSTALLED"
+          desiredState: &#34;INSTALLED&#34;
           msi:
             source:
-              localPath: "$HOME/package.msi"
+              localPath: &#34;$HOME/package.msi&#34;
             properties:
-            - "REBOOT=ReallySuppress"
-      - id: "msi2"
+            - &#34;REBOOT=ReallySuppress&#34;
+      - id: &#34;msi2&#34;
         pkg:
-          desiredState: "INSTALLED"
+          desiredState: &#34;INSTALLED&#34;
           msi:
             source:
               allowInsecure: true
               remote:
-                uri: "https://remote.uri.com/package.msi"
-                sha256Checksum: "3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025"
-              sha256Checksum: "3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025"
-      - id: "msi3"
+                uri: &#34;https://remote.uri.com/package.msi&#34;
+                sha256Checksum: &#34;3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025&#34;
+              sha256Checksum: &#34;3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025&#34;
+      - id: &#34;msi3&#34;
         pkg:
-          desiredState: "INSTALLED"
+          desiredState: &#34;INSTALLED&#34;
           msi:
             source:
               gcs:
-                bucket: "test-bucket"
-                object: "test-object"
+                bucket: &#34;test-bucket&#34;
+                object: &#34;test-object&#34;
                 generation: 1
     allowNoResourceGroupMatch: false
   instanceFilter:
     all: false
     inclusionLabels:
     - labels:
-        label-one: "value-one"
+        label-one: &#34;value-one&#34;
     exclusionLabels:
     - labels:
-        label-two: "value-two"
+        label-two: &#34;value-two&#34;
     inventories:
-    - osShortName: "centos"
-      osVersion: "8.*"
+    - osShortName: &#34;centos&#34;
+      osVersion: &#34;8.*&#34;
   rollout:
     disruptionBudget:
       fixed: 1
-    minWaitDuration: "3.5s"
+    minWaitDuration: &#34;3.5s&#34;
 ```
 
 ### Percent Os Policy Assignment
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -2143,149 +2143,149 @@ metadata:
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: "projects/${PROJECT_ID?}"
-  location: "us-west2-a"
-  description: "A test os policy assignment"
+     external: &#34;projects/${PROJECT_ID?}&#34;
+  location: &#34;us-west2-a&#34;
+  description: &#34;A test os policy assignment&#34;
   osPolicies:
-  - id: "policy"
-    mode: "VALIDATION"
+  - id: &#34;policy&#34;
+    mode: &#34;VALIDATION&#34;
     resourceGroups:
     - resources:
-      - id: "apt-to-yum"
+      - id: &#34;apt-to-yum&#34;
         repository:
           apt:
-            archiveType: "DEB"
-            uri: "https://atl.mirrors.clouvider.net/debian"
-            distribution: "debian"
+            archiveType: &#34;DEB&#34;
+            uri: &#34;https://atl.mirrors.clouvider.net/debian&#34;
+            distribution: &#34;debian&#34;
             components:
-            - "doc"
-            gpgKey: ".gnupg/pubring.kbx"
-      - id: "yum"
+            - &#34;doc&#34;
+            gpgKey: &#34;.gnupg/pubring.kbx&#34;
+      - id: &#34;yum&#34;
         repository:
           yum:
-            id: "yum"
-            displayName: "yum"
-            baseUrl: "http://centos.s.uw.edu/centos/"
+            id: &#34;yum&#34;
+            displayName: &#34;yum&#34;
+            baseUrl: &#34;http://centos.s.uw.edu/centos/&#34;
             gpgKeys:
-            - "RPM-GPG-KEY-CentOS-7"
-      - id: "zypper"
+            - &#34;RPM-GPG-KEY-CentOS-7&#34;
+      - id: &#34;zypper&#34;
         repository:
           zypper:
-            id: "zypper"
-            displayName: "zypper"
-            baseUrl: "http://mirror.dal10.us.leaseweb.net/opensuse"
+            id: &#34;zypper&#34;
+            displayName: &#34;zypper&#34;
+            baseUrl: &#34;http://mirror.dal10.us.leaseweb.net/opensuse&#34;
             gpgKeys:
-            - "sample-key-uri"
-      - id: "goo"
+            - &#34;sample-key-uri&#34;
+      - id: &#34;goo&#34;
         repository:
           goo:
-            name: "goo"
-            url: "https://foo.com/googet/bar"
-      - id: "exec1"
+            name: &#34;goo&#34;
+            url: &#34;https://foo.com/googet/bar&#34;
+      - id: &#34;exec1&#34;
         exec:
           validate:
             args:
-            - "arg1"
-            interpreter: "SHELL"
-            outputFilePath: "$HOME/out"
+            - &#34;arg1&#34;
+            interpreter: &#34;SHELL&#34;
+            outputFilePath: &#34;$HOME/out&#34;
             file:
-              localPath: "$HOME/script.sh"
+              localPath: &#34;$HOME/script.sh&#34;
           enforce:
             args:
-            - "arg1"
-            interpreter: "SHELL"
-            outputFilePath: "$HOME/out"
+            - &#34;arg1&#34;
+            interpreter: &#34;SHELL&#34;
+            outputFilePath: &#34;$HOME/out&#34;
             file:
               allowInsecure: true
               remote:
-                uri: "https://www.example.com/script.sh"
-                sha256Checksum: "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063"
-      - id: "exec2"
+                uri: &#34;https://www.example.com/script.sh&#34;
+                sha256Checksum: &#34;c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063&#34;
+      - id: &#34;exec2&#34;
         exec:
           validate:
             args:
-            - "arg1"
-            interpreter: "SHELL"
-            outputFilePath: "$HOME/out"
+            - &#34;arg1&#34;
+            interpreter: &#34;SHELL&#34;
+            outputFilePath: &#34;$HOME/out&#34;
             file:
               allowInsecure: true
               remote:
-                uri: "https://www.example.com/script.sh"
-                sha256Checksum: "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063"
+                uri: &#34;https://www.example.com/script.sh&#34;
+                sha256Checksum: &#34;c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063&#34;
           enforce:
             args:
-            - "arg1"
-            interpreter: "SHELL"
-            outputFilePath: "$HOME/out"
+            - &#34;arg1&#34;
+            interpreter: &#34;SHELL&#34;
+            outputFilePath: &#34;$HOME/out&#34;
             file:
-              localPath: "$HOME/script.sh"
-      - id: "exec3"
+              localPath: &#34;$HOME/script.sh&#34;
+      - id: &#34;exec3&#34;
         exec:
           validate:
-            interpreter: "SHELL"
-            outputFilePath: "$HOME/out"
+            interpreter: &#34;SHELL&#34;
+            outputFilePath: &#34;$HOME/out&#34;
             file:
               allowInsecure: true
               gcs:
-                bucket: "test-bucket"
-                object: "test-object"
+                bucket: &#34;test-bucket&#34;
+                object: &#34;test-object&#34;
                 generation: 1
           enforce:
-            interpreter: "SHELL"
-            outputFilePath: "$HOME/out"
-            script: "pwd"
-      - id: "exec4"
+            interpreter: &#34;SHELL&#34;
+            outputFilePath: &#34;$HOME/out&#34;
+            script: &#34;pwd&#34;
+      - id: &#34;exec4&#34;
         exec:
           validate:
-            interpreter: "SHELL"
-            outputFilePath: "$HOME/out"
-            script: "pwd"
+            interpreter: &#34;SHELL&#34;
+            outputFilePath: &#34;$HOME/out&#34;
+            script: &#34;pwd&#34;
           enforce:
-            interpreter: "SHELL"
-            outputFilePath: "$HOME/out"
+            interpreter: &#34;SHELL&#34;
+            outputFilePath: &#34;$HOME/out&#34;
             file:
               allowInsecure: true
               gcs:
-                bucket: "test-bucket"
-                object: "test-object"
+                bucket: &#34;test-bucket&#34;
+                object: &#34;test-object&#34;
                 generation: 1
-      - id: "file1"
+      - id: &#34;file1&#34;
         file:
-          path: "$HOME/file"
-          state: "PRESENT"
+          path: &#34;$HOME/file&#34;
+          state: &#34;PRESENT&#34;
           file:
-            localPath: "$HOME/file"
+            localPath: &#34;$HOME/file&#34;
     - resources:
-      - id: "file2"
+      - id: &#34;file2&#34;
         file:
-          path: "$HOME/file"
-          state: "PRESENT"
-          permissions: "755"
+          path: &#34;$HOME/file&#34;
+          state: &#34;PRESENT&#34;
+          permissions: &#34;755&#34;
           file:
             allowInsecure: true
             remote:
-              uri: "https://www.example.com/file"
-              sha256Checksum: "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063"
-      - id: "file3"
+              uri: &#34;https://www.example.com/file&#34;
+              sha256Checksum: &#34;c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063&#34;
+      - id: &#34;file3&#34;
         file:
-          path: "$HOME/file"
-          state: "PRESENT"
+          path: &#34;$HOME/file&#34;
+          state: &#34;PRESENT&#34;
           file:
             gcs:
-              bucket: "test-bucket"
-              object: "test-object"
+              bucket: &#34;test-bucket&#34;
+              object: &#34;test-object&#34;
               generation: 1
-      - id: "file4"
+      - id: &#34;file4&#34;
         file:
-          path: "$HOME/file"
-          state: "PRESENT"
-          content: "sample-content"
+          path: &#34;$HOME/file&#34;
+          state: &#34;PRESENT&#34;
+          content: &#34;sample-content&#34;
   instanceFilter:
     all: true
   rollout:
     disruptionBudget:
       percent: 1
-    minWaitDuration: "3.5s"
+    minWaitDuration: &#34;3.5s&#34;
 ```
 
 

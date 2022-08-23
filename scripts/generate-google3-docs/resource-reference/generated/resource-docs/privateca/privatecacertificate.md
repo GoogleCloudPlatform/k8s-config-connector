@@ -357,7 +357,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The "common name" of the subject.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The &#34;common name&#34; of the subject.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -607,7 +607,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. Describes Online Certificate Status Protocol (OCSP) endpoint addresses that appear in the "Authority Information Access" extension in the certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. Describes Online Certificate Status Protocol (OCSP) endpoint addresses that appear in the &#34;Authority Information Access&#34; extension in the certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -637,7 +637,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Optional. When true, the "CA" in Basic Constraints extension will be set to true.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. When true, the &#34;CA&#34; in Basic Constraints extension will be set to true.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -647,7 +647,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Optional. Refers to the "path length constraint" in Basic Constraints extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. Refers to the &#34;path length constraint&#34; in Basic Constraints extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -657,7 +657,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Optional. When true, the "CA" in Basic Constraints extension will be set to false. If both `is_ca` and `non_ca` are unset, the extension will be omitted from the CA certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. When true, the &#34;CA&#34; in Basic Constraints extension will be set to false. If both `is_ca` and `non_ca` are unset, the extension will be omitted from the CA certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -667,7 +667,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Optional. When true, the "path length constraint" in Basic Constraints extension will be set to 0. if both max_issuer_path_length and zero_max_issuer_path_length are unset, the max path length will be omitted from the CA certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. When true, the &#34;path length constraint&#34; in Basic Constraints extension will be set to 0. if both max_issuer_path_length and zero_max_issuer_path_length are unset, the max path length will be omitted from the CA certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -707,7 +707,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. The key may be used for cryptographic commitments. Note that this may also be referred to as "non-repudiation".{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The key may be used for cryptographic commitments. Note that this may also be referred to as &#34;non-repudiation&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -797,7 +797,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as "TLS WWW client authentication", though regularly used for non-WWW TLS.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as &#34;TLS WWW client authentication&#34;, though regularly used for non-WWW TLS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -807,7 +807,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as "Signing of downloadable executable code client authentication".{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as &#34;Signing of downloadable executable code client authentication&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -817,7 +817,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as "Email protection".{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as &#34;Email protection&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -827,7 +827,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as "Signing OCSP responses".{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as &#34;Signing OCSP responses&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -837,7 +837,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW server authentication", though regularly used for non-WWW TLS.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as &#34;TLS WWW server authentication&#34;, though regularly used for non-WWW TLS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -847,7 +847,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as "Binding the hash of an object to a time".{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as &#34;Binding the hash of an object to a time&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -937,7 +937,7 @@ Allowed value: The `selfLink` field of a `PrivateCACertificateTemplate` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Required. Immutable. The desired lifetime of a certificate. Used to create the "not_before_time" and "not_after_time" fields inside an X.509 certificate. Note that the lifetime may be truncated if it would extend past the life of any certificate authority in the issuing chain.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Required. Immutable. The desired lifetime of a certificate. Used to create the &#34;not_before_time&#34; and &#34;not_after_time&#34; fields inside an X.509 certificate. Note that the lifetime may be truncated if it would extend past the life of any certificate authority in the issuing chain.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1019,7 +1019,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Immutable. Specifies how the Certificate's identity fields are to be decided. If this is omitted, the `DEFAULT` subject mode will be used. Possible values: SUBJECT_REQUEST_MODE_UNSPECIFIED, DEFAULT, REFLECTED_SPIFFE{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Immutable. Specifies how the Certificate&#39;s identity fields are to be decided. If this is omitted, the `DEFAULT` subject mode will be used. Possible values: SUBJECT_REQUEST_MODE_UNSPECIFIED, DEFAULT, REFLECTED_SPIFFE{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -1147,7 +1147,7 @@ updateTime: string
         <td><code>certificateDescription.aiaIssuingCertificateUrls</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Describes lists of issuer CA certificate URLs that appear in the "Authority Information Access" extension in the certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Describes lists of issuer CA certificate URLs that appear in the &#34;Authority Information Access&#34; extension in the certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1245,7 +1245,7 @@ updateTime: string
         <td><code>certificateDescription.subjectDescription.notAfterTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time after which the certificate is expired. Per RFC 5280, the validity period for a certificate is the period of time from not_before_time through not_after_time, inclusive. Corresponds to 'not_before_time' + 'lifetime' - 1 second.{% endverbatim %}</p>
+            <p>{% verbatim %}The time after which the certificate is expired. Per RFC 5280, the validity period for a certificate is the period of time from not_before_time through not_after_time, inclusive. Corresponds to &#39;not_before_time&#39; &#43; &#39;lifetime&#39; - 1 second.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1266,7 +1266,7 @@ updateTime: string
         <td><code>certificateDescription.subjectDescription.subject.commonName</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The "common name" of the subject.{% endverbatim %}</p>
+            <p>{% verbatim %}The &#34;common name&#34; of the subject.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1504,7 +1504,7 @@ updateTime: string
         <td><code>certificateDescription.x509Description.aiaOcspServers</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Optional. Describes Online Certificate Status Protocol (OCSP) endpoint addresses that appear in the "Authority Information Access" extension in the certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Describes Online Certificate Status Protocol (OCSP) endpoint addresses that appear in the &#34;Authority Information Access&#34; extension in the certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1525,7 +1525,7 @@ updateTime: string
         <td><code>certificateDescription.x509Description.caOptions.isCa</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. Refers to the "CA" X.509 extension, which is a boolean value. When this value is missing, the extension will be omitted from the CA certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Refers to the &#34;CA&#34; X.509 extension, which is a boolean value. When this value is missing, the extension will be omitted from the CA certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1560,7 +1560,7 @@ updateTime: string
         <td><code>certificateDescription.x509Description.keyUsage.baseKeyUsage.contentCommitment</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}The key may be used for cryptographic commitments. Note that this may also be referred to as "non-repudiation".{% endverbatim %}</p>
+            <p>{% verbatim %}The key may be used for cryptographic commitments. Note that this may also be referred to as &#34;non-repudiation&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1623,42 +1623,42 @@ updateTime: string
         <td><code>certificateDescription.x509Description.keyUsage.extendedKeyUsage.clientAuth</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as "TLS WWW client authentication", though regularly used for non-WWW TLS.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as &#34;TLS WWW client authentication&#34;, though regularly used for non-WWW TLS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.extendedKeyUsage.codeSigning</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as "Signing of downloadable executable code client authentication".{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as &#34;Signing of downloadable executable code client authentication&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.extendedKeyUsage.emailProtection</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as "Email protection".{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as &#34;Email protection&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.extendedKeyUsage.ocspSigning</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as "Signing OCSP responses".{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as &#34;Signing OCSP responses&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.extendedKeyUsage.serverAuth</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW server authentication", though regularly used for non-WWW TLS.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as &#34;TLS WWW server authentication&#34;, though regularly used for non-WWW TLS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>certificateDescription.x509Description.keyUsage.extendedKeyUsage.timeStamping</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as "Binding the hash of an object to a time".{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as &#34;Binding the hash of an object to a time&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1721,7 +1721,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1749,7 +1749,7 @@ updateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1845,14 +1845,14 @@ updateTime: string
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1903,14 +1903,14 @@ apiVersion: privateca.cnrm.cloud.google.com/v1beta1
 kind: PrivateCACAPool
 metadata:
   labels:
-    label-two: "value-two"
+    label-two: &#34;value-two&#34;
   name: privatecacertificate-dep-basic
   # PrivateCACertificateAuthority cannot be deleted immediately, and must wait
-  # 30 days in a 'DELETED' status before it is fully deleted. Since a PrivateCACAPool
-  # with a PrivateCACertificateAuthority in 'DELETED' status cannot be deleted
+  # 30 days in a &#39;DELETED&#39; status before it is fully deleted. Since a PrivateCACAPool
+  # with a PrivateCACertificateAuthority in &#39;DELETED&#39; status cannot be deleted
   # itself, we abandon this resource on deletion.
   annotations:
-    cnrm.cloud.google.com/deletion-policy: "abandon"
+    cnrm.cloud.google.com/deletion-policy: &#34;abandon&#34;
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
@@ -1970,7 +1970,7 @@ apiVersion: privateca.cnrm.cloud.google.com/v1beta1
 kind: PrivateCACertificateAuthority
 metadata:
   labels:
-    label-two: "value-two"
+    label-two: &#34;value-two&#34;
   name: privatecacertificate-dep-basic
 spec:
   projectRef:
@@ -2006,14 +2006,14 @@ spec:
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -2030,23 +2030,23 @@ spec:
     name: privatecacertificate-dep-cert-sign
   caPoolRef:
     name: privatecacertificate-dep-cert-sign
-  lifetime: "860s"
+  lifetime: &#34;860s&#34;
   config:
     subjectConfig:
       subject:
-        commonName: "san1.example.com"
+        commonName: &#34;san1.example.com&#34;
       subjectAltName:
         dnsNames:
-        - "san1.example.com"
+        - &#34;san1.example.com&#34;
         uris:
-        - "http://www.ietf.org/rfc/rfc3986.txt"
+        - &#34;http://www.ietf.org/rfc/rfc3986.txt&#34;
         emailAddresses:
         - test_example@google.com
         ipAddresses:
-        - "127.0.0.1"
+        - &#34;127.0.0.1&#34;
     x509Config:
       aiaOcspServers:
-      - "www.example.com"
+      - &#34;www.example.com&#34;
       caOptions:
         isCa: true
         maxIssuerPathLength: 100
@@ -2068,7 +2068,7 @@ spec:
           - 5
           - 5
         critical: false
-        value: "d3d3LmV4YW1wbGUuY29t"
+        value: &#34;d3d3LmV4YW1wbGUuY29t&#34;
       keyUsage:
         baseKeyUsage:
           digitalSignature: true
@@ -2095,8 +2095,8 @@ spec:
           - 5
           - 5
     publicKey:
-      format: "PEM"
-      key: "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUF2NndlQzFhVDE2bDJxUzZxZFljeQo3Qk9qelA3VHdUOXpVQWlGaFdwTDI1NkdScUM4eVFSZHFNc2k2OFEvLzc2MklVeXUvcWFIYkVnUThXUm1RZFZWCkdEbHhrQmZyQS9pWEIyZGd1anE4amgwSFdJVjJldjNUZXJWM2FVd3ZZVWxyb3docTAyN1NYOVUxaGJ1ZmRHQ00KdUtzSGlGMDVFcmdOdkV1UjhYQWtlSi9ZVjJEVjIrc1JxK1dnOXk0UndVWWJkY2hkRnR5MWQ1U1gvczBZcXN3Zwp5T0c5Vm9DZFI3YmFGMjJ1Z2hWUjQ0YVJtKzgzbWd0cUFaNE0rUnBlN0pHUnNVR1kvcFIzOTFUb2kwczhFbjE1CkpHaUFocVgyVzBVby9GWlpyeTN5dXFSZmRIWUVOQitBRHV5VE1UclVhS1p2N2V1YTBsVEJ6NW9vbTNqU0YzZ3YKSTdTUW9MZEsvamhFVk9PcTQxSWpCOEQ2MFNnZDY5YkQ3eVRJNTE2eXZaL3MzQXlLelc2ZjZLbmpkYkNjWktLVAowR0FlUE5MTmhEWWZTbEE5YndKOEhRUzJGZW5TcFNUQXJLdkdpVnJzaW5KdU5qYlFkUHVRSGNwV2Y5eDFtM0dSClRNdkYrVE5ZTS9scDdJTDJWTWJKUmZXUHkxaVd4bTlGMVlyNmRrSFZvTFA3b2NZa05SSG9QTHV0NUU2SUZKdEsKbFZJMk5uZVVZSkduWVNPKzF4UFY5VHFsSmVNTndyM3VGTUFOOE4vb0IzZjRXV3d1UllnUjBMNWcyQStMdngrZwpiYmRsK1RiLzBDTmZzbGZTdURyRlY4WjRuNmdWd2I5WlBHbE5IQ3ZucVJmTFVwUkZKd21SN1VZdnppL0U3clhKCkVEa0srdGNuUGt6Mkp0amRMS1I3cVZjQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQ=="
+      format: &#34;PEM&#34;
+      key: &#34;LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUF2NndlQzFhVDE2bDJxUzZxZFljeQo3Qk9qelA3VHdUOXpVQWlGaFdwTDI1NkdScUM4eVFSZHFNc2k2OFEvLzc2MklVeXUvcWFIYkVnUThXUm1RZFZWCkdEbHhrQmZyQS9pWEIyZGd1anE4amgwSFdJVjJldjNUZXJWM2FVd3ZZVWxyb3docTAyN1NYOVUxaGJ1ZmRHQ00KdUtzSGlGMDVFcmdOdkV1UjhYQWtlSi9ZVjJEVjIrc1JxK1dnOXk0UndVWWJkY2hkRnR5MWQ1U1gvczBZcXN3Zwp5T0c5Vm9DZFI3YmFGMjJ1Z2hWUjQ0YVJtKzgzbWd0cUFaNE0rUnBlN0pHUnNVR1kvcFIzOTFUb2kwczhFbjE1CkpHaUFocVgyVzBVby9GWlpyeTN5dXFSZmRIWUVOQitBRHV5VE1UclVhS1p2N2V1YTBsVEJ6NW9vbTNqU0YzZ3YKSTdTUW9MZEsvamhFVk9PcTQxSWpCOEQ2MFNnZDY5YkQ3eVRJNTE2eXZaL3MzQXlLelc2ZjZLbmpkYkNjWktLVAowR0FlUE5MTmhEWWZTbEE5YndKOEhRUzJGZW5TcFNUQXJLdkdpVnJzaW5KdU5qYlFkUHVRSGNwV2Y5eDFtM0dSClRNdkYrVE5ZTS9scDdJTDJWTWJKUmZXUHkxaVd4bTlGMVlyNmRrSFZvTFA3b2NZa05SSG9QTHV0NUU2SUZKdEsKbFZJMk5uZVVZSkduWVNPKzF4UFY5VHFsSmVNTndyM3VGTUFOOE4vb0IzZjRXV3d1UllnUjBMNWcyQStMdngrZwpiYmRsK1RiLzBDTmZzbGZTdURyRlY4WjRuNmdWd2I5WlBHbE5IQ3ZucVJmTFVwUkZKd21SN1VZdnppL0U3clhKCkVEa0srdGNuUGt6Mkp0amRMS1I3cVZjQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQ==&#34;
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
     external: projects/${PROJECT_ID?}
@@ -2105,14 +2105,14 @@ apiVersion: privateca.cnrm.cloud.google.com/v1beta1
 kind: PrivateCACAPool
 metadata:
   labels:
-    label-two: "value-two"
+    label-two: &#34;value-two&#34;
   name: privatecacertificate-dep-cert-sign
   # PrivateCACertificateAuthority cannot be deleted immediately, and must wait
-  # 30 days in a 'DELETED' status before it is fully deleted. Since a PrivateCACAPool
-  # with a PrivateCACertificateAuthority in 'DELETED' status cannot be deleted
+  # 30 days in a &#39;DELETED&#39; status before it is fully deleted. Since a PrivateCACAPool
+  # with a PrivateCACertificateAuthority in &#39;DELETED&#39; status cannot be deleted
   # itself, we abandon this resource on deletion.
   annotations:
-    cnrm.cloud.google.com/deletion-policy: "abandon"
+    cnrm.cloud.google.com/deletion-policy: &#34;abandon&#34;
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
@@ -2126,18 +2126,18 @@ metadata:
   name: privatecacertificate-dep-cert-sign
 spec:
   location: us-central1
-  type: "SELF_SIGNED"
+  type: &#34;SELF_SIGNED&#34;
   caPoolRef:
     name: privatecacertificate-dep-cert-sign
-  lifetime: "86400s"
+  lifetime: &#34;86400s&#34;
   config:
     subjectConfig:
       subject:
-        organization: "Example"
-        commonName: "my-certificate-authority"
+        organization: &#34;Example&#34;
+        commonName: &#34;my-certificate-authority&#34;
       subjectAltName:
         dnsNames:
-        - "example.com"
+        - &#34;example.com&#34;
     x509Config:
       caOptions:
         isCa: true
@@ -2148,7 +2148,7 @@ spec:
         extendedKeyUsage:
           serverAuth: true
   keySpec:
-    algorithm: "RSA_PKCS1_4096_SHA256"
+    algorithm: &#34;RSA_PKCS1_4096_SHA256&#34;
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
     external: projects/${PROJECT_ID?}
@@ -2158,14 +2158,14 @@ spec:
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -2177,25 +2177,25 @@ metadata:
   labels:
     key: value
 spec:
-  location: "us-central1"
+  location: &#34;us-central1&#34;
   certificateAuthorityRef:
     name: privatecacertificate-dep-complex
   caPoolRef:
     name: privatecacertificate-dep-complex
-  lifetime: "860s"
+  lifetime: &#34;860s&#34;
   config:
     subjectConfig:
       subject:
-        commonName: "san1.example.com"
+        commonName: &#34;san1.example.com&#34;
       subjectAltName:
         dnsNames:
-        - "san1.example.com"
+        - &#34;san1.example.com&#34;
         uris:
-        - "http://www.ietf.org/rfc/rfc3986.txt"
+        - &#34;http://www.ietf.org/rfc/rfc3986.txt&#34;
         emailAddresses:
         - test_example@google.com
         ipAddresses:
-        - "127.0.0.1"
+        - &#34;127.0.0.1&#34;
     x509Config:
       caOptions:
         isCa: false
@@ -2217,8 +2217,8 @@ spec:
           timeStamping: true
           ocspSigning: true
     publicKey:
-      format: "PEM"
-      key: "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUF2NndlQzFhVDE2bDJxUzZxZFljeQo3Qk9qelA3VHdUOXpVQWlGaFdwTDI1NkdScUM4eVFSZHFNc2k2OFEvLzc2MklVeXUvcWFIYkVnUThXUm1RZFZWCkdEbHhrQmZyQS9pWEIyZGd1anE4amgwSFdJVjJldjNUZXJWM2FVd3ZZVWxyb3docTAyN1NYOVUxaGJ1ZmRHQ00KdUtzSGlGMDVFcmdOdkV1UjhYQWtlSi9ZVjJEVjIrc1JxK1dnOXk0UndVWWJkY2hkRnR5MWQ1U1gvczBZcXN3Zwp5T0c5Vm9DZFI3YmFGMjJ1Z2hWUjQ0YVJtKzgzbWd0cUFaNE0rUnBlN0pHUnNVR1kvcFIzOTFUb2kwczhFbjE1CkpHaUFocVgyVzBVby9GWlpyeTN5dXFSZmRIWUVOQitBRHV5VE1UclVhS1p2N2V1YTBsVEJ6NW9vbTNqU0YzZ3YKSTdTUW9MZEsvamhFVk9PcTQxSWpCOEQ2MFNnZDY5YkQ3eVRJNTE2eXZaL3MzQXlLelc2ZjZLbmpkYkNjWktLVAowR0FlUE5MTmhEWWZTbEE5YndKOEhRUzJGZW5TcFNUQXJLdkdpVnJzaW5KdU5qYlFkUHVRSGNwV2Y5eDFtM0dSClRNdkYrVE5ZTS9scDdJTDJWTWJKUmZXUHkxaVd4bTlGMVlyNmRrSFZvTFA3b2NZa05SSG9QTHV0NUU2SUZKdEsKbFZJMk5uZVVZSkduWVNPKzF4UFY5VHFsSmVNTndyM3VGTUFOOE4vb0IzZjRXV3d1UllnUjBMNWcyQStMdngrZwpiYmRsK1RiLzBDTmZzbGZTdURyRlY4WjRuNmdWd2I5WlBHbE5IQ3ZucVJmTFVwUkZKd21SN1VZdnppL0U3clhKCkVEa0srdGNuUGt6Mkp0amRMS1I3cVZjQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQ=="
+      format: &#34;PEM&#34;
+      key: &#34;LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUF2NndlQzFhVDE2bDJxUzZxZFljeQo3Qk9qelA3VHdUOXpVQWlGaFdwTDI1NkdScUM4eVFSZHFNc2k2OFEvLzc2MklVeXUvcWFIYkVnUThXUm1RZFZWCkdEbHhrQmZyQS9pWEIyZGd1anE4amgwSFdJVjJldjNUZXJWM2FVd3ZZVWxyb3docTAyN1NYOVUxaGJ1ZmRHQ00KdUtzSGlGMDVFcmdOdkV1UjhYQWtlSi9ZVjJEVjIrc1JxK1dnOXk0UndVWWJkY2hkRnR5MWQ1U1gvczBZcXN3Zwp5T0c5Vm9DZFI3YmFGMjJ1Z2hWUjQ0YVJtKzgzbWd0cUFaNE0rUnBlN0pHUnNVR1kvcFIzOTFUb2kwczhFbjE1CkpHaUFocVgyVzBVby9GWlpyeTN5dXFSZmRIWUVOQitBRHV5VE1UclVhS1p2N2V1YTBsVEJ6NW9vbTNqU0YzZ3YKSTdTUW9MZEsvamhFVk9PcTQxSWpCOEQ2MFNnZDY5YkQ3eVRJNTE2eXZaL3MzQXlLelc2ZjZLbmpkYkNjWktLVAowR0FlUE5MTmhEWWZTbEE5YndKOEhRUzJGZW5TcFNUQXJLdkdpVnJzaW5KdU5qYlFkUHVRSGNwV2Y5eDFtM0dSClRNdkYrVE5ZTS9scDdJTDJWTWJKUmZXUHkxaVd4bTlGMVlyNmRrSFZvTFA3b2NZa05SSG9QTHV0NUU2SUZKdEsKbFZJMk5uZVVZSkduWVNPKzF4UFY5VHFsSmVNTndyM3VGTUFOOE4vb0IzZjRXV3d1UllnUjBMNWcyQStMdngrZwpiYmRsK1RiLzBDTmZzbGZTdURyRlY4WjRuNmdWd2I5WlBHbE5IQ3ZucVJmTFVwUkZKd21SN1VZdnppL0U3clhKCkVEa0srdGNuUGt6Mkp0amRMS1I3cVZjQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQ==&#34;
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
     external: projects/${PROJECT_ID?}
@@ -2227,14 +2227,14 @@ apiVersion: privateca.cnrm.cloud.google.com/v1beta1
 kind: PrivateCACAPool
 metadata:
   labels:
-    label-two: "value-two"
+    label-two: &#34;value-two&#34;
   name: privatecacertificate-dep-complex
   # PrivateCACertificateAuthority cannot be deleted immediately, and must wait
-  # 30 days in a 'DELETED' status before it is fully deleted. Since a PrivateCACAPool
-  # with a PrivateCACertificateAuthority in 'DELETED' status cannot be deleted
+  # 30 days in a &#39;DELETED&#39; status before it is fully deleted. Since a PrivateCACAPool
+  # with a PrivateCACertificateAuthority in &#39;DELETED&#39; status cannot be deleted
   # itself, we abandon this resource on deletion.
   annotations:
-    cnrm.cloud.google.com/deletion-policy: "abandon"
+    cnrm.cloud.google.com/deletion-policy: &#34;abandon&#34;
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
@@ -2248,18 +2248,18 @@ metadata:
   name: privatecacertificate-dep-complex
 spec:
   location: us-central1
-  type: "SELF_SIGNED"
+  type: &#34;SELF_SIGNED&#34;
   caPoolRef:
     name: privatecacertificate-dep-complex
-  lifetime: "86400s"
+  lifetime: &#34;86400s&#34;
   config:
     subjectConfig:
       subject:
-        organization: "Example"
-        commonName: "my-certificate-authority"
+        organization: &#34;Example&#34;
+        commonName: &#34;my-certificate-authority&#34;
       subjectAltName:
         dnsNames:
-        - "example.com"
+        - &#34;example.com&#34;
     x509Config:
       caOptions:
         isCa: true
@@ -2270,7 +2270,7 @@ spec:
         extendedKeyUsage:
           serverAuth: true
   keySpec:
-    algorithm: "RSA_PKCS1_4096_SHA256"
+    algorithm: &#34;RSA_PKCS1_4096_SHA256&#34;
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
     external: projects/${PROJECT_ID?}

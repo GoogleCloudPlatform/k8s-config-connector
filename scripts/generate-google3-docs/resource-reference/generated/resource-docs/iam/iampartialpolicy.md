@@ -692,7 +692,7 @@ resourceRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used.{% endverbatim %}</p>
+            <p>{% verbatim %}The IAM identity to be bound to the role. Exactly one of &#39;member&#39; or &#39;memberFrom&#39; must be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -702,7 +702,7 @@ resourceRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used, and only one subfield within 'memberFrom' can be used.{% endverbatim %}</p>
+            <p>{% verbatim %}The IAM identity to be bound to the role. Exactly one of &#39;member&#39; or &#39;memberFrom&#39; must be used, and only one subfield within &#39;memberFrom&#39; can be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -712,7 +712,7 @@ resourceRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The LoggingLogSink whose writer identity (i.e. its 'status.writerIdentity') is to be bound to the role.{% endverbatim %}</p>
+            <p>{% verbatim %}The LoggingLogSink whose writer identity (i.e. its &#39;status.writerIdentity&#39;) is to be bound to the role.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -772,7 +772,7 @@ resourceRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The SQLInstance whose service account (i.e. its 'status.serviceAccountEmailAddress') is to be bound to the role.{% endverbatim %}</p>
+            <p>{% verbatim %}The SQLInstance whose service account (i.e. its &#39;status.serviceAccountEmailAddress&#39;) is to be bound to the role.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -974,7 +974,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observations of the IAM policy's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the IAM policy&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1002,7 +1002,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1098,14 +1098,14 @@ observedGeneration: integer
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1141,30 +1141,30 @@ apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
 metadata:
   annotations:
-    cnrm.cloud.google.com/auto-create-network: "false"
+    cnrm.cloud.google.com/auto-create-network: &#34;false&#34;
   name: iampartialpolicy-dep-project
 spec:
   name: Config Connector Sample
   billingAccountRef:
-    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-    external: "${BILLING_ACCOUNT_ID?}"
+    # Replace &#34;${BILLING_ACCOUNT_ID?}&#34; with the numeric ID for your billing account
+    external: &#34;${BILLING_ACCOUNT_ID?}&#34;
   organizationRef:
-    # Replace "${ORG_ID?}" with the numeric ID of the parent organization
-    external: "${ORG_ID?}"
+    # Replace &#34;${ORG_ID?}&#34; with the numeric ID of the parent organization
+    external: &#34;${ORG_ID?}&#34;
 ```
 
 ### Pubsub Admin Policy
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.

@@ -196,7 +196,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Location policy specifies the algorithm used when scaling-up the node pool. "BALANCED" - Is a best effort policy that aims to balance the sizes of available zones. "ANY" - Instructs the cluster autoscaler to prioritize utilization of unused reservations, and reduces preemption risk for Spot VMs.{% endverbatim %}</p>
+            <p>{% verbatim %}Location policy specifies the algorithm used when scaling-up the node pool. &#34;BALANCED&#34; - Is a best effort policy that aims to balance the sizes of available zones. &#34;ANY&#34; - Instructs the cluster autoscaler to prioritize utilization of unused reservations, and reduces preemption risk for Spot VMs.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -206,7 +206,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Maximum number of nodes per zone in the node pool. Must be >= min_node_count. Cannot be used with total limits.{% endverbatim %}</p>
+            <p>{% verbatim %}Maximum number of nodes per zone in the node pool. Must be &gt;= min_node_count. Cannot be used with total limits.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -216,7 +216,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Minimum number of nodes per zone in the node pool. Must be >=0 and <= max_node_count. Cannot be used with total limits.{% endverbatim %}</p>
+            <p>{% verbatim %}Minimum number of nodes per zone in the node pool. Must be &gt;=0 and &lt;= max_node_count. Cannot be used with total limits.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -226,7 +226,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Maximum number of all nodes in the node pool. Must be >= total_min_node_count. Cannot be used with per zone limits.{% endverbatim %}</p>
+            <p>{% verbatim %}Maximum number of all nodes in the node pool. Must be &gt;= total_min_node_count. Cannot be used with per zone limits.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -236,7 +236,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Minimum number of all nodes in the node pool. Must be >=0 and <= total_max_node_count. Cannot be used with per zone limits.{% endverbatim %}</p>
+            <p>{% verbatim %}Minimum number of all nodes in the node pool. Must be &gt;=0 and &lt;= total_max_node_count. Cannot be used with per zone limits.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -336,7 +336,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. The maximum number of pods per node in this node pool. Note that this does not work on node pools which are "route-based" - that is, node pools belonging to clusters that do not have IP Aliasing enabled.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The maximum number of pods per node in this node pool. Note that this does not work on node pools which are &#34;route-based&#34; - that is, node pools belonging to clusters that do not have IP Aliasing enabled.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -606,7 +606,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Set the CPU CFS quota period value 'cpu.cfs_period_us'.{% endverbatim %}</p>
+            <p>{% verbatim %}Set the CPU CFS quota period value &#39;cpu.cfs_period_us&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -828,7 +828,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Type of the sandbox to use for the node (e.g. 'gvisor').{% endverbatim %}</p>
+            <p>{% verbatim %}Type of the sandbox to use for the node (e.g. &#39;gvisor&#39;).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1028,7 +1028,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The list of zones in which the node pool's nodes should be located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. If unspecified, the cluster-level node_locations will be used.{% endverbatim %}</p>
+            <p>{% verbatim %}The list of zones in which the node pool&#39;s nodes should be located. Nodes must be in the region of their regional cluster or in the same region as their cluster&#39;s zone for zonal clusters. If unspecified, the cluster-level node_locations will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1146,7 +1146,7 @@ operation: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1174,7 +1174,7 @@ operation: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1242,14 +1242,14 @@ operation: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1258,7 +1258,7 @@ apiVersion: container.cnrm.cloud.google.com/v1beta1
 kind: ContainerNodePool
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   name: containernodepool-sample-basic
 spec:
   location: us-east1-c
@@ -1273,15 +1273,15 @@ spec:
       - tagone
       - tagtwo
     preemptible: false
-    minCpuPlatform: "Intel Haswell"
+    minCpuPlatform: &#34;Intel Haswell&#34;
     oauthScopes:
-      - "https://www.googleapis.com/auth/logging.write"
-      - "https://www.googleapis.com/auth/monitoring"
+      - &#34;https://www.googleapis.com/auth/logging.write&#34;
+      - &#34;https://www.googleapis.com/auth/monitoring&#34;
     guestAccelerator:
-      - type: "nvidia-tesla-k80"
+      - type: &#34;nvidia-tesla-k80&#34;
         count: 1
     metadata:
-      disable-legacy-endpoints: "true"
+      disable-legacy-endpoints: &#34;true&#34;
   management:
     autoRepair: true
     autoUpgrade: true
@@ -1292,7 +1292,7 @@ apiVersion: container.cnrm.cloud.google.com/v1beta1
 kind: ContainerCluster
 metadata:
   annotations:
-    cnrm.cloud.google.com/remove-default-node-pool: "true"
+    cnrm.cloud.google.com/remove-default-node-pool: &#34;true&#34;
   name: containernodepool-dep-basic
 spec:
   location: us-east1-c
@@ -1303,14 +1303,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1354,7 +1354,7 @@ apiVersion: container.cnrm.cloud.google.com/v1beta1
 kind: ContainerCluster
 metadata:
   annotations:
-    cnrm.cloud.google.com/remove-default-node-pool: "true"
+    cnrm.cloud.google.com/remove-default-node-pool: &#34;true&#34;
   name: containernodepool-dep-soletenancy
 spec:
   description: A cluster using the Compute Engine sole-tenant node.

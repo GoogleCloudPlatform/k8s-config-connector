@@ -204,7 +204,7 @@ rules:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Required. Service hostnames with an optional port for which this route describes traffic. Format: [:] Hostname is the fully qualified domain name of a network host. This matches the RFC 1123 definition of a hostname with 2 notable exceptions: - IPs are not allowed. - A hostname may be prefixed with a wildcard label (*.). The wildcard label must appear by itself as the first label. Hostname can be “precise” which is a domain name without the terminating dot of a network host (e.g. “foo.example.com”) or “wildcard”, which is a domain name prefixed with a single wildcard label (e.g. *.example.com). Note that as per RFC1035 and RFC1123, a label must consist of lower case alphanumeric characters or ‘-’, and must start and end with an alphanumeric character. No other punctuation is allowed. The routes associated with a Router must have unique hostnames. If you attempt to attach multiple routes with conflicting hostnames, the configuration will be rejected. For example, while it is acceptable for routes for the hostnames "*.foo.bar.com" and "*.bar.com" to be associated with the same route, it is not possible to associate two routes both with "*.bar.com" or both with "bar.com". In the case that multiple routes match the hostname, the most specific match will be selected. For example, "foo.bar.baz.com" will take precedence over "*.bar.baz.com" and "*.bar.baz.com" will take precedence over "*.baz.com". If a port is specified, then gRPC clients must use the channel URI with the port to match this rule (i.e. "xds:///service:123"), otherwise they must supply the URI without a port (i.e. "xds:///service").{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Service hostnames with an optional port for which this route describes traffic. Format: [:] Hostname is the fully qualified domain name of a network host. This matches the RFC 1123 definition of a hostname with 2 notable exceptions: - IPs are not allowed. - A hostname may be prefixed with a wildcard label (*.). The wildcard label must appear by itself as the first label. Hostname can be “precise” which is a domain name without the terminating dot of a network host (e.g. “foo.example.com”) or “wildcard”, which is a domain name prefixed with a single wildcard label (e.g. *.example.com). Note that as per RFC1035 and RFC1123, a label must consist of lower case alphanumeric characters or ‘-’, and must start and end with an alphanumeric character. No other punctuation is allowed. The routes associated with a Router must have unique hostnames. If you attempt to attach multiple routes with conflicting hostnames, the configuration will be rejected. For example, while it is acceptable for routes for the hostnames &#34;*.foo.bar.com&#34; and &#34;*.bar.com&#34; to be associated with the same route, it is not possible to associate two routes both with &#34;*.bar.com&#34; or both with &#34;bar.com&#34;. In the case that multiple routes match the hostname, the most specific match will be selected. For example, &#34;foo.bar.baz.com&#34; will take precedence over &#34;*.bar.baz.com&#34; and &#34;*.bar.baz.com&#34; will take precedence over &#34;*.baz.com&#34;. If a port is specified, then gRPC clients must use the channel URI with the port to match this rule (i.e. &#34;xds:///service:123&#34;), otherwise they must supply the URI without a port (i.e. &#34;xds:///service&#34;).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -528,7 +528,7 @@ Allowed value: The Google Cloud resource name of a `ComputeBackendService` resou
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Specifies the allowed number of retries. This number must be > 0. If not specpfied, default to 1.{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies the allowed number of retries. This number must be &gt; 0. If not specpfied, default to 1.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -678,7 +678,7 @@ Allowed value: The Google Cloud resource name of a `ComputeBackendService` resou
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. Specifies how to match against the name. If not specified, a default value of "EXACT" is used. Possible values: TYPE_UNSPECIFIED, EXACT, REGULAR_EXPRESSION{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Specifies how to match against the name. If not specified, a default value of &#34;EXACT&#34; is used. Possible values: TYPE_UNSPECIFIED, EXACT, REGULAR_EXPRESSION{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -714,7 +714,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -742,7 +742,7 @@ updateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -796,14 +796,14 @@ updateTime: string
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -817,9 +817,9 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
-    external: "projects/${PROJECT_ID?}"
+    external: &#34;projects/${PROJECT_ID?}&#34;
   location: global
-  hostnames: ["baz.bar"]
+  hostnames: [&#34;baz.bar&#34;]
   meshes:
     - name: networkservicesgrpcroute-dep
   gateways:
@@ -841,14 +841,14 @@ spec:
           httpStatus: 501
           percentage: 1
         delay:
-          fixedDelay: "10s"
+          fixedDelay: &#34;10s&#34;
           percentage: 2
       retryPolicy:
         numRetries: 3
         retryConditions:
-        - "refused-stream"
-        - "cancelled"
-      timeout: "30s"
+        - &#34;refused-stream&#34;
+        - &#34;cancelled&#34;
+      timeout: &#34;30s&#34;
   - action:
       destinations:
       - serviceRef:
@@ -870,7 +870,7 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
-    external: "projects/${PROJECT_ID?}"
+    external: &#34;projects/${PROJECT_ID?}&#34;
   type: OPEN_MESH
   ports:
   - 80
@@ -885,7 +885,7 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
-    external: "projects/${PROJECT_ID?}"
+    external: &#34;projects/${PROJECT_ID?}&#34;
   location: global
 ```
 

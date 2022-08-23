@@ -218,7 +218,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Specifies the VMs that are assigned this policy. This allows you to target sets or groups of VMs by different parameters such as labels, names, OS, or zones. Empty assignments will target ALL VMs underneath this policy. Conflict Management Policies that exist higher up in the resource hierarchy (closer to the Org) will override those lower down if there is a conflict. At the same level in the resource hierarchy (ie. within a project), the service will prevent the creation of multiple policies that conflict with each other. If there are multiple policies that specify the same config (eg. package, software recipe, repository, etc.), the service will ensure that no VM could potentially receive instructions from both policies. To create multiple policies that specify different versions of a package or different configs for different Operating Systems, each policy must be mutually exclusive in their targeting according to labels, OS, or other criteria. Different configs are identified for conflicts in different ways. Packages are identified by their name and the package manager(s) they target. Package repositories are identified by their unique id where applicable. Some package managers don't have a unique identifier for repositories and where that's the case, no uniqueness is validated by the service. Note that if OS Inventory is disabled, a VM will not be assigned a policy that targets by OS because the service will see this VM's OS as unknown.{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies the VMs that are assigned this policy. This allows you to target sets or groups of VMs by different parameters such as labels, names, OS, or zones. Empty assignments will target ALL VMs underneath this policy. Conflict Management Policies that exist higher up in the resource hierarchy (closer to the Org) will override those lower down if there is a conflict. At the same level in the resource hierarchy (ie. within a project), the service will prevent the creation of multiple policies that conflict with each other. If there are multiple policies that specify the same config (eg. package, software recipe, repository, etc.), the service will ensure that no VM could potentially receive instructions from both policies. To create multiple policies that specify different versions of a package or different configs for different Operating Systems, each policy must be mutually exclusive in their targeting according to labels, OS, or other criteria. Different configs are identified for conflicts in different ways. Packages are identified by their name and the package manager(s) they target. Package repositories are identified by their unique id where applicable. Some package managers don&#39;t have a unique identifier for repositories and where that&#39;s the case, no uniqueness is validated by the service. Note that if OS Inventory is disabled, a VM will not be assigned a policy that targets by OS because the service will see this VM&#39;s OS as unknown.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -228,7 +228,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Targets instances matching at least one of these label sets. This allows an assignment to target disparate groups, for example "env=prod or env=staging".{% endverbatim %}</p>
+            <p>{% verbatim %}Targets instances matching at least one of these label sets. This allows an assignment to target disparate groups, for example &#34;env=prod or env=staging&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -258,7 +258,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Targets VM instances whose name starts with one of these prefixes. Like labels, this is another way to group VM instances when targeting configs, for example prefix="prod-". Only supported for project-level policies.{% endverbatim %}</p>
+            <p>{% verbatim %}Targets VM instances whose name starts with one of these prefixes. Like labels, this is another way to group VM instances when targeting configs, for example prefix=&#34;prod-&#34;. Only supported for project-level policies.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -358,7 +358,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Targets VM instances with OS Inventory enabled and having the following OS short name, for example "debian" or "windows".{% endverbatim %}</p>
+            <p>{% verbatim %}Targets VM instances with OS Inventory enabled and having the following OS short name, for example &#34;debian&#34; or &#34;windows&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -840,7 +840,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Must be provided if `allow_insecure` is `false`. SHA256 checksum in hex format, to compare to the checksum of the artifact. If the checksum is not empty and it doesn't match the artifact then the recipe installation fails before running any of the steps.{% endverbatim %}</p>
+            <p>{% verbatim %}Must be provided if `allow_insecure` is `false`. SHA256 checksum in hex format, to compare to the checksum of the artifact. If the checksum is not empty and it doesn&#39;t match the artifact then the recipe installation fails before running any of the steps.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -860,7 +860,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Default is INSTALLED. The desired state the agent should maintain for this recipe. INSTALLED: The software recipe is installed on the instance but won't be updated to new versions. UPDATED: The software recipe is installed on the instance. The recipe is updated to a higher version, if a higher version of the recipe is assigned to this instance. REMOVE: Remove is unsupported for software recipes and attempts to create or update a recipe to the REMOVE state is rejected. Possible values: DESIRED_STATE_UNSPECIFIED, INSTALLED, REMOVED{% endverbatim %}</p>
+            <p>{% verbatim %}Default is INSTALLED. The desired state the agent should maintain for this recipe. INSTALLED: The software recipe is installed on the instance but won&#39;t be updated to new versions. UPDATED: The software recipe is installed on the instance. The recipe is updated to a higher version, if a higher version of the recipe is assigned to this instance. REMOVE: Remove is unsupported for software recipes and attempts to create or update a recipe to the REMOVE state is rejected. Possible values: DESIRED_STATE_UNSPECIFIED, INSTALLED, REMOVED{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1110,7 +1110,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The flags to use when installing the MSI defaults to ["/i"] (i.e. the install flag).{% endverbatim %}</p>
+            <p>{% verbatim %}The flags to use when installing the MSI defaults to [&#34;/i&#34;] (i.e. the install flag).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1450,7 +1450,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The flags to use when installing the MSI defaults to ["/i"] (i.e. the install flag).{% endverbatim %}</p>
+            <p>{% verbatim %}The flags to use when installing the MSI defaults to [&#34;/i&#34;] (i.e. the install flag).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1586,7 +1586,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1614,7 +1614,7 @@ updateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1642,7 +1642,7 @@ updateTime: string
         <td><code>etag</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The etag for this GuestPolicy. If this is provided on update, it must match the server's etag.{% endverbatim %}</p>
+            <p>{% verbatim %}The etag for this GuestPolicy. If this is provided on update, it must match the server&#39;s etag.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1668,14 +1668,14 @@ updateTime: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1700,7 +1700,7 @@ spec:
     osTypes:
       - osArchitecture: x86_64
         osShortName: debian
-        osVersion: "10"
+        osVersion: &#34;10&#34;
       - osArchitecture: x86_64
         osShortName: windows
         osVersion: 10.0.14393
@@ -1743,7 +1743,7 @@ spec:
             artifactId: ansible
             destination: /installbackups/ansible
             overwrite: true
-            permissions: "555"
+            permissions: &#34;555&#34;
         - archiveExtraction:
             destination: /var/ansible/
             type: TAR_GZIP
@@ -1762,7 +1762,7 @@ spec:
       installSteps:
         - fileCopy:
             overwrite: false
-            permissions: "777"
+            permissions: &#34;777&#34;
             artifactId: web-app
             destination: /installbackups/prod
         - fileExec:
@@ -1773,7 +1773,7 @@ spec:
               - prodcompile
       updateSteps:
         - fileCopy:
-            permissions: "755"
+            permissions: &#34;755&#34;
             artifactId: web-app
             destination: /installbackups/prod
         - fileExec:

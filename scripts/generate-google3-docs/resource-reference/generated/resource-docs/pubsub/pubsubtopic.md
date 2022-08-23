@@ -126,9 +126,9 @@ schemaSettings:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}The KMSCryptoKey to be used to protect access to messages published
-on this topic. Your project's Pub/Sub service account
-('service-{{PROJECT_NUMBER}}@gcp-sa-pubsub.iam.gserviceaccount.com')
-must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
+on this topic. Your project&#39;s Pub/Sub service account
+(&#39;service-{{PROJECT_NUMBER}}@gcp-sa-pubsub.iam.gserviceaccount.com&#39;)
+must have &#39;roles/cloudkms.cryptoKeyEncrypterDecrypter&#39; to use this
 feature.{% endverbatim %}</p>
         </td>
     </tr>
@@ -242,7 +242,7 @@ and is not a valid configuration.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The encoding of messages validated against schema. Default value: "ENCODING_UNSPECIFIED" Possible values: ["ENCODING_UNSPECIFIED", "JSON", "BINARY"].{% endverbatim %}</p>
+            <p>{% verbatim %}The encoding of messages validated against schema. Default value: &#34;ENCODING_UNSPECIFIED&#34; Possible values: [&#34;ENCODING_UNSPECIFIED&#34;, &#34;JSON&#34;, &#34;BINARY&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -315,7 +315,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -343,7 +343,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -376,14 +376,14 @@ observedGeneration: integer
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -392,7 +392,7 @@ apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   name: pubsubtopic-sample
 spec:
   schemaSettings:
@@ -406,7 +406,7 @@ metadata:
   name: pubsubtopic-dep
 spec:
   type: PROTOCOL_BUFFER
-  definition: "syntax = \"proto3\";\nmessage Results {\nstring message_request = 1;\nstring message_response = 2;\nstring timestamp_request = 3;\nstring timestamp_response = 4;\n}"
+  definition: &#34;syntax = \&#34;proto3\&#34;;\nmessage Results {\nstring message_request = 1;\nstring message_response = 2;\nstring timestamp_request = 3;\nstring timestamp_response = 4;\n}&#34;
   # Replace ${PROJECT_ID?} below with your project ID
   projectRef:
     external: ${PROJECT_ID?}

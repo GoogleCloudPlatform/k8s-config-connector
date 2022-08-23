@@ -201,7 +201,7 @@ this instance.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The full or partial URL of the accelerator type to
 attach to this instance. For example:
-'projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100'
+&#39;projects/my-project/zones/us-central1-c/acceleratorTypes/nvidia-tesla-p100&#39;
 
 If you are creating an instance template, specify only the accelerator name.{% endverbatim %}</p>
         </td>
@@ -214,7 +214,7 @@ If you are creating an instance template, specify only the accelerator name.{% e
         <td>
             <p><code class="apitype">list (object)</code></p>
             <p>{% verbatim %}Immutable. The amount of local ssd to reserve with each instance. This
-reserves disks of type 'local-ssd'.{% endverbatim %}</p>
+reserves disks of type &#39;local-ssd&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -244,7 +244,7 @@ reserves disks of type 'local-ssd'.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The disk interface to use for attaching this disk. Default value: "SCSI" Possible values: ["SCSI", "NVME"].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The disk interface to use for attaching this disk. Default value: &#34;SCSI&#34; Possible values: [&#34;SCSI&#34;, &#34;NVME&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -265,7 +265,7 @@ reserves disks of type 'local-ssd'.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The minimum CPU platform for the reservation. For example,
-'"Intel Skylake"'. See
+&#39;&#34;Intel Skylake&#34;&#39;. See
 the CPU platform availability reference](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform#availablezones)
 for information on available CPU platforms.{% endverbatim %}</p>
         </td>
@@ -334,7 +334,7 @@ reservations that are tied to a commitment.{% endverbatim %}</p>
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -362,7 +362,7 @@ reservations that are tied to a commitment.{% endverbatim %}</p>
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -416,14 +416,14 @@ reservations that are tied to a commitment.{% endverbatim %}</p>
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -439,21 +439,21 @@ spec:
     count: 2
     instanceProperties:
       machineType: n1-standard-1
-      minCpuPlatform: "Intel Sandy Bridge"
+      minCpuPlatform: &#34;Intel Sandy Bridge&#34;
 ```
 
 ### Specialized Compute Reservation
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -470,7 +470,7 @@ spec:
     count: 1
     instanceProperties:
       machineType: n1-highmem-8
-      minCpuPlatform: "Intel Skylake"
+      minCpuPlatform: &#34;Intel Skylake&#34;
       guestAccelerators:
       - acceleratorCount: 1
         acceleratorType: nvidia-tesla-v100

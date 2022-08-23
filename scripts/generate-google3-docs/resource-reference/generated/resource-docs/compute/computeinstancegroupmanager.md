@@ -317,7 +317,7 @@ Allowed value: The `selfLink` field of a `ComputeHealthCheck` resource.{% endver
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The URL of the instance template that is specified for this managed instance group. The group uses this template to create all new instances in the managed instance group. The templates for existing instances in the group do not change unless you run `recreateInstances`, run `applyUpdatesToInstances`, or set the group's `updatePolicy.type` to `PROACTIVE`.
+            <p>{% verbatim %}The URL of the instance template that is specified for this managed instance group. The group uses this template to create all new instances in the managed instance group. The templates for existing instances in the group do not change unless you run `recreateInstances`, run `applyUpdatesToInstances`, or set the group&#39;s `updatePolicy.type` to `PROACTIVE`.
 
 Allowed value: The `selfLink` field of a `ComputeInstanceTemplate` resource.{% endverbatim %}</p>
         </td>
@@ -653,7 +653,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The maximum number of instances that can be unavailable during the update process. An instance is considered available if all of the following conditions are satisfied: - The instance's [status](/compute/docs/instances/checking-instance-status) is `RUNNING`. - If there is a [health check](/compute/docs/instance-groups/autohealing-instances-in-migs) on the instance group, the instance's health check status must be `HEALTHY` at least once. If there is no health check on the group, then the instance only needs to have a status of `RUNNING` to be considered available. This value can be either a fixed number or, if the group has 10 or more instances, a percentage. If you set a percentage, the number of instances is rounded if necessary. The default value for `maxUnavailable` is a fixed value equal to the number of zones in which the managed instance group operates. At least one of either `maxSurge` or `maxUnavailable` must be greater than 0. Learn more about [`maxUnavailable`](/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#max_unavailable).{% endverbatim %}</p>
+            <p>{% verbatim %}The maximum number of instances that can be unavailable during the update process. An instance is considered available if all of the following conditions are satisfied: - The instance&#39;s [status](/compute/docs/instances/checking-instance-status) is `RUNNING`. - If there is a [health check](/compute/docs/instance-groups/autohealing-instances-in-migs) on the instance group, the instance&#39;s health check status must be `HEALTHY` at least once. If there is no health check on the group, then the instance only needs to have a status of `RUNNING` to be considered available. This value can be either a fixed number or, if the group has 10 or more instances, a percentage. If you set a percentage, the number of instances is rounded if necessary. The default value for `maxUnavailable` is a fixed value equal to the number of zones in which the managed instance group operates. At least one of either `maxSurge` or `maxUnavailable` must be greater than 0. Learn more about [`maxUnavailable`](/compute/docs/instance-groups/rolling-out-updates-to-managed-instance-groups#max_unavailable).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -763,7 +763,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The URL of the instance template that is specified for this managed instance group. The group uses this template to create new instances in the managed instance group until the `targetSize` for this version is reached. The templates for existing instances in the group do not change unless you run `recreateInstances`, run `applyUpdatesToInstances`, or set the group's `updatePolicy.type` to `PROACTIVE`; in those cases, existing instances are updated until the `targetSize` for this version is reached.
+            <p>{% verbatim %}The URL of the instance template that is specified for this managed instance group. The group uses this template to create new instances in the managed instance group until the `targetSize` for this version is reached. The templates for existing instances in the group do not change unless you run `recreateInstances`, run `applyUpdatesToInstances`, or set the group&#39;s `updatePolicy.type` to `PROACTIVE`; in those cases, existing instances are updated until the `targetSize` for this version is reached.
 
 Allowed value: The `selfLink` field of a `ComputeInstanceTemplate` resource.{% endverbatim %}</p>
         </td>
@@ -898,7 +898,7 @@ zone: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -926,7 +926,7 @@ zone: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -975,7 +975,7 @@ zone: string
         <td><code>currentActions.creatingWithoutRetries</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}[Output Only] The number of instances that the managed instance group will attempt to create. The group attempts to create each instance only once. If the group fails to create any of these instances, it decreases the group's `targetSize` value accordingly.{% endverbatim %}</p>
+            <p>{% verbatim %}[Output Only] The number of instances that the managed instance group will attempt to create. The group attempts to create each instance only once. If the group fails to create any of these instances, it decreases the group&#39;s `targetSize` value accordingly.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1115,21 +1115,21 @@ zone: string
         <td><code>status.stateful.perInstanceConfigs.allEffective</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}A bit indicating if all of the group's per-instance configs (listed in the output of a listPerInstanceConfigs API call) have status `EFFECTIVE` or there are no per-instance-configs.{% endverbatim %}</p>
+            <p>{% verbatim %}A bit indicating if all of the group&#39;s per-instance configs (listed in the output of a listPerInstanceConfigs API call) have status `EFFECTIVE` or there are no per-instance-configs.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>status.versionTarget</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}[Output Only] A status of consistency of Instances' versions with their target version specified by `version` field on Instance Group Manager.{% endverbatim %}</p>
+            <p>{% verbatim %}[Output Only] A status of consistency of Instances&#39; versions with their target version specified by `version` field on Instance Group Manager.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>status.versionTarget.isReached</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}[Output Only] A bit indicating whether version target has been reached in this managed instance group, i.e. all instances are in their target version. Instances' target version are specified by `version` field on Instance Group Manager.{% endverbatim %}</p>
+            <p>{% verbatim %}[Output Only] A bit indicating whether version target has been reached in this managed instance group, i.e. all instances are in their target version. Instances&#39; target version are specified by `version` field on Instance Group Manager.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1183,14 +1183,14 @@ zone: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1202,7 +1202,7 @@ metadata:
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: "projects/${PROJECT_ID?}"
+     external: &#34;projects/${PROJECT_ID?}&#34;
   location: us-central1
   baseInstanceName: app
   autoHealingPolicies:
@@ -1269,14 +1269,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1288,7 +1288,7 @@ metadata:
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: "projects/${PROJECT_ID?}"
+     external: &#34;projects/${PROJECT_ID?}&#34;
   location: us-central1-a
   baseInstanceName: app
   autoHealingPolicies:
@@ -1308,9 +1308,9 @@ spec:
     preservedState:
       disks:
         disk-a:
-          autoDelete: "ON_PERMANENT_INSTANCE_DELETION"
+          autoDelete: &#34;ON_PERMANENT_INSTANCE_DELETION&#34;
         disk-b:
-          autoDelete: "NEVER"
+          autoDelete: &#34;NEVER&#34;
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeHealthCheck

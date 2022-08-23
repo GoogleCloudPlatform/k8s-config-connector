@@ -212,7 +212,7 @@ signIn:
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: object)</code></p>
-            <p>{% verbatim %}Map of Trigger to event type. Key should be one of the supported event types: "beforeCreate", "beforeSignIn"{% endverbatim %}</p>
+            <p>{% verbatim %}Map of Trigger to event type. Key should be one of the supported event types: &#34;beforeCreate&#34;, &#34;beforeSignIn&#34;{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -232,7 +232,7 @@ signIn:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Configuration related to restricting a user's ability to affect their account.{% endverbatim %}</p>
+            <p>{% verbatim %}Configuration related to restricting a user&#39;s ability to affect their account.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -262,7 +262,7 @@ signIn:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Configuration for this project's multi-factor authentication, including whether it is active and what factors can be used for the second factor{% endverbatim %}</p>
+            <p>{% verbatim %}Configuration for this project&#39;s multi-factor authentication, including whether it is active and what factors can be used for the second factor{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -342,7 +342,7 @@ signIn:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The default cloud parent org or folder that the tenant project should be created under. The parent resource name should be in the format of "<type>/<number>", such as "folders/123" or "organizations/456". If the value is not set, the tenant will be created under the same organization or folder as the agent project.
+            <p>{% verbatim %}The default cloud parent org or folder that the tenant project should be created under. The parent resource name should be in the format of &#34;&lt;type&gt;/&lt;number&gt;&#34;, such as &#34;folders/123&#34; or &#34;organizations/456&#34;. If the value is not set, the tenant will be created under the same organization or folder as the agent project.
 
 Allowed values:
 * The Google Cloud resource name of a `Folder` resource (format: `folders/{{name}}`).
@@ -366,7 +366,7 @@ Allowed values:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[WARNING] Organization not yet supported in Config Connector, use 'external' field to reference existing resources.
+            <p>{% verbatim %}[WARNING] Organization not yet supported in Config Connector, use &#39;external&#39; field to reference existing resources.
 Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
         </td>
     </tr>
@@ -697,7 +697,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value of the field. Cannot be used if 'valueFrom' is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Value of the field. Cannot be used if &#39;valueFrom&#39; is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -707,7 +707,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Source for the field's value. Cannot be used if 'value' is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Source for the field&#39;s value. Cannot be used if &#39;value&#39; is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -717,7 +717,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource's namespace.{% endverbatim %}</p>
+            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource&#39;s namespace.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -939,7 +939,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Corresponds to the 'refill_token_count' field in QuotaServer config{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to the &#39;refill_token_count&#39; field in QuotaServer config{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1149,7 +1149,7 @@ subtype: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1177,7 +1177,7 @@ subtype: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1254,7 +1254,7 @@ subtype: string
         <td><code>notification.sendEmail.dnsInfo.pendingCustomDomain</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The custom domain that's to be verified.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The custom domain that&#39;s to be verified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1317,7 +1317,7 @@ subtype: string
         <td><code>notification.sendSms.smsTemplate.content</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The SMS's content. Can contain the following placeholders which will be replaced with the appropriate values: %APP_NAME% - For Android or iOS apps, the app's display name. For web apps, the domain hosting the application. %LOGIN_CODE% - The OOB code being sent in the SMS.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The SMS&#39;s content. Can contain the following placeholders which will be replaced with the appropriate values: %APP_NAME% - For Android or iOS apps, the app&#39;s display name. For web apps, the domain hosting the application. %LOGIN_CODE% - The OOB code being sent in the SMS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1441,14 +1441,14 @@ subtype: string
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1459,8 +1459,8 @@ metadata:
   name: identityplatformconfig-sample
 spec:
   projectRef:
-    # Replace "${PROJECT_ID?}" with your project ID
-    external: "projects/${PROJECT_ID?}"
+    # Replace &#34;${PROJECT_ID?}&#34; with your project ID
+    external: &#34;projects/${PROJECT_ID?}&#34;
   signIn:
     email:
       enabled: true
@@ -1468,73 +1468,73 @@ spec:
     phoneNumber:
       enabled: true
       testPhoneNumbers:
-        +1 555-555-5555: "000000"
+        &#43;1 555-555-5555: &#34;000000&#34;
     anonymous:
       enabled: true
     allowDuplicateEmails: true
   notification:
     sendEmail:
-      method: "CUSTOM_SMTP"
+      method: &#34;CUSTOM_SMTP&#34;
       smtp:
-        senderEmail: "magic-modules-guitar-testing@system.gserviceaccount.com"
-        host: "system.gserviceaccount.com"
+        senderEmail: &#34;magic-modules-guitar-testing@system.gserviceaccount.com&#34;
+        host: &#34;system.gserviceaccount.com&#34;
         port: 8080
-        username: "sample-username"
+        username: &#34;sample-username&#34;
         password:
-          value: "sample-password"
-        securityMode: "SSL"
+          value: &#34;sample-password&#34;
+        securityMode: &#34;SSL&#34;
       resetPasswordTemplate:
-        senderLocalPart: "noreply"
-        subject: "Reset your password for %APP_NAME%"
-        senderDisplayName: "DCL Team"
-        body: "<p>Hello,</p>\n<p>Follow this link to reset your %APP_NAME% password\
-          \ for your %EMAIL% account.</p>\n<p><a href='%LINK%'>%LINK%</a></p>\n<p>If\
-          \ you didn’t ask to reset your password, you can ignore this email.</p>\n\
-          <p>Thanks,</p>\n<p>Your %APP_NAME% team</p>"
-        bodyFormat: "PLAIN_TEXT"
-        replyTo: "noreply"
+        senderLocalPart: &#34;noreply&#34;
+        subject: &#34;Reset your password for %APP_NAME%&#34;
+        senderDisplayName: &#34;DCL Team&#34;
+        body: &#34;&lt;p&gt;Hello,&lt;/p&gt;\n&lt;p&gt;Follow this link to reset your %APP_NAME% password\
+          \ for your %EMAIL% account.&lt;/p&gt;\n&lt;p&gt;&lt;a href=&#39;%LINK%&#39;&gt;%LINK%&lt;/a&gt;&lt;/p&gt;\n&lt;p&gt;If\
+          \ you didn’t ask to reset your password, you can ignore this email.&lt;/p&gt;\n\
+          &lt;p&gt;Thanks,&lt;/p&gt;\n&lt;p&gt;Your %APP_NAME% team&lt;/p&gt;&#34;
+        bodyFormat: &#34;PLAIN_TEXT&#34;
+        replyTo: &#34;noreply&#34;
       verifyEmailTemplate:
-        senderLocalPart: "noreply"
-        subject: "Verify your email for %APP_NAME%"
-        senderDisplayName: "DCL Team"
-        body: "<p>Hello %DISPLAY_NAME%,</p>\n<p>Follow this link to verify your email\
-          \ address.</p>\n<p><a href='%LINK%'>%LINK%</a></p>\n<p>If you didn’t ask\
-          \ to verify this address, you can ignore this email.</p>\n<p>Thanks,</p>\n\
-          <p>Your %APP_NAME% team</p>"
-        bodyFormat: "PLAIN_TEXT"
-        replyTo: "noreply"
+        senderLocalPart: &#34;noreply&#34;
+        subject: &#34;Verify your email for %APP_NAME%&#34;
+        senderDisplayName: &#34;DCL Team&#34;
+        body: &#34;&lt;p&gt;Hello %DISPLAY_NAME%,&lt;/p&gt;\n&lt;p&gt;Follow this link to verify your email\
+          \ address.&lt;/p&gt;\n&lt;p&gt;&lt;a href=&#39;%LINK%&#39;&gt;%LINK%&lt;/a&gt;&lt;/p&gt;\n&lt;p&gt;If you didn’t ask\
+          \ to verify this address, you can ignore this email.&lt;/p&gt;\n&lt;p&gt;Thanks,&lt;/p&gt;\n\
+          &lt;p&gt;Your %APP_NAME% team&lt;/p&gt;&#34;
+        bodyFormat: &#34;PLAIN_TEXT&#34;
+        replyTo: &#34;noreply&#34;
       changeEmailTemplate:
-        senderLocalPart: "noreply"
-        subject: "Your sign-in email was changed for %APP_NAME%"
-        senderDisplayName: "DCL Team"
-        body: "<p>Hello %DISPLAY_NAME%,</p>\n<p>Your sign-in email for %APP_NAME%\
-          \ was changed to %NEW_EMAIL%.</p>\n<p>If you didn’t ask to change your email,\
-          \ follow this link to reset your sign-in email.</p>\n<p><a href='%LINK%'>%LINK%</a></p>\n\
-          <p>Thanks,</p>\n<p>Your %APP_NAME% team</p>"
-        bodyFormat: "PLAIN_TEXT"
-        replyTo: "noreply"
-      callbackUri: "https://config-connector-sample.firebaseapp.com/__/auth/action"
+        senderLocalPart: &#34;noreply&#34;
+        subject: &#34;Your sign-in email was changed for %APP_NAME%&#34;
+        senderDisplayName: &#34;DCL Team&#34;
+        body: &#34;&lt;p&gt;Hello %DISPLAY_NAME%,&lt;/p&gt;\n&lt;p&gt;Your sign-in email for %APP_NAME%\
+          \ was changed to %NEW_EMAIL%.&lt;/p&gt;\n&lt;p&gt;If you didn’t ask to change your email,\
+          \ follow this link to reset your sign-in email.&lt;/p&gt;\n&lt;p&gt;&lt;a href=&#39;%LINK%&#39;&gt;%LINK%&lt;/a&gt;&lt;/p&gt;\n\
+          &lt;p&gt;Thanks,&lt;/p&gt;\n&lt;p&gt;Your %APP_NAME% team&lt;/p&gt;&#34;
+        bodyFormat: &#34;PLAIN_TEXT&#34;
+        replyTo: &#34;noreply&#34;
+      callbackUri: &#34;https://config-connector-sample.firebaseapp.com/__/auth/action&#34;
       dnsInfo:
         useCustomDomain: true
       revertSecondFactorAdditionTemplate:
-        senderLocalPart: "noreply"
-        subject: "You've added 2 step verification to your %APP_NAME% account."
-        senderDisplayName: "DCL Team"
-        body: "<p>Hello %DISPLAY_NAME%,</p>\n<p>Your account in %APP_NAME% has been\
-          \ updated with a phone number %SECOND_FACTOR% for 2-step verification.</p>\n\
-          <p>If you didn't add this phone number for 2-step verification, click the\
-          \ link below to remove it.</p>\n<p><a href='%LINK%'>%LINK%</a></p>\n<p>Thanks,</p>\n\
-          <p>Your %APP_NAME% team</p>"
-        bodyFormat: "PLAIN_TEXT"
-        replyTo: "noreply"
+        senderLocalPart: &#34;noreply&#34;
+        subject: &#34;You&#39;ve added 2 step verification to your %APP_NAME% account.&#34;
+        senderDisplayName: &#34;DCL Team&#34;
+        body: &#34;&lt;p&gt;Hello %DISPLAY_NAME%,&lt;/p&gt;\n&lt;p&gt;Your account in %APP_NAME% has been\
+          \ updated with a phone number %SECOND_FACTOR% for 2-step verification.&lt;/p&gt;\n\
+          &lt;p&gt;If you didn&#39;t add this phone number for 2-step verification, click the\
+          \ link below to remove it.&lt;/p&gt;\n&lt;p&gt;&lt;a href=&#39;%LINK%&#39;&gt;%LINK%&lt;/a&gt;&lt;/p&gt;\n&lt;p&gt;Thanks,&lt;/p&gt;\n\
+          &lt;p&gt;Your %APP_NAME% team&lt;/p&gt;&#34;
+        bodyFormat: &#34;PLAIN_TEXT&#34;
+        replyTo: &#34;noreply&#34;
     sendSms:
       useDeviceLocale: true
-    defaultLocale: "en"
+    defaultLocale: &#34;en&#34;
   quota:
     signUpQuotaConfig:
       quota: 1
-      startTime: "2022-08-10T00:22:56.247547Z"
-      quotaDuration: "604800s"
+      startTime: &#34;2022-08-10T00:22:56.247547Z&#34;
+      quotaDuration: &#34;604800s&#34;
   monitoring:
     requestLogging:
       enabled: true
@@ -1542,22 +1542,22 @@ spec:
     allowTenants: true
     defaultTenantLocationRef:
       kind: Folder
-      name: "identityplatformconfig-dep"
+      name: &#34;identityplatformconfig-dep&#34;
   authorizedDomains:
-  - "localhost"
-  - "config-connector-sample.firebaseapp.com"
-  subtype: "IDENTITY_PLATFORM"
+  - &#34;localhost&#34;
+  - &#34;config-connector-sample.firebaseapp.com&#34;
+  subtype: &#34;IDENTITY_PLATFORM&#34;
   client:
     permissions:
       disabledUserSignup: true
       disabledUserDeletion: true
   mfa:
-    state: "ENABLED"
+    state: &#34;ENABLED&#34;
   blockingFunctions:
     triggers:
       beforeCreate:
         functionUriRef:
-          name: "identityplatformconfig-dep"
+          name: &#34;identityplatformconfig-dep&#34;
     forwardInboundCredentials:
       idToken: true
       accessToken: true
@@ -1568,19 +1568,19 @@ kind: CloudFunctionsFunction
 metadata:
   name: identityplatformconfig-dep
 spec:
-  region: "us-west2"
-  runtime: "nodejs8"
+  region: &#34;us-west2&#34;
+  runtime: &#34;nodejs8&#34;
   availableMemoryMb: 128
-  sourceArchiveUrl: "gs://aaa-dont-delete-dcl-cloud-functions-testing/http_trigger.zip"
-  timeout: "60s"
-  entryPoint: "helloGET"
-  ingressSettings: "ALLOW_INTERNAL_ONLY"
+  sourceArchiveUrl: &#34;gs://aaa-dont-delete-dcl-cloud-functions-testing/http_trigger.zip&#34;
+  timeout: &#34;60s&#34;
+  entryPoint: &#34;helloGET&#34;
+  ingressSettings: &#34;ALLOW_INTERNAL_ONLY&#34;
   maxInstances: 10
   httpsTrigger:
-    securityLevel: "SECURE_OPTIONAL"
+    securityLevel: &#34;SECURE_OPTIONAL&#34;
   projectRef:
-    # Replace "${PROJECT_ID?}" with your project ID
-    external: "projects/${PROJECT_ID?}"
+    # Replace &#34;${PROJECT_ID?}&#34; with your project ID
+    external: &#34;projects/${PROJECT_ID?}&#34;
 ---
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Folder
@@ -1589,8 +1589,8 @@ metadata:
 spec:
   displayName: Default Tenant Location
   organizationRef:
-    # Replace "${ORG_ID?}" with the numeric ID for your organization
-    external: "${ORG_ID?}"
+    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
+    external: &#34;${ORG_ID?}&#34;
 ```
 
 

@@ -181,7 +181,7 @@ service: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Identities that do not cause logging for this type of permission. The format is the same as that for 'members' in IAMPolicy/IAMPolicyMember.{% endverbatim %}</p>
+            <p>{% verbatim %}Identities that do not cause logging for this type of permission. The format is the same as that for &#39;members&#39; in IAMPolicy/IAMPolicyMember.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -201,7 +201,7 @@ service: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Permission type for which logging is to be configured. Must be one of 'DATA_READ', 'DATA_WRITE', or 'ADMIN_READ'.{% endverbatim %}</p>
+            <p>{% verbatim %}Permission type for which logging is to be configured. Must be one of &#39;DATA_READ&#39;, &#39;DATA_WRITE&#39;, or &#39;ADMIN_READ&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -271,7 +271,7 @@ service: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Required. The service for which to enable Data Access audit logs. The special value 'allServices' covers all services. Note that if there are audit configs covering both 'allServices' and a specific service, then the union of the two audit configs is used for that service: the 'logTypes' specified in each 'auditLogConfig' are enabled, and the 'exemptedMembers' in each 'auditLogConfg' are exempted.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Required. The service for which to enable Data Access audit logs. The special value &#39;allServices&#39; covers all services. Note that if there are audit configs covering both &#39;allServices&#39; and a specific service, then the union of the two audit configs is used for that service: the &#39;logTypes&#39; specified in each &#39;auditLogConfig&#39; are enabled, and the &#39;exemptedMembers&#39; in each &#39;auditLogConfg&#39; are exempted.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -304,7 +304,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observations of the IAMAuditConfig's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the IAMAuditConfig&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -332,7 +332,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -365,14 +365,14 @@ observedGeneration: integer
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -392,7 +392,7 @@ spec:
         - serviceAccount:iamauditconfig-dep-orglevel@${PROJECT_ID?}.iam.gserviceaccount.com
   resourceRef:
     kind: Organization
-    external: "${ORG_ID?}"
+    external: &#34;${ORG_ID?}&#34;
 ---
 # Replace ${PROJECT_ID?} below with your desired project ID.
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
@@ -407,14 +407,14 @@ metadata:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.

@@ -118,7 +118,7 @@ subnetworkRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Only valid when networkEndpointType is "SERVERLESS".
+            <p>{% verbatim %}Immutable. Only valid when networkEndpointType is &#34;SERVERLESS&#34;.
 Only one of cloud_run, app_engine, cloud_function or serverless_deployment may be set.{% endverbatim %}</p>
         </td>
     </tr>
@@ -133,7 +133,7 @@ Only one of cloud_run, app_engine, cloud_function or serverless_deployment may b
 
 Immutable. A user-defined name of the Cloud Function.
 The function name is case-sensitive and must be 1-63 characters long.
-Example value: "func1".{% endverbatim %}</p>
+Example value: &#34;func1&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -177,9 +177,9 @@ Example value: "func1".{% endverbatim %}</p>
 for routing to multiple Cloud Functions without having to create
 multiple Network Endpoint Groups and backend services.
 
-For example, request URLs "mydomain.com/function1" and "mydomain.com/function2"
-can be backed by the same Serverless NEG with URL mask "/". The URL mask
-will parse them to { function = "function1" } and { function = "function2" } respectively.{% endverbatim %}</p>
+For example, request URLs &#34;mydomain.com/function1&#34; and &#34;mydomain.com/function2&#34;
+can be backed by the same Serverless NEG with URL mask &#34;/&#34;. The URL mask
+will parse them to { function = &#34;function1&#34; } and { function = &#34;function2&#34; } respectively.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -189,7 +189,7 @@ will parse them to { function = "function1" } and { function = "function2" } res
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Only valid when networkEndpointType is "SERVERLESS".
+            <p>{% verbatim %}Immutable. Only valid when networkEndpointType is &#34;SERVERLESS&#34;.
 Only one of cloud_run, app_engine, cloud_function or serverless_deployment may be set.{% endverbatim %}</p>
         </td>
     </tr>
@@ -204,7 +204,7 @@ Only one of cloud_run, app_engine, cloud_function or serverless_deployment may b
 
 Immutable. Cloud Run service is the main resource of Cloud Run.
 The service must be 1-63 characters long, and comply with RFC1035.
-Example value: "run-service".{% endverbatim %}</p>
+Example value: &#34;run-service&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -244,10 +244,10 @@ Example value: "run-service".{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Cloud Run tag represents the "named-revision" to provide
+            <p>{% verbatim %}Immutable. Cloud Run tag represents the &#34;named-revision&#34; to provide
 additional fine-grained traffic routing information.
 The tag must be 1-63 characters long, and comply with RFC1035.
-Example value: "revision-0010".{% endverbatim %}</p>
+Example value: &#34;revision-0010&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -261,10 +261,10 @@ Example value: "revision-0010".{% endverbatim %}</p>
 URL mask allows for routing to multiple Run services without having
 to create multiple network endpoint groups and backend services.
 
-For example, request URLs "foo1.domain.com/bar1" and "foo1.domain.com/bar2"
+For example, request URLs &#34;foo1.domain.com/bar1&#34; and &#34;foo1.domain.com/bar2&#34;
 an be backed by the same Serverless Network Endpoint Group (NEG) with
-URL mask ".domain.com/". The URL mask will parse them to { service="bar1", tag="foo1" }
-and { service="bar2", tag="foo2" } respectively.{% endverbatim %}</p>
+URL mask &#34;.domain.com/&#34;. The URL mask will parse them to { service=&#34;bar1&#34;, tag=&#34;foo1&#34; }
+and { service=&#34;bar2&#34;, tag=&#34;foo2&#34; } respectively.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -285,7 +285,7 @@ you create the resource.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Type of network endpoints in this network endpoint group. Defaults to SERVERLESS Default value: "SERVERLESS" Possible values: ["SERVERLESS", "PRIVATE_SERVICE_CONNECT"].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Type of network endpoints in this network endpoint group. Defaults to SERVERLESS Default value: &#34;SERVERLESS&#34; Possible values: [&#34;SERVERLESS&#34;, &#34;PRIVATE_SERVICE_CONNECT&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -297,7 +297,7 @@ you create the resource.{% endverbatim %}</p>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Immutable. This field is only used for PSC.
 The URL of the network to which all network endpoints in the NEG belong. Uses
-"default" project network if unspecified.{% endverbatim %}</p>
+&#34;default&#34; project network if unspecified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -431,7 +431,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -459,7 +459,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -499,14 +499,14 @@ selfLink: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -530,27 +530,27 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID
-    external: "projects/${PROJECT_ID?}"
+    external: &#34;projects/${PROJECT_ID?}&#34;
   region: us-west1
-  runtime: "nodejs8"
-  sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
-  entryPoint: "helloGET"
+  runtime: &#34;nodejs8&#34;
+  sourceArchiveUrl: &#34;gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip&#34;
+  entryPoint: &#34;helloGET&#34;
   httpsTrigger:
-    securityLevel: "SECURE_OPTIONAL"
+    securityLevel: &#34;SECURE_OPTIONAL&#34;
 ```
 
 ### Cloud Run Region Network Endpoint Group
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -572,8 +572,8 @@ kind: RunService
 metadata:
   name: computeregionnetworkendpointgroup-dep-cloudrun
 spec:
-  ingress: "INGRESS_TRAFFIC_ALL"
-  launchStage: "GA"
+  ingress: &#34;INGRESS_TRAFFIC_ALL&#34;
+  launchStage: &#34;GA&#34;
   location: us-west1
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
@@ -581,28 +581,28 @@ spec:
   template:
     containers:
       - env:
-          - name: "FOO"
-            value: "bar]"
-        image: "gcr.io/cloudrun/hello"
+          - name: &#34;FOO&#34;
+            value: &#34;bar]&#34;
+        image: &#34;gcr.io/cloudrun/hello&#34;
     scaling:
       maxInstanceCount: 2
   traffic:
     - percent: 100
-      type: "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+      type: &#34;TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST&#34;
 ```
 
 ### Private Service Connection Region Network Endpoint Group
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -673,7 +673,7 @@ metadata:
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: "projects/${PROJECT_ID?}"
+     external: &#34;projects/${PROJECT_ID?}&#34;
   location: us-west3
   description: A sample service attachment
   targetServiceRef:

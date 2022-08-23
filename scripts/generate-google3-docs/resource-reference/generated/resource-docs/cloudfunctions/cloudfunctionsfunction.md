@@ -172,7 +172,7 @@ vpcConnectorRef:
             <p>{% verbatim %}Immutable. The name of the function (as defined in source code) that will be
 executed. Defaults to the resource name suffix, if not specified. For
 backward compatibility, if function with given name is not found, then the
-system will try to use function named "function".
+system will try to use function named &#34;function&#34;.
 For Node.js this is name of a function exported by the module specified
 in `source_location`.{% endverbatim %}</p>
         </td>
@@ -216,7 +216,7 @@ The pattern contains:
 2. resource type: The type of resource on which event occurs. For
    example, the Google Cloud Storage API includes the type `object`.
 3. action: The action that generates the event. For example, action for
-   a Google Cloud Storage Object is 'change'.
+   a Google Cloud Storage Object is &#39;change&#39;.
 These parts are lower case.{% endverbatim %}</p>
         </td>
     </tr>
@@ -258,14 +258,14 @@ example:
    same project as the `Function`.
 2. The resource type must match the pattern expected for an
    `event_type`. For example, an `EventTrigger` that has an
-   `event_type` of "google.pubsub.topic.publish" should have a resource
+   `event_type` of &#34;google.pubsub.topic.publish&#34; should have a resource
    that matches Google Cloud Pub/Sub topics.
 
 Additionally, some services may support short names when creating an
-`EventTrigger`. These will always be returned in the normalized "long"
+`EventTrigger`. These will always be returned in the normalized &#34;long&#34;
 format.
 
-See each *service's* documentation for supported formats.
+See each *service&#39;s* documentation for supported formats.
 
 Allowed values:
 * The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).
@@ -452,7 +452,7 @@ reference](/sdk/gcloud/reference/functions/deploy#--runtime).
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The email of the function's service account. If empty, defaults to
+            <p>{% verbatim %}The email of the function&#39;s service account. If empty, defaults to
 `{project_id}@appspot.gserviceaccount.com`.
 
 Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
@@ -625,7 +625,7 @@ versionId: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -653,7 +653,7 @@ versionId: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -718,7 +718,7 @@ commit in the format described above.{% endverbatim %}</p>
         <td><code>updateTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The last update timestamp of a Cloud Function in RFC3339 UTC 'Zulu' format, with nanosecond resolution and up to nine fractional digits.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The last update timestamp of a Cloud Function in RFC3339 UTC &#39;Zulu&#39; format, with nanosecond resolution and up to nine fractional digits.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -738,14 +738,14 @@ results in a new version of a function being created.{% endverbatim %}</p>
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -757,33 +757,33 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID
-    external: "projects/${PROJECT_ID?}"
-  description: "A sample cloud function with an event trigger from PubSubTopic and a VPCAccessConnector"
-  region: "us-west2"
-  runtime: "nodejs8"
+    external: &#34;projects/${PROJECT_ID?}&#34;
+  description: &#34;A sample cloud function with an event trigger from PubSubTopic and a VPCAccessConnector&#34;
+  region: &#34;us-west2&#34;
+  runtime: &#34;nodejs8&#34;
   availableMemoryMb: 128
   # Replace ${PROJECT_ID?} with your project ID
-  serviceAccountEmail: "${PROJECT_ID?}@appspot.gserviceaccount.com"
+  serviceAccountEmail: &#34;${PROJECT_ID?}@appspot.gserviceaccount.com&#34;
   # Replace ${REPO_URL?} with your cloud source repository url
   # Example: https://source.developers.google.com/projects/config-connector-samples/repos/config-connnector-samples/moveable-aliases/main/paths/cloudfunctionsfunction
   sourceRepository:
-    url: "${REPO_URL?}"
-  timeout: "60s"
-  entryPoint: "helloGET"
-  ingressSettings: "ALLOW_INTERNAL_ONLY"
+    url: &#34;${REPO_URL?}&#34;
+  timeout: &#34;60s&#34;
+  entryPoint: &#34;helloGET&#34;
+  ingressSettings: &#34;ALLOW_INTERNAL_ONLY&#34;
   environmentVariables:
-    TEST_ENV_VARIABLE: "test-env-variable-value"
+    TEST_ENV_VARIABLE: &#34;test-env-variable-value&#34;
   maxInstances: 10
   vpcConnectorRef:
-    name: "function-dep-trigger"
-  vpcConnectorEgressSettings: "PRIVATE_RANGES_ONLY"
+    name: &#34;function-dep-trigger&#34;
+  vpcConnectorEgressSettings: &#34;PRIVATE_RANGES_ONLY&#34;
   eventTrigger:
-    eventType: "providers/cloud.pubsub/eventTypes/topic.publish"
+    eventType: &#34;providers/cloud.pubsub/eventTypes/topic.publish&#34;
     resourceRef:
-      name: "cloudfunctionsfunction-dep-pubsubtopic"
-      kind: "PubSubTopic"
+      name: &#34;cloudfunctionsfunction-dep-pubsubtopic&#34;
+      kind: &#34;PubSubTopic&#34;
     failurePolicy: true
-    service: "pubsub.googleapis.com"
+    service: &#34;pubsub.googleapis.com&#34;
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
@@ -802,29 +802,29 @@ kind: VPCAccessConnector
 metadata:
   name: function-dep-trigger
 spec:
-  location: "us-west2"
+  location: &#34;us-west2&#34;
   networkRef:
     name: cloudfunctionsfunction-dep-pubsubtopic
-  ipCidrRange: "10.5.0.0/28"
+  ipCidrRange: &#34;10.5.0.0/28&#34;
   minThroughput: 300
   maxThroughput: 400
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID
-    external: "projects/${PROJECT_ID?}"
+    external: &#34;projects/${PROJECT_ID?}&#34;
 ```
 
 ### Eventtrigger With Storagebucket
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -836,19 +836,19 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID
-    external: "projects/${PROJECT_ID?}"
-  description: "A sample cloud function with an event trigger from StorageBucket"
-  region: "us-west2"
-  runtime: "nodejs8"
-  sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
-  entryPoint: "helloGET"
+    external: &#34;projects/${PROJECT_ID?}&#34;
+  description: &#34;A sample cloud function with an event trigger from StorageBucket&#34;
+  region: &#34;us-west2&#34;
+  runtime: &#34;nodejs8&#34;
+  sourceArchiveUrl: &#34;gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip&#34;
+  entryPoint: &#34;helloGET&#34;
   eventTrigger:
-    eventType: "providers/cloud.storage/eventTypes/object.change"
+    eventType: &#34;providers/cloud.storage/eventTypes/object.change&#34;
     resourceRef:
       name: ${PROJECT_ID?}-cloudfunctionsfunction-dep-bucket
       kind: StorageBucket
     failurePolicy: true
-    service: "storage.googleapis.com"
+    service: &#34;storage.googleapis.com&#34;
 ---
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
@@ -869,14 +869,14 @@ spec:
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -888,13 +888,13 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID
-    external: "projects/${PROJECT_ID?}"
-  region: "us-west2"
-  runtime: "nodejs8"
-  sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
-  entryPoint: "helloGET"
+    external: &#34;projects/${PROJECT_ID?}&#34;
+  region: &#34;us-west2&#34;
+  runtime: &#34;nodejs8&#34;
+  sourceArchiveUrl: &#34;gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip&#34;
+  entryPoint: &#34;helloGET&#34;
   httpsTrigger:
-    securityLevel: "SECURE_OPTIONAL"
+    securityLevel: &#34;SECURE_OPTIONAL&#34;
 ```
 
 

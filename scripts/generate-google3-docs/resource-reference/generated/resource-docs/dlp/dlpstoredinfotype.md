@@ -458,7 +458,7 @@ Allowed value: The Google Cloud resource name of a `BigQueryTable` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[WARNING] Organization not yet supported in Config Connector, use 'external' field to reference existing resources.
+            <p>{% verbatim %}[WARNING] Organization not yet supported in Config Connector, use &#39;external&#39; field to reference existing resources.
 Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
         </td>
     </tr>
@@ -592,7 +592,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -620,7 +620,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -653,14 +653,14 @@ observedGeneration: integer
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -671,23 +671,23 @@ metadata:
   name: dlpstoredinfotype-sample-bigqueryfieldstoredinfotype
 spec:
   projectRef:
-    # Replace "${PROJECT_ID?}" with your project ID
-    external: "projects/${PROJECT_ID?}"
-  location: "us-west2"
+    # Replace &#34;${PROJECT_ID?}&#34; with your project ID
+    external: &#34;projects/${PROJECT_ID?}&#34;
+  location: &#34;us-west2&#34;
   largeCustomDictionary:
     outputPath:
-      path: "gs://aaa-dont-delete-kcc-dlp-testing/large-custom-dictionary-2"
+      path: &#34;gs://aaa-dont-delete-kcc-dlp-testing/large-custom-dictionary-2&#34;
     bigQueryField:
       table:
         projectRef:
-          # Replace "${PROJECT_ID?}" with your project ID
-          external: "projects/${PROJECT_ID?}"
+          # Replace &#34;${PROJECT_ID?}&#34; with your project ID
+          external: &#34;projects/${PROJECT_ID?}&#34;
         datasetRef:
-          name: "dlpstoredinfotypedepbigqueryfieldstoredinfotype"
+          name: &#34;dlpstoredinfotypedepbigqueryfieldstoredinfotype&#34;
         tableRef:
-          name: "dlpstoredinfotypedepbigqueryfieldstoredinfotype"
+          name: &#34;dlpstoredinfotypedepbigqueryfieldstoredinfotype&#34;
       field:
-        name: "sample_field"
+        name: &#34;sample_field&#34;
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
@@ -702,14 +702,14 @@ metadata:
   name: dlpstoredinfotypedepbigqueryfieldstoredinfotype
 spec:
   datasetRef:
-    name: "dlpstoredinfotypedepbigqueryfieldstoredinfotype"
-  schema: '[{"name": "sample_field", "type": "STRING"}]'
+    name: &#34;dlpstoredinfotypedepbigqueryfieldstoredinfotype&#34;
+  schema: &#39;[{&#34;name&#34;: &#34;sample_field&#34;, &#34;type&#34;: &#34;STRING&#34;}]&#39;
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
   annotations:
-    cnrm.cloud.google.com/deletion-policy: "abandon"
+    cnrm.cloud.google.com/deletion-policy: &#34;abandon&#34;
   name: dlpstoredinfotype-dep-bigqueryfieldstoredinfotype
 spec:
   # Replace ${PROJECT_NUMBER?} with your project number.
@@ -725,14 +725,14 @@ spec:
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -743,20 +743,20 @@ metadata:
   name: dlpstoredinfotype-sample-cloudstoragefilesetstoredinfotype
 spec:
   projectRef:
-    # Replace "${PROJECT_ID?}" with your project ID
-    external: "projects/${PROJECT_ID?}"
-  location: "us-west2"
+    # Replace &#34;${PROJECT_ID?}&#34; with your project ID
+    external: &#34;projects/${PROJECT_ID?}&#34;
+  location: &#34;us-west2&#34;
   largeCustomDictionary:
     outputPath:
-      path: "gs://aaa-dont-delete-kcc-dlp-testing/large-custom-dictionary-1"
+      path: &#34;gs://aaa-dont-delete-kcc-dlp-testing/large-custom-dictionary-1&#34;
     cloudStorageFileSet:
-      url: "gs://aaa-dont-delete-kcc-dlp-testing/*"
+      url: &#34;gs://aaa-dont-delete-kcc-dlp-testing/*&#34;
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
   annotations:
-    cnrm.cloud.google.com/deletion-policy: "abandon"
+    cnrm.cloud.google.com/deletion-policy: &#34;abandon&#34;
   name: dlpstoredinfotype-dep-cloudstoragefilesetstoredinfotype
 spec:
   # Replace ${PROJECT_NUMBER?} with your project number.
@@ -772,14 +772,14 @@ spec:
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -790,26 +790,26 @@ metadata:
   name: dlpstoredinfotype-sample-cloudstoragepathstoredinfotype
 spec:
   projectRef:
-    # Replace "${PROJECT_ID?}" with your project ID
-    external: "projects/${PROJECT_ID?}"
-  location: "us-west2"
+    # Replace &#34;${PROJECT_ID?}&#34; with your project ID
+    external: &#34;projects/${PROJECT_ID?}&#34;
+  location: &#34;us-west2&#34;
   dictionary:
     cloudStoragePath:
-      path: "gs://aaa-dont-delete-kcc-dlp-testing/dictionary-1"
+      path: &#34;gs://aaa-dont-delete-kcc-dlp-testing/dictionary-1&#34;
 ```
 
 ### Regex Stored Info Type
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -820,13 +820,13 @@ metadata:
   name: dlpstoredinfotype-sample-regexstoredinfotype
 spec:
   projectRef:
-    # Replace "${PROJECT_ID?}" with your project ID
-    external: "projects/${PROJECT_ID?}"
-  location: "us-west2"
-  displayName: "sample-type"
-  description: "A sample regex-based stored info type"
+    # Replace &#34;${PROJECT_ID?}&#34; with your project ID
+    external: &#34;projects/${PROJECT_ID?}&#34;
+  location: &#34;us-west2&#34;
+  displayName: &#34;sample-type&#34;
+  description: &#34;A sample regex-based stored info type&#34;
   regex:
-    pattern: "([a-z]*)(.+)"
+    pattern: &#34;([a-z]*)(.&#43;)&#34;
     groupIndexes:
     - 0
     - 1
@@ -836,14 +836,14 @@ spec:
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -854,14 +854,14 @@ metadata:
   name: dlpstoredinfotype-sample-wordliststoredinfotype
 spec:
   projectRef:
-    # Replace "${PROJECT_ID?}" with your project ID
-    external: "projects/${PROJECT_ID?}"
-  location: "us-west2"
+    # Replace &#34;${PROJECT_ID?}&#34; with your project ID
+    external: &#34;projects/${PROJECT_ID?}&#34;
+  location: &#34;us-west2&#34;
   dictionary:
     wordList:
       words:
-      - "aye"
-      - "nay"
+      - &#34;aye&#34;
+      - &#34;nay&#34;
 ```
 
 

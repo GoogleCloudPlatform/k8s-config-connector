@@ -120,7 +120,7 @@ routerRef:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}User-specified flag to indicate which mode to use for advertisement.
-Valid values of this enum field are: 'DEFAULT', 'CUSTOM' Default value: "DEFAULT" Possible values: ["DEFAULT", "CUSTOM"].{% endverbatim %}</p>
+Valid values of this enum field are: &#39;DEFAULT&#39;, &#39;CUSTOM&#39; Default value: &#34;DEFAULT&#34; Possible values: [&#34;DEFAULT&#34;, &#34;CUSTOM&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -133,13 +133,13 @@ Valid values of this enum field are: 'DEFAULT', 'CUSTOM' Default value: "DEFAULT
             <p>{% verbatim %}User-specified list of prefix groups to advertise in custom
 mode, which can take one of the following options:
 
-* 'ALL_SUBNETS': Advertises all available subnets, including peer VPC subnets.
-* 'ALL_VPC_SUBNETS': Advertises the router's own VPC subnets.
-* 'ALL_PEER_VPC_SUBNETS': Advertises peer subnets of the router's VPC network.
+* &#39;ALL_SUBNETS&#39;: Advertises all available subnets, including peer VPC subnets.
+* &#39;ALL_VPC_SUBNETS&#39;: Advertises the router&#39;s own VPC subnets.
+* &#39;ALL_PEER_VPC_SUBNETS&#39;: Advertises peer subnets of the router&#39;s VPC network.
 
 
-Note that this field can only be populated if advertiseMode is 'CUSTOM'
-and overrides the list defined for the router (in the "bgp" message).
+Note that this field can only be populated if advertiseMode is &#39;CUSTOM&#39;
+and overrides the list defined for the router (in the &#34;bgp&#34; message).
 These groups are advertised in addition to any specified prefixes.
 Leave this field blank to advertise no custom groups.{% endverbatim %}</p>
         </td>
@@ -163,7 +163,7 @@ Leave this field blank to advertise no custom groups.{% endverbatim %}</p>
             <p><code class="apitype">list (object)</code></p>
             <p>{% verbatim %}User-specified list of individual IP ranges to advertise in
 custom mode. This field can only be populated if advertiseMode
-is 'CUSTOM' and is advertised to all peers of the router. These IP
+is &#39;CUSTOM&#39; and is advertised to all peers of the router. These IP
 ranges will be advertised in addition to any specified groups.
 Leave this field blank to advertise no custom IP ranges.{% endverbatim %}</p>
         </td>
@@ -269,10 +269,10 @@ be a value between 5 and 16.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The BFD session initialization mode for this BGP peer.
-If set to 'ACTIVE', the Cloud Router will initiate the BFD session
-for this BGP peer. If set to 'PASSIVE', the Cloud Router will wait
+If set to &#39;ACTIVE&#39;, the Cloud Router will initiate the BFD session
+for this BGP peer. If set to &#39;PASSIVE&#39;, the Cloud Router will wait
 for the peer router to initiate the BFD session for this BGP peer.
-If set to 'DISABLED', BFD is disabled for this BGP peer. Possible values: ["ACTIVE", "DISABLED", "PASSIVE"].{% endverbatim %}</p>
+If set to &#39;DISABLED&#39;, BFD is disabled for this BGP peer. Possible values: [&#34;ACTIVE&#34;, &#34;DISABLED&#34;, &#34;PASSIVE&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -463,7 +463,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -491,7 +491,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -514,9 +514,9 @@ observedGeneration: integer
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The resource that configures and manages this BGP peer.
 
-* 'MANAGED_BY_USER' is the default value and can be managed by
+* &#39;MANAGED_BY_USER&#39; is the default value and can be managed by
 you or other users
-* 'MANAGED_BY_ATTACHMENT' is a BGP peer that is configured and
+* &#39;MANAGED_BY_ATTACHMENT&#39; is a BGP peer that is configured and
 managed by Cloud Interconnect, specifically by an
 InterconnectAttachment of type PARTNER. Google automatically
 creates, updates, and deletes this type of BGP peer when the
@@ -540,14 +540,14 @@ or deleted.{% endverbatim %}</p>
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -558,10 +558,10 @@ metadata:
   name: computerouterpeer-sample
 spec:
   region: us-central1
-  peerIpAddress: "169.254.0.2"
+  peerIpAddress: &#34;169.254.0.2&#34;
   peerAsn: 65513
   ipAddress:
-    external: "169.254.0.1"
+    external: &#34;169.254.0.1&#34;
   advertisedRoutePriority: 1
   routerRef:
     name: computerouterpeer-dep
@@ -572,7 +572,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   name: computerouterpeer-dep
 spec:
   routingMode: REGIONAL
@@ -593,7 +593,7 @@ spec:
     advertisedGroups:
       - ALL_SUBNETS
     advertisedIpRanges:
-      - range: "1.2.3.4"
+      - range: &#34;1.2.3.4&#34;
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeRouterInterface
@@ -603,7 +603,7 @@ spec:
   routerRef:
     name: computerouterpeer-dep
   region: us-central1
-  ipRange: "169.254.0.1/30"
+  ipRange: &#34;169.254.0.1/30&#34;
 ```
 
 

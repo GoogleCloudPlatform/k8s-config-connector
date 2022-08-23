@@ -262,7 +262,7 @@ rules:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Required. Hostnames define a set of hosts that should match against the HTTP host header to select a HttpRoute to process the request. Hostname is the fully qualified domain name of a network host, as defined by RFC 1123 with the exception that ip addresses are not allowed. Wildcard hosts are supported as "*" (no prefix or suffix allowed).{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Hostnames define a set of hosts that should match against the HTTP host header to select a HttpRoute to process the request. Hostname is the fully qualified domain name of a network host, as defined by RFC 1123 with the exception that ip addresses are not allowed. Wildcard hosts are supported as &#34;*&#34; (no prefix or suffix allowed).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -978,7 +978,7 @@ Allowed value: The Google Cloud resource name of a `ComputeBackendService` resou
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Specifies the allowed number of retries. This number must be > 0. If not specified, default to 1.{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies the allowed number of retries. This number must be &gt; 0. If not specified, default to 1.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1322,7 +1322,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1350,7 +1350,7 @@ updateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1404,14 +1404,14 @@ updateTime: string
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1425,19 +1425,19 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
-    external: "projects/${PROJECT_ID?}"
+    external: &#34;projects/${PROJECT_ID?}&#34;
   location: global
-  hostnames: ["bar.baz"]
+  hostnames: [&#34;bar.baz&#34;]
   meshes:
     - name: networkserviceshttproute-dep
   gateways:
     - name: networkserviceshttproute-dep
   rules:
   - matches:
-    - fullPathMatch: "/foo/bar"
+    - fullPathMatch: &#34;/foo/bar&#34;
       headers:
-      - header: "foo-header"
-        prefixMatch: "bar-value"
+      - header: &#34;foo-header&#34;
+        prefixMatch: &#34;bar-value&#34;
     action:
       destinations:
       - serviceRef:
@@ -1447,7 +1447,7 @@ spec:
           httpStatus: 501
           percentage: 1
         delay:
-          fixedDelay: "10s"
+          fixedDelay: &#34;10s&#34;
           percentage: 2
       requestHeaderModifier:
         add:
@@ -1475,11 +1475,11 @@ spec:
         - bar3
       retryPolicy:
         numRetries: 3
-        perTryTimeout: "5s"
+        perTryTimeout: &#34;5s&#34;
         retryConditions:
-        - "refused-stream"
-        - "cancelled"
-      timeout: "30s"
+        - &#34;refused-stream&#34;
+        - &#34;cancelled&#34;
+      timeout: &#34;30s&#34;
   - action:
       destinations:
       - serviceRef:
@@ -1500,7 +1500,7 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
-    external: "projects/${PROJECT_ID?}"
+    external: &#34;projects/${PROJECT_ID?}&#34;
   type: OPEN_MESH
   ports:
   - 80
@@ -1515,7 +1515,7 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
-    external: "projects/${PROJECT_ID?}"
+    external: &#34;projects/${PROJECT_ID?}&#34;
   location: global
 ```
 

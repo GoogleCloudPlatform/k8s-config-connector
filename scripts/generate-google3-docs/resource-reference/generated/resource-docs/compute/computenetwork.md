@@ -100,11 +100,11 @@ routingMode: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. When set to 'true', the network is created in "auto subnet mode" and
+            <p>{% verbatim %}Immutable. When set to &#39;true&#39;, the network is created in &#34;auto subnet mode&#34; and
 it will create a subnet for each region automatically across the
-'10.128.0.0/9' address range.
+&#39;10.128.0.0/9&#39; address range.
 
-When set to 'false', the network is created in "custom subnet mode" so
+When set to &#39;false&#39;, the network is created in &#34;custom subnet mode&#34; so
 the user can explicitly connect subnetwork resources.{% endverbatim %}</p>
         </td>
     </tr>
@@ -182,11 +182,11 @@ and the maximum value is 1500 bytes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The network-wide routing mode to use. If set to 'REGIONAL', this
-network's cloud routers will only advertise routes with subnetworks
-of this network in the same region as the router. If set to 'GLOBAL',
-this network's cloud routers will advertise routes with all
-subnetworks of this network, across regions. Possible values: ["REGIONAL", "GLOBAL"].{% endverbatim %}</p>
+            <p>{% verbatim %}The network-wide routing mode to use. If set to &#39;REGIONAL&#39;, this
+network&#39;s cloud routers will only advertise routes with subnetworks
+of this network in the same region as the router. If set to &#39;GLOBAL&#39;,
+this network&#39;s cloud routers will advertise routes with all
+subnetworks of this network, across regions. Possible values: [&#34;REGIONAL&#34;, &#34;GLOBAL&#34;].{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -219,7 +219,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -247,7 +247,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -295,14 +295,14 @@ is selected by GCP.{% endverbatim %}</p>
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -311,7 +311,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   name: computenetwork-sample
 spec:
   routingMode: REGIONAL

@@ -287,7 +287,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The number of physical cores to expose to an instance. Multiply by the number of threads per core to compute the total number of virtual CPUs to expose to the instance. If unset, the number of cores is inferred from the instance\'s nominal CPU count and the underlying platform\'s SMT width.{% endverbatim %}</p>
+            <p>{% verbatim %}The number of physical cores to expose to an instance. Multiply by the number of threads per core to compute the total number of virtual CPUs to expose to the instance. If unset, the number of cores is inferred from the instance\&#39;s nominal CPU count and the underlying platform\&#39;s SMT width.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -337,7 +337,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value of the field. Cannot be used if 'valueFrom' is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Value of the field. Cannot be used if &#39;valueFrom&#39; is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -347,7 +347,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Source for the field's value. Cannot be used if 'value' is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Source for the field&#39;s value. Cannot be used if &#39;value&#39; is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -357,7 +357,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource's namespace.{% endverbatim %}</p>
+            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource&#39;s namespace.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -437,7 +437,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Read/write mode for the disk. One of "READ_ONLY" or "READ_WRITE".{% endverbatim %}</p>
+            <p>{% verbatim %}Read/write mode for the disk. One of &#34;READ_ONLY&#34; or &#34;READ_WRITE&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -527,7 +527,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value of the field. Cannot be used if 'valueFrom' is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Value of the field. Cannot be used if &#39;valueFrom&#39; is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -537,7 +537,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Source for the field's value. Cannot be used if 'value' is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Source for the field&#39;s value. Cannot be used if &#39;value&#39; is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -547,7 +547,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource's namespace.{% endverbatim %}</p>
+            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource&#39;s namespace.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -707,7 +707,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Read/write mode for the disk. One of "READ_ONLY" or "READ_WRITE".{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Read/write mode for the disk. One of &#34;READ_ONLY&#34; or &#34;READ_WRITE&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -807,7 +807,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Desired status of the instance. Either "RUNNING" or "TERMINATED".{% endverbatim %}</p>
+            <p>{% verbatim %}Desired status of the instance. Either &#34;RUNNING&#34; or &#34;TERMINATED&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1317,7 +1317,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. The networking queue count that's specified by users for the network interface. Both Rx and Tx queues will be set to this number. It will be empty if not specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The networking queue count that&#39;s specified by users for the network interface. Both Rx and Tx queues will be set to this number. It will be empty if not specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1827,7 +1827,7 @@ tagsFingerprint: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1855,7 +1855,7 @@ tagsFingerprint: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1937,14 +1937,14 @@ tagsFingerprint: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1953,11 +1953,11 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeInstance
 metadata:
   annotations:
-    cnrm.cloud.google.com/allow-stopping-for-update: "true"
+    cnrm.cloud.google.com/allow-stopping-for-update: &#34;true&#34;
   name: computeinstance-sample-cloudmachine
   labels:
-    created-from: "image"
-    network-type: "subnetwork"
+    created-from: &#34;image&#34;
+    network-type: &#34;subnetwork&#34;
 spec:
   machineType: n1-standard-1
   zone: us-west1-a
@@ -1987,7 +1987,7 @@ spec:
         name: computeinstance-dep2-cloudmachine
       mode: READ_WRITE
       deviceName: persistentdisk
-  minCpuPlatform: "Intel Skylake"
+  minCpuPlatform: &#34;Intel Skylake&#34;
   serviceAccount:
     serviceAccountRef:
       name: inst-dep-cloudmachine
@@ -2052,21 +2052,21 @@ kind: Secret
 metadata:
   name: computeinstance-dep-cloudmachine
 stringData:
-  diskEncryptionKey: "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+  diskEncryptionKey: &#34;SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0=&#34;
 ```
 
 ### Instance From Template
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -2075,11 +2075,11 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeInstance
 metadata:
   annotations:
-    cnrm.cloud.google.com/allow-stopping-for-update: "false"
+    cnrm.cloud.google.com/allow-stopping-for-update: &#34;false&#34;
   name: computeinstance-sample-fromtemplate
   labels:
-    created-from: "template"
-    override-type: "largermachine"
+    created-from: &#34;template&#34;
+    override-type: &#34;largermachine&#34;
 spec:
   machineType: n1-standard-2
   instanceTemplateRef:
@@ -2124,14 +2124,14 @@ spec:
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -2140,10 +2140,10 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeInstance
 metadata:
   annotations:
-    cnrm.cloud.google.com/allow-stopping-for-update: "true"
+    cnrm.cloud.google.com/allow-stopping-for-update: &#34;true&#34;
   name: computeinstance-sample-networkipref
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
 spec:
   description: an basic instance example
   machineType: n1-standard-1
@@ -2166,7 +2166,7 @@ spec:
     networkIpRef:
       kind: ComputeAddress
       name: computeinstance-dep-networkipref
-  metadataStartupScript: "echo hi > /test.txt"
+  metadataStartupScript: &#34;echo hi &gt; /test.txt&#34;
   metadata:
   - key: foo
     value: bar
@@ -2201,7 +2201,7 @@ kind: ComputeDisk
 metadata:
   name: computeinstance-dep2-networkipref
 spec:
-  description: "an attached disk for Compute Instance"
+  description: &#34;an attached disk for Compute Instance&#34;
   location: us-west1-a
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
@@ -2222,14 +2222,14 @@ metadata:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -2238,11 +2238,11 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeInstance
 metadata:
   annotations:
-    cnrm.cloud.google.com/allow-stopping-for-update: "false"
+    cnrm.cloud.google.com/allow-stopping-for-update: &#34;false&#34;
   name: computeinstance-sample-networkworker
   labels:
-    created-from: "disk"
-    network-type: "global"
+    created-from: &#34;disk&#34;
+    network-type: &#34;global&#34;
 spec:
   machineType: n1-standard-1
   zone: us-west2-a
@@ -2262,7 +2262,7 @@ spec:
         name: computeinstance-dep-networkworker
       subnetworkRef:
         name: computeinstance-dep-networkworker
-      networkIp: "10.2.0.4"
+      networkIp: &#34;10.2.0.4&#34;
       accessConfig:
         - natIpRef:
             name: computeinstance-dep-networkworker
@@ -2329,7 +2329,7 @@ kind: Secret
 metadata:
   name: computeinstance-dep-networkworker
 stringData:
-  diskEncryptionKey: "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
+  diskEncryptionKey: &#34;SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0=&#34;
 ```
 
 

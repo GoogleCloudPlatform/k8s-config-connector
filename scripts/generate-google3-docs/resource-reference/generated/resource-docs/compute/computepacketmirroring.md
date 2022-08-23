@@ -601,7 +601,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -629,7 +629,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -697,14 +697,14 @@ selfLink: string
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -715,10 +715,10 @@ metadata:
   name: computepacketmirroring-sample
 spec:
   projectRef:
-    # Replace "${PROJECT_ID?}" with your project id
-    external: "projects/${PROJECT_ID?}"
-  location: "us-west2"
-  description: "A sample packet mirroring"
+    # Replace &#34;${PROJECT_ID?}&#34; with your project id
+    external: &#34;projects/${PROJECT_ID?}&#34;
+  location: &#34;us-west2&#34;
+  description: &#34;A sample packet mirroring&#34;
   network:
     urlRef:
       name: computepacketmirroring-dep
@@ -734,38 +734,38 @@ spec:
     - urlRef:
         name: computepacketmirroring-dep
     tags:
-    - "tag-one"
+    - &#34;tag-one&#34;
   filter:
     cidrRanges:
-    - "192.168.0.0/23"
+    - &#34;192.168.0.0/23&#34;
     ipProtocols:
-    - "tcp"
-    direction: "BOTH"
-  enable: "TRUE"
+    - &#34;tcp&#34;
+    direction: &#34;BOTH&#34;
+  enable: &#34;TRUE&#34;
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
   name: computepacketmirroring-dep
 spec:
-  location: "us-west2"
-  loadBalancingScheme: "INTERNAL"
+  location: &#34;us-west2&#34;
+  loadBalancingScheme: &#34;INTERNAL&#34;
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   name: computepacketmirroring-dep
 spec:
-  location: "us-west2"
+  location: &#34;us-west2&#34;
   networkRef:
     name: computepacketmirroring-dep
   subnetworkRef:
     name: computepacketmirroring-dep
-  description: "A test mirror collector forwarding rule with internal load balancing scheme"
-  loadBalancingScheme: "INTERNAL"
+  description: &#34;A test mirror collector forwarding rule with internal load balancing scheme&#34;
+  loadBalancingScheme: &#34;INTERNAL&#34;
   backendServiceRef:
     name: computepacketmirroring-dep
-  networkTier: "PREMIUM"
+  networkTier: &#34;PREMIUM&#34;
   allPorts: true
   isMirroringCollector: true
 ---
@@ -773,11 +773,11 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeInstance
 metadata:
   annotations:
-    cnrm.cloud.google.com/allow-stopping-for-update: "true"
+    cnrm.cloud.google.com/allow-stopping-for-update: &#34;true&#34;
   name: computepacketmirroring-dep
 spec:
-  zone: "us-west2-a"
-  machineType: "zones/us-west2-a/machineTypes/e2-medium"
+  zone: &#34;us-west2-a&#34;
+  machineType: &#34;zones/us-west2-a/machineTypes/e2-medium&#34;
   bootDisk:
     autoDelete: true
     initializeParams:
@@ -803,7 +803,7 @@ metadata:
 spec:
   networkRef:
     name: computepacketmirroring-dep
-  ipCidrRange: "10.168.0.0/20"
+  ipCidrRange: &#34;10.168.0.0/20&#34;
   region: us-west2
 ```
 

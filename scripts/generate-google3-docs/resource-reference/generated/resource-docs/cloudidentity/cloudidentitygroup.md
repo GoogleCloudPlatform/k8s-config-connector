@@ -136,7 +136,7 @@ For Google-managed entities, the id must be the email address of an existing
 group or user.
 
 For external-identity-mapped entities, the id must be a string conforming
-to the Identity Source's requirements.
+to the Identity Source&#39;s requirements.
 
 Must be unique within a namespace.{% endverbatim %}</p>
         </td>
@@ -155,7 +155,7 @@ such as a Google user or a Google Group.
 
 If specified, the EntityKey represents an external-identity-mapped group.
 The namespace must correspond to an identity source created in Admin Console
-and must be in the form of 'identitysources/{identity_source_id}'.{% endverbatim %}</p>
+and must be in the form of &#39;identitysources/{identity_source_id}&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -169,7 +169,7 @@ and must be in the form of 'identitysources/{identity_source_id}'.{% endverbatim
 
 See the
 [API reference](https://cloud.google.com/identity/docs/reference/rest/v1beta1/groups/create#initialgroupconfig)
-for possible values. Default value: "EMPTY" Possible values: ["INITIAL_GROUP_CONFIG_UNSPECIFIED", "WITH_INITIAL_OWNER", "EMPTY"].{% endverbatim %}</p>
+for possible values. Default value: &#34;EMPTY&#34; Possible values: [&#34;INITIAL_GROUP_CONFIG_UNSPECIFIED&#34;, &#34;WITH_INITIAL_OWNER&#34;, &#34;EMPTY&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -182,8 +182,8 @@ for possible values. Default value: "EMPTY" Possible values: ["INITIAL_GROUP_CON
             <p>{% verbatim %}Immutable. The labels that apply to the Group.
 
 Must not contain more than one entry. Must contain the entry
-'cloudidentity.googleapis.com/groups.discussion_forum': '' if the Group is a Google Group or
-'system/groups/external': '' if the Group is an external-identity-mapped group.{% endverbatim %}</p>
+&#39;cloudidentity.googleapis.com/groups.discussion_forum&#39;: &#39;&#39; if the Group is a Google Group or
+&#39;system/groups/external&#39;: &#39;&#39; if the Group is an external-identity-mapped group.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -241,7 +241,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -269,7 +269,7 @@ updateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -324,14 +324,14 @@ is the unique ID assigned to the Group.{% endverbatim %}</p>
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -347,7 +347,7 @@ spec:
     id: example.com
   parent: customers/C00qzcxfe
   labels:
-    cloudidentity.googleapis.com/groups.discussion_forum: ""
+    cloudidentity.googleapis.com/groups.discussion_forum: &#34;&#34;
 ```
 
 

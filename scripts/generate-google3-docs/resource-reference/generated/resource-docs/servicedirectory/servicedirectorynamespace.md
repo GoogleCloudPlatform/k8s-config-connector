@@ -115,7 +115,7 @@ resourceID: string
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The location for the Namespace.
 A full list of valid locations can be found by running
-'gcloud beta service-directory locations list'.{% endverbatim %}</p>
+&#39;gcloud beta service-directory locations list&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -197,7 +197,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -225,7 +225,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -247,7 +247,7 @@ observedGeneration: integer
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The resource name for the namespace
-in the format 'projects/*/locations/*/namespaces/*'.{% endverbatim %}</p>
+in the format &#39;projects/*/locations/*/namespaces/*&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -266,14 +266,14 @@ in the format 'projects/*/locations/*/namespaces/*'.{% endverbatim %}</p>
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.

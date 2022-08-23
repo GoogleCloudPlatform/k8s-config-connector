@@ -212,7 +212,7 @@ state: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -240,7 +240,7 @@ state: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -280,14 +280,14 @@ state: string
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -297,13 +297,13 @@ kind: IAMWorkloadIdentityPool
 metadata:
   name: iamwip-sample
 spec:
-  location: "global"
-  displayName: "sample-pool"
-  description: "A sample workload identity pool using a newly created project"
+  location: &#34;global&#34;
+  displayName: &#34;sample-pool&#34;
+  description: &#34;A sample workload identity pool using a newly created project&#34;
   disabled: false
   projectRef:
     # Replace ${PROJECT_ID?} with your project id
-    external: "projects/${PROJECT_ID?}"
+    external: &#34;projects/${PROJECT_ID?}&#34;
 ```
 
 

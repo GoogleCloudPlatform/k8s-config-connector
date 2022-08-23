@@ -155,7 +155,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Control over how this alert policy's notification channels are notified.{% endverbatim %}</p>
+            <p>{% verbatim %}Control over how this alert policy&#39;s notification channels are notified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -197,7 +197,7 @@ This limit is not implemented for alert policies that are not log-based.{% endve
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}How to combine the results of multiple conditions to
-determine if an incident should be opened. Possible values: ["AND", "OR", "AND_WITH_MATCHING_RESOURCE"].{% endverbatim %}</p>
+determine if an incident should be opened. Possible values: [&#34;AND&#34;, &#34;OR&#34;, &#34;AND_WITH_MATCHING_RESOURCE&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -308,7 +308,7 @@ then perSeriesAligner must be
 specified and not equal ALIGN_NONE
 and alignmentPeriod must be
 specified; otherwise, an error is
-returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"].{% endverbatim %}</p>
+returned. Possible values: [&#34;REDUCE_NONE&#34;, &#34;REDUCE_MEAN&#34;, &#34;REDUCE_MIN&#34;, &#34;REDUCE_MAX&#34;, &#34;REDUCE_SUM&#34;, &#34;REDUCE_STDDEV&#34;, &#34;REDUCE_COUNT&#34;, &#34;REDUCE_COUNT_TRUE&#34;, &#34;REDUCE_COUNT_FALSE&#34;, &#34;REDUCE_FRACTION_TRUE&#34;, &#34;REDUCE_PERCENTILE_99&#34;, &#34;REDUCE_PERCENTILE_95&#34;, &#34;REDUCE_PERCENTILE_50&#34;, &#34;REDUCE_PERCENTILE_05&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -378,7 +378,7 @@ then perSeriesAligner must be
 specified and not equal ALIGN_NONE
 and alignmentPeriod must be
 specified; otherwise, an error is
-returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"].{% endverbatim %}</p>
+returned. Possible values: [&#34;ALIGN_NONE&#34;, &#34;ALIGN_DELTA&#34;, &#34;ALIGN_RATE&#34;, &#34;ALIGN_INTERPOLATE&#34;, &#34;ALIGN_NEXT_OLDER&#34;, &#34;ALIGN_MIN&#34;, &#34;ALIGN_MAX&#34;, &#34;ALIGN_MEAN&#34;, &#34;ALIGN_COUNT&#34;, &#34;ALIGN_SUM&#34;, &#34;ALIGN_STDDEV&#34;, &#34;ALIGN_COUNT_TRUE&#34;, &#34;ALIGN_COUNT_FALSE&#34;, &#34;ALIGN_FRACTION_TRUE&#34;, &#34;ALIGN_PERCENTILE_99&#34;, &#34;ALIGN_PERCENTILE_95&#34;, &#34;ALIGN_PERCENTILE_50&#34;, &#34;ALIGN_PERCENTILE_05&#34;, &#34;ALIGN_PERCENT_CHANGE&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -535,7 +535,7 @@ alerted on quickly.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}A condition control that determines how
 metric-threshold conditions are evaluated when
-data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP"].{% endverbatim %}</p>
+data stops arriving. Possible values: [&#34;EVALUATION_MISSING_DATA_INACTIVE&#34;, &#34;EVALUATION_MISSING_DATA_ACTIVE&#34;, &#34;EVALUATION_MISSING_DATA_NO_OP&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -678,7 +678,7 @@ then perSeriesAligner must be
 specified and not equal ALIGN_NONE
 and alignmentPeriod must be
 specified; otherwise, an error is
-returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"].{% endverbatim %}</p>
+returned. Possible values: [&#34;REDUCE_NONE&#34;, &#34;REDUCE_MEAN&#34;, &#34;REDUCE_MIN&#34;, &#34;REDUCE_MAX&#34;, &#34;REDUCE_SUM&#34;, &#34;REDUCE_STDDEV&#34;, &#34;REDUCE_COUNT&#34;, &#34;REDUCE_COUNT_TRUE&#34;, &#34;REDUCE_COUNT_FALSE&#34;, &#34;REDUCE_FRACTION_TRUE&#34;, &#34;REDUCE_PERCENTILE_99&#34;, &#34;REDUCE_PERCENTILE_95&#34;, &#34;REDUCE_PERCENTILE_50&#34;, &#34;REDUCE_PERCENTILE_05&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -748,7 +748,7 @@ then perSeriesAligner must be
 specified and not equal ALIGN_NONE
 and alignmentPeriod must be
 specified; otherwise, an error is
-returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"].{% endverbatim %}</p>
+returned. Possible values: [&#34;ALIGN_NONE&#34;, &#34;ALIGN_DELTA&#34;, &#34;ALIGN_RATE&#34;, &#34;ALIGN_INTERPOLATE&#34;, &#34;ALIGN_NEXT_OLDER&#34;, &#34;ALIGN_MIN&#34;, &#34;ALIGN_MAX&#34;, &#34;ALIGN_MEAN&#34;, &#34;ALIGN_COUNT&#34;, &#34;ALIGN_SUM&#34;, &#34;ALIGN_STDDEV&#34;, &#34;ALIGN_COUNT_TRUE&#34;, &#34;ALIGN_COUNT_FALSE&#34;, &#34;ALIGN_FRACTION_TRUE&#34;, &#34;ALIGN_PERCENTILE_99&#34;, &#34;ALIGN_PERCENTILE_95&#34;, &#34;ALIGN_PERCENTILE_50&#34;, &#34;ALIGN_PERCENTILE_05&#34;, &#34;ALIGN_PERCENT_CHANGE&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -765,7 +765,7 @@ threshold_value). The comparison is applied
 on each time series, with the time series on
 the left-hand side and the threshold on the
 right-hand side. Only COMPARISON_LT and
-COMPARISON_GT are supported currently. Possible values: ["COMPARISON_GT", "COMPARISON_GE", "COMPARISON_LT", "COMPARISON_LE", "COMPARISON_EQ", "COMPARISON_NE"].{% endverbatim %}</p>
+COMPARISON_GT are supported currently. Possible values: [&#34;COMPARISON_GT&#34;, &#34;COMPARISON_GE&#34;, &#34;COMPARISON_LT&#34;, &#34;COMPARISON_LE&#34;, &#34;COMPARISON_EQ&#34;, &#34;COMPARISON_NE&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -849,7 +849,7 @@ then perSeriesAligner must be
 specified and not equal ALIGN_NONE
 and alignmentPeriod must be
 specified; otherwise, an error is
-returned. Possible values: ["REDUCE_NONE", "REDUCE_MEAN", "REDUCE_MIN", "REDUCE_MAX", "REDUCE_SUM", "REDUCE_STDDEV", "REDUCE_COUNT", "REDUCE_COUNT_TRUE", "REDUCE_COUNT_FALSE", "REDUCE_FRACTION_TRUE", "REDUCE_PERCENTILE_99", "REDUCE_PERCENTILE_95", "REDUCE_PERCENTILE_50", "REDUCE_PERCENTILE_05"].{% endverbatim %}</p>
+returned. Possible values: [&#34;REDUCE_NONE&#34;, &#34;REDUCE_MEAN&#34;, &#34;REDUCE_MIN&#34;, &#34;REDUCE_MAX&#34;, &#34;REDUCE_SUM&#34;, &#34;REDUCE_STDDEV&#34;, &#34;REDUCE_COUNT&#34;, &#34;REDUCE_COUNT_TRUE&#34;, &#34;REDUCE_COUNT_FALSE&#34;, &#34;REDUCE_FRACTION_TRUE&#34;, &#34;REDUCE_PERCENTILE_99&#34;, &#34;REDUCE_PERCENTILE_95&#34;, &#34;REDUCE_PERCENTILE_50&#34;, &#34;REDUCE_PERCENTILE_05&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -919,7 +919,7 @@ then perSeriesAligner must be
 specified and not equal ALIGN_NONE
 and alignmentPeriod must be
 specified; otherwise, an error is
-returned. Possible values: ["ALIGN_NONE", "ALIGN_DELTA", "ALIGN_RATE", "ALIGN_INTERPOLATE", "ALIGN_NEXT_OLDER", "ALIGN_MIN", "ALIGN_MAX", "ALIGN_MEAN", "ALIGN_COUNT", "ALIGN_SUM", "ALIGN_STDDEV", "ALIGN_COUNT_TRUE", "ALIGN_COUNT_FALSE", "ALIGN_FRACTION_TRUE", "ALIGN_PERCENTILE_99", "ALIGN_PERCENTILE_95", "ALIGN_PERCENTILE_50", "ALIGN_PERCENTILE_05", "ALIGN_PERCENT_CHANGE"].{% endverbatim %}</p>
+returned. Possible values: [&#34;ALIGN_NONE&#34;, &#34;ALIGN_DELTA&#34;, &#34;ALIGN_RATE&#34;, &#34;ALIGN_INTERPOLATE&#34;, &#34;ALIGN_NEXT_OLDER&#34;, &#34;ALIGN_MIN&#34;, &#34;ALIGN_MAX&#34;, &#34;ALIGN_MEAN&#34;, &#34;ALIGN_COUNT&#34;, &#34;ALIGN_SUM&#34;, &#34;ALIGN_STDDEV&#34;, &#34;ALIGN_COUNT_TRUE&#34;, &#34;ALIGN_COUNT_FALSE&#34;, &#34;ALIGN_FRACTION_TRUE&#34;, &#34;ALIGN_PERCENTILE_99&#34;, &#34;ALIGN_PERCENTILE_95&#34;, &#34;ALIGN_PERCENTILE_50&#34;, &#34;ALIGN_PERCENTILE_05&#34;, &#34;ALIGN_PERCENT_CHANGE&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -979,7 +979,7 @@ alerted on quickly.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}A condition control that determines how
 metric-threshold conditions are evaluated when
-data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP"].{% endverbatim %}</p>
+data stops arriving. Possible values: [&#34;EVALUATION_MISSING_DATA_INACTIVE&#34;, &#34;EVALUATION_MISSING_DATA_ACTIVE&#34;, &#34;EVALUATION_MISSING_DATA_NO_OP&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1064,7 +1064,7 @@ condition to be triggered.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}A short name or phrase used to identify the
 condition in dashboards, notifications, and
-incidents. To avoid confusion, don't use the same
+incidents. To avoid confusion, don&#39;t use the same
 display name for multiple conditions in the same
 policy.{% endverbatim %}</p>
         </td>
@@ -1092,7 +1092,7 @@ policy.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}A short name or phrase used to identify the policy in
-dashboards, notifications, and incidents. To avoid confusion, don't use
+dashboards, notifications, and incidents. To avoid confusion, don&#39;t use
 the same display name for multiple policies in the same project. The
 name is limited to 512 Unicode characters.{% endverbatim %}</p>
         </td>
@@ -1132,7 +1132,7 @@ whichever is smaller.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The format of the content field. Presently, only the value
-"text/markdown" is supported.{% endverbatim %}</p>
+&#34;text/markdown&#34; is supported.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1239,7 +1239,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1267,7 +1267,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1338,14 +1338,14 @@ Its syntax is: projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID].{% endverba
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1366,7 +1366,7 @@ spec:
   conditions:
   - displayName: CPU usage is extremely high
     conditionThreshold:
-      filter: metric.type="compute.googleapis.com/instance/cpu/utilization" AND resource.type="gce_instance"
+      filter: metric.type=&#34;compute.googleapis.com/instance/cpu/utilization&#34; AND resource.type=&#34;gce_instance&#34;
       aggregations:
       - perSeriesAligner: ALIGN_MAX
         alignmentPeriod: 60s
@@ -1382,7 +1382,7 @@ spec:
         count: 1
   - displayName: CPU usage is increasing at a high rate
     conditionThreshold:
-      filter: metric.type="compute.googleapis.com/instance/cpu/utilization" AND resource.type="gce_instance"
+      filter: metric.type=&#34;compute.googleapis.com/instance/cpu/utilization&#34; AND resource.type=&#34;gce_instance&#34;
       aggregations:
       - alignmentPeriod: 900s
         perSeriesAligner: ALIGN_PERCENT_CHANGE
@@ -1391,9 +1391,9 @@ spec:
       duration: 180s
       trigger:
         count: 1
-  - displayName: Process 'nginx' is not running
+  - displayName: Process &#39;nginx&#39; is not running
     conditionThreshold:
-      filter: select_process_count("has_substring(\"nginx\")", "www") AND resource.type="gce_instance"
+      filter: select_process_count(&#34;has_substring(\&#34;nginx\&#34;)&#34;, &#34;www&#34;) AND resource.type=&#34;gce_instance&#34;
       comparison: COMPARISON_LT
       thresholdValue: 1
       duration: 300s
@@ -1406,15 +1406,15 @@ spec:
       AND_WITH_MATCHING_RESOURCE combiners go one step further and only trigger when all conditions are met for the same resource, in this case, a GCE instance.
 
       Metric-threshold condition
-      The first condition in this policy, "CPU usage is extremely high", tests average CPU usage in a group of VMs.
+      The first condition in this policy, &#34;CPU usage is extremely high&#34;, tests average CPU usage in a group of VMs.
 
       Rate-of-change condition
-      The second condition in this policy, "CPU usage is increasing at a high rate" tests if the rate of CPU utilization is increasing rapidly.
+      The second condition in this policy, &#34;CPU usage is increasing at a high rate&#34; tests if the rate of CPU utilization is increasing rapidly.
 
       Process-health condition
-      The third condition in this policy, "Process 'nginx' is not running", tests if there is no process matching the string nginx and running as user www available for more than 5 minutes.
+      The third condition in this policy, &#34;Process &#39;nginx&#39; is not running&#34;, tests if there is no process matching the string nginx and running as user www available for more than 5 minutes.
 
-      All together, this policy would monitor for a situation where the lack of an 'nginx' process caused a spike in CPU usage in the same instance and elevated CPU usage across all instances in its group.
+      All together, this policy would monitor for a situation where the lack of an &#39;nginx&#39; process caused a spike in CPU usage in the same instance and elevated CPU usage across all instances in its group.
 ---
 apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
 kind: MonitoringNotificationChannel
@@ -1423,21 +1423,21 @@ metadata:
 spec:
   type: sms
   labels:
-    number: "12025550196"
+    number: &#34;12025550196&#34;
 ```
 
 ### Network Connectivity Alert Policy
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1459,7 +1459,7 @@ spec:
   conditions:
   - displayName: Failure of uptime check_id uptime-check-for-google-cloud-site
     conditionThreshold:
-      filter: metric.type="monitoring.googleapis.com/uptime_check/check_passed" AND metric.label.check_id="uptime-check-for-google-cloud-site" AND resource.type="uptime_url"
+      filter: metric.type=&#34;monitoring.googleapis.com/uptime_check/check_passed&#34; AND metric.label.check_id=&#34;uptime-check-for-google-cloud-site&#34; AND resource.type=&#34;uptime_url&#34;
       aggregations:
       - perSeriesAligner: ALIGN_NEXT_OLDER
         alignmentPeriod: 1200s
@@ -1473,7 +1473,7 @@ spec:
         count: 1
   - displayName: SSL Certificate for google-cloud-site expiring soon
     conditionThreshold:
-      filter: metric.type="monitoring.googleapis.com/uptime_check/time_until_ssl_cert_expires" AND metric.label.check_id="uptime-check-for-google-cloud-site" AND resource.type="uptime_url"
+      filter: metric.type=&#34;monitoring.googleapis.com/uptime_check/time_until_ssl_cert_expires&#34; AND metric.label.check_id=&#34;uptime-check-for-google-cloud-site&#34; AND resource.type=&#34;uptime_url&#34;
       aggregations:
       - alignmentPeriod: 1200s
         perSeriesAligner: ALIGN_NEXT_OLDER
@@ -1487,11 +1487,11 @@ spec:
         count: 1
   - displayName: Uptime check running
     conditionAbsent:
-      filter: metric.type="monitoring.googleapis.com/uptime_check/check_passed" AND metric.label.check_id="uptime-check-for-google-cloud-site" AND resource.type="uptime_url"
+      filter: metric.type=&#34;monitoring.googleapis.com/uptime_check/check_passed&#34; AND metric.label.check_id=&#34;uptime-check-for-google-cloud-site&#34; AND resource.type=&#34;uptime_url&#34;
       duration: 3900s
   - displayName: Ratio of HTTP 500s error-response counts to all HTTP response counts
     conditionThreshold:
-      filter: metric.label.response_code>="500" AND metric.label.response_code<"600" AND metric.type="appengine.googleapis.com/http/server/response_count" AND resource.type="gae_app"
+      filter: metric.label.response_code&gt;=&#34;500&#34; AND metric.label.response_code&lt;&#34;600&#34; AND metric.type=&#34;appengine.googleapis.com/http/server/response_count&#34; AND resource.type=&#34;gae_app&#34;
       aggregations:
       - alignmentPeriod: 300s
         perSeriesAligner: ALIGN_DELTA
@@ -1500,7 +1500,7 @@ spec:
         - project
         - resource.label.module_id
         - resource.label.version_id
-      denominatorFilter: metric.type="appengine.googleapis.com/http/server/response_count" AND resource.type="gae_app"
+      denominatorFilter: metric.type=&#34;appengine.googleapis.com/http/server/response_count&#34; AND resource.type=&#34;gae_app&#34;
       denominatorAggregations:
       - alignmentPeriod: 300s
         perSeriesAligner: ALIGN_DELTA
@@ -1522,17 +1522,17 @@ spec:
       OR combiner policies will trigger an incident when any of their conditions are met. They should be considered the default for most purposes.
 
       Uptime-check conditions
-      The first three conditions in this policy involve an uptime check with the ID 'uptime-check-for-google-cloud-site'.
+      The first three conditions in this policy involve an uptime check with the ID &#39;uptime-check-for-google-cloud-site&#39;.
 
-      The first condition, "Failure of uptime check_id uptime-check-for-google-cloud-site", tests if the uptime check fails.
-      The second condition, "SSL Certificate for google-cloud-site expiring soon", tests if the SSL certificate on the Google Cloud site will expire in under 15 days.
+      The first condition, &#34;Failure of uptime check_id uptime-check-for-google-cloud-site&#34;, tests if the uptime check fails.
+      The second condition, &#34;SSL Certificate for google-cloud-site expiring soon&#34;, tests if the SSL certificate on the Google Cloud site will expire in under 15 days.
 
       Metric-absence condition
-      The third condition in this policy, "Uptime check running" tests if the aforementioned uptime check is not written to for a period of approximately an hour.
+      The third condition in this policy, &#34;Uptime check running&#34; tests if the aforementioned uptime check is not written to for a period of approximately an hour.
       Note that unlike all the conditions so far, the condition used here is conditionAbsent, because the test is for the lack of a metric.
 
       Metric ratio
-      The fourth and last condition in this policy, "Ratio of HTTP 500s error-response counts to all HTTP response counts", tests that 5XX error codes do not make up more than half of all HTTP responses. It targets a different set of metrics through appengine.
+      The fourth and last condition in this policy, &#34;Ratio of HTTP 500s error-response counts to all HTTP response counts&#34;, tests that 5XX error codes do not make up more than half of all HTTP responses. It targets a different set of metrics through appengine.
       
       All together, this policy would monitor for a situation where any of the above conditions threatened the health of the website.
 ---
@@ -1543,7 +1543,7 @@ metadata:
 spec:
   type: sms
   labels:
-    number: "12025550196"
+    number: &#34;12025550196&#34;
 ---
 apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
 kind: MonitoringNotificationChannel

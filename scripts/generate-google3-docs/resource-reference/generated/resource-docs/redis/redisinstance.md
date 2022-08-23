@@ -148,8 +148,8 @@ If provided, it must be a different zone from the one provided in
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Optional. Indicates whether OSS Redis AUTH is enabled for the
-instance. If set to "true" AUTH is enabled on the instance.
-Default value is "false" meaning AUTH is disabled.{% endverbatim %}</p>
+instance. If set to &#34;true&#34; AUTH is enabled on the instance.
+Default value is &#34;false&#34; meaning AUTH is disabled.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -210,7 +210,7 @@ unspecified, the default network will be used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The connection mode of the Redis instance. Default value: "DIRECT_PEERING" Possible values: ["DIRECT_PEERING", "PRIVATE_SERVICE_ACCESS"].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The connection mode of the Redis instance. Default value: &#34;DIRECT_PEERING&#34; Possible values: [&#34;DIRECT_PEERING&#34;, &#34;PRIVATE_SERVICE_ACCESS&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -297,7 +297,7 @@ be different from [locationId].{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. The time when the policy was created.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+A timestamp in RFC3339 UTC &#34;Zulu&#34; format, with nanosecond
 resolution and up to nine fractional digits.{% endverbatim %}</p>
         </td>
     </tr>
@@ -321,7 +321,7 @@ length is greater than 512.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. The time when the policy was last updated.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+A timestamp in RFC3339 UTC &#34;Zulu&#34; format, with nanosecond
 resolution and up to nine fractional digits.{% endverbatim %}</p>
         </td>
     </tr>
@@ -363,7 +363,7 @@ of weekly_window is expected to be one.{% endverbatim %}</p>
 - THURSDAY: Thursday
 - FRIDAY: Friday
 - SATURDAY: Saturday
-- SUNDAY: Sunday Possible values: ["DAY_OF_WEEK_UNSPECIFIED", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"].{% endverbatim %}</p>
+- SUNDAY: Sunday Possible values: [&#34;DAY_OF_WEEK_UNSPECIFIED&#34;, &#34;MONDAY&#34;, &#34;TUESDAY&#34;, &#34;WEDNESDAY&#34;, &#34;THURSDAY&#34;, &#34;FRIDAY&#34;, &#34;SATURDAY&#34;, &#34;SUNDAY&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -376,7 +376,7 @@ of weekly_window is expected to be one.{% endverbatim %}</p>
             <p>{% verbatim %}Output only. Duration of the maintenance window.
 The current window is fixed at 1 hour.
 A duration in seconds with up to nine fractional digits,
-terminated by 's'. Example: "3.5s".{% endverbatim %}</p>
+terminated by &#39;s&#39;. Example: &#34;3.5s&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -397,7 +397,7 @@ terminated by 's'. Example: "3.5s".{% endverbatim %}</p>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23.
-An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
+An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -449,7 +449,7 @@ An API may allow the value 60 if it allows leap-seconds.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. The end time of any upcoming scheduled maintenance for this instance.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+A timestamp in RFC3339 UTC &#34;Zulu&#34; format, with nanosecond
 resolution and up to nine fractional digits.{% endverbatim %}</p>
         </td>
     </tr>
@@ -462,7 +462,7 @@ resolution and up to nine fractional digits.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. The deadline that the maintenance schedule start time
 can not go beyond, including reschedule.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+A timestamp in RFC3339 UTC &#34;Zulu&#34; format, with nanosecond
 resolution and up to nine fractional digits.{% endverbatim %}</p>
         </td>
     </tr>
@@ -474,7 +474,7 @@ resolution and up to nine fractional digits.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. The start time of any upcoming scheduled maintenance for this instance.
-A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+A timestamp in RFC3339 UTC &#34;Zulu&#34; format, with nanosecond
 resolution and up to nine fractional digits.{% endverbatim %}</p>
         </td>
     </tr>
@@ -500,7 +500,7 @@ If not set, Memorystore Redis backend will default to READ_REPLICAS_DISABLED.
 - READ_REPLICAS_DISABLED: If disabled, read endpoint will not be provided and the 
 instance cannot scale up or down the number of replicas.
 - READ_REPLICAS_ENABLED: If enabled, read endpoint will be provided and the instance 
-can scale up and down the number of replicas. Possible values: ["READ_REPLICAS_DISABLED", "READ_REPLICAS_ENABLED"].{% endverbatim %}</p>
+can scale up and down the number of replicas. Possible values: [&#34;READ_REPLICAS_DISABLED&#34;, &#34;READ_REPLICAS_ENABLED&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -583,8 +583,8 @@ network.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Optional. Additional IP range for node placement. Required when enabling read replicas on
 an existing instance. For DIRECT_PEERING mode value must be a CIDR range of size /28, or
-"auto". For PRIVATE_SERVICE_ACCESS mode value must be the name of an allocated address 
-range associated with the private service access connection, or "auto".{% endverbatim %}</p>
+&#34;auto&#34;. For PRIVATE_SERVICE_ACCESS mode value must be the name of an allocated address 
+range associated with the private service access connection, or &#34;auto&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -597,7 +597,7 @@ range associated with the private service access connection, or "auto".{% endver
             <p>{% verbatim %}Immutable. The service tier of the instance. Must be one of these values:
 
 - BASIC: standalone instance
-- STANDARD_HA: highly available primary/replica instances Default value: "BASIC" Possible values: ["BASIC", "STANDARD_HA"].{% endverbatim %}</p>
+- STANDARD_HA: highly available primary/replica instances Default value: &#34;BASIC&#34; Possible values: [&#34;BASIC&#34;, &#34;STANDARD_HA&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -609,7 +609,7 @@ range associated with the private service access connection, or "auto".{% endver
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The TLS mode of the Redis instance, If not provided, TLS is disabled for the instance.
 
-- SERVER_AUTHENTICATION: Client to Server traffic encryption enabled with server authentication Default value: "DISABLED" Possible values: ["SERVER_AUTHENTICATION", "DISABLED"].{% endverbatim %}</p>
+- SERVER_AUTHENTICATION: Client to Server traffic encryption enabled with server authentication Default value: &#34;DISABLED&#34; Possible values: [&#34;SERVER_AUTHENTICATION&#34;, &#34;DISABLED&#34;].{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -658,7 +658,7 @@ serverCaCerts:
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -686,7 +686,7 @@ serverCaCerts:
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -707,7 +707,7 @@ serverCaCerts:
         <td><code>createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time the instance was created in RFC3339 UTC "Zulu" format,
+            <p>{% verbatim %}The time the instance was created in RFC3339 UTC &#34;Zulu&#34; format,
 accurate to nanoseconds.{% endverbatim %}</p>
         </td>
     </tr>
@@ -748,7 +748,7 @@ to connect to the service.{% endverbatim %}</p>
         <td><code>nodes[].id</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Node identifying string. e.g. 'node-0', 'node-1'.{% endverbatim %}</p>
+            <p>{% verbatim %}Node identifying string. e.g. &#39;node-0&#39;, &#39;node-1&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -770,7 +770,7 @@ to connect to the service.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. Cloud IAM identity used by import / export operations
-to transfer data to/from Cloud Storage. Format is "serviceAccount:".
+to transfer data to/from Cloud Storage. Format is &#34;serviceAccount:&#34;.
 The value may change over time for a given instance so should be
 checked before each import/export operation.{% endverbatim %}</p>
         </td>
@@ -788,7 +788,7 @@ checked before each import/export operation.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. Hostname or IP address of the exposed readonly Redis endpoint. Standard tier only.
 Targets all healthy replica nodes in instance. Replication is asynchronous and replica nodes
-will exhibit some lag behind the primary. Write requests must target 'host'.{% endverbatim %}</p>
+will exhibit some lag behind the primary. Write requests must target &#39;host&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -796,7 +796,7 @@ will exhibit some lag behind the primary. Write requests must target 'host'.{% e
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}Output only. The port number of the exposed readonly redis endpoint. Standard tier only. 
-Write requests should target 'port'.{% endverbatim %}</p>
+Write requests should target &#39;port&#39;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -857,14 +857,14 @@ Write requests should target 'port'.{% endverbatim %}</p>
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -873,7 +873,7 @@ apiVersion: redis.cnrm.cloud.google.com/v1beta1
 kind: RedisInstance
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   name: redisinstance-sample
 spec:
   displayName: Sample Redis Instance

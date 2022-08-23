@@ -425,7 +425,7 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The Compute Engine network to be used for machine communications. Cannot be specified with subnetwork_uri. If neither `network_uri` nor `subnetwork_uri` is specified, the "default" network of the project is used, if it exists. Cannot be a "Custom Subnet Network" (see [Using Subnetworks](https://cloud.google.com/compute/docs/subnetworks) for more information). A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/regions/global/default` * `projects/[project_id]/regions/global/default` * `default`
+            <p>{% verbatim %}Optional. The Compute Engine network to be used for machine communications. Cannot be specified with subnetwork_uri. If neither `network_uri` nor `subnetwork_uri` is specified, the &#34;default&#34; network of the project is used, if it exists. Cannot be a &#34;Custom Subnet Network&#34; (see [Using Subnetworks](https://cloud.google.com/compute/docs/subnetworks) for more information). A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/regions/global/default` * `projects/[project_id]/regions/global/default` * `default`
 
 Allowed value: The `selfLink` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
         </td>
@@ -693,7 +693,7 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverb
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The zone where the Compute Engine cluster will be located. On a create request, it is required in the "global" region. If omitted in a non-global Dataproc region, the service will pick a zone in the corresponding Compute Engine region. On a get request, zone will always be present. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]` * `projects/[project_id]/zones/[zone]` * `us-central1-f`{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. The zone where the Compute Engine cluster will be located. On a create request, it is required in the &#34;global&#34; region. If omitted in a non-global Dataproc region, the service will pick a zone in the corresponding Compute Engine region. On a get request, zone will always be present. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]` * `projects/[project_id]/zones/[zone]` * `us-central1-f`{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -703,7 +703,7 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverb
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. Optional. Commands to execute on each node after config is completed. By default, executables are run on master and all worker nodes. You can test a node's `role` metadata to run an executable on a master or worker node, as shown below using `curl` (you can also use `wget`): ROLE=$(curl -H Metadata-Flavor:Google http://metadata/computeMetadata/v1/instance/attributes/dataproc-role) if [[ "${ROLE}" == 'Master' ]]; then ... master specific actions ... else ... worker specific actions ... fi{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. Commands to execute on each node after config is completed. By default, executables are run on master and all worker nodes. You can test a node&#39;s `role` metadata to run an executable on a master or worker node, as shown below using `curl` (you can also use `wget`): ROLE=$(curl -H Metadata-Flavor:Google http://metadata/computeMetadata/v1/instance/attributes/dataproc-role) if [[ &#34;${ROLE}&#34; == &#39;Master&#39; ]]; then ... master specific actions ... else ... worker specific actions ... fi{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -853,7 +853,7 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverb
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive), "pd-ssd" (Persistent Disk Solid State Drive), or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. Type of the boot disk (default is &#34;pd-standard&#34;). Valid values: &#34;pd-balanced&#34; (Persistent Disk Balanced Solid State Drive), &#34;pd-ssd&#34; (Persistent Disk Solid State Drive), or &#34;pd-standard&#34; (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -925,7 +925,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -&gt; Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1025,7 +1025,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive), "pd-ssd" (Persistent Disk Solid State Drive), or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. Type of the boot disk (default is &#34;pd-standard&#34;). Valid values: &#34;pd-balanced&#34; (Persistent Disk Balanced Solid State Drive), &#34;pd-ssd&#34; (Persistent Disk Solid State Drive), or &#34;pd-standard&#34; (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1097,7 +1097,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -&gt; Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1339,7 +1339,7 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The version of software inside the cluster. It must be one of the supported [Dataproc Versions](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions), such as "1.2" (including a subminor version, such as "1.2.29"), or the ["preview" version](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. The version of software inside the cluster. It must be one of the supported [Dataproc Versions](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions), such as &#34;1.2&#34; (including a subminor version, such as &#34;1.2.29&#34;), or the [&#34;preview&#34; version](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1389,7 +1389,7 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see [Dataproc staging bucket](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). **This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.**
+            <p>{% verbatim %}Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#39;s staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see [Dataproc staging bucket](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). **This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.**
 
 Allowed value: The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).{% endverbatim %}</p>
         </td>
@@ -1431,7 +1431,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket. **This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.**
+            <p>{% verbatim %}Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#39;s temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket. **This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.**
 
 Allowed value: The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).{% endverbatim %}</p>
         </td>
@@ -1533,7 +1533,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive), "pd-ssd" (Persistent Disk Solid State Drive), or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. Type of the boot disk (default is &#34;pd-standard&#34;). Valid values: &#34;pd-balanced&#34; (Persistent Disk Balanced Solid State Drive), &#34;pd-ssd&#34; (Persistent Disk Solid State Drive), or &#34;pd-standard&#34; (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1605,7 +1605,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -&gt; Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1770,7 +1770,7 @@ statusHistory:
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1798,7 +1798,7 @@ statusHistory:
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2036,14 +2036,14 @@ statusHistory:
         <td><code>status.detail</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. Output only. Details of cluster's state.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Output only. Details of cluster&#39;s state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>status.state</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The cluster's state. Possible values: UNKNOWN, CREATING, RUNNING, ERROR, DELETING, UPDATING, STOPPING, STOPPED, STARTING{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The cluster&#39;s state. Possible values: UNKNOWN, CREATING, RUNNING, ERROR, DELETING, UPDATING, STOPPING, STOPPED, STARTING{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2078,14 +2078,14 @@ statusHistory:
         <td><code>statusHistory[].detail</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. Output only. Details of cluster's state.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Output only. Details of cluster&#39;s state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>statusHistory[].state</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The cluster's state. Possible values: UNKNOWN, CREATING, RUNNING, ERROR, DELETING, UPDATING, STOPPING, STOPPED, STARTING{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The cluster&#39;s state. Possible values: UNKNOWN, CREATING, RUNNING, ERROR, DELETING, UPDATING, STOPPING, STOPPED, STARTING{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2111,14 +2111,14 @@ statusHistory:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -2127,12 +2127,12 @@ apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
 kind: DataprocCluster
 metadata:
   annotations:
-    cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
+    cnrm.cloud.google.com/management-conflict-prevention-policy: &#34;none&#34;
   name: dataproccluster-sample
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
 spec:
-  location: "us-central1"
+  location: &#34;us-central1&#34;
   config:
     autoscalingConfig:
       policyRef:
@@ -2143,23 +2143,23 @@ spec:
       diskConfig:
         bootDiskSizeGb: 30
         bootDiskType: pd-standard
-      machineType: "n2-standard-2"
+      machineType: &#34;n2-standard-2&#34;
       numInstances: 1
     workerConfig:
       numInstances: 2
-      machineType: "n2-standard-2"
+      machineType: &#34;n2-standard-2&#34;
       diskConfig:
         bootDiskSizeGb: 30
         numLocalSsds: 1
     softwareConfig:
-      imageVersion: "2.0.39-debian10"
+      imageVersion: &#34;2.0.39-debian10&#34;
     gceClusterConfig:
       tags:
-      - "foo"
-      - "bar"
+      - &#34;foo&#34;
+      - &#34;bar&#34;
     initializationActions:
-    - executableFile: "gs://dataproc-initialization-actions/stackdriver/stackdriver.sh"
-      executionTimeout: "500s"
+    - executableFile: &#34;gs://dataproc-initialization-actions/stackdriver/stackdriver.sh&#34;
+      executionTimeout: &#34;500s&#34;
 ---
 apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
 kind: DataprocAutoscalingPolicy
@@ -2167,14 +2167,14 @@ metadata:
   annotations:
   name: dataproccluster-dep
 spec:
-  location: "us-central1"
+  location: &#34;us-central1&#34;
   workerConfig:
     maxInstances: 5
   secondaryWorkerConfig:
     maxInstances: 2
   basicAlgorithm:
     yarnConfig:
-      gracefulDecommissionTimeout: "30s"
+      gracefulDecommissionTimeout: &#34;30s&#34;
       scaleDownFactor: 0.5
       scaleUpFactor: 0.5
 ---
@@ -2182,9 +2182,9 @@ apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
 metadata:
   annotations:
-    cnrm.cloud.google.com/force-destroy: "true"
+    cnrm.cloud.google.com/force-destroy: &#34;true&#34;
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   name: dataproccluster-dep-staging
 spec:
   # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.

@@ -221,7 +221,7 @@ thresholdRules:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The name of the Pub/Sub topic where budget related messages will be published, in the form `projects/{project_id}/topics/{topic_id}`. Updates are sent at regular intervals to the topic. The topic needs to be created before the budget is created; see https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications for more details. Caller is expected to have `pubsub.topics.setIamPolicy` permission on the topic when it's set for a budget, otherwise, the API call will fail with PERMISSION_DENIED. See https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#permissions_required_for_this_task for more details on Pub/Sub roles and permissions.
+            <p>{% verbatim %}Optional. The name of the Pub/Sub topic where budget related messages will be published, in the form `projects/{project_id}/topics/{topic_id}`. Updates are sent at regular intervals to the topic. The topic needs to be created before the budget is created; see https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications for more details. Caller is expected to have `pubsub.topics.setIamPolicy` permission on the topic when it&#39;s set for a budget, otherwise, the API call will fail with PERMISSION_DENIED. See https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#permissions_required_for_this_task for more details on Pub/Sub roles and permissions.
 
 Allowed value: The Google Cloud resource name of a `PubSubTopic` resource (format: `projects/{{project}}/topics/{{name}}`).{% endverbatim %}</p>
         </td>
@@ -253,7 +253,7 @@ Allowed value: The Google Cloud resource name of a `PubSubTopic` resource (forma
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. Required when NotificationsRule.pubsub_topic is set. The schema version of the notification sent to NotificationsRule.pubsub_topic. Only "1.0" is accepted. It represents the JSON schema as defined in https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Required when NotificationsRule.pubsub_topic is set. The schema version of the notification sent to NotificationsRule.pubsub_topic. Only &#34;1.0&#34; is accepted. It represents the JSON schema as defined in https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -273,7 +273,7 @@ Allowed value: The Google Cloud resource name of a `PubSubTopic` resource (forma
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Use the last period's actual spend as the budget for the present period. LastPeriodAmount can only be set when the budget's time period is a .{% endverbatim %}</p>
+            <p>{% verbatim %}Use the last period&#39;s actual spend as the budget for the present period. LastPeriodAmount can only be set when the budget&#39;s time period is a .{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -303,7 +303,7 @@ Allowed value: The Google Cloud resource name of a `PubSubTopic` resource (forma
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Number of nano (10^-9) units of the amount. The value must be between -999,999,999 and +999,999,999 inclusive. If `units` is positive, `nanos` must be positive or zero. If `units` is zero, `nanos` can be positive, zero, or negative. If `units` is negative, `nanos` must be negative or zero. For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.{% endverbatim %}</p>
+            <p>{% verbatim %}Number of nano (10^-9) units of the amount. The value must be between -999,999,999 and &#43;999,999,999 inclusive. If `units` is positive, `nanos` must be positive or zero. If `units` is zero, `nanos` can be positive, zero, or negative. If `units` is negative, `nanos` must be negative or zero. For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -313,7 +313,7 @@ Allowed value: The Google Cloud resource name of a `PubSubTopic` resource (forma
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The whole units of the amount. For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar.{% endverbatim %}</p>
+            <p>{% verbatim %}The whole units of the amount. For example if `currencyCode` is `&#34;USD&#34;`, then 1 unit is one US dollar.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -345,7 +345,7 @@ Allowed value: The Google Cloud resource name of a Google Cloud Billing Account 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[WARNING] BillingAccount not yet supported in Config Connector, use 'external' field to reference existing resources.
+            <p>{% verbatim %}[WARNING] BillingAccount not yet supported in Config Connector, use &#39;external&#39; field to reference existing resources.
 Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
         </td>
     </tr>
@@ -366,7 +366,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Optional. Filters that define which resources are used to compute the actual spend against the budget amount, such as projects, services, and the budget's time period, as well as other filters.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Filters that define which resources are used to compute the actual spend against the budget amount, such as projects, services, and the budget&#39;s time period, as well as other filters.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -426,7 +426,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. The end date of the time period. Budgets with elapsed end date won't be processed. If unset, specifies to track all usage incurred since the start_date.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. The end date of the time period. Budgets with elapsed end date won&#39;t be processed. If unset, specifies to track all usage incurred since the start_date.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -436,7 +436,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -476,7 +476,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn&#39;t significant.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -616,7 +616,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[WARNING] CloudBillingBillingAccount not yet supported in Config Connector, use 'external' field to reference existing resources.
+            <p>{% verbatim %}[WARNING] CloudBillingBillingAccount not yet supported in Config Connector, use &#39;external&#39; field to reference existing resources.
 Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
         </td>
     </tr>
@@ -721,7 +721,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -749,7 +749,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -789,14 +789,14 @@ observedGeneration: integer
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -807,37 +807,37 @@ metadata:
   name: billingbudgetsbudget-sample-calendarbudget
 spec:
   billingAccountRef:
-    # Replace "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}" with the numeric ID for your billing account
-    external: "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}"
-  displayName: "sample-budget"
+    # Replace &#34;${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}&#34; with the numeric ID for your billing account
+    external: &#34;${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}&#34;
+  displayName: &#34;sample-budget&#34;
   budgetFilter:
     projects:
-    - name: "billingbudgetsbudget-dep-calb"
+    - name: &#34;billingbudgetsbudget-dep-calb&#34;
     creditTypes:
-    - "DISCOUNT"
-    creditTypesTreatment: "INCLUDE_SPECIFIED_CREDITS"
+    - &#34;DISCOUNT&#34;
+    creditTypesTreatment: &#34;INCLUDE_SPECIFIED_CREDITS&#34;
     services:
     # This is the service name for the Geolocation API.
-    - "services/0245-C3C9-3864"
+    - &#34;services/0245-C3C9-3864&#34;
     labels:
       label-one:
         values:
-        - "value-one"
-    calendarPeriod: "MONTH"
+        - &#34;value-one&#34;
+    calendarPeriod: &#34;MONTH&#34;
   amount:
     specifiedAmount:
-      currencyCode: "USD"
+      currencyCode: &#34;USD&#34;
       units: 9000000
       nanos: 0
   thresholdRules:
   - thresholdPercent: 0.5
-    spendBasis: "CURRENT_SPEND"
+    spendBasis: &#34;CURRENT_SPEND&#34;
   allUpdatesRule:
     pubsubTopicRef:
-      name: "billingbudgetsbudget-dep-calendarbudget"
-    schemaVersion: "1.0"
+      name: &#34;billingbudgetsbudget-dep-calendarbudget&#34;
+    schemaVersion: &#34;1.0&#34;
     monitoringNotificationChannels:
-    - name: "billingbudgetsbudget-dep-calendarbudget"
+    - name: &#34;billingbudgetsbudget-dep-calendarbudget&#34;
     disableDefaultIamRecipients: false
 ---
 apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
@@ -847,7 +847,7 @@ metadata:
 spec:
   labels:
     email_address: test@example.com
-  type: "email"
+  type: &#34;email&#34;
 ---
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
@@ -860,26 +860,26 @@ metadata:
   name: billingbudgetsbudget-dep-calb
 spec:
   organizationRef:
-    # Replace "${ORG_ID?}" with the numeric ID for your organization
-    external: "${ORG_ID?}"
-  name: "billingbudgetsbudget-dep-calb"
+    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
+    external: &#34;${ORG_ID?}&#34;
+  name: &#34;billingbudgetsbudget-dep-calb&#34;
   billingAccountRef:
-    # Replace "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}" with the numeric ID for your billing account
-    external: "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}"
+    # Replace &#34;${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}&#34; with the numeric ID for your billing account
+    external: &#34;${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}&#34;
 ```
 
 ### Custom Budget
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -890,12 +890,12 @@ metadata:
   name: billingbudgetsbudget-sample-custombudget
 spec:
   billingAccountRef:
-    # Replace "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}" with the numeric ID for your billing account
-    external: "${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}"
+    # Replace &#34;${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}&#34; with the numeric ID for your billing account
+    external: &#34;${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}&#34;
   budgetFilter:
     creditTypes:
-    - "DISCOUNT"
-    creditTypesTreatment: "INCLUDE_SPECIFIED_CREDITS"
+    - &#34;DISCOUNT&#34;
+    creditTypesTreatment: &#34;INCLUDE_SPECIFIED_CREDITS&#34;
     customPeriod:
       startDate:
         year: 2140
@@ -907,7 +907,7 @@ spec:
         day: 14
   amount:
     specifiedAmount:
-      currencyCode: "USD"
+      currencyCode: &#34;USD&#34;
       units: 9000000
       nanos: 0
 ```

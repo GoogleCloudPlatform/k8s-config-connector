@@ -456,7 +456,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -484,7 +484,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -601,14 +601,14 @@ selfLink: string
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -620,20 +620,20 @@ metadata:
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: "projects/${PROJECT_ID?}"
-  location: "us-west2"
-  description: "A sample service attachment"
+     external: &#34;projects/${PROJECT_ID?}&#34;
+  location: &#34;us-west2&#34;
+  description: &#34;A sample service attachment&#34;
   targetServiceRef:
-    name: "computeserviceattachment-dep"
-  connectionPreference: "ACCEPT_MANUAL"
+    name: &#34;computeserviceattachment-dep&#34;
+  connectionPreference: &#34;ACCEPT_MANUAL&#34;
   natSubnets:
-  - name: "computeserviceattachment-dep1"
+  - name: &#34;computeserviceattachment-dep1&#34;
   enableProxyProtocol: false
   consumerRejectLists:
-  - name: "computeserviceattachment-dep1"
+  - name: &#34;computeserviceattachment-dep1&#34;
   consumerAcceptLists:
   - projectRef:
-      name: "computeserviceattachment-dep2"
+      name: &#34;computeserviceattachment-dep2&#34;
     connectionLimit: 2
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
@@ -641,26 +641,26 @@ kind: ComputeBackendService
 metadata:
   name: computeserviceattachment-dep
 spec:
-  location: "us-west2"
+  location: &#34;us-west2&#34;
   networkRef:
-    name: "computeserviceattachment-dep"
-  loadBalancingScheme: "INTERNAL"
+    name: &#34;computeserviceattachment-dep&#34;
+  loadBalancingScheme: &#34;INTERNAL&#34;
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   name: computeserviceattachment-dep
 spec:
-  location: "us-west2"
+  location: &#34;us-west2&#34;
   networkRef:
-    name: "computeserviceattachment-dep"
+    name: &#34;computeserviceattachment-dep&#34;
   subnetworkRef:
-    name: "computeserviceattachment-dep3"
-  description: "A test forwarding rule with internal load balancing scheme"
-  loadBalancingScheme: "INTERNAL"
+    name: &#34;computeserviceattachment-dep3&#34;
+  description: &#34;A test forwarding rule with internal load balancing scheme&#34;
+  loadBalancingScheme: &#34;INTERNAL&#34;
   backendServiceRef:
-    name: "computeserviceattachment-dep"
-  networkTier: "PREMIUM"
+    name: &#34;computeserviceattachment-dep&#34;
+  networkTier: &#34;PREMIUM&#34;
   allPorts: true
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
@@ -675,33 +675,33 @@ kind: ComputeSubnetwork
 metadata:
   name: computeserviceattachment-dep1
 spec:
-  region: "us-west2"
-  ipCidrRange: "10.2.0.0/16"
+  region: &#34;us-west2&#34;
+  ipCidrRange: &#34;10.2.0.0/16&#34;
   networkRef:
-    name: "computeserviceattachment-dep"
-  purpose: "PRIVATE_SERVICE_CONNECT"
+    name: &#34;computeserviceattachment-dep&#34;
+  purpose: &#34;PRIVATE_SERVICE_CONNECT&#34;
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
   name: computeserviceattachment-dep2
 spec:
-  region: "us-west2"
-  ipCidrRange: "10.3.0.0/16"
+  region: &#34;us-west2&#34;
+  ipCidrRange: &#34;10.3.0.0/16&#34;
   networkRef:
-    name: "computeserviceattachment-dep"
-  purpose: "PRIVATE_SERVICE_CONNECT"
+    name: &#34;computeserviceattachment-dep&#34;
+  purpose: &#34;PRIVATE_SERVICE_CONNECT&#34;
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
   name: computeserviceattachment-dep3
 spec:
-  region: "us-west2"
-  ipCidrRange: "10.4.0.0/16"
+  region: &#34;us-west2&#34;
+  ipCidrRange: &#34;10.4.0.0/16&#34;
   networkRef:
-    name: "computeserviceattachment-dep"
-  purpose: "PRIVATE"
+    name: &#34;computeserviceattachment-dep&#34;
+  purpose: &#34;PRIVATE&#34;
 ---
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
@@ -709,9 +709,9 @@ metadata:
   name: computeserviceattachment-dep1
 spec:
   organizationRef:
-    # Replace "${ORG_ID?}" with the numeric ID for your organization
-    external: "${ORG_ID?}"
-  name: "computeserviceattachment-dep1"
+    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
+    external: &#34;${ORG_ID?}&#34;
+  name: &#34;computeserviceattachment-dep1&#34;
 ---
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
@@ -719,9 +719,9 @@ metadata:
   name: computeserviceattachment-dep2
 spec:
   organizationRef:
-    # Replace "${ORG_ID?}" with the numeric ID for your organization
-    external: "${ORG_ID?}"
-  name: "computeserviceattachment-dep2"
+    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
+    external: &#34;${ORG_ID?}&#34;
+  name: &#34;computeserviceattachment-dep2&#34;
 ```
 
 

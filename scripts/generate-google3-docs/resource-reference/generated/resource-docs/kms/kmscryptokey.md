@@ -183,7 +183,7 @@ If not specified at creation time, the default duration is 24 hours.{% endverbat
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The immutable purpose of this CryptoKey. See the
 [purpose reference](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKeyPurpose)
-for possible inputs. Default value: "ENCRYPT_DECRYPT" Possible values: ["ENCRYPT_DECRYPT", "ASYMMETRIC_SIGN", "ASYMMETRIC_DECRYPT", "MAC"].{% endverbatim %}</p>
+for possible inputs. Default value: &#34;ENCRYPT_DECRYPT&#34; Possible values: [&#34;ENCRYPT_DECRYPT&#34;, &#34;ASYMMETRIC_SIGN&#34;, &#34;ASYMMETRIC_DECRYPT&#34;, &#34;MAC&#34;].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -206,7 +206,7 @@ for possible inputs. Default value: "ENCRYPT_DECRYPT" Possible values: ["ENCRYPT
             <p>{% verbatim %}Every time this period passes, generate a new CryptoKeyVersion and set it as the primary.
 The first rotation will take place after the specified period. The rotation period has
 the format of a decimal number with up to 9 fractional digits, followed by the
-letter 's' (seconds). It must be greater than a day (ie, 86400).{% endverbatim %}</p>
+letter &#39;s&#39; (seconds). It must be greater than a day (ie, 86400).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -217,7 +217,7 @@ letter 's' (seconds). It must be greater than a day (ie, 86400).{% endverbatim %
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions. 
-You must use the 'google_kms_key_ring_import_job' resource to import the CryptoKeyVersion.{% endverbatim %}</p>
+You must use the &#39;google_kms_key_ring_import_job&#39; resource to import the CryptoKeyVersion.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -248,7 +248,7 @@ See the [algorithm reference](https://cloud.google.com/kms/docs/reference/rest/v
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The protection level to use when creating a version based on this template. Possible values include "SOFTWARE", "HSM", "EXTERNAL", "EXTERNAL_VPC". Defaults to "SOFTWARE".{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The protection level to use when creating a version based on this template. Possible values include &#34;SOFTWARE&#34;, &#34;HSM&#34;, &#34;EXTERNAL&#34;, &#34;EXTERNAL_VPC&#34;. Defaults to &#34;SOFTWARE&#34;.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -282,7 +282,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -310,7 +310,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -350,14 +350,14 @@ selfLink: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.

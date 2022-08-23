@@ -199,7 +199,7 @@ Allowed value: The Google Cloud resource name of a `CloudFunctionsFunction` reso
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The relative path on the Cloud Run service the events should be sent to. The value must conform to the definition of URI path segment (section 3.3 of RFC2396). Examples: "/route", "route", "route/subroute".{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The relative path on the Cloud Run service the events should be sent to. The value must conform to the definition of URI path segment (section 3.3 of RFC2396). Examples: &#34;/route&#34;, &#34;route&#34;, &#34;route/subroute&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -333,7 +333,7 @@ Allowed value: The `selfLink` field of a `ContainerCluster` resource.{% endverba
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The relative path on the GKE service the events should be sent to. The value must conform to the definition of a URI path segment (section 3.3 of RFC2396). Examples: "/route", "route", "route/subroute".{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The relative path on the GKE service the events should be sent to. The value must conform to the definition of a URI path segment (section 3.3 of RFC2396). Examples: &#34;/route&#34;, &#34;route&#34;, &#34;route/subroute&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -373,7 +373,7 @@ Allowed value: The `selfLink` field of a `ContainerCluster` resource.{% endverba
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[WARNING] WorkflowsWorkflow not yet supported in Config Connector, use 'external' field to reference existing resources.
+            <p>{% verbatim %}[WARNING] WorkflowsWorkflow not yet supported in Config Connector, use &#39;external&#39; field to reference existing resources.
 Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
         </td>
     </tr>
@@ -424,7 +424,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The name of a CloudEvents attribute. Currently, only a subset of attributes are supported for filtering. All triggers MUST provide a filter for the 'type' attribute.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The name of a CloudEvents attribute. Currently, only a subset of attributes are supported for filtering. All triggers MUST provide a filter for the &#39;type&#39; attribute.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -640,7 +640,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -668,7 +668,7 @@ updateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -750,14 +750,14 @@ updateTime: string
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -782,11 +782,11 @@ spec:
       topicRef:
         name: eventarctrigger-dep
   matchingCriteria:
-  - attribute: "type"
-    value: "google.cloud.pubsub.topic.v1.messagePublished"
+  - attribute: &#34;type&#34;
+    value: &#34;google.cloud.pubsub.topic.v1.messagePublished&#34;
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID
-    external: "projects/${PROJECT_ID?}"
+    external: &#34;projects/${PROJECT_ID?}&#34;
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
@@ -800,7 +800,7 @@ spec:
   resourceRef:
     kind: Project
     # Replace ${PROJECT_ID?} with your project ID
-    external: "${PROJECT_ID?}"
+    external: &#34;${PROJECT_ID?}&#34;
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
@@ -809,7 +809,7 @@ metadata:
     # Replace ${PROJECT_ID?} with your project ID
     cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   name: eventarctrigger-dep
 spec:
   displayName: ExampleGSA
@@ -818,7 +818,7 @@ apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
   labels:
-    label-one: "value-one"
+    label-one: &#34;value-one&#34;
   name: eventarctrigger-dep
 ---
 apiVersion: run.cnrm.cloud.google.com/v1beta1
@@ -826,23 +826,23 @@ kind: RunService
 metadata:
   name: eventarctrigger-dep
 spec:
-  ingress: "INGRESS_TRAFFIC_ALL"
-  launchStage: "GA"
+  ingress: &#34;INGRESS_TRAFFIC_ALL&#34;
+  launchStage: &#34;GA&#34;
   location: us-central1
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID
-    external: "projects/${PROJECT_ID?}"
+    external: &#34;projects/${PROJECT_ID?}&#34;
   template:
     containers:
       - env:
-          - name: "FOO"
-            value: "BAR"
-        image: "gcr.io/cloudrun/hello"
+          - name: &#34;FOO&#34;
+            value: &#34;BAR&#34;
+        image: &#34;gcr.io/cloudrun/hello&#34;
     scaling:
       maxInstanceCount: 2
   traffic:
     - percent: 100
-      type: "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+      type: &#34;TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST&#34;
 ```
 
 

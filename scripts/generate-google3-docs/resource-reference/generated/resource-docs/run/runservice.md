@@ -211,7 +211,7 @@ traffic:
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects. Cloud Run will populate some annotations using 'run.googleapis.com' or 'serving.knative.dev' namespaces. This field follows Kubernetes annotations' namespacing, limits, and rules. More info: http://kubernetes.io/docs/user-guide/annotations{% endverbatim %}</p>
+            <p>{% verbatim %}Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects. Cloud Run will populate some annotations using &#39;run.googleapis.com&#39; or &#39;serving.knative.dev&#39; namespaces. This field follows Kubernetes annotations&#39; namespacing, limits, and rules. More info: http://kubernetes.io/docs/user-guide/annotations{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -241,7 +241,7 @@ traffic:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}If True, indicates to use the default project's binary authorization policy. If False, binary authorization will be disabled{% endverbatim %}</p>
+            <p>{% verbatim %}If True, indicates to use the default project&#39;s binary authorization policy. If False, binary authorization will be disabled{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -413,7 +413,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Arguments to the entrypoint. The docker image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. The $(VAR_NAME) syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references will never be expanded, regardless of whether the variable exists or not. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell{% endverbatim %}</p>
+            <p>{% verbatim %}Arguments to the entrypoint. The docker image&#39;s CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container&#39;s environment. If a variable cannot be resolved, the reference in the input string will be unchanged. The $(VAR_NAME) syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references will never be expanded, regardless of whether the variable exists or not. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -433,7 +433,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. The $(VAR_NAME) syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references will never be expanded, regardless of whether the variable exists or not. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell{% endverbatim %}</p>
+            <p>{% verbatim %}Entrypoint array. Not executed within a shell. The docker image&#39;s ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container&#39;s environment. If a variable cannot be resolved, the reference in the input string will be unchanged. The $(VAR_NAME) syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references will never be expanded, regardless of whether the variable exists or not. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -483,7 +483,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Variable references $(VAR_NAME) are expanded using the previous defined environment variables in the container and any route environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. The $(VAR_NAME) syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to "", and the maximum length is 32768 bytes.{% endverbatim %}</p>
+            <p>{% verbatim %}Variable references $(VAR_NAME) are expanded using the previous defined environment variables in the container and any route environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. The $(VAR_NAME) syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to &#34;&#34;, and the maximum length is 32768 bytes.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -493,7 +493,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Source for the environment variable's value.{% endverbatim %}</p>
+            <p>{% verbatim %}Source for the environment variable&#39;s value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -565,7 +565,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecret` resourc
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The Cloud Secret Manager secret version. Can be 'latest' for the latest value or an integer for a specific version.
+            <p>{% verbatim %}The Cloud Secret Manager secret version. Can be &#39;latest&#39; for the latest value or an integer for a specific version.
 
 Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` resource (format: `{{name}}`).{% endverbatim %}</p>
         </td>
@@ -637,7 +637,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Port number the container listens on. This must be a valid TCP port number, 0 < container_port < 65536.{% endverbatim %}</p>
+            <p>{% verbatim %}Port number the container listens on. This must be a valid TCP port number, 0 &lt; container_port &lt; 65536.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -647,7 +647,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}If specified, used to specify which protocol to use. Allowed values are "http1" and "h2c".{% endverbatim %}</p>
+            <p>{% verbatim %}If specified, used to specify which protocol to use. Allowed values are &#34;http1&#34; and &#34;h2c&#34;.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -677,7 +677,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Only memory and CPU are supported. Note: The only supported values for CPU are '1', '2', and '4'. Setting 4 CPU requires at least 2Gi of memory. The values of the map is string form of the 'quantity' k8s type: https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apimachinery/pkg/api/resource/quantity.go{% endverbatim %}</p>
+            <p>{% verbatim %}Only memory and CPU are supported. Note: The only supported values for CPU are &#39;1&#39;, &#39;2&#39;, and &#39;4&#39;. Setting 4 CPU requires at least 2Gi of memory. The values of the map is string form of the &#39;quantity&#39; k8s type: https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apimachinery/pkg/api/resource/quantity.go{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -687,7 +687,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Volume to mount into the container's filesystem.{% endverbatim %}</p>
+            <p>{% verbatim %}Volume to mount into the container&#39;s filesystem.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -707,7 +707,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. Path within the container at which the volume should be mounted. Must not contain ':'. For Cloud SQL volumes, it can be left empty, or must otherwise be `/cloudsql`. All instances defined in the Volume will be available as `/cloudsql/[instance]`. For more information on Cloud SQL volumes, visit https://cloud.google.com/sql/docs/mysql/connect-run{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Path within the container at which the volume should be mounted. Must not contain &#39;:&#39;. For Cloud SQL volumes, it can be left empty, or must otherwise be `/cloudsql`. All instances defined in the Volume will be available as `/cloudsql/[instance]`. For more information on Cloud SQL volumes, visit https://cloud.google.com/sql/docs/mysql/connect-run{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -797,7 +797,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Email address of the IAM service account associated with the revision of the service. The service account represents the identity of the running revision, and determines what permissions the revision has. If not provided, the revision will use the project's default service account.
+            <p>{% verbatim %}Email address of the IAM service account associated with the revision of the service. The service account represents the identity of the running revision, and determines what permissions the revision has. If not provided, the revision will use the project&#39;s default service account.
 
 Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
         </td>
@@ -919,7 +919,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. Volume's name.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Volume&#39;s name.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -969,7 +969,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Integer octal mode bits to use on this file, must be a value between 01 and 0777 (octal). If 0 or not set, the Volume's default mode will be used. Notes * Internally, a umask of 0222 will be applied to any non-zero value. * This is an integer representation of the mode bits. So, the octal integer value should look exactly as the chmod numeric notation with a leading zero. Some examples: for chmod 777 (a=rwx), set to 0777 (octal) or 511 (base-10). For chmod 640 (u=rw,g=r), set to 0640 (octal) or 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or 493 (base-10). * This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set.{% endverbatim %}</p>
+            <p>{% verbatim %}Integer octal mode bits to use on this file, must be a value between 01 and 0777 (octal). If 0 or not set, the Volume&#39;s default mode will be used. Notes * Internally, a umask of 0222 will be applied to any non-zero value. * This is an integer representation of the mode bits. So, the octal integer value should look exactly as the chmod numeric notation with a leading zero. Some examples: for chmod 777 (a=rwx), set to 0777 (octal) or 511 (base-10). For chmod 640 (u=rw,g=r), set to 0640 (octal) or 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or 493 (base-10). * This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -999,7 +999,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The Cloud Secret Manager secret version. Can be 'latest' for the latest value or an integer for a specific version.
+            <p>{% verbatim %}The Cloud Secret Manager secret version. Can be &#39;latest&#39; for the latest value or an integer for a specific version.
 
 Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` resource (format: `{{name}}`).{% endverbatim %}</p>
         </td>
@@ -1248,7 +1248,7 @@ uri: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1276,7 +1276,7 @@ uri: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1332,7 +1332,7 @@ uri: string
         <td><code>labels</code></td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Map of string keys and values that can be used to organize and categorize objects. User-provided labels are shared with Google's billing system, so they can be used to filter, or break down billing charges by team, component, environment, state, etc. For more information, visit https://cloud.google.com/resource-manager/docs/creating-managing-labels or https://cloud.google.com/run/docs/configuring/labels Cloud Run will populate some labels with 'run.googleapis.com' or 'serving.knative.dev' namespaces. Those labels are read-only, and user changes will not be preserved.{% endverbatim %}</p>
+            <p>{% verbatim %}Map of string keys and values that can be used to organize and categorize objects. User-provided labels are shared with Google&#39;s billing system, so they can be used to filter, or break down billing charges by team, component, environment, state, etc. For more information, visit https://cloud.google.com/resource-manager/docs/creating-managing-labels or https://cloud.google.com/run/docs/configuring/labels Cloud Run will populate some labels with &#39;run.googleapis.com&#39; or &#39;serving.knative.dev&#39; namespaces. Those labels are read-only, and user changes will not be preserved.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1437,7 +1437,7 @@ uri: string
         <td><code>terminalCondition.type</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}type is used to communicate the status of the reconciliation process. See also: https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting Types common to all resources include: * "Ready": True when the Resource is ready.{% endverbatim %}</p>
+            <p>{% verbatim %}type is used to communicate the status of the reconciliation process. See also: https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting Types common to all resources include: * &#34;Ready&#34;: True when the Resource is ready.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1519,14 +1519,14 @@ uri: string
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1536,23 +1536,23 @@ kind: RunService
 metadata:
   name: runservice-sample
 spec:
-  ingress: "INGRESS_TRAFFIC_ALL"
-  launchStage: "GA"
-  location: "us-central1"
+  ingress: &#34;INGRESS_TRAFFIC_ALL&#34;
+  launchStage: &#34;GA&#34;
+  location: &#34;us-central1&#34;
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
     external: projects/${PROJECT_ID?}
   template:
     containers:
       - env:
-          - name: "FOO"
-            value: "bar]"
-        image: "gcr.io/cloudrun/hello"
+          - name: &#34;FOO&#34;
+            value: &#34;bar]&#34;
+        image: &#34;gcr.io/cloudrun/hello&#34;
     scaling:
       maxInstanceCount: 2
   traffic:
     - percent: 100
-      type: "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+      type: &#34;TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST&#34;
 ```
 
 
