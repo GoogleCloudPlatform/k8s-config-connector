@@ -8,6 +8,9 @@
 {{product_name_short}} resources have a Kubernetes API group of
 `cnrm.cloud.google.com`.
 
+<div>
+<devsite-filter>
+  <input type="text" placeholder="Type a keyword to filter the list of resources">
 <table>
 <thead>
 <tr>
@@ -731,5 +734,7 @@
 </tr>
 </tbody>
 </table>
+</devsite-filter>
+</div>
 
 {% endblock %}
