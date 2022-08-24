@@ -29,6 +29,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/scripts/utils"
+	kcck8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/randomid"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 
@@ -537,6 +538,13 @@ func TestShouldNotBeAbleToCreateKCCResourcesIfKCCNotEnabledForNamespace(t *testi
 	if ok {
 		t.Fatalf("expected ArtifactRegistryRepository to not have finalizer '%v', but it does", k8s.KCCFinalizer)
 	}
+	ok, err = cluster.doesArtifactRegistryRepositoryHaveStatusUnmanaged(namespace, repoName, repoYAMLDir)
+	if err != nil {
+		t.Fatalf("error checking if ArtifactRegistryRepository has status '%v': %v", kcck8s.Unmanaged, err)
+	}
+	if !ok {
+		t.Fatalf("expected ArtifactRegistryRepository to have status '%v', but it does not", kcck8s.Unmanaged)
+	}
 	log.Info("Deleting ArtifactRegistryRepository...")
 	if err := cluster.deleteArtifactRegistryRepository(namespace, repoName); err != nil {
 		t.Fatal(err)
@@ -705,7 +713,7 @@ func getOperatorReleaseAssetsForVersion(version, serviceAccountID, projectID str
 		return "", emptySample, fmt.Errorf("error creating temporary directory for operator release assets: %v", err)
 	}
 	if err := downloadAndExtractOperatorReleaseTarball(version, releaseAssetsDir); err != nil {
-		return "", emptySample, fmt.Errorf("error downloading and extracting operator release tarball with version '%v': %v", f.version, err)
+		return "", emptySample, fmt.Errorf("error downloading and extracting operator release tarball with version '%v': %v", version, err)
 	}
 	manifestsDir = path.Join(releaseAssetsDir, "operator-system")
 	sample, err = getConfigConnectorSample(releaseAssetsDir, serviceAccountID, projectID, version)
@@ -1051,7 +1059,7 @@ func (c *cluster) waitForCNRMFinalizersToBeRemovedFromArtifactRegistryRepository
 	return nil
 }
 
-func (c *cluster) getArtifctRegistryRepositoryUnstructured(namespace, repoName string) (*unstructured.Unstructured, error) {
+func (c *cluster) getArtifactRegistryRepositoryUnstructured(namespace, repoName string) (*unstructured.Unstructured, error) {
 	out, err := c.kubectl.get("-n", namespace, "artifactregistryrepository", repoName, "-o", "yaml")
 	if err != nil {
 		return nil, fmt.Errorf("error getting ArtifactRegistryRepository '%v/%v': %v", namespace, repoName, err)
@@ -1075,7 +1083,7 @@ func (c *cluster) applyUnstructured(u *unstructured.Unstructured) error {
 }
 
 func (c *cluster) removeFinalizerToArtifactRegistryRepository(namespace, repoName, finalizer string) error {
-	repoUnstruct, err := c.getArtifctRegistryRepositoryUnstructured(namespace, repoName)
+	repoUnstruct, err := c.getArtifactRegistryRepositoryUnstructured(namespace, repoName)
 	if err != nil {
 		return err
 	}
@@ -1092,7 +1100,7 @@ func (c *cluster) removeFinalizerToArtifactRegistryRepository(namespace, repoNam
 }
 
 func (c *cluster) addFinalizerToArtifactRegistryRepository(namespace, repoName, finalizer string) error {
-	repoUnstruct, err := c.getArtifctRegistryRepositoryUnstructured(namespace, repoName)
+	repoUnstruct, err := c.getArtifactRegistryRepositoryUnstructured(namespace, repoName)
 	if err != nil {
 		return err
 	}
@@ -1102,7 +1110,7 @@ func (c *cluster) addFinalizerToArtifactRegistryRepository(namespace, repoName, 
 }
 
 func (c *cluster) doesArtifactRegistryRepositoryHaveFinalizer(namespace, repoName, finalizer string) (ok bool, err error) {
-	repoUnstruct, err := c.getArtifctRegistryRepositoryUnstructured(namespace, repoName)
+	repoUnstruct, err := c.getArtifactRegistryRepositoryUnstructured(namespace, repoName)
 	if err != nil {
 		return false, err
 	}
@@ -1112,6 +1120,22 @@ func (c *cluster) doesArtifactRegistryRepositoryHaveFinalizer(namespace, repoNam
 		}
 	}
 	return false, nil
+}
+
+func (c *cluster) doesArtifactRegistryRepositoryHaveStatusUnmanaged(namespace, repoName, finalizer string) (ok bool, err error) {
+	repoUnstruct, err := c.getArtifactRegistryRepositoryUnstructured(namespace, repoName)
+	if err != nil {
+		return false, err
+	}
+	r, err := kcck8s.NewResource(repoUnstruct)
+	if err != nil {
+		return false, err
+	}
+	condition, ok := kcck8s.GetReadyCondition(r)
+	if !ok {
+		return false, nil
+	}
+	return condition.Reason == kcck8s.Unmanaged, nil
 }
 
 func (c *cluster) deleteArtifactRegistryRepository(namespace, repoName string, extraArgs ...string) error {
