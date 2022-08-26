@@ -87,7 +87,7 @@ func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 			obj: &unstructured.Unstructured{
 				Object: map[string]interface{}{
 					"apiVersion": "test1.cnrm.cloud.google.com/v1alpha1",
-					"kind":       "Test1Bar",
+					"kind":       "ComputeAddress",
 					"metadata": map[string]interface{}{
 						"annotations": map[string]interface{}{
 							StateIntoSpecAnnotation: "absent",
