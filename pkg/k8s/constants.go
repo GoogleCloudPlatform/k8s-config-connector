@@ -131,7 +131,8 @@ var (
 		StateMergeIntoSpec,
 		StateAbsentInSpec,
 	}
-	WebhookTimeoutSeconds = int32(3)
+	// TODO(kcc-eng): Adjust the timeout back down after b/237398742 is fixed.
+	WebhookTimeoutSeconds = int32(10)
 
 	ReservedStatusFieldNamesForFutureUse = []string{"generation"}
 
