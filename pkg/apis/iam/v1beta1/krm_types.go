@@ -46,6 +46,10 @@ type MemberSource struct {
 	// The LoggingLogSink whose writer identity (i.e. its
 	// 'status.writerIdentity') is to be bound to the role.
 	LogSinkRef *MemberReference `json:"logSinkRef,omitempty"`
+
+	// The SQLInstance whose service account (i.e. its
+	// 'status.serviceAccountEmailAddress') is to be bound to the role.
+	SQLInstanceRef *MemberReference `json:"sqlInstanceRef,omitempty"`
 }
 
 // MemberReference represents a resource with an IAM identity

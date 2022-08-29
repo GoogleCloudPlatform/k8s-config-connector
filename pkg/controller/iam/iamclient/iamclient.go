@@ -36,6 +36,10 @@ const (
 	ResourceManagerGroup   = "resourcemanager.cnrm.cloud.google.com"
 	ResourceManagerVersion = "v1beta1"
 
+	SQLInstanceKind = "SQLInstance"
+	SQLGroup        = "sql.cnrm.cloud.google.com"
+	SQLVersion      = "v1beta1"
+
 	LoggingLogSinkKind = "LoggingLogSink"
 	LoggingGroup       = "logging.cnrm.cloud.google.com"
 	LoggingVersion     = "v1beta1"
@@ -53,6 +57,11 @@ var (
 		Group:   ResourceManagerGroup,
 		Version: ResourceManagerVersion,
 		Kind:    ProjectKind,
+	}
+	SQLInstanceGVK = schema.GroupVersionKind{
+		Group:   SQLGroup,
+		Version: SQLVersion,
+		Kind:    SQLInstanceKind,
 	}
 	LoggingLogSinkGVK = schema.GroupVersionKind{
 		Group:   LoggingGroup,

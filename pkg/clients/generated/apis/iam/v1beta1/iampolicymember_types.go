@@ -55,6 +55,10 @@ type PolicymemberMemberFrom struct {
 	/* The IAMServiceAccount to be bound to the role. */
 	// +optional
 	ServiceAccountRef *v1alpha1.IAMResourceRef `json:"serviceAccountRef,omitempty"`
+
+	/* The SQLInstance whose service account (i.e. its 'status.serviceAccountEmailAddress') is to be bound to the role. */
+	// +optional
+	SqlInstanceRef *v1alpha1.IAMResourceRef `json:"sqlInstanceRef,omitempty"`
 }
 
 type IAMPolicyMemberSpec struct {

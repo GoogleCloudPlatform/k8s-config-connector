@@ -38,7 +38,7 @@ func (c *IAMClient) isDCLBasedResource(gvk schema.GroupVersionKind) bool {
 }
 
 // ResolveMemberIdentity checks only one of Member/MemberFrom is provided, and then tries to resolve identity.
-// MemberFrom can only have either a ServiceAccountRef or a LogSinkRef, so to resolve these
+// MemberFrom can only have oneOf a ServiceAccountRef, a LogSinkRef, a SQLInstanceRef, so to resolve these
 // values, it is necessary to call on the TFIAMClient
 func ResolveMemberIdentity(ctx context.Context, member v1beta1.Member,
 	memberFrom *v1beta1.MemberSource, namespace string, tfIAMClient *TFIAMClient) (id string, err error) {
@@ -54,21 +54,28 @@ func ResolveMemberIdentity(ctx context.Context, member v1beta1.Member,
 		return string(member), nil
 	}
 
-	if memberFrom.LogSinkRef != nil && memberFrom.ServiceAccountRef != nil {
-		return id, fmt.Errorf("both 'logSinkRef' and 'serviceAccountRef' are used in 'memberFrom'. Exactly one of them must be used")
+	var refs []*v1beta1.MemberReference
+	var gvks []schema.GroupVersionKind
+
+	if memberFrom.ServiceAccountRef != nil {
+		refs = append(refs, memberFrom.ServiceAccountRef)
+		gvks = append(gvks, IAMServiceAccountGVK)
 	}
 
-	if memberFrom.LogSinkRef == nil && memberFrom.ServiceAccountRef == nil {
-		return id, fmt.Errorf("both 'logSinkRef' and 'serviceAccountRef' are empty in 'memberFrom'. Exactly one of them must be used")
+	if memberFrom.LogSinkRef != nil {
+		refs = append(refs, memberFrom.LogSinkRef)
+		gvks = append(gvks, LoggingLogSinkGVK)
 	}
 
-	switch {
-	case memberFrom.ServiceAccountRef != nil:
-		return tfIAMClient.resolveMemberReference(ctx, memberFrom.ServiceAccountRef, IAMServiceAccountGVK, namespace)
-	case memberFrom.LogSinkRef != nil:
-		return tfIAMClient.resolveMemberReference(ctx, memberFrom.LogSinkRef, LoggingLogSinkGVK, namespace)
-	default:
-		return id, fmt.Errorf("member reference field in 'memberFrom' is not recognized")
+	if memberFrom.SQLInstanceRef != nil {
+		refs = append(refs, memberFrom.SQLInstanceRef)
+		gvks = append(gvks, SQLInstanceGVK)
+	}
+
+	if len(refs) == 1 {
+		return tfIAMClient.resolveMemberReference(ctx, refs[0], gvks[0], namespace)
+	} else {
+		return id, fmt.Errorf("%v memberFrom refs found. Exactly one Of 'logSinkRef', 'serviceAccountRef', 'sqlInstanceRef' must be used", len(refs))
 	}
 }
 

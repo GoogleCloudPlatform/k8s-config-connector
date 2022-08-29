@@ -53,6 +53,9 @@ spec:
       idTemplate: "projects/{{project}}/instances/{{name}}"
       idTemplateCanBeUsedToMatchResourceName: true
       resourceAvailableInAssetInventory: true
+      iamMemberReferenceConfig:
+        targetField: service_account_email_address
+        valueTemplate: "serviceAccount:{{value}}"
       resourceReferences:
         - key: masterInstanceRef
           tfField: master_instance_name

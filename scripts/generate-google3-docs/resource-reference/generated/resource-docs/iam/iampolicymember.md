@@ -561,6 +561,9 @@ memberFrom:
   serviceAccountRef:
     name: string
     namespace: string
+  sqlInstanceRef:
+    name: string
+    namespace: string
 resourceRef:
   apiVersion: string
   external: string
@@ -690,6 +693,36 @@ role: string
     <tr>
         <td>
             <p><code>memberFrom.serviceAccountRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>memberFrom.sqlInstanceRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The SQLInstance whose service account (i.e. its 'status.serviceAccountEmailAddress') is to be bound to the role.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>memberFrom.sqlInstanceRef.name</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>memberFrom.sqlInstanceRef.namespace</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>

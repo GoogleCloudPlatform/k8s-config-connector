@@ -1506,6 +1506,11 @@ func (in *PartialpolicyMemberFrom) DeepCopyInto(out *PartialpolicyMemberFrom) {
 		*out = new(v1alpha1.IAMResourceRef)
 		**out = **in
 	}
+	if in.SqlInstanceRef != nil {
+		in, out := &in.SqlInstanceRef, &out.SqlInstanceRef
+		*out = new(v1alpha1.IAMResourceRef)
+		**out = **in
+	}
 	return
 }
 
@@ -1667,6 +1672,11 @@ func (in *PolicymemberMemberFrom) DeepCopyInto(out *PolicymemberMemberFrom) {
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
+		*out = new(v1alpha1.IAMResourceRef)
+		**out = **in
+	}
+	if in.SqlInstanceRef != nil {
+		in, out := &in.SqlInstanceRef, &out.SqlInstanceRef
 		*out = new(v1alpha1.IAMResourceRef)
 		**out = **in
 	}

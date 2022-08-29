@@ -100,6 +100,8 @@ spec:
                               - logSinkRef
                             - required:
                               - serviceAccountRef
+                            - required:
+                              - sqlInstanceRef
                             properties:
                               logSinkRef:
                                 description: The LoggingLogSink whose writer identity
@@ -116,6 +118,18 @@ spec:
                               serviceAccountRef:
                                 description: The IAMServiceAccount to be bound to
                                   the role.
+                                properties:
+                                  name:
+                                    type: string
+                                  namespace:
+                                    type: string
+                                required:
+                                - name
+                                type: object
+                              sqlInstanceRef:
+                                description: The SQLInstance whose service account
+                                  (i.e. its 'status.serviceAccountEmailAddress') is
+                                  to be bound to the role.
                                 properties:
                                   name:
                                     type: string

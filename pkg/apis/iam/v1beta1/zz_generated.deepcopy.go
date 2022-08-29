@@ -635,6 +635,11 @@ func (in *MemberSource) DeepCopyInto(out *MemberSource) {
 		*out = new(MemberReference)
 		**out = **in
 	}
+	if in.SQLInstanceRef != nil {
+		in, out := &in.SQLInstanceRef, &out.SQLInstanceRef
+		*out = new(MemberReference)
+		**out = **in
+	}
 	return
 }
 
