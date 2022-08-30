@@ -135,6 +135,7 @@ components:
               x-dcl-go-name: CsvOptions
               x-dcl-go-type: ZoneDiscoverySpecCsvOptions
               description: Optional. Configuration for CSV data.
+              x-dcl-server-default: true
               properties:
                 delimiter:
                   type: string
@@ -192,6 +193,7 @@ components:
               x-dcl-go-name: JsonOptions
               x-dcl-go-type: ZoneDiscoverySpecJsonOptions
               description: Optional. Configuration for Json data.
+              x-dcl-server-default: true
               properties:
                 disableTypeInference:
                   type: boolean

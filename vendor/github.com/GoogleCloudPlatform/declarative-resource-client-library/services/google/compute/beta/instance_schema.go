@@ -449,10 +449,11 @@ func DCLInstanceSchema() *dcl.Schema {
 														Immutable:   true,
 													},
 													"natIP": &dcl.Property{
-														Type:        "string",
-														GoName:      "NatIP",
-														Description: "Reference to an address. An external IP address associated with this instance. Specify an unused static external IP address available to the project or leave this field undefined to use an IP from a shared ephemeral IP address pool. If you specify a static external IP address, it must live in the same region as the zone of the instance.",
-														Immutable:   true,
+														Type:          "string",
+														GoName:        "NatIP",
+														Description:   "Reference to an address. An external IP address associated with this instance. Specify an unused static external IP address available to the project or leave this field undefined to use an IP from a shared ephemeral IP address pool. If you specify a static external IP address, it must live in the same region as the zone of the instance.",
+														Immutable:     true,
+														ServerDefault: true,
 														ResourceReferences: []*dcl.PropertyResourceReference{
 															&dcl.PropertyResourceReference{
 																Resource: "Compute/Address",
@@ -461,11 +462,12 @@ func DCLInstanceSchema() *dcl.Schema {
 														},
 													},
 													"networkTier": &dcl.Property{
-														Type:        "string",
-														GoName:      "NetworkTier",
-														GoType:      "InstanceNetworkInterfacesAccessConfigsNetworkTierEnum",
-														Description: "This signifies the networking tier used for configuring this access configuration and can only take the following values: PREMIUM, STANDARD. If an AccessConfig is specified without a valid external IP address, an ephemeral IP will be created with this networkTier. If an AccessConfig with a valid external IP address is specified, it must match that of the networkTier associated with the Address resource owning that IP.",
-														Immutable:   true,
+														Type:          "string",
+														GoName:        "NetworkTier",
+														GoType:        "InstanceNetworkInterfacesAccessConfigsNetworkTierEnum",
+														Description:   "This signifies the networking tier used for configuring this access configuration and can only take the following values: PREMIUM, STANDARD. If an AccessConfig is specified without a valid external IP address, an ephemeral IP will be created with this networkTier. If an AccessConfig with a valid external IP address is specified, it must match that of the networkTier associated with the Address resource owning that IP.",
+														Immutable:     true,
+														ServerDefault: true,
 														Enum: []string{
 															"PREMIUM",
 															"STANDARD",
@@ -558,10 +560,11 @@ func DCLInstanceSchema() *dcl.Schema {
 														Immutable:   true,
 													},
 													"natIP": &dcl.Property{
-														Type:        "string",
-														GoName:      "NatIP",
-														Description: "Reference to an address. An external IP address associated with this instance. Specify an unused static external IP address available to the project or leave this field undefined to use an IP from a shared ephemeral IP address pool. If you specify a static external IP address, it must live in the same region as the zone of the instance.",
-														Immutable:   true,
+														Type:          "string",
+														GoName:        "NatIP",
+														Description:   "Reference to an address. An external IP address associated with this instance. Specify an unused static external IP address available to the project or leave this field undefined to use an IP from a shared ephemeral IP address pool. If you specify a static external IP address, it must live in the same region as the zone of the instance.",
+														Immutable:     true,
+														ServerDefault: true,
 														ResourceReferences: []*dcl.PropertyResourceReference{
 															&dcl.PropertyResourceReference{
 																Resource: "Compute/Address",
@@ -613,10 +616,11 @@ func DCLInstanceSchema() *dcl.Schema {
 											Immutable:   true,
 										},
 										"network": &dcl.Property{
-											Type:        "string",
-											GoName:      "Network",
-											Description: "Specifies the title of an existing network.  When creating an instance, if neither the network nor the subnetwork is specified, the default network global/networks/default is used; if the network is not specified but the subnetwork is specified, the network is inferred.",
-											Immutable:   true,
+											Type:          "string",
+											GoName:        "Network",
+											Description:   "Specifies the title of an existing network.  When creating an instance, if neither the network nor the subnetwork is specified, the default network global/networks/default is used; if the network is not specified but the subnetwork is specified, the network is inferred.",
+											Immutable:     true,
+											ServerDefault: true,
 											ResourceReferences: []*dcl.PropertyResourceReference{
 												&dcl.PropertyResourceReference{
 													Resource: "Compute/Network",
@@ -625,16 +629,18 @@ func DCLInstanceSchema() *dcl.Schema {
 											},
 										},
 										"networkIP": &dcl.Property{
-											Type:        "string",
-											GoName:      "NetworkIP",
-											Description: "An IPv4 internal network address to assign to the instance for this network interface. If not specified by the user, an unused internal IP is assigned by the system.",
-											Immutable:   true,
+											Type:          "string",
+											GoName:        "NetworkIP",
+											Description:   "An IPv4 internal network address to assign to the instance for this network interface. If not specified by the user, an unused internal IP is assigned by the system.",
+											Immutable:     true,
+											ServerDefault: true,
 										},
 										"subnetwork": &dcl.Property{
-											Type:        "string",
-											GoName:      "Subnetwork",
-											Description: "Reference to a VPC network. If the network resource is in legacy mode, do not provide this property.  If the network is in auto subnet mode, providing the subnetwork is optional. If the network is in custom subnet mode, then this field should be specified.",
-											Immutable:   true,
+											Type:          "string",
+											GoName:        "Subnetwork",
+											Description:   "Reference to a VPC network. If the network resource is in legacy mode, do not provide this property.  If the network is in auto subnet mode, providing the subnetwork is optional. If the network is in custom subnet mode, then this field should be specified.",
+											Immutable:     true,
+											ServerDefault: true,
 											ResourceReferences: []*dcl.PropertyResourceReference{
 												&dcl.PropertyResourceReference{
 													Resource: "Compute/Subnetwork",
@@ -659,11 +665,12 @@ func DCLInstanceSchema() *dcl.Schema {
 								},
 							},
 							"scheduling": &dcl.Property{
-								Type:        "object",
-								GoName:      "Scheduling",
-								GoType:      "InstanceScheduling",
-								Description: "Sets the scheduling options for this instance.",
-								Immutable:   true,
+								Type:          "object",
+								GoName:        "Scheduling",
+								GoType:        "InstanceScheduling",
+								Description:   "Sets the scheduling options for this instance.",
+								Immutable:     true,
+								ServerDefault: true,
 								Properties: map[string]*dcl.Property{
 									"automaticRestart": &dcl.Property{
 										Type:        "boolean",
@@ -725,10 +732,11 @@ func DCLInstanceSchema() *dcl.Schema {
 								},
 							},
 							"shieldedInstanceConfig": &dcl.Property{
-								Type:        "object",
-								GoName:      "ShieldedInstanceConfig",
-								GoType:      "InstanceShieldedInstanceConfig",
-								Description: "Configuration for various parameters related to shielded instances.",
+								Type:          "object",
+								GoName:        "ShieldedInstanceConfig",
+								GoType:        "InstanceShieldedInstanceConfig",
+								Description:   "Configuration for various parameters related to shielded instances.",
+								ServerDefault: true,
 								Properties: map[string]*dcl.Property{
 									"enableIntegrityMonitoring": &dcl.Property{
 										Type:        "boolean",
@@ -748,11 +756,12 @@ func DCLInstanceSchema() *dcl.Schema {
 								},
 							},
 							"status": &dcl.Property{
-								Type:        "string",
-								GoName:      "Status",
-								GoType:      "InstanceStatusEnum",
-								Description: "The status of the instance. One of the following values: PROVISIONING, STAGING, RUNNING, STOPPING, SUSPENDING, SUSPENDED, and TERMINATED.  As a user, use RUNNING to keep a machine \"on\" and TERMINATED to turn a machine off",
-								Immutable:   true,
+								Type:          "string",
+								GoName:        "Status",
+								GoType:        "InstanceStatusEnum",
+								Description:   "The status of the instance. One of the following values: PROVISIONING, STAGING, RUNNING, STOPPING, SUSPENDING, SUSPENDED, and TERMINATED.  As a user, use RUNNING to keep a machine \"on\" and TERMINATED to turn a machine off",
+								Immutable:     true,
+								ServerDefault: true,
 								Enum: []string{
 									"PROVISIONING",
 									"STAGING",

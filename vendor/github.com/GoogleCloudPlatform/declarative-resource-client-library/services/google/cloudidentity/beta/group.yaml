@@ -177,6 +177,7 @@ components:
           type: string
           x-dcl-go-name: DisplayName
           description: The display name of the `Group`.
+          x-dcl-server-default: true
         dynamicGroupMetadata:
           type: object
           x-dcl-go-name: DynamicGroupMetadata

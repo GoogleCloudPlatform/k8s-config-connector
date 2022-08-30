@@ -164,14 +164,6 @@ spec:
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
-              routers:
-                description: 'Optional. Routers define a list of routers this TcpRoute
-                  should be served by. Each router reference should match the pattern:
-                  `projects/*/locations/global/routers/` The attached Router should
-                  be of a type PROXY'
-                items:
-                  type: string
-                type: array
               rules:
                 description: Required. Rules that define how traffic is routed and
                   handled. At least one RouteRule must be supplied. If there are multiple

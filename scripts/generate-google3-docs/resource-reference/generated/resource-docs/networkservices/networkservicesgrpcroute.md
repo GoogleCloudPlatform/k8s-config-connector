@@ -84,8 +84,6 @@ projectRef:
   name: string
   namespace: string
 resourceID: string
-routers:
-- string
 rules:
 - action:
     destinations:
@@ -325,26 +323,6 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>routers</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Optional. Routers define a list of routers this GrpcRoute should be served by. Each router reference should match the pattern: `projects/*/locations/global/routers/`{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>routers[]</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -686,7 +664,7 @@ Allowed value: The Google Cloud resource name of a `ComputeBackendService` resou
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. Specifies how to match against the name. If not specified, a default value of "EXACT" is used. Possible values: MATCH_TYPE_UNSPECIFIED, MATCH_ANY, MATCH_ALL{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Specifies how to match against the name. If not specified, a default value of "EXACT" is used. Possible values: TYPE_UNSPECIFIED, EXACT, REGULAR_EXPRESSION{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

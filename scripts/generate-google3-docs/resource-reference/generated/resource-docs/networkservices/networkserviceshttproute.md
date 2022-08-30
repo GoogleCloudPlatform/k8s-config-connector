@@ -84,8 +84,6 @@ projectRef:
   name: string
   namespace: string
 resourceID: string
-routers:
-- string
 rules:
 - action:
     corsPolicy:
@@ -115,7 +113,6 @@ rules:
       delay:
         fixedDelay: string
         percentage: integer
-    originalDestination: boolean
     redirect:
       hostRedirect: string
       httpsRedirect: boolean
@@ -384,26 +381,6 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>routers</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Optional. Routers define a list of routers this HttpRoute should be served by. Each router reference should match the pattern: `projects/*/locations/global/routers/` The attached Router should be of a type PROXY{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>routers[]</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -716,16 +693,6 @@ Allowed value: The Google Cloud resource name of a `ComputeBackendService` resou
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}The percentage of traffic on which delay will be injected. The value must be between [0, 100]{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>rules[].action.originalDestination</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}If true, the matched traffic will use the destination ip and port of the original connection (as it was not processed by proxy) as the destination of the request. Only one of destinations, redirect, original_destination can be set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

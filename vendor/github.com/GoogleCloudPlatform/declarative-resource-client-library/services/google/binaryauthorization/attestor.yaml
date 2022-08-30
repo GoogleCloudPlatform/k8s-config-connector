@@ -167,6 +167,7 @@ components:
                       field exactly. Additional restrictions on this field can be
                       imposed based on which public key type is encapsulated. See
                       the documentation on `public_key` cases below for details.
+                    x-dcl-server-default: true
                   pkixPublicKey:
                     type: object
                     x-dcl-go-name: PkixPublicKey

@@ -406,6 +406,7 @@ type WorkflowTemplatePlacementManagedClusterConfigGceClusterConfig struct {
 	Metadata                map[string]string                                                                         `json:"metadata"`
 	ReservationAffinity     *WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigReservationAffinity         `json:"reservationAffinity"`
 	NodeGroupAffinity       *WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigNodeGroupAffinity           `json:"nodeGroupAffinity"`
+	ShieldedInstanceConfig  *WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig      `json:"shieldedInstanceConfig"`
 }
 
 type jsonWorkflowTemplatePlacementManagedClusterConfigGceClusterConfig WorkflowTemplatePlacementManagedClusterConfigGceClusterConfig
@@ -444,6 +445,8 @@ func (r *WorkflowTemplatePlacementManagedClusterConfigGceClusterConfig) Unmarsha
 		r.ReservationAffinity = res.ReservationAffinity
 
 		r.NodeGroupAffinity = res.NodeGroupAffinity
+
+		r.ShieldedInstanceConfig = res.ShieldedInstanceConfig
 
 	}
 	return nil
@@ -561,6 +564,58 @@ func (r *WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigNodeGroupA
 }
 
 func (r *WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigNodeGroupAffinity) HashCode() string {
+	// Placeholder for a more complex hash method that handles ordering, etc
+	// Hash resource body for easy comparison later
+	hash := sha256.New().Sum([]byte(r.String()))
+	return fmt.Sprintf("%x", hash)
+}
+
+type WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig struct {
+	empty                     bool  `json:"-"`
+	EnableSecureBoot          *bool `json:"enableSecureBoot"`
+	EnableVtpm                *bool `json:"enableVtpm"`
+	EnableIntegrityMonitoring *bool `json:"enableIntegrityMonitoring"`
+}
+
+type jsonWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig
+
+func (r *WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig) UnmarshalJSON(data []byte) error {
+	var res jsonWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+
+	var m map[string]interface{}
+	json.Unmarshal(data, &m)
+
+	if len(m) == 0 {
+		*r = *EmptyWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig
+	} else {
+
+		r.EnableSecureBoot = res.EnableSecureBoot
+
+		r.EnableVtpm = res.EnableVtpm
+
+		r.EnableIntegrityMonitoring = res.EnableIntegrityMonitoring
+
+	}
+	return nil
+}
+
+// This object is used to assert a desired state where this WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig is
+// empty. Go lacks global const objects, but this object should be treated
+// as one. Modifying this object will have undesirable results.
+var EmptyWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig *WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig = &WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig{empty: true}
+
+func (r *WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig) Empty() bool {
+	return r.empty
+}
+
+func (r *WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig) String() string {
+	return dcl.SprintResource(r)
+}
+
+func (r *WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig) HashCode() string {
 	// Placeholder for a more complex hash method that handles ordering, etc
 	// Hash resource body for easy comparison later
 	hash := sha256.New().Sum([]byte(r.String()))

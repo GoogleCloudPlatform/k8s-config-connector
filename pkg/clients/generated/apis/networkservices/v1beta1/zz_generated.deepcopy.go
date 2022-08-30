@@ -422,11 +422,6 @@ func (in *HttprouteAction) DeepCopyInto(out *HttprouteAction) {
 		*out = new(HttprouteFaultInjectionPolicy)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.OriginalDestination != nil {
-		in, out := &in.OriginalDestination, &out.OriginalDestination
-		*out = new(bool)
-		**out = **in
-	}
 	if in.Redirect != nil {
 		in, out := &in.Redirect, &out.Redirect
 		*out = new(HttprouteRedirect)
@@ -1257,11 +1252,6 @@ func (in *NetworkServicesGRPCRouteSpec) DeepCopyInto(out *NetworkServicesGRPCRou
 		*out = new(string)
 		**out = **in
 	}
-	if in.Routers != nil {
-		in, out := &in.Routers, &out.Routers
-		*out = make([]string, len(*in))
-		copy(*out, *in)
-	}
 	if in.Rules != nil {
 		in, out := &in.Rules, &out.Rules
 		*out = make([]GrpcrouteRules, len(*in))
@@ -1372,9 +1362,9 @@ func (in *NetworkServicesGatewaySpec) DeepCopyInto(out *NetworkServicesGatewaySp
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.AuthorizationPolicy != nil {
-		in, out := &in.AuthorizationPolicy, &out.AuthorizationPolicy
-		*out = new(string)
+	if in.AuthorizationPolicyRef != nil {
+		in, out := &in.AuthorizationPolicyRef, &out.AuthorizationPolicyRef
+		*out = new(v1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -1400,9 +1390,9 @@ func (in *NetworkServicesGatewaySpec) DeepCopyInto(out *NetworkServicesGatewaySp
 		*out = new(string)
 		**out = **in
 	}
-	if in.ServerTlsPolicy != nil {
-		in, out := &in.ServerTlsPolicy, &out.ServerTlsPolicy
-		*out = new(string)
+	if in.ServerTlsPolicyRef != nil {
+		in, out := &in.ServerTlsPolicyRef, &out.ServerTlsPolicyRef
+		*out = new(v1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.Type != nil {
@@ -1540,11 +1530,6 @@ func (in *NetworkServicesHTTPRouteSpec) DeepCopyInto(out *NetworkServicesHTTPRou
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
 		**out = **in
-	}
-	if in.Routers != nil {
-		in, out := &in.Routers, &out.Routers
-		*out = make([]string, len(*in))
-		copy(*out, *in)
 	}
 	if in.Rules != nil {
 		in, out := &in.Rules, &out.Rules
@@ -1799,11 +1784,6 @@ func (in *NetworkServicesTCPRouteSpec) DeepCopyInto(out *NetworkServicesTCPRoute
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
 		**out = **in
-	}
-	if in.Routers != nil {
-		in, out := &in.Routers, &out.Routers
-		*out = make([]string, len(*in))
-		copy(*out, *in)
 	}
 	if in.Rules != nil {
 		in, out := &in.Rules, &out.Rules

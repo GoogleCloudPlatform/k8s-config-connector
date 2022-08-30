@@ -705,11 +705,6 @@ func canonicalizeForwardingRuleDesiredState(rawDesired, rawInitial *ForwardingRu
 	} else {
 		canonicalDesired.Ports = rawDesired.Ports
 	}
-	if dcl.StringCanonicalize(rawDesired.Region, rawInitial.Region) {
-		canonicalDesired.Region = rawInitial.Region
-	} else {
-		canonicalDesired.Region = rawDesired.Region
-	}
 	if dcl.StringCanonicalize(rawDesired.ServiceLabel, rawInitial.ServiceLabel) {
 		canonicalDesired.ServiceLabel = rawInitial.ServiceLabel
 	} else {
@@ -1452,7 +1447,7 @@ func diffForwardingRule(c *Client, desired, actual *ForwardingRule, opts ...dcl.
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Region, actual.Region, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Region")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Region, actual.Region, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Region")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1801,9 +1796,6 @@ func expandForwardingRule(c *Client, f *ForwardingRule) (map[string]interface{},
 	}
 	if v := f.Ports; v != nil {
 		m["ports"] = v
-	}
-	if v := f.Region; dcl.ValueShouldBeSent(v) {
-		m["region"] = v
 	}
 	if v := f.ServiceLabel; dcl.ValueShouldBeSent(v) {
 		m["serviceLabel"] = v

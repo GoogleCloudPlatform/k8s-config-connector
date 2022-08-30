@@ -284,6 +284,7 @@ components:
               x-dcl-go-name: ContainerConcurrency
               description: Sets the maximum number of requests that each serving instance
                 can receive.
+              x-dcl-server-default: true
             containers:
               type: array
               x-dcl-go-name: Containers
@@ -380,10 +381,10 @@ components:
                                 secret:
                                   type: string
                                   x-dcl-go-name: Secret
-                                  description: Required. The name of the secret in
-                                    Cloud Secret Manager. Format {secret_name} if
+                                  description: 'Required. The name of the secret in
+                                    Cloud Secret Manager. Format: {secret_name} if
                                     the secret is in the same project. projects/{project}/secrets/{secret_name}
-                                    if the secret is in a different project.
+                                    if the secret is in a different project.'
                                   x-dcl-references:
                                   - resource: Secretmanager/Secret
                                     field: name
@@ -414,6 +415,7 @@ components:
                       be accessible. If omitted, a port number will be chosen and
                       passed to the container through the PORT environment variable
                       for the container to listen on.
+                    x-dcl-server-default: true
                     x-dcl-send-empty: true
                     x-dcl-list-type: list
                     items:
@@ -438,6 +440,7 @@ components:
                     x-dcl-go-type: ServiceTemplateContainersResources
                     description: 'Compute Resource requirements by this container.
                       More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources'
+                    x-dcl-server-default: true
                     properties:
                       cpuIdle:
                         type: boolean
@@ -528,6 +531,7 @@ components:
                 of the running revision, and determines what permissions the revision
                 has. If not provided, the revision will use the project's default
                 service account.
+              x-dcl-server-default: true
               x-dcl-references:
               - resource: Iam/ServiceAccount
                 field: email
@@ -535,6 +539,7 @@ components:
               type: string
               x-dcl-go-name: Timeout
               description: Max allowed time for an instance to respond to a request.
+              x-dcl-server-default: true
             volumes:
               type: array
               x-dcl-go-name: Volumes
@@ -560,11 +565,11 @@ components:
                       instances:
                         type: array
                         x-dcl-go-name: Instances
-                        description: The Cloud SQL instance connection names, as can
-                          be found in https://console.cloud.google.com/sql/instances.
+                        description: 'The Cloud SQL instance connection names, as
+                          can be found in https://console.cloud.google.com/sql/instances.
                           Visit https://cloud.google.com/sql/docs/mysql/connect-run
                           for more information on how to connect Cloud SQL and Cloud
-                          Run. Format {project}:{location}:{instance}
+                          Run. Format: {project}:{location}:{instance}'
                         x-dcl-send-empty: true
                         x-dcl-list-type: list
                         items:
@@ -660,10 +665,10 @@ components:
                       secret:
                         type: string
                         x-dcl-go-name: Secret
-                        description: Required. The name of the secret in Cloud Secret
-                          Manager. Format {secret} if the secret is in the same project.
+                        description: 'Required. The name of the secret in Cloud Secret
+                          Manager. Format: {secret} if the secret is in the same project.
                           projects/{project}/secrets/{secret} if the secret is in
-                          a different project.
+                          a different project.'
                         x-dcl-references:
                         - resource: Secretmanager/Secret
                           field: name

@@ -125,7 +125,7 @@ type GrpcrouteMethod struct {
 	/* Required. Name of the service to match against. If unspecified, will match all services. */
 	GrpcService string `json:"grpcService"`
 
-	/* Optional. Specifies how to match against the name. If not specified, a default value of "EXACT" is used. Possible values: MATCH_TYPE_UNSPECIFIED, MATCH_ANY, MATCH_ALL */
+	/* Optional. Specifies how to match against the name. If not specified, a default value of "EXACT" is used. Possible values: TYPE_UNSPECIFIED, EXACT, REGULAR_EXPRESSION */
 	// +optional
 	Type *string `json:"type,omitempty"`
 }
@@ -178,10 +178,6 @@ type NetworkServicesGRPCRouteSpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	/* Optional. Routers define a list of routers this GrpcRoute should be served by. Each router reference should match the pattern: `projects/* /locations/global/routers/` */
-	// +optional
-	Routers []string `json:"routers,omitempty"`
 
 	/* Required. A list of detailed rules defining how to route traffic. Within a single GrpcRoute, the GrpcRoute.RouteAction associated with the first matching GrpcRoute.RouteRule will be executed. At least one rule must be supplied. */
 	Rules []GrpcrouteRules `json:"rules"`

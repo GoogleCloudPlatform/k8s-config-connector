@@ -163,10 +163,11 @@ func DCLMembershipSchema() *dcl.Schema {
 								},
 							},
 							"memberKey": &dcl.Property{
-								Type:        "object",
-								GoName:      "MemberKey",
-								GoType:      "MembershipMemberKey",
-								Description: "Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned.",
+								Type:          "object",
+								GoName:        "MemberKey",
+								GoType:        "MembershipMemberKey",
+								Description:   "Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned.",
+								ServerDefault: true,
 								Properties: map[string]*dcl.Property{
 									"id": &dcl.Property{
 										Type:        "string",

@@ -218,26 +218,6 @@ func (r *HttpRoute) deleteURL(userBasePath string) (string, error) {
 	return dcl.URL("projects/{{project}}/locations/{{location}}/httpRoutes/{{name}}", nr.basePath(), userBasePath, params), nil
 }
 
-func (r *HttpRoute) SetPolicyURL(userBasePath string) string {
-	nr := r.urlNormalized()
-	fields := map[string]interface{}{}
-	return dcl.URL("", nr.basePath(), userBasePath, fields)
-}
-
-func (r *HttpRoute) SetPolicyVerb() string {
-	return ""
-}
-
-func (r *HttpRoute) getPolicyURL(userBasePath string) string {
-	nr := r.urlNormalized()
-	fields := map[string]interface{}{}
-	return dcl.URL("", nr.basePath(), userBasePath, fields)
-}
-
-func (r *HttpRoute) IAMPolicyVersion() int {
-	return 3
-}
-
 // httpRouteApiOperation represents a mutable operation in the underlying REST
 // API such as Create, Update, or Delete.
 type httpRouteApiOperation interface {
@@ -262,9 +242,6 @@ func newUpdateHttpRouteUpdateHttpRouteRequest(ctx context.Context, f *HttpRoute,
 	}
 	if v := f.Hostnames; v != nil {
 		req["hostnames"] = v
-	}
-	if v := f.Routers; v != nil {
-		req["routers"] = v
 	}
 	if v := f.Meshes; v != nil {
 		req["meshes"] = v
@@ -629,11 +606,6 @@ func canonicalizeHttpRouteDesiredState(rawDesired, rawInitial *HttpRoute, opts .
 	} else {
 		canonicalDesired.Hostnames = rawDesired.Hostnames
 	}
-	if dcl.StringArrayCanonicalize(rawDesired.Routers, rawInitial.Routers) {
-		canonicalDesired.Routers = rawInitial.Routers
-	} else {
-		canonicalDesired.Routers = rawDesired.Routers
-	}
 	if dcl.StringArrayCanonicalize(rawDesired.Meshes, rawInitial.Meshes) {
 		canonicalDesired.Meshes = rawInitial.Meshes
 	} else {
@@ -698,14 +670,6 @@ func canonicalizeHttpRouteNewState(c *Client, rawNew, rawDesired *HttpRoute) (*H
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Hostnames, rawNew.Hostnames) {
 			rawNew.Hostnames = rawDesired.Hostnames
-		}
-	}
-
-	if dcl.IsEmptyValueIndirect(rawNew.Routers) && dcl.IsEmptyValueIndirect(rawDesired.Routers) {
-		rawNew.Routers = rawDesired.Routers
-	} else {
-		if dcl.StringArrayCanonicalize(rawDesired.Routers, rawNew.Routers) {
-			rawNew.Routers = rawDesired.Routers
 		}
 	}
 
@@ -1563,11 +1527,6 @@ func canonicalizeHttpRouteRulesAction(des, initial *HttpRouteRulesAction, opts .
 
 	cDes.Destinations = canonicalizeHttpRouteRulesActionDestinationsSlice(des.Destinations, initial.Destinations, opts...)
 	cDes.Redirect = canonicalizeHttpRouteRulesActionRedirect(des.Redirect, initial.Redirect, opts...)
-	if dcl.BoolCanonicalize(des.OriginalDestination, initial.OriginalDestination) || dcl.IsZeroValue(des.OriginalDestination) {
-		cDes.OriginalDestination = initial.OriginalDestination
-	} else {
-		cDes.OriginalDestination = des.OriginalDestination
-	}
 	cDes.FaultInjectionPolicy = canonicalizeHttpRouteRulesActionFaultInjectionPolicy(des.FaultInjectionPolicy, initial.FaultInjectionPolicy, opts...)
 	cDes.RequestHeaderModifier = canonicalizeHttpRouteRulesActionRequestHeaderModifier(des.RequestHeaderModifier, initial.RequestHeaderModifier, opts...)
 	cDes.ResponseHeaderModifier = canonicalizeHttpRouteRulesActionResponseHeaderModifier(des.ResponseHeaderModifier, initial.ResponseHeaderModifier, opts...)
@@ -1628,9 +1587,6 @@ func canonicalizeNewHttpRouteRulesAction(c *Client, des, nw *HttpRouteRulesActio
 
 	nw.Destinations = canonicalizeNewHttpRouteRulesActionDestinationsSlice(c, des.Destinations, nw.Destinations)
 	nw.Redirect = canonicalizeNewHttpRouteRulesActionRedirect(c, des.Redirect, nw.Redirect)
-	if dcl.BoolCanonicalize(des.OriginalDestination, nw.OriginalDestination) {
-		nw.OriginalDestination = des.OriginalDestination
-	}
 	nw.FaultInjectionPolicy = canonicalizeNewHttpRouteRulesActionFaultInjectionPolicy(c, des.FaultInjectionPolicy, nw.FaultInjectionPolicy)
 	nw.RequestHeaderModifier = canonicalizeNewHttpRouteRulesActionRequestHeaderModifier(c, des.RequestHeaderModifier, nw.RequestHeaderModifier)
 	nw.ResponseHeaderModifier = canonicalizeNewHttpRouteRulesActionResponseHeaderModifier(c, des.ResponseHeaderModifier, nw.ResponseHeaderModifier)
@@ -3272,13 +3228,6 @@ func diffHttpRoute(c *Client, desired, actual *HttpRoute, opts ...dcl.ApplyOptio
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Routers, actual.Routers, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Routers")); len(ds) != 0 || err != nil {
-		if err != nil {
-			return nil, err
-		}
-		newDiffs = append(newDiffs, ds...)
-	}
-
 	if ds, err := dcl.Diff(desired.Meshes, actual.Meshes, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Meshes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
@@ -3622,13 +3571,6 @@ func compareHttpRouteRulesActionNewStyle(d, a interface{}, fn dcl.FieldName) ([]
 	}
 
 	if ds, err := dcl.Diff(desired.Redirect, actual.Redirect, dcl.DiffInfo{ObjectFunction: compareHttpRouteRulesActionRedirectNewStyle, EmptyObject: EmptyHttpRouteRulesActionRedirect, OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("Redirect")); len(ds) != 0 || err != nil {
-		if err != nil {
-			return nil, err
-		}
-		diffs = append(diffs, ds...)
-	}
-
-	if ds, err := dcl.Diff(desired.OriginalDestination, actual.OriginalDestination, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateHttpRouteUpdateHttpRouteOperation")}, fn.AddNest("OriginalDestination")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4290,9 +4232,6 @@ func expandHttpRoute(c *Client, f *HttpRoute) (map[string]interface{}, error) {
 	if v := f.Hostnames; v != nil {
 		m["hostnames"] = v
 	}
-	if v := f.Routers; v != nil {
-		m["routers"] = v
-	}
 	if v := f.Meshes; v != nil {
 		m["meshes"] = v
 	}
@@ -4338,7 +4277,6 @@ func flattenHttpRoute(c *Client, i interface{}, res *HttpRoute) *HttpRoute {
 	resultRes.CreateTime = dcl.FlattenString(m["createTime"])
 	resultRes.UpdateTime = dcl.FlattenString(m["updateTime"])
 	resultRes.Hostnames = dcl.FlattenStringSlice(m["hostnames"])
-	resultRes.Routers = dcl.FlattenStringSlice(m["routers"])
 	resultRes.Meshes = dcl.FlattenStringSlice(m["meshes"])
 	resultRes.Gateways = dcl.FlattenStringSlice(m["gateways"])
 	resultRes.Labels = dcl.FlattenKeyValuePairs(m["labels"])
@@ -5097,9 +5035,6 @@ func expandHttpRouteRulesAction(c *Client, f *HttpRouteRulesAction, res *HttpRou
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["redirect"] = v
 	}
-	if v := f.OriginalDestination; !dcl.IsEmptyValueIndirect(v) {
-		m["originalDestination"] = v
-	}
 	if v, err := expandHttpRouteRulesActionFaultInjectionPolicy(c, f.FaultInjectionPolicy, res); err != nil {
 		return nil, fmt.Errorf("error expanding FaultInjectionPolicy into faultInjectionPolicy: %w", err)
 	} else if !dcl.IsEmptyValueIndirect(v) {
@@ -5157,7 +5092,6 @@ func flattenHttpRouteRulesAction(c *Client, i interface{}, res *HttpRoute) *Http
 	}
 	r.Destinations = flattenHttpRouteRulesActionDestinationsSlice(c, m["destinations"], res)
 	r.Redirect = flattenHttpRouteRulesActionRedirect(c, m["redirect"], res)
-	r.OriginalDestination = dcl.FlattenBool(m["originalDestination"])
 	r.FaultInjectionPolicy = flattenHttpRouteRulesActionFaultInjectionPolicy(c, m["faultInjectionPolicy"], res)
 	r.RequestHeaderModifier = flattenHttpRouteRulesActionRequestHeaderModifier(c, m["requestHeaderModifier"], res)
 	r.ResponseHeaderModifier = flattenHttpRouteRulesActionResponseHeaderModifier(c, m["responseHeaderModifier"], res)

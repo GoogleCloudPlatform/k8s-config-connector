@@ -223,7 +223,7 @@ tenantRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The multiple response type to request for in the OAuth authorization flow. This can possibly be a combination of set bits (e.g. {id\_token, token}).{% endverbatim %}</p>
+            <p>{% verbatim %}The multiple response type to request for in the OAuth authorization flow. This can possibly be a combination of set bits (e.g.: {id\_token, token}).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

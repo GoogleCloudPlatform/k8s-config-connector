@@ -133,6 +133,7 @@ components:
           x-dcl-go-type: PacketMirroringFilter
           description: Filter for mirrored traffic. If unspecified, all traffic is
             mirrored.
+          x-dcl-server-default: true
           properties:
             cidrRanges:
               type: array

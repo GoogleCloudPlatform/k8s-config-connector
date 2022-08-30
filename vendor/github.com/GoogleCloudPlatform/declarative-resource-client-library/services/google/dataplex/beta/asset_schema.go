@@ -170,10 +170,11 @@ func DCLAssetSchema() *dcl.Schema {
 								},
 								Properties: map[string]*dcl.Property{
 									"csvOptions": &dcl.Property{
-										Type:        "object",
-										GoName:      "CsvOptions",
-										GoType:      "AssetDiscoverySpecCsvOptions",
-										Description: "Optional. Configuration for CSV data.",
+										Type:          "object",
+										GoName:        "CsvOptions",
+										GoType:        "AssetDiscoverySpecCsvOptions",
+										Description:   "Optional. Configuration for CSV data.",
+										ServerDefault: true,
 										Properties: map[string]*dcl.Property{
 											"delimiter": &dcl.Property{
 												Type:        "string",
@@ -226,10 +227,11 @@ func DCLAssetSchema() *dcl.Schema {
 										},
 									},
 									"jsonOptions": &dcl.Property{
-										Type:        "object",
-										GoName:      "JsonOptions",
-										GoType:      "AssetDiscoverySpecJsonOptions",
-										Description: "Optional. Configuration for Json data.",
+										Type:          "object",
+										GoName:        "JsonOptions",
+										GoType:        "AssetDiscoverySpecJsonOptions",
+										Description:   "Optional. Configuration for Json data.",
+										ServerDefault: true,
 										Properties: map[string]*dcl.Property{
 											"disableTypeInference": &dcl.Property{
 												Type:        "boolean",
@@ -355,13 +357,6 @@ func DCLAssetSchema() *dcl.Schema {
 								Type:        "string",
 								GoName:      "Name",
 								Description: "The name of the asset.",
-								ResourceReferences: []*dcl.PropertyResourceReference{
-									&dcl.PropertyResourceReference{
-										Resource: "Dataplex/Asset",
-										Field:    "selfLink",
-										Parent:   true,
-									},
-								},
 							},
 							"project": &dcl.Property{
 								Type:        "string",

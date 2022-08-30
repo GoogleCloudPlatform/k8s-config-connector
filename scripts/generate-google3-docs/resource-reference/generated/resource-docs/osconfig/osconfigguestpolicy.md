@@ -847,7 +847,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}URI from which to fetch the object. It should contain both the protocol and path following the format {protocol}://{location}.{% endverbatim %}</p>
+            <p>{% verbatim %}URI from which to fetch the object. It should contain both the protocol and path following the format: {protocol}://{location}.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

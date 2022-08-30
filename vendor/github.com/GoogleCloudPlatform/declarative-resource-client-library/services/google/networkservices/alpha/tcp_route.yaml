@@ -141,17 +141,6 @@ components:
           - resource: Cloudresourcemanager/Project
             field: name
             parent: true
-        routers:
-          type: array
-          x-dcl-go-name: Routers
-          description: 'Optional. Routers define a list of routers this TcpRoute should
-            be served by. Each router reference should match the pattern: `projects/*/locations/global/routers/`
-            The attached Router should be of a type PROXY'
-          x-dcl-send-empty: true
-          x-dcl-list-type: list
-          items:
-            type: string
-            x-dcl-go-type: string
         rules:
           type: array
           x-dcl-go-name: Rules

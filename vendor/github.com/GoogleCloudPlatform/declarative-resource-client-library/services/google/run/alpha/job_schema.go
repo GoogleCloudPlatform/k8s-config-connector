@@ -576,7 +576,7 @@ func DCLJobSchema() *dcl.Schema {
 																					"secret": &dcl.Property{
 																						Type:        "string",
 																						GoName:      "Secret",
-																						Description: "Required. The name of the secret in Cloud Secret Manager. Format {secret_name} if the secret is in the same project. projects/{project}/secrets/{secret_name} if the secret is in a different project.",
+																						Description: "Required. The name of the secret in Cloud Secret Manager. Format: {secret_name} if the secret is in the same project. projects/{project}/secrets/{secret_name} if the secret is in a different project.",
 																						ResourceReferences: []*dcl.PropertyResourceReference{
 																							&dcl.PropertyResourceReference{
 																								Resource: "Secretmanager/Secret",
@@ -701,10 +701,11 @@ func DCLJobSchema() *dcl.Schema {
 												},
 											},
 											"executionEnvironment": &dcl.Property{
-												Type:        "string",
-												GoName:      "ExecutionEnvironment",
-												GoType:      "JobTemplateTemplateExecutionEnvironmentEnum",
-												Description: "The execution environment being used to host this Task. Possible values: EXECUTION_ENVIRONMENT_UNSPECIFIED, EXECUTION_ENVIRONMENT_DEFAULT, EXECUTION_ENVIRONMENT_GEN2",
+												Type:          "string",
+												GoName:        "ExecutionEnvironment",
+												GoType:        "JobTemplateTemplateExecutionEnvironmentEnum",
+												Description:   "The execution environment being used to host this Task. Possible values: EXECUTION_ENVIRONMENT_UNSPECIFIED, EXECUTION_ENVIRONMENT_DEFAULT, EXECUTION_ENVIRONMENT_GEN2",
+												ServerDefault: true,
 												Enum: []string{
 													"EXECUTION_ENVIRONMENT_UNSPECIFIED",
 													"EXECUTION_ENVIRONMENT_DEFAULT",
@@ -712,10 +713,11 @@ func DCLJobSchema() *dcl.Schema {
 												},
 											},
 											"maxRetries": &dcl.Property{
-												Type:        "integer",
-												Format:      "int64",
-												GoName:      "MaxRetries",
-												Description: "Number of retries allowed per Task, before marking this Task failed.",
+												Type:          "integer",
+												Format:        "int64",
+												GoName:        "MaxRetries",
+												Description:   "Number of retries allowed per Task, before marking this Task failed.",
+												ServerDefault: true,
 											},
 											"serviceAccount": &dcl.Property{
 												Type:          "string",
@@ -754,7 +756,7 @@ func DCLJobSchema() *dcl.Schema {
 																"instances": &dcl.Property{
 																	Type:        "array",
 																	GoName:      "Instances",
-																	Description: "The Cloud SQL instance connection names, as can be found in https://console.cloud.google.com/sql/instances. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. Format {project}:{location}:{instance}",
+																	Description: "The Cloud SQL instance connection names, as can be found in https://console.cloud.google.com/sql/instances. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. Format: {project}:{location}:{instance}",
 																	SendEmpty:   true,
 																	ListType:    "list",
 																	Items: &dcl.Property{
@@ -822,7 +824,7 @@ func DCLJobSchema() *dcl.Schema {
 																"secret": &dcl.Property{
 																	Type:        "string",
 																	GoName:      "Secret",
-																	Description: "Required. The name of the secret in Cloud Secret Manager. Format {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project.",
+																	Description: "Required. The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project.",
 																},
 															},
 														},

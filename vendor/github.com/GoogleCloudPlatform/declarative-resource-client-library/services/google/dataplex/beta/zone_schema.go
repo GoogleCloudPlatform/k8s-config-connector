@@ -177,10 +177,11 @@ func DCLZoneSchema() *dcl.Schema {
 								},
 								Properties: map[string]*dcl.Property{
 									"csvOptions": &dcl.Property{
-										Type:        "object",
-										GoName:      "CsvOptions",
-										GoType:      "ZoneDiscoverySpecCsvOptions",
-										Description: "Optional. Configuration for CSV data.",
+										Type:          "object",
+										GoName:        "CsvOptions",
+										GoType:        "ZoneDiscoverySpecCsvOptions",
+										Description:   "Optional. Configuration for CSV data.",
+										ServerDefault: true,
 										Properties: map[string]*dcl.Property{
 											"delimiter": &dcl.Property{
 												Type:        "string",
@@ -233,10 +234,11 @@ func DCLZoneSchema() *dcl.Schema {
 										},
 									},
 									"jsonOptions": &dcl.Property{
-										Type:        "object",
-										GoName:      "JsonOptions",
-										GoType:      "ZoneDiscoverySpecJsonOptions",
-										Description: "Optional. Configuration for Json data.",
+										Type:          "object",
+										GoName:        "JsonOptions",
+										GoType:        "ZoneDiscoverySpecJsonOptions",
+										Description:   "Optional. Configuration for Json data.",
+										ServerDefault: true,
 										Properties: map[string]*dcl.Property{
 											"disableTypeInference": &dcl.Property{
 												Type:        "boolean",

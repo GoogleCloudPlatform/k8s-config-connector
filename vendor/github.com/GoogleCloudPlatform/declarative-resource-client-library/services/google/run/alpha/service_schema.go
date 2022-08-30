@@ -304,10 +304,11 @@ func DCLServiceSchema() *dcl.Schema {
 										Description: "KRM-style annotations for the resource.",
 									},
 									"containerConcurrency": &dcl.Property{
-										Type:        "integer",
-										Format:      "int64",
-										GoName:      "ContainerConcurrency",
-										Description: "Sets the maximum number of requests that each serving instance can receive.",
+										Type:          "integer",
+										Format:        "int64",
+										GoName:        "ContainerConcurrency",
+										Description:   "Sets the maximum number of requests that each serving instance can receive.",
+										ServerDefault: true,
 									},
 									"containers": &dcl.Property{
 										Type:        "array",
@@ -391,7 +392,7 @@ func DCLServiceSchema() *dcl.Schema {
 																			"secret": &dcl.Property{
 																				Type:        "string",
 																				GoName:      "Secret",
-																				Description: "Required. The name of the secret in Cloud Secret Manager. Format {secret_name} if the secret is in the same project. projects/{project}/secrets/{secret_name} if the secret is in a different project.",
+																				Description: "Required. The name of the secret in Cloud Secret Manager. Format: {secret_name} if the secret is in the same project. projects/{project}/secrets/{secret_name} if the secret is in a different project.",
 																				ResourceReferences: []*dcl.PropertyResourceReference{
 																					&dcl.PropertyResourceReference{
 																						Resource: "Secretmanager/Secret",
@@ -428,11 +429,12 @@ func DCLServiceSchema() *dcl.Schema {
 													Description: "Name of the container specified as a DNS_LABEL.",
 												},
 												"ports": &dcl.Property{
-													Type:        "array",
-													GoName:      "Ports",
-													Description: "List of ports to expose from the container. Only a single port can be specified. The specified ports must be listening on all interfaces (0.0.0.0) within the container to be accessible. If omitted, a port number will be chosen and passed to the container through the PORT environment variable for the container to listen on.",
-													SendEmpty:   true,
-													ListType:    "list",
+													Type:          "array",
+													GoName:        "Ports",
+													Description:   "List of ports to expose from the container. Only a single port can be specified. The specified ports must be listening on all interfaces (0.0.0.0) within the container to be accessible. If omitted, a port number will be chosen and passed to the container through the PORT environment variable for the container to listen on.",
+													ServerDefault: true,
+													SendEmpty:     true,
+													ListType:      "list",
 													Items: &dcl.Property{
 														Type:   "object",
 														GoType: "ServiceTemplateContainersPorts",
@@ -452,10 +454,11 @@ func DCLServiceSchema() *dcl.Schema {
 													},
 												},
 												"resources": &dcl.Property{
-													Type:        "object",
-													GoName:      "Resources",
-													GoType:      "ServiceTemplateContainersResources",
-													Description: "Compute Resource requirements by this container. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources",
+													Type:          "object",
+													GoName:        "Resources",
+													GoType:        "ServiceTemplateContainersResources",
+													Description:   "Compute Resource requirements by this container. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources",
+													ServerDefault: true,
 													Properties: map[string]*dcl.Property{
 														"cpuIdle": &dcl.Property{
 															Type:        "boolean",
@@ -547,9 +550,10 @@ func DCLServiceSchema() *dcl.Schema {
 										},
 									},
 									"serviceAccount": &dcl.Property{
-										Type:        "string",
-										GoName:      "ServiceAccount",
-										Description: "Email address of the IAM service account associated with the revision of the service. The service account represents the identity of the running revision, and determines what permissions the revision has. If not provided, the revision will use the project's default service account.",
+										Type:          "string",
+										GoName:        "ServiceAccount",
+										Description:   "Email address of the IAM service account associated with the revision of the service. The service account represents the identity of the running revision, and determines what permissions the revision has. If not provided, the revision will use the project's default service account.",
+										ServerDefault: true,
 										ResourceReferences: []*dcl.PropertyResourceReference{
 											&dcl.PropertyResourceReference{
 												Resource: "Iam/ServiceAccount",
@@ -558,9 +562,10 @@ func DCLServiceSchema() *dcl.Schema {
 										},
 									},
 									"timeout": &dcl.Property{
-										Type:        "string",
-										GoName:      "Timeout",
-										Description: "Max allowed time for an instance to respond to a request.",
+										Type:          "string",
+										GoName:        "Timeout",
+										Description:   "Max allowed time for an instance to respond to a request.",
+										ServerDefault: true,
 									},
 									"volumes": &dcl.Property{
 										Type:        "array",
@@ -587,7 +592,7 @@ func DCLServiceSchema() *dcl.Schema {
 														"instances": &dcl.Property{
 															Type:        "array",
 															GoName:      "Instances",
-															Description: "The Cloud SQL instance connection names, as can be found in https://console.cloud.google.com/sql/instances. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. Format {project}:{location}:{instance}",
+															Description: "The Cloud SQL instance connection names, as can be found in https://console.cloud.google.com/sql/instances. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. Format: {project}:{location}:{instance}",
 															SendEmpty:   true,
 															ListType:    "list",
 															Items: &dcl.Property{
@@ -667,7 +672,7 @@ func DCLServiceSchema() *dcl.Schema {
 														"secret": &dcl.Property{
 															Type:        "string",
 															GoName:      "Secret",
-															Description: "Required. The name of the secret in Cloud Secret Manager. Format {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project.",
+															Description: "Required. The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project.",
 															ResourceReferences: []*dcl.PropertyResourceReference{
 																&dcl.PropertyResourceReference{
 																	Resource: "Secretmanager/Secret",

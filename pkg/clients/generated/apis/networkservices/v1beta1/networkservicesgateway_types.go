@@ -40,9 +40,9 @@ type NetworkServicesGatewaySpec struct {
 	// +optional
 	Addresses []string `json:"addresses,omitempty"`
 
-	/* Optional. A fully-qualified AuthorizationPolicy URL reference. Specifies how traffic is authorized. If empty, authorization checks are disabled. */
+	/*  */
 	// +optional
-	AuthorizationPolicy *string `json:"authorizationPolicy,omitempty"`
+	AuthorizationPolicyRef *v1alpha1.ResourceRef `json:"authorizationPolicyRef,omitempty"`
 
 	/* Optional. A free-text description of the resource. Max length 1024 characters. */
 	// +optional
@@ -68,9 +68,9 @@ type NetworkServicesGatewaySpec struct {
 	/* Immutable. Required. Immutable. Scope determines how configuration across multiple Gateway instances are merged. The configuration for multiple Gateway instances with the same scope will be merged as presented as a single coniguration to the proxy/load balancer. Max length 64 characters. Scope should start with a letter and can only have letters, numbers, hyphens. */
 	Scope string `json:"scope"`
 
-	/* Optional. A fully-qualified ServerTLSPolicy URL reference. Specifies how TLS traffic is terminated. If empty, TLS termination is disabled. */
+	/*  */
 	// +optional
-	ServerTlsPolicy *string `json:"serverTlsPolicy,omitempty"`
+	ServerTlsPolicyRef *v1alpha1.ResourceRef `json:"serverTlsPolicyRef,omitempty"`
 
 	/* Immutable. Immutable. The type of the customer managed gateway. Possible values: MATCH_TYPE_UNSPECIFIED, MATCH_ANY, MATCH_ALL */
 	// +optional

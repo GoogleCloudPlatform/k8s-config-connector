@@ -64,11 +64,6 @@ func TcpRouteToUnstructured(r *dclService.TcpRoute) *unstructured.Resource {
 	if r.Project != nil {
 		u.Object["project"] = *r.Project
 	}
-	var rRouters []interface{}
-	for _, rRoutersVal := range r.Routers {
-		rRouters = append(rRouters, rRoutersVal)
-	}
-	u.Object["routers"] = rRouters
 	var rRules []interface{}
 	for _, rRulesVal := range r.Rules {
 		rRulesObject := make(map[string]interface{})
@@ -185,17 +180,6 @@ func UnstructuredToTcpRoute(u *unstructured.Resource) (*dclService.TcpRoute, err
 			r.Project = dcl.String(s)
 		} else {
 			return nil, fmt.Errorf("r.Project: expected string")
-		}
-	}
-	if _, ok := u.Object["routers"]; ok {
-		if s, ok := u.Object["routers"].([]interface{}); ok {
-			for _, ss := range s {
-				if strval, ok := ss.(string); ok {
-					r.Routers = append(r.Routers, strval)
-				}
-			}
-		} else {
-			return nil, fmt.Errorf("r.Routers: expected []interface{}")
 		}
 	}
 	if _, ok := u.Object["rules"]; ok {

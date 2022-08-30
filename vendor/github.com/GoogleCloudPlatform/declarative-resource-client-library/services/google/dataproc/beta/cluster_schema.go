@@ -169,11 +169,12 @@ func DCLClusterSchema() *dcl.Schema {
 										},
 									},
 									"endpointConfig": &dcl.Property{
-										Type:        "object",
-										GoName:      "EndpointConfig",
-										GoType:      "ClusterConfigEndpointConfig",
-										Description: "Optional. Port/endpoint configuration for this cluster",
-										Immutable:   true,
+										Type:          "object",
+										GoName:        "EndpointConfig",
+										GoType:        "ClusterConfigEndpointConfig",
+										Description:   "Optional. Port/endpoint configuration for this cluster",
+										Immutable:     true,
+										ServerDefault: true,
 										Properties: map[string]*dcl.Property{
 											"enableHttpPortAccess": &dcl.Property{
 												Type:        "boolean",
@@ -194,11 +195,12 @@ func DCLClusterSchema() *dcl.Schema {
 										},
 									},
 									"gceClusterConfig": &dcl.Property{
-										Type:        "object",
-										GoName:      "GceClusterConfig",
-										GoType:      "ClusterConfigGceClusterConfig",
-										Description: "Optional. The shared Compute Engine config settings for all instances in a cluster.",
-										Immutable:   true,
+										Type:          "object",
+										GoName:        "GceClusterConfig",
+										GoType:        "ClusterConfigGceClusterConfig",
+										Description:   "Optional. The shared Compute Engine config settings for all instances in a cluster.",
+										Immutable:     true,
+										ServerDefault: true,
 										Properties: map[string]*dcl.Property{
 											"internalIPOnly": &dcl.Property{
 												Type:          "boolean",
@@ -217,10 +219,11 @@ func DCLClusterSchema() *dcl.Schema {
 												Immutable:   true,
 											},
 											"network": &dcl.Property{
-												Type:        "string",
-												GoName:      "Network",
-												Description: "Optional. The Compute Engine network to be used for machine communications. Cannot be specified with subnetwork_uri. If neither `network_uri` nor `subnetwork_uri` is specified, the \"default\" network of the project is used, if it exists. Cannot be a \"Custom Subnet Network\" (see [Using Subnetworks](https://cloud.google.com/compute/docs/subnetworks) for more information). A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/regions/global/default` * `projects/[project_id]/regions/global/default` * `default`",
-												Immutable:   true,
+												Type:          "string",
+												GoName:        "Network",
+												Description:   "Optional. The Compute Engine network to be used for machine communications. Cannot be specified with subnetwork_uri. If neither `network_uri` nor `subnetwork_uri` is specified, the \"default\" network of the project is used, if it exists. Cannot be a \"Custom Subnet Network\" (see [Using Subnetworks](https://cloud.google.com/compute/docs/subnetworks) for more information). A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/regions/global/default` * `projects/[project_id]/regions/global/default` * `default`",
+												Immutable:     true,
+												ServerDefault: true,
 												ResourceReferences: []*dcl.PropertyResourceReference{
 													&dcl.PropertyResourceReference{
 														Resource: "Compute/Network",
@@ -318,12 +321,13 @@ func DCLClusterSchema() *dcl.Schema {
 												},
 											},
 											"serviceAccountScopes": &dcl.Property{
-												Type:        "array",
-												GoName:      "ServiceAccountScopes",
-												Description: "Optional. The URIs of service account scopes to be included in Compute Engine instances. The following base set of scopes is always included: * https://www.googleapis.com/auth/cloud.useraccounts.readonly * https://www.googleapis.com/auth/devstorage.read_write * https://www.googleapis.com/auth/logging.write If no scopes are specified, the following defaults are also provided: * https://www.googleapis.com/auth/bigquery * https://www.googleapis.com/auth/bigtable.admin.table * https://www.googleapis.com/auth/bigtable.data * https://www.googleapis.com/auth/devstorage.full_control",
-												Immutable:   true,
-												SendEmpty:   true,
-												ListType:    "list",
+												Type:          "array",
+												GoName:        "ServiceAccountScopes",
+												Description:   "Optional. The URIs of service account scopes to be included in Compute Engine instances. The following base set of scopes is always included: * https://www.googleapis.com/auth/cloud.useraccounts.readonly * https://www.googleapis.com/auth/devstorage.read_write * https://www.googleapis.com/auth/logging.write If no scopes are specified, the following defaults are also provided: * https://www.googleapis.com/auth/bigquery * https://www.googleapis.com/auth/bigtable.admin.table * https://www.googleapis.com/auth/bigtable.data * https://www.googleapis.com/auth/devstorage.full_control",
+												Immutable:     true,
+												ServerDefault: true,
+												SendEmpty:     true,
+												ListType:      "list",
 												Items: &dcl.Property{
 													Type:   "string",
 													GoType: "string",
@@ -930,11 +934,12 @@ func DCLClusterSchema() *dcl.Schema {
 										},
 									},
 									"softwareConfig": &dcl.Property{
-										Type:        "object",
-										GoName:      "SoftwareConfig",
-										GoType:      "ClusterConfigSoftwareConfig",
-										Description: "Optional. The config settings for software inside the cluster.",
-										Immutable:   true,
+										Type:          "object",
+										GoName:        "SoftwareConfig",
+										GoType:        "ClusterConfigSoftwareConfig",
+										Description:   "Optional. The config settings for software inside the cluster.",
+										Immutable:     true,
+										ServerDefault: true,
 										Properties: map[string]*dcl.Property{
 											"imageVersion": &dcl.Property{
 												Type:        "string",
@@ -982,10 +987,11 @@ func DCLClusterSchema() *dcl.Schema {
 										},
 									},
 									"stagingBucket": &dcl.Property{
-										Type:        "string",
-										GoName:      "StagingBucket",
-										Description: "Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see [Dataproc staging bucket](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). **This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.**",
-										Immutable:   true,
+										Type:          "string",
+										GoName:        "StagingBucket",
+										Description:   "Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see [Dataproc staging bucket](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). **This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.**",
+										Immutable:     true,
+										ServerDefault: true,
 										ResourceReferences: []*dcl.PropertyResourceReference{
 											&dcl.PropertyResourceReference{
 												Resource: "Storage/Bucket",
@@ -994,10 +1000,11 @@ func DCLClusterSchema() *dcl.Schema {
 										},
 									},
 									"tempBucket": &dcl.Property{
-										Type:        "string",
-										GoName:      "TempBucket",
-										Description: "Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket. **This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.**",
-										Immutable:   true,
+										Type:          "string",
+										GoName:        "TempBucket",
+										Description:   "Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket. **This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.**",
+										Immutable:     true,
+										ServerDefault: true,
 										ResourceReferences: []*dcl.PropertyResourceReference{
 											&dcl.PropertyResourceReference{
 												Resource: "Storage/Bucket",

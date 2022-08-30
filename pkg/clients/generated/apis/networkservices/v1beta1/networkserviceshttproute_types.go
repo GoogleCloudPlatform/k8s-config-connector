@@ -58,10 +58,6 @@ type HttprouteAction struct {
 	// +optional
 	FaultInjectionPolicy *HttprouteFaultInjectionPolicy `json:"faultInjectionPolicy,omitempty"`
 
-	/* If true, the matched traffic will use the destination ip and port of the original connection (as it was not processed by proxy) as the destination of the request. Only one of destinations, redirect, original_destination can be set. */
-	// +optional
-	OriginalDestination *bool `json:"originalDestination,omitempty"`
-
 	/* If set, the request is directed as configured by this field. */
 	// +optional
 	Redirect *HttprouteRedirect `json:"redirect,omitempty"`
@@ -380,10 +376,6 @@ type NetworkServicesHTTPRouteSpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	/* Optional. Routers define a list of routers this HttpRoute should be served by. Each router reference should match the pattern: `projects/* /locations/global/routers/` The attached Router should be of a type PROXY */
-	// +optional
-	Routers []string `json:"routers,omitempty"`
 
 	/* Required. Rules that define how traffic is routed and handled. */
 	Rules []HttprouteRules `json:"rules"`

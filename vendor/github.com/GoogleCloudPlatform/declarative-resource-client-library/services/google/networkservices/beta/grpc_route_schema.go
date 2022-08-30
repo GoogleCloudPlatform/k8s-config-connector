@@ -201,17 +201,6 @@ func DCLGrpcRouteSchema() *dcl.Schema {
 									},
 								},
 							},
-							"routers": &dcl.Property{
-								Type:        "array",
-								GoName:      "Routers",
-								Description: "Optional. Routers define a list of routers this GrpcRoute should be served by. Each router reference should match the pattern: `projects/*/locations/global/routers/`",
-								SendEmpty:   true,
-								ListType:    "list",
-								Items: &dcl.Property{
-									Type:   "string",
-									GoType: "string",
-								},
-							},
 							"rules": &dcl.Property{
 								Type:        "array",
 								GoName:      "Rules",
@@ -421,11 +410,11 @@ func DCLGrpcRouteSchema() *dcl.Schema {
 																Type:        "string",
 																GoName:      "Type",
 																GoType:      "GrpcRouteRulesMatchesMethodTypeEnum",
-																Description: "Optional. Specifies how to match against the name. If not specified, a default value of \"EXACT\" is used. Possible values: MATCH_TYPE_UNSPECIFIED, MATCH_ANY, MATCH_ALL",
+																Description: "Optional. Specifies how to match against the name. If not specified, a default value of \"EXACT\" is used. Possible values: TYPE_UNSPECIFIED, EXACT, REGULAR_EXPRESSION",
 																Enum: []string{
-																	"MATCH_TYPE_UNSPECIFIED",
-																	"MATCH_ANY",
-																	"MATCH_ALL",
+																	"TYPE_UNSPECIFIED",
+																	"EXACT",
+																	"REGULAR_EXPRESSION",
 																},
 															},
 														},

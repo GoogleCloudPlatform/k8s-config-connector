@@ -159,9 +159,10 @@ func DCLWorkforcePoolSchema() *dcl.Schema {
 								Immutable:   true,
 							},
 							"sessionDuration": &dcl.Property{
-								Type:        "string",
-								GoName:      "SessionDuration",
-								Description: "How long the Google Cloud access tokens, console sign-in sessions, and gcloud sign-in sessions from this pool are valid. Must be greater than 15 minutes (900s) and less than 12 hours (43200s). If `session_duration` is not configured, minted credentials will have a default duration of one hour (3600s).",
+								Type:          "string",
+								GoName:        "SessionDuration",
+								Description:   "How long the Google Cloud access tokens, console sign-in sessions, and gcloud sign-in sessions from this pool are valid. Must be greater than 15 minutes (900s) and less than 12 hours (43200s). If `session_duration` is not configured, minted credentials will have a default duration of one hour (3600s).",
+								ServerDefault: true,
 							},
 							"state": &dcl.Property{
 								Type:        "string",

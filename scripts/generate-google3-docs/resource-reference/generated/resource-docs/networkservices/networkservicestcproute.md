@@ -82,8 +82,6 @@ projectRef:
   name: string
   namespace: string
 resourceID: string
-routers:
-- string
 rules:
 - action:
     destinations:
@@ -285,26 +283,6 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>routers</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Optional. Routers define a list of routers this TcpRoute should be served by. Each router reference should match the pattern: `projects/*/locations/global/routers/` The attached Router should be of a type PROXY{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>routers[]</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

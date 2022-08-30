@@ -104,12 +104,12 @@ components:
               type: string
               x-dcl-go-name: WorkloadIdentityPool
               readOnly: true
-              description: Output only. The name of the workload identity pool in
+              description: 'Output only. The name of the workload identity pool in
                 which `issuer` will be recognized. There is a single Workload Identity
                 Pool per Hub that is shared between all Memberships that belong to
-                that Hub. For a Hub hosted in {PROJECT_ID}, the workload pool format
+                that Hub. For a Hub hosted in: {PROJECT_ID}, the workload pool format
                 is `{PROJECT_ID}.hub.id.goog`, although this is subject to change
-                in newer versions of this API.
+                in newer versions of this API.'
         createTime:
           type: string
           format: date-time
@@ -306,12 +306,14 @@ components:
             The ID must match the regex: `*` If this Membership represents a Kubernetes
             cluster, this value should be set to the UID of the `kube-system` namespace
             object.'
+          x-dcl-server-default: true
         infrastructureType:
           type: string
           x-dcl-go-name: InfrastructureType
           x-dcl-go-type: MembershipInfrastructureTypeEnum
           description: 'Optional. The infrastructure type this Membership is running
             on. Possible values: INFRASTRUCTURE_TYPE_UNSPECIFIED, ON_PREM, MULTI_CLOUD'
+          x-dcl-server-default: true
           enum:
           - INFRASTRUCTURE_TYPE_UNSPECIFIED
           - ON_PREM

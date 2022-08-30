@@ -69,11 +69,6 @@ func HttpRouteToUnstructured(r *dclService.HttpRoute) *unstructured.Resource {
 	if r.Project != nil {
 		u.Object["project"] = *r.Project
 	}
-	var rRouters []interface{}
-	for _, rRoutersVal := range r.Routers {
-		rRouters = append(rRouters, rRoutersVal)
-	}
-	u.Object["routers"] = rRouters
 	var rRules []interface{}
 	for _, rRulesVal := range r.Rules {
 		rRulesObject := make(map[string]interface{})
@@ -152,9 +147,6 @@ func HttpRouteToUnstructured(r *dclService.HttpRoute) *unstructured.Resource {
 					rRulesValActionFaultInjectionPolicy["delay"] = rRulesValActionFaultInjectionPolicyDelay
 				}
 				rRulesValAction["faultInjectionPolicy"] = rRulesValActionFaultInjectionPolicy
-			}
-			if rRulesVal.Action.OriginalDestination != nil {
-				rRulesValAction["originalDestination"] = *rRulesVal.Action.OriginalDestination
 			}
 			if rRulesVal.Action.Redirect != nil && rRulesVal.Action.Redirect != dclService.EmptyHttpRouteRulesActionRedirect {
 				rRulesValActionRedirect := make(map[string]interface{})
@@ -439,17 +431,6 @@ func UnstructuredToHttpRoute(u *unstructured.Resource) (*dclService.HttpRoute, e
 			return nil, fmt.Errorf("r.Project: expected string")
 		}
 	}
-	if _, ok := u.Object["routers"]; ok {
-		if s, ok := u.Object["routers"].([]interface{}); ok {
-			for _, ss := range s {
-				if strval, ok := ss.(string); ok {
-					r.Routers = append(r.Routers, strval)
-				}
-			}
-		} else {
-			return nil, fmt.Errorf("r.Routers: expected []interface{}")
-		}
-	}
 	if _, ok := u.Object["rules"]; ok {
 		if s, ok := u.Object["rules"].([]interface{}); ok {
 			for _, o := range s {
@@ -614,13 +595,6 @@ func UnstructuredToHttpRoute(u *unstructured.Resource) (*dclService.HttpRoute, e
 									}
 								} else {
 									return nil, fmt.Errorf("rRules.Action.FaultInjectionPolicy: expected map[string]interface{}")
-								}
-							}
-							if _, ok := rRulesAction["originalDestination"]; ok {
-								if b, ok := rRulesAction["originalDestination"].(bool); ok {
-									rRules.Action.OriginalDestination = dcl.Bool(b)
-								} else {
-									return nil, fmt.Errorf("rRules.Action.OriginalDestination: expected bool")
 								}
 							}
 							if _, ok := rRulesAction["redirect"]; ok {

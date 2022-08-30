@@ -170,10 +170,11 @@ func DCLPacketMirroringSchema() *dcl.Schema {
 								},
 							},
 							"filter": &dcl.Property{
-								Type:        "object",
-								GoName:      "Filter",
-								GoType:      "PacketMirroringFilter",
-								Description: "Filter for mirrored traffic. If unspecified, all traffic is mirrored.",
+								Type:          "object",
+								GoName:        "Filter",
+								GoType:        "PacketMirroringFilter",
+								Description:   "Filter for mirrored traffic. If unspecified, all traffic is mirrored.",
+								ServerDefault: true,
 								Properties: map[string]*dcl.Property{
 									"cidrRanges": &dcl.Property{
 										Type:        "array",

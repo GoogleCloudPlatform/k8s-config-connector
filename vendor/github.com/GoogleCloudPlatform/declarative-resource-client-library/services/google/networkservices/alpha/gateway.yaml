@@ -94,6 +94,10 @@ components:
           description: Optional. A fully-qualified AuthorizationPolicy URL reference.
             Specifies how traffic is authorized. If empty, authorization checks are
             disabled.
+          x-dcl-references:
+          - resource: Networksecurity/AuthorizationPolicy
+            field: name
+            format: projects/{{project}}/locations/global/authorizationPolicies/{{name}}
         createTime:
           type: string
           format: date-time
@@ -164,6 +168,10 @@ components:
           description: Optional. A fully-qualified ServerTLSPolicy URL reference.
             Specifies how TLS traffic is terminated. If empty, TLS termination is
             disabled.
+          x-dcl-references:
+          - resource: Networksecurity/ServerTlsPolicy
+            field: name
+            format: projects/{{project}}/locations/global/serverTlsPolicies/{{name}}
         type:
           type: string
           x-dcl-go-name: Type

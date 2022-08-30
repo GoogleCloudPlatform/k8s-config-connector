@@ -14,7 +14,6 @@
 package alpha
 
 import (
-	"bytes"
 	"context"
 	"crypto/sha256"
 	"encoding/json"
@@ -32,7 +31,6 @@ type GrpcRoute struct {
 	Labels      map[string]string `json:"labels"`
 	Description *string           `json:"description"`
 	Hostnames   []string          `json:"hostnames"`
-	Routers     []string          `json:"routers"`
 	Meshes      []string          `json:"meshes"`
 	Gateways    []string          `json:"gateways"`
 	Rules       []GrpcRouteRules  `json:"rules"`
@@ -60,7 +58,7 @@ func (v GrpcRouteRulesMatchesMethodTypeEnum) Validate() error {
 		// Empty enum is okay.
 		return nil
 	}
-	for _, s := range []string{"MATCH_TYPE_UNSPECIFIED", "MATCH_ANY", "MATCH_ALL"} {
+	for _, s := range []string{"TYPE_UNSPECIFIED", "EXACT", "REGULAR_EXPRESSION"} {
 		if string(v) == s {
 			return nil
 		}
@@ -626,7 +624,6 @@ func (r *GrpcRoute) ID() (string, error) {
 		"labels":      dcl.ValueOrEmptyString(nr.Labels),
 		"description": dcl.ValueOrEmptyString(nr.Description),
 		"hostnames":   dcl.ValueOrEmptyString(nr.Hostnames),
-		"routers":     dcl.ValueOrEmptyString(nr.Routers),
 		"meshes":      dcl.ValueOrEmptyString(nr.Meshes),
 		"gateways":    dcl.ValueOrEmptyString(nr.Gateways),
 		"rules":       dcl.ValueOrEmptyString(nr.Rules),
@@ -944,14 +941,4 @@ func applyGrpcRouteDiff(c *Client, ctx context.Context, desired *GrpcRoute, rawD
 	}
 	c.Config.Logger.InfoWithContext(ctx, "Done Apply.")
 	return newState, nil
-}
-
-func (r *GrpcRoute) GetPolicy(basePath string) (string, string, *bytes.Buffer, error) {
-	u := r.getPolicyURL(basePath)
-	body := &bytes.Buffer{}
-	u, err := dcl.AddQueryParams(u, map[string]string{"optionsRequestedPolicyVersion": fmt.Sprintf("%d", r.IAMPolicyVersion())})
-	if err != nil {
-		return "", "", nil, err
-	}
-	return u, "", body, nil
 }

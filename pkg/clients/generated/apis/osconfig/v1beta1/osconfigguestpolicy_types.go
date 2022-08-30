@@ -300,7 +300,7 @@ type GuestpolicyRemote struct {
 	// +optional
 	Checksum *string `json:"checksum,omitempty"`
 
-	/* URI from which to fetch the object. It should contain both the protocol and path following the format {protocol}://{location}. */
+	/* URI from which to fetch the object. It should contain both the protocol and path following the format: {protocol}://{location}. */
 	// +optional
 	Uri *string `json:"uri,omitempty"`
 }

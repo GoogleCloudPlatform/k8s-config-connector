@@ -174,14 +174,6 @@ spec:
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
-              routers:
-                description: 'Optional. Routers define a list of routers this HttpRoute
-                  should be served by. Each router reference should match the pattern:
-                  `projects/*/locations/global/routers/` The attached Router should
-                  be of a type PROXY'
-                items:
-                  type: string
-                type: array
               rules:
                 description: Required. Rules that define how traffic is routed and
                   handled.
@@ -342,13 +334,6 @@ spec:
                                   type: integer
                               type: object
                           type: object
-                        originalDestination:
-                          description: If true, the matched traffic will use the destination
-                            ip and port of the original connection (as it was not
-                            processed by proxy) as the destination of the request.
-                            Only one of destinations, redirect, original_destination
-                            can be set.
-                          type: boolean
                         redirect:
                           description: If set, the request is directed as configured
                             by this field.

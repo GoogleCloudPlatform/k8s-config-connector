@@ -900,7 +900,7 @@ components:
                                   to the surrogate by prefixing it with the name of
                                   the custom info type followed by the number of characters
                                   comprising the surrogate. The following scheme defines
-                                  the format {info type name}({surrogate character
+                                  the format: {info type name}({surrogate character
                                   count}):{surrogate} For example, if the name of
                                   custom info type is ''MY_TOKEN_INFO_TYPE'' and the
                                   surrogate is ''abc'', the full replacement value
@@ -3113,7 +3113,7 @@ components:
                                             it with the name of the custom info type
                                             followed by the number of characters comprising
                                             the surrogate. The following scheme defines
-                                            the format {info type name}({surrogate
+                                            the format: {info type name}({surrogate
                                             character count}):{surrogate} For example,
                                             if the name of custom info type is ''MY_TOKEN_INFO_TYPE''
                                             and the surrogate is ''abc'', the full
@@ -5014,7 +5014,7 @@ components:
                                   to the surrogate by prefixing it with the name of
                                   the custom info type followed by the number of characters
                                   comprising the surrogate. The following scheme defines
-                                  the format {info type name}({surrogate character
+                                  the format: {info type name}({surrogate character
                                   count}):{surrogate} For example, if the name of
                                   custom info type is ''MY_TOKEN_INFO_TYPE'' and the
                                   surrogate is ''abc'', the full replacement value

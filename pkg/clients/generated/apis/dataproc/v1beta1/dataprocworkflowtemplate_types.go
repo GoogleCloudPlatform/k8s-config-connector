@@ -173,6 +173,10 @@ type WorkflowtemplateGceClusterConfig struct {
 	// +optional
 	ServiceAccountScopes []string `json:"serviceAccountScopes,omitempty"`
 
+	/* Immutable. Optional. Shielded Instance Config for clusters using Compute Engine Shielded VMs. */
+	// +optional
+	ShieldedInstanceConfig *WorkflowtemplateShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
+
 	/* Immutable. */
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
@@ -554,7 +558,7 @@ type WorkflowtemplatePysparkJob struct {
 }
 
 type WorkflowtemplateQueryList struct {
-	/* Immutable. Required. The queries to execute. You do not need to end a query expression with a semicolon. Multiple queries can be specified in one string by separating each with a semicolon. Here is an example of a Dataproc API snippet that uses a QueryList to specify a HiveJob: "hiveJob" { "queryList": { "queries": [ "query1", "query2", "query3;query4", ] } } */
+	/* Immutable. Required. The queries to execute. You do not need to end a query expression with a semicolon. Multiple queries can be specified in one string by separating each with a semicolon. Here is an example of a Dataproc API snippet that uses a QueryList to specify a HiveJob: "hiveJob": { "queryList": { "queries": [ "query1", "query2", "query3;query4", ] } } */
 	Queries []string `json:"queries"`
 }
 
@@ -621,6 +625,20 @@ type WorkflowtemplateSecurityConfig struct {
 	/* Immutable. Optional. Kerberos related configuration. */
 	// +optional
 	KerberosConfig *WorkflowtemplateKerberosConfig `json:"kerberosConfig,omitempty"`
+}
+
+type WorkflowtemplateShieldedInstanceConfig struct {
+	/* Immutable. Optional. Defines whether instances have integrity monitoring enabled. Integrity monitoring compares the most recent boot measurements to the integrity policy baseline and returns a pair of pass/fail results depending on whether they match or not. */
+	// +optional
+	EnableIntegrityMonitoring *bool `json:"enableIntegrityMonitoring,omitempty"`
+
+	/* Immutable. Optional. Defines whether the instances have Secure Boot enabled. Secure Boot helps ensure that the system only runs authentic software by verifying the digital signature of all boot components, and halting the boot process if signature verification fails. */
+	// +optional
+	EnableSecureBoot *bool `json:"enableSecureBoot,omitempty"`
+
+	/* Immutable. Optional. Defines whether the instance have the vTPM enabled. Virtual Trusted Platform Module protects objects like keys, certificates and enables Measured Boot by performing the measurements needed to create a known good boot baseline, called the integrity policy baseline. */
+	// +optional
+	EnableVtpm *bool `json:"enableVtpm,omitempty"`
 }
 
 type WorkflowtemplateSoftwareConfig struct {

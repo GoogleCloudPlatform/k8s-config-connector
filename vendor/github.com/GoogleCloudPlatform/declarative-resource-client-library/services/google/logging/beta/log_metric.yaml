@@ -366,7 +366,7 @@ components:
                 should always be computed at query time from the underlying cumulative
                 or delta value). * `.` multiplication or composition (as an infix
                 operator). For examples, `GBy.d` or `k{watt}.h`. The grammar for a
-                unit is as follows: Expression = Component { "." Component } { "/"
+                unit is as follows: Expression = Component: { "." Component } { "/"
                 Component } ; Component = ( [ PREFIX ] UNIT | "%" ) [ Annotation ]
                 | Annotation | "1" ; Annotation = "{" NAME "}" ; Notes: * `Annotation`
                 is just a comment if it follows a `UNIT`. If the annotation is used
@@ -386,6 +386,7 @@ components:
                 contains a ratio, typically in the range 0..1, that will be multiplied
                 by 100 and displayed as a percentage (so a metric value `0.03` means
                 "3 percent").'
+              x-dcl-server-default: true
             valueType:
               type: string
               x-dcl-go-name: ValueType

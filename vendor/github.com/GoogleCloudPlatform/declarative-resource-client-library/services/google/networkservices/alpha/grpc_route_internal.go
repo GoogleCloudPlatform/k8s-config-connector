@@ -195,26 +195,6 @@ func (r *GrpcRoute) deleteURL(userBasePath string) (string, error) {
 	return dcl.URL("projects/{{project}}/locations/{{location}}/grpcRoutes/{{name}}", nr.basePath(), userBasePath, params), nil
 }
 
-func (r *GrpcRoute) SetPolicyURL(userBasePath string) string {
-	nr := r.urlNormalized()
-	fields := map[string]interface{}{}
-	return dcl.URL("", nr.basePath(), userBasePath, fields)
-}
-
-func (r *GrpcRoute) SetPolicyVerb() string {
-	return ""
-}
-
-func (r *GrpcRoute) getPolicyURL(userBasePath string) string {
-	nr := r.urlNormalized()
-	fields := map[string]interface{}{}
-	return dcl.URL("", nr.basePath(), userBasePath, fields)
-}
-
-func (r *GrpcRoute) IAMPolicyVersion() int {
-	return 3
-}
-
 // grpcRouteApiOperation represents a mutable operation in the underlying REST
 // API such as Create, Update, or Delete.
 type grpcRouteApiOperation interface {
@@ -242,9 +222,6 @@ func newUpdateGrpcRouteUpdateGrpcRouteRequest(ctx context.Context, f *GrpcRoute,
 	}
 	if v := f.Hostnames; v != nil {
 		req["hostnames"] = v
-	}
-	if v := f.Routers; v != nil {
-		req["routers"] = v
 	}
 	if v := f.Meshes; v != nil {
 		req["meshes"] = v
@@ -612,11 +589,6 @@ func canonicalizeGrpcRouteDesiredState(rawDesired, rawInitial *GrpcRoute, opts .
 	} else {
 		canonicalDesired.Hostnames = rawDesired.Hostnames
 	}
-	if dcl.StringArrayCanonicalize(rawDesired.Routers, rawInitial.Routers) {
-		canonicalDesired.Routers = rawInitial.Routers
-	} else {
-		canonicalDesired.Routers = rawDesired.Routers
-	}
 	if dcl.StringArrayCanonicalize(rawDesired.Meshes, rawInitial.Meshes) {
 		canonicalDesired.Meshes = rawInitial.Meshes
 	} else {
@@ -680,14 +652,6 @@ func canonicalizeGrpcRouteNewState(c *Client, rawNew, rawDesired *GrpcRoute) (*G
 	} else {
 		if dcl.StringArrayCanonicalize(rawDesired.Hostnames, rawNew.Hostnames) {
 			rawNew.Hostnames = rawDesired.Hostnames
-		}
-	}
-
-	if dcl.IsEmptyValueIndirect(rawNew.Routers) && dcl.IsEmptyValueIndirect(rawDesired.Routers) {
-		rawNew.Routers = rawDesired.Routers
-	} else {
-		if dcl.StringArrayCanonicalize(rawDesired.Routers, rawNew.Routers) {
-			rawNew.Routers = rawDesired.Routers
 		}
 	}
 
@@ -2076,13 +2040,6 @@ func diffGrpcRoute(c *Client, desired, actual *GrpcRoute, opts ...dcl.ApplyOptio
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Routers, actual.Routers, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Routers")); len(ds) != 0 || err != nil {
-		if err != nil {
-			return nil, err
-		}
-		newDiffs = append(newDiffs, ds...)
-	}
-
 	if ds, err := dcl.Diff(desired.Meshes, actual.Meshes, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateGrpcRouteUpdateGrpcRouteOperation")}, fn.AddNest("Meshes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
@@ -2599,9 +2556,6 @@ func expandGrpcRoute(c *Client, f *GrpcRoute) (map[string]interface{}, error) {
 	if v := f.Hostnames; v != nil {
 		m["hostnames"] = v
 	}
-	if v := f.Routers; v != nil {
-		m["routers"] = v
-	}
 	if v := f.Meshes; v != nil {
 		m["meshes"] = v
 	}
@@ -2645,7 +2599,6 @@ func flattenGrpcRoute(c *Client, i interface{}, res *GrpcRoute) *GrpcRoute {
 	resultRes.Labels = dcl.FlattenKeyValuePairs(m["labels"])
 	resultRes.Description = dcl.FlattenString(m["description"])
 	resultRes.Hostnames = dcl.FlattenStringSlice(m["hostnames"])
-	resultRes.Routers = dcl.FlattenStringSlice(m["routers"])
 	resultRes.Meshes = dcl.FlattenStringSlice(m["meshes"])
 	resultRes.Gateways = dcl.FlattenStringSlice(m["gateways"])
 	resultRes.Rules = flattenGrpcRouteRulesSlice(c, m["rules"], res)

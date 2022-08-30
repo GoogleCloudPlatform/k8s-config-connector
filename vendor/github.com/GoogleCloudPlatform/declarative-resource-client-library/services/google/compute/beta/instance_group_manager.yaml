@@ -112,6 +112,7 @@ components:
             The value must be 1-58 characters long. Instances are named by appending
             a hyphen and a random four-character string to the base instance name.
             The base instance name must comply with [RFC1035](https://www.ietf.org/rfc/rfc1035.txt).
+          x-dcl-server-default: true
         creationTimestamp:
           type: string
           x-dcl-go-name: CreationTimestamp
@@ -225,6 +226,7 @@ components:
           x-dcl-go-type: InstanceGroupManagerDistributionPolicy
           description: Policy specifying the intended distribution of managed instances
             across zones in a regional managed instance group.
+          x-dcl-server-default: true
           properties:
             targetShape:
               type: string
@@ -368,11 +370,11 @@ components:
         serviceAccount:
           type: string
           x-dcl-go-name: ServiceAccount
-          description: The service account to be used as credentials for all operations
+          description: 'The service account to be used as credentials for all operations
             performed by the managed instance group on instances. The service accounts
             needs all permissions required to create and delete instances. By default,
-            the service account {projectNumber}@cloudservices.gserviceaccount.com
-            is used.
+            the service account: {projectNumber}@cloudservices.gserviceaccount.com
+            is used.'
           x-dcl-references:
           - resource: Iam/ServiceAccount
             field: email
@@ -573,6 +575,7 @@ components:
           x-dcl-go-name: UpdatePolicy
           x-dcl-go-type: InstanceGroupManagerUpdatePolicy
           description: The update policy for this managed instance group.
+          x-dcl-server-default: true
           properties:
             instanceRedistributionType:
               type: string

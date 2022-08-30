@@ -509,7 +509,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The name of the secret in Cloud Secret Manager. Format {secret_name} if the secret is in the same project. projects/{project}/secrets/{secret_name} if the secret is in a different project.
+            <p>{% verbatim %}Required. The name of the secret in Cloud Secret Manager. Format: {secret_name} if the secret is in the same project. projects/{project}/secrets/{secret_name} if the secret is in a different project.
 
 Allowed value: The Google Cloud resource name of a `SecretManagerSecret` resource (format: `projects/{{project}}/secrets/{{name}}`).{% endverbatim %}</p>
         </td>
@@ -1027,7 +1027,7 @@ Allowed value: The Google Cloud resource name of a `SecretManagerSecretVersion` 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The name of the secret in Cloud Secret Manager. Format {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project.
+            <p>{% verbatim %}Required. The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project.
 
 Allowed value: The Google Cloud resource name of a `SecretManagerSecret` resource (format: `projects/{{project}}/secrets/{{name}}`).{% endverbatim %}</p>
         </td>

@@ -78,6 +78,7 @@ components:
             in the DESTROY_SCHEDULED state before transitioning to DESTROYED. If not
             specified at creation time, the default duration is 24 hours.
           x-kubernetes-immutable: true
+          x-dcl-server-default: true
         importOnly:
           type: boolean
           x-dcl-go-name: ImportOnly
@@ -382,6 +383,7 @@ components:
           description: A template describing settings for new CryptoKeyVersion instances.
             The properties of new CryptoKeyVersion instances created by either CreateCryptoKeyVersion
             or auto-rotation are controlled by this template.
+          x-dcl-server-default: true
           required:
           - algorithm
           properties:
@@ -427,6 +429,7 @@ components:
                 based on this template. Immutable. Defaults to SOFTWARE. Possible
                 values: PROTECTION_LEVEL_UNSPECIFIED, SOFTWARE, HSM, EXTERNAL, EXTERNAL_VPC'
               x-kubernetes-immutable: true
+              x-dcl-server-default: true
               enum:
               - PROTECTION_LEVEL_UNSPECIFIED
               - SOFTWARE

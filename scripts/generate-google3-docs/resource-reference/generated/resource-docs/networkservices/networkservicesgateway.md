@@ -67,7 +67,10 @@ Before you upgrade Config Connector to a later version, we recommended that you 
 ```yaml
 addresses:
 - string
-authorizationPolicy: string
+authorizationPolicyRef:
+  external: string
+  name: string
+  namespace: string
 description: string
 labels:
   string: string
@@ -80,7 +83,10 @@ projectRef:
   namespace: string
 resourceID: string
 scope: string
-serverTlsPolicy: string
+serverTlsPolicyRef:
+  external: string
+  name: string
+  namespace: string
 type: string
 ```
 
@@ -113,12 +119,44 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>authorizationPolicy</code></p>
+            <p><code>authorizationPolicyRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>authorizationPolicyRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. A fully-qualified AuthorizationPolicy URL reference. Specifies how traffic is authorized. If empty, authorization checks are disabled.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A fully-qualified AuthorizationPolicy URL reference. Specifies how traffic is authorized. If empty, authorization checks are disabled.
+
+Allowed value: The Google Cloud resource name of a `NetworkSecurityAuthorizationPolicy` resource (format: `projects/{{project}}/locations/{{location}}/authorizationPolicies/{{name}}`).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>authorizationPolicyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>authorizationPolicyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -235,12 +273,44 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
     </tr>
     <tr>
         <td>
-            <p><code>serverTlsPolicy</code></p>
+            <p><code>serverTlsPolicyRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>serverTlsPolicyRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. A fully-qualified ServerTLSPolicy URL reference. Specifies how TLS traffic is terminated. If empty, TLS termination is disabled.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A fully-qualified ServerTLSPolicy URL reference. Specifies how TLS traffic is terminated. If empty, TLS termination is disabled.
+
+Allowed value: The Google Cloud resource name of a `NetworkSecurityServerTLSPolicy` resource (format: `projects/{{project}}/locations/{{location}}/serverTlsPolicies/{{name}}`).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>serverTlsPolicyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>serverTlsPolicyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

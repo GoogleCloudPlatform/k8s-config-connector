@@ -201,17 +201,6 @@ func DCLHttpRouteSchema() *dcl.Schema {
 									},
 								},
 							},
-							"routers": &dcl.Property{
-								Type:        "array",
-								GoName:      "Routers",
-								Description: "Optional. Routers define a list of routers this HttpRoute should be served by. Each router reference should match the pattern: `projects/*/locations/global/routers/` The attached Router should be of a type PROXY",
-								SendEmpty:   true,
-								ListType:    "list",
-								Items: &dcl.Property{
-									Type:   "string",
-									GoType: "string",
-								},
-							},
 							"rules": &dcl.Property{
 								Type:        "array",
 								GoName:      "Rules",
@@ -383,11 +372,6 @@ func DCLHttpRouteSchema() *dcl.Schema {
 															},
 														},
 													},
-												},
-												"originalDestination": &dcl.Property{
-													Type:        "boolean",
-													GoName:      "OriginalDestination",
-													Description: "If true, the matched traffic will use the destination ip and port of the original connection (as it was not processed by proxy) as the destination of the request. Only one of destinations, redirect, original_destination can be set.",
 												},
 												"redirect": &dcl.Property{
 													Type:        "object",

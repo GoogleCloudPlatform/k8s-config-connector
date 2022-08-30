@@ -117,10 +117,11 @@ func DCLFunctionSchema() *dcl.Schema {
 						},
 						Properties: map[string]*dcl.Property{
 							"availableMemoryMb": &dcl.Property{
-								Type:        "integer",
-								Format:      "int64",
-								GoName:      "AvailableMemoryMb",
-								Description: "Memory (in MB), available to the function. Default value is 256MB. Allowed values are: 128MB, 256MB, 512MB, 1024MB, and 2048MB.",
+								Type:          "integer",
+								Format:        "int64",
+								GoName:        "AvailableMemoryMb",
+								Description:   "Memory (in MB), available to the function. Default value is 256MB. Allowed values are: 128MB, 256MB, 512MB, 1024MB, and 2048MB.",
+								ServerDefault: true,
 							},
 							"description": &dcl.Property{
 								Type:        "string",
@@ -224,10 +225,11 @@ func DCLFunctionSchema() *dcl.Schema {
 								},
 							},
 							"ingressSettings": &dcl.Property{
-								Type:        "string",
-								GoName:      "IngressSettings",
-								GoType:      "FunctionIngressSettingsEnum",
-								Description: "The ingress settings for the function, controlling what traffic can reach\nit. Possible values: INGRESS_SETTINGS_UNSPECIFIED, ALLOW_ALL, ALLOW_INTERNAL_ONLY, ALLOW_INTERNAL_AND_GCLB",
+								Type:          "string",
+								GoName:        "IngressSettings",
+								GoType:        "FunctionIngressSettingsEnum",
+								Description:   "The ingress settings for the function, controlling what traffic can reach\nit. Possible values: INGRESS_SETTINGS_UNSPECIFIED, ALLOW_ALL, ALLOW_INTERNAL_ONLY, ALLOW_INTERNAL_AND_GCLB",
+								ServerDefault: true,
 								Enum: []string{
 									"INGRESS_SETTINGS_UNSPECIFIED",
 									"ALLOW_ALL",
@@ -280,10 +282,11 @@ func DCLFunctionSchema() *dcl.Schema {
 								Description: "The runtime in which to run the function. Required when deploying a new\nfunction, optional when updating an existing function. For a complete\nlist of possible choices, see the\n[`gcloud` command\nreference](/sdk/gcloud/reference/functions/deploy#--runtime).\n",
 							},
 							"serviceAccountEmail": &dcl.Property{
-								Type:        "string",
-								GoName:      "ServiceAccountEmail",
-								Description: "The email of the function's service account. If empty, defaults to\n`{project_id}@appspot.gserviceaccount.com`.",
-								Immutable:   true,
+								Type:          "string",
+								GoName:        "ServiceAccountEmail",
+								Description:   "The email of the function's service account. If empty, defaults to\n`{project_id}@appspot.gserviceaccount.com`.",
+								Immutable:     true,
+								ServerDefault: true,
 								ResourceReferences: []*dcl.PropertyResourceReference{
 									&dcl.PropertyResourceReference{
 										Resource: "Iam/ServiceAccount",
@@ -345,9 +348,10 @@ func DCLFunctionSchema() *dcl.Schema {
 								},
 							},
 							"timeout": &dcl.Property{
-								Type:        "string",
-								GoName:      "Timeout",
-								Description: "The function execution timeout. Execution is considered failed and\ncan be terminated if the function is not completed at the end of the\ntimeout period. Defaults to 60 seconds.",
+								Type:          "string",
+								GoName:        "Timeout",
+								Description:   "The function execution timeout. Execution is considered failed and\ncan be terminated if the function is not completed at the end of the\ntimeout period. Defaults to 60 seconds.",
+								ServerDefault: true,
 							},
 							"updateTime": &dcl.Property{
 								Type:        "string",

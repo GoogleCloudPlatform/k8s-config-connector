@@ -143,9 +143,10 @@ func DCLInstanceGroupManagerSchema() *dcl.Schema {
 								},
 							},
 							"baseInstanceName": &dcl.Property{
-								Type:        "string",
-								GoName:      "BaseInstanceName",
-								Description: "The base instance name to use for instances in this group. The value must be 1-58 characters long. Instances are named by appending a hyphen and a random four-character string to the base instance name. The base instance name must comply with [RFC1035](https://www.ietf.org/rfc/rfc1035.txt).",
+								Type:          "string",
+								GoName:        "BaseInstanceName",
+								Description:   "The base instance name to use for instances in this group. The value must be 1-58 characters long. Instances are named by appending a hyphen and a random four-character string to the base instance name. The base instance name must comply with [RFC1035](https://www.ietf.org/rfc/rfc1035.txt).",
+								ServerDefault: true,
 							},
 							"creationTimestamp": &dcl.Property{
 								Type:        "string",
@@ -243,10 +244,11 @@ func DCLInstanceGroupManagerSchema() *dcl.Schema {
 								Immutable:   true,
 							},
 							"distributionPolicy": &dcl.Property{
-								Type:        "object",
-								GoName:      "DistributionPolicy",
-								GoType:      "InstanceGroupManagerDistributionPolicy",
-								Description: "Policy specifying the intended distribution of managed instances across zones in a regional managed instance group.",
+								Type:          "object",
+								GoName:        "DistributionPolicy",
+								GoType:        "InstanceGroupManagerDistributionPolicy",
+								Description:   "Policy specifying the intended distribution of managed instances across zones in a regional managed instance group.",
+								ServerDefault: true,
 								Properties: map[string]*dcl.Property{
 									"targetShape": &dcl.Property{
 										Type:        "string",
@@ -403,7 +405,7 @@ func DCLInstanceGroupManagerSchema() *dcl.Schema {
 							"serviceAccount": &dcl.Property{
 								Type:        "string",
 								GoName:      "ServiceAccount",
-								Description: "The service account to be used as credentials for all operations performed by the managed instance group on instances. The service accounts needs all permissions required to create and delete instances. By default, the service account {projectNumber}@cloudservices.gserviceaccount.com is used.",
+								Description: "The service account to be used as credentials for all operations performed by the managed instance group on instances. The service accounts needs all permissions required to create and delete instances. By default, the service account: {projectNumber}@cloudservices.gserviceaccount.com is used.",
 								ResourceReferences: []*dcl.PropertyResourceReference{
 									&dcl.PropertyResourceReference{
 										Resource: "Iam/ServiceAccount",
@@ -590,10 +592,11 @@ func DCLInstanceGroupManagerSchema() *dcl.Schema {
 								Description: "The target number of running instances for this managed instance group. You can reduce this number by using the instanceGroupManager deleteInstances or abandonInstances methods. Resizing the group also changes this number.",
 							},
 							"updatePolicy": &dcl.Property{
-								Type:        "object",
-								GoName:      "UpdatePolicy",
-								GoType:      "InstanceGroupManagerUpdatePolicy",
-								Description: "The update policy for this managed instance group.",
+								Type:          "object",
+								GoName:        "UpdatePolicy",
+								GoType:        "InstanceGroupManagerUpdatePolicy",
+								Description:   "The update policy for this managed instance group.",
+								ServerDefault: true,
 								Properties: map[string]*dcl.Property{
 									"instanceRedistributionType": &dcl.Property{
 										Type:        "string",

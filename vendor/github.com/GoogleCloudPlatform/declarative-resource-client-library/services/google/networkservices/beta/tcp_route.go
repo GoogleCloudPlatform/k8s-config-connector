@@ -14,7 +14,6 @@
 package beta
 
 import (
-	"bytes"
 	"context"
 	"crypto/sha256"
 	"encoding/json"
@@ -31,7 +30,6 @@ type TcpRoute struct {
 	UpdateTime  *string           `json:"updateTime"`
 	Description *string           `json:"description"`
 	Rules       []TcpRouteRules   `json:"rules"`
-	Routers     []string          `json:"routers"`
 	Meshes      []string          `json:"meshes"`
 	Gateways    []string          `json:"gateways"`
 	Labels      map[string]string `json:"labels"`
@@ -261,7 +259,6 @@ func (r *TcpRoute) ID() (string, error) {
 		"update_time": dcl.ValueOrEmptyString(nr.UpdateTime),
 		"description": dcl.ValueOrEmptyString(nr.Description),
 		"rules":       dcl.ValueOrEmptyString(nr.Rules),
-		"routers":     dcl.ValueOrEmptyString(nr.Routers),
 		"meshes":      dcl.ValueOrEmptyString(nr.Meshes),
 		"gateways":    dcl.ValueOrEmptyString(nr.Gateways),
 		"labels":      dcl.ValueOrEmptyString(nr.Labels),
@@ -579,14 +576,4 @@ func applyTcpRouteDiff(c *Client, ctx context.Context, desired *TcpRoute, rawDes
 	}
 	c.Config.Logger.InfoWithContext(ctx, "Done Apply.")
 	return newState, nil
-}
-
-func (r *TcpRoute) GetPolicy(basePath string) (string, string, *bytes.Buffer, error) {
-	u := r.getPolicyURL(basePath)
-	body := &bytes.Buffer{}
-	u, err := dcl.AddQueryParams(u, map[string]string{"optionsRequestedPolicyVersion": fmt.Sprintf("%d", r.IAMPolicyVersion())})
-	if err != nil {
-		return "", "", nil, err
-	}
-	return u, "", body, nil
 }

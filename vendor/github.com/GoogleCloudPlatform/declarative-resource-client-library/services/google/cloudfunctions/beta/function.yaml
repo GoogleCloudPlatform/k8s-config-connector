@@ -84,6 +84,7 @@ components:
           x-dcl-go-name: AvailableMemoryMb
           description: 'Memory (in MB), available to the function. Default value is
             256MB. Allowed values are: 128MB, 256MB, 512MB, 1024MB, and 2048MB.'
+          x-dcl-server-default: true
         description:
           type: string
           x-dcl-go-name: Description
@@ -219,6 +220,7 @@ components:
           description: |-
             The ingress settings for the function, controlling what traffic can reach
             it. Possible values: INGRESS_SETTINGS_UNSPECIFIED, ALLOW_ALL, ALLOW_INTERNAL_ONLY, ALLOW_INTERNAL_AND_GCLB
+          x-dcl-server-default: true
           enum:
           - INGRESS_SETTINGS_UNSPECIFIED
           - ALLOW_ALL
@@ -273,6 +275,7 @@ components:
             The email of the function's service account. If empty, defaults to
             `{project_id}@appspot.gserviceaccount.com`.
           x-kubernetes-immutable: true
+          x-dcl-server-default: true
           x-dcl-references:
           - resource: Iam/ServiceAccount
             field: email
@@ -346,6 +349,7 @@ components:
             The function execution timeout. Execution is considered failed and
             can be terminated if the function is not completed at the end of the
             timeout period. Defaults to 60 seconds.
+          x-dcl-server-default: true
         updateTime:
           type: string
           x-dcl-go-name: UpdateTime

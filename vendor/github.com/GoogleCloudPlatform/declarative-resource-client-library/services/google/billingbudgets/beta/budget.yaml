@@ -182,6 +182,7 @@ components:
           description: Optional. Filters that define which resources are used to compute
             the actual spend against the budget amount, such as projects, services,
             and the budget's time period, as well as other filters.
+          x-dcl-server-default: true
           properties:
             calendarPeriod:
               type: string

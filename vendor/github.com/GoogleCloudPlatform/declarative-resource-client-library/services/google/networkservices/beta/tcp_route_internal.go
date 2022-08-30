@@ -116,26 +116,6 @@ func (r *TcpRoute) deleteURL(userBasePath string) (string, error) {
 	return dcl.URL("projects/{{project}}/locations/{{location}}/tcpRoutes/{{name}}", nr.basePath(), userBasePath, params), nil
 }
 
-func (r *TcpRoute) SetPolicyURL(userBasePath string) string {
-	nr := r.urlNormalized()
-	fields := map[string]interface{}{}
-	return dcl.URL("", nr.basePath(), userBasePath, fields)
-}
-
-func (r *TcpRoute) SetPolicyVerb() string {
-	return ""
-}
-
-func (r *TcpRoute) getPolicyURL(userBasePath string) string {
-	nr := r.urlNormalized()
-	fields := map[string]interface{}{}
-	return dcl.URL("", nr.basePath(), userBasePath, fields)
-}
-
-func (r *TcpRoute) IAMPolicyVersion() int {
-	return 3
-}
-
 // tcpRouteApiOperation represents a mutable operation in the underlying REST
 // API such as Create, Update, or Delete.
 type tcpRouteApiOperation interface {
@@ -162,9 +142,6 @@ func newUpdateTcpRouteUpdateTcpRouteRequest(ctx context.Context, f *TcpRoute, c 
 		return nil, fmt.Errorf("error expanding Rules into rules: %w", err)
 	} else if v != nil {
 		req["rules"] = v
-	}
-	if v := f.Routers; v != nil {
-		req["routers"] = v
 	}
 	if v := f.Meshes; v != nil {
 		req["meshes"] = v
@@ -520,11 +497,6 @@ func canonicalizeTcpRouteDesiredState(rawDesired, rawInitial *TcpRoute, opts ...
 		canonicalDesired.Description = rawDesired.Description
 	}
 	canonicalDesired.Rules = canonicalizeTcpRouteRulesSlice(rawDesired.Rules, rawInitial.Rules, opts...)
-	if dcl.StringArrayCanonicalize(rawDesired.Routers, rawInitial.Routers) {
-		canonicalDesired.Routers = rawInitial.Routers
-	} else {
-		canonicalDesired.Routers = rawDesired.Routers
-	}
 	if dcl.StringArrayCanonicalize(rawDesired.Meshes, rawInitial.Meshes) {
 		canonicalDesired.Meshes = rawInitial.Meshes
 	} else {
@@ -587,14 +559,6 @@ func canonicalizeTcpRouteNewState(c *Client, rawNew, rawDesired *TcpRoute) (*Tcp
 		rawNew.Rules = rawDesired.Rules
 	} else {
 		rawNew.Rules = canonicalizeNewTcpRouteRulesSlice(c, rawDesired.Rules, rawNew.Rules)
-	}
-
-	if dcl.IsEmptyValueIndirect(rawNew.Routers) && dcl.IsEmptyValueIndirect(rawDesired.Routers) {
-		rawNew.Routers = rawDesired.Routers
-	} else {
-		if dcl.StringArrayCanonicalize(rawDesired.Routers, rawNew.Routers) {
-			rawNew.Routers = rawDesired.Routers
-		}
 	}
 
 	if dcl.IsEmptyValueIndirect(rawNew.Meshes) && dcl.IsEmptyValueIndirect(rawDesired.Meshes) {
@@ -1155,13 +1119,6 @@ func diffTcpRoute(c *Client, desired, actual *TcpRoute, opts ...dcl.ApplyOption)
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Routers, actual.Routers, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateTcpRouteUpdateTcpRouteOperation")}, fn.AddNest("Routers")); len(ds) != 0 || err != nil {
-		if err != nil {
-			return nil, err
-		}
-		newDiffs = append(newDiffs, ds...)
-	}
-
 	if ds, err := dcl.Diff(desired.Meshes, actual.Meshes, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateTcpRouteUpdateTcpRouteOperation")}, fn.AddNest("Meshes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
@@ -1426,9 +1383,6 @@ func expandTcpRoute(c *Client, f *TcpRoute) (map[string]interface{}, error) {
 	} else if v != nil {
 		m["rules"] = v
 	}
-	if v := f.Routers; v != nil {
-		m["routers"] = v
-	}
 	if v := f.Meshes; v != nil {
 		m["meshes"] = v
 	}
@@ -1469,7 +1423,6 @@ func flattenTcpRoute(c *Client, i interface{}, res *TcpRoute) *TcpRoute {
 	resultRes.UpdateTime = dcl.FlattenString(m["updateTime"])
 	resultRes.Description = dcl.FlattenString(m["description"])
 	resultRes.Rules = flattenTcpRouteRulesSlice(c, m["rules"], res)
-	resultRes.Routers = dcl.FlattenStringSlice(m["routers"])
 	resultRes.Meshes = dcl.FlattenStringSlice(m["meshes"])
 	resultRes.Gateways = dcl.FlattenStringSlice(m["gateways"])
 	resultRes.Labels = dcl.FlattenKeyValuePairs(m["labels"])

@@ -202,10 +202,11 @@ func DCLBudgetSchema() *dcl.Schema {
 								},
 							},
 							"budgetFilter": &dcl.Property{
-								Type:        "object",
-								GoName:      "BudgetFilter",
-								GoType:      "BudgetBudgetFilter",
-								Description: "Optional. Filters that define which resources are used to compute the actual spend against the budget amount, such as projects, services, and the budget's time period, as well as other filters.",
+								Type:          "object",
+								GoName:        "BudgetFilter",
+								GoType:        "BudgetBudgetFilter",
+								Description:   "Optional. Filters that define which resources are used to compute the actual spend against the budget amount, such as projects, services, and the budget's time period, as well as other filters.",
+								ServerDefault: true,
 								Properties: map[string]*dcl.Property{
 									"calendarPeriod": &dcl.Property{
 										Type:        "string",

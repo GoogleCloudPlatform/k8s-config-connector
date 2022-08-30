@@ -362,6 +362,7 @@ func DCLForwardingRuleSchema() *dcl.Schema {
 							"region": &dcl.Property{
 								Type:        "string",
 								GoName:      "Region",
+								ReadOnly:    true,
 								Description: "[Output Only] URL of the region where the regional forwarding rule resides. This field is not applicable to global forwarding rules. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.",
 								Immutable:   true,
 							},

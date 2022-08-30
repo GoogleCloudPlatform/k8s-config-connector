@@ -17,6 +17,7 @@ package beta
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 )
@@ -117,6 +118,22 @@ func (op *updateStoredInfoTypeUpdateStoredInfoTypeOperation) do(ctx context.Cont
 	if err != nil {
 		return err
 	}
+
+	// Wait for there to be no pending versions.
+	dcl.Do(ctx, func(ctx context.Context) (*dcl.RetryDetails, error) {
+		b, err := c.getStoredInfoTypeRaw(ctx, r)
+		if err != nil {
+			return nil, err
+		}
+		var m map[string]interface{}
+		if err := json.Unmarshal(b, &m); err != nil {
+			return nil, err
+		}
+		if _, ok := m["pendingVersions"]; ok {
+			return &dcl.RetryDetails{}, nil
+		}
+		return nil, nil
+	}, c.Config.RetryProvider)
 
 	return nil
 }

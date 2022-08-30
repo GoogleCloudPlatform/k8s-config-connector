@@ -70,6 +70,7 @@ components:
             managed automatically between peered networks. Currently this field should
             always be true since Google Compute Engine will automatically create and
             manage subnetwork routes between two networks when peering state is `ACTIVE`.
+          x-dcl-server-default: true
         exchangeSubnetRoutes:
           type: boolean
           x-dcl-go-name: ExchangeSubnetRoutes
@@ -88,6 +89,7 @@ components:
             default value is true, all subnet routes are exported. The IPv4 special-use
             ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses) are always
             exported to peers and are not controlled by this field.
+          x-dcl-server-default: true
         importCustomRoutes:
           type: boolean
           x-dcl-go-name: ImportCustomRoutes

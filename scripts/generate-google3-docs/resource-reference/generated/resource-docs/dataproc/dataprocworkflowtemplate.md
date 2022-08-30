@@ -244,6 +244,10 @@ placement:
           namespace: string
         serviceAccountScopes:
         - string
+        shieldedInstanceConfig:
+          enableIntegrityMonitoring: boolean
+          enableSecureBoot: boolean
+          enableVtpm: boolean
         subnetworkRef:
           external: string
           name: string
@@ -603,7 +607,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Required. The queries to execute. You do not need to end a query expression with a semicolon. Multiple queries can be specified in one string by separating each with a semicolon. Here is an example of a Dataproc API snippet that uses a QueryList to specify a HiveJob: "hiveJob" { "queryList": { "queries": [ "query1", "query2", "query3;query4", ] } }{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Required. The queries to execute. You do not need to end a query expression with a semicolon. Multiple queries can be specified in one string by separating each with a semicolon. Here is an example of a Dataproc API snippet that uses a QueryList to specify a HiveJob: "hiveJob": { "queryList": { "queries": [ "query1", "query2", "query3;query4", ] } }{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -733,7 +737,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Required. The queries to execute. You do not need to end a query expression with a semicolon. Multiple queries can be specified in one string by separating each with a semicolon. Here is an example of a Dataproc API snippet that uses a QueryList to specify a HiveJob: "hiveJob" { "queryList": { "queries": [ "query1", "query2", "query3;query4", ] } }{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Required. The queries to execute. You do not need to end a query expression with a semicolon. Multiple queries can be specified in one string by separating each with a semicolon. Here is an example of a Dataproc API snippet that uses a QueryList to specify a HiveJob: "hiveJob": { "queryList": { "queries": [ "query1", "query2", "query3;query4", ] } }{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -883,7 +887,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Required. The queries to execute. You do not need to end a query expression with a semicolon. Multiple queries can be specified in one string by separating each with a semicolon. Here is an example of a Dataproc API snippet that uses a QueryList to specify a HiveJob: "hiveJob" { "queryList": { "queries": [ "query1", "query2", "query3;query4", ] } }{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Required. The queries to execute. You do not need to end a query expression with a semicolon. Multiple queries can be specified in one string by separating each with a semicolon. Here is an example of a Dataproc API snippet that uses a QueryList to specify a HiveJob: "hiveJob": { "queryList": { "queries": [ "query1", "query2", "query3;query4", ] } }{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1413,7 +1417,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Required. The queries to execute. You do not need to end a query expression with a semicolon. Multiple queries can be specified in one string by separating each with a semicolon. Here is an example of a Dataproc API snippet that uses a QueryList to specify a HiveJob: "hiveJob" { "queryList": { "queries": [ "query1", "query2", "query3;query4", ] } }{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Required. The queries to execute. You do not need to end a query expression with a semicolon. Multiple queries can be specified in one string by separating each with a semicolon. Here is an example of a Dataproc API snippet that uses a QueryList to specify a HiveJob: "hiveJob": { "queryList": { "queries": [ "query1", "query2", "query3;query4", ] } }{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2024,6 +2028,46 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.gceClusterConfig.shieldedInstanceConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Optional. Shielded Instance Config for clusters using Compute Engine Shielded VMs.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.gceClusterConfig.shieldedInstanceConfig.enableIntegrityMonitoring</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Optional. Defines whether instances have integrity monitoring enabled. Integrity monitoring compares the most recent boot measurements to the integrity policy baseline and returns a pair of pass/fail results depending on whether they match or not.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.gceClusterConfig.shieldedInstanceConfig.enableSecureBoot</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Optional. Defines whether the instances have Secure Boot enabled. Secure Boot helps ensure that the system only runs authentic software by verifying the digital signature of all boot components, and halting the boot process if signature verification fails.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.gceClusterConfig.shieldedInstanceConfig.enableVtpm</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Optional. Defines whether the instance have the vTPM enabled. Virtual Trusted Platform Module protects objects like keys, certificates and enables Measured Boot by performing the measurements needed to create a known good boot baseline, called the integrity policy baseline.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

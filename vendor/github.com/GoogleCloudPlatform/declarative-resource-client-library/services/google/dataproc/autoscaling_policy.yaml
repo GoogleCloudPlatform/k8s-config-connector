@@ -89,6 +89,7 @@ components:
               description: 'Optional. Duration between scaling events. A scaling period
                 starts after the update operation from the previous event has completed.
                 Bounds: . Default: 2m.'
+              x-dcl-server-default: true
             yarnConfig:
               type: object
               x-dcl-go-name: YarnConfig
@@ -210,6 +211,7 @@ components:
                 is set for one group only, the cluster will default to zero weight
                 on the unset group. For example if weight is set only on primary workers,
                 the cluster will use primary workers only and no secondary workers.'
+              x-dcl-server-default: true
         workerConfig:
           type: object
           x-dcl-go-name: WorkerConfig
@@ -234,6 +236,7 @@ components:
               x-dcl-go-name: MinInstances
               description: 'Optional. Minimum number of instances for this group.
                 Primary workers - Bounds: . Default: 0.'
+              x-dcl-server-default: true
             weight:
               type: integer
               format: int64
@@ -253,3 +256,4 @@ components:
                 is set for one group only, the cluster will default to zero weight
                 on the unset group. For example if weight is set only on primary workers,
                 the cluster will use primary workers only and no secondary workers.'
+              x-dcl-server-default: true

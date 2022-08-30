@@ -189,17 +189,6 @@ func DCLTcpRouteSchema() *dcl.Schema {
 									},
 								},
 							},
-							"routers": &dcl.Property{
-								Type:        "array",
-								GoName:      "Routers",
-								Description: "Optional. Routers define a list of routers this TcpRoute should be served by. Each router reference should match the pattern: `projects/*/locations/global/routers/` The attached Router should be of a type PROXY",
-								SendEmpty:   true,
-								ListType:    "list",
-								Items: &dcl.Property{
-									Type:   "string",
-									GoType: "string",
-								},
-							},
 							"rules": &dcl.Property{
 								Type:        "array",
 								GoName:      "Rules",

@@ -60,21 +60,23 @@ func DCLConfigSchema() *dcl.Schema {
 						},
 						Properties: map[string]*dcl.Property{
 							"authorizedDomains": &dcl.Property{
-								Type:        "array",
-								GoName:      "AuthorizedDomains",
-								Description: "List of domains authorized for OAuth redirects",
-								SendEmpty:   true,
-								ListType:    "list",
+								Type:          "array",
+								GoName:        "AuthorizedDomains",
+								Description:   "List of domains authorized for OAuth redirects",
+								ServerDefault: true,
+								SendEmpty:     true,
+								ListType:      "list",
 								Items: &dcl.Property{
 									Type:   "string",
 									GoType: "string",
 								},
 							},
 							"blockingFunctions": &dcl.Property{
-								Type:        "object",
-								GoName:      "BlockingFunctions",
-								GoType:      "ConfigBlockingFunctions",
-								Description: "Configuration related to blocking functions.",
+								Type:          "object",
+								GoName:        "BlockingFunctions",
+								GoType:        "ConfigBlockingFunctions",
+								Description:   "Configuration related to blocking functions.",
+								ServerDefault: true,
 								Properties: map[string]*dcl.Property{
 									"triggers": &dcl.Property{
 										Type: "object",
@@ -108,10 +110,11 @@ func DCLConfigSchema() *dcl.Schema {
 								},
 							},
 							"client": &dcl.Property{
-								Type:        "object",
-								GoName:      "Client",
-								GoType:      "ConfigClient",
-								Description: "Options related to how clients making requests on behalf of a project should be configured.",
+								Type:          "object",
+								GoName:        "Client",
+								GoType:        "ConfigClient",
+								Description:   "Options related to how clients making requests on behalf of a project should be configured.",
+								ServerDefault: true,
 								Properties: map[string]*dcl.Property{
 									"apiKey": &dcl.Property{
 										Type:        "string",
@@ -147,10 +150,11 @@ func DCLConfigSchema() *dcl.Schema {
 								},
 							},
 							"mfa": &dcl.Property{
-								Type:        "object",
-								GoName:      "Mfa",
-								GoType:      "ConfigMfa",
-								Description: "Configuration for this project's multi-factor authentication, including whether it is active and what factors can be used for the second factor",
+								Type:          "object",
+								GoName:        "Mfa",
+								GoType:        "ConfigMfa",
+								Description:   "Configuration for this project's multi-factor authentication, including whether it is active and what factors can be used for the second factor",
+								ServerDefault: true,
 								Properties: map[string]*dcl.Property{
 									"state": &dcl.Property{
 										Type:        "string",
@@ -167,10 +171,11 @@ func DCLConfigSchema() *dcl.Schema {
 								},
 							},
 							"monitoring": &dcl.Property{
-								Type:        "object",
-								GoName:      "Monitoring",
-								GoType:      "ConfigMonitoring",
-								Description: "Configuration related to monitoring project activity.",
+								Type:          "object",
+								GoName:        "Monitoring",
+								GoType:        "ConfigMonitoring",
+								Description:   "Configuration related to monitoring project activity.",
+								ServerDefault: true,
 								Properties: map[string]*dcl.Property{
 									"requestLogging": &dcl.Property{
 										Type:        "object",
@@ -188,10 +193,11 @@ func DCLConfigSchema() *dcl.Schema {
 								},
 							},
 							"multiTenant": &dcl.Property{
-								Type:        "object",
-								GoName:      "MultiTenant",
-								GoType:      "ConfigMultiTenant",
-								Description: "Configuration related to multi-tenant functionality.",
+								Type:          "object",
+								GoName:        "MultiTenant",
+								GoType:        "ConfigMultiTenant",
+								Description:   "Configuration related to multi-tenant functionality.",
+								ServerDefault: true,
 								Properties: map[string]*dcl.Property{
 									"allowTenants": &dcl.Property{
 										Type:        "boolean",
@@ -216,10 +222,11 @@ func DCLConfigSchema() *dcl.Schema {
 								},
 							},
 							"notification": &dcl.Property{
-								Type:        "object",
-								GoName:      "Notification",
-								GoType:      "ConfigNotification",
-								Description: "Configuration related to sending notifications to users.",
+								Type:          "object",
+								GoName:        "Notification",
+								GoType:        "ConfigNotification",
+								Description:   "Configuration related to sending notifications to users.",
+								ServerDefault: true,
 								Properties: map[string]*dcl.Property{
 									"defaultLocale": &dcl.Property{
 										Type:        "string",
@@ -600,10 +607,11 @@ func DCLConfigSchema() *dcl.Schema {
 								},
 							},
 							"quota": &dcl.Property{
-								Type:        "object",
-								GoName:      "Quota",
-								GoType:      "ConfigQuota",
-								Description: "Configuration related to quotas.",
+								Type:          "object",
+								GoName:        "Quota",
+								GoType:        "ConfigQuota",
+								Description:   "Configuration related to quotas.",
+								ServerDefault: true,
 								Properties: map[string]*dcl.Property{
 									"signUpQuotaConfig": &dcl.Property{
 										Type:        "object",
@@ -633,10 +641,11 @@ func DCLConfigSchema() *dcl.Schema {
 								},
 							},
 							"signIn": &dcl.Property{
-								Type:        "object",
-								GoName:      "SignIn",
-								GoType:      "ConfigSignIn",
-								Description: "Configuration related to local sign in methods.",
+								Type:          "object",
+								GoName:        "SignIn",
+								GoType:        "ConfigSignIn",
+								Description:   "Configuration related to local sign in methods.",
+								ServerDefault: true,
 								Properties: map[string]*dcl.Property{
 									"allowDuplicateEmails": &dcl.Property{
 										Type:        "boolean",

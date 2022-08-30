@@ -202,9 +202,10 @@ func DCLGroupSchema() *dcl.Schema {
 								},
 							},
 							"displayName": &dcl.Property{
-								Type:        "string",
-								GoName:      "DisplayName",
-								Description: "The display name of the `Group`.",
+								Type:          "string",
+								GoName:        "DisplayName",
+								Description:   "The display name of the `Group`.",
+								ServerDefault: true,
 							},
 							"dynamicGroupMetadata": &dcl.Property{
 								Type:        "object",

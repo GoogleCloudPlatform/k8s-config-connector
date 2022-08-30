@@ -116,26 +116,6 @@ func (r *TlsRoute) deleteURL(userBasePath string) (string, error) {
 	return dcl.URL("projects/{{project}}/locations/{{location}}/tlsRoutes/{{name}}", nr.basePath(), userBasePath, params), nil
 }
 
-func (r *TlsRoute) SetPolicyURL(userBasePath string) string {
-	nr := r.urlNormalized()
-	fields := map[string]interface{}{}
-	return dcl.URL("", nr.basePath(), userBasePath, fields)
-}
-
-func (r *TlsRoute) SetPolicyVerb() string {
-	return ""
-}
-
-func (r *TlsRoute) getPolicyURL(userBasePath string) string {
-	nr := r.urlNormalized()
-	fields := map[string]interface{}{}
-	return dcl.URL("", nr.basePath(), userBasePath, fields)
-}
-
-func (r *TlsRoute) IAMPolicyVersion() int {
-	return 3
-}
-
 // tlsRouteApiOperation represents a mutable operation in the underlying REST
 // API such as Create, Update, or Delete.
 type tlsRouteApiOperation interface {

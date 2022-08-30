@@ -552,10 +552,10 @@ components:
                                     secret:
                                       type: string
                                       x-dcl-go-name: Secret
-                                      description: Required. The name of the secret
-                                        in Cloud Secret Manager. Format {secret_name}
+                                      description: 'Required. The name of the secret
+                                        in Cloud Secret Manager. Format: {secret_name}
                                         if the secret is in the same project. projects/{project}/secrets/{secret_name}
-                                        if the secret is in a different project.
+                                        if the secret is in a different project.'
                                       x-dcl-references:
                                       - resource: Secretmanager/Secret
                                         field: selfLink
@@ -671,6 +671,7 @@ components:
                   description: 'The execution environment being used to host this
                     Task. Possible values: EXECUTION_ENVIRONMENT_UNSPECIFIED, EXECUTION_ENVIRONMENT_DEFAULT,
                     EXECUTION_ENVIRONMENT_GEN2'
+                  x-dcl-server-default: true
                   enum:
                   - EXECUTION_ENVIRONMENT_UNSPECIFIED
                   - EXECUTION_ENVIRONMENT_DEFAULT
@@ -681,6 +682,7 @@ components:
                   x-dcl-go-name: MaxRetries
                   description: Number of retries allowed per Task, before marking
                     this Task failed.
+                  x-dcl-server-default: true
                 serviceAccount:
                   type: string
                   x-dcl-go-name: ServiceAccount
@@ -724,11 +726,11 @@ components:
                           instances:
                             type: array
                             x-dcl-go-name: Instances
-                            description: The Cloud SQL instance connection names,
+                            description: 'The Cloud SQL instance connection names,
                               as can be found in https://console.cloud.google.com/sql/instances.
                               Visit https://cloud.google.com/sql/docs/mysql/connect-run
                               for more information on how to connect Cloud SQL and
-                              Cloud Run. Format {project}:{location}:{instance}
+                              Cloud Run. Format: {project}:{location}:{instance}'
                             x-dcl-send-empty: true
                             x-dcl-list-type: list
                             items:
@@ -821,10 +823,10 @@ components:
                           secret:
                             type: string
                             x-dcl-go-name: Secret
-                            description: Required. The name of the secret in Cloud
-                              Secret Manager. Format {secret} if the secret is in
+                            description: 'Required. The name of the secret in Cloud
+                              Secret Manager. Format: {secret} if the secret is in
                               the same project. projects/{project}/secrets/{secret}
-                              if the secret is in a different project.
+                              if the secret is in a different project.'
                 vpcAccess:
                   type: object
                   x-dcl-go-name: VPCAccess

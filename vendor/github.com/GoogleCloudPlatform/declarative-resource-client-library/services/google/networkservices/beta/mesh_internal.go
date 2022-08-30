@@ -84,26 +84,6 @@ func (r *Mesh) deleteURL(userBasePath string) (string, error) {
 	return dcl.URL("projects/{{project}}/locations/{{location}}/meshes/{{name}}", nr.basePath(), userBasePath, params), nil
 }
 
-func (r *Mesh) SetPolicyURL(userBasePath string) string {
-	nr := r.urlNormalized()
-	fields := map[string]interface{}{}
-	return dcl.URL("", nr.basePath(), userBasePath, fields)
-}
-
-func (r *Mesh) SetPolicyVerb() string {
-	return ""
-}
-
-func (r *Mesh) getPolicyURL(userBasePath string) string {
-	nr := r.urlNormalized()
-	fields := map[string]interface{}{}
-	return dcl.URL("", nr.basePath(), userBasePath, fields)
-}
-
-func (r *Mesh) IAMPolicyVersion() int {
-	return 3
-}
-
 // meshApiOperation represents a mutable operation in the underlying REST
 // API such as Create, Update, or Delete.
 type meshApiOperation interface {

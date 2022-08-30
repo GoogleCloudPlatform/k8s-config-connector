@@ -103,14 +103,14 @@ components:
             urlMask:
               type: string
               x-dcl-go-name: UrlMask
-              description: A template to parse `service` and `version` fields from
+              description: 'A template to parse `service` and `version` fields from
                 a request URL. URL mask allows for routing to multiple App Engine
                 services without having to create multiple Network Endpoint Groups
                 and backend services. For example, the request URLs "`foo1-dot-appname.appspot.com/v1`"
                 and "foo1-dot-appname.appspot.com/v2" can be backed by the same Serverless
                 NEG with URL mask "`-dot-appname.appspot.com/`". The URL mask will
-                parse them to { service = "foo1", version = "v1" } and { service =
-                "foo1", version = "v2" } respectively.
+                parse them to: { service = "foo1", version = "v1" } and { service
+                = "foo1", version = "v2" } respectively.'
               x-kubernetes-immutable: true
             version:
               type: string
@@ -146,13 +146,13 @@ components:
             urlMask:
               type: string
               x-dcl-go-name: UrlMask
-              description: A template to parse `function` field from a request URL.
+              description: 'A template to parse `function` field from a request URL.
                 URL mask allows for routing to multiple Cloud Functions without having
                 to create multiple Network Endpoint Groups and backend services. For
                 example, request URLs "`mydomain.com/function1`" and "`mydomain.com/function2`"
                 can be backed by the same Serverless NEG with URL mask "`/`". The
-                URL mask will parse them to { function = "function1" } and { function
-                = "function2" } respectively.
+                URL mask will parse them to: { function = "function1" } and { function
+                = "function2" } respectively.'
               x-kubernetes-immutable: true
         cloudRun:
           type: object
@@ -180,13 +180,13 @@ components:
             urlMask:
               type: string
               x-dcl-go-name: UrlMask
-              description: A template to parse `service` and `tag` fields from a request
-                URL. URL mask allows for routing to multiple Run services without
-                having to create multiple network endpoint groups and backend services.
-                For example, request URLs "foo1.domain.com/bar1" and "foo1.domain.com/bar2"
+              description: 'A template to parse `service` and `tag` fields from a
+                request URL. URL mask allows for routing to multiple Run services
+                without having to create multiple network endpoint groups and backend
+                services. For example, request URLs "foo1.domain.com/bar1" and "foo1.domain.com/bar2"
                 can be backed by the same Serverless Network Endpoint Group (NEG)
-                with URL mask "`.domain.com/`". The URL mask will parse them to {
-                service="bar1", tag="foo1" } and { service="bar2", tag="foo2" } respectively.
+                with URL mask "`.domain.com/`". The URL mask will parse them to: {
+                service="bar1", tag="foo1" } and { service="bar2", tag="foo2" } respectively.'
               x-kubernetes-immutable: true
         defaultPort:
           type: integer

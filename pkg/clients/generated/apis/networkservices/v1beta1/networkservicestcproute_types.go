@@ -98,10 +98,6 @@ type NetworkServicesTCPRouteSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Optional. Routers define a list of routers this TcpRoute should be served by. Each router reference should match the pattern: `projects/* /locations/global/routers/` The attached Router should be of a type PROXY */
-	// +optional
-	Routers []string `json:"routers,omitempty"`
-
 	/* Required. Rules that define how traffic is routed and handled. At least one RouteRule must be supplied. If there are multiple rules then the action taken will be the first rule to match. */
 	Rules []TcprouteRules `json:"rules"`
 }

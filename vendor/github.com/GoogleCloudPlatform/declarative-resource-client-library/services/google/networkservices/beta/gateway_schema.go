@@ -126,6 +126,13 @@ func DCLGatewaySchema() *dcl.Schema {
 								Type:        "string",
 								GoName:      "AuthorizationPolicy",
 								Description: "Optional. A fully-qualified AuthorizationPolicy URL reference. Specifies how traffic is authorized. If empty, authorization checks are disabled.",
+								ResourceReferences: []*dcl.PropertyResourceReference{
+									&dcl.PropertyResourceReference{
+										Resource: "Networksecurity/AuthorizationPolicy",
+										Field:    "name",
+										Format:   "projects/{{project}}/locations/global/authorizationPolicies/{{name}}",
+									},
+								},
 							},
 							"createTime": &dcl.Property{
 								Type:        "string",
@@ -201,6 +208,13 @@ func DCLGatewaySchema() *dcl.Schema {
 								Type:        "string",
 								GoName:      "ServerTlsPolicy",
 								Description: "Optional. A fully-qualified ServerTLSPolicy URL reference. Specifies how TLS traffic is terminated. If empty, TLS termination is disabled.",
+								ResourceReferences: []*dcl.PropertyResourceReference{
+									&dcl.PropertyResourceReference{
+										Resource: "Networksecurity/ServerTlsPolicy",
+										Field:    "name",
+										Format:   "projects/{{project}}/locations/global/serverTlsPolicies/{{name}}",
+									},
+								},
 							},
 							"type": &dcl.Property{
 								Type:        "string",

@@ -531,6 +531,7 @@ components:
             The rules for daylight saving time are determined by the chosen tz. For
             UTC use the string "utc". If a time zone is not specified, the default
             will be in UTC (also known as GMT).
+          x-dcl-server-default: true
         userUpdateTime:
           type: string
           format: date-time

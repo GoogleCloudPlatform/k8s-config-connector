@@ -262,7 +262,7 @@ components:
                           need to end a query expression with a semicolon. Multiple
                           queries can be specified in one string by separating each
                           with a semicolon. Here is an example of a Dataproc API snippet
-                          that uses a QueryList to specify a HiveJob: "hiveJob" {
+                          that uses a QueryList to specify a HiveJob: "hiveJob": {
                           "queryList": { "queries": [ "query1", "query2", "query3;query4",
                           ] } }'
                         x-kubernetes-immutable: true
@@ -367,7 +367,7 @@ components:
                           need to end a query expression with a semicolon. Multiple
                           queries can be specified in one string by separating each
                           with a semicolon. Here is an example of a Dataproc API snippet
-                          that uses a QueryList to specify a HiveJob: "hiveJob" {
+                          that uses a QueryList to specify a HiveJob: "hiveJob": {
                           "queryList": { "queries": [ "query1", "query2", "query3;query4",
                           ] } }'
                         x-kubernetes-immutable: true
@@ -473,7 +473,7 @@ components:
                           need to end a query expression with a semicolon. Multiple
                           queries can be specified in one string by separating each
                           with a semicolon. Here is an example of a Dataproc API snippet
-                          that uses a QueryList to specify a HiveJob: "hiveJob" {
+                          that uses a QueryList to specify a HiveJob: "hiveJob": {
                           "queryList": { "queries": [ "query1", "query2", "query3;query4",
                           ] } }'
                         x-kubernetes-immutable: true
@@ -851,7 +851,7 @@ components:
                           need to end a query expression with a semicolon. Multiple
                           queries can be specified in one string by separating each
                           with a semicolon. Here is an example of a Dataproc API snippet
-                          that uses a QueryList to specify a HiveJob: "hiveJob" {
+                          that uses a QueryList to specify a HiveJob: "hiveJob": {
                           "queryList": { "queries": [ "query1", "query2", "query3;query4",
                           ] } }'
                         x-kubernetes-immutable: true
@@ -1291,6 +1291,43 @@ components:
                           items:
                             type: string
                             x-dcl-go-type: string
+                        shieldedInstanceConfig:
+                          type: object
+                          x-dcl-go-name: ShieldedInstanceConfig
+                          x-dcl-go-type: WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig
+                          description: Optional. Shielded Instance Config for clusters
+                            using Compute Engine Shielded VMs.
+                          x-kubernetes-immutable: true
+                          properties:
+                            enableIntegrityMonitoring:
+                              type: boolean
+                              x-dcl-go-name: EnableIntegrityMonitoring
+                              description: Optional. Defines whether instances have
+                                integrity monitoring enabled. Integrity monitoring
+                                compares the most recent boot measurements to the
+                                integrity policy baseline and returns a pair of pass/fail
+                                results depending on whether they match or not.
+                              x-kubernetes-immutable: true
+                            enableSecureBoot:
+                              type: boolean
+                              x-dcl-go-name: EnableSecureBoot
+                              description: Optional. Defines whether the instances
+                                have Secure Boot enabled. Secure Boot helps ensure
+                                that the system only runs authentic software by verifying
+                                the digital signature of all boot components, and
+                                halting the boot process if signature verification
+                                fails.
+                              x-kubernetes-immutable: true
+                            enableVtpm:
+                              type: boolean
+                              x-dcl-go-name: EnableVtpm
+                              description: Optional. Defines whether the instance
+                                have the vTPM enabled. Virtual Trusted Platform Module
+                                protects objects like keys, certificates and enables
+                                Measured Boot by performing the measurements needed
+                                to create a known good boot baseline, called the integrity
+                                policy baseline.
+                              x-kubernetes-immutable: true
                         subnetwork:
                           type: string
                           x-dcl-go-name: Subnetwork

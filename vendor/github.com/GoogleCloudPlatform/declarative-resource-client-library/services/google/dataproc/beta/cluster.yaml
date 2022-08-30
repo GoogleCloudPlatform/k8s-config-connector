@@ -133,6 +133,7 @@ components:
               x-dcl-go-type: ClusterConfigEndpointConfig
               description: Optional. Port/endpoint configuration for this cluster
               x-kubernetes-immutable: true
+              x-dcl-server-default: true
               properties:
                 enableHttpPortAccess:
                   type: boolean
@@ -156,6 +157,7 @@ components:
               description: Optional. The shared Compute Engine config settings for
                 all instances in a cluster.
               x-kubernetes-immutable: true
+              x-dcl-server-default: true
               properties:
                 internalIPOnly:
                   type: boolean
@@ -189,6 +191,7 @@ components:
                     are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/regions/global/default`
                     * `projects/[project_id]/regions/global/default` * `default`'
                   x-kubernetes-immutable: true
+                  x-dcl-server-default: true
                   x-dcl-references:
                   - resource: Compute/Network
                     field: selfLink
@@ -289,6 +292,7 @@ components:
                     * https://www.googleapis.com/auth/bigquery * https://www.googleapis.com/auth/bigtable.admin.table
                     * https://www.googleapis.com/auth/bigtable.data * https://www.googleapis.com/auth/devstorage.full_control'
                   x-kubernetes-immutable: true
+                  x-dcl-server-default: true
                   x-dcl-send-empty: true
                   x-dcl-list-type: list
                   items:
@@ -949,6 +953,7 @@ components:
               x-dcl-go-type: ClusterConfigSoftwareConfig
               description: Optional. The config settings for software inside the cluster.
               x-kubernetes-immutable: true
+              x-dcl-server-default: true
               properties:
                 imageVersion:
                   type: string
@@ -1012,6 +1017,7 @@ components:
                 **This field requires a Cloud Storage bucket name, not a URI to a
                 Cloud Storage bucket.**
               x-kubernetes-immutable: true
+              x-dcl-server-default: true
               x-dcl-references:
               - resource: Storage/Bucket
                 field: name
@@ -1028,6 +1034,7 @@ components:
                 none) if you specify a bucket. **This field requires a Cloud Storage
                 bucket name, not a URI to a Cloud Storage bucket.**
               x-kubernetes-immutable: true
+              x-dcl-server-default: true
               x-dcl-references:
               - resource: Storage/Bucket
                 field: name

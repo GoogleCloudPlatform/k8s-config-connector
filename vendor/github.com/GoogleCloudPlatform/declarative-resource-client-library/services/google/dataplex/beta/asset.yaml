@@ -125,6 +125,7 @@ components:
               x-dcl-go-name: CsvOptions
               x-dcl-go-type: AssetDiscoverySpecCsvOptions
               description: Optional. Configuration for CSV data.
+              x-dcl-server-default: true
               properties:
                 delimiter:
                   type: string
@@ -182,6 +183,7 @@ components:
               x-dcl-go-name: JsonOptions
               x-dcl-go-type: AssetDiscoverySpecJsonOptions
               description: Optional. Configuration for Json data.
+              x-dcl-server-default: true
               properties:
                 disableTypeInference:
                   type: boolean
@@ -295,10 +297,6 @@ components:
           type: string
           x-dcl-go-name: Name
           description: The name of the asset.
-          x-dcl-references:
-          - resource: Dataplex/Asset
-            field: selfLink
-            parent: true
         project:
           type: string
           x-dcl-go-name: Project

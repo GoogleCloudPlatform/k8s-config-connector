@@ -177,7 +177,7 @@ spec:
                     properties:
                       external:
                         description: |-
-                          Subnet name (relative, not fully qualified). E.g. if the full subnet selfLink is https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetName} the correct input for this field would be {subnetName}
+                          Subnet name (relative, not fully qualified). E.g. if the full subnet selfLink is https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetName} the correct input for this field would be: {subnetName}
 
                           Allowed value: The Google Cloud resource name of a `ComputeSubnetwork` resource (format: `projects/{{project}}/regions/{{region}}/subnetworks/{{name}}`).
                         type: string

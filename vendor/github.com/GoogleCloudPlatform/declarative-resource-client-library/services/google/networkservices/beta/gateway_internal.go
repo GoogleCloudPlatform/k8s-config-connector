@@ -90,26 +90,6 @@ func (r *Gateway) deleteURL(userBasePath string) (string, error) {
 	return dcl.URL("projects/{{project}}/locations/{{location}}/gateways/{{name}}", nr.basePath(), userBasePath, params), nil
 }
 
-func (r *Gateway) SetPolicyURL(userBasePath string) string {
-	nr := r.urlNormalized()
-	fields := map[string]interface{}{}
-	return dcl.URL("", nr.basePath(), userBasePath, fields)
-}
-
-func (r *Gateway) SetPolicyVerb() string {
-	return ""
-}
-
-func (r *Gateway) getPolicyURL(userBasePath string) string {
-	nr := r.urlNormalized()
-	fields := map[string]interface{}{}
-	return dcl.URL("", nr.basePath(), userBasePath, fields)
-}
-
-func (r *Gateway) IAMPolicyVersion() int {
-	return 3
-}
-
 // gatewayApiOperation represents a mutable operation in the underlying REST
 // API such as Create, Update, or Delete.
 type gatewayApiOperation interface {
@@ -519,12 +499,14 @@ func canonicalizeGatewayDesiredState(rawDesired, rawInitial *Gateway, opts ...dc
 	} else {
 		canonicalDesired.Scope = rawDesired.Scope
 	}
-	if dcl.StringCanonicalize(rawDesired.ServerTlsPolicy, rawInitial.ServerTlsPolicy) {
+	if dcl.IsZeroValue(rawDesired.ServerTlsPolicy) || (dcl.IsEmptyValueIndirect(rawDesired.ServerTlsPolicy) && dcl.IsEmptyValueIndirect(rawInitial.ServerTlsPolicy)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
 		canonicalDesired.ServerTlsPolicy = rawInitial.ServerTlsPolicy
 	} else {
 		canonicalDesired.ServerTlsPolicy = rawDesired.ServerTlsPolicy
 	}
-	if dcl.StringCanonicalize(rawDesired.AuthorizationPolicy, rawInitial.AuthorizationPolicy) {
+	if dcl.IsZeroValue(rawDesired.AuthorizationPolicy) || (dcl.IsEmptyValueIndirect(rawDesired.AuthorizationPolicy) && dcl.IsEmptyValueIndirect(rawInitial.AuthorizationPolicy)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
 		canonicalDesired.AuthorizationPolicy = rawInitial.AuthorizationPolicy
 	} else {
 		canonicalDesired.AuthorizationPolicy = rawDesired.AuthorizationPolicy
@@ -605,17 +587,11 @@ func canonicalizeGatewayNewState(c *Client, rawNew, rawDesired *Gateway) (*Gatew
 	if dcl.IsEmptyValueIndirect(rawNew.ServerTlsPolicy) && dcl.IsEmptyValueIndirect(rawDesired.ServerTlsPolicy) {
 		rawNew.ServerTlsPolicy = rawDesired.ServerTlsPolicy
 	} else {
-		if dcl.StringCanonicalize(rawDesired.ServerTlsPolicy, rawNew.ServerTlsPolicy) {
-			rawNew.ServerTlsPolicy = rawDesired.ServerTlsPolicy
-		}
 	}
 
 	if dcl.IsEmptyValueIndirect(rawNew.AuthorizationPolicy) && dcl.IsEmptyValueIndirect(rawDesired.AuthorizationPolicy) {
 		rawNew.AuthorizationPolicy = rawDesired.AuthorizationPolicy
 	} else {
-		if dcl.StringCanonicalize(rawDesired.AuthorizationPolicy, rawNew.AuthorizationPolicy) {
-			rawNew.AuthorizationPolicy = rawDesired.AuthorizationPolicy
-		}
 	}
 
 	rawNew.Project = rawDesired.Project
@@ -714,14 +690,14 @@ func diffGateway(c *Client, desired, actual *Gateway, opts ...dcl.ApplyOption) (
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ServerTlsPolicy, actual.ServerTlsPolicy, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGatewayUpdateGatewayOperation")}, fn.AddNest("ServerTlsPolicy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServerTlsPolicy, actual.ServerTlsPolicy, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateGatewayUpdateGatewayOperation")}, fn.AddNest("ServerTlsPolicy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AuthorizationPolicy, actual.AuthorizationPolicy, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGatewayUpdateGatewayOperation")}, fn.AddNest("AuthorizationPolicy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AuthorizationPolicy, actual.AuthorizationPolicy, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateGatewayUpdateGatewayOperation")}, fn.AddNest("AuthorizationPolicy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

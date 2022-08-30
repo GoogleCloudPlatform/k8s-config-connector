@@ -584,6 +584,19 @@ func WorkflowTemplateToUnstructured(r *dclService.WorkflowTemplate) *unstructure
 						rPlacementManagedClusterConfigGceClusterConfigServiceAccountScopes = append(rPlacementManagedClusterConfigGceClusterConfigServiceAccountScopes, rPlacementManagedClusterConfigGceClusterConfigServiceAccountScopesVal)
 					}
 					rPlacementManagedClusterConfigGceClusterConfig["serviceAccountScopes"] = rPlacementManagedClusterConfigGceClusterConfigServiceAccountScopes
+					if r.Placement.ManagedCluster.Config.GceClusterConfig.ShieldedInstanceConfig != nil && r.Placement.ManagedCluster.Config.GceClusterConfig.ShieldedInstanceConfig != dclService.EmptyWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig {
+						rPlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig := make(map[string]interface{})
+						if r.Placement.ManagedCluster.Config.GceClusterConfig.ShieldedInstanceConfig.EnableIntegrityMonitoring != nil {
+							rPlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig["enableIntegrityMonitoring"] = *r.Placement.ManagedCluster.Config.GceClusterConfig.ShieldedInstanceConfig.EnableIntegrityMonitoring
+						}
+						if r.Placement.ManagedCluster.Config.GceClusterConfig.ShieldedInstanceConfig.EnableSecureBoot != nil {
+							rPlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig["enableSecureBoot"] = *r.Placement.ManagedCluster.Config.GceClusterConfig.ShieldedInstanceConfig.EnableSecureBoot
+						}
+						if r.Placement.ManagedCluster.Config.GceClusterConfig.ShieldedInstanceConfig.EnableVtpm != nil {
+							rPlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig["enableVtpm"] = *r.Placement.ManagedCluster.Config.GceClusterConfig.ShieldedInstanceConfig.EnableVtpm
+						}
+						rPlacementManagedClusterConfigGceClusterConfig["shieldedInstanceConfig"] = rPlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig
+					}
 					if r.Placement.ManagedCluster.Config.GceClusterConfig.Subnetwork != nil {
 						rPlacementManagedClusterConfigGceClusterConfig["subnetwork"] = *r.Placement.ManagedCluster.Config.GceClusterConfig.Subnetwork
 					}
@@ -2027,6 +2040,34 @@ func UnstructuredToWorkflowTemplate(u *unstructured.Resource) (*dclService.Workf
 											}
 										} else {
 											return nil, fmt.Errorf("r.Placement.ManagedCluster.Config.GceClusterConfig.ServiceAccountScopes: expected []interface{}")
+										}
+									}
+									if _, ok := rPlacementManagedClusterConfigGceClusterConfig["shieldedInstanceConfig"]; ok {
+										if rPlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig, ok := rPlacementManagedClusterConfigGceClusterConfig["shieldedInstanceConfig"].(map[string]interface{}); ok {
+											r.Placement.ManagedCluster.Config.GceClusterConfig.ShieldedInstanceConfig = &dclService.WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig{}
+											if _, ok := rPlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig["enableIntegrityMonitoring"]; ok {
+												if b, ok := rPlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig["enableIntegrityMonitoring"].(bool); ok {
+													r.Placement.ManagedCluster.Config.GceClusterConfig.ShieldedInstanceConfig.EnableIntegrityMonitoring = dcl.Bool(b)
+												} else {
+													return nil, fmt.Errorf("r.Placement.ManagedCluster.Config.GceClusterConfig.ShieldedInstanceConfig.EnableIntegrityMonitoring: expected bool")
+												}
+											}
+											if _, ok := rPlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig["enableSecureBoot"]; ok {
+												if b, ok := rPlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig["enableSecureBoot"].(bool); ok {
+													r.Placement.ManagedCluster.Config.GceClusterConfig.ShieldedInstanceConfig.EnableSecureBoot = dcl.Bool(b)
+												} else {
+													return nil, fmt.Errorf("r.Placement.ManagedCluster.Config.GceClusterConfig.ShieldedInstanceConfig.EnableSecureBoot: expected bool")
+												}
+											}
+											if _, ok := rPlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig["enableVtpm"]; ok {
+												if b, ok := rPlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig["enableVtpm"].(bool); ok {
+													r.Placement.ManagedCluster.Config.GceClusterConfig.ShieldedInstanceConfig.EnableVtpm = dcl.Bool(b)
+												} else {
+													return nil, fmt.Errorf("r.Placement.ManagedCluster.Config.GceClusterConfig.ShieldedInstanceConfig.EnableVtpm: expected bool")
+												}
+											}
+										} else {
+											return nil, fmt.Errorf("r.Placement.ManagedCluster.Config.GceClusterConfig.ShieldedInstanceConfig: expected map[string]interface{}")
 										}
 									}
 									if _, ok := rPlacementManagedClusterConfigGceClusterConfig["subnetwork"]; ok {

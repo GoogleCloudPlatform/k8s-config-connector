@@ -101,6 +101,7 @@ components:
           description: Machine type of VM Instance underlying connector. Default is
             e2-micro
           x-kubernetes-immutable: true
+          x-dcl-server-default: true
         maxInstances:
           type: integer
           format: int64
@@ -108,6 +109,7 @@ components:
           description: Maximum value of instances in autoscaling group underlying
             the connector.
           x-kubernetes-immutable: true
+          x-dcl-server-default: true
         maxThroughput:
           type: integer
           format: int64
@@ -115,6 +117,7 @@ components:
           description: Maximum throughput of the connector in Mbps. Default is 200,
             max is 1000.
           x-kubernetes-immutable: true
+          x-dcl-server-default: true
         minInstances:
           type: integer
           format: int64
@@ -122,6 +125,7 @@ components:
           description: Minimum value of instances in autoscaling group underlying
             the connector.
           x-kubernetes-immutable: true
+          x-dcl-server-default: true
         minThroughput:
           type: integer
           format: int64
@@ -129,6 +133,7 @@ components:
           description: Minimum throughput of the connector in Mbps. Default and min
             is 200.
           x-kubernetes-immutable: true
+          x-dcl-server-default: true
         name:
           type: string
           x-dcl-go-name: Name
@@ -176,9 +181,9 @@ components:
             name:
               type: string
               x-dcl-go-name: Name
-              description: Subnet name (relative, not fully qualified). E.g. if the
+              description: 'Subnet name (relative, not fully qualified). E.g. if the
                 full subnet selfLink is https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetName}
-                the correct input for this field would be {subnetName}
+                the correct input for this field would be: {subnetName}'
               x-kubernetes-immutable: true
               x-dcl-references:
               - resource: Compute/Subnetwork

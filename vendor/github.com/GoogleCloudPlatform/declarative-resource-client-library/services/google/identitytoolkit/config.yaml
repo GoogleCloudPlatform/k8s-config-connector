@@ -49,6 +49,7 @@ components:
           type: array
           x-dcl-go-name: AuthorizedDomains
           description: List of domains authorized for OAuth redirects
+          x-dcl-server-default: true
           x-dcl-send-empty: true
           x-dcl-list-type: list
           items:
@@ -59,6 +60,7 @@ components:
           x-dcl-go-name: BlockingFunctions
           x-dcl-go-type: ConfigBlockingFunctions
           description: Configuration related to blocking functions.
+          x-dcl-server-default: true
           properties:
             triggers:
               type: object
@@ -88,6 +90,7 @@ components:
           x-dcl-go-type: ConfigClient
           description: Options related to how clients making requests on behalf of
             a project should be configured.
+          x-dcl-server-default: true
           properties:
             apiKey:
               type: string
@@ -125,6 +128,7 @@ components:
           description: Configuration for this project's multi-factor authentication,
             including whether it is active and what factors can be used for the second
             factor
+          x-dcl-server-default: true
           properties:
             state:
               type: string
@@ -143,6 +147,7 @@ components:
           x-dcl-go-name: Monitoring
           x-dcl-go-type: ConfigMonitoring
           description: Configuration related to monitoring project activity.
+          x-dcl-server-default: true
           properties:
             requestLogging:
               type: object
@@ -160,6 +165,7 @@ components:
           x-dcl-go-name: MultiTenant
           x-dcl-go-type: ConfigMultiTenant
           description: Configuration related to multi-tenant functionality.
+          x-dcl-server-default: true
           properties:
             allowTenants:
               type: boolean
@@ -183,6 +189,7 @@ components:
           x-dcl-go-name: Notification
           x-dcl-go-type: ConfigNotification
           description: Configuration related to sending notifications to users.
+          x-dcl-server-default: true
           properties:
             defaultLocale:
               type: string
@@ -511,6 +518,7 @@ components:
           x-dcl-go-name: Quota
           x-dcl-go-type: ConfigQuota
           description: Configuration related to quotas.
+          x-dcl-server-default: true
           properties:
             signUpQuotaConfig:
               type: object
@@ -539,6 +547,7 @@ components:
           x-dcl-go-name: SignIn
           x-dcl-go-type: ConfigSignIn
           description: Configuration related to local sign in methods.
+          x-dcl-server-default: true
           properties:
             allowDuplicateEmails:
               type: boolean

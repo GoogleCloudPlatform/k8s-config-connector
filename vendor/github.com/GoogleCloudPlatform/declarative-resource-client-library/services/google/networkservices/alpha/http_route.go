@@ -14,7 +14,6 @@
 package alpha
 
 import (
-	"bytes"
 	"context"
 	"crypto/sha256"
 	"encoding/json"
@@ -31,7 +30,6 @@ type HttpRoute struct {
 	CreateTime  *string           `json:"createTime"`
 	UpdateTime  *string           `json:"updateTime"`
 	Hostnames   []string          `json:"hostnames"`
-	Routers     []string          `json:"routers"`
 	Meshes      []string          `json:"meshes"`
 	Gateways    []string          `json:"gateways"`
 	Labels      map[string]string `json:"labels"`
@@ -357,7 +355,6 @@ type HttpRouteRulesAction struct {
 	empty                  bool                                        `json:"-"`
 	Destinations           []HttpRouteRulesActionDestinations          `json:"destinations"`
 	Redirect               *HttpRouteRulesActionRedirect               `json:"redirect"`
-	OriginalDestination    *bool                                       `json:"originalDestination"`
 	FaultInjectionPolicy   *HttpRouteRulesActionFaultInjectionPolicy   `json:"faultInjectionPolicy"`
 	RequestHeaderModifier  *HttpRouteRulesActionRequestHeaderModifier  `json:"requestHeaderModifier"`
 	ResponseHeaderModifier *HttpRouteRulesActionResponseHeaderModifier `json:"responseHeaderModifier"`
@@ -386,8 +383,6 @@ func (r *HttpRouteRulesAction) UnmarshalJSON(data []byte) error {
 		r.Destinations = res.Destinations
 
 		r.Redirect = res.Redirect
-
-		r.OriginalDestination = res.OriginalDestination
 
 		r.FaultInjectionPolicy = res.FaultInjectionPolicy
 
@@ -1077,7 +1072,6 @@ func (r *HttpRoute) ID() (string, error) {
 		"create_time": dcl.ValueOrEmptyString(nr.CreateTime),
 		"update_time": dcl.ValueOrEmptyString(nr.UpdateTime),
 		"hostnames":   dcl.ValueOrEmptyString(nr.Hostnames),
-		"routers":     dcl.ValueOrEmptyString(nr.Routers),
 		"meshes":      dcl.ValueOrEmptyString(nr.Meshes),
 		"gateways":    dcl.ValueOrEmptyString(nr.Gateways),
 		"labels":      dcl.ValueOrEmptyString(nr.Labels),
@@ -1396,14 +1390,4 @@ func applyHttpRouteDiff(c *Client, ctx context.Context, desired *HttpRoute, rawD
 	}
 	c.Config.Logger.InfoWithContext(ctx, "Done Apply.")
 	return newState, nil
-}
-
-func (r *HttpRoute) GetPolicy(basePath string) (string, string, *bytes.Buffer, error) {
-	u := r.getPolicyURL(basePath)
-	body := &bytes.Buffer{}
-	u, err := dcl.AddQueryParams(u, map[string]string{"optionsRequestedPolicyVersion": fmt.Sprintf("%d", r.IAMPolicyVersion())})
-	if err != nil {
-		return "", "", nil, err
-	}
-	return u, "", body, nil
 }

@@ -14,7 +14,6 @@
 package alpha
 
 import (
-	"bytes"
 	"context"
 	"crypto/sha256"
 	"encoding/json"
@@ -572,14 +571,4 @@ func applyTlsRouteDiff(c *Client, ctx context.Context, desired *TlsRoute, rawDes
 	}
 	c.Config.Logger.InfoWithContext(ctx, "Done Apply.")
 	return newState, nil
-}
-
-func (r *TlsRoute) GetPolicy(basePath string) (string, string, *bytes.Buffer, error) {
-	u := r.getPolicyURL(basePath)
-	body := &bytes.Buffer{}
-	u, err := dcl.AddQueryParams(u, map[string]string{"optionsRequestedPolicyVersion": fmt.Sprintf("%d", r.IAMPolicyVersion())})
-	if err != nil {
-		return "", "", nil, err
-	}
-	return u, "", body, nil
 }

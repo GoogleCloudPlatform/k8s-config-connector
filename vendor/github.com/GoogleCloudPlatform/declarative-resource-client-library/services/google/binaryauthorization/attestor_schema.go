@@ -175,9 +175,10 @@ func DCLAttestorSchema() *dcl.Schema {
 													Description: "Optional. A descriptive comment. This field may be updated.",
 												},
 												"id": &dcl.Property{
-													Type:        "string",
-													GoName:      "Id",
-													Description: "The ID of this public key. Signatures verified by BinAuthz must include the ID of the public key that can be used to verify them, and that ID must match the contents of this field exactly. Additional restrictions on this field can be imposed based on which public key type is encapsulated. See the documentation on `public_key` cases below for details.",
+													Type:          "string",
+													GoName:        "Id",
+													Description:   "The ID of this public key. Signatures verified by BinAuthz must include the ID of the public key that can be used to verify them, and that ID must match the contents of this field exactly. Additional restrictions on this field can be imposed based on which public key type is encapsulated. See the documentation on `public_key` cases below for details.",
+													ServerDefault: true,
 												},
 												"pkixPublicKey": &dcl.Property{
 													Type:        "object",

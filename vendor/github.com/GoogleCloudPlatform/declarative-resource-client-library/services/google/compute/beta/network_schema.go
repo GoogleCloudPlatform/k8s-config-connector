@@ -98,12 +98,13 @@ func DCLNetworkSchema() *dcl.Schema {
 						},
 						Properties: map[string]*dcl.Property{
 							"autoCreateSubnetworks": &dcl.Property{
-								Type:        "boolean",
-								GoName:      "AutoCreateSubnetworks",
-								Description: "When set to `true`, the network is created in \"auto subnet mode\" and it will create a subnet for each region automatically across the `10.128.0.0/9` address range.  When set to `false`, the network is created in \"custom subnet mode\" so the user can explicitly connect subnetwork resources. ",
-								Immutable:   true,
-								Default:     true,
-								SendEmpty:   true,
+								Type:          "boolean",
+								GoName:        "AutoCreateSubnetworks",
+								Description:   "When set to `true`, the network is created in \"auto subnet mode\" and it will create a subnet for each region automatically across the `10.128.0.0/9` address range.  When set to `false`, the network is created in \"custom subnet mode\" so the user can explicitly connect subnetwork resources. ",
+								Immutable:     true,
+								Default:       true,
+								ServerDefault: true,
+								SendEmpty:     true,
 							},
 							"description": &dcl.Property{
 								Type:        "string",
@@ -144,10 +145,11 @@ func DCLNetworkSchema() *dcl.Schema {
 								},
 							},
 							"routingConfig": &dcl.Property{
-								Type:        "object",
-								GoName:      "RoutingConfig",
-								GoType:      "NetworkRoutingConfig",
-								Description: "The network-level routing configuration for this network. Used by Cloud Router to determine what type of network-wide routing behavior to enforce. ",
+								Type:          "object",
+								GoName:        "RoutingConfig",
+								GoType:        "NetworkRoutingConfig",
+								Description:   "The network-level routing configuration for this network. Used by Cloud Router to determine what type of network-wide routing behavior to enforce. ",
+								ServerDefault: true,
 								Properties: map[string]*dcl.Property{
 									"routingMode": &dcl.Property{
 										Type:          "string",
