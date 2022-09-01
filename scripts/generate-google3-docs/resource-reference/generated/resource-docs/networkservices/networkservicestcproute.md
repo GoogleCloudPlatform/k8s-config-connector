@@ -5,12 +5,6 @@
 {% block page_title %}NetworkServicesTCPRoute{% endblock %}
 {% block body %}
 
-<aside class="caution"><strong>Caution:</strong> This resource is currently in alpha and may change without notice.
-<p>
-Before you upgrade Config Connector to a later version, we recommended that you abandon all existing Kubernetes objects based on alpha-stage resources from the cluster. Objects should be adjusted to reflect the CRD schema of the new version, and reapplied after the upgrade.
-</p>
-</aside>
-
 
 <table>
 <thead>
@@ -30,11 +24,11 @@ Before you upgrade Config Connector to a later version, we recommended that you 
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Name</td>
-<td>v1alpha1/projects.locations.tcpRoutes</td>
+<td>v1/projects.locations.tcpRoutes</td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/traffic-director/docs/reference/network-services/rest/v1alpha1/projects.locations.tcpRoutes">/traffic-director/docs/reference/network-services/rest/v1alpha1/projects.locations.tcpRoutes</a></td>
+<td><a href="/traffic-director/docs/reference/network-services/rest/v1/projects.locations.tcpRoutes">/traffic-director/docs/reference/network-services/rest/v1/projects.locations.tcpRoutes</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
@@ -552,7 +546,7 @@ updateTime: string
 
 ### Typical Use Case
 ```yaml
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -569,18 +563,16 @@ updateTime: string
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesTCPRoute
 metadata:
-  labels:
-    key-one: value-one
   name: networkservicestcproute-sample
+  labels:
+    foo: bar
 spec:
-  projectRef:
-    # Replace ${PROJECT_ID?} with your project ID.
-    external: "projects/${PROJECT_ID?}"
-  location: global
   meshes:
-    - name: networkservicestcproute-dep
+  - name: "networkservicestcproute-dep"
   gateways:
-    - name: networkservicestcproute-dep
+  - name: "networkservicestcproute-dep"
+  location: "global"
+  description: "A test TcpRoute"
   rules:
   - matches:
     - address: "10.0.0.1/32"
@@ -588,45 +580,59 @@ spec:
     action:
       destinations:
       - serviceRef:
-          name: networkservicestcproute-dep
-  - action:
+          name: "networkservicestcproute-dep"
+        weight: 1
+  - matches:
+    - address: "10.0.0.1/0"
+      port: "1"
+    action:
+      originalDestination: false
       destinations:
       - serviceRef:
-          name: networkservicestcproute-dep
+          name: "networkservicestcproute-dep"
+        weight: 1
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
   name: networkservicestcproute-dep
 spec:
-  loadBalancingScheme: INTERNAL_SELF_MANAGED
+  loadBalancingScheme: "INTERNAL_SELF_MANAGED"
   location: global
-  protocol: TCP
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
 ---
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesGateway
 metadata:
   name: networkservicestcproute-dep
+  labels:
+    foo: bar
 spec:
-  projectRef:
-    # Replace ${PROJECT_ID?} with your project ID.
-    external: "projects/${PROJECT_ID?}"
-  type: OPEN_MESH
+  description: "A test Gateway"
+  type: "OPEN_MESH"
   ports:
   - 80
   - 443
-  location: global
-  scope: tcproute-sample-scope
+  location: "global"
+  scope: "networkservicestcproute-sample"
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
 ---
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesMesh
 metadata:
   name: networkservicestcproute-dep
 spec:
+  location: "global"
   projectRef:
-    # Replace ${PROJECT_ID?} with your project ID.
+    # Replace "${PROJECT_ID?}" with your project ID
     external: "projects/${PROJECT_ID?}"
-  location: global
 ```
 
 

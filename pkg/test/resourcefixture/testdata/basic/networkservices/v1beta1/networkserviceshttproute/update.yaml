@@ -15,67 +15,137 @@
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesHTTPRoute
 metadata:
-  labels:
-    key-one: value-one
   name: networkserviceshttproute-${uniqueId}
+  labels:
+    foo2: bar2
 spec:
-  projectRef:
-    external: "projects/${projectId}"
-  location: global
-  hostnames: ["baz.bar"]
+  description: "An updated test HttpRoute"
   meshes:
-    - name: "networkservicesmesh-${uniqueId}"
+  - name: "networkservicesmesh-2-${uniqueId}"
   gateways:
-    - name: "networkservicesgateway-${uniqueId}"
+  - name: "networkservicesgateway-2-${uniqueId}"
+  location: "global"
+  hostnames:
+  - "test1"
+  - "test2"
+  - "newhost"
   rules:
   - matches:
-    - fullPathMatch: "/foo/bar"
+    - fullPathMatch: "/bar/foo"
       headers:
-      - header: "foo-header"
-        prefixMatch: "bar-value"
+      - header: "foo-header2"
+        prefixMatch: "bar-value2"
+    - prefixMatch: "/foo2/"
+      ignoreCase: false
+    - regexMatch: "/foo2/.*/bar/.*"
+    - prefixMatch: "/"
+      headers:
+      - header: "foo2"
+        exactMatch: "bar2"
+      - header: "foo2"
+        regexMatch: "b.*ar2"
+      - header: "foo2"
+        prefixMatch: "2ba"
+      - header: "foo2"
+        presentMatch: false
+      - header: "foo2"
+        suffixMatch: "ar2"
+      - header: "foo2"
+        rangeMatch:
+          start: 1
+          end: 6
+        invertMatch: false
+    - prefixMatch: "/"
+      queryParameters:
+      - queryParameter: "foo2"
+        exactMatch: "bar2"
+      - queryParameter: "foo2"
+        regexMatch: ".*bar2.*"
+      - queryParameter: "foo2"
+        presentMatch: false
     action:
       destinations:
       - serviceRef:
-          name: computebackendservice-${uniqueId}
-      faultInjectionPolicy:
-        abort:
-          httpStatus: 501
-          percentage: 1
-        delay:
-          fixedDelay: "10s"
-          percentage: 2
-      requestHeaderModifier:
-        add:
-          foo1: bar1
-          baz1: qux1
-        set:
-          foo2: bar2
-          baz2: qux2
-        remove:
-        - foo3
-        - bar3
+          name: "computebackendservice-2-${uniqueId}"
+        weight: 2
+      - serviceRef:
+          name: "computebackendservice-2-${uniqueId}"
+        weight: 2
       requestMirrorPolicy:
         destination:
           serviceRef:
-            name: computebackendservice-${uniqueId}
+            name: "computebackendservice-2-${uniqueId}"
+      urlRewrite:
+        pathPrefixRewrite: "bar"
+        hostRewrite: "bar"
+      corsPolicy:
+        allowOrigins:
+        - "foo2.com"
+        - "bar2.com"
+        allowOriginRegexes:
+        - ".*.foo2.com"
+        - ".*.bar2.com"
+        allowMethods:
+        - "PUT"
+        - "PATCH"
+        allowHeaders:
+        - "foo2"
+        - "bar2"
+        exposeHeaders:
+        - "foo2"
+        - "bar2"
+        maxAge: "36"
+        allowCredentials: false
+        disabled: true
+      faultInjectionPolicy:
+        abort:
+          httpStatus: 500
+          percentage: 2
+        delay:
+          fixedDelay: "11s"
+          percentage: 3
+      requestHeaderModifier:
+        add:
+          foo2: "bar2"
+          baz2: "qux2"
+        set:
+          foo3: "bar3"
+          baz3: "qux3"
+        remove:
+        - "foo4"
+        - "bar4"
       responseHeaderModifier:
         add:
-          foo1: bar1
-          baz1: qux1
+          foo2: "bar2"
+          baz2: "qux2"
         set:
-          foo2: bar2
-          baz2: qux2
+          foo3: "bar3"
+          baz3: "qux3"
         remove:
-        - foo3
-        - bar3
+        - "foo4"
+        - "bar4"
       retryPolicy:
-        numRetries: 3
-        perTryTimeout: "5s"
+        numRetries: 4
+        perTryTimeout: "6s"
         retryConditions:
         - "refused-stream"
-        - "cancelled"
-      timeout: "30s"
+      timeout: "31s"
   - action:
-      destinations:
-      - serviceRef:
-          name: computebackendservice-${uniqueId}
+      redirect:
+        hostRedirect: "foo2"
+        responseCode: "FOUND"
+        httpsRedirect: false
+        stripQuery: false
+        portRedirect: 24601
+  - action:
+      redirect:
+        hostRedirect: "test"
+        prefixRewrite: "foo2"
+        responseCode: "SEE_OTHER"
+  - action:
+      redirect:
+        hostRedirect: "test"
+        pathRedirect: "/foo2"
+        responseCode: "SEE_OTHER"
+  projectRef:
+    external: "projects/${projectId}"

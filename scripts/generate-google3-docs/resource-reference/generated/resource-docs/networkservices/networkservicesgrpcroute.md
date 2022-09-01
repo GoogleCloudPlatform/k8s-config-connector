@@ -5,12 +5,6 @@
 {% block page_title %}NetworkServicesGRPCRoute{% endblock %}
 {% block body %}
 
-<aside class="caution"><strong>Caution:</strong> This resource is currently in alpha and may change without notice.
-<p>
-Before you upgrade Config Connector to a later version, we recommended that you abandon all existing Kubernetes objects based on alpha-stage resources from the cluster. Objects should be adjusted to reflect the CRD schema of the new version, and reapplied after the upgrade.
-</p>
-</aside>
-
 
 <table>
 <thead>
@@ -30,11 +24,11 @@ Before you upgrade Config Connector to a later version, we recommended that you 
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Name</td>
-<td>v1alpha1/projects.locations.grpcRoutes</td>
+<td>v1/projects.locations.grpcRoutes</td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/traffic-director/docs/reference/network-services/rest/v1alpha1/projects.locations.grpcRoutes">/traffic-director/docs/reference/network-services/rest/v1alpha1/projects.locations.grpcRoutes</a></td>
+<td><a href="/traffic-director/docs/reference/network-services/rest/v1/projects.locations.grpcRoutes">/traffic-director/docs/reference/network-services/rest/v1/projects.locations.grpcRoutes</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
@@ -782,7 +776,7 @@ updateTime: string
 
 ### Typical Use Case
 ```yaml
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -799,31 +793,38 @@ updateTime: string
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesGRPCRoute
 metadata:
-  labels:
-    key-one: value-one
   name: networkservicesgrpcroute-sample
+  labels:
+    foo: bar
 spec:
-  projectRef:
-    # Replace ${PROJECT_ID?} with your project ID.
-    external: "projects/${PROJECT_ID?}"
-  location: global
-  hostnames: ["baz.bar"]
+  description: "A test GrpcRoute"
   meshes:
-    - name: networkservicesgrpcroute-dep
+  - name: "networkservicesgrpcroute-dep"
   gateways:
-    - name: networkservicesgrpcroute-dep
+  - name: "networkservicesgrpcroute-dep"
+  location: "global"
+  hostnames:
+  - "test1"
+  - "test2"
   rules:
   - matches:
     - method:
-        grpcService: helloworld.Greeter
-        grpcMethod: SayHello
+        type: "EXACT"
+        grpcService: "helloworld.Greeter"
+        grpcMethod: "SayHello"
+        caseSensitive: false
       headers:
-      - key: foo
-        value: bar
+      - type: "EXACT"
+        key: "foo"
+        value: "bar"
     action:
       destinations:
       - serviceRef:
-          name: networkservicesgrpcroute-dep
+          name: "networkservicesgrpcroute-dep"
+        weight: 50
+      - serviceRef:
+          name: "networkservicesgrpcroute-dep"
+        weight: 50
       faultInjectionPolicy:
         abort:
           httpStatus: 501
@@ -840,41 +841,47 @@ spec:
   - action:
       destinations:
       - serviceRef:
-          name: networkservicesgrpcroute-dep
+          name: "networkservicesgrpcroute-dep"
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
   name: networkservicesgrpcroute-dep
 spec:
-  loadBalancingScheme: INTERNAL_SELF_MANAGED
+  loadBalancingScheme: "INTERNAL_SELF_MANAGED"
   location: global
   protocol: GRPC
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
 ---
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesGateway
 metadata:
   name: networkservicesgrpcroute-dep
 spec:
-  projectRef:
-    # Replace ${PROJECT_ID?} with your project ID.
-    external: "projects/${PROJECT_ID?}"
-  type: OPEN_MESH
+  location: "global"
+  type: "OPEN_MESH"
+  scope: "networkservicesgrpcroute-sample-scope"
   ports:
   - 80
   - 443
-  location: global
-  scope: grpcroute-sample-scope
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
 ---
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesMesh
 metadata:
   name: networkservicesgrpcroute-dep
 spec:
+  location: "global"
   projectRef:
-    # Replace ${PROJECT_ID?} with your project ID.
+    # Replace "${PROJECT_ID?}" with your project ID
     external: "projects/${PROJECT_ID?}"
-  location: global
 ```
 
 

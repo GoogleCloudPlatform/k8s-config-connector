@@ -5,12 +5,6 @@
 {% block page_title %}NetworkServicesGateway{% endblock %}
 {% block body %}
 
-<aside class="caution"><strong>Caution:</strong> This resource is currently in alpha and may change without notice.
-<p>
-Before you upgrade Config Connector to a later version, we recommended that you abandon all existing Kubernetes objects based on alpha-stage resources from the cluster. Objects should be adjusted to reflect the CRD schema of the new version, and reapplied after the upgrade.
-</p>
-</aside>
-
 
 <table>
 <thead>
@@ -30,11 +24,11 @@ Before you upgrade Config Connector to a later version, we recommended that you 
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Name</td>
-<td>v1alpha1/projects.locations.gateways</td>
+<td>v1/projects.locations.gateways</td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/traffic-director/docs/reference/network-services/rest/v1alpha1/projects.locations.gateways">/traffic-director/docs/reference/network-services/rest/v1alpha1/projects.locations.gateways</a></td>
+<td><a href="/traffic-director/docs/reference/network-services/rest/v1/projects.locations.gateways">/traffic-director/docs/reference/network-services/rest/v1/projects.locations.gateways</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
@@ -390,7 +384,7 @@ updateTime: string
 
 ### Typical Use Case
 ```yaml
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -407,19 +401,33 @@ updateTime: string
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesGateway
 metadata:
-  labels:
-    key-one: value-one
   name: networkservicesgateway-sample
+  labels:
+    foo: bar
 spec:
-  projectRef:
-    # Replace ${PROJECT_ID?} with your project ID.
-    external: "projects/${PROJECT_ID?}"
-  type: OPEN_MESH
+  description: "A test Gateway"
+  type: "OPEN_MESH"
   ports:
   - 80
   - 443
-  location: global
-  scope: foo-scope
+  location: "global"
+  scope: "networkservicesgateway-sample"
+  serverTlsPolicyRef:
+    name: "networkservicesgateway-dep"
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
+---
+apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
+kind: NetworkSecurityServerTLSPolicy
+metadata:
+  name: networkservicesgateway-dep
+spec:
+  location: "global"
+  allowOpen: true
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
 ```
 
 

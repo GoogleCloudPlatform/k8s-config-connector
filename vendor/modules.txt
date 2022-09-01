@@ -96,6 +96,7 @@ github.com/GoogleCloudPlatform/declarative-resource-client-library/services/goog
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/networkconnectivity
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/networkconnectivity/beta
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/networksecurity/beta
+github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/networkservices
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/networkservices/alpha
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/networkservices/beta
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/orgpolicy/beta
@@ -134,6 +135,7 @@ github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/
 github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/monitoring
 github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/networkconnectivity
 github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/networksecurity/beta
+github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/networkservices
 github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/networkservices/alpha
 github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/networkservices/beta
 github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/osconfig/beta

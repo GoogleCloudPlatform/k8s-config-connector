@@ -15,48 +15,51 @@
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesGRPCRoute
 metadata:
-  labels:
-    key-one: value-one
   name: networkservicesgrpcroute-${uniqueId}
+  labels:
+    bar: baz
 spec:
-  projectRef:
-    external: "projects/${projectId}"
-  location: global
-  hostnames: ["foo.bar"]
+  description: "An updated test GrpcRoute"
   meshes:
-    - name: "networkservicesmesh-${uniqueId}"
+  - name: "networkservicesmesh-2-${uniqueId}"
   gateways:
-    - name: "networkservicesgateway-${uniqueId}"
+  - name: "networkservicesgateway-2-${uniqueId}"
+  location: "global"
+  hostnames:
+  - "test1"
+  - "test2"
+  - "newhost"
   rules:
   - matches:
     - method:
-        grpcService: helloworld.Greeter
-        grpcMethod: SayHello
+        type: "REGULAR_EXPRESSION"
+        grpcService: "helloworld.Greeter2"
+        grpcMethod: "SayHello2"
+        caseSensitive: true
       headers:
-      - key: foo
-        value: bar
+      - type: "REGULAR_EXPRESSION"
+        key: "bar"
+        value: "foo"
     action:
       destinations:
       - serviceRef:
-          name: computebackendservice-${uniqueId}
+          name: "computebackendservice-2-${uniqueId}"
+        weight: 100
       faultInjectionPolicy:
         abort:
-          httpStatus: 501
-          percentage: 1
-        delay:
-          fixedDelay: "10s"
+          httpStatus: 502
           percentage: 2
-      requestMirrorPolicy:
-        destination:
-          serviceRef:
-            name: computebackendservice-${uniqueId}
+        delay:
+          fixedDelay: "11s"
+          percentage: 3
       retryPolicy:
-        numRetries: 3
+        numRetries: 4
         retryConditions:
         - "refused-stream"
-        - "cancelled"
-      timeout: "30s"
+      timeout: "40s"
   - action:
       destinations:
       - serviceRef:
-          external: projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}
+          name: "computebackendservice-2-${uniqueId}"
+  projectRef:
+    external: "projects/${projectId}"

@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,18 +15,14 @@
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesTLSRoute
 metadata:
-  labels:
-    key-one: value-one
   name: networkservicestlsroute-sample
 spec:
-  projectRef:
-    # Replace ${PROJECT_ID?} with your project ID.
-    external: "projects/${PROJECT_ID?}"
-  location: global
   meshes:
-    - name: networkservicestlsroute-dep
+  - name: "networkservicestlsroute-dep"
   gateways:
-    - name: networkservicestlsroute-dep
+  - name: "networkservicestlsroute-dep"
+  description: "A test TcpRoute"
+  location: "global"
   rules:
   - matches:
     - sniHost:
@@ -38,4 +34,8 @@ spec:
     action:
       destinations:
       - serviceRef:
-          name: networkservicestlsroute-dep
+          name: "networkservicestlsroute-dep"
+        weight: 1
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"

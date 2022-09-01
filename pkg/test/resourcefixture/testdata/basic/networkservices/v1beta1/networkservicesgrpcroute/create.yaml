@@ -15,30 +15,38 @@
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesGRPCRoute
 metadata:
-  labels:
-    key-one: value-one
   name: networkservicesgrpcroute-${uniqueId}
+  labels:
+    foo: bar
 spec:
-  projectRef:
-    external: "projects/${projectId}"
-  location: global
-  hostnames: ["baz.bar"]
+  description: "A test GrpcRoute"
   meshes:
-    - name: "networkservicesmesh-${uniqueId}"
+  - name: "networkservicesmesh-1-${uniqueId}"
   gateways:
-    - name: "networkservicesgateway-${uniqueId}"
+  - name: "networkservicesgateway-1-${uniqueId}"
+  location: "global"
+  hostnames:
+  - "test1"
+  - "test2"
   rules:
   - matches:
     - method:
-        grpcService: helloworld.Greeter
-        grpcMethod: SayHello
-    headers:
-    - key: foo
-      value: bar
+        type: "EXACT"
+        grpcService: "helloworld.Greeter"
+        grpcMethod: "SayHello"
+        caseSensitive: false
+      headers:
+      - type: "EXACT"
+        key: "foo"
+        value: "bar"
     action:
       destinations:
       - serviceRef:
-          name: computebackendservice-${uniqueId}
+          name: "computebackendservice-1-${uniqueId}"
+        weight: 50
+      - serviceRef:
+          name: "computebackendservice-1-${uniqueId}"
+        weight: 50
       faultInjectionPolicy:
         abort:
           httpStatus: 501
@@ -46,10 +54,6 @@ spec:
         delay:
           fixedDelay: "10s"
           percentage: 2
-      requestMirrorPolicy:
-        destination:
-          serviceRef:
-            name: computebackendservice-${uniqueId}
       retryPolicy:
         numRetries: 3
         retryConditions:
@@ -59,4 +63,6 @@ spec:
   - action:
       destinations:
       - serviceRef:
-          external: projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}
+          name: "computebackendservice-1-${uniqueId}"
+  projectRef:
+    external: "projects/${projectId}"

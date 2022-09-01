@@ -15,28 +15,83 @@
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesHTTPRoute
 metadata:
-  labels:
-    key-one: value-one
   name: networkserviceshttproute-${uniqueId}
+  labels:
+    foo: bar
 spec:
-  projectRef:
-    external: "projects/${projectId}"
-  location: global
-  hostnames: ["foo.bar"]
+  description: "A test HttpRoute"
   meshes:
-    - name: "networkservicesmesh-${uniqueId}"
+  - name: "networkservicesmesh-1-${uniqueId}"
   gateways:
-    - name: "networkservicesgateway-${uniqueId}"
+  - name: "networkservicesgateway-1-${uniqueId}"
+  location: "global"
+  hostnames:
+  - "test1"
+  - "test2"
   rules:
   - matches:
     - fullPathMatch: "/foo/bar"
       headers:
       - header: "foo-header"
         prefixMatch: "bar-value"
+    - prefixMatch: "/foo/"
+      ignoreCase: true
+    - regexMatch: "/foo/.*/bar/.*"
+    - prefixMatch: "/"
+      headers:
+      - header: "foo"
+        exactMatch: "bar"
+      - header: "foo"
+        regexMatch: "b.*ar"
+      - header: "foo"
+        prefixMatch: "ba"
+      - header: "foo"
+        presentMatch: true
+      - header: "foo"
+        suffixMatch: "ar"
+      - header: "foo"
+        rangeMatch:
+          start: 0
+          end: 5
+        invertMatch: true
+    - prefixMatch: "/"
+      queryParameters:
+      - queryParameter: "foo"
+        exactMatch: "bar"
+      - queryParameter: "foo"
+        regexMatch: ".*bar.*"
+      - queryParameter: "foo"
+        presentMatch: true
     action:
       destinations:
       - serviceRef:
-          name: computebackendservice-${uniqueId}
+          name: "computebackendservice-1-${uniqueId}"
+        weight: 1
+      - serviceRef:
+          name: "computebackendservice-1-${uniqueId}"
+        weight: 1
+      urlRewrite:
+        pathPrefixRewrite: "foo"
+        hostRewrite: "foo"
+      corsPolicy:
+        allowOrigins:
+        - "foo.com"
+        - "bar.com"
+        allowOriginRegexes:
+        - ".*.foo.com"
+        - ".*.bar.com"
+        allowMethods:
+        - "GET"
+        - "POST"
+        allowHeaders:
+        - "foo"
+        - "bar"
+        exposeHeaders:
+        - "foo"
+        - "bar"
+        maxAge: "35"
+        allowCredentials: true
+        disabled: false
       faultInjectionPolicy:
         abort:
           httpStatus: 501
@@ -46,28 +101,28 @@ spec:
           percentage: 2
       requestHeaderModifier:
         add:
-          foo1: bar1
-          baz1: qux1
+          foo1: "bar1"
+          baz1: "qux1"
         set:
-          foo2: bar2
-          baz2: qux2
+          foo2: "bar2"
+          baz2: "qux2"
         remove:
-        - foo3
-        - bar3
+        - "foo3"
+        - "bar3"
       requestMirrorPolicy:
         destination:
           serviceRef:
-            name: computebackendservice-${uniqueId}
+            name: "computebackendservice-1-${uniqueId}"
       responseHeaderModifier:
         add:
-          foo1: bar1
-          baz1: qux1
+          foo1: "bar1"
+          baz1: "qux1"
         set:
-          foo2: bar2
-          baz2: qux2
+          foo2: "bar2"
+          baz2: "qux2"
         remove:
-        - foo3
-        - bar3
+        - "foo3"
+        - "bar3"
       retryPolicy:
         numRetries: 3
         perTryTimeout: "5s"
@@ -76,6 +131,21 @@ spec:
         - "cancelled"
       timeout: "30s"
   - action:
-      destinations:
-      - serviceRef:
-         name: computebackendservice-${uniqueId}
+      redirect:
+        hostRedirect: "foo"
+        responseCode: "MOVED_PERMANENTLY_DEFAULT"
+        httpsRedirect: true
+        stripQuery: true
+        portRedirect: 7777
+  - action:
+      redirect:
+        hostRedirect: "test"
+        prefixRewrite: "foo"
+        responseCode: "FOUND"
+  - action:
+      redirect:
+        hostRedirect: "test"
+        pathRedirect: "/foo"
+        responseCode: "FOUND"
+  projectRef:
+    external: "projects/${projectId}"

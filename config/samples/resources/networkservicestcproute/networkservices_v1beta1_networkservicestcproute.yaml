@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,18 +15,16 @@
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesTCPRoute
 metadata:
-  labels:
-    key-one: value-one
   name: networkservicestcproute-sample
+  labels:
+    foo: bar
 spec:
-  projectRef:
-    # Replace ${PROJECT_ID?} with your project ID.
-    external: "projects/${PROJECT_ID?}"
-  location: global
   meshes:
-    - name: networkservicestcproute-dep
+  - name: "networkservicestcproute-dep"
   gateways:
-    - name: networkservicestcproute-dep
+  - name: "networkservicestcproute-dep"
+  location: "global"
+  description: "A test TcpRoute"
   rules:
   - matches:
     - address: "10.0.0.1/32"
@@ -34,8 +32,17 @@ spec:
     action:
       destinations:
       - serviceRef:
-          name: networkservicestcproute-dep
-  - action:
+          name: "networkservicestcproute-dep"
+        weight: 1
+  - matches:
+    - address: "10.0.0.1/0"
+      port: "1"
+    action:
+      originalDestination: false
       destinations:
       - serviceRef:
-          name: networkservicestcproute-dep
+          name: "networkservicestcproute-dep"
+        weight: 1
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"

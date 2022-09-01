@@ -15,18 +15,14 @@
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesTLSRoute
 metadata:
-  labels:
-    key-one: value-one
   name: networkservicestlsroute-${uniqueId}
 spec:
-  projectRef:
-    external: "projects/${projectId}"
-  location: global
-  description: "Test"
   meshes:
-    - name: "networkservicesmesh-${uniqueId}"
+  - name: "networkservicesmesh-1-${uniqueId}"
   gateways:
-    - name: "networkservicesgateway-${uniqueId}"
+  - name: "networkservicesgateway-1-${uniqueId}"
+  description: "A test TcpRoute"
+  location: "global"
   rules:
   - matches:
     - sniHost:
@@ -38,4 +34,7 @@ spec:
     action:
       destinations:
       - serviceRef:
-          name: computebackendservice-${uniqueId}
+          name: "computebackendservice-1-${uniqueId}"
+        weight: 1
+  projectRef:
+    external: "projects/${projectId}"

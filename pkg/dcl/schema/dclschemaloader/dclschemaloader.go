@@ -54,6 +54,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/monitoring"
 	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/networkconnectivity"
 	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/networksecurity/beta"
+	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/networkservices"
 	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/networkservices/alpha"
 	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/networkservices/beta"
 	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/osconfig/beta"

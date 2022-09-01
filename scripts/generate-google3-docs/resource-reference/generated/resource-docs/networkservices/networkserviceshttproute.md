@@ -5,12 +5,6 @@
 {% block page_title %}NetworkServicesHTTPRoute{% endblock %}
 {% block body %}
 
-<aside class="caution"><strong>Caution:</strong> This resource is currently in alpha and may change without notice.
-<p>
-Before you upgrade Config Connector to a later version, we recommended that you abandon all existing Kubernetes objects based on alpha-stage resources from the cluster. Objects should be adjusted to reflect the CRD schema of the new version, and reapplied after the upgrade.
-</p>
-</aside>
-
 
 <table>
 <thead>
@@ -30,11 +24,11 @@ Before you upgrade Config Connector to a later version, we recommended that you 
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Name</td>
-<td>v1alpha1/projects.locations.httpRoutes</td>
+<td>v1/projects.locations.httpRoutes</td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/traffic-director/docs/reference/network-services/rest/v1alpha1/projects.locations.httpRoutes">/traffic-director/docs/reference/network-services/rest/v1alpha1/projects.locations.httpRoutes</a></td>
+<td><a href="/traffic-director/docs/reference/network-services/rest/v1/projects.locations.httpRoutes">/traffic-director/docs/reference/network-services/rest/v1/projects.locations.httpRoutes</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
@@ -1390,7 +1384,7 @@ updateTime: string
 
 ### Typical Use Case
 ```yaml
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1407,29 +1401,83 @@ updateTime: string
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesHTTPRoute
 metadata:
-  labels:
-    key-one: value-one
   name: networkserviceshttproute-sample
+  labels:
+    foo: bar
 spec:
-  projectRef:
-    # Replace ${PROJECT_ID?} with your project ID.
-    external: "projects/${PROJECT_ID?}"
-  location: global
-  hostnames: ["bar.baz"]
+  description: "A test HttpRoute"
   meshes:
-    - name: networkserviceshttproute-dep
+  - name: "networkserviceshttproute-dep"
   gateways:
-    - name: networkserviceshttproute-dep
+  - name: "networkserviceshttproute-dep"
+  location: "global"
+  hostnames:
+  - "test1"
+  - "test2"
   rules:
   - matches:
     - fullPathMatch: "/foo/bar"
       headers:
       - header: "foo-header"
         prefixMatch: "bar-value"
+    - prefixMatch: "/foo/"
+      ignoreCase: true
+    - regexMatch: "/foo/.*/bar/.*"
+    - prefixMatch: "/"
+      headers:
+      - header: "foo"
+        exactMatch: "bar"
+      - header: "foo"
+        regexMatch: "b.*ar"
+      - header: "foo"
+        prefixMatch: "ba"
+      - header: "foo"
+        presentMatch: true
+      - header: "foo"
+        suffixMatch: "ar"
+      - header: "foo"
+        rangeMatch:
+          start: 0
+          end: 5
+        invertMatch: true
+    - prefixMatch: "/"
+      queryParameters:
+      - queryParameter: "foo"
+        exactMatch: "bar"
+      - queryParameter: "foo"
+        regexMatch: ".*bar.*"
+      - queryParameter: "foo"
+        presentMatch: true
     action:
       destinations:
       - serviceRef:
-          name: networkserviceshttproute-dep
+          name: "networkserviceshttproute-dep"
+        weight: 1
+      - serviceRef:
+          name: "networkserviceshttproute-dep"
+        weight: 1
+      urlRewrite:
+        pathPrefixRewrite: "foo"
+        hostRewrite: "foo"
+      corsPolicy:
+        allowOrigins:
+        - "foo.com"
+        - "bar.com"
+        allowOriginRegexes:
+        - ".*.foo.com"
+        - ".*.bar.com"
+        allowMethods:
+        - "GET"
+        - "POST"
+        allowHeaders:
+        - "foo"
+        - "bar"
+        exposeHeaders:
+        - "foo"
+        - "bar"
+        maxAge: "35"
+        allowCredentials: true
+        disabled: false
       faultInjectionPolicy:
         abort:
           httpStatus: 501
@@ -1439,28 +1487,28 @@ spec:
           percentage: 2
       requestHeaderModifier:
         add:
-          foo1: bar1
-          baz1: qux1
+          foo1: "bar1"
+          baz1: "qux1"
         set:
-          foo2: bar2
-          baz2: qux2
+          foo2: "bar2"
+          baz2: "qux2"
         remove:
-        - foo3
-        - bar3
+        - "foo3"
+        - "bar3"
       requestMirrorPolicy:
         destination:
           serviceRef:
-            name: networkserviceshttproute-dep
+            name: "networkserviceshttproute-dep"
       responseHeaderModifier:
         add:
-          foo1: bar1
-          baz1: qux1
+          foo1: "bar1"
+          baz1: "qux1"
         set:
-          foo2: bar2
-          baz2: qux2
+          foo2: "bar2"
+          baz2: "qux2"
         remove:
-        - foo3
-        - bar3
+        - "foo3"
+        - "bar3"
       retryPolicy:
         numRetries: 3
         perTryTimeout: "5s"
@@ -1469,42 +1517,61 @@ spec:
         - "cancelled"
       timeout: "30s"
   - action:
-      destinations:
-      - serviceRef:
-          name: networkserviceshttproute-dep
+      redirect:
+        hostRedirect: "foo"
+        responseCode: "MOVED_PERMANENTLY_DEFAULT"
+        httpsRedirect: true
+        stripQuery: true
+        portRedirect: 7777
+  - action:
+      redirect:
+        hostRedirect: "test"
+        prefixRewrite: "foo"
+        responseCode: "FOUND"
+  - action:
+      redirect:
+        hostRedirect: "test"
+        pathRedirect: "/foo"
+        responseCode: "FOUND"
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
   name: networkserviceshttproute-dep
 spec:
-  loadBalancingScheme: INTERNAL_SELF_MANAGED
+  loadBalancingScheme: "INTERNAL_SELF_MANAGED"
   location: global
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
 ---
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesGateway
 metadata:
   name: networkserviceshttproute-dep
 spec:
-  projectRef:
-    # Replace ${PROJECT_ID?} with your project ID.
-    external: "projects/${PROJECT_ID?}"
-  type: OPEN_MESH
+  location: "global"
+  type: "OPEN_MESH"
+  scope: "networkserviceshttproute-sample-scope"
   ports:
   - 80
   - 443
-  location: global
-  scope: httproute-sample-scope
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
 ---
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesMesh
 metadata:
   name: networkserviceshttproute-dep
 spec:
+  location: "global"
   projectRef:
-    # Replace ${PROJECT_ID?} with your project ID.
+    # Replace "${PROJECT_ID?}" with your project ID
     external: "projects/${PROJECT_ID?}"
-  location: global
 ```
 
 

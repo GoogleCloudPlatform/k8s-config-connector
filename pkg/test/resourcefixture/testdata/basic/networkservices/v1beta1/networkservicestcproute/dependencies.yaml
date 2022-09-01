@@ -12,34 +12,71 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeBackendService
+apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+kind: NetworkServicesMesh
 metadata:
-  name: computebackendservice-${uniqueId}
+  name: networkservicesmesh-1-${uniqueId}
 spec:
-  loadBalancingScheme: INTERNAL_SELF_MANAGED
-  location: global
-  protocol: TCP
+  location: "global"
+  projectRef:
+    external: "projects/${projectId}"
 ---
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesMesh
 metadata:
-  name: networkservicesmesh-${uniqueId}
+  name: networkservicesmesh-2-${uniqueId}
 spec:
+  location: "global"
   projectRef:
     external: "projects/${projectId}"
-  location: global
 ---
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesGateway
 metadata:
-  name: networkservicesgateway-${uniqueId}
+  name: networkservicesgateway-1-${uniqueId}
+  labels:
+    foo: bar
 spec:
-  projectRef:
-    external: "projects/${projectId}"
-  type: OPEN_MESH
+  description: "A test Gateway"
+  type: "OPEN_MESH"
   ports:
   - 80
   - 443
+  location: "global"
+  scope: "networkservicesgateway-1-${uniqueId}"
+  projectRef:
+    external: "projects/${projectId}"
+---
+apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+kind: NetworkServicesGateway
+metadata:
+  name: networkservicesgateway-2-${uniqueId}
+spec:
+  location: "global"
+  type: "OPEN_MESH"
+  scope: "networkservicesgateway-1-${uniqueId}-scope2"
+  ports:
+  - 80
+  - 443
+  projectRef:
+    external: "projects/${projectId}"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computebackendservice-1-${uniqueId}
+spec:
+  loadBalancingScheme: "INTERNAL_SELF_MANAGED"
   location: global
-  scope: foo-scope-${uniqueId}
+  projectRef:
+    external: "projects/${projectId}"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computebackendservice-2-${uniqueId}
+spec:
+  loadBalancingScheme: "INTERNAL_SELF_MANAGED"
+  location: global
+  projectRef:
+    external: "projects/${projectId}"

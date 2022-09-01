@@ -5,12 +5,6 @@
 {% block page_title %}NetworkServicesTLSRoute{% endblock %}
 {% block body %}
 
-<aside class="caution"><strong>Caution:</strong> This resource is currently in alpha and may change without notice.
-<p>
-Before you upgrade Config Connector to a later version, we recommended that you abandon all existing Kubernetes objects based on alpha-stage resources from the cluster. Objects should be adjusted to reflect the CRD schema of the new version, and reapplied after the upgrade.
-</p>
-</aside>
-
 
 <table>
 <thead>
@@ -30,11 +24,11 @@ Before you upgrade Config Connector to a later version, we recommended that you 
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Name</td>
-<td>v1alpha1.projects.locations.tlsRoutes</td>
+<td>v1.projects.locations.tlsRoutes</td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/traffic-director/docs/reference/network-services/rest/v1alpha1/projects.locations.tlsRoutes">/traffic-director/docs/reference/network-services/rest/v1alpha1/projects.locations.tlsRoutes</a></td>
+<td><a href="/traffic-director/docs/reference/network-services/rest/v1/projects.locations.tlsRoutes">/traffic-director/docs/reference/network-services/rest/v1/projects.locations.tlsRoutes</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
@@ -561,7 +555,7 @@ updateTime: string
 
 ### Typical Use Case
 ```yaml
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -578,18 +572,14 @@ updateTime: string
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesTLSRoute
 metadata:
-  labels:
-    key-one: value-one
   name: networkservicestlsroute-sample
 spec:
-  projectRef:
-    # Replace ${PROJECT_ID?} with your project ID.
-    external: "projects/${PROJECT_ID?}"
-  location: global
   meshes:
-    - name: networkservicestlsroute-dep
+  - name: "networkservicestlsroute-dep"
   gateways:
-    - name: networkservicestlsroute-dep
+  - name: "networkservicestlsroute-dep"
+  description: "A test TcpRoute"
+  location: "global"
   rules:
   - matches:
     - sniHost:
@@ -601,41 +591,47 @@ spec:
     action:
       destinations:
       - serviceRef:
-          name: networkservicestlsroute-dep
+          name: "networkservicestlsroute-dep"
+        weight: 1
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
   name: networkservicestlsroute-dep
 spec:
-  loadBalancingScheme: INTERNAL_SELF_MANAGED
-  location: global
-  protocol: TCP
+  loadBalancingScheme: "INTERNAL_SELF_MANAGED"
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
+  location: "global"
 ---
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesGateway
 metadata:
   name: networkservicestlsroute-dep
 spec:
-  projectRef:
-    # Replace ${PROJECT_ID?} with your project ID.
-    external: "projects/${PROJECT_ID?}"
-  type: OPEN_MESH
+  location: "global"
+  type: "OPEN_MESH"
+  scope: "networkservicestlsroute-sample-scope"
   ports:
   - 80
   - 443
-  location: global
-  scope: tlsroute-sample-scope
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
 ---
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesMesh
 metadata:
   name: networkservicestlsroute-dep
 spec:
+  location: "global"
   projectRef:
-    # Replace ${PROJECT_ID?} with your project ID.
+    # Replace "${PROJECT_ID?}" with your project ID
     external: "projects/${PROJECT_ID?}"
-  location: global
 ```
 
 

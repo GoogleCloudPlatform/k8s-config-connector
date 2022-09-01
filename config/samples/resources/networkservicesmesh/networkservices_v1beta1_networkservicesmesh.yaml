@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,11 +15,13 @@
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesMesh
 metadata:
-  labels:
-    key-one: value-one
   name: networkservicesmesh-sample
+  labels:
+    foo: bar
 spec:
+  location: "global"
+  description: "Original description"
+  interceptionPort: 80
   projectRef:
-    # Replace ${PROJECT_ID?} with your project ID.
+    # Replace "${PROJECT_ID?}" with your project ID
     external: "projects/${PROJECT_ID?}"
-  location: global
