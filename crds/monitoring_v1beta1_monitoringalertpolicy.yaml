@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.92.0
+    cnrm.cloud.google.com/version: 1.93.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -301,6 +301,12 @@ spec:
                             generate spurious alerts, but short enough
                             that unhealthy states are detected and
                             alerted on quickly.
+                          type: string
+                        evaluationMissingData:
+                          description: |-
+                            A condition control that determines how
+                            metric-threshold conditions are evaluated when
+                            data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP"].
                           type: string
                         query:
                           description: Monitoring Query Language query that outputs
@@ -600,6 +606,12 @@ spec:
                             generate spurious alerts, but short enough
                             that unhealthy states are detected and
                             alerted on quickly.
+                          type: string
+                        evaluationMissingData:
+                          description: |-
+                            A condition control that determines how
+                            metric-threshold conditions are evaluated when
+                            data stops arriving. Possible values: ["EVALUATION_MISSING_DATA_INACTIVE", "EVALUATION_MISSING_DATA_ACTIVE", "EVALUATION_MISSING_DATA_NO_OP"].
                           type: string
                         filter:
                           description: |-

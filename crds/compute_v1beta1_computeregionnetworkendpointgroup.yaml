@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.92.0
+    cnrm.cloud.google.com/version: 1.93.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -187,6 +187,37 @@ spec:
                   endpoint group. Defaults to SERVERLESS Default value: "SERVERLESS"
                   Possible values: ["SERVERLESS", "PRIVATE_SERVICE_CONNECT"].'
                 type: string
+              networkRef:
+                description: |-
+                  Immutable. This field is only used for PSC.
+                  The URL of the network to which all network endpoints in the NEG belong. Uses
+                  "default" project network if unspecified.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: The `selfLink` field of a `ComputeNetwork`
+                      resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
               pscTargetService:
                 description: |-
                   Immutable. The target service url used to set up private service connection to
@@ -201,6 +232,36 @@ spec:
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
+              subnetworkRef:
+                description: |-
+                  Immutable. This field is only used for PSC.
+                  Optional URL of the subnetwork to which all network endpoints in the NEG belong.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: The `selfLink` field of a `ComputeSubnetwork`
+                      resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
             required:
             - region
             type: object
