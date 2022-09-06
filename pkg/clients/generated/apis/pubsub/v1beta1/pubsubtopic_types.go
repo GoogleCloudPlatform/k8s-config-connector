@@ -69,7 +69,7 @@ type PubSubTopicSpec struct {
 	For instance, it allows any attached subscription to seek to a timestamp
 	that is up to messageRetentionDuration in the past. If this field is not
 	set, message retention is controlled by settings on individual subscriptions.
-	Cannot be more than 7 days or less than 10 minutes. */
+	Cannot be more than 31 days or less than 10 minutes. */
 	// +optional
 	MessageRetentionDuration *string `json:"messageRetentionDuration,omitempty"`
 

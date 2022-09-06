@@ -971,6 +971,34 @@ func resourceContainerCluster() *schema.Resource {
 				ConflictsWith: []string{"enable_autopilot"},
 			},
 
+			"node_pool_auto_config": {
+				Type:             schema.TypeList,
+				Optional:         true,
+				DiffSuppressFunc: emptyOrUnsetBlockDiffSuppress,
+				MaxItems:         1,
+				Description:      `Node pool configs that apply to all auto-provisioned node pools in autopilot clusters and node auto-provisioning enabled clusters.`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"network_tags": {
+							Type:        schema.TypeList,
+							Optional:    true,
+							MaxItems:    1,
+							Description: `Collection of Compute Engine network tags that can be applied to a node's underlying VM instance.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"tags": {
+										Type:        schema.TypeList,
+										Optional:    true,
+										Elem:        &schema.Schema{Type: schema.TypeString},
+										Description: `List of network tags applied to auto-provisioned node pools.`,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+
 			"node_version": {
 				Type:        schema.TypeString,
 				Optional:    true,
@@ -1571,6 +1599,7 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		NotificationConfig: expandNotificationConfig(d.Get("notification_config")),
 		ConfidentialNodes:  expandConfidentialNodes(d.Get("confidential_nodes")),
 		ResourceLabels:     expandStringMap(d, "resource_labels"),
+		NodePoolAutoConfig: expandNodePoolAutoConfig(d.Get("node_pool_auto_config")),
 	}
 
 	v := d.Get("enable_shielded_nodes")
@@ -1685,6 +1714,10 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 
 	if v, ok := d.GetOk("monitoring_config"); ok {
 		cluster.MonitoringConfig = expandMonitoringConfig(v)
+	}
+
+	if err := validateNodePoolAutoConfig(cluster); err != nil {
+		return err
 	}
 
 	if err := validatePrivateClusterConfig(cluster); err != nil {
@@ -2040,6 +2073,10 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 	}
 
 	if err := d.Set("monitoring_config", flattenMonitoringConfig(cluster.MonitoringConfig)); err != nil {
+		return err
+	}
+
+	if err := d.Set("node_pool_auto_config", flattenNodePoolAutoConfig(cluster.NodePoolAutoConfig)); err != nil {
 		return err
 	}
 
@@ -2989,6 +3026,27 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		log.Printf("[INFO] GKE cluster %s resource usage export config has been updated", d.Id())
 	}
 
+	if d.HasChange("node_pool_auto_config.0.network_tags.0.tags") {
+		tags := d.Get("node_pool_auto_config.0.network_tags.0.tags").([]interface{})
+
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredNodePoolAutoConfigNetworkTags: &container.NetworkTags{
+					Tags:            convertStringArr(tags),
+					ForceSendFields: []string{"Tags"},
+				},
+			},
+		}
+
+		updateF := updateFunc(req, "updating GKE cluster node pool auto config network tags")
+		// Call update serially.
+		if err := lockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s node pool auto config network tags have been updated", d.Id())
+	}
+
 	d.Partial(false)
 
 	if d.HasChange("cluster_telemetry") {
@@ -3855,6 +3913,34 @@ func expandContainerClusterAuthenticatorGroupsConfig(configured interface{}) *co
 	}
 }
 
+func expandNodePoolAutoConfig(configured interface{}) *container.NodePoolAutoConfig {
+	l := configured.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil
+	}
+	npac := &container.NodePoolAutoConfig{}
+	config := l[0].(map[string]interface{})
+
+	if v, ok := config["network_tags"]; ok && len(v.([]interface{})) > 0 {
+		npac.NetworkTags = expandNodePoolAutoConfigNetworkTags(v)
+	}
+	return npac
+}
+
+func expandNodePoolAutoConfigNetworkTags(configured interface{}) *container.NetworkTags {
+	l := configured.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil
+	}
+	nt := &container.NetworkTags{}
+	config := l[0].(map[string]interface{})
+
+	if v, ok := config["tags"]; ok && len(v.([]interface{})) > 0 {
+		nt.Tags = convertStringArr(v.([]interface{}))
+	}
+	return nt
+}
+
 func flattenNotificationConfig(c *container.NotificationConfig) []map[string]interface{} {
 	if c == nil {
 		return nil
@@ -4403,6 +4489,30 @@ func flattenManagedPrometheusConfig(c *container.ManagedPrometheusConfig) []map[
 	}
 }
 
+func flattenNodePoolAutoConfig(c *container.NodePoolAutoConfig) []map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+
+	result := make(map[string]interface{})
+	if c.NetworkTags != nil {
+		result["network_tags"] = flattenNodePoolAutoConfigNetworkTags(c.NetworkTags)
+	}
+	return []map[string]interface{}{result}
+}
+
+func flattenNodePoolAutoConfigNetworkTags(c *container.NetworkTags) []map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+
+	result := make(map[string]interface{})
+	if c.Tags != nil {
+		result["tags"] = c.Tags
+	}
+	return []map[string]interface{}{result}
+}
+
 func resourceContainerClusterStateImporter(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
 
@@ -4620,4 +4730,17 @@ func BinaryAuthorizationDiffSuppress(k, old, new string, r *schema.ResourceData)
 	}
 
 	return false
+}
+
+func validateNodePoolAutoConfig(cluster *container.Cluster) error {
+	if cluster == nil || cluster.NodePoolAutoConfig == nil {
+		return nil
+	}
+	if cluster.NodePoolAutoConfig != nil && cluster.NodePoolAutoConfig.NetworkTags != nil && len(cluster.NodePoolAutoConfig.NetworkTags.Tags) > 0 {
+		if (cluster.Autopilot == nil || !cluster.Autopilot.Enabled) && (cluster.Autoscaling == nil || !cluster.Autoscaling.EnableNodeAutoprovisioning) {
+			return fmt.Errorf("node_pool_auto_config network tags can only be set if enable_autopilot or cluster_autoscaling is enabled")
+		}
+	}
+
+	return nil
 }

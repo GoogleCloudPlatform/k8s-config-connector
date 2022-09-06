@@ -68,7 +68,7 @@ func resourceIAM2DenyPolicy() *schema.Resource {
 								Schema: map[string]*schema.Schema{
 									"denial_condition": {
 										Type:        schema.TypeList,
-										Required:    true,
+										Optional:    true,
 										Description: `User defined CEVAL expression. A CEVAL expression is used to specify match criteria such as origin.ip, source.region_code and contents in the request header.`,
 										MaxItems:    1,
 										Elem: &schema.Resource{

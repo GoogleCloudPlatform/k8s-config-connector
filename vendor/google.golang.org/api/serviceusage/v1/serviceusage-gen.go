@@ -8,35 +8,35 @@
 //
 // For product documentation, see: https://cloud.google.com/service-usage/
 //
-// Creating a client
+// # Creating a client
 //
 // Usage example:
 //
-//   import "google.golang.org/api/serviceusage/v1"
-//   ...
-//   ctx := context.Background()
-//   serviceusageService, err := serviceusage.NewService(ctx)
+//	import "google.golang.org/api/serviceusage/v1"
+//	...
+//	ctx := context.Background()
+//	serviceusageService, err := serviceusage.NewService(ctx)
 //
 // In this example, Google Application Default Credentials are used for authentication.
 //
 // For information on how to create and obtain Application Default Credentials, see https://developers.google.com/identity/protocols/application-default-credentials.
 //
-// Other authentication options
+// # Other authentication options
 //
 // By default, all available scopes (see "Constants") are used to authenticate. To restrict scopes, use option.WithScopes:
 //
-//   serviceusageService, err := serviceusage.NewService(ctx, option.WithScopes(serviceusage.ServiceManagementScope))
+//	serviceusageService, err := serviceusage.NewService(ctx, option.WithScopes(serviceusage.ServiceManagementScope))
 //
 // To use an API key for authentication (note: some APIs do not support API keys), use option.WithAPIKey:
 //
-//   serviceusageService, err := serviceusage.NewService(ctx, option.WithAPIKey("AIza..."))
+//	serviceusageService, err := serviceusage.NewService(ctx, option.WithAPIKey("AIza..."))
 //
 // To use an OAuth token (e.g., a user token obtained via a three-legged OAuth flow), use option.WithTokenSource:
 //
-//   config := &oauth2.Config{...}
-//   // ...
-//   token, err := config.Exchange(ctx, ...)
-//   serviceusageService, err := serviceusage.NewService(ctx, option.WithTokenSource(config.TokenSource(ctx, token)))
+//	config := &oauth2.Config{...}
+//	// ...
+//	token, err := config.Exchange(ctx, ...)
+//	serviceusageService, err := serviceusage.NewService(ctx, option.WithTokenSource(config.TokenSource(ctx, token)))
 //
 // See https://godoc.org/google.golang.org/api/option/ for details on options.
 package serviceusage // import "google.golang.org/api/serviceusage/v1"
@@ -3084,14 +3084,6 @@ func (s *MetricDescriptorMetadata) MarshalJSON() ([]byte, error) {
 // causes that metric's configured quota behaviors to apply to the
 // method call.
 type MetricRule struct {
-	// DynamicMetricCosts: Metrics to update when the selected methods are
-	// called. The key of the map is the metric name, the value is the
-	// DynamicCostType to specify how to calculate the cost from the
-	// request. The cost amount will be increased for the metric against
-	// which the quota limits are defined. It is only implemented in
-	// CloudESF(go/cloudesf)
-	DynamicMetricCosts map[string]string `json:"dynamicMetricCosts,omitempty"`
-
 	// MetricCosts: Metrics to update when the selected methods are called,
 	// and the associated cost applied to each metric. The key of the map is
 	// the metric name, and the values are the amount increased for the
@@ -3103,21 +3095,20 @@ type MetricRule struct {
 	// selector for syntax details.
 	Selector string `json:"selector,omitempty"`
 
-	// ForceSendFields is a list of field names (e.g. "DynamicMetricCosts")
-	// to unconditionally include in API requests. By default, fields with
+	// ForceSendFields is a list of field names (e.g. "MetricCosts") to
+	// unconditionally include in API requests. By default, fields with
 	// empty or default values are omitted from API requests. However, any
 	// non-pointer, non-interface field appearing in ForceSendFields will be
 	// sent to the server regardless of whether the field is empty or not.
 	// This may be used to include empty fields in Patch requests.
 	ForceSendFields []string `json:"-"`
 
-	// NullFields is a list of field names (e.g. "DynamicMetricCosts") to
-	// include in API requests with the JSON null value. By default, fields
-	// with empty values are omitted from API requests. However, any field
-	// with an empty value appearing in NullFields will be sent to the
-	// server as null. It is an error if a field in this list has a
-	// non-empty value. This may be used to include null fields in Patch
-	// requests.
+	// NullFields is a list of field names (e.g. "MetricCosts") to include
+	// in API requests with the JSON null value. By default, fields with
+	// empty values are omitted from API requests. However, any field with
+	// an empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
 	NullFields []string `json:"-"`
 }
 
@@ -4927,9 +4918,9 @@ type ServicesBatchEnableCall struct {
 // and no state changes occur. To enable a single service, use the
 // `EnableService` method instead.
 //
-// - parent: Parent to enable services on. An example name would be:
-//   `projects/123` where `123` is the project number. The
-//   `BatchEnableServices` method currently only supports projects.
+//   - parent: Parent to enable services on. An example name would be:
+//     `projects/123` where `123` is the project number. The
+//     `BatchEnableServices` method currently only supports projects.
 func (r *ServicesService) BatchEnable(parent string, batchenableservicesrequest *BatchEnableServicesRequest) *ServicesBatchEnableCall {
 	c := &ServicesBatchEnableCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.parent = parent
@@ -5073,11 +5064,11 @@ type ServicesBatchGetCall struct {
 // BatchGet: Returns the service configurations and enabled states for a
 // given list of services.
 //
-// - parent: Parent to retrieve services from. If this is set, the
-//   parent of all of the services specified in `names` must match this
-//   field. An example name would be: `projects/123` where `123` is the
-//   project number. The `BatchGetServices` method currently only
-//   supports projects.
+//   - parent: Parent to retrieve services from. If this is set, the
+//     parent of all of the services specified in `names` must match this
+//     field. An example name would be: `projects/123` where `123` is the
+//     project number. The `BatchGetServices` method currently only
+//     supports projects.
 func (r *ServicesService) BatchGet(parent string) *ServicesBatchGetCall {
 	c := &ServicesBatchGetCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.parent = parent
@@ -5245,11 +5236,11 @@ type ServicesDisableCall struct {
 // will receive a `FAILED_PRECONDITION` status if the target service is
 // not currently enabled.
 //
-// - name: Name of the consumer and service to disable the service on.
-//   The enable and disable methods currently only support projects. An
-//   example name would be:
-//   `projects/123/services/serviceusage.googleapis.com` where `123` is
-//   the project number.
+//   - name: Name of the consumer and service to disable the service on.
+//     The enable and disable methods currently only support projects. An
+//     example name would be:
+//     `projects/123/services/serviceusage.googleapis.com` where `123` is
+//     the project number.
 func (r *ServicesService) Disable(name string, disableservicerequest *DisableServiceRequest) *ServicesDisableCall {
 	c := &ServicesDisableCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.name = name
@@ -5392,12 +5383,12 @@ type ServicesEnableCall struct {
 
 // Enable: Enable a service so that it can be used with a project.
 //
-// - name: Name of the consumer and service to enable the service on.
-//   The `EnableService` and `DisableService` methods currently only
-//   support projects. Enabling a service requires that the service is
-//   public or is shared with the user enabling the service. An example
-//   name would be: `projects/123/services/serviceusage.googleapis.com`
-//   where `123` is the project number.
+//   - name: Name of the consumer and service to enable the service on.
+//     The `EnableService` and `DisableService` methods currently only
+//     support projects. Enabling a service requires that the service is
+//     public or is shared with the user enabling the service. An example
+//     name would be: `projects/123/services/serviceusage.googleapis.com`
+//     where `123` is the project number.
 func (r *ServicesService) Enable(name string, enableservicerequest *EnableServiceRequest) *ServicesEnableCall {
 	c := &ServicesEnableCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.name = name
@@ -5541,10 +5532,10 @@ type ServicesGetCall struct {
 // Get: Returns the service configuration and enabled state for a given
 // service.
 //
-// - name: Name of the consumer and service to get the `ConsumerState`
-//   for. An example name would be:
-//   `projects/123/services/serviceusage.googleapis.com` where `123` is
-//   the project number.
+//   - name: Name of the consumer and service to get the `ConsumerState`
+//     for. An example name would be:
+//     `projects/123/services/serviceusage.googleapis.com` where `123` is
+//     the project number.
 func (r *ServicesService) Get(name string) *ServicesGetCall {
 	c := &ServicesGetCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.name = name
@@ -5701,8 +5692,8 @@ type ServicesListCall struct {
 // (https://cloud.google.com/asset-inventory/docs/apis), which provides
 // higher throughput and richer filtering capability.
 //
-// - parent: Parent to search for services on. An example name would be:
-//   `projects/123` where `123` is the project number.
+//   - parent: Parent to search for services on. An example name would be:
+//     `projects/123` where `123` is the project number.
 func (r *ServicesService) List(parent string) *ServicesListCall {
 	c := &ServicesListCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.parent = parent

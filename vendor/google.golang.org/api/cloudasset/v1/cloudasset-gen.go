@@ -8,31 +8,31 @@
 //
 // For product documentation, see: https://cloud.google.com/asset-inventory/docs/quickstart
 //
-// Creating a client
+// # Creating a client
 //
 // Usage example:
 //
-//   import "google.golang.org/api/cloudasset/v1"
-//   ...
-//   ctx := context.Background()
-//   cloudassetService, err := cloudasset.NewService(ctx)
+//	import "google.golang.org/api/cloudasset/v1"
+//	...
+//	ctx := context.Background()
+//	cloudassetService, err := cloudasset.NewService(ctx)
 //
 // In this example, Google Application Default Credentials are used for authentication.
 //
 // For information on how to create and obtain Application Default Credentials, see https://developers.google.com/identity/protocols/application-default-credentials.
 //
-// Other authentication options
+// # Other authentication options
 //
 // To use an API key for authentication (note: some APIs do not support API keys), use option.WithAPIKey:
 //
-//   cloudassetService, err := cloudasset.NewService(ctx, option.WithAPIKey("AIza..."))
+//	cloudassetService, err := cloudasset.NewService(ctx, option.WithAPIKey("AIza..."))
 //
 // To use an OAuth token (e.g., a user token obtained via a three-legged OAuth flow), use option.WithTokenSource:
 //
-//   config := &oauth2.Config{...}
-//   // ...
-//   token, err := config.Exchange(ctx, ...)
-//   cloudassetService, err := cloudasset.NewService(ctx, option.WithTokenSource(config.TokenSource(ctx, token)))
+//	config := &oauth2.Config{...}
+//	// ...
+//	token, err := config.Exchange(ctx, ...)
+//	cloudassetService, err := cloudasset.NewService(ctx, option.WithTokenSource(config.TokenSource(ctx, token)))
 //
 // See https://godoc.org/google.golang.org/api/option/ for details on options.
 package cloudasset // import "google.golang.org/api/cloudasset/v1"
@@ -824,16 +824,20 @@ type Binding struct {
 	// who is authenticated with a Google account or a service account. *
 	// `user:{emailid}`: An email address that represents a specific Google
 	// account. For example, `alice@example.com` . *
-	// `serviceAccount:{emailid}`: An email address that represents a
+	// `serviceAccount:{emailid}`: An email address that represents a Google
 	// service account. For example,
-	// `my-other-app@appspot.gserviceaccount.com`. * `group:{emailid}`: An
-	// email address that represents a Google group. For example,
-	// `admins@example.com`. * `deleted:user:{emailid}?uid={uniqueid}`: An
-	// email address (plus unique identifier) representing a user that has
-	// been recently deleted. For example,
-	// `alice@example.com?uid=123456789012345678901`. If the user is
-	// recovered, this value reverts to `user:{emailid}` and the recovered
-	// user retains the role in the binding. *
+	// `my-other-app@appspot.gserviceaccount.com`. *
+	// `serviceAccount:{projectid}.svc.id.goog[{namespace}/{kubernetes-sa}]`:
+	//  An identifier for a Kubernetes service account
+	// (https://cloud.google.com/kubernetes-engine/docs/how-to/kubernetes-service-accounts).
+	// For example, `my-project.svc.id.goog[my-namespace/my-kubernetes-sa]`.
+	// * `group:{emailid}`: An email address that represents a Google group.
+	// For example, `admins@example.com`. *
+	// `deleted:user:{emailid}?uid={uniqueid}`: An email address (plus
+	// unique identifier) representing a user that has been recently
+	// deleted. For example, `alice@example.com?uid=123456789012345678901`.
+	// If the user is recovered, this value reverts to `user:{emailid}` and
+	// the recovered user retains the role in the binding. *
 	// `deleted:serviceAccount:{emailid}?uid={uniqueid}`: An email address
 	// (plus unique identifier) representing a service account that has been
 	// recently deleted. For example,
@@ -2813,6 +2817,15 @@ func (s *GoogleIdentityAccesscontextmanagerV1EgressPolicy) MarshalJSON() ([]byte
 // to succeed. The request must match `operations` AND `resources`
 // fields in order to be allowed egress out of the perimeter.
 type GoogleIdentityAccesscontextmanagerV1EgressTo struct {
+	// ExternalResources: A list of external resources that are allowed to
+	// be accessed. Only AWS and Azure resources are supported. For Amazon
+	// S3, the supported format is s3://BUCKET_NAME. For Azure Storage, the
+	// supported format is
+	// azure://myaccount.blob.core.windows.net/CONTAINER_NAME. A request
+	// matches if it contains an external resource in this list (Example:
+	// s3://bucket/path). Currently '*' is not allowed.
+	ExternalResources []string `json:"externalResources,omitempty"`
+
 	// Operations: A list of ApiOperations allowed to be performed by the
 	// sources specified in the corresponding EgressFrom. A request matches
 	// if it uses an operation/service in this list.
@@ -2826,20 +2839,21 @@ type GoogleIdentityAccesscontextmanagerV1EgressTo struct {
 	// perimeter.
 	Resources []string `json:"resources,omitempty"`
 
-	// ForceSendFields is a list of field names (e.g. "Operations") to
-	// unconditionally include in API requests. By default, fields with
+	// ForceSendFields is a list of field names (e.g. "ExternalResources")
+	// to unconditionally include in API requests. By default, fields with
 	// empty or default values are omitted from API requests. However, any
 	// non-pointer, non-interface field appearing in ForceSendFields will be
 	// sent to the server regardless of whether the field is empty or not.
 	// This may be used to include empty fields in Patch requests.
 	ForceSendFields []string `json:"-"`
 
-	// NullFields is a list of field names (e.g. "Operations") to include in
-	// API requests with the JSON null value. By default, fields with empty
-	// values are omitted from API requests. However, any field with an
-	// empty value appearing in NullFields will be sent to the server as
-	// null. It is an error if a field in this list has a non-empty value.
-	// This may be used to include null fields in Patch requests.
+	// NullFields is a list of field names (e.g. "ExternalResources") to
+	// include in API requests with the JSON null value. By default, fields
+	// with empty values are omitted from API requests. However, any field
+	// with an empty value appearing in NullFields will be sent to the
+	// server as null. It is an error if a field in this list has a
+	// non-empty value. This may be used to include null fields in Patch
+	// requests.
 	NullFields []string `json:"-"`
 }
 
@@ -4832,7 +4846,7 @@ func (s *Resource) MarshalJSON() ([]byte, error) {
 }
 
 // ResourceSearchResult: A result of Resource Search, containing
-// information of a cloud resource.
+// information of a cloud resource. Next ID: 29
 type ResourceSearchResult struct {
 	// AdditionalAttributes: The additional searchable attributes of this
 	// resource. The attributes may vary from one resource type to another.
@@ -5782,12 +5796,12 @@ type AssetsListCall struct {
 // List: Lists assets with time and resource types and returns paged
 // results in response.
 //
-// - parent: Name of the organization, folder, or project the assets
-//   belong to. Format: "organizations/[organization-number]" (such as
-//   "organizations/123"), "projects/[project-id]" (such as
-//   "projects/my-project-id"), "projects/[project-number]" (such as
-//   "projects/12345"), or "folders/[folder-number]" (such as
-//   "folders/12345").
+//   - parent: Name of the organization, folder, or project the assets
+//     belong to. Format: "organizations/[organization-number]" (such as
+//     "organizations/123"), "projects/[project-id]" (such as
+//     "projects/my-project-id"), "projects/[project-number]" (such as
+//     "projects/12345"), or "folders/[folder-number]" (such as
+//     "folders/12345").
 func (r *AssetsService) List(parent string) *AssetsListCall {
 	c := &AssetsListCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.parent = parent
@@ -5819,14 +5833,17 @@ func (c *AssetsListCall) AssetTypes(assetTypes ...string) *AssetsListCall {
 // returned.
 //
 // Possible values:
-//   "CONTENT_TYPE_UNSPECIFIED" - Unspecified content type.
-//   "RESOURCE" - Resource metadata.
-//   "IAM_POLICY" - The actual IAM policy set on a resource.
-//   "ORG_POLICY" - The Cloud Organization Policy set on an asset.
-//   "ACCESS_POLICY" - The Cloud Access context manager Policy set on an
+//
+//	"CONTENT_TYPE_UNSPECIFIED" - Unspecified content type.
+//	"RESOURCE" - Resource metadata.
+//	"IAM_POLICY" - The actual IAM policy set on a resource.
+//	"ORG_POLICY" - The Cloud Organization Policy set on an asset.
+//	"ACCESS_POLICY" - The Cloud Access context manager Policy set on an
+//
 // asset.
-//   "OS_INVENTORY" - The runtime OS Inventory information.
-//   "RELATIONSHIP" - The related resources.
+//
+//	"OS_INVENTORY" - The runtime OS Inventory information.
+//	"RELATIONSHIP" - The related resources.
 func (c *AssetsListCall) ContentType(contentType string) *AssetsListCall {
 	c.urlParams_.Set("contentType", contentType)
 	return c
@@ -6092,15 +6109,15 @@ type EffectiveIamPoliciesBatchGetCall struct {
 
 // BatchGet: Gets effective IAM policies for a batch of resources.
 //
-// - scope: Only IAM policies on or below the scope will be returned.
-//   This can only be an organization number (such as
-//   "organizations/123"), a folder number (such as "folders/123"), a
-//   project ID (such as "projects/my-project-id"), or a project number
-//   (such as "projects/12345"). To know how to get organization id,
-//   visit here
-//   (https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id).
-//   To know how to get folder or project id, visit here
-//   (https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects).
+//   - scope: Only IAM policies on or below the scope will be returned.
+//     This can only be an organization number (such as
+//     "organizations/123"), a folder number (such as "folders/123"), a
+//     project ID (such as "projects/my-project-id"), or a project number
+//     (such as "projects/12345"). To know how to get organization id,
+//     visit here
+//     (https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id).
+//     To know how to get folder or project id, visit here
+//     (https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects).
 func (r *EffectiveIamPoliciesService) BatchGet(scope string) *EffectiveIamPoliciesBatchGetCall {
 	c := &EffectiveIamPoliciesBatchGetCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.scope = scope
@@ -6266,11 +6283,11 @@ type FeedsCreateCall struct {
 // Create: Creates a feed in a parent project/folder/organization to
 // listen to its asset updates.
 //
-// - parent: The name of the project/folder/organization where this feed
-//   should be created in. It can only be an organization number (such
-//   as "organizations/123"), a folder number (such as "folders/123"), a
-//   project ID (such as "projects/my-project-id")", or a project number
-//   (such as "projects/12345").
+//   - parent: The name of the project/folder/organization where this feed
+//     should be created in. It can only be an organization number (such
+//     as "organizations/123"), a folder number (such as "folders/123"), a
+//     project ID (such as "projects/my-project-id")", or a project number
+//     (such as "projects/12345").
 func (r *FeedsService) Create(parent string, createfeedrequest *CreateFeedRequest) *FeedsCreateCall {
 	c := &FeedsCreateCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.parent = parent
@@ -6411,10 +6428,10 @@ type FeedsDeleteCall struct {
 
 // Delete: Deletes an asset feed.
 //
-// - name: The name of the feed and it must be in the format of:
-//   projects/project_number/feeds/feed_id
-//   folders/folder_number/feeds/feed_id
-//   organizations/organization_number/feeds/feed_id.
+//   - name: The name of the feed and it must be in the format of:
+//     projects/project_number/feeds/feed_id
+//     folders/folder_number/feeds/feed_id
+//     organizations/organization_number/feeds/feed_id.
 func (r *FeedsService) Delete(name string) *FeedsDeleteCall {
 	c := &FeedsDeleteCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.name = name
@@ -6547,10 +6564,10 @@ type FeedsGetCall struct {
 
 // Get: Gets details about an asset feed.
 //
-// - name: The name of the Feed and it must be in the format of:
-//   projects/project_number/feeds/feed_id
-//   folders/folder_number/feeds/feed_id
-//   organizations/organization_number/feeds/feed_id.
+//   - name: The name of the Feed and it must be in the format of:
+//     projects/project_number/feeds/feed_id
+//     folders/folder_number/feeds/feed_id
+//     organizations/organization_number/feeds/feed_id.
 func (r *FeedsService) Get(name string) *FeedsGetCall {
 	c := &FeedsGetCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.name = name
@@ -6696,10 +6713,10 @@ type FeedsListCall struct {
 
 // List: Lists all asset feeds in a parent project/folder/organization.
 //
-// - parent: The parent project/folder/organization whose feeds are to
-//   be listed. It can only be using project/folder/organization number
-//   (such as "folders/12345")", or a project ID (such as
-//   "projects/my-project-id").
+//   - parent: The parent project/folder/organization whose feeds are to
+//     be listed. It can only be using project/folder/organization number
+//     (such as "folders/12345")", or a project ID (such as
+//     "projects/my-project-id").
 func (r *FeedsService) List(parent string) *FeedsListCall {
 	c := &FeedsListCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.parent = parent
@@ -6845,13 +6862,13 @@ type FeedsPatchCall struct {
 
 // Patch: Updates an asset feed configuration.
 //
-// - name: The format will be
-//   projects/{project_number}/feeds/{client-assigned_feed_identifier}
-//   or folders/{folder_number}/feeds/{client-assigned_feed_identifier}
-//   or
-//   organizations/{organization_number}/feeds/{client-assigned_feed_iden
-//   tifier} The client-assigned feed identifier must be unique within
-//   the parent project/folder/organization.
+//   - name: The format will be
+//     projects/{project_number}/feeds/{client-assigned_feed_identifier}
+//     or folders/{folder_number}/feeds/{client-assigned_feed_identifier}
+//     or
+//     organizations/{organization_number}/feeds/{client-assigned_feed_iden
+//     tifier} The client-assigned feed identifier must be unique within
+//     the parent project/folder/organization.
 func (r *FeedsService) Patch(nameid string, updatefeedrequest *UpdateFeedRequest) *FeedsPatchCall {
 	c := &FeedsPatchCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.nameid = nameid
@@ -7142,11 +7159,11 @@ type SavedQueriesCreateCall struct {
 // Create: Creates a saved query in a parent
 // project/folder/organization.
 //
-// - parent: The name of the project/folder/organization where this
-//   saved_query should be created in. It can only be an organization
-//   number (such as "organizations/123"), a folder number (such as
-//   "folders/123"), a project ID (such as "projects/my-project-id")",
-//   or a project number (such as "projects/12345").
+//   - parent: The name of the project/folder/organization where this
+//     saved_query should be created in. It can only be an organization
+//     number (such as "organizations/123"), a folder number (such as
+//     "folders/123"), a project ID (such as "projects/my-project-id")",
+//     or a project number (such as "projects/12345").
 func (r *SavedQueriesService) Create(parent string, savedquery *SavedQuery) *SavedQueriesCreateCall {
 	c := &SavedQueriesCreateCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.parent = parent
@@ -7304,10 +7321,10 @@ type SavedQueriesDeleteCall struct {
 
 // Delete: Deletes a saved query.
 //
-// - name: The name of the saved query to delete. It must be in the
-//   format of: * projects/project_number/savedQueries/saved_query_id *
-//   folders/folder_number/savedQueries/saved_query_id *
-//   organizations/organization_number/savedQueries/saved_query_id.
+//   - name: The name of the saved query to delete. It must be in the
+//     format of: * projects/project_number/savedQueries/saved_query_id *
+//     folders/folder_number/savedQueries/saved_query_id *
+//     organizations/organization_number/savedQueries/saved_query_id.
 func (r *SavedQueriesService) Delete(name string) *SavedQueriesDeleteCall {
 	c := &SavedQueriesDeleteCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.name = name
@@ -7441,9 +7458,9 @@ type SavedQueriesGetCall struct {
 // Get: Gets details about a saved query.
 //
 // - name: The name of the saved query and it must be in the format of:
-//   * projects/project_number/savedQueries/saved_query_id *
-//   folders/folder_number/savedQueries/saved_query_id *
-//   organizations/organization_number/savedQueries/saved_query_id.
+//   - projects/project_number/savedQueries/saved_query_id *
+//     folders/folder_number/savedQueries/saved_query_id *
+//     organizations/organization_number/savedQueries/saved_query_id.
 func (r *SavedQueriesService) Get(name string) *SavedQueriesGetCall {
 	c := &SavedQueriesGetCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.name = name
@@ -7590,10 +7607,10 @@ type SavedQueriesListCall struct {
 // List: Lists all saved queries in a parent
 // project/folder/organization.
 //
-// - parent: The parent project/folder/organization whose savedQueries
-//   are to be listed. It can only be using project/folder/organization
-//   number (such as "folders/12345")", or a project ID (such as
-//   "projects/my-project-id").
+//   - parent: The parent project/folder/organization whose savedQueries
+//     are to be listed. It can only be using project/folder/organization
+//     number (such as "folders/12345")", or a project ID (such as
+//     "projects/my-project-id").
 func (r *SavedQueriesService) List(parent string) *SavedQueriesListCall {
 	c := &SavedQueriesListCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.parent = parent
@@ -7807,10 +7824,10 @@ type SavedQueriesPatchCall struct {
 
 // Patch: Updates a saved query.
 //
-// - name: The resource name of the saved query. The format must be: *
-//   projects/project_number/savedQueries/saved_query_id *
-//   folders/folder_number/savedQueries/saved_query_id *
-//   organizations/organization_number/savedQueries/saved_query_id.
+//   - name: The resource name of the saved query. The format must be: *
+//     projects/project_number/savedQueries/saved_query_id *
+//     folders/folder_number/savedQueries/saved_query_id *
+//     organizations/organization_number/savedQueries/saved_query_id.
 func (r *SavedQueriesService) Patch(name string, savedquery *SavedQuery) *SavedQueriesPatchCall {
 	c := &SavedQueriesPatchCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.name = name
@@ -7966,15 +7983,15 @@ type V1AnalyzeIamPolicyCall struct {
 // AnalyzeIamPolicy: Analyzes IAM policies to answer which identities
 // have what accesses on which resources.
 //
-// - scope: The relative name of the root asset. Only resources and IAM
-//   policies within the scope will be analyzed. This can only be an
-//   organization number (such as "organizations/123"), a folder number
-//   (such as "folders/123"), a project ID (such as
-//   "projects/my-project-id"), or a project number (such as
-//   "projects/12345"). To know how to get organization id, visit here
-//   (https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id).
-//   To know how to get folder or project id, visit here
-//   (https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects).
+//   - scope: The relative name of the root asset. Only resources and IAM
+//     policies within the scope will be analyzed. This can only be an
+//     organization number (such as "organizations/123"), a folder number
+//     (such as "folders/123"), a project ID (such as
+//     "projects/my-project-id"), or a project number (such as
+//     "projects/12345"). To know how to get organization id, visit here
+//     (https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id).
+//     To know how to get folder or project id, visit here
+//     (https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects).
 func (r *V1Service) AnalyzeIamPolicy(scope string) *V1AnalyzeIamPolicyCall {
 	c := &V1AnalyzeIamPolicyCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.scope = scope
@@ -8378,15 +8395,15 @@ type V1AnalyzeIamPolicyLongrunningCall struct {
 // seconds with exponential backoff retry to poll the operation result.
 // The metadata contains the metadata for the long-running operation.
 //
-// - scope: The relative name of the root asset. Only resources and IAM
-//   policies within the scope will be analyzed. This can only be an
-//   organization number (such as "organizations/123"), a folder number
-//   (such as "folders/123"), a project ID (such as
-//   "projects/my-project-id"), or a project number (such as
-//   "projects/12345"). To know how to get organization id, visit here
-//   (https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id).
-//   To know how to get folder or project id, visit here
-//   (https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects).
+//   - scope: The relative name of the root asset. Only resources and IAM
+//     policies within the scope will be analyzed. This can only be an
+//     organization number (such as "organizations/123"), a folder number
+//     (such as "folders/123"), a project ID (such as
+//     "projects/my-project-id"), or a project number (such as
+//     "projects/12345"). To know how to get organization id, visit here
+//     (https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id).
+//     To know how to get folder or project id, visit here
+//     (https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects).
 func (r *V1Service) AnalyzeIamPolicyLongrunning(scope string, analyzeiampolicylongrunningrequest *AnalyzeIamPolicyLongrunningRequest) *V1AnalyzeIamPolicyLongrunningCall {
 	c := &V1AnalyzeIamPolicyLongrunningCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.scope = scope
@@ -8532,10 +8549,10 @@ type V1AnalyzeMoveCall struct {
 // policies and configurations. The policies and configuration are
 // subject to change before the actual resource migration takes place.
 //
-// - resource: Name of the resource to perform the analysis against.
-//   Only GCP Project are supported as of today. Hence, this can only be
-//   Project ID (such as "projects/my-project-id") or a Project Number
-//   (such as "projects/12345").
+//   - resource: Name of the resource to perform the analysis against.
+//     Only GCP Project are supported as of today. Hence, this can only be
+//     Project ID (such as "projects/my-project-id") or a Project Number
+//     (such as "projects/12345").
 func (r *V1Service) AnalyzeMove(resource string) *V1AnalyzeMoveCall {
 	c := &V1AnalyzeMoveCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.resource = resource
@@ -8558,11 +8575,17 @@ func (c *V1AnalyzeMoveCall) DestinationParent(destinationParent string) *V1Analy
 // unspecified, the default view is FULL.
 //
 // Possible values:
-//   "ANALYSIS_VIEW_UNSPECIFIED" - The default/unset value. The API will
+//
+//	"ANALYSIS_VIEW_UNSPECIFIED" - The default/unset value. The API will
+//
 // default to the FULL view.
-//   "FULL" - Full analysis including all level of impacts of the
+//
+//	"FULL" - Full analysis including all level of impacts of the
+//
 // specified resource move.
-//   "BASIC" - Basic analysis only including blockers which will prevent
+//
+//	"BASIC" - Basic analysis only including blockers which will prevent
+//
 // the specified resource move at runtime.
 func (c *V1AnalyzeMoveCall) View(view string) *V1AnalyzeMoveCall {
 	c.urlParams_.Set("view", view)
@@ -8734,10 +8757,10 @@ type V1BatchGetAssetsHistoryCall struct {
 // specified asset does not exist, this API returns an INVALID_ARGUMENT
 // error.
 //
-// - parent: The relative name of the root asset. It can only be an
-//   organization number (such as "organizations/123"), a project ID
-//   (such as "projects/my-project-id")", or a project number (such as
-//   "projects/12345").
+//   - parent: The relative name of the root asset. It can only be an
+//     organization number (such as "organizations/123"), a project ID
+//     (such as "projects/my-project-id")", or a project number (such as
+//     "projects/12345").
 func (r *V1Service) BatchGetAssetsHistory(parent string) *V1BatchGetAssetsHistoryCall {
 	c := &V1BatchGetAssetsHistoryCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.parent = parent
@@ -8760,14 +8783,17 @@ func (c *V1BatchGetAssetsHistoryCall) AssetNames(assetNames ...string) *V1BatchG
 // type.
 //
 // Possible values:
-//   "CONTENT_TYPE_UNSPECIFIED" - Unspecified content type.
-//   "RESOURCE" - Resource metadata.
-//   "IAM_POLICY" - The actual IAM policy set on a resource.
-//   "ORG_POLICY" - The Cloud Organization Policy set on an asset.
-//   "ACCESS_POLICY" - The Cloud Access context manager Policy set on an
+//
+//	"CONTENT_TYPE_UNSPECIFIED" - Unspecified content type.
+//	"RESOURCE" - Resource metadata.
+//	"IAM_POLICY" - The actual IAM policy set on a resource.
+//	"ORG_POLICY" - The Cloud Organization Policy set on an asset.
+//	"ACCESS_POLICY" - The Cloud Access context manager Policy set on an
+//
 // asset.
-//   "OS_INVENTORY" - The runtime OS Inventory information.
-//   "RELATIONSHIP" - The related resources.
+//
+//	"OS_INVENTORY" - The runtime OS Inventory information.
+//	"RELATIONSHIP" - The related resources.
 func (c *V1BatchGetAssetsHistoryCall) ContentType(contentType string) *V1BatchGetAssetsHistoryCall {
 	c.urlParams_.Set("contentType", contentType)
 	return c
@@ -9004,10 +9030,10 @@ type V1ExportAssetsCall struct {
 // regular-size resource parent, the export operation usually finishes
 // within 5 minutes.
 //
-// - parent: The relative name of the root asset. This can only be an
-//   organization number (such as "organizations/123"), a project ID
-//   (such as "projects/my-project-id"), or a project number (such as
-//   "projects/12345"), or a folder number (such as "folders/123").
+//   - parent: The relative name of the root asset. This can only be an
+//     organization number (such as "organizations/123"), a project ID
+//     (such as "projects/my-project-id"), or a project number (such as
+//     "projects/12345"), or a folder number (such as "folders/123").
 func (r *V1Service) ExportAssets(parent string, exportassetsrequest *ExportAssetsRequest) *V1ExportAssetsCall {
 	c := &V1ExportAssetsCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.parent = parent
@@ -9152,15 +9178,15 @@ type V1SearchAllIamPoliciesCall struct {
 // granted the `cloudasset.assets.searchAllIamPolicies` permission on
 // the desired scope, otherwise the request will be rejected.
 //
-// - scope: A scope can be a project, a folder, or an organization. The
-//   search is limited to the IAM policies within the `scope`. The
-//   caller must be granted the `cloudasset.assets.searchAllIamPolicies`
-//   (https://cloud.google.com/asset-inventory/docs/access-control#required_permissions)
-//   permission on the desired scope. The allowed values are: *
-//   projects/{PROJECT_ID} (e.g., "projects/foo-bar") *
-//   projects/{PROJECT_NUMBER} (e.g., "projects/12345678") *
-//   folders/{FOLDER_NUMBER} (e.g., "folders/1234567") *
-//   organizations/{ORGANIZATION_NUMBER} (e.g., "organizations/123456").
+//   - scope: A scope can be a project, a folder, or an organization. The
+//     search is limited to the IAM policies within the `scope`. The
+//     caller must be granted the `cloudasset.assets.searchAllIamPolicies`
+//     (https://cloud.google.com/asset-inventory/docs/access-control#required_permissions)
+//     permission on the desired scope. The allowed values are: *
+//     projects/{PROJECT_ID} (e.g., "projects/foo-bar") *
+//     projects/{PROJECT_NUMBER} (e.g., "projects/12345678") *
+//     folders/{FOLDER_NUMBER} (e.g., "folders/1234567") *
+//     organizations/{ORGANIZATION_NUMBER} (e.g., "organizations/123456").
 func (r *V1Service) SearchAllIamPolicies(scope string) *V1SearchAllIamPoliciesCall {
 	c := &V1SearchAllIamPoliciesCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.scope = scope
@@ -9452,15 +9478,15 @@ type V1SearchAllResourcesCall struct {
 // granted the `cloudasset.assets.searchAllResources` permission on the
 // desired scope, otherwise the request will be rejected.
 //
-// - scope: A scope can be a project, a folder, or an organization. The
-//   search is limited to the resources within the `scope`. The caller
-//   must be granted the `cloudasset.assets.searchAllResources`
-//   (https://cloud.google.com/asset-inventory/docs/access-control#required_permissions)
-//   permission on the desired scope. The allowed values are: *
-//   projects/{PROJECT_ID} (e.g., "projects/foo-bar") *
-//   projects/{PROJECT_NUMBER} (e.g., "projects/12345678") *
-//   folders/{FOLDER_NUMBER} (e.g., "folders/1234567") *
-//   organizations/{ORGANIZATION_NUMBER} (e.g., "organizations/123456").
+//   - scope: A scope can be a project, a folder, or an organization. The
+//     search is limited to the resources within the `scope`. The caller
+//     must be granted the `cloudasset.assets.searchAllResources`
+//     (https://cloud.google.com/asset-inventory/docs/access-control#required_permissions)
+//     permission on the desired scope. The allowed values are: *
+//     projects/{PROJECT_ID} (e.g., "projects/foo-bar") *
+//     projects/{PROJECT_NUMBER} (e.g., "projects/12345678") *
+//     folders/{FOLDER_NUMBER} (e.g., "folders/1234567") *
+//     organizations/{ORGANIZATION_NUMBER} (e.g., "organizations/123456").
 func (r *V1Service) SearchAllResources(scope string) *V1SearchAllResourcesCall {
 	c := &V1SearchAllResourcesCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.scope = scope
@@ -9536,7 +9562,15 @@ func (c *V1SearchAllResourcesCall) PageToken(pageToken string) *V1SearchAllResou
 // a label "env" and its value is "prod". * `labels.env:*` to find Cloud
 // resources that have a label "env". * `kmsKey:key` to find Cloud
 // resources encrypted with a customer-managed encryption key whose name
-// contains the word "key". * `state:ACTIVE` to find Cloud resources
+// contains the word "key". * `relationships:instance-group-1` to find
+// Cloud resources that have relationships with "instance-group-1" in
+// the related resource name. *
+// `relationships:INSTANCE_TO_INSTANCEGROUP` to find compute instances
+// that have relationships of type "INSTANCE_TO_INSTANCEGROUP". *
+// `relationships.INSTANCE_TO_INSTANCEGROUP:instance-group-1` to find
+// compute instances that have relationships with "instance-group-1" in
+// the compute instance group resource name, for relationship type
+// "INSTANCE_TO_INSTANCEGROUP". * `state:ACTIVE` to find Cloud resources
 // whose state contains "ACTIVE" as a word. * `NOT state:ACTIVE` to find
 // Cloud resources whose state doesn't contain "ACTIVE" as a word. *
 // `createTime<1609459200` to find Cloud resources that were created
@@ -9705,7 +9739,7 @@ func (c *V1SearchAllResourcesCall) Do(opts ...googleapi.CallOption) (*SearchAllR
 	//       "type": "string"
 	//     },
 	//     "query": {
-	//       "description": "Optional. The query statement. See [how to construct a query](https://cloud.google.com/asset-inventory/docs/searching-resources#how_to_construct_a_query) for more information. If not specified or empty, it will search all the resources within the specified `scope`. Examples: * `name:Important` to find Cloud resources whose name contains \"Important\" as a word. * `name=Important` to find the Cloud resource whose name is exactly \"Important\". * `displayName:Impor*` to find Cloud resources whose display name contains \"Impor\" as a prefix of any word in the field. * `location:us-west*` to find Cloud resources whose location contains both \"us\" and \"west\" as prefixes. * `labels:prod` to find Cloud resources whose labels contain \"prod\" as a key or value. * `labels.env:prod` to find Cloud resources that have a label \"env\" and its value is \"prod\". * `labels.env:*` to find Cloud resources that have a label \"env\". * `kmsKey:key` to find Cloud resources encrypted with a customer-managed encryption key whose name contains the word \"key\". * `state:ACTIVE` to find Cloud resources whose state contains \"ACTIVE\" as a word. * `NOT state:ACTIVE` to find Cloud resources whose state doesn't contain \"ACTIVE\" as a word. * `createTime\u003c1609459200` to find Cloud resources that were created before \"2021-01-01 00:00:00 UTC\". 1609459200 is the epoch timestamp of \"2021-01-01 00:00:00 UTC\" in seconds. * `updateTime\u003e1609459200` to find Cloud resources that were updated after \"2021-01-01 00:00:00 UTC\". 1609459200 is the epoch timestamp of \"2021-01-01 00:00:00 UTC\" in seconds. * `Important` to find Cloud resources that contain \"Important\" as a word in any of the searchable fields. * `Impor*` to find Cloud resources that contain \"Impor\" as a prefix of any word in any of the searchable fields. * `Important location:(us-west1 OR global)` to find Cloud resources that contain \"Important\" as a word in any of the searchable fields and are also located in the \"us-west1\" region or the \"global\" location.",
+	//       "description": "Optional. The query statement. See [how to construct a query](https://cloud.google.com/asset-inventory/docs/searching-resources#how_to_construct_a_query) for more information. If not specified or empty, it will search all the resources within the specified `scope`. Examples: * `name:Important` to find Cloud resources whose name contains \"Important\" as a word. * `name=Important` to find the Cloud resource whose name is exactly \"Important\". * `displayName:Impor*` to find Cloud resources whose display name contains \"Impor\" as a prefix of any word in the field. * `location:us-west*` to find Cloud resources whose location contains both \"us\" and \"west\" as prefixes. * `labels:prod` to find Cloud resources whose labels contain \"prod\" as a key or value. * `labels.env:prod` to find Cloud resources that have a label \"env\" and its value is \"prod\". * `labels.env:*` to find Cloud resources that have a label \"env\". * `kmsKey:key` to find Cloud resources encrypted with a customer-managed encryption key whose name contains the word \"key\". * `relationships:instance-group-1` to find Cloud resources that have relationships with \"instance-group-1\" in the related resource name. * `relationships:INSTANCE_TO_INSTANCEGROUP` to find compute instances that have relationships of type \"INSTANCE_TO_INSTANCEGROUP\". * `relationships.INSTANCE_TO_INSTANCEGROUP:instance-group-1` to find compute instances that have relationships with \"instance-group-1\" in the compute instance group resource name, for relationship type \"INSTANCE_TO_INSTANCEGROUP\". * `state:ACTIVE` to find Cloud resources whose state contains \"ACTIVE\" as a word. * `NOT state:ACTIVE` to find Cloud resources whose state doesn't contain \"ACTIVE\" as a word. * `createTime\u003c1609459200` to find Cloud resources that were created before \"2021-01-01 00:00:00 UTC\". 1609459200 is the epoch timestamp of \"2021-01-01 00:00:00 UTC\" in seconds. * `updateTime\u003e1609459200` to find Cloud resources that were updated after \"2021-01-01 00:00:00 UTC\". 1609459200 is the epoch timestamp of \"2021-01-01 00:00:00 UTC\" in seconds. * `Important` to find Cloud resources that contain \"Important\" as a word in any of the searchable fields. * `Impor*` to find Cloud resources that contain \"Impor\" as a prefix of any word in any of the searchable fields. * `Important location:(us-west1 OR global)` to find Cloud resources that contain \"Important\" as a word in any of the searchable fields and are also located in the \"us-west1\" region or the \"global\" location.",
 	//       "location": "query",
 	//       "type": "string"
 	//     },

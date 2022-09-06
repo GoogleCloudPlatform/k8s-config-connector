@@ -5029,6 +5029,9 @@ resource "google_compute_image" "foobar" {
   guest_os_features {
     type = "VIRTIO_SCSI_MULTIQUEUE"
   }
+	guest_os_features {
+    type = "UEFI_COMPATIBLE"
+   }
 }
 
 resource "google_compute_instance" "foobar" {

@@ -24,7 +24,7 @@ clone-terraform-google-provider-beta:
 	rm -rf github.com/hashicorp/terraform-provider-google-beta
 	mkdir -p github.com/hashicorp
 	cd github.com/hashicorp && git clone https://github.com/hashicorp/terraform-provider-google-beta
-	git -C github.com/hashicorp/terraform-provider-google-beta checkout v4.33.0
+	git -C github.com/hashicorp/terraform-provider-google-beta checkout v4.34.0
 	rm -rf github.com/hashicorp/terraform-provider-google-beta/.git
 
 .PHONY: apply-patches
@@ -171,9 +171,6 @@ apply-patches:
 	# isn't as much of an issue in KCC, so we patch this new `true` default
 	# out.
 	git apply ../hack/terraform-overrides/deletion_protection_default.patch
-	# kms_crypto_key has a field whose description references another TF
-	# resource. This patches that part of the description out.
-	git apply ../hack/terraform-overrides/bigtable_gc_policy_read.patch
 	# Return an empty instance state on the TF read if the policy is
 	# "<never>" (i.e. an empty policy). This fixes an issue with
 	# BigtableGCPolicy where it could not create an underlying policy at

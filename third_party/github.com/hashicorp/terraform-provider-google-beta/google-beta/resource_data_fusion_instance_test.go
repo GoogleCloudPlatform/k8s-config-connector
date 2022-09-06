@@ -43,6 +43,10 @@ resource "google_data_fusion_instance" "foobar" {
   region = "us-central1"
   type   = "BASIC"
   version = "6.1.1"
+  # Mark for testing to avoid service networking connection usage that is not cleaned up
+  options = {
+  	prober_test_run = "true"
+  }
 }
 `, instanceName)
 }
@@ -61,6 +65,10 @@ resource "google_data_fusion_instance" "foobar" {
     label2 = "value2"
   }
   version = "6.2.0"
+  # Mark for testing to avoid service networking connection usage that is not cleaned up
+  options = {
+  	prober_test_run = "true"
+  }
 }
 `, instanceName)
 }

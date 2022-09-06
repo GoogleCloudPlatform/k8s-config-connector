@@ -1420,6 +1420,23 @@
               "location": "path",
               "required": true,
               "type": "string"
+            },
+            "view": {
+              "description": "Specifies the view that determines which table information is returned. By default, basic table information and storage statistics (STORAGE_STATS) are returned.",
+              "enum": [
+                "BASIC",
+                "FULL",
+                "STORAGE_STATS",
+                "TABLE_METADATA_VIEW_UNSPECIFIED"
+              ],
+              "enumDescriptions": [
+                "Includes basic table information including schema and partitioning specification. This view does not include storage statistics such as numRows or numBytes. This view is significantly more efficient and should be used to support high query rates.",
+                "Includes all table information, including storage statistics. It returns same information as STORAGE_STATS view, but may contain additional information in the future.",
+                "Includes all information in the BASIC view as well as storage statistics (numBytes, numLongTermBytes, numRows and lastModifiedTime).",
+                "The default value. Default to the STORAGE_STATS view."
+              ],
+              "location": "query",
+              "type": "string"
             }
           },
           "path": "projects/{projectId}/datasets/{datasetId}/tables/{tableId}",
@@ -1693,7 +1710,7 @@
       }
     }
   },
-  "revision": "20220507",
+  "revision": "20220730",
   "rootUrl": "https://bigquery.googleapis.com/",
   "schemas": {
     "AggregateClassificationMetrics": {
@@ -2663,6 +2680,10 @@
           "description": "[Optional] An custom string that will represent a NULL value in CSV import data.",
           "type": "string"
         },
+        "preserveAsciiControlCharacters": {
+          "description": "[Optional] Preserves the embedded ASCII control characters (the first 32 characters in the ASCII-table, from '\\x00' to '\\x1F') when loading from CSV. Only applicable to CSV, ignored for other formats.",
+          "type": "boolean"
+        },
         "quote": {
           "default": "\"",
           "description": "[Optional] The value that is used to quote data sections in a CSV file. BigQuery converts the string to ISO-8859-1 encoding, and then uses the first byte of the encoded string to split the data in its raw, binary state. The default value is a double-quote ('\"'). If your data does not contain quoted sections, set the property value to an empty string. If your data contains quoted newline characters, you must also set the allowQuotedNewlines property to true.",
@@ -3407,6 +3428,10 @@
           "$ref": "ParquetOptions",
           "description": "Additional properties to set if sourceFormat is set to Parquet."
         },
+        "referenceFileSchemaUri": {
+          "description": "[Optional] Provide a referencing file with the expected table schema. Enabled for the format: AVRO, PARQUET, ORC.",
+          "type": "string"
+        },
         "schema": {
           "$ref": "TableSchema",
           "description": "[Optional] The schema for the data. Schema is required for CSV and JSON formats. Schema is disallowed for Google Cloud Bigtable, Cloud Datastore backups, and Avro formats."
@@ -3763,6 +3788,31 @@
       },
       "type": "object"
     },
+    "IndexUnusedReason": {
+      "id": "IndexUnusedReason",
+      "properties": {
+        "base_table": {
+          "$ref": "TableReference",
+          "description": "[Output-only] Specifies the base table involved in the reason that no search index was used."
+        },
+        "code": {
+          "default": "$(reason.code)",
+          "description": "[Output-only] Specifies the high-level reason for the scenario when no search index was used.",
+          "type": "string"
+        },
+        "index_name": {
+          "default": "$(reason.index_name)",
+          "description": "[Output-only] Specifies the name of the unused search index, if available.",
+          "type": "string"
+        },
+        "message": {
+          "default": "$(reason.message)",
+          "description": "[Output-only] Free form human-readable reason for the scenario when no search index was used.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
     "IntArray": {
       "description": "An array of int.",
       "id": "IntArray",
@@ -4111,6 +4161,10 @@
         "rangePartitioning": {
           "$ref": "RangePartitioning",
           "description": "[TrustedTester] Range partitioning specification for this table. Only one of timePartitioning and rangePartitioning should be specified."
+        },
+        "referenceFileSchemaUri": {
+          "description": "User provided referencing file with the expected reader schema, Available for the format: AVRO, PARQUET, ORC.",
+          "type": "string"
         },
         "schema": {
           "$ref": "TableSchema",
@@ -4645,6 +4699,10 @@
         "schema": {
           "$ref": "TableSchema",
           "description": "[Output-only] The schema of the results. Present only for successful dry run of non-legacy SQL queries."
+        },
+        "searchStatistics": {
+          "$ref": "SearchStatistics",
+          "description": "[Output-only] Search query specific statistics."
         },
         "statementType": {
           "description": "The type of query statement, if valid. Possible values (new values might be added in the future): \"SELECT\": SELECT query. \"INSERT\": INSERT query; see https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language. \"UPDATE\": UPDATE query; see https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language. \"DELETE\": DELETE query; see https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language. \"MERGE\": MERGE query; see https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language. \"ALTER_TABLE\": ALTER TABLE query. \"ALTER_VIEW\": ALTER VIEW query. \"ASSERT\": ASSERT condition AS 'description'. \"CREATE_FUNCTION\": CREATE FUNCTION query. \"CREATE_MODEL\": CREATE [OR REPLACE] MODEL ... AS SELECT ... . \"CREATE_PROCEDURE\": CREATE PROCEDURE query. \"CREATE_TABLE\": CREATE [OR REPLACE] TABLE without AS SELECT. \"CREATE_TABLE_AS_SELECT\": CREATE [OR REPLACE] TABLE ... AS SELECT ... . \"CREATE_VIEW\": CREATE [OR REPLACE] VIEW ... AS SELECT ... . \"DROP_FUNCTION\" : DROP FUNCTION query. \"DROP_PROCEDURE\": DROP PROCEDURE query. \"DROP_TABLE\": DROP TABLE query. \"DROP_VIEW\": DROP VIEW query.",
@@ -5515,8 +5573,13 @@
           "format": "int64",
           "type": "string"
         },
+        "estimatedRunnableUnits": {
+          "description": "Units of work that can be scheduled immediately. Providing additional slots for these units of work will speed up the query, provided no other query in the reservation needs additional slots.",
+          "format": "int64",
+          "type": "string"
+        },
         "pendingUnits": {
-          "description": "Total parallel units of work remaining for the active stages.",
+          "description": "Total units of work remaining for the query. This number can be revised (increased or decreased) while the query is running.",
           "format": "int64",
           "type": "string"
         },
@@ -5623,15 +5686,15 @@
       "id": "RemoteFunctionOptions",
       "properties": {
         "connection": {
-          "description": "Fully qualified name of the user-provided connection object which holds the authentication information to send requests to the remote service. projects/{project_id}/locations/{location_id}/connections/{connection_id}",
+          "description": "Fully qualified name of the user-provided connection object which holds the authentication information to send requests to the remote service. Format: ```\"projects/{projectId}/locations/{locationId}/connections/{connectionId}\"```",
           "type": "string"
         },
         "endpoint": {
-          "description": "Endpoint of the user-provided remote service (e.g. a function url in Google Cloud Functions).",
+          "description": "Endpoint of the user-provided remote service, e.g. ```https://us-east1-my_gcf_project.cloudfunctions.net/remote_add```",
           "type": "string"
         },
         "maxBatchingRows": {
-          "description": "Max number of rows in each batch sent to the remote service. If absent or if 0, it means no limit.",
+          "description": "Max number of rows in each batch sent to the remote service. If absent or if 0, BigQuery dynamically decides the number of rows in a batch.",
           "format": "int64",
           "type": "string"
         },
@@ -5906,6 +5969,23 @@
       },
       "type": "object"
     },
+    "SearchStatistics": {
+      "id": "SearchStatistics",
+      "properties": {
+        "indexUnusedReason": {
+          "description": "When index_usage_mode is UNUSED or PARTIALLY_USED, this field explains why index was not used in all or part of the search query. If index_usage_mode is FULLLY_USED, this field is not populated.",
+          "items": {
+            "$ref": "IndexUnusedReason"
+          },
+          "type": "array"
+        },
+        "indexUsageMode": {
+          "description": "Specifies index usage mode for the query.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
     "SessionInfo": {
       "id": "SessionInfo",
       "properties": {
@@ -6153,6 +6233,11 @@
         "materializedView": {
           "$ref": "MaterializedViewDefinition",
           "description": "[Optional] Materialized view definition."
+        },
+        "maxStaleness": {
+          "description": "[Optional] Max staleness of data that could be returned when table or materialized view is queried (formatted as Google SQL Interval type).",
+          "format": "byte",
+          "type": "string"
         },
         "model": {
           "$ref": "ModelDefinition",
@@ -7136,6 +7221,11 @@
           "format": "int64",
           "type": "string"
         },
+        "maxTimeSeriesLength": {
+          "description": "Get truncated length by last n points in time series. Use separately from time_series_length_fraction and min_time_series_length.",
+          "format": "int64",
+          "type": "string"
+        },
         "maxTreeDepth": {
           "description": "Maximum depth of a tree for boosted tree models.",
           "format": "int64",
@@ -7150,6 +7240,11 @@
           "description": "Minimum split loss for boosted tree models.",
           "format": "double",
           "type": "number"
+        },
+        "minTimeSeriesLength": {
+          "description": "Set fast trend ARIMA_PLUS model minimum training length. Use in pair with time_series_length_fraction.",
+          "format": "int64",
+          "type": "string"
         },
         "minTreeChildWeight": {
           "description": "Minimum sum of instance weight needed in a child for boosted tree models.",
@@ -7227,6 +7322,11 @@
           },
           "type": "array"
         },
+        "timeSeriesLengthFraction": {
+          "description": "Get truncated length by fraction in time series.",
+          "format": "double",
+          "type": "number"
+        },
         "timeSeriesTimestampColumn": {
           "description": "Column to be designated as time series timestamp for ARIMA model.",
           "type": "string"
@@ -7247,6 +7347,11 @@
             "Approximate greedy algorithm using quantile sketch and gradient histogram.",
             "Fast histogram optimized approximate greedy algorithm."
           ],
+          "type": "string"
+        },
+        "trendSmoothingWindowSize": {
+          "description": "The smoothing window size for the trend component of the time series.",
+          "format": "int64",
           "type": "string"
         },
         "userColumn": {

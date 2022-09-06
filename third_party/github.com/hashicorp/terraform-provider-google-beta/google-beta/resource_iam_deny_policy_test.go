@@ -73,6 +73,15 @@ func TestAccIAM2DenyPolicy_iamDenyPolicyFolderParent(t *testing.T) {
 				ImportStateVerify:       true,
 				ImportStateVerifyIgnore: []string{"name", "parent"},
 			},
+			{
+				Config: testAccIAM2DenyPolicy_iamDenyPolicyFolderUpdate(context),
+			},
+			{
+				ResourceName:            "google_iam_deny_policy.example",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"name", "parent"},
+			},
 		},
 	})
 }
@@ -180,6 +189,30 @@ resource "google_iam_deny_policy" "example" {
         title = "Some expr"
         expression = "!resource.matchTag('12345678/env', 'test')"
       }
+      denied_permissions = ["cloudresourcemanager.googleapis.com/projects.delete"]
+    }
+  }
+}
+
+resource "google_folder" "folder" {
+  provider = google-beta
+  display_name = "tf-test-%{random_suffix}"
+  parent       = "organizations/%{org_id}"
+}
+`, context)
+}
+
+func testAccIAM2DenyPolicy_iamDenyPolicyFolderUpdate(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_iam_deny_policy" "example" {
+  provider = google-beta
+  parent   = urlencode("cloudresourcemanager.googleapis.com/${google_folder.folder.id}")
+  name     = "tf-test-my-deny-policy%{random_suffix}"
+  display_name = "A deny rule"
+  rules {
+    description = "Second rule"
+    deny_rule {
+      denied_principals = ["principalSet://goog/public:all"]
       denied_permissions = ["cloudresourcemanager.googleapis.com/projects.delete"]
     }
   }

@@ -186,6 +186,10 @@ type NodepoolNodeConfig struct {
 	// +optional
 	Preemptible *bool `json:"preemptible,omitempty"`
 
+	/* Immutable. The reservation affinity configuration for the node pool. */
+	// +optional
+	ReservationAffinity *NodepoolReservationAffinity `json:"reservationAffinity,omitempty"`
+
 	/* Immutable. Sandbox configuration for this node. */
 	// +optional
 	SandboxConfig *NodepoolSandboxConfig `json:"sandboxConfig,omitempty"`
@@ -218,6 +222,19 @@ type NodepoolNodeConfig struct {
 type NodepoolPlacementPolicy struct {
 	/* Type defines the type of placement policy. */
 	Type string `json:"type"`
+}
+
+type NodepoolReservationAffinity struct {
+	/* Immutable. Corresponds to the type of reservation consumption. */
+	ConsumeReservationType string `json:"consumeReservationType"`
+
+	/* Immutable. The label key of a reservation resource. */
+	// +optional
+	Key *string `json:"key,omitempty"`
+
+	/* Immutable. The label values of the reservation resource. */
+	// +optional
+	Values []string `json:"values,omitempty"`
 }
 
 type NodepoolSandboxConfig struct {

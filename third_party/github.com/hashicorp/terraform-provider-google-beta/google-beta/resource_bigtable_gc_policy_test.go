@@ -99,6 +99,7 @@ func TestAccBigtableGCPolicy_union(t *testing.T) {
 	})
 }
 
+// Testing multiple GC policies; one per column family.
 func TestAccBigtableGCPolicy_multiplePolicies(t *testing.T) {
 	// bigtable instance does not use the shared HTTP client, this test creates an instance
 	skipIfVcr(t)
@@ -280,12 +281,12 @@ var testUnitBigtableGCPolicyRulesTestCases = []testUnitBigtableGCPolicyJSONRules
 func TestUnitBigtableGCPolicy_getGCPolicyFromJSON(t *testing.T) {
 	for _, tc := range testUnitBigtableGCPolicyRulesTestCases {
 		t.Run(tc.name, func(t *testing.T) {
-			var j map[string]interface{}
-			err := json.Unmarshal([]byte(tc.gcJSONString), &j)
+			var topLevelPolicy map[string]interface{}
+			err := json.Unmarshal([]byte(tc.gcJSONString), &topLevelPolicy)
 			if err != nil {
 				t.Fatalf("error unmarshalling JSON string: %v", err)
 			}
-			got, err := getGCPolicyFromJSON(j)
+			got, err := getGCPolicyFromJSON(topLevelPolicy /*isTopLevel=*/, true)
 			if tc.errorExpected && err == nil {
 				t.Fatal("expect error, got nil")
 			} else if !tc.errorExpected && err != nil {
@@ -406,7 +407,7 @@ func testAccBigtableGCPolicyExists(t *testing.T, n string) resource.TestCheckFun
 		}
 
 		for _, i := range table.FamilyInfos {
-			if i.Name == rs.Primary.Attributes["column_family"] {
+			if i.Name == rs.Primary.Attributes["column_family"] && i.GCPolicy == rs.Primary.ID {
 				return nil
 			}
 		}
@@ -621,14 +622,20 @@ resource "google_bigtable_table" "table" {
   instance_name = google_bigtable_instance.instance.id
 
   column_family {
-    family = "%s"
+    family = "%sA"
+  }
+  column_family {
+    family = "%sB"
+  }
+  column_family {
+    family = "%sC"
   }
 }
 
 resource "google_bigtable_gc_policy" "policyA" {
   instance_name = google_bigtable_instance.instance.id
   table         = google_bigtable_table.table.name
-  column_family = "%s"
+  column_family = "%sA"
 
   max_age {
     days = 30
@@ -638,7 +645,7 @@ resource "google_bigtable_gc_policy" "policyA" {
 resource "google_bigtable_gc_policy" "policyB" {
   instance_name = google_bigtable_instance.instance.id
   table         = google_bigtable_table.table.name
-  column_family = "%s"
+  column_family = "%sB"
 
   max_version {
     number = 8
@@ -648,7 +655,7 @@ resource "google_bigtable_gc_policy" "policyB" {
 resource "google_bigtable_gc_policy" "policyC" {
 	instance_name = google_bigtable_instance.instance.id
   table         = google_bigtable_table.table.name
-  column_family = "%s"
+  column_family = "%sC"
 
   max_age {
     days = 7
@@ -660,7 +667,7 @@ resource "google_bigtable_gc_policy" "policyC" {
 
   mode        = "UNION"
 }
-`, instanceName, instanceName, tableName, family, family, family, family)
+`, instanceName, instanceName, tableName, family, family, family, family, family, family)
 }
 
 func testAccBigtableGCPolicy_gcRulesCreate(instanceName, tableName, family string) string {

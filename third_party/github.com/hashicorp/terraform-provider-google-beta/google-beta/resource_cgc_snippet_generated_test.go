@@ -395,6 +395,77 @@ resource "google_compute_instance" "instance_virtual_display" {
 `, context)
 }
 
+func TestAccCGCSnippet_osLoginExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProviders,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCGCSnippet_osLoginExample(context),
+			},
+			{
+				ResourceName:      "google_compute_instance.oslogin_instance",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccCGCSnippet_osLoginExample(context map[string]interface{}) string {
+	return Nprintf(`
+# [START compute_terraform-oslogin-example]
+
+resource "google_project_service" "project" {
+  service            = "oslogin.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_compute_project_metadata" "default" {
+  metadata = {
+    enable-oslogin = "TRUE"
+  }
+}
+
+resource "google_compute_instance" "oslogin_instance" {
+  name         = "tf-test-oslogin-instance-name%{random_suffix}"
+  machine_type = "f1-micro"
+  zone         = "us-central1-c"
+  metadata = {
+    enable-oslogin: "TRUE"
+  }
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+    }
+  }
+  network_interface {
+    # A default network is created for all GCP projects
+    network = "default"
+    access_config {
+    }
+  }
+}
+
+
+data "google_project" "project" {
+}
+resource "google_project_iam_member" "os-login-admin-users" {
+  project  = data.google_project.project.project_id
+  role = "roles/compute.osAdminLogin"
+  member   = "serviceAccount:service-${data.google_project.project.number}@compute-system.iam.gserviceaccount.com"
+}
+
+# [END compute_terraform-oslogin-example]
+`, context)
+}
+
 func TestAccCGCSnippet_eventarcWorkflowsExample(t *testing.T) {
 	t.Parallel()
 
@@ -1298,6 +1369,49 @@ resource "google_storage_bucket" "bucket" {
 resource "google_pubsub_topic" "topic" {
   name     = "tf_test_your_topic_name%{random_suffix}"
   provider = google-beta
+}
+`, context)
+}
+
+func TestAccCGCSnippet_storageObjectLifecycleSettingExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProvidersOiCS,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCGCSnippet_storageObjectLifecycleSettingExample(context),
+			},
+			{
+				ResourceName:            "google_storage_bucket.auto_expire",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"force_destroy"},
+			},
+		},
+	})
+}
+
+func testAccCGCSnippet_storageObjectLifecycleSettingExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_storage_bucket" "auto_expire" {
+  name          = "tf-test-example-bucket%{random_suffix}"
+  location      = "US"
+  uniform_bucket_level_access = true
+
+  lifecycle_rule {
+    condition {
+      age = 3
+    }
+    action {
+      type = "Delete"
+    }
+  }
 }
 `, context)
 }

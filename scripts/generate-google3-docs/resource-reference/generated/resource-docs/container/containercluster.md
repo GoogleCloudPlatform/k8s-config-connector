@@ -257,6 +257,11 @@ nodeConfig:
   oauthScopes:
   - string
   preemptible: boolean
+  reservationAffinity:
+    consumeReservationType: string
+    key: string
+    values:
+    - string
   sandboxConfig:
     sandboxType: string
   serviceAccountRef:
@@ -278,6 +283,10 @@ nodeConfig:
     nodeMetadata: string
 nodeLocations:
 - string
+nodePoolAutoConfig:
+  networkTags:
+    tags:
+    - string
 nodeVersion: string
 notificationConfig:
   pubsub:
@@ -2089,6 +2098,56 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>nodeConfig.reservationAffinity</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. The reservation affinity configuration for the node pool.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.reservationAffinity.consumeReservationType</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Corresponds to the type of reservation consumption.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.reservationAffinity.key</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. The label key of a reservation resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.reservationAffinity.values</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Immutable. The label values of the reservation resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.reservationAffinity.values[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>nodeConfig.sandboxConfig</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -2300,6 +2359,46 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>nodeLocations[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodePoolAutoConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Node pool configs that apply to all auto-provisioned node pools in autopilot clusters and node auto-provisioning enabled clusters.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodePoolAutoConfig.networkTags</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Collection of Compute Engine network tags that can be applied to a node's underlying VM instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodePoolAutoConfig.networkTags.tags</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}List of network tags applied to auto-provisioned node pools.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodePoolAutoConfig.networkTags.tags[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>

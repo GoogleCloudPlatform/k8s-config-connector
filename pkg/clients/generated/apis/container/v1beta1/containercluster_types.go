@@ -439,6 +439,12 @@ type ClusterNetworkPolicyConfig struct {
 	Disabled bool `json:"disabled"`
 }
 
+type ClusterNetworkTags struct {
+	/* List of network tags applied to auto-provisioned node pools. */
+	// +optional
+	Tags []string `json:"tags,omitempty"`
+}
+
 type ClusterNodeConfig struct {
 	/*  */
 	// +optional
@@ -514,6 +520,10 @@ type ClusterNodeConfig struct {
 	// +optional
 	Preemptible *bool `json:"preemptible,omitempty"`
 
+	/* Immutable. The reservation affinity configuration for the node pool. */
+	// +optional
+	ReservationAffinity *ClusterReservationAffinity `json:"reservationAffinity,omitempty"`
+
 	/* Immutable. Sandbox configuration for this node. */
 	// +optional
 	SandboxConfig *ClusterSandboxConfig `json:"sandboxConfig,omitempty"`
@@ -541,6 +551,12 @@ type ClusterNodeConfig struct {
 	/* Immutable. The workload metadata configuration for this node. */
 	// +optional
 	WorkloadMetadataConfig *ClusterWorkloadMetadataConfig `json:"workloadMetadataConfig,omitempty"`
+}
+
+type ClusterNodePoolAutoConfig struct {
+	/* Collection of Compute Engine network tags that can be applied to a node's underlying VM instance. */
+	// +optional
+	NetworkTags *ClusterNetworkTags `json:"networkTags,omitempty"`
 }
 
 type ClusterNotificationConfig struct {
@@ -619,6 +635,19 @@ type ClusterReleaseChannel struct {
 	* REGULAR: Multiple per month upgrade cadence; Production users who need features not yet offered in the Stable channel.
 	* STABLE: Every few months upgrade cadence; Production users who need stability above all else, and for whom frequent upgrades are too risky. */
 	Channel string `json:"channel"`
+}
+
+type ClusterReservationAffinity struct {
+	/* Immutable. Corresponds to the type of reservation consumption. */
+	ConsumeReservationType string `json:"consumeReservationType"`
+
+	/* Immutable. The label key of a reservation resource. */
+	// +optional
+	Key *string `json:"key,omitempty"`
+
+	/* Immutable. The label values of the reservation resource. */
+	// +optional
+	Values []string `json:"values,omitempty"`
 }
 
 type ClusterResourceLimits struct {
@@ -860,6 +889,10 @@ type ContainerClusterSpec struct {
 	/* The list of zones in which the cluster's nodes are located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. If this is specified for a zonal cluster, omit the cluster's zone. */
 	// +optional
 	NodeLocations []string `json:"nodeLocations,omitempty"`
+
+	/* Node pool configs that apply to all auto-provisioned node pools in autopilot clusters and node auto-provisioning enabled clusters. */
+	// +optional
+	NodePoolAutoConfig *ClusterNodePoolAutoConfig `json:"nodePoolAutoConfig,omitempty"`
 
 	/*  */
 	// +optional

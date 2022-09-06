@@ -761,6 +761,8 @@ func TestAccSqlDatabaseInstance_withPrivateNetwork_withAllocatedIpRange(t *testi
 }
 
 func TestAccSqlDatabaseInstance_withPrivateNetwork_withAllocatedIpRangeReplica(t *testing.T) {
+	// Service Networking
+	skipIfVcr(t)
 	t.Parallel()
 
 	databaseName := "tf-test-" + randString(t, 10)
@@ -792,6 +794,8 @@ func TestAccSqlDatabaseInstance_withPrivateNetwork_withAllocatedIpRangeReplica(t
 }
 
 func TestAccSqlDatabaseInstance_withPrivateNetwork_withAllocatedIpRangeClone(t *testing.T) {
+	// Service Networking
+	skipIfVcr(t)
 	t.Parallel()
 
 	databaseName := "tf-test-" + randString(t, 10)
@@ -1195,6 +1199,36 @@ func TestAccSqlDatabaseInstance_SqlServerAuditConfig(t *testing.T) {
 	})
 }
 
+func TestAccSqlDatabaseInstance_mysqlMajorVersionUpgrade(t *testing.T) {
+	t.Parallel()
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testGoogleSqlDatabaseInstance_basic2,
+			},
+			{
+				ResourceName:            "google_sql_database_instance.instance",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"root_password", "deletion_protection"},
+			},
+			{
+				Config: testGoogleSqlDatabaseInstance_basic2_update,
+			},
+			{
+				ResourceName:            "google_sql_database_instance.instance",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"root_password", "deletion_protection"},
+			},
+		},
+	})
+}
+
 func TestAccSqlDatabaseInstance_sqlMysqlInstancePvpExample(t *testing.T) {
 	t.Parallel()
 
@@ -1246,6 +1280,17 @@ var testGoogleSqlDatabaseInstance_basic2 = `
 resource "google_sql_database_instance" "instance" {
   region              = "us-central1"
   database_version    = "MYSQL_5_7"
+  deletion_protection = false
+  settings {
+    tier = "db-f1-micro"
+  }
+}
+`
+
+var testGoogleSqlDatabaseInstance_basic2_update = `
+resource "google_sql_database_instance" "instance" {
+  region              = "us-central1"
+  database_version    = "MYSQL_8_0"
   deletion_protection = false
   settings {
     tier = "db-f1-micro"

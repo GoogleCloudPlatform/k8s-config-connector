@@ -956,6 +956,26 @@ spec:
                     description: Immutable. Whether the nodes are created as preemptible
                       VM instances.
                     type: boolean
+                  reservationAffinity:
+                    description: Immutable. The reservation affinity configuration
+                      for the node pool.
+                    properties:
+                      consumeReservationType:
+                        description: Immutable. Corresponds to the type of reservation
+                          consumption.
+                        type: string
+                      key:
+                        description: Immutable. The label key of a reservation resource.
+                        type: string
+                      values:
+                        description: Immutable. The label values of the reservation
+                          resource.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - consumeReservationType
+                    type: object
                   sandboxConfig:
                     description: Immutable. Sandbox configuration for this node.
                     properties:
@@ -1058,6 +1078,23 @@ spec:
                 items:
                   type: string
                 type: array
+              nodePoolAutoConfig:
+                description: Node pool configs that apply to all auto-provisioned
+                  node pools in autopilot clusters and node auto-provisioning enabled
+                  clusters.
+                properties:
+                  networkTags:
+                    description: Collection of Compute Engine network tags that can
+                      be applied to a node's underlying VM instance.
+                    properties:
+                      tags:
+                        description: List of network tags applied to auto-provisioned
+                          node pools.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                type: object
               nodeVersion:
                 type: string
               notificationConfig:
