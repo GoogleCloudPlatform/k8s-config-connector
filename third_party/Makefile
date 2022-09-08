@@ -132,9 +132,6 @@ apply-patches:
 	# Update the default description from "Managed by Terraform" to "Managed by
 	# Config Connector" in dns_managed_zone and dns_policy.
 	git apply ../hack/terraform-overrides/dns_resources_default_description.patch
-	# Add validation so that numNodes cannot be
-	# changed to less than 1 after creation (otherwise the error is silently dropped)
-	git apply ../hack/terraform-overrides/bigtable_instance_numnodes_validate.patch
 	# The newly-introduced confidential_instance_config field on
 	# compute_instance_template is incorrectly marked as Computed, causing
 	# a persistent ForceNew diff.

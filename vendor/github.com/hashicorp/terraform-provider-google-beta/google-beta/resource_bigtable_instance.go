@@ -417,9 +417,6 @@ func expandBigtableClusters(clusters []interface{}, instanceID string, config *C
 		case "HDD":
 			storageType = bigtable.HDD
 		}
-		if cluster["num_nodes"].(int) < 1 {
-			return nil, fmt.Errorf("Error: cluster.numNodes cannot be less than 1")
-		}
 
 		cluster_config := bigtable.ClusterConfig{
 			InstanceID:  instanceID,
