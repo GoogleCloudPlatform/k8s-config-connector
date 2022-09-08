@@ -50,7 +50,7 @@ type SetLastAppliedOptions struct {
 	namespace                    string
 	enforceNamespace             bool
 	dryRunStrategy               cmdutil.DryRunStrategy
-	dryRunVerifier               *resource.QueryParamVerifier
+	dryRunVerifier               *resource.DryRunVerifier
 	shortOutput                  bool
 	output                       string
 	patchBufferList              []PatchBuffer
@@ -128,7 +128,7 @@ func (o *SetLastAppliedOptions) Complete(f cmdutil.Factory, cmd *cobra.Command) 
 	if err != nil {
 		return err
 	}
-	o.dryRunVerifier = resource.NewQueryParamVerifier(dynamicClient, f.OpenAPIGetter(), resource.QueryParamDryRun)
+	o.dryRunVerifier = resource.NewDryRunVerifier(dynamicClient, f.OpenAPIGetter())
 	o.output = cmdutil.GetFlagString(cmd, "output")
 	o.shortOutput = o.output == "name"
 

@@ -91,7 +91,7 @@ type Etcd struct {
 }
 
 // Start starts the etcd, waits for it to come up, and returns an error, if one
-// occurred.
+// occoured.
 func (e *Etcd) Start() error {
 	if err := e.setProcessState(); err != nil {
 		return err

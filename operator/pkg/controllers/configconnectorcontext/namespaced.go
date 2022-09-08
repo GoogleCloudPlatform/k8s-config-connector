@@ -66,7 +66,7 @@ func transformNamespacedComponentTemplates(ctx context.Context, c client.Client,
 		if err != nil {
 			return nil, err
 		}
-		if processed.Kind == rbacv1.ServiceAccountKind && strings.HasPrefix(processed.GetName(), k8s.ServiceAccountNamePrefix) {
+		if processed.Kind == rbacv1.ServiceAccountKind && strings.HasPrefix(processed.Name, k8s.ServiceAccountNamePrefix) {
 			processed, err = controllers.AnnotateServiceAccountObject(processed, ccc.Spec.GoogleServiceAccount)
 			if err != nil {
 				return nil, errors.Wrap(err, fmt.Sprintf("error annotating ServiceAccount %v/%v", obj.UnstructuredObject().GetNamespace(), obj.UnstructuredObject().GetName()))

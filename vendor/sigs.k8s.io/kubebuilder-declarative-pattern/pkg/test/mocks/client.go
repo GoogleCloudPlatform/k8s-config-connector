@@ -46,44 +46,11 @@ func (f FakeClient) Get(ctx context.Context, key client.ObjectKey, out client.Ob
 	return err
 }
 
-func (f FakeClient) List(ctx context.Context, list client.ObjectList, opts ...client.ListOption) error {
-	gvkUnprocessed, err := apiutil.GVKForObject(list, f.scheme)
-	if err != nil {
-		return err
-	}
-	// this will be a SomethingList kind, and we want to get the Something: remove `List` (last 4 chars) of this string
-	nonListKind := gvkUnprocessed.Kind
-	nonListKind = nonListKind[:len(nonListKind)-4]
-	gvk := schema.GroupVersionKind{gvkUnprocessed.Group, gvkUnprocessed.Version, nonListKind}
-	gvr, _ := meta.UnsafeGuessKindToResource(gvk)
-
-	listObject, err := f.tracker.List(gvr, gvk, "")
-	if err != nil {
-		return err
-	}
-
-	items, err := meta.ExtractList(listObject)
-	if err != nil {
-		return err
-	}
-
-	return meta.SetList(list, items)
+func (FakeClient) List(ctx context.Context, list client.ObjectList, opts ...client.ListOption) error {
+	panic("not implemented")
 }
 
 func (f FakeClient) Create(ctx context.Context, obj client.Object, opts ...client.CreateOption) error {
-	gvr, err := getGVRFromObject(obj, f.scheme)
-	if err != nil {
-		return err
-	}
-	return f.create(gvr, obj, opts...)
-}
-
-func (f FakeClient) CreateRuntimeObject(ctx context.Context, obj runtime.Object, opts ...client.CreateOption) error {
-	gvr := getGVRFromRuntimeObject(obj)
-	return f.create(gvr, obj, opts...)
-}
-
-func (f FakeClient) create(gvr schema.GroupVersionResource, obj runtime.Object, opts ...client.CreateOption) error {
 	createOptions := &client.CreateOptions{}
 	createOptions.ApplyOptions(opts)
 
@@ -93,6 +60,10 @@ func (f FakeClient) create(gvr schema.GroupVersionResource, obj runtime.Object, 
 		}
 	}
 
+	gvr, err := getGVRFromObject(obj, f.scheme)
+	if err != nil {
+		return err
+	}
 	accessor, err := meta.Accessor(obj)
 	if err != nil {
 		return err
@@ -100,21 +71,8 @@ func (f FakeClient) create(gvr schema.GroupVersionResource, obj runtime.Object, 
 	return f.tracker.Create(gvr, obj, accessor.GetNamespace())
 }
 
-func (f FakeClient) Delete(ctx context.Context, obj client.Object, opts ...client.DeleteOption) error {
-	gvr, err := getGVRFromObject(obj, f.scheme)
-	if err != nil {
-		return err
-	}
-	return f.tracker.Delete(gvr, obj.GetNamespace(), obj.GetName())
-}
-
-func (f FakeClient) DeleteRuntimeObject(ctx context.Context, obj runtime.Object, opts ...client.DeleteOption) error {
-	gvr := getGVRFromRuntimeObject(obj)
-	accessor, err := meta.Accessor(obj)
-	if err != nil {
-		return err
-	}
-	return f.tracker.Delete(gvr, accessor.GetNamespace(), accessor.GetName())
+func (FakeClient) Delete(ctx context.Context, obj client.Object, opts ...client.DeleteOption) error {
+	return nil
 }
 
 func (FakeClient) DeleteAllOf(ctx context.Context, obj client.Object, opts ...client.DeleteAllOfOption) error {
@@ -148,12 +106,6 @@ func getGVRFromObject(obj client.Object, scheme *runtime.Scheme) (schema.GroupVe
 	}
 	gvr, _ := meta.UnsafeGuessKindToResource(gvk)
 	return gvr, nil
-}
-
-func getGVRFromRuntimeObject(obj runtime.Object) schema.GroupVersionResource {
-	gvk := obj.GetObjectKind().GroupVersionKind()
-	gvr, _ := meta.UnsafeGuessKindToResource(gvk)
-	return gvr
 }
 
 type FakeStatusClient struct{}

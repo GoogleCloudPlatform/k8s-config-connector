@@ -36,7 +36,7 @@ import (
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 	cmdwait "k8s.io/kubectl/pkg/cmd/wait"
 	"k8s.io/kubectl/pkg/rawhttp"
-	"k8s.io/kubectl/pkg/util/completion"
+	"k8s.io/kubectl/pkg/util"
 	"k8s.io/kubectl/pkg/util/i18n"
 	"k8s.io/kubectl/pkg/util/templates"
 )
@@ -69,11 +69,7 @@ var (
 
 		Note that the delete command does NOT do resource version checks, so if someone submits an
 		update to a resource right when you submit a delete, their update will be lost along with the
-		rest of the resource.
-
-		After a CustomResourceDefinition is deleted, invalidation of discovery cache may take up
-		to 10 minutes. If you don't want to wait, you might want to run "kubectl api-resources"
-		to refresh the discovery cache.`))
+		rest of the resource.`))
 
 	deleteExample = templates.Examples(i18n.T(`
 		# Delete a pod using the type and name specified in pod.json
@@ -81,9 +77,6 @@ var (
 
 		# Delete resources from a directory containing kustomization.yaml - e.g. dir/kustomization.yaml
 		kubectl delete -k dir
-
-		# Delete resources from all files that end with '.json' - i.e. expand wildcard characters in file names
-		kubectl apply -f '*.json'
 
 		# Delete a pod based on the type and name in the JSON passed into stdin
 		cat pod.json | kubectl delete -f -
@@ -124,7 +117,7 @@ type DeleteOptions struct {
 	Timeout     time.Duration
 
 	DryRunStrategy cmdutil.DryRunStrategy
-	DryRunVerifier *resource.QueryParamVerifier
+	DryRunVerifier *resource.DryRunVerifier
 
 	Output string
 
@@ -144,7 +137,7 @@ func NewCmdDelete(f cmdutil.Factory, streams genericclioptions.IOStreams) *cobra
 		Short:                 i18n.T("Delete resources by file names, stdin, resources and names, or by resources and label selector"),
 		Long:                  deleteLong,
 		Example:               deleteExample,
-		ValidArgsFunction:     completion.ResourceTypeAndNameCompletionFunc(f),
+		ValidArgsFunction:     util.ResourceTypeAndNameCompletionFunc(f),
 		Run: func(cmd *cobra.Command, args []string) {
 			o, err := deleteFlags.ToOptions(nil, streams)
 			cmdutil.CheckErr(err)
@@ -198,7 +191,7 @@ func (o *DeleteOptions) Complete(f cmdutil.Factory, args []string, cmd *cobra.Co
 	if err != nil {
 		return err
 	}
-	o.DryRunVerifier = resource.NewQueryParamVerifier(dynamicClient, f.OpenAPIGetter(), resource.QueryParamDryRun)
+	o.DryRunVerifier = resource.NewDryRunVerifier(dynamicClient, f.OpenAPIGetter())
 
 	if len(o.Raw) == 0 {
 		r := f.NewBuilder().

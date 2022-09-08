@@ -19,7 +19,6 @@ package apiutil
 import (
 	"errors"
 	"sync"
-	"sync/atomic"
 
 	"golang.org/x/time/rate"
 	"k8s.io/apimachinery/pkg/api/meta"
@@ -39,8 +38,7 @@ type dynamicRESTMapper struct {
 
 	lazy bool
 	// Used for lazy init.
-	inited  uint32
-	initMtx sync.Mutex
+	initOnce sync.Once
 }
 
 // DynamicRESTMapperOption is a functional option on the dynamicRESTMapper.
@@ -127,18 +125,11 @@ func (drm *dynamicRESTMapper) setStaticMapper() error {
 
 // init initializes drm only once if drm is lazy.
 func (drm *dynamicRESTMapper) init() (err error) {
-	// skip init if drm is not lazy or has initialized
-	if !drm.lazy || atomic.LoadUint32(&drm.inited) != 0 {
-		return nil
-	}
-
-	drm.initMtx.Lock()
-	defer drm.initMtx.Unlock()
-	if drm.inited == 0 {
-		if err = drm.setStaticMapper(); err == nil {
-			atomic.StoreUint32(&drm.inited, 1)
+	drm.initOnce.Do(func() {
+		if drm.lazy {
+			err = drm.setStaticMapper()
 		}
-	}
+	})
 	return err
 }
 

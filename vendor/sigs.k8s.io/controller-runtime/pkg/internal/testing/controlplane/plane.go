@@ -47,18 +47,13 @@ type ControlPlane struct {
 }
 
 // Start will start your control plane processes. To stop them, call Stop().
-func (f *ControlPlane) Start() (retErr error) {
+func (f *ControlPlane) Start() error {
 	if f.Etcd == nil {
 		f.Etcd = &Etcd{}
 	}
 	if err := f.Etcd.Start(); err != nil {
 		return err
 	}
-	defer func() {
-		if retErr != nil {
-			_ = f.Etcd.Stop()
-		}
-	}()
 
 	if f.APIServer == nil {
 		f.APIServer = &APIServer{}
@@ -67,11 +62,6 @@ func (f *ControlPlane) Start() (retErr error) {
 	if err := f.APIServer.Start(); err != nil {
 		return err
 	}
-	defer func() {
-		if retErr != nil {
-			_ = f.APIServer.Stop()
-		}
-	}()
 
 	// provision the default user -- can be removed when the related
 	// methods are removed.  The default user has admin permissions to
@@ -98,7 +88,6 @@ func (f *ControlPlane) Stop() error {
 			errList = append(errList, err)
 		}
 	}
-
 	if f.Etcd != nil {
 		if err := f.Etcd.Stop(); err != nil {
 			errList = append(errList, err)

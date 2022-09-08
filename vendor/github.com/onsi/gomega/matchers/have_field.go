@@ -12,13 +12,6 @@ func extractField(actual interface{}, field string) (interface{}, error) {
 	fields := strings.SplitN(field, ".", 2)
 	actualValue := reflect.ValueOf(actual)
 
-	if actualValue.Kind() == reflect.Ptr {
-		actualValue = actualValue.Elem()
-	}
-	if actualValue == (reflect.Value{}) {
-		return nil, fmt.Errorf("HaveField encountered nil while dereferencing a pointer of type %T.", actual)
-	}
-
 	if actualValue.Kind() != reflect.Struct {
 		return nil, fmt.Errorf("HaveField encountered:\n%s\nWhich is not a struct.", format.Object(actual, 1))
 	}
