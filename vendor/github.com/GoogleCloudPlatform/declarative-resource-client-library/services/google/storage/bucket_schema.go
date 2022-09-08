@@ -30,7 +30,7 @@ func DCLBucketSchema() *dcl.Schema {
 				Description: "The function used to get information about a Bucket",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Bucket",
+						Name:        "bucket",
 						Required:    true,
 						Description: "A full instance of a Bucket",
 					},
@@ -40,7 +40,7 @@ func DCLBucketSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Bucket",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Bucket",
+						Name:        "bucket",
 						Required:    true,
 						Description: "A full instance of a Bucket",
 					},
@@ -50,7 +50,7 @@ func DCLBucketSchema() *dcl.Schema {
 				Description: "The function used to delete a Bucket",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Bucket",
+						Name:        "bucket",
 						Required:    true,
 						Description: "A full instance of a Bucket",
 					},

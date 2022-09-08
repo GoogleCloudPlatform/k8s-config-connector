@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Note
     parameters:
-    - name: Note
+    - name: note
       required: true
       description: A full instance of a Note
   apply:
     description: The function used to apply information about a Note
     parameters:
-    - name: Note
+    - name: note
       required: true
       description: A full instance of a Note
   delete:
     description: The function used to delete a Note
     parameters:
-    - name: Note
+    - name: note
       required: true
       description: A full instance of a Note
   deleteAll:

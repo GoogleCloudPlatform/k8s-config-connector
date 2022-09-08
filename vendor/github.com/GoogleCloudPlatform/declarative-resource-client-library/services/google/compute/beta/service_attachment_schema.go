@@ -39,7 +39,7 @@ func DCLServiceAttachmentSchema() *dcl.Schema {
 				Description: "The function used to get information about a ServiceAttachment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "ServiceAttachment",
+						Name:        "serviceAttachment",
 						Required:    true,
 						Description: "A full instance of a ServiceAttachment",
 					},
@@ -49,7 +49,7 @@ func DCLServiceAttachmentSchema() *dcl.Schema {
 				Description: "The function used to apply information about a ServiceAttachment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "ServiceAttachment",
+						Name:        "serviceAttachment",
 						Required:    true,
 						Description: "A full instance of a ServiceAttachment",
 					},
@@ -59,7 +59,7 @@ func DCLServiceAttachmentSchema() *dcl.Schema {
 				Description: "The function used to delete a ServiceAttachment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "ServiceAttachment",
+						Name:        "serviceAttachment",
 						Required:    true,
 						Description: "A full instance of a ServiceAttachment",
 					},

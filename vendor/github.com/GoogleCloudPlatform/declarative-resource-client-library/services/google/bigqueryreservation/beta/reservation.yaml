@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Reservation
     parameters:
-    - name: Reservation
+    - name: reservation
       required: true
       description: A full instance of a Reservation
   apply:
     description: The function used to apply information about a Reservation
     parameters:
-    - name: Reservation
+    - name: reservation
       required: true
       description: A full instance of a Reservation
   delete:
     description: The function used to delete a Reservation
     parameters:
-    - name: Reservation
+    - name: reservation
       required: true
       description: A full instance of a Reservation
   deleteAll:

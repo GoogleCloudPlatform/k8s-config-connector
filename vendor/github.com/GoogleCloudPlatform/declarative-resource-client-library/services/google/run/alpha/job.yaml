@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Job
     parameters:
-    - name: Job
+    - name: job
       required: true
       description: A full instance of a Job
   apply:
     description: The function used to apply information about a Job
     parameters:
-    - name: Job
+    - name: job
       required: true
       description: A full instance of a Job
   delete:
     description: The function used to delete a Job
     parameters:
-    - name: Job
+    - name: job
       required: true
       description: A full instance of a Job
   deleteAll:

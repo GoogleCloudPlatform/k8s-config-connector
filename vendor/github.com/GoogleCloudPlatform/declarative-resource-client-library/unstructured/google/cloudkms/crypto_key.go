@@ -448,9 +448,9 @@ func GetCryptoKey(ctx context.Context, config *dcl.Config, u *unstructured.Resou
 	return CryptoKeyToUnstructured(r), nil
 }
 
-func ListCryptoKey(ctx context.Context, config *dcl.Config, project string, location string, keyring string) ([]*unstructured.Resource, error) {
+func ListCryptoKey(ctx context.Context, config *dcl.Config, project string, location string, keyRing string) ([]*unstructured.Resource, error) {
 	c := dclService.NewClient(config)
-	l, err := c.ListCryptoKey(ctx, project, location, keyring)
+	l, err := c.ListCryptoKey(ctx, project, location, keyRing)
 	if err != nil {
 		return nil, err
 	}

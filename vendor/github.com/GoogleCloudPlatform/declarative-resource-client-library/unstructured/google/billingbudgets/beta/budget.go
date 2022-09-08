@@ -479,9 +479,9 @@ func GetBudget(ctx context.Context, config *dcl.Config, u *unstructured.Resource
 	return BudgetToUnstructured(r), nil
 }
 
-func ListBudget(ctx context.Context, config *dcl.Config, billingaccount string) ([]*unstructured.Resource, error) {
+func ListBudget(ctx context.Context, config *dcl.Config, billingAccount string) ([]*unstructured.Resource, error) {
 	c := dclService.NewClient(config)
-	l, err := c.ListBudget(ctx, billingaccount)
+	l, err := c.ListBudget(ctx, billingAccount)
 	if err != nil {
 		return nil, err
 	}

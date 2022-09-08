@@ -20,32 +20,32 @@ paths:
   get:
     description: The function used to get information about a Instance
     parameters:
-    - name: Instance
+    - name: instance
       required: true
       description: A full instance of a Instance
   apply:
     description: The function used to apply information about a Instance
     parameters:
-    - name: Instance
+    - name: instance
       required: true
       description: A full instance of a Instance
   delete:
     description: The function used to delete a Instance
     parameters:
-    - name: Instance
+    - name: instance
       required: true
       description: A full instance of a Instance
   deleteAll:
     description: The function used to delete all Instance
     parameters:
-    - name: apigeeorganization
+    - name: apigeeOrganization
       required: true
       schema:
         type: string
   list:
     description: The function used to list information about many Instance
     parameters:
-    - name: apigeeorganization
+    - name: apigeeOrganization
       required: true
       schema:
         type: string

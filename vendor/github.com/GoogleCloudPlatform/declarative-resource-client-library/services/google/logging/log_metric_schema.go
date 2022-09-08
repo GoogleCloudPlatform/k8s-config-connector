@@ -29,7 +29,7 @@ func DCLLogMetricSchema() *dcl.Schema {
 				Description: "The function used to get information about a LogMetric",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "LogMetric",
+						Name:        "logMetric",
 						Required:    true,
 						Description: "A full instance of a LogMetric",
 					},
@@ -39,7 +39,7 @@ func DCLLogMetricSchema() *dcl.Schema {
 				Description: "The function used to apply information about a LogMetric",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "LogMetric",
+						Name:        "logMetric",
 						Required:    true,
 						Description: "A full instance of a LogMetric",
 					},
@@ -49,7 +49,7 @@ func DCLLogMetricSchema() *dcl.Schema {
 				Description: "The function used to delete a LogMetric",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "LogMetric",
+						Name:        "logMetric",
 						Required:    true,
 						Description: "A full instance of a LogMetric",
 					},

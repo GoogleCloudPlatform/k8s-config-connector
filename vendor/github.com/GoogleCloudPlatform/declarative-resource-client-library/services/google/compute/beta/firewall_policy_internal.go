@@ -22,6 +22,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
+	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl/operations"
 )
 
 func (r *FirewallPolicy) validate() error {
@@ -129,6 +130,45 @@ type updateFirewallPolicyPatchOperation struct {
 // do will transcribe a subset of the resource into a request object and send a
 // PUT request to a single URL.
 
+func (op *updateFirewallPolicyPatchOperation) do(ctx context.Context, r *FirewallPolicy, c *Client) error {
+	_, err := c.GetFirewallPolicy(ctx, r)
+	if err != nil {
+		return err
+	}
+
+	u, err := r.updateURL(c.Config.BasePath, "Patch")
+	if err != nil {
+		return err
+	}
+
+	req, err := newUpdateFirewallPolicyPatchRequest(ctx, r, c)
+	if err != nil {
+		return err
+	}
+
+	c.Config.Logger.InfoWithContextf(ctx, "Created update: %#v", req)
+	body, err := marshalUpdateFirewallPolicyPatchRequest(c, req)
+	if err != nil {
+		return err
+	}
+	resp, err := dcl.SendRequest(ctx, c.Config, "PATCH", u, bytes.NewBuffer(body), c.Config.RetryProvider)
+	if err != nil {
+		return err
+	}
+
+	var o operations.ComputeOperation
+	if err := dcl.ParseResponse(resp.Response, &o); err != nil {
+		return err
+	}
+	err = o.Wait(context.WithValue(ctx, dcl.DoNotLogRequestsKey, true), c.Config, r.basePath(), "GET")
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (c *Client) listFirewallPolicyRaw(ctx context.Context, r *FirewallPolicy, pageToken string, pageSize int32) ([]byte, error) {
 	u, err := r.urlNormalized().listURL(c.Config.BasePath)
 	if err != nil {
@@ -204,6 +244,55 @@ func (c *Client) deleteAllFirewallPolicy(ctx context.Context, f func(*FirewallPo
 }
 
 type deleteFirewallPolicyOperation struct{}
+
+func (op *deleteFirewallPolicyOperation) do(ctx context.Context, r *FirewallPolicy, c *Client) error {
+	r, err := c.GetFirewallPolicy(ctx, r)
+	if err != nil {
+		if dcl.IsNotFound(err) {
+			c.Config.Logger.InfoWithContextf(ctx, "FirewallPolicy not found, returning. Original error: %v", err)
+			return nil
+		}
+		c.Config.Logger.WarningWithContextf(ctx, "GetFirewallPolicy checking for existence. error: %v", err)
+		return err
+	}
+
+	u, err := r.deleteURL(c.Config.BasePath)
+	if err != nil {
+		return err
+	}
+
+	// Delete should never have a body
+	body := &bytes.Buffer{}
+	resp, err := dcl.SendRequest(ctx, c.Config, "DELETE", u, body, c.Config.RetryProvider)
+	if err != nil {
+		return err
+	}
+
+	// wait for object to be deleted.
+	var o operations.ComputeOperation
+	if err := dcl.ParseResponse(resp.Response, &o); err != nil {
+		return err
+	}
+	if err := o.Wait(context.WithValue(ctx, dcl.DoNotLogRequestsKey, true), c.Config, r.basePath(), "GET"); err != nil {
+		return err
+	}
+
+	// We saw a race condition where for some successful delete operation, the Get calls returned resources for a short duration.
+	// This is the reason we are adding retry to handle that case.
+	retriesRemaining := 10
+	dcl.Do(ctx, func(ctx context.Context) (*dcl.RetryDetails, error) {
+		_, err := c.GetFirewallPolicy(ctx, r)
+		if dcl.IsNotFound(err) {
+			return nil, nil
+		}
+		if retriesRemaining > 0 {
+			retriesRemaining--
+			return &dcl.RetryDetails{}, dcl.OperationNotDone{}
+		}
+		return nil, dcl.NotDeletedError{ExistingResource: r}
+	}, c.Config.RetryProvider)
+	return nil
+}
 
 // Create operations are similar to Update operations, although they do not have
 // specific request objects. The Create request object is the json encoding of

@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Realm
     parameters:
-    - name: Realm
+    - name: realm
       required: true
       description: A full instance of a Realm
   apply:
     description: The function used to apply information about a Realm
     parameters:
-    - name: Realm
+    - name: realm
       required: true
       description: A full instance of a Realm
   delete:
     description: The function used to delete a Realm
     parameters:
-    - name: Realm
+    - name: realm
       required: true
       description: A full instance of a Realm
   deleteAll:

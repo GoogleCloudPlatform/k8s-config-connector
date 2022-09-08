@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a HttpFilter
     parameters:
-    - name: HttpFilter
+    - name: httpFilter
       required: true
       description: A full instance of a HttpFilter
   apply:
     description: The function used to apply information about a HttpFilter
     parameters:
-    - name: HttpFilter
+    - name: httpFilter
       required: true
       description: A full instance of a HttpFilter
   delete:
     description: The function used to delete a HttpFilter
     parameters:
-    - name: HttpFilter
+    - name: httpFilter
       required: true
       description: A full instance of a HttpFilter
   deleteAll:

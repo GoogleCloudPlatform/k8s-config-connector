@@ -29,7 +29,7 @@ func DCLCertificateAuthoritySchema() *dcl.Schema {
 				Description: "The function used to get information about a CertificateAuthority",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "CertificateAuthority",
+						Name:        "certificateAuthority",
 						Required:    true,
 						Description: "A full instance of a CertificateAuthority",
 					},
@@ -39,7 +39,7 @@ func DCLCertificateAuthoritySchema() *dcl.Schema {
 				Description: "The function used to apply information about a CertificateAuthority",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "CertificateAuthority",
+						Name:        "certificateAuthority",
 						Required:    true,
 						Description: "A full instance of a CertificateAuthority",
 					},
@@ -49,7 +49,7 @@ func DCLCertificateAuthoritySchema() *dcl.Schema {
 				Description: "The function used to delete a CertificateAuthority",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "CertificateAuthority",
+						Name:        "certificateAuthority",
 						Required:    true,
 						Description: "A full instance of a CertificateAuthority",
 					},
@@ -73,7 +73,7 @@ func DCLCertificateAuthoritySchema() *dcl.Schema {
 						},
 					},
 					dcl.PathParameters{
-						Name:     "capool",
+						Name:     "caPool",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",
@@ -99,7 +99,7 @@ func DCLCertificateAuthoritySchema() *dcl.Schema {
 						},
 					},
 					dcl.PathParameters{
-						Name:     "capool",
+						Name:     "caPool",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",

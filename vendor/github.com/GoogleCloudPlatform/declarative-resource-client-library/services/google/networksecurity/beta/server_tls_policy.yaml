@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a ServerTlsPolicy
     parameters:
-    - name: ServerTlsPolicy
+    - name: serverTlsPolicy
       required: true
       description: A full instance of a ServerTlsPolicy
   apply:
     description: The function used to apply information about a ServerTlsPolicy
     parameters:
-    - name: ServerTlsPolicy
+    - name: serverTlsPolicy
       required: true
       description: A full instance of a ServerTlsPolicy
   delete:
     description: The function used to delete a ServerTlsPolicy
     parameters:
-    - name: ServerTlsPolicy
+    - name: serverTlsPolicy
       required: true
       description: A full instance of a ServerTlsPolicy
   deleteAll:

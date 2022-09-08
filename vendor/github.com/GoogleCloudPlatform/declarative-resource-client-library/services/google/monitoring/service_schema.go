@@ -29,7 +29,7 @@ func DCLServiceSchema() *dcl.Schema {
 				Description: "The function used to get information about a Service",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Service",
+						Name:        "service",
 						Required:    true,
 						Description: "A full instance of a Service",
 					},
@@ -39,7 +39,7 @@ func DCLServiceSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Service",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Service",
+						Name:        "service",
 						Required:    true,
 						Description: "A full instance of a Service",
 					},
@@ -49,7 +49,7 @@ func DCLServiceSchema() *dcl.Schema {
 				Description: "The function used to delete a Service",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Service",
+						Name:        "service",
 						Required:    true,
 						Description: "A full instance of a Service",
 					},

@@ -29,7 +29,7 @@ func DCLForwardingRuleSchema() *dcl.Schema {
 				Description: "The function used to get information about a ForwardingRule",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "ForwardingRule",
+						Name:        "forwardingRule",
 						Required:    true,
 						Description: "A full instance of a ForwardingRule",
 					},
@@ -39,7 +39,7 @@ func DCLForwardingRuleSchema() *dcl.Schema {
 				Description: "The function used to apply information about a ForwardingRule",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "ForwardingRule",
+						Name:        "forwardingRule",
 						Required:    true,
 						Description: "A full instance of a ForwardingRule",
 					},
@@ -49,7 +49,7 @@ func DCLForwardingRuleSchema() *dcl.Schema {
 				Description: "The function used to delete a ForwardingRule",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "ForwardingRule",
+						Name:        "forwardingRule",
 						Required:    true,
 						Description: "A full instance of a ForwardingRule",
 					},

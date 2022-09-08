@@ -173,9 +173,9 @@ func GetInstance(ctx context.Context, config *dcl.Config, u *unstructured.Resour
 	return InstanceToUnstructured(r), nil
 }
 
-func ListInstance(ctx context.Context, config *dcl.Config, apigeeorganization string) ([]*unstructured.Resource, error) {
+func ListInstance(ctx context.Context, config *dcl.Config, apigeeOrganization string) ([]*unstructured.Resource, error) {
 	c := dclService.NewClient(config)
-	l, err := c.ListInstance(ctx, apigeeorganization)
+	l, err := c.ListInstance(ctx, apigeeOrganization)
 	if err != nil {
 		return nil, err
 	}

@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a DeidentifyTemplate
     parameters:
-    - name: DeidentifyTemplate
+    - name: deidentifyTemplate
       required: true
       description: A full instance of a DeidentifyTemplate
   apply:
     description: The function used to apply information about a DeidentifyTemplate
     parameters:
-    - name: DeidentifyTemplate
+    - name: deidentifyTemplate
       required: true
       description: A full instance of a DeidentifyTemplate
   delete:
     description: The function used to delete a DeidentifyTemplate
     parameters:
-    - name: DeidentifyTemplate
+    - name: deidentifyTemplate
       required: true
       description: A full instance of a DeidentifyTemplate
   deleteAll:

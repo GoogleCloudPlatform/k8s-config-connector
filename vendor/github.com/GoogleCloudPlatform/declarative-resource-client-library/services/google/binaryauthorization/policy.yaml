@@ -20,13 +20,13 @@ paths:
   get:
     description: The function used to get information about a Policy
     parameters:
-    - name: Policy
+    - name: policy
       required: true
       description: A full instance of a Policy
   apply:
     description: The function used to apply information about a Policy
     parameters:
-    - name: Policy
+    - name: policy
       required: true
       description: A full instance of a Policy
 components:

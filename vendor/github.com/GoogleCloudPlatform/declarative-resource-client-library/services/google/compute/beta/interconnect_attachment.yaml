@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a InterconnectAttachment
     parameters:
-    - name: InterconnectAttachment
+    - name: interconnectAttachment
       required: true
       description: A full instance of a InterconnectAttachment
   apply:
     description: The function used to apply information about a InterconnectAttachment
     parameters:
-    - name: InterconnectAttachment
+    - name: interconnectAttachment
       required: true
       description: A full instance of a InterconnectAttachment
   delete:
     description: The function used to delete a InterconnectAttachment
     parameters:
-    - name: InterconnectAttachment
+    - name: interconnectAttachment
       required: true
       description: A full instance of a InterconnectAttachment
   deleteAll:

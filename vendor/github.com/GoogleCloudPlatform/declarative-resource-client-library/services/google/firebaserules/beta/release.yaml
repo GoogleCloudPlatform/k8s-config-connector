@@ -26,19 +26,19 @@ paths:
   get:
     description: The function used to get information about a Release
     parameters:
-    - name: Release
+    - name: release
       required: true
       description: A full instance of a Release
   apply:
     description: The function used to apply information about a Release
     parameters:
-    - name: Release
+    - name: release
       required: true
       description: A full instance of a Release
   delete:
     description: The function used to delete a Release
     parameters:
-    - name: Release
+    - name: release
       required: true
       description: A full instance of a Release
   deleteAll:

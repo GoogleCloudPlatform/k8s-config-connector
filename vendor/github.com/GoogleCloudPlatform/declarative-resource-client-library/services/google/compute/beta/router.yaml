@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Router
     parameters:
-    - name: Router
+    - name: router
       required: true
       description: A full instance of a Router
   apply:
     description: The function used to apply information about a Router
     parameters:
-    - name: Router
+    - name: router
       required: true
       description: A full instance of a Router
   delete:
     description: The function used to delete a Router
     parameters:
-    - name: Router
+    - name: router
       required: true
       description: A full instance of a Router
   deleteAll:

@@ -29,7 +29,7 @@ func DCLInstanceGroupManagerSchema() *dcl.Schema {
 				Description: "The function used to get information about a InstanceGroupManager",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "InstanceGroupManager",
+						Name:        "instanceGroupManager",
 						Required:    true,
 						Description: "A full instance of a InstanceGroupManager",
 					},
@@ -39,7 +39,7 @@ func DCLInstanceGroupManagerSchema() *dcl.Schema {
 				Description: "The function used to apply information about a InstanceGroupManager",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "InstanceGroupManager",
+						Name:        "instanceGroupManager",
 						Required:    true,
 						Description: "A full instance of a InstanceGroupManager",
 					},
@@ -49,7 +49,7 @@ func DCLInstanceGroupManagerSchema() *dcl.Schema {
 				Description: "The function used to delete a InstanceGroupManager",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "InstanceGroupManager",
+						Name:        "instanceGroupManager",
 						Required:    true,
 						Description: "A full instance of a InstanceGroupManager",
 					},

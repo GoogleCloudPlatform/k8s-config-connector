@@ -130,7 +130,7 @@ func (op *updateStoredInfoTypeUpdateStoredInfoTypeOperation) do(ctx context.Cont
 			return nil, err
 		}
 		if _, ok := m["pendingVersions"]; ok {
-			return &dcl.RetryDetails{}, nil
+			return &dcl.RetryDetails{}, dcl.OperationNotDone{}
 		}
 		return nil, nil
 	}, c.Config.RetryProvider)

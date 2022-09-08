@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Network
     parameters:
-    - name: Network
+    - name: network
       required: true
       description: A full instance of a Network
   apply:
     description: The function used to apply information about a Network
     parameters:
-    - name: Network
+    - name: network
       required: true
       description: A full instance of a Network
   delete:
     description: The function used to delete a Network
     parameters:
-    - name: Network
+    - name: network
       required: true
       description: A full instance of a Network
   deleteAll:

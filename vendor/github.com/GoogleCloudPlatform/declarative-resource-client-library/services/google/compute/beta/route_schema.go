@@ -29,7 +29,7 @@ func DCLRouteSchema() *dcl.Schema {
 				Description: "The function used to get information about a Route",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Route",
+						Name:        "route",
 						Required:    true,
 						Description: "A full instance of a Route",
 					},
@@ -39,7 +39,7 @@ func DCLRouteSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Route",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Route",
+						Name:        "route",
 						Required:    true,
 						Description: "A full instance of a Route",
 					},
@@ -49,7 +49,7 @@ func DCLRouteSchema() *dcl.Schema {
 				Description: "The function used to delete a Route",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Route",
+						Name:        "route",
 						Required:    true,
 						Description: "A full instance of a Route",
 					},

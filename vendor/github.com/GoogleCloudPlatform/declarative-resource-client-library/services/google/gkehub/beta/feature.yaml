@@ -21,19 +21,19 @@ paths:
   get:
     description: The function used to get information about a Feature
     parameters:
-    - name: Feature
+    - name: feature
       required: true
       description: A full instance of a Feature
   apply:
     description: The function used to apply information about a Feature
     parameters:
-    - name: Feature
+    - name: feature
       required: true
       description: A full instance of a Feature
   delete:
     description: The function used to delete a Feature
     parameters:
-    - name: Feature
+    - name: feature
       required: true
       description: A full instance of a Feature
   deleteAll:

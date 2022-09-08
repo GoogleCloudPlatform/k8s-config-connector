@@ -22,6 +22,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
+	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl/operations"
 )
 
 func (r *FirewallPolicyRule) validate() error {
@@ -166,6 +167,45 @@ type updateFirewallPolicyRulePatchRuleOperation struct {
 // do will transcribe a subset of the resource into a request object and send a
 // PUT request to a single URL.
 
+func (op *updateFirewallPolicyRulePatchRuleOperation) do(ctx context.Context, r *FirewallPolicyRule, c *Client) error {
+	_, err := c.GetFirewallPolicyRule(ctx, r)
+	if err != nil {
+		return err
+	}
+
+	u, err := r.updateURL(c.Config.BasePath, "PatchRule")
+	if err != nil {
+		return err
+	}
+
+	req, err := newUpdateFirewallPolicyRulePatchRuleRequest(ctx, r, c)
+	if err != nil {
+		return err
+	}
+
+	c.Config.Logger.InfoWithContextf(ctx, "Created update: %#v", req)
+	body, err := marshalUpdateFirewallPolicyRulePatchRuleRequest(c, req)
+	if err != nil {
+		return err
+	}
+	resp, err := dcl.SendRequest(ctx, c.Config, "POST", u, bytes.NewBuffer(body), c.Config.RetryProvider)
+	if err != nil {
+		return err
+	}
+
+	var o operations.ComputeOperation
+	if err := dcl.ParseResponse(resp.Response, &o); err != nil {
+		return err
+	}
+	err = o.Wait(context.WithValue(ctx, dcl.DoNotLogRequestsKey, true), c.Config, r.basePath(), "GET")
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (c *Client) listFirewallPolicyRuleRaw(ctx context.Context, r *FirewallPolicyRule, pageToken string, pageSize int32) ([]byte, error) {
 	u, err := r.urlNormalized().listURL(c.Config.BasePath)
 	if err != nil {
@@ -242,6 +282,55 @@ func (c *Client) deleteAllFirewallPolicyRule(ctx context.Context, f func(*Firewa
 
 type deleteFirewallPolicyRuleOperation struct{}
 
+func (op *deleteFirewallPolicyRuleOperation) do(ctx context.Context, r *FirewallPolicyRule, c *Client) error {
+	r, err := c.GetFirewallPolicyRule(ctx, r)
+	if err != nil {
+		if dcl.IsNotFoundOrCode(err, 400) {
+			c.Config.Logger.InfoWithContextf(ctx, "FirewallPolicyRule not found, returning. Original error: %v", err)
+			return nil
+		}
+		c.Config.Logger.WarningWithContextf(ctx, "GetFirewallPolicyRule checking for existence. error: %v", err)
+		return err
+	}
+
+	u, err := r.deleteURL(c.Config.BasePath)
+	if err != nil {
+		return err
+	}
+
+	// Delete should never have a body
+	body := &bytes.Buffer{}
+	resp, err := dcl.SendRequest(ctx, c.Config, "POST", u, body, c.Config.RetryProvider)
+	if err != nil {
+		return err
+	}
+
+	// wait for object to be deleted.
+	var o operations.ComputeOperation
+	if err := dcl.ParseResponse(resp.Response, &o); err != nil {
+		return err
+	}
+	if err := o.Wait(context.WithValue(ctx, dcl.DoNotLogRequestsKey, true), c.Config, r.basePath(), "GET"); err != nil {
+		return err
+	}
+
+	// We saw a race condition where for some successful delete operation, the Get calls returned resources for a short duration.
+	// This is the reason we are adding retry to handle that case.
+	retriesRemaining := 10
+	dcl.Do(ctx, func(ctx context.Context) (*dcl.RetryDetails, error) {
+		_, err := c.GetFirewallPolicyRule(ctx, r)
+		if dcl.IsNotFoundOrCode(err, 400) {
+			return nil, nil
+		}
+		if retriesRemaining > 0 {
+			retriesRemaining--
+			return &dcl.RetryDetails{}, dcl.OperationNotDone{}
+		}
+		return nil, dcl.NotDeletedError{ExistingResource: r}
+	}, c.Config.RetryProvider)
+	return nil
+}
+
 // Create operations are similar to Update operations, although they do not have
 // specific request objects. The Create request object is the json encoding of
 // the resource, which is modified by res.marshal to form the base request body.
@@ -251,6 +340,41 @@ type createFirewallPolicyRuleOperation struct {
 
 func (op *createFirewallPolicyRuleOperation) FirstResponse() (map[string]interface{}, bool) {
 	return op.response, len(op.response) > 0
+}
+
+func (op *createFirewallPolicyRuleOperation) do(ctx context.Context, r *FirewallPolicyRule, c *Client) error {
+	c.Config.Logger.InfoWithContextf(ctx, "Attempting to create %v", r)
+	u, err := r.createURL(c.Config.BasePath)
+	if err != nil {
+		return err
+	}
+
+	req, err := r.marshal(c)
+	if err != nil {
+		return err
+	}
+	resp, err := dcl.SendRequest(ctx, c.Config, "POST", u, bytes.NewBuffer(req), c.Config.RetryProvider)
+	if err != nil {
+		return err
+	}
+	// wait for object to be created.
+	var o operations.ComputeOperation
+	if err := dcl.ParseResponse(resp.Response, &o); err != nil {
+		return err
+	}
+	if err := o.Wait(context.WithValue(ctx, dcl.DoNotLogRequestsKey, true), c.Config, r.basePath(), "GET"); err != nil {
+		c.Config.Logger.Warningf("Creation failed after waiting for operation: %v", err)
+		return err
+	}
+	c.Config.Logger.InfoWithContextf(ctx, "Successfully waited for operation")
+	op.response, _ = o.FirstResponse()
+
+	if _, err := c.GetFirewallPolicyRule(ctx, r); err != nil {
+		c.Config.Logger.WarningWithContextf(ctx, "get returned error: %v", err)
+		return err
+	}
+
+	return nil
 }
 
 func (c *Client) getFirewallPolicyRuleRaw(ctx context.Context, r *FirewallPolicyRule) ([]byte, error) {

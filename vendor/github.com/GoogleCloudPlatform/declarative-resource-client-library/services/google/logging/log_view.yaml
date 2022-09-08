@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a LogView
     parameters:
-    - name: LogView
+    - name: logView
       required: true
       description: A full instance of a LogView
   apply:
     description: The function used to apply information about a LogView
     parameters:
-    - name: LogView
+    - name: logView
       required: true
       description: A full instance of a LogView
   delete:
     description: The function used to delete a LogView
     parameters:
-    - name: LogView
+    - name: logView
       required: true
       description: A full instance of a LogView
   deleteAll:

@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a DefaultObjectAccessControl
     parameters:
-    - name: DefaultObjectAccessControl
+    - name: defaultObjectAccessControl
       required: true
       description: A full instance of a DefaultObjectAccessControl
   apply:
     description: The function used to apply information about a DefaultObjectAccessControl
     parameters:
-    - name: DefaultObjectAccessControl
+    - name: defaultObjectAccessControl
       required: true
       description: A full instance of a DefaultObjectAccessControl
   delete:
     description: The function used to delete a DefaultObjectAccessControl
     parameters:
-    - name: DefaultObjectAccessControl
+    - name: defaultObjectAccessControl
       required: true
       description: A full instance of a DefaultObjectAccessControl
   deleteAll:

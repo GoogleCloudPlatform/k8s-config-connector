@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Channel
     parameters:
-    - name: Channel
+    - name: channel
       required: true
       description: A full instance of a Channel
   apply:
     description: The function used to apply information about a Channel
     parameters:
-    - name: Channel
+    - name: channel
       required: true
       description: A full instance of a Channel
   delete:
     description: The function used to delete a Channel
     parameters:
-    - name: Channel
+    - name: channel
       required: true
       description: A full instance of a Channel
   deleteAll:
@@ -118,13 +118,6 @@ components:
           - resource: Cloudresourcemanager/Project
             field: name
             parent: true
-        provider:
-          type: string
-          x-dcl-go-name: Provider
-          description: 'The name of the event provider (e.g. Eventarc SaaS partner)
-            associated with the channel. This provider will be granted permissions
-            to publish events to the channel. Format: `projects/{project}/locations/{location}/providers/{provider_id}`.'
-          x-kubernetes-immutable: true
         pubsubTopic:
           type: string
           x-dcl-go-name: PubsubTopic
@@ -145,6 +138,13 @@ components:
           - PENDING
           - ACTIVE
           - INACTIVE
+        thirdPartyProvider:
+          type: string
+          x-dcl-go-name: ThirdPartyProvider
+          description: 'The name of the event provider (e.g. Eventarc SaaS partner)
+            associated with the channel. This provider will be granted permissions
+            to publish events to the channel. Format: `projects/{project}/locations/{location}/providers/{provider_id}`.'
+          x-kubernetes-immutable: true
         uid:
           type: string
           x-dcl-go-name: Uid

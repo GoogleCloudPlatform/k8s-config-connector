@@ -29,7 +29,7 @@ func DCLAssetSchema() *dcl.Schema {
 				Description: "The function used to get information about a Asset",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Asset",
+						Name:        "asset",
 						Required:    true,
 						Description: "A full instance of a Asset",
 					},
@@ -39,7 +39,7 @@ func DCLAssetSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Asset",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Asset",
+						Name:        "asset",
 						Required:    true,
 						Description: "A full instance of a Asset",
 					},
@@ -49,7 +49,7 @@ func DCLAssetSchema() *dcl.Schema {
 				Description: "The function used to delete a Asset",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Asset",
+						Name:        "asset",
 						Required:    true,
 						Description: "A full instance of a Asset",
 					},
@@ -73,7 +73,7 @@ func DCLAssetSchema() *dcl.Schema {
 						},
 					},
 					dcl.PathParameters{
-						Name:     "dataplexzone",
+						Name:     "dataplexZone",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",
@@ -106,7 +106,7 @@ func DCLAssetSchema() *dcl.Schema {
 						},
 					},
 					dcl.PathParameters{
-						Name:     "dataplexzone",
+						Name:     "dataplexZone",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",

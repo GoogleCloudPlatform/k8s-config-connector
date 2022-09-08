@@ -29,7 +29,7 @@ func DCLWorkloadIdentityPoolSchema() *dcl.Schema {
 				Description: "The function used to get information about a WorkloadIdentityPool",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "WorkloadIdentityPool",
+						Name:        "workloadIdentityPool",
 						Required:    true,
 						Description: "A full instance of a WorkloadIdentityPool",
 					},
@@ -39,7 +39,7 @@ func DCLWorkloadIdentityPoolSchema() *dcl.Schema {
 				Description: "The function used to apply information about a WorkloadIdentityPool",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "WorkloadIdentityPool",
+						Name:        "workloadIdentityPool",
 						Required:    true,
 						Description: "A full instance of a WorkloadIdentityPool",
 					},
@@ -49,7 +49,7 @@ func DCLWorkloadIdentityPoolSchema() *dcl.Schema {
 				Description: "The function used to delete a WorkloadIdentityPool",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "WorkloadIdentityPool",
+						Name:        "workloadIdentityPool",
 						Required:    true,
 						Description: "A full instance of a WorkloadIdentityPool",
 					},

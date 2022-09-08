@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a WorkforcePool
     parameters:
-    - name: WorkforcePool
+    - name: workforcePool
       required: true
       description: A full instance of a WorkforcePool
   apply:
     description: The function used to apply information about a WorkforcePool
     parameters:
-    - name: WorkforcePool
+    - name: workforcePool
       required: true
       description: A full instance of a WorkforcePool
   delete:
     description: The function used to delete a WorkforcePool
     parameters:
-    - name: WorkforcePool
+    - name: workforcePool
       required: true
       description: A full instance of a WorkforcePool
   deleteAll:

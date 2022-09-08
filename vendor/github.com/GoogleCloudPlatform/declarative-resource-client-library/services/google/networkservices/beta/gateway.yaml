@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Gateway
     parameters:
-    - name: Gateway
+    - name: gateway
       required: true
       description: A full instance of a Gateway
   apply:
     description: The function used to apply information about a Gateway
     parameters:
-    - name: Gateway
+    - name: gateway
       required: true
       description: A full instance of a Gateway
   delete:
     description: The function used to delete a Gateway
     parameters:
-    - name: Gateway
+    - name: gateway
       required: true
       description: A full instance of a Gateway
   deleteAll:

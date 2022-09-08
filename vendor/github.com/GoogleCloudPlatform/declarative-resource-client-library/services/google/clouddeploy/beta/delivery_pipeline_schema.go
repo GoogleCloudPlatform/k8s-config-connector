@@ -33,7 +33,7 @@ func DCLDeliveryPipelineSchema() *dcl.Schema {
 				Description: "The function used to get information about a DeliveryPipeline",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "DeliveryPipeline",
+						Name:        "deliveryPipeline",
 						Required:    true,
 						Description: "A full instance of a DeliveryPipeline",
 					},
@@ -43,7 +43,7 @@ func DCLDeliveryPipelineSchema() *dcl.Schema {
 				Description: "The function used to apply information about a DeliveryPipeline",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "DeliveryPipeline",
+						Name:        "deliveryPipeline",
 						Required:    true,
 						Description: "A full instance of a DeliveryPipeline",
 					},
@@ -53,7 +53,7 @@ func DCLDeliveryPipelineSchema() *dcl.Schema {
 				Description: "The function used to delete a DeliveryPipeline",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "DeliveryPipeline",
+						Name:        "deliveryPipeline",
 						Required:    true,
 						Description: "A full instance of a DeliveryPipeline",
 					},

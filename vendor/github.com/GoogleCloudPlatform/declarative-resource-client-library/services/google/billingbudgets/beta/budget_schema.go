@@ -29,7 +29,7 @@ func DCLBudgetSchema() *dcl.Schema {
 				Description: "The function used to get information about a Budget",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Budget",
+						Name:        "budget",
 						Required:    true,
 						Description: "A full instance of a Budget",
 					},
@@ -39,7 +39,7 @@ func DCLBudgetSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Budget",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Budget",
+						Name:        "budget",
 						Required:    true,
 						Description: "A full instance of a Budget",
 					},
@@ -49,7 +49,7 @@ func DCLBudgetSchema() *dcl.Schema {
 				Description: "The function used to delete a Budget",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Budget",
+						Name:        "budget",
 						Required:    true,
 						Description: "A full instance of a Budget",
 					},
@@ -59,7 +59,7 @@ func DCLBudgetSchema() *dcl.Schema {
 				Description: "The function used to delete all Budget",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:     "billingaccount",
+						Name:     "billingAccount",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",
@@ -71,7 +71,7 @@ func DCLBudgetSchema() *dcl.Schema {
 				Description: "The function used to list information about many Budget",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:     "billingaccount",
+						Name:     "billingAccount",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",

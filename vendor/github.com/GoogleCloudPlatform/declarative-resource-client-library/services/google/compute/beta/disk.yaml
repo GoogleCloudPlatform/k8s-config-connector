@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Disk
     parameters:
-    - name: Disk
+    - name: disk
       required: true
       description: A full instance of a Disk
   apply:
     description: The function used to apply information about a Disk
     parameters:
-    - name: Disk
+    - name: disk
       required: true
       description: A full instance of a Disk
   delete:
     description: The function used to delete a Disk
     parameters:
-    - name: Disk
+    - name: disk
       required: true
       description: A full instance of a Disk
   deleteAll:
@@ -258,17 +258,6 @@ components:
           description: Last detach timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt)
             text format.
           x-kubernetes-immutable: true
-        license:
-          type: array
-          x-dcl-go-name: License
-          description: A list of publicly visible licenses. Reserved for Google's
-            use.
-          x-kubernetes-immutable: true
-          x-dcl-send-empty: true
-          x-dcl-list-type: list
-          items:
-            type: string
-            x-dcl-go-type: string
         licenseCodes:
           type: array
           x-dcl-go-name: LicenseCodes

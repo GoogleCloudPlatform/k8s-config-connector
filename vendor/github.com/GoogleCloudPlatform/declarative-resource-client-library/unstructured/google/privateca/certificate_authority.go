@@ -1793,9 +1793,9 @@ func GetCertificateAuthority(ctx context.Context, config *dcl.Config, u *unstruc
 	return CertificateAuthorityToUnstructured(r), nil
 }
 
-func ListCertificateAuthority(ctx context.Context, config *dcl.Config, project string, location string, capool string) ([]*unstructured.Resource, error) {
+func ListCertificateAuthority(ctx context.Context, config *dcl.Config, project string, location string, caPool string) ([]*unstructured.Resource, error) {
 	c := dclService.NewClient(config)
-	l, err := c.ListCertificateAuthority(ctx, project, location, capool)
+	l, err := c.ListCertificateAuthority(ctx, project, location, caPool)
 	if err != nil {
 		return nil, err
 	}

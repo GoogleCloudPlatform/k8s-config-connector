@@ -29,7 +29,7 @@ func DCLRoleSchema() *dcl.Schema {
 				Description: "The function used to get information about a Role",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Role",
+						Name:        "role",
 						Required:    true,
 						Description: "A full instance of a Role",
 					},
@@ -39,7 +39,7 @@ func DCLRoleSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Role",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Role",
+						Name:        "role",
 						Required:    true,
 						Description: "A full instance of a Role",
 					},
@@ -49,7 +49,7 @@ func DCLRoleSchema() *dcl.Schema {
 				Description: "The function used to delete a Role",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Role",
+						Name:        "role",
 						Required:    true,
 						Description: "A full instance of a Role",
 					},

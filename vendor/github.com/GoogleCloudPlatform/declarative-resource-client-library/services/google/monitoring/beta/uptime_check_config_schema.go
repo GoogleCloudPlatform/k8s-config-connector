@@ -29,7 +29,7 @@ func DCLUptimeCheckConfigSchema() *dcl.Schema {
 				Description: "The function used to get information about a UptimeCheckConfig",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "UptimeCheckConfig",
+						Name:        "uptimeCheckConfig",
 						Required:    true,
 						Description: "A full instance of a UptimeCheckConfig",
 					},
@@ -39,7 +39,7 @@ func DCLUptimeCheckConfigSchema() *dcl.Schema {
 				Description: "The function used to apply information about a UptimeCheckConfig",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "UptimeCheckConfig",
+						Name:        "uptimeCheckConfig",
 						Required:    true,
 						Description: "A full instance of a UptimeCheckConfig",
 					},
@@ -49,7 +49,7 @@ func DCLUptimeCheckConfigSchema() *dcl.Schema {
 				Description: "The function used to delete a UptimeCheckConfig",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "UptimeCheckConfig",
+						Name:        "uptimeCheckConfig",
 						Required:    true,
 						Description: "A full instance of a UptimeCheckConfig",
 					},

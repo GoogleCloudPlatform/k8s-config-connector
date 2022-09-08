@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Attestor
     parameters:
-    - name: Attestor
+    - name: attestor
       required: true
       description: A full instance of a Attestor
   apply:
     description: The function used to apply information about a Attestor
     parameters:
-    - name: Attestor
+    - name: attestor
       required: true
       description: A full instance of a Attestor
   delete:
     description: The function used to delete a Attestor
     parameters:
-    - name: Attestor
+    - name: attestor
       required: true
       description: A full instance of a Attestor
   deleteAll:

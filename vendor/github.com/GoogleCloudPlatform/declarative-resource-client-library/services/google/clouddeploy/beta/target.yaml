@@ -23,19 +23,19 @@ paths:
   get:
     description: The function used to get information about a Target
     parameters:
-    - name: Target
+    - name: target
       required: true
       description: A full instance of a Target
   apply:
     description: The function used to apply information about a Target
     parameters:
-    - name: Target
+    - name: target
       required: true
       description: A full instance of a Target
   delete:
     description: The function used to delete a Target
     parameters:
-    - name: Target
+    - name: target
       required: true
       description: A full instance of a Target
   deleteAll:

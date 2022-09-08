@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a AuthorizationPolicy
     parameters:
-    - name: AuthorizationPolicy
+    - name: authorizationPolicy
       required: true
       description: A full instance of a AuthorizationPolicy
   apply:
     description: The function used to apply information about a AuthorizationPolicy
     parameters:
-    - name: AuthorizationPolicy
+    - name: authorizationPolicy
       required: true
       description: A full instance of a AuthorizationPolicy
   delete:
     description: The function used to delete a AuthorizationPolicy
     parameters:
-    - name: AuthorizationPolicy
+    - name: authorizationPolicy
       required: true
       description: A full instance of a AuthorizationPolicy
   deleteAll:

@@ -29,7 +29,7 @@ func DCLEndpointPolicySchema() *dcl.Schema {
 				Description: "The function used to get information about a EndpointPolicy",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "EndpointPolicy",
+						Name:        "endpointPolicy",
 						Required:    true,
 						Description: "A full instance of a EndpointPolicy",
 					},
@@ -39,7 +39,7 @@ func DCLEndpointPolicySchema() *dcl.Schema {
 				Description: "The function used to apply information about a EndpointPolicy",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "EndpointPolicy",
+						Name:        "endpointPolicy",
 						Required:    true,
 						Description: "A full instance of a EndpointPolicy",
 					},
@@ -49,7 +49,7 @@ func DCLEndpointPolicySchema() *dcl.Schema {
 				Description: "The function used to delete a EndpointPolicy",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "EndpointPolicy",
+						Name:        "endpointPolicy",
 						Required:    true,
 						Description: "A full instance of a EndpointPolicy",
 					},

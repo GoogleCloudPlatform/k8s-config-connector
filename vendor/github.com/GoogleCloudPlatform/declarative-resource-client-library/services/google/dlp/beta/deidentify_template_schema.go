@@ -29,7 +29,7 @@ func DCLDeidentifyTemplateSchema() *dcl.Schema {
 				Description: "The function used to get information about a DeidentifyTemplate",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "DeidentifyTemplate",
+						Name:        "deidentifyTemplate",
 						Required:    true,
 						Description: "A full instance of a DeidentifyTemplate",
 					},
@@ -39,7 +39,7 @@ func DCLDeidentifyTemplateSchema() *dcl.Schema {
 				Description: "The function used to apply information about a DeidentifyTemplate",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "DeidentifyTemplate",
+						Name:        "deidentifyTemplate",
 						Required:    true,
 						Description: "A full instance of a DeidentifyTemplate",
 					},
@@ -49,7 +49,7 @@ func DCLDeidentifyTemplateSchema() *dcl.Schema {
 				Description: "The function used to delete a DeidentifyTemplate",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "DeidentifyTemplate",
+						Name:        "deidentifyTemplate",
 						Required:    true,
 						Description: "A full instance of a DeidentifyTemplate",
 					},

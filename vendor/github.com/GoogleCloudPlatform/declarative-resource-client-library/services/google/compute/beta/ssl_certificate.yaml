@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a SslCertificate
     parameters:
-    - name: SslCertificate
+    - name: sslCertificate
       required: true
       description: A full instance of a SslCertificate
   apply:
     description: The function used to apply information about a SslCertificate
     parameters:
-    - name: SslCertificate
+    - name: sslCertificate
       required: true
       description: A full instance of a SslCertificate
   delete:
     description: The function used to delete a SslCertificate
     parameters:
-    - name: SslCertificate
+    - name: sslCertificate
       required: true
       description: A full instance of a SslCertificate
   deleteAll:

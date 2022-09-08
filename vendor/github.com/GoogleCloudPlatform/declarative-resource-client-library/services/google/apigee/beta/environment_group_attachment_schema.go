@@ -29,7 +29,7 @@ func DCLEnvironmentGroupAttachmentSchema() *dcl.Schema {
 				Description: "The function used to get information about a EnvironmentGroupAttachment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "EnvironmentGroupAttachment",
+						Name:        "environmentGroupAttachment",
 						Required:    true,
 						Description: "A full instance of a EnvironmentGroupAttachment",
 					},
@@ -39,7 +39,7 @@ func DCLEnvironmentGroupAttachmentSchema() *dcl.Schema {
 				Description: "The function used to apply information about a EnvironmentGroupAttachment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "EnvironmentGroupAttachment",
+						Name:        "environmentGroupAttachment",
 						Required:    true,
 						Description: "A full instance of a EnvironmentGroupAttachment",
 					},
@@ -49,7 +49,7 @@ func DCLEnvironmentGroupAttachmentSchema() *dcl.Schema {
 				Description: "The function used to delete a EnvironmentGroupAttachment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "EnvironmentGroupAttachment",
+						Name:        "environmentGroupAttachment",
 						Required:    true,
 						Description: "A full instance of a EnvironmentGroupAttachment",
 					},

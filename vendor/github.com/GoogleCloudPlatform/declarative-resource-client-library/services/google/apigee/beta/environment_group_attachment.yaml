@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a EnvironmentGroupAttachment
     parameters:
-    - name: EnvironmentGroupAttachment
+    - name: environmentGroupAttachment
       required: true
       description: A full instance of a EnvironmentGroupAttachment
   apply:
     description: The function used to apply information about a EnvironmentGroupAttachment
     parameters:
-    - name: EnvironmentGroupAttachment
+    - name: environmentGroupAttachment
       required: true
       description: A full instance of a EnvironmentGroupAttachment
   delete:
     description: The function used to delete a EnvironmentGroupAttachment
     parameters:
-    - name: EnvironmentGroupAttachment
+    - name: environmentGroupAttachment
       required: true
       description: A full instance of a EnvironmentGroupAttachment
   deleteAll:

@@ -43,7 +43,7 @@ func DCLMonitoredProjectSchema() *dcl.Schema {
 				Description: "The function used to get information about a MonitoredProject",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "MonitoredProject",
+						Name:        "monitoredProject",
 						Required:    true,
 						Description: "A full instance of a MonitoredProject",
 					},
@@ -53,7 +53,7 @@ func DCLMonitoredProjectSchema() *dcl.Schema {
 				Description: "The function used to apply information about a MonitoredProject",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "MonitoredProject",
+						Name:        "monitoredProject",
 						Required:    true,
 						Description: "A full instance of a MonitoredProject",
 					},
@@ -63,7 +63,7 @@ func DCLMonitoredProjectSchema() *dcl.Schema {
 				Description: "The function used to delete a MonitoredProject",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "MonitoredProject",
+						Name:        "monitoredProject",
 						Required:    true,
 						Description: "A full instance of a MonitoredProject",
 					},
@@ -73,7 +73,7 @@ func DCLMonitoredProjectSchema() *dcl.Schema {
 				Description: "The function used to delete all MonitoredProject",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:     "metricsscope",
+						Name:     "metricsScope",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",
@@ -85,7 +85,7 @@ func DCLMonitoredProjectSchema() *dcl.Schema {
 				Description: "The function used to list information about many MonitoredProject",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:     "metricsscope",
+						Name:     "metricsScope",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",

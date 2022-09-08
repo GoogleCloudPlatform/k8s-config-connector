@@ -29,7 +29,7 @@ func DCLAssignmentSchema() *dcl.Schema {
 				Description: "The function used to get information about a Assignment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Assignment",
+						Name:        "assignment",
 						Required:    true,
 						Description: "A full instance of a Assignment",
 					},
@@ -39,7 +39,7 @@ func DCLAssignmentSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Assignment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Assignment",
+						Name:        "assignment",
 						Required:    true,
 						Description: "A full instance of a Assignment",
 					},
@@ -49,7 +49,7 @@ func DCLAssignmentSchema() *dcl.Schema {
 				Description: "The function used to delete a Assignment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Assignment",
+						Name:        "assignment",
 						Required:    true,
 						Description: "A full instance of a Assignment",
 					},

@@ -237,9 +237,9 @@ func GetWorkloadIdentityPoolProvider(ctx context.Context, config *dcl.Config, u 
 	return WorkloadIdentityPoolProviderToUnstructured(r), nil
 }
 
-func ListWorkloadIdentityPoolProvider(ctx context.Context, config *dcl.Config, project string, location string, workloadidentitypool string) ([]*unstructured.Resource, error) {
+func ListWorkloadIdentityPoolProvider(ctx context.Context, config *dcl.Config, project string, location string, workloadIdentityPool string) ([]*unstructured.Resource, error) {
 	c := dclService.NewClient(config)
-	l, err := c.ListWorkloadIdentityPoolProvider(ctx, project, location, workloadidentitypool)
+	l, err := c.ListWorkloadIdentityPoolProvider(ctx, project, location, workloadIdentityPool)
 	if err != nil {
 		return nil, err
 	}

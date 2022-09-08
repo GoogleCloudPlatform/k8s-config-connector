@@ -29,7 +29,7 @@ func DCLFirewallPolicyRuleSchema() *dcl.Schema {
 				Description: "The function used to get information about a FirewallPolicyRule",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "FirewallPolicyRule",
+						Name:        "firewallPolicyRule",
 						Required:    true,
 						Description: "A full instance of a FirewallPolicyRule",
 					},
@@ -39,7 +39,7 @@ func DCLFirewallPolicyRuleSchema() *dcl.Schema {
 				Description: "The function used to apply information about a FirewallPolicyRule",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "FirewallPolicyRule",
+						Name:        "firewallPolicyRule",
 						Required:    true,
 						Description: "A full instance of a FirewallPolicyRule",
 					},
@@ -49,7 +49,7 @@ func DCLFirewallPolicyRuleSchema() *dcl.Schema {
 				Description: "The function used to delete a FirewallPolicyRule",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "FirewallPolicyRule",
+						Name:        "firewallPolicyRule",
 						Required:    true,
 						Description: "A full instance of a FirewallPolicyRule",
 					},
@@ -59,7 +59,7 @@ func DCLFirewallPolicyRuleSchema() *dcl.Schema {
 				Description: "The function used to delete all FirewallPolicyRule",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:     "firewallpolicy",
+						Name:     "firewallPolicy",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",
@@ -71,7 +71,7 @@ func DCLFirewallPolicyRuleSchema() *dcl.Schema {
 				Description: "The function used to list information about many FirewallPolicyRule",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:     "firewallpolicy",
+						Name:     "firewallPolicy",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",

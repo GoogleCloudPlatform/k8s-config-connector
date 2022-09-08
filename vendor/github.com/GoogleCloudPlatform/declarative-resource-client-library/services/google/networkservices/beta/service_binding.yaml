@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a ServiceBinding
     parameters:
-    - name: ServiceBinding
+    - name: serviceBinding
       required: true
       description: A full instance of a ServiceBinding
   apply:
     description: The function used to apply information about a ServiceBinding
     parameters:
-    - name: ServiceBinding
+    - name: serviceBinding
       required: true
       description: A full instance of a ServiceBinding
   delete:
     description: The function used to delete a ServiceBinding
     parameters:
-    - name: ServiceBinding
+    - name: serviceBinding
       required: true
       description: A full instance of a ServiceBinding
   deleteAll:

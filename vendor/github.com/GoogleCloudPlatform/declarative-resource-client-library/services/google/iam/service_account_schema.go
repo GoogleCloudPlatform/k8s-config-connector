@@ -30,7 +30,7 @@ func DCLServiceAccountSchema() *dcl.Schema {
 				Description: "The function used to get information about a ServiceAccount",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "ServiceAccount",
+						Name:        "serviceAccount",
 						Required:    true,
 						Description: "A full instance of a ServiceAccount",
 					},
@@ -40,7 +40,7 @@ func DCLServiceAccountSchema() *dcl.Schema {
 				Description: "The function used to apply information about a ServiceAccount",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "ServiceAccount",
+						Name:        "serviceAccount",
 						Required:    true,
 						Description: "A full instance of a ServiceAccount",
 					},
@@ -50,7 +50,7 @@ func DCLServiceAccountSchema() *dcl.Schema {
 				Description: "The function used to delete a ServiceAccount",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "ServiceAccount",
+						Name:        "serviceAccount",
 						Required:    true,
 						Description: "A full instance of a ServiceAccount",
 					},

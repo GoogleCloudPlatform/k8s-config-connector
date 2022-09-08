@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Image
     parameters:
-    - name: Image
+    - name: image
       required: true
       description: A full instance of a Image
   apply:
     description: The function used to apply information about a Image
     parameters:
-    - name: Image
+    - name: image
       required: true
       description: A full instance of a Image
   delete:
     description: The function used to delete a Image
     parameters:
-    - name: Image
+    - name: image
       required: true
       description: A full instance of a Image
   deleteAll:

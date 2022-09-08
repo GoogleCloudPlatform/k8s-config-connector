@@ -29,7 +29,7 @@ func DCLWorkerPoolSchema() *dcl.Schema {
 				Description: "The function used to get information about a WorkerPool",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "WorkerPool",
+						Name:        "workerPool",
 						Required:    true,
 						Description: "A full instance of a WorkerPool",
 					},
@@ -39,7 +39,7 @@ func DCLWorkerPoolSchema() *dcl.Schema {
 				Description: "The function used to apply information about a WorkerPool",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "WorkerPool",
+						Name:        "workerPool",
 						Required:    true,
 						Description: "A full instance of a WorkerPool",
 					},
@@ -49,7 +49,7 @@ func DCLWorkerPoolSchema() *dcl.Schema {
 				Description: "The function used to delete a WorkerPool",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "WorkerPool",
+						Name:        "workerPool",
 						Required:    true,
 						Description: "A full instance of a WorkerPool",
 					},

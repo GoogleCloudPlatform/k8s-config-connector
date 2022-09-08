@@ -30,7 +30,7 @@ func DCLEkmConnectionSchema() *dcl.Schema {
 				Description: "The function used to get information about a EkmConnection",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "EkmConnection",
+						Name:        "ekmConnection",
 						Required:    true,
 						Description: "A full instance of a EkmConnection",
 					},
@@ -40,7 +40,7 @@ func DCLEkmConnectionSchema() *dcl.Schema {
 				Description: "The function used to apply information about a EkmConnection",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "EkmConnection",
+						Name:        "ekmConnection",
 						Required:    true,
 						Description: "A full instance of a EkmConnection",
 					},

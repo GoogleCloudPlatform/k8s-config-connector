@@ -83,9 +83,9 @@ func GetMonitoredProject(ctx context.Context, config *dcl.Config, u *unstructure
 	return MonitoredProjectToUnstructured(r), nil
 }
 
-func ListMonitoredProject(ctx context.Context, config *dcl.Config, metricsscope string) ([]*unstructured.Resource, error) {
+func ListMonitoredProject(ctx context.Context, config *dcl.Config, metricsScope string) ([]*unstructured.Resource, error) {
 	c := dclService.NewClient(config)
-	l, err := c.ListMonitoredProject(ctx, metricsscope)
+	l, err := c.ListMonitoredProject(ctx, metricsScope)
 	if err != nil {
 		return nil, err
 	}

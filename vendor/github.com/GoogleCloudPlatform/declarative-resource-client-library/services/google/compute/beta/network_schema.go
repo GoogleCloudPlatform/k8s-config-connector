@@ -29,7 +29,7 @@ func DCLNetworkSchema() *dcl.Schema {
 				Description: "The function used to get information about a Network",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Network",
+						Name:        "network",
 						Required:    true,
 						Description: "A full instance of a Network",
 					},
@@ -39,7 +39,7 @@ func DCLNetworkSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Network",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Network",
+						Name:        "network",
 						Required:    true,
 						Description: "A full instance of a Network",
 					},
@@ -49,7 +49,7 @@ func DCLNetworkSchema() *dcl.Schema {
 				Description: "The function used to delete a Network",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Network",
+						Name:        "network",
 						Required:    true,
 						Description: "A full instance of a Network",
 					},

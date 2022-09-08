@@ -29,7 +29,7 @@ func DCLWorkforcePoolProviderSchema() *dcl.Schema {
 				Description: "The function used to get information about a WorkforcePoolProvider",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "WorkforcePoolProvider",
+						Name:        "workforcePoolProvider",
 						Required:    true,
 						Description: "A full instance of a WorkforcePoolProvider",
 					},
@@ -39,7 +39,7 @@ func DCLWorkforcePoolProviderSchema() *dcl.Schema {
 				Description: "The function used to apply information about a WorkforcePoolProvider",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "WorkforcePoolProvider",
+						Name:        "workforcePoolProvider",
 						Required:    true,
 						Description: "A full instance of a WorkforcePoolProvider",
 					},
@@ -49,7 +49,7 @@ func DCLWorkforcePoolProviderSchema() *dcl.Schema {
 				Description: "The function used to delete a WorkforcePoolProvider",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "WorkforcePoolProvider",
+						Name:        "workforcePoolProvider",
 						Required:    true,
 						Description: "A full instance of a WorkforcePoolProvider",
 					},
@@ -66,7 +66,7 @@ func DCLWorkforcePoolProviderSchema() *dcl.Schema {
 						},
 					},
 					dcl.PathParameters{
-						Name:     "workforcepool",
+						Name:     "workforcePool",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",
@@ -85,7 +85,7 @@ func DCLWorkforcePoolProviderSchema() *dcl.Schema {
 						},
 					},
 					dcl.PathParameters{
-						Name:     "workforcepool",
+						Name:     "workforcePool",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",

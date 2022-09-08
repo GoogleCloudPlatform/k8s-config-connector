@@ -29,7 +29,7 @@ func DCLNoteSchema() *dcl.Schema {
 				Description: "The function used to get information about a Note",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Note",
+						Name:        "note",
 						Required:    true,
 						Description: "A full instance of a Note",
 					},
@@ -39,7 +39,7 @@ func DCLNoteSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Note",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Note",
+						Name:        "note",
 						Required:    true,
 						Description: "A full instance of a Note",
 					},
@@ -49,7 +49,7 @@ func DCLNoteSchema() *dcl.Schema {
 				Description: "The function used to delete a Note",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Note",
+						Name:        "note",
 						Required:    true,
 						Description: "A full instance of a Note",
 					},

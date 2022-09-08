@@ -29,7 +29,7 @@ func DCLJobTriggerSchema() *dcl.Schema {
 				Description: "The function used to get information about a JobTrigger",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "JobTrigger",
+						Name:        "jobTrigger",
 						Required:    true,
 						Description: "A full instance of a JobTrigger",
 					},
@@ -39,7 +39,7 @@ func DCLJobTriggerSchema() *dcl.Schema {
 				Description: "The function used to apply information about a JobTrigger",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "JobTrigger",
+						Name:        "jobTrigger",
 						Required:    true,
 						Description: "A full instance of a JobTrigger",
 					},
@@ -49,7 +49,7 @@ func DCLJobTriggerSchema() *dcl.Schema {
 				Description: "The function used to delete a JobTrigger",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "JobTrigger",
+						Name:        "jobTrigger",
 						Required:    true,
 						Description: "A full instance of a JobTrigger",
 					},

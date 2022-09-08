@@ -205,9 +205,9 @@ func GetWorkforcePoolProvider(ctx context.Context, config *dcl.Config, u *unstru
 	return WorkforcePoolProviderToUnstructured(r), nil
 }
 
-func ListWorkforcePoolProvider(ctx context.Context, config *dcl.Config, location string, workforcepool string) ([]*unstructured.Resource, error) {
+func ListWorkforcePoolProvider(ctx context.Context, config *dcl.Config, location string, workforcePool string) ([]*unstructured.Resource, error) {
 	c := dclService.NewClient(config)
-	l, err := c.ListWorkforcePoolProvider(ctx, location, workforcepool)
+	l, err := c.ListWorkforcePoolProvider(ctx, location, workforcePool)
 	if err != nil {
 		return nil, err
 	}

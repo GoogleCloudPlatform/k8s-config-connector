@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a JobTrigger
     parameters:
-    - name: JobTrigger
+    - name: jobTrigger
       required: true
       description: A full instance of a JobTrigger
   apply:
     description: The function used to apply information about a JobTrigger
     parameters:
-    - name: JobTrigger
+    - name: jobTrigger
       required: true
       description: A full instance of a JobTrigger
   delete:
     description: The function used to delete a JobTrigger
     parameters:
-    - name: JobTrigger
+    - name: jobTrigger
       required: true
       description: A full instance of a JobTrigger
   deleteAll:

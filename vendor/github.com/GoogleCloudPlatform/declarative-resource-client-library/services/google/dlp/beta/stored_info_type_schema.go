@@ -29,7 +29,7 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 				Description: "The function used to get information about a StoredInfoType",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "StoredInfoType",
+						Name:        "storedInfoType",
 						Required:    true,
 						Description: "A full instance of a StoredInfoType",
 					},
@@ -39,7 +39,7 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 				Description: "The function used to apply information about a StoredInfoType",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "StoredInfoType",
+						Name:        "storedInfoType",
 						Required:    true,
 						Description: "A full instance of a StoredInfoType",
 					},
@@ -49,7 +49,7 @@ func DCLStoredInfoTypeSchema() *dcl.Schema {
 				Description: "The function used to delete a StoredInfoType",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "StoredInfoType",
+						Name:        "storedInfoType",
 						Required:    true,
 						Description: "A full instance of a StoredInfoType",
 					},

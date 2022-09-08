@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a InspectTemplate
     parameters:
-    - name: InspectTemplate
+    - name: inspectTemplate
       required: true
       description: A full instance of a InspectTemplate
   apply:
     description: The function used to apply information about a InspectTemplate
     parameters:
-    - name: InspectTemplate
+    - name: inspectTemplate
       required: true
       description: A full instance of a InspectTemplate
   delete:
     description: The function used to delete a InspectTemplate
     parameters:
-    - name: InspectTemplate
+    - name: inspectTemplate
       required: true
       description: A full instance of a InspectTemplate
   deleteAll:

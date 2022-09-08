@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Zone
     parameters:
-    - name: Zone
+    - name: zone
       required: true
       description: A full instance of a Zone
   apply:
     description: The function used to apply information about a Zone
     parameters:
-    - name: Zone
+    - name: zone
       required: true
       description: A full instance of a Zone
   delete:
     description: The function used to delete a Zone
     parameters:
-    - name: Zone
+    - name: zone
       required: true
       description: A full instance of a Zone
   deleteAll:

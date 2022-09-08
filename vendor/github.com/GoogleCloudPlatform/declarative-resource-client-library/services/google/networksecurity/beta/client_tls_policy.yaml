@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a ClientTlsPolicy
     parameters:
-    - name: ClientTlsPolicy
+    - name: clientTlsPolicy
       required: true
       description: A full instance of a ClientTlsPolicy
   apply:
     description: The function used to apply information about a ClientTlsPolicy
     parameters:
-    - name: ClientTlsPolicy
+    - name: clientTlsPolicy
       required: true
       description: A full instance of a ClientTlsPolicy
   delete:
     description: The function used to delete a ClientTlsPolicy
     parameters:
-    - name: ClientTlsPolicy
+    - name: clientTlsPolicy
       required: true
       description: A full instance of a ClientTlsPolicy
   deleteAll:

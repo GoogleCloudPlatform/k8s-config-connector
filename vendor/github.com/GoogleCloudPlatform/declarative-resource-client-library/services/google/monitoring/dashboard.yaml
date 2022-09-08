@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Dashboard
     parameters:
-    - name: Dashboard
+    - name: dashboard
       required: true
       description: A full instance of a Dashboard
   apply:
     description: The function used to apply information about a Dashboard
     parameters:
-    - name: Dashboard
+    - name: dashboard
       required: true
       description: A full instance of a Dashboard
   delete:
     description: The function used to delete a Dashboard
     parameters:
-    - name: Dashboard
+    - name: dashboard
       required: true
       description: A full instance of a Dashboard
   deleteAll:

@@ -20,32 +20,32 @@ paths:
   get:
     description: The function used to get information about a FirewallPolicyAssociation
     parameters:
-    - name: FirewallPolicyAssociation
+    - name: firewallPolicyAssociation
       required: true
       description: A full instance of a FirewallPolicyAssociation
   apply:
     description: The function used to apply information about a FirewallPolicyAssociation
     parameters:
-    - name: FirewallPolicyAssociation
+    - name: firewallPolicyAssociation
       required: true
       description: A full instance of a FirewallPolicyAssociation
   delete:
     description: The function used to delete a FirewallPolicyAssociation
     parameters:
-    - name: FirewallPolicyAssociation
+    - name: firewallPolicyAssociation
       required: true
       description: A full instance of a FirewallPolicyAssociation
   deleteAll:
     description: The function used to delete all FirewallPolicyAssociation
     parameters:
-    - name: firewallpolicy
+    - name: firewallPolicy
       required: true
       schema:
         type: string
   list:
     description: The function used to list information about many FirewallPolicyAssociation
     parameters:
-    - name: firewallpolicy
+    - name: firewallPolicy
       required: true
       schema:
         type: string

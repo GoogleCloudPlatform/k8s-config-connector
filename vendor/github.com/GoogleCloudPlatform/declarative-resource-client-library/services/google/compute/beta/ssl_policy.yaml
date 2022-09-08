@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a SslPolicy
     parameters:
-    - name: SslPolicy
+    - name: sslPolicy
       required: true
       description: A full instance of a SslPolicy
   apply:
     description: The function used to apply information about a SslPolicy
     parameters:
-    - name: SslPolicy
+    - name: sslPolicy
       required: true
       description: A full instance of a SslPolicy
   delete:
     description: The function used to delete a SslPolicy
     parameters:
-    - name: SslPolicy
+    - name: sslPolicy
       required: true
       description: A full instance of a SslPolicy
   deleteAll:

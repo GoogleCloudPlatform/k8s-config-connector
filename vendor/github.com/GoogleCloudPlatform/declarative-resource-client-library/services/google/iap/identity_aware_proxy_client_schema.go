@@ -29,7 +29,7 @@ func DCLIdentityAwareProxyClientSchema() *dcl.Schema {
 				Description: "The function used to get information about a IdentityAwareProxyClient",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "IdentityAwareProxyClient",
+						Name:        "identityAwareProxyClient",
 						Required:    true,
 						Description: "A full instance of a IdentityAwareProxyClient",
 					},
@@ -39,7 +39,7 @@ func DCLIdentityAwareProxyClientSchema() *dcl.Schema {
 				Description: "The function used to apply information about a IdentityAwareProxyClient",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "IdentityAwareProxyClient",
+						Name:        "identityAwareProxyClient",
 						Required:    true,
 						Description: "A full instance of a IdentityAwareProxyClient",
 					},
@@ -49,7 +49,7 @@ func DCLIdentityAwareProxyClientSchema() *dcl.Schema {
 				Description: "The function used to delete a IdentityAwareProxyClient",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "IdentityAwareProxyClient",
+						Name:        "identityAwareProxyClient",
 						Required:    true,
 						Description: "A full instance of a IdentityAwareProxyClient",
 					},

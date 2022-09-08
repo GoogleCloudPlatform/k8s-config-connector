@@ -29,7 +29,7 @@ func DCLGatewaySchema() *dcl.Schema {
 				Description: "The function used to get information about a Gateway",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Gateway",
+						Name:        "gateway",
 						Required:    true,
 						Description: "A full instance of a Gateway",
 					},
@@ -39,7 +39,7 @@ func DCLGatewaySchema() *dcl.Schema {
 				Description: "The function used to apply information about a Gateway",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Gateway",
+						Name:        "gateway",
 						Required:    true,
 						Description: "A full instance of a Gateway",
 					},
@@ -49,7 +49,7 @@ func DCLGatewaySchema() *dcl.Schema {
 				Description: "The function used to delete a Gateway",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Gateway",
+						Name:        "gateway",
 						Required:    true,
 						Description: "A full instance of a Gateway",
 					},

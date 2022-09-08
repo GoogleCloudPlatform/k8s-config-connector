@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Schema
     parameters:
-    - name: Schema
+    - name: schema
       required: true
       description: A full instance of a Schema
   apply:
     description: The function used to apply information about a Schema
     parameters:
-    - name: Schema
+    - name: schema
       required: true
       description: A full instance of a Schema
   delete:
     description: The function used to delete a Schema
     parameters:
-    - name: Schema
+    - name: schema
       required: true
       description: A full instance of a Schema
   deleteAll:

@@ -29,7 +29,7 @@ func DCLKeySchema() *dcl.Schema {
 				Description: "The function used to get information about a Key",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Key",
+						Name:        "key",
 						Required:    true,
 						Description: "A full instance of a Key",
 					},
@@ -39,7 +39,7 @@ func DCLKeySchema() *dcl.Schema {
 				Description: "The function used to apply information about a Key",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Key",
+						Name:        "key",
 						Required:    true,
 						Description: "A full instance of a Key",
 					},
@@ -49,7 +49,7 @@ func DCLKeySchema() *dcl.Schema {
 				Description: "The function used to delete a Key",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Key",
+						Name:        "key",
 						Required:    true,
 						Description: "A full instance of a Key",
 					},

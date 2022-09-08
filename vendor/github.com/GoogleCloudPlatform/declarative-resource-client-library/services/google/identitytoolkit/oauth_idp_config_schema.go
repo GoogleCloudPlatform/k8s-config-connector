@@ -29,7 +29,7 @@ func DCLOAuthIdpConfigSchema() *dcl.Schema {
 				Description: "The function used to get information about a OAuthIdpConfig",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "OAuthIdpConfig",
+						Name:        "oAuthIdpConfig",
 						Required:    true,
 						Description: "A full instance of a OAuthIdpConfig",
 					},
@@ -39,7 +39,7 @@ func DCLOAuthIdpConfigSchema() *dcl.Schema {
 				Description: "The function used to apply information about a OAuthIdpConfig",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "OAuthIdpConfig",
+						Name:        "oAuthIdpConfig",
 						Required:    true,
 						Description: "A full instance of a OAuthIdpConfig",
 					},
@@ -49,7 +49,7 @@ func DCLOAuthIdpConfigSchema() *dcl.Schema {
 				Description: "The function used to delete a OAuthIdpConfig",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "OAuthIdpConfig",
+						Name:        "oAuthIdpConfig",
 						Required:    true,
 						Description: "A full instance of a OAuthIdpConfig",
 					},

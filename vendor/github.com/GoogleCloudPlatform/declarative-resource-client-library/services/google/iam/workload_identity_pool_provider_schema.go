@@ -29,7 +29,7 @@ func DCLWorkloadIdentityPoolProviderSchema() *dcl.Schema {
 				Description: "The function used to get information about a WorkloadIdentityPoolProvider",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "WorkloadIdentityPoolProvider",
+						Name:        "workloadIdentityPoolProvider",
 						Required:    true,
 						Description: "A full instance of a WorkloadIdentityPoolProvider",
 					},
@@ -39,7 +39,7 @@ func DCLWorkloadIdentityPoolProviderSchema() *dcl.Schema {
 				Description: "The function used to apply information about a WorkloadIdentityPoolProvider",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "WorkloadIdentityPoolProvider",
+						Name:        "workloadIdentityPoolProvider",
 						Required:    true,
 						Description: "A full instance of a WorkloadIdentityPoolProvider",
 					},
@@ -49,7 +49,7 @@ func DCLWorkloadIdentityPoolProviderSchema() *dcl.Schema {
 				Description: "The function used to delete a WorkloadIdentityPoolProvider",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "WorkloadIdentityPoolProvider",
+						Name:        "workloadIdentityPoolProvider",
 						Required:    true,
 						Description: "A full instance of a WorkloadIdentityPoolProvider",
 					},
@@ -73,7 +73,7 @@ func DCLWorkloadIdentityPoolProviderSchema() *dcl.Schema {
 						},
 					},
 					dcl.PathParameters{
-						Name:     "workloadidentitypool",
+						Name:     "workloadIdentityPool",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",
@@ -99,7 +99,7 @@ func DCLWorkloadIdentityPoolProviderSchema() *dcl.Schema {
 						},
 					},
 					dcl.PathParameters{
-						Name:     "workloadidentitypool",
+						Name:     "workloadIdentityPool",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",

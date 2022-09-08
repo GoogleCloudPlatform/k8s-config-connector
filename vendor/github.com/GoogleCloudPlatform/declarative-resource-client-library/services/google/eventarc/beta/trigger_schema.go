@@ -29,7 +29,7 @@ func DCLTriggerSchema() *dcl.Schema {
 				Description: "The function used to get information about a Trigger",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Trigger",
+						Name:        "trigger",
 						Required:    true,
 						Description: "A full instance of a Trigger",
 					},
@@ -39,7 +39,7 @@ func DCLTriggerSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Trigger",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Trigger",
+						Name:        "trigger",
 						Required:    true,
 						Description: "A full instance of a Trigger",
 					},
@@ -49,7 +49,7 @@ func DCLTriggerSchema() *dcl.Schema {
 				Description: "The function used to delete a Trigger",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Trigger",
+						Name:        "trigger",
 						Required:    true,
 						Description: "A full instance of a Trigger",
 					},

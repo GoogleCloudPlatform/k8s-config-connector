@@ -39,7 +39,7 @@ func DCLAzureClientSchema() *dcl.Schema {
 				Description: "The function used to get information about a Client",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Client",
+						Name:        "client",
 						Required:    true,
 						Description: "A full instance of a Client",
 					},
@@ -49,7 +49,7 @@ func DCLAzureClientSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Client",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Client",
+						Name:        "client",
 						Required:    true,
 						Description: "A full instance of a Client",
 					},
@@ -59,7 +59,7 @@ func DCLAzureClientSchema() *dcl.Schema {
 				Description: "The function used to delete a Client",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Client",
+						Name:        "client",
 						Required:    true,
 						Description: "A full instance of a Client",
 					},

@@ -29,7 +29,7 @@ func DCLSubnetworkSchema() *dcl.Schema {
 				Description: "The function used to get information about a Subnetwork",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Subnetwork",
+						Name:        "subnetwork",
 						Required:    true,
 						Description: "A full instance of a Subnetwork",
 					},
@@ -39,7 +39,7 @@ func DCLSubnetworkSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Subnetwork",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Subnetwork",
+						Name:        "subnetwork",
 						Required:    true,
 						Description: "A full instance of a Subnetwork",
 					},
@@ -49,7 +49,7 @@ func DCLSubnetworkSchema() *dcl.Schema {
 				Description: "The function used to delete a Subnetwork",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Subnetwork",
+						Name:        "subnetwork",
 						Required:    true,
 						Description: "A full instance of a Subnetwork",
 					},

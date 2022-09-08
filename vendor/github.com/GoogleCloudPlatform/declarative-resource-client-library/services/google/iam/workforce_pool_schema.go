@@ -30,7 +30,7 @@ func DCLWorkforcePoolSchema() *dcl.Schema {
 				Description: "The function used to get information about a WorkforcePool",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "WorkforcePool",
+						Name:        "workforcePool",
 						Required:    true,
 						Description: "A full instance of a WorkforcePool",
 					},
@@ -40,7 +40,7 @@ func DCLWorkforcePoolSchema() *dcl.Schema {
 				Description: "The function used to apply information about a WorkforcePool",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "WorkforcePool",
+						Name:        "workforcePool",
 						Required:    true,
 						Description: "A full instance of a WorkforcePool",
 					},
@@ -50,7 +50,7 @@ func DCLWorkforcePoolSchema() *dcl.Schema {
 				Description: "The function used to delete a WorkforcePool",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "WorkforcePool",
+						Name:        "workforcePool",
 						Required:    true,
 						Description: "A full instance of a WorkforcePool",
 					},

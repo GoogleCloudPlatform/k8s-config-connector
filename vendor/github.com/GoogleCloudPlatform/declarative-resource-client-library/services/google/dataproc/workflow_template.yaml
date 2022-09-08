@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a WorkflowTemplate
     parameters:
-    - name: WorkflowTemplate
+    - name: workflowTemplate
       required: true
       description: A full instance of a WorkflowTemplate
   apply:
     description: The function used to apply information about a WorkflowTemplate
     parameters:
-    - name: WorkflowTemplate
+    - name: workflowTemplate
       required: true
       description: A full instance of a WorkflowTemplate
   delete:
     description: The function used to delete a WorkflowTemplate
     parameters:
-    - name: WorkflowTemplate
+    - name: workflowTemplate
       required: true
       description: A full instance of a WorkflowTemplate
   deleteAll:

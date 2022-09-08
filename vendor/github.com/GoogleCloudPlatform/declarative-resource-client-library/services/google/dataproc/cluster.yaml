@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Cluster
     parameters:
-    - name: Cluster
+    - name: cluster
       required: true
       description: A full instance of a Cluster
   apply:
     description: The function used to apply information about a Cluster
     parameters:
-    - name: Cluster
+    - name: cluster
       required: true
       description: A full instance of a Cluster
   delete:
     description: The function used to delete a Cluster
     parameters:
-    - name: Cluster
+    - name: cluster
       required: true
       description: A full instance of a Cluster
   deleteAll:

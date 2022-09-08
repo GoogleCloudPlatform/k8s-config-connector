@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a RouterPeer
     parameters:
-    - name: RouterPeer
+    - name: routerPeer
       required: true
       description: A full instance of a RouterPeer
   apply:
     description: The function used to apply information about a RouterPeer
     parameters:
-    - name: RouterPeer
+    - name: routerPeer
       required: true
       description: A full instance of a RouterPeer
   delete:
     description: The function used to delete a RouterPeer
     parameters:
-    - name: RouterPeer
+    - name: routerPeer
       required: true
       description: A full instance of a RouterPeer
   deleteAll:

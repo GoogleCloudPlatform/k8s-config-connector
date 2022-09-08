@@ -30,7 +30,7 @@ func (r *ForwardingRule) validate() error {
 	if err := dcl.Required(r, "name"); err != nil {
 		return err
 	}
-	if err := dcl.Required(r, "project"); err != nil {
+	if err := dcl.RequiredParameter(r.Project, "Project"); err != nil {
 		return err
 	}
 	return nil
@@ -720,8 +720,7 @@ func canonicalizeForwardingRuleDesiredState(rawDesired, rawInitial *ForwardingRu
 	} else {
 		canonicalDesired.Target = rawDesired.Target
 	}
-	if dcl.IsZeroValue(rawDesired.Project) || (dcl.IsEmptyValueIndirect(rawDesired.Project) && dcl.IsEmptyValueIndirect(rawInitial.Project)) {
-		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+	if dcl.NameToSelfLink(rawDesired.Project, rawInitial.Project) {
 		canonicalDesired.Project = rawInitial.Project
 	} else {
 		canonicalDesired.Project = rawDesired.Project
@@ -913,10 +912,7 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 		}
 	}
 
-	if dcl.IsEmptyValueIndirect(rawNew.Project) && dcl.IsEmptyValueIndirect(rawDesired.Project) {
-		rawNew.Project = rawDesired.Project
-	} else {
-	}
+	rawNew.Project = rawDesired.Project
 
 	rawNew.Location = rawDesired.Location
 
@@ -1808,7 +1804,9 @@ func expandForwardingRule(c *Client, f *ForwardingRule) (map[string]interface{},
 	if v := f.Target; dcl.ValueShouldBeSent(v) {
 		m["target"] = v
 	}
-	if v := f.Project; dcl.ValueShouldBeSent(v) {
+	if v, err := dcl.EmptyValue(); err != nil {
+		return nil, fmt.Errorf("error expanding Project into project: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["project"] = v
 	}
 	if v, err := dcl.EmptyValue(); err != nil {

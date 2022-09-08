@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a TargetSslProxy
     parameters:
-    - name: TargetSslProxy
+    - name: targetSslProxy
       required: true
       description: A full instance of a TargetSslProxy
   apply:
     description: The function used to apply information about a TargetSslProxy
     parameters:
-    - name: TargetSslProxy
+    - name: targetSslProxy
       required: true
       description: A full instance of a TargetSslProxy
   delete:
     description: The function used to delete a TargetSslProxy
     parameters:
-    - name: TargetSslProxy
+    - name: targetSslProxy
       required: true
       description: A full instance of a TargetSslProxy
   deleteAll:

@@ -29,7 +29,7 @@ func DCLAttestorSchema() *dcl.Schema {
 				Description: "The function used to get information about a Attestor",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Attestor",
+						Name:        "attestor",
 						Required:    true,
 						Description: "A full instance of a Attestor",
 					},
@@ -39,7 +39,7 @@ func DCLAttestorSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Attestor",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Attestor",
+						Name:        "attestor",
 						Required:    true,
 						Description: "A full instance of a Attestor",
 					},
@@ -49,7 +49,7 @@ func DCLAttestorSchema() *dcl.Schema {
 				Description: "The function used to delete a Attestor",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Attestor",
+						Name:        "attestor",
 						Required:    true,
 						Description: "A full instance of a Attestor",
 					},

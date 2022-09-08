@@ -30,7 +30,7 @@ func DCLTagKeySchema() *dcl.Schema {
 				Description: "The function used to get information about a TagKey",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "TagKey",
+						Name:        "tagKey",
 						Required:    true,
 						Description: "A full instance of a TagKey",
 					},
@@ -40,7 +40,7 @@ func DCLTagKeySchema() *dcl.Schema {
 				Description: "The function used to apply information about a TagKey",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "TagKey",
+						Name:        "tagKey",
 						Required:    true,
 						Description: "A full instance of a TagKey",
 					},
@@ -50,7 +50,7 @@ func DCLTagKeySchema() *dcl.Schema {
 				Description: "The function used to delete a TagKey",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "TagKey",
+						Name:        "tagKey",
 						Required:    true,
 						Description: "A full instance of a TagKey",
 					},

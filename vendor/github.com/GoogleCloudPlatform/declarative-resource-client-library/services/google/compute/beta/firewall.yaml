@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Firewall
     parameters:
-    - name: Firewall
+    - name: firewall
       required: true
       description: A full instance of a Firewall
   apply:
     description: The function used to apply information about a Firewall
     parameters:
-    - name: Firewall
+    - name: firewall
       required: true
       description: A full instance of a Firewall
   delete:
     description: The function used to delete a Firewall
     parameters:
-    - name: Firewall
+    - name: firewall
       required: true
       description: A full instance of a Firewall
   deleteAll:

@@ -29,7 +29,7 @@ func DCLKeyRingSchema() *dcl.Schema {
 				Description: "The function used to get information about a KeyRing",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "KeyRing",
+						Name:        "keyRing",
 						Required:    true,
 						Description: "A full instance of a KeyRing",
 					},
@@ -39,7 +39,7 @@ func DCLKeyRingSchema() *dcl.Schema {
 				Description: "The function used to apply information about a KeyRing",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "KeyRing",
+						Name:        "keyRing",
 						Required:    true,
 						Description: "A full instance of a KeyRing",
 					},

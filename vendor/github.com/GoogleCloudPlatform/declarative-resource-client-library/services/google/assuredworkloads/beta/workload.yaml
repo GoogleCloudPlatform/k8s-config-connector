@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Workload
     parameters:
-    - name: Workload
+    - name: workload
       required: true
       description: A full instance of a Workload
   apply:
     description: The function used to apply information about a Workload
     parameters:
-    - name: Workload
+    - name: workload
       required: true
       description: A full instance of a Workload
   delete:
     description: The function used to delete a Workload
     parameters:
-    - name: Workload
+    - name: workload
       required: true
       description: A full instance of a Workload
   deleteAll:

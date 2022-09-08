@@ -20,13 +20,13 @@ paths:
   get:
     description: The function used to get information about a KeyRing
     parameters:
-    - name: KeyRing
+    - name: keyRing
       required: true
       description: A full instance of a KeyRing
   apply:
     description: The function used to apply information about a KeyRing
     parameters:
-    - name: KeyRing
+    - name: keyRing
       required: true
       description: A full instance of a KeyRing
   list:

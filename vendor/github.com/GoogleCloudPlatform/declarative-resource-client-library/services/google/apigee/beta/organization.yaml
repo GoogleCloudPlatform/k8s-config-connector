@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Organization
     parameters:
-    - name: Organization
+    - name: organization
       required: true
       description: A full instance of a Organization
   apply:
     description: The function used to apply information about a Organization
     parameters:
-    - name: Organization
+    - name: organization
       required: true
       description: A full instance of a Organization
   delete:
     description: The function used to delete a Organization
     parameters:
-    - name: Organization
+    - name: organization
       required: true
       description: A full instance of a Organization
   deleteAll:

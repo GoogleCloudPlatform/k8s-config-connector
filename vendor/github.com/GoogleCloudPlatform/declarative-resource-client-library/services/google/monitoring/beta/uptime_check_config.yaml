@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a UptimeCheckConfig
     parameters:
-    - name: UptimeCheckConfig
+    - name: uptimeCheckConfig
       required: true
       description: A full instance of a UptimeCheckConfig
   apply:
     description: The function used to apply information about a UptimeCheckConfig
     parameters:
-    - name: UptimeCheckConfig
+    - name: uptimeCheckConfig
       required: true
       description: A full instance of a UptimeCheckConfig
   delete:
     description: The function used to delete a UptimeCheckConfig
     parameters:
-    - name: UptimeCheckConfig
+    - name: uptimeCheckConfig
       required: true
       description: A full instance of a UptimeCheckConfig
   deleteAll:

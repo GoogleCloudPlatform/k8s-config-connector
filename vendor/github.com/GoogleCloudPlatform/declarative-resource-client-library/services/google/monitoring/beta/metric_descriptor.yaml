@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a MetricDescriptor
     parameters:
-    - name: MetricDescriptor
+    - name: metricDescriptor
       required: true
       description: A full instance of a MetricDescriptor
   apply:
     description: The function used to apply information about a MetricDescriptor
     parameters:
-    - name: MetricDescriptor
+    - name: metricDescriptor
       required: true
       description: A full instance of a MetricDescriptor
   delete:
     description: The function used to delete a MetricDescriptor
     parameters:
-    - name: MetricDescriptor
+    - name: metricDescriptor
       required: true
       description: A full instance of a MetricDescriptor
   deleteAll:

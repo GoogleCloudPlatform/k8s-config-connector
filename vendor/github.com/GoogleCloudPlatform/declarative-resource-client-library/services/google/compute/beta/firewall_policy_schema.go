@@ -29,7 +29,7 @@ func DCLFirewallPolicySchema() *dcl.Schema {
 				Description: "The function used to get information about a FirewallPolicy",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "FirewallPolicy",
+						Name:        "firewallPolicy",
 						Required:    true,
 						Description: "A full instance of a FirewallPolicy",
 					},
@@ -39,7 +39,7 @@ func DCLFirewallPolicySchema() *dcl.Schema {
 				Description: "The function used to apply information about a FirewallPolicy",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "FirewallPolicy",
+						Name:        "firewallPolicy",
 						Required:    true,
 						Description: "A full instance of a FirewallPolicy",
 					},
@@ -49,7 +49,7 @@ func DCLFirewallPolicySchema() *dcl.Schema {
 				Description: "The function used to delete a FirewallPolicy",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "FirewallPolicy",
+						Name:        "firewallPolicy",
 						Required:    true,
 						Description: "A full instance of a FirewallPolicy",
 					},

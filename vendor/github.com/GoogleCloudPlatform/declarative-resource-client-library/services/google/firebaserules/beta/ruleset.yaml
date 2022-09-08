@@ -26,19 +26,19 @@ paths:
   get:
     description: The function used to get information about a Ruleset
     parameters:
-    - name: Ruleset
+    - name: ruleset
       required: true
       description: A full instance of a Ruleset
   apply:
     description: The function used to apply information about a Ruleset
     parameters:
-    - name: Ruleset
+    - name: ruleset
       required: true
       description: A full instance of a Ruleset
   delete:
     description: The function used to delete a Ruleset
     parameters:
-    - name: Ruleset
+    - name: ruleset
       required: true
       description: A full instance of a Ruleset
   deleteAll:

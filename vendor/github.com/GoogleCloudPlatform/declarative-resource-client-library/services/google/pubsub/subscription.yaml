@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Subscription
     parameters:
-    - name: Subscription
+    - name: subscription
       required: true
       description: A full instance of a Subscription
   apply:
     description: The function used to apply information about a Subscription
     parameters:
-    - name: Subscription
+    - name: subscription
       required: true
       description: A full instance of a Subscription
   delete:
     description: The function used to delete a Subscription
     parameters:
-    - name: Subscription
+    - name: subscription
       required: true
       description: A full instance of a Subscription
   deleteAll:

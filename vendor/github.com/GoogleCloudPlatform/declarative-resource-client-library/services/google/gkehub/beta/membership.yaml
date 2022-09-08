@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Membership
     parameters:
-    - name: Membership
+    - name: membership
       required: true
       description: A full instance of a Membership
   apply:
     description: The function used to apply information about a Membership
     parameters:
-    - name: Membership
+    - name: membership
       required: true
       description: A full instance of a Membership
   delete:
     description: The function used to delete a Membership
     parameters:
-    - name: Membership
+    - name: membership
       required: true
       description: A full instance of a Membership
   deleteAll:

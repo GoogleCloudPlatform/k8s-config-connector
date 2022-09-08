@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a GuestPolicy
     parameters:
-    - name: GuestPolicy
+    - name: guestPolicy
       required: true
       description: A full instance of a GuestPolicy
   apply:
     description: The function used to apply information about a GuestPolicy
     parameters:
-    - name: GuestPolicy
+    - name: guestPolicy
       required: true
       description: A full instance of a GuestPolicy
   delete:
     description: The function used to delete a GuestPolicy
     parameters:
-    - name: GuestPolicy
+    - name: guestPolicy
       required: true
       description: A full instance of a GuestPolicy
   deleteAll:

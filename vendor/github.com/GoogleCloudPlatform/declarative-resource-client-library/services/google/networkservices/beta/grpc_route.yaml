@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a GrpcRoute
     parameters:
-    - name: GrpcRoute
+    - name: grpcRoute
       required: true
       description: A full instance of a GrpcRoute
   apply:
     description: The function used to apply information about a GrpcRoute
     parameters:
-    - name: GrpcRoute
+    - name: grpcRoute
       required: true
       description: A full instance of a GrpcRoute
   delete:
     description: The function used to delete a GrpcRoute
     parameters:
-    - name: GrpcRoute
+    - name: grpcRoute
       required: true
       description: A full instance of a GrpcRoute
   deleteAll:

@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a WorkforcePoolProvider
     parameters:
-    - name: WorkforcePoolProvider
+    - name: workforcePoolProvider
       required: true
       description: A full instance of a WorkforcePoolProvider
   apply:
     description: The function used to apply information about a WorkforcePoolProvider
     parameters:
-    - name: WorkforcePoolProvider
+    - name: workforcePoolProvider
       required: true
       description: A full instance of a WorkforcePoolProvider
   delete:
     description: The function used to delete a WorkforcePoolProvider
     parameters:
-    - name: WorkforcePoolProvider
+    - name: workforcePoolProvider
       required: true
       description: A full instance of a WorkforcePoolProvider
   deleteAll:
@@ -42,7 +42,7 @@ paths:
       required: true
       schema:
         type: string
-    - name: workforcepool
+    - name: workforcePool
       required: true
       schema:
         type: string
@@ -53,7 +53,7 @@ paths:
       required: true
       schema:
         type: string
-    - name: workforcepool
+    - name: workforcePool
       required: true
       schema:
         type: string

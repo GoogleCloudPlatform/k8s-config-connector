@@ -50,14 +50,14 @@ func ChannelToUnstructured(r *dclService.Channel) *unstructured.Resource {
 	if r.Project != nil {
 		u.Object["project"] = *r.Project
 	}
-	if r.Provider != nil {
-		u.Object["provider"] = *r.Provider
-	}
 	if r.PubsubTopic != nil {
 		u.Object["pubsubTopic"] = *r.PubsubTopic
 	}
 	if r.State != nil {
 		u.Object["state"] = string(*r.State)
+	}
+	if r.ThirdPartyProvider != nil {
+		u.Object["thirdPartyProvider"] = *r.ThirdPartyProvider
 	}
 	if r.Uid != nil {
 		u.Object["uid"] = *r.Uid
@@ -112,13 +112,6 @@ func UnstructuredToChannel(u *unstructured.Resource) (*dclService.Channel, error
 			return nil, fmt.Errorf("r.Project: expected string")
 		}
 	}
-	if _, ok := u.Object["provider"]; ok {
-		if s, ok := u.Object["provider"].(string); ok {
-			r.Provider = dcl.String(s)
-		} else {
-			return nil, fmt.Errorf("r.Provider: expected string")
-		}
-	}
 	if _, ok := u.Object["pubsubTopic"]; ok {
 		if s, ok := u.Object["pubsubTopic"].(string); ok {
 			r.PubsubTopic = dcl.String(s)
@@ -131,6 +124,13 @@ func UnstructuredToChannel(u *unstructured.Resource) (*dclService.Channel, error
 			r.State = dclService.ChannelStateEnumRef(s)
 		} else {
 			return nil, fmt.Errorf("r.State: expected string")
+		}
+	}
+	if _, ok := u.Object["thirdPartyProvider"]; ok {
+		if s, ok := u.Object["thirdPartyProvider"].(string); ok {
+			r.ThirdPartyProvider = dcl.String(s)
+		} else {
+			return nil, fmt.Errorf("r.ThirdPartyProvider: expected string")
 		}
 	}
 	if _, ok := u.Object["uid"]; ok {

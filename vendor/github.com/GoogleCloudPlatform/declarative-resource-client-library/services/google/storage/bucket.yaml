@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Bucket
     parameters:
-    - name: Bucket
+    - name: bucket
       required: true
       description: A full instance of a Bucket
   apply:
     description: The function used to apply information about a Bucket
     parameters:
-    - name: Bucket
+    - name: bucket
       required: true
       description: A full instance of a Bucket
   delete:
     description: The function used to delete a Bucket
     parameters:
-    - name: Bucket
+    - name: bucket
       required: true
       description: A full instance of a Bucket
   deleteAll:

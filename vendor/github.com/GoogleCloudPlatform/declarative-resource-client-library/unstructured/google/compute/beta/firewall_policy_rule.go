@@ -262,9 +262,9 @@ func GetFirewallPolicyRule(ctx context.Context, config *dcl.Config, u *unstructu
 	return FirewallPolicyRuleToUnstructured(r), nil
 }
 
-func ListFirewallPolicyRule(ctx context.Context, config *dcl.Config, firewallpolicy string) ([]*unstructured.Resource, error) {
+func ListFirewallPolicyRule(ctx context.Context, config *dcl.Config, firewallPolicy string) ([]*unstructured.Resource, error) {
 	c := dclService.NewClient(config)
-	l, err := c.ListFirewallPolicyRule(ctx, firewallpolicy)
+	l, err := c.ListFirewallPolicyRule(ctx, firewallPolicy)
 	if err != nil {
 		return nil, err
 	}

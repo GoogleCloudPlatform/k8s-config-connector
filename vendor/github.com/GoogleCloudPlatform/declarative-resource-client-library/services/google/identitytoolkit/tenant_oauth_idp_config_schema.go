@@ -29,7 +29,7 @@ func DCLTenantOAuthIdpConfigSchema() *dcl.Schema {
 				Description: "The function used to get information about a TenantOAuthIdpConfig",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "TenantOAuthIdpConfig",
+						Name:        "tenantOAuthIdpConfig",
 						Required:    true,
 						Description: "A full instance of a TenantOAuthIdpConfig",
 					},
@@ -39,7 +39,7 @@ func DCLTenantOAuthIdpConfigSchema() *dcl.Schema {
 				Description: "The function used to apply information about a TenantOAuthIdpConfig",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "TenantOAuthIdpConfig",
+						Name:        "tenantOAuthIdpConfig",
 						Required:    true,
 						Description: "A full instance of a TenantOAuthIdpConfig",
 					},
@@ -49,7 +49,7 @@ func DCLTenantOAuthIdpConfigSchema() *dcl.Schema {
 				Description: "The function used to delete a TenantOAuthIdpConfig",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "TenantOAuthIdpConfig",
+						Name:        "tenantOAuthIdpConfig",
 						Required:    true,
 						Description: "A full instance of a TenantOAuthIdpConfig",
 					},

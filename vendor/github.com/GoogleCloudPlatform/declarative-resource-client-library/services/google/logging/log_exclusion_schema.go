@@ -29,7 +29,7 @@ func DCLLogExclusionSchema() *dcl.Schema {
 				Description: "The function used to get information about a LogExclusion",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "LogExclusion",
+						Name:        "logExclusion",
 						Required:    true,
 						Description: "A full instance of a LogExclusion",
 					},
@@ -39,7 +39,7 @@ func DCLLogExclusionSchema() *dcl.Schema {
 				Description: "The function used to apply information about a LogExclusion",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "LogExclusion",
+						Name:        "logExclusion",
 						Required:    true,
 						Description: "A full instance of a LogExclusion",
 					},
@@ -49,7 +49,7 @@ func DCLLogExclusionSchema() *dcl.Schema {
 				Description: "The function used to delete a LogExclusion",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "LogExclusion",
+						Name:        "logExclusion",
 						Required:    true,
 						Description: "A full instance of a LogExclusion",
 					},

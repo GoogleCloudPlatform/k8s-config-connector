@@ -30,7 +30,7 @@ func DCLServerTlsPolicySchema() *dcl.Schema {
 				Description: "The function used to get information about a ServerTlsPolicy",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "ServerTlsPolicy",
+						Name:        "serverTlsPolicy",
 						Required:    true,
 						Description: "A full instance of a ServerTlsPolicy",
 					},
@@ -40,7 +40,7 @@ func DCLServerTlsPolicySchema() *dcl.Schema {
 				Description: "The function used to apply information about a ServerTlsPolicy",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "ServerTlsPolicy",
+						Name:        "serverTlsPolicy",
 						Required:    true,
 						Description: "A full instance of a ServerTlsPolicy",
 					},
@@ -50,7 +50,7 @@ func DCLServerTlsPolicySchema() *dcl.Schema {
 				Description: "The function used to delete a ServerTlsPolicy",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "ServerTlsPolicy",
+						Name:        "serverTlsPolicy",
 						Required:    true,
 						Description: "A full instance of a ServerTlsPolicy",
 					},

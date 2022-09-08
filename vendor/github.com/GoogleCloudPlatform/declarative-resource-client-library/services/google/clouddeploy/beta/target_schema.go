@@ -33,7 +33,7 @@ func DCLTargetSchema() *dcl.Schema {
 				Description: "The function used to get information about a Target",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Target",
+						Name:        "target",
 						Required:    true,
 						Description: "A full instance of a Target",
 					},
@@ -43,7 +43,7 @@ func DCLTargetSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Target",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Target",
+						Name:        "target",
 						Required:    true,
 						Description: "A full instance of a Target",
 					},
@@ -53,7 +53,7 @@ func DCLTargetSchema() *dcl.Schema {
 				Description: "The function used to delete a Target",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Target",
+						Name:        "target",
 						Required:    true,
 						Description: "A full instance of a Target",
 					},

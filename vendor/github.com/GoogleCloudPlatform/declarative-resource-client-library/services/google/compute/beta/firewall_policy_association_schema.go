@@ -29,7 +29,7 @@ func DCLFirewallPolicyAssociationSchema() *dcl.Schema {
 				Description: "The function used to get information about a FirewallPolicyAssociation",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "FirewallPolicyAssociation",
+						Name:        "firewallPolicyAssociation",
 						Required:    true,
 						Description: "A full instance of a FirewallPolicyAssociation",
 					},
@@ -39,7 +39,7 @@ func DCLFirewallPolicyAssociationSchema() *dcl.Schema {
 				Description: "The function used to apply information about a FirewallPolicyAssociation",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "FirewallPolicyAssociation",
+						Name:        "firewallPolicyAssociation",
 						Required:    true,
 						Description: "A full instance of a FirewallPolicyAssociation",
 					},
@@ -49,7 +49,7 @@ func DCLFirewallPolicyAssociationSchema() *dcl.Schema {
 				Description: "The function used to delete a FirewallPolicyAssociation",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "FirewallPolicyAssociation",
+						Name:        "firewallPolicyAssociation",
 						Required:    true,
 						Description: "A full instance of a FirewallPolicyAssociation",
 					},
@@ -59,7 +59,7 @@ func DCLFirewallPolicyAssociationSchema() *dcl.Schema {
 				Description: "The function used to delete all FirewallPolicyAssociation",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:     "firewallpolicy",
+						Name:     "firewallPolicy",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",
@@ -71,7 +71,7 @@ func DCLFirewallPolicyAssociationSchema() *dcl.Schema {
 				Description: "The function used to list information about many FirewallPolicyAssociation",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:     "firewallpolicy",
+						Name:     "firewallPolicy",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",

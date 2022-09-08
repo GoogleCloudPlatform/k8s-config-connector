@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Asset
     parameters:
-    - name: Asset
+    - name: asset
       required: true
       description: A full instance of a Asset
   apply:
     description: The function used to apply information about a Asset
     parameters:
-    - name: Asset
+    - name: asset
       required: true
       description: A full instance of a Asset
   delete:
     description: The function used to delete a Asset
     parameters:
-    - name: Asset
+    - name: asset
       required: true
       description: A full instance of a Asset
   deleteAll:
@@ -46,7 +46,7 @@ paths:
       required: true
       schema:
         type: string
-    - name: dataplexzone
+    - name: dataplexZone
       required: true
       schema:
         type: string
@@ -65,7 +65,7 @@ paths:
       required: true
       schema:
         type: string
-    - name: dataplexzone
+    - name: dataplexZone
       required: true
       schema:
         type: string

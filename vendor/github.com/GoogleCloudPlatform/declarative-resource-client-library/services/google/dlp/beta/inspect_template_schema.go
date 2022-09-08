@@ -29,7 +29,7 @@ func DCLInspectTemplateSchema() *dcl.Schema {
 				Description: "The function used to get information about a InspectTemplate",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "InspectTemplate",
+						Name:        "inspectTemplate",
 						Required:    true,
 						Description: "A full instance of a InspectTemplate",
 					},
@@ -39,7 +39,7 @@ func DCLInspectTemplateSchema() *dcl.Schema {
 				Description: "The function used to apply information about a InspectTemplate",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "InspectTemplate",
+						Name:        "inspectTemplate",
 						Required:    true,
 						Description: "A full instance of a InspectTemplate",
 					},
@@ -49,7 +49,7 @@ func DCLInspectTemplateSchema() *dcl.Schema {
 				Description: "The function used to delete a InspectTemplate",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "InspectTemplate",
+						Name:        "inspectTemplate",
 						Required:    true,
 						Description: "A full instance of a InspectTemplate",
 					},

@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Address
     parameters:
-    - name: Address
+    - name: address
       required: true
       description: A full instance of a Address
   apply:
     description: The function used to apply information about a Address
     parameters:
-    - name: Address
+    - name: address
       required: true
       description: A full instance of a Address
   delete:
     description: The function used to delete a Address
     parameters:
-    - name: Address
+    - name: address
       required: true
       description: A full instance of a Address
   deleteAll:

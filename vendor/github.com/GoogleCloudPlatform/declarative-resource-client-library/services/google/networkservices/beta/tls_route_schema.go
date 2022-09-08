@@ -29,7 +29,7 @@ func DCLTlsRouteSchema() *dcl.Schema {
 				Description: "The function used to get information about a TlsRoute",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "TlsRoute",
+						Name:        "tlsRoute",
 						Required:    true,
 						Description: "A full instance of a TlsRoute",
 					},
@@ -39,7 +39,7 @@ func DCLTlsRouteSchema() *dcl.Schema {
 				Description: "The function used to apply information about a TlsRoute",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "TlsRoute",
+						Name:        "tlsRoute",
 						Required:    true,
 						Description: "A full instance of a TlsRoute",
 					},
@@ -49,7 +49,7 @@ func DCLTlsRouteSchema() *dcl.Schema {
 				Description: "The function used to delete a TlsRoute",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "TlsRoute",
+						Name:        "tlsRoute",
 						Required:    true,
 						Description: "A full instance of a TlsRoute",
 					},

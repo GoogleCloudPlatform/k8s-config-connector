@@ -20,32 +20,32 @@ paths:
   get:
     description: The function used to get information about a Budget
     parameters:
-    - name: Budget
+    - name: budget
       required: true
       description: A full instance of a Budget
   apply:
     description: The function used to apply information about a Budget
     parameters:
-    - name: Budget
+    - name: budget
       required: true
       description: A full instance of a Budget
   delete:
     description: The function used to delete a Budget
     parameters:
-    - name: Budget
+    - name: budget
       required: true
       description: A full instance of a Budget
   deleteAll:
     description: The function used to delete all Budget
     parameters:
-    - name: billingaccount
+    - name: billingAccount
       required: true
       schema:
         type: string
   list:
     description: The function used to list information about many Budget
     parameters:
-    - name: billingaccount
+    - name: billingAccount
       required: true
       schema:
         type: string

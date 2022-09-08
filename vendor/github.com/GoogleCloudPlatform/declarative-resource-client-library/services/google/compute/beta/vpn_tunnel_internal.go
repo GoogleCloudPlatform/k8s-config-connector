@@ -43,41 +43,41 @@ func (r *VpnTunnel) basePath() string {
 func (r *VpnTunnel) getURL(userBasePath string) (string, error) {
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"project": dcl.ValueOrEmptyString(nr.Project),
-		"region":  dcl.ValueOrEmptyString(nr.Region),
-		"name":    dcl.ValueOrEmptyString(nr.Name),
+		"project":  dcl.ValueOrEmptyString(nr.Project),
+		"location": dcl.ValueOrEmptyString(nr.Location),
+		"name":     dcl.ValueOrEmptyString(nr.Name),
 	}
-	return dcl.URL("projects/{{project}}/regions/{{region}}/vpnTunnels/{{name}}", nr.basePath(), userBasePath, params), nil
+	return dcl.URL("projects/{{project}}/regions/{{location}}/vpnTunnels/{{name}}", nr.basePath(), userBasePath, params), nil
 }
 
 func (r *VpnTunnel) listURL(userBasePath string) (string, error) {
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"project": dcl.ValueOrEmptyString(nr.Project),
-		"region":  dcl.ValueOrEmptyString(nr.Region),
+		"project":  dcl.ValueOrEmptyString(nr.Project),
+		"location": dcl.ValueOrEmptyString(nr.Location),
 	}
-	return dcl.URL("projects/{{project}}/regions/{{region}}/vpnTunnels", nr.basePath(), userBasePath, params), nil
+	return dcl.URL("projects/{{project}}/regions/{{location}}/vpnTunnels", nr.basePath(), userBasePath, params), nil
 
 }
 
 func (r *VpnTunnel) createURL(userBasePath string) (string, error) {
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"project": dcl.ValueOrEmptyString(nr.Project),
-		"region":  dcl.ValueOrEmptyString(nr.Region),
+		"project":  dcl.ValueOrEmptyString(nr.Project),
+		"location": dcl.ValueOrEmptyString(nr.Location),
 	}
-	return dcl.URL("projects/{{project}}/regions/{{region}}/vpnTunnels", nr.basePath(), userBasePath, params), nil
+	return dcl.URL("projects/{{project}}/regions/{{location}}/vpnTunnels", nr.basePath(), userBasePath, params), nil
 
 }
 
 func (r *VpnTunnel) deleteURL(userBasePath string) (string, error) {
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"project": dcl.ValueOrEmptyString(nr.Project),
-		"region":  dcl.ValueOrEmptyString(nr.Region),
-		"name":    dcl.ValueOrEmptyString(nr.Name),
+		"project":  dcl.ValueOrEmptyString(nr.Project),
+		"location": dcl.ValueOrEmptyString(nr.Location),
+		"name":     dcl.ValueOrEmptyString(nr.Name),
 	}
-	return dcl.URL("projects/{{project}}/regions/{{region}}/vpnTunnels/{{name}}", nr.basePath(), userBasePath, params), nil
+	return dcl.URL("projects/{{project}}/regions/{{location}}/vpnTunnels/{{name}}", nr.basePath(), userBasePath, params), nil
 }
 
 // vpnTunnelApiOperation represents a mutable operation in the underlying REST
@@ -208,7 +208,7 @@ func (c *Client) listVpnTunnel(ctx context.Context, r *VpnTunnel, pageToken stri
 			return nil, m.Token, err
 		}
 		res.Project = r.Project
-		res.Region = r.Region
+		res.Location = r.Location
 		l = append(l, res)
 	}
 
@@ -447,10 +447,10 @@ func canonicalizeVpnTunnelDesiredState(rawDesired, rawInitial *VpnTunnel, opts .
 	} else {
 		canonicalDesired.Description = rawDesired.Description
 	}
-	if dcl.StringCanonicalize(rawDesired.Region, rawInitial.Region) {
-		canonicalDesired.Region = rawInitial.Region
+	if dcl.StringCanonicalize(rawDesired.Location, rawInitial.Location) {
+		canonicalDesired.Location = rawInitial.Location
 	} else {
-		canonicalDesired.Region = rawDesired.Region
+		canonicalDesired.Location = rawDesired.Location
 	}
 	if dcl.IsZeroValue(rawDesired.TargetVpnGateway) || (dcl.IsEmptyValueIndirect(rawDesired.TargetVpnGateway) && dcl.IsEmptyValueIndirect(rawInitial.TargetVpnGateway)) {
 		// Desired and initial values are equivalent, so set canonical desired value to initial value.
@@ -554,11 +554,11 @@ func canonicalizeVpnTunnelNewState(c *Client, rawNew, rawDesired *VpnTunnel) (*V
 		}
 	}
 
-	if dcl.IsEmptyValueIndirect(rawNew.Region) && dcl.IsEmptyValueIndirect(rawDesired.Region) {
-		rawNew.Region = rawDesired.Region
+	if dcl.IsEmptyValueIndirect(rawNew.Location) && dcl.IsEmptyValueIndirect(rawDesired.Location) {
+		rawNew.Location = rawDesired.Location
 	} else {
-		if dcl.StringCanonicalize(rawDesired.Region, rawNew.Region) {
-			rawNew.Region = rawDesired.Region
+		if dcl.StringCanonicalize(rawDesired.Location, rawNew.Location) {
+			rawNew.Location = rawDesired.Location
 		}
 	}
 
@@ -717,7 +717,7 @@ func diffVpnTunnel(c *Client, desired, actual *VpnTunnel, opts ...dcl.ApplyOptio
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Region, actual.Region, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Region")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Location, actual.Location, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Region")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -853,7 +853,7 @@ func (r *VpnTunnel) urlNormalized() *VpnTunnel {
 	normalized := dcl.Copy(*r).(VpnTunnel)
 	normalized.Name = dcl.SelfLinkToName(r.Name)
 	normalized.Description = dcl.SelfLinkToName(r.Description)
-	normalized.Region = dcl.SelfLinkToName(r.Region)
+	normalized.Location = dcl.SelfLinkToName(r.Location)
 	normalized.TargetVpnGateway = dcl.SelfLinkToName(r.TargetVpnGateway)
 	normalized.VpnGateway = dcl.SelfLinkToName(r.VpnGateway)
 	normalized.PeerExternalGateway = dcl.SelfLinkToName(r.PeerExternalGateway)
@@ -872,10 +872,10 @@ func (r *VpnTunnel) updateURL(userBasePath, updateName string) (string, error) {
 	nr := r.urlNormalized()
 	if updateName == "setLabels" {
 		fields := map[string]interface{}{
-			"project": dcl.ValueOrEmptyString(nr.Project),
-			"region":  dcl.ValueOrEmptyString(nr.Region),
+			"project":  dcl.ValueOrEmptyString(nr.Project),
+			"location": dcl.ValueOrEmptyString(nr.Location),
 		}
-		return dcl.URL("projects/{{project}}/regions/{{region}}/vpnTunnels/setLabels", nr.basePath(), userBasePath, fields), nil
+		return dcl.URL("projects/{{project}}/regions/{{location}}/vpnTunnels/setLabels", nr.basePath(), userBasePath, fields), nil
 
 	}
 
@@ -926,7 +926,7 @@ func expandVpnTunnel(c *Client, f *VpnTunnel) (map[string]interface{}, error) {
 	if v := f.Description; dcl.ValueShouldBeSent(v) {
 		m["description"] = v
 	}
-	if v := f.Region; dcl.ValueShouldBeSent(v) {
+	if v := f.Location; dcl.ValueShouldBeSent(v) {
 		m["region"] = v
 	}
 	if v := f.TargetVpnGateway; dcl.ValueShouldBeSent(v) {
@@ -947,7 +947,7 @@ func expandVpnTunnel(c *Client, f *VpnTunnel) (map[string]interface{}, error) {
 	if v := f.PeerGcpGateway; dcl.ValueShouldBeSent(v) {
 		m["peerGcpGateway"] = v
 	}
-	if v, err := dcl.DeriveField("projects/%s/regions/%s/routers/%s", f.Router, dcl.SelfLinkToName(f.Project), dcl.SelfLinkToName(f.Region), dcl.SelfLinkToName(f.Router)); err != nil {
+	if v, err := dcl.DeriveField("projects/%s/regions/%s/routers/%s", f.Router, dcl.SelfLinkToName(f.Project), dcl.SelfLinkToName(f.Location), dcl.SelfLinkToName(f.Router)); err != nil {
 		return nil, fmt.Errorf("error expanding Router into router: %w", err)
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["router"] = v
@@ -992,7 +992,7 @@ func flattenVpnTunnel(c *Client, i interface{}, res *VpnTunnel) *VpnTunnel {
 	resultRes.Id = dcl.FlattenInteger(m["id"])
 	resultRes.Name = dcl.FlattenString(m["name"])
 	resultRes.Description = dcl.FlattenString(m["description"])
-	resultRes.Region = dcl.FlattenString(m["region"])
+	resultRes.Location = dcl.FlattenString(m["region"])
 	resultRes.TargetVpnGateway = dcl.FlattenString(m["targetVpnGateway"])
 	resultRes.VpnGateway = dcl.FlattenString(m["vpnGateway"])
 	resultRes.VpnGatewayInterface = dcl.FlattenInteger(m["vpnGatewayInterface"])
@@ -1091,12 +1091,12 @@ func (r *VpnTunnel) matcher(c *Client) func([]byte) bool {
 		} else if *nr.Project != *ncr.Project {
 			return false
 		}
-		if nr.Region == nil && ncr.Region == nil {
-			c.Config.Logger.Info("Both Region fields null - considering equal.")
-		} else if nr.Region == nil || ncr.Region == nil {
-			c.Config.Logger.Info("Only one Region field is null - considering unequal.")
+		if nr.Location == nil && ncr.Location == nil {
+			c.Config.Logger.Info("Both Location fields null - considering equal.")
+		} else if nr.Location == nil || ncr.Location == nil {
+			c.Config.Logger.Info("Only one Location field is null - considering unequal.")
 			return false
-		} else if *nr.Region != *ncr.Region {
+		} else if *nr.Location != *ncr.Location {
 			return false
 		}
 		if nr.Name == nil && ncr.Name == nil {

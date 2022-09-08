@@ -29,7 +29,7 @@ func DCLCaPoolSchema() *dcl.Schema {
 				Description: "The function used to get information about a CaPool",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "CaPool",
+						Name:        "caPool",
 						Required:    true,
 						Description: "A full instance of a CaPool",
 					},
@@ -39,7 +39,7 @@ func DCLCaPoolSchema() *dcl.Schema {
 				Description: "The function used to apply information about a CaPool",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "CaPool",
+						Name:        "caPool",
 						Required:    true,
 						Description: "A full instance of a CaPool",
 					},
@@ -49,7 +49,7 @@ func DCLCaPoolSchema() *dcl.Schema {
 				Description: "The function used to delete a CaPool",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "CaPool",
+						Name:        "caPool",
 						Required:    true,
 						Description: "A full instance of a CaPool",
 					},

@@ -93,9 +93,9 @@ func GetFirewallPolicyAssociation(ctx context.Context, config *dcl.Config, u *un
 	return FirewallPolicyAssociationToUnstructured(r), nil
 }
 
-func ListFirewallPolicyAssociation(ctx context.Context, config *dcl.Config, firewallpolicy string) ([]*unstructured.Resource, error) {
+func ListFirewallPolicyAssociation(ctx context.Context, config *dcl.Config, firewallPolicy string) ([]*unstructured.Resource, error) {
 	c := dclService.NewClient(config)
-	l, err := c.ListFirewallPolicyAssociation(ctx, firewallpolicy)
+	l, err := c.ListFirewallPolicyAssociation(ctx, firewallPolicy)
 	if err != nil {
 		return nil, err
 	}

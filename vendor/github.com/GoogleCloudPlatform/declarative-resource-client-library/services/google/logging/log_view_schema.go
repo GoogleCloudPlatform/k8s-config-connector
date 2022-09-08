@@ -29,7 +29,7 @@ func DCLLogViewSchema() *dcl.Schema {
 				Description: "The function used to get information about a LogView",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "LogView",
+						Name:        "logView",
 						Required:    true,
 						Description: "A full instance of a LogView",
 					},
@@ -39,7 +39,7 @@ func DCLLogViewSchema() *dcl.Schema {
 				Description: "The function used to apply information about a LogView",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "LogView",
+						Name:        "logView",
 						Required:    true,
 						Description: "A full instance of a LogView",
 					},
@@ -49,7 +49,7 @@ func DCLLogViewSchema() *dcl.Schema {
 				Description: "The function used to delete a LogView",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "LogView",
+						Name:        "logView",
 						Required:    true,
 						Description: "A full instance of a LogView",
 					},

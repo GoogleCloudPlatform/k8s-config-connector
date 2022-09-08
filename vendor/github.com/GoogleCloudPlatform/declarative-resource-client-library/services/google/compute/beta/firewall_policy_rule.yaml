@@ -20,32 +20,32 @@ paths:
   get:
     description: The function used to get information about a FirewallPolicyRule
     parameters:
-    - name: FirewallPolicyRule
+    - name: firewallPolicyRule
       required: true
       description: A full instance of a FirewallPolicyRule
   apply:
     description: The function used to apply information about a FirewallPolicyRule
     parameters:
-    - name: FirewallPolicyRule
+    - name: firewallPolicyRule
       required: true
       description: A full instance of a FirewallPolicyRule
   delete:
     description: The function used to delete a FirewallPolicyRule
     parameters:
-    - name: FirewallPolicyRule
+    - name: firewallPolicyRule
       required: true
       description: A full instance of a FirewallPolicyRule
   deleteAll:
     description: The function used to delete all FirewallPolicyRule
     parameters:
-    - name: firewallpolicy
+    - name: firewallPolicy
       required: true
       schema:
         type: string
   list:
     description: The function used to list information about many FirewallPolicyRule
     parameters:
-    - name: firewallpolicy
+    - name: firewallPolicy
       required: true
       schema:
         type: string

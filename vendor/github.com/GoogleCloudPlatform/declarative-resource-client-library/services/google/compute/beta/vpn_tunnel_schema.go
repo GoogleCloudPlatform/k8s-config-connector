@@ -29,7 +29,7 @@ func DCLVpnTunnelSchema() *dcl.Schema {
 				Description: "The function used to get information about a VpnTunnel",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "VpnTunnel",
+						Name:        "vpnTunnel",
 						Required:    true,
 						Description: "A full instance of a VpnTunnel",
 					},
@@ -39,7 +39,7 @@ func DCLVpnTunnelSchema() *dcl.Schema {
 				Description: "The function used to apply information about a VpnTunnel",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "VpnTunnel",
+						Name:        "vpnTunnel",
 						Required:    true,
 						Description: "A full instance of a VpnTunnel",
 					},
@@ -49,7 +49,7 @@ func DCLVpnTunnelSchema() *dcl.Schema {
 				Description: "The function used to delete a VpnTunnel",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "VpnTunnel",
+						Name:        "vpnTunnel",
 						Required:    true,
 						Description: "A full instance of a VpnTunnel",
 					},
@@ -66,7 +66,7 @@ func DCLVpnTunnelSchema() *dcl.Schema {
 						},
 					},
 					dcl.PathParameters{
-						Name:     "region",
+						Name:     "location",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",
@@ -85,7 +85,7 @@ func DCLVpnTunnelSchema() *dcl.Schema {
 						},
 					},
 					dcl.PathParameters{
-						Name:     "region",
+						Name:     "location",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",
@@ -97,11 +97,8 @@ func DCLVpnTunnelSchema() *dcl.Schema {
 		Components: &dcl.Components{
 			Schemas: map[string]*dcl.Component{
 				"VpnTunnel": &dcl.Component{
-					Title: "VpnTunnel",
-					ID:    "projects/{{project}}/regions/{{region}}/vpnTunnels/{{name}}",
-					Locations: []string{
-						"region",
-					},
+					Title:           "VpnTunnel",
+					ID:              "projects/{{project}}/regions/{{location}}/vpnTunnels/{{name}}",
 					UsesStateHint:   true,
 					ParentContainer: "project",
 					LabelsField:     "labels",
@@ -163,6 +160,12 @@ func DCLVpnTunnelSchema() *dcl.Schema {
 									GoType: "string",
 								},
 							},
+							"location": &dcl.Property{
+								Type:        "string",
+								GoName:      "Location",
+								Description: "Name of the region where the VPN tunnel resides.",
+								Immutable:   true,
+							},
 							"name": &dcl.Property{
 								Type:        "string",
 								GoName:      "Name",
@@ -207,12 +210,6 @@ func DCLVpnTunnelSchema() *dcl.Schema {
 										Parent:   true,
 									},
 								},
-							},
-							"region": &dcl.Property{
-								Type:        "string",
-								GoName:      "Region",
-								Description: "URL of the region where the VPN tunnel resides. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.",
-								Immutable:   true,
 							},
 							"remoteTrafficSelector": &dcl.Property{
 								Type:          "array",

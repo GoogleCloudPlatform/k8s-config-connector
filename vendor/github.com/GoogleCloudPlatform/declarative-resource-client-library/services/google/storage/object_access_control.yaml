@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a ObjectAccessControl
     parameters:
-    - name: ObjectAccessControl
+    - name: objectAccessControl
       required: true
       description: A full instance of a ObjectAccessControl
   apply:
     description: The function used to apply information about a ObjectAccessControl
     parameters:
-    - name: ObjectAccessControl
+    - name: objectAccessControl
       required: true
       description: A full instance of a ObjectAccessControl
   delete:
     description: The function used to delete a ObjectAccessControl
     parameters:
-    - name: ObjectAccessControl
+    - name: objectAccessControl
       required: true
       description: A full instance of a ObjectAccessControl
   deleteAll:

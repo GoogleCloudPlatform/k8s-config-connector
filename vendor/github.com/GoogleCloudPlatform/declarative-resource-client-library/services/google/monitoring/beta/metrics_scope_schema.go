@@ -29,7 +29,7 @@ func DCLMetricsScopeSchema() *dcl.Schema {
 				Description: "The function used to get information about a MetricsScope",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "MetricsScope",
+						Name:        "metricsScope",
 						Required:    true,
 						Description: "A full instance of a MetricsScope",
 					},
@@ -39,7 +39,7 @@ func DCLMetricsScopeSchema() *dcl.Schema {
 				Description: "The function used to apply information about a MetricsScope",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "MetricsScope",
+						Name:        "metricsScope",
 						Required:    true,
 						Description: "A full instance of a MetricsScope",
 					},

@@ -29,7 +29,7 @@ func DCLConfigSchema() *dcl.Schema {
 				Description: "The function used to get information about a Config",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Config",
+						Name:        "config",
 						Required:    true,
 						Description: "A full instance of a Config",
 					},
@@ -39,7 +39,7 @@ func DCLConfigSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Config",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Config",
+						Name:        "config",
 						Required:    true,
 						Description: "A full instance of a Config",
 					},

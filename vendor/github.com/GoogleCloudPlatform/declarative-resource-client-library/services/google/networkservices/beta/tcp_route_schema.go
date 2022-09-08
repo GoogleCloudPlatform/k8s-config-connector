@@ -29,7 +29,7 @@ func DCLTcpRouteSchema() *dcl.Schema {
 				Description: "The function used to get information about a TcpRoute",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "TcpRoute",
+						Name:        "tcpRoute",
 						Required:    true,
 						Description: "A full instance of a TcpRoute",
 					},
@@ -39,7 +39,7 @@ func DCLTcpRouteSchema() *dcl.Schema {
 				Description: "The function used to apply information about a TcpRoute",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "TcpRoute",
+						Name:        "tcpRoute",
 						Required:    true,
 						Description: "A full instance of a TcpRoute",
 					},
@@ -49,7 +49,7 @@ func DCLTcpRouteSchema() *dcl.Schema {
 				Description: "The function used to delete a TcpRoute",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "TcpRoute",
+						Name:        "tcpRoute",
 						Required:    true,
 						Description: "A full instance of a TcpRoute",
 					},

@@ -29,7 +29,7 @@ func DCLWorkflowTemplateSchema() *dcl.Schema {
 				Description: "The function used to get information about a WorkflowTemplate",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "WorkflowTemplate",
+						Name:        "workflowTemplate",
 						Required:    true,
 						Description: "A full instance of a WorkflowTemplate",
 					},
@@ -39,7 +39,7 @@ func DCLWorkflowTemplateSchema() *dcl.Schema {
 				Description: "The function used to apply information about a WorkflowTemplate",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "WorkflowTemplate",
+						Name:        "workflowTemplate",
 						Required:    true,
 						Description: "A full instance of a WorkflowTemplate",
 					},
@@ -49,7 +49,7 @@ func DCLWorkflowTemplateSchema() *dcl.Schema {
 				Description: "The function used to delete a WorkflowTemplate",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "WorkflowTemplate",
+						Name:        "workflowTemplate",
 						Required:    true,
 						Description: "A full instance of a WorkflowTemplate",
 					},

@@ -29,7 +29,7 @@ func DCLMetricDescriptorSchema() *dcl.Schema {
 				Description: "The function used to get information about a MetricDescriptor",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "MetricDescriptor",
+						Name:        "metricDescriptor",
 						Required:    true,
 						Description: "A full instance of a MetricDescriptor",
 					},
@@ -39,7 +39,7 @@ func DCLMetricDescriptorSchema() *dcl.Schema {
 				Description: "The function used to apply information about a MetricDescriptor",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "MetricDescriptor",
+						Name:        "metricDescriptor",
 						Required:    true,
 						Description: "A full instance of a MetricDescriptor",
 					},
@@ -49,7 +49,7 @@ func DCLMetricDescriptorSchema() *dcl.Schema {
 				Description: "The function used to delete a MetricDescriptor",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "MetricDescriptor",
+						Name:        "metricDescriptor",
 						Required:    true,
 						Description: "A full instance of a MetricDescriptor",
 					},

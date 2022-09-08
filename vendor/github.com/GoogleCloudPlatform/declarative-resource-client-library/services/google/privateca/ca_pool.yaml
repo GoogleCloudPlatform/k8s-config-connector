@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a CaPool
     parameters:
-    - name: CaPool
+    - name: caPool
       required: true
       description: A full instance of a CaPool
   apply:
     description: The function used to apply information about a CaPool
     parameters:
-    - name: CaPool
+    - name: caPool
       required: true
       description: A full instance of a CaPool
   delete:
     description: The function used to delete a CaPool
     parameters:
-    - name: CaPool
+    - name: caPool
       required: true
       description: A full instance of a CaPool
   deleteAll:

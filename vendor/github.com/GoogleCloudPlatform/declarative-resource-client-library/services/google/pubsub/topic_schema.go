@@ -29,7 +29,7 @@ func DCLTopicSchema() *dcl.Schema {
 				Description: "The function used to get information about a Topic",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Topic",
+						Name:        "topic",
 						Required:    true,
 						Description: "A full instance of a Topic",
 					},
@@ -39,7 +39,7 @@ func DCLTopicSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Topic",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Topic",
+						Name:        "topic",
 						Required:    true,
 						Description: "A full instance of a Topic",
 					},
@@ -49,7 +49,7 @@ func DCLTopicSchema() *dcl.Schema {
 				Description: "The function used to delete a Topic",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Topic",
+						Name:        "topic",
 						Required:    true,
 						Description: "A full instance of a Topic",
 					},

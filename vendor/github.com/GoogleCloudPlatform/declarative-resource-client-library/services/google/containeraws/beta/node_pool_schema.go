@@ -39,7 +39,7 @@ func DCLNodePoolSchema() *dcl.Schema {
 				Description: "The function used to get information about a NodePool",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "NodePool",
+						Name:        "nodePool",
 						Required:    true,
 						Description: "A full instance of a NodePool",
 					},
@@ -49,7 +49,7 @@ func DCLNodePoolSchema() *dcl.Schema {
 				Description: "The function used to apply information about a NodePool",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "NodePool",
+						Name:        "nodePool",
 						Required:    true,
 						Description: "A full instance of a NodePool",
 					},
@@ -59,7 +59,7 @@ func DCLNodePoolSchema() *dcl.Schema {
 				Description: "The function used to delete a NodePool",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "NodePool",
+						Name:        "nodePool",
 						Required:    true,
 						Description: "A full instance of a NodePool",
 					},

@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Mesh
     parameters:
-    - name: Mesh
+    - name: mesh
       required: true
       description: A full instance of a Mesh
   apply:
     description: The function used to apply information about a Mesh
     parameters:
-    - name: Mesh
+    - name: mesh
       required: true
       description: A full instance of a Mesh
   delete:
     description: The function used to delete a Mesh
     parameters:
-    - name: Mesh
+    - name: mesh
       required: true
       description: A full instance of a Mesh
   deleteAll:

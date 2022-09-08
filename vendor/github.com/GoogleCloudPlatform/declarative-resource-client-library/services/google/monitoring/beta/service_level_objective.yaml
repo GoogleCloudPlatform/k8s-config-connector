@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a ServiceLevelObjective
     parameters:
-    - name: ServiceLevelObjective
+    - name: serviceLevelObjective
       required: true
       description: A full instance of a ServiceLevelObjective
   apply:
     description: The function used to apply information about a ServiceLevelObjective
     parameters:
-    - name: ServiceLevelObjective
+    - name: serviceLevelObjective
       required: true
       description: A full instance of a ServiceLevelObjective
   delete:
     description: The function used to delete a ServiceLevelObjective
     parameters:
-    - name: ServiceLevelObjective
+    - name: serviceLevelObjective
       required: true
       description: A full instance of a ServiceLevelObjective
   deleteAll:

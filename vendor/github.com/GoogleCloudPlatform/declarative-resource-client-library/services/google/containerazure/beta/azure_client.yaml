@@ -32,19 +32,19 @@ paths:
   get:
     description: The function used to get information about a Client
     parameters:
-    - name: Client
+    - name: client
       required: true
       description: A full instance of a Client
   apply:
     description: The function used to apply information about a Client
     parameters:
-    - name: Client
+    - name: client
       required: true
       description: A full instance of a Client
   delete:
     description: The function used to delete a Client
     parameters:
-    - name: Client
+    - name: client
       required: true
       description: A full instance of a Client
   deleteAll:

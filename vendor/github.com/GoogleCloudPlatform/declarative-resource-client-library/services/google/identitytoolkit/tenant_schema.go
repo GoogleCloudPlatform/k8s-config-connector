@@ -29,7 +29,7 @@ func DCLTenantSchema() *dcl.Schema {
 				Description: "The function used to get information about a Tenant",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Tenant",
+						Name:        "tenant",
 						Required:    true,
 						Description: "A full instance of a Tenant",
 					},
@@ -39,7 +39,7 @@ func DCLTenantSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Tenant",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Tenant",
+						Name:        "tenant",
 						Required:    true,
 						Description: "A full instance of a Tenant",
 					},
@@ -49,7 +49,7 @@ func DCLTenantSchema() *dcl.Schema {
 				Description: "The function used to delete a Tenant",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Tenant",
+						Name:        "tenant",
 						Required:    true,
 						Description: "A full instance of a Tenant",
 					},

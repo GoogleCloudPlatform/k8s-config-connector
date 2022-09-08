@@ -29,7 +29,7 @@ func DCLServiceBindingSchema() *dcl.Schema {
 				Description: "The function used to get information about a ServiceBinding",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "ServiceBinding",
+						Name:        "serviceBinding",
 						Required:    true,
 						Description: "A full instance of a ServiceBinding",
 					},
@@ -39,7 +39,7 @@ func DCLServiceBindingSchema() *dcl.Schema {
 				Description: "The function used to apply information about a ServiceBinding",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "ServiceBinding",
+						Name:        "serviceBinding",
 						Required:    true,
 						Description: "A full instance of a ServiceBinding",
 					},
@@ -49,7 +49,7 @@ func DCLServiceBindingSchema() *dcl.Schema {
 				Description: "The function used to delete a ServiceBinding",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "ServiceBinding",
+						Name:        "serviceBinding",
 						Required:    true,
 						Description: "A full instance of a ServiceBinding",
 					},

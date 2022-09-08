@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a TargetVpnGateway
     parameters:
-    - name: TargetVpnGateway
+    - name: targetVpnGateway
       required: true
       description: A full instance of a TargetVpnGateway
   apply:
     description: The function used to apply information about a TargetVpnGateway
     parameters:
-    - name: TargetVpnGateway
+    - name: targetVpnGateway
       required: true
       description: A full instance of a TargetVpnGateway
   delete:
     description: The function used to delete a TargetVpnGateway
     parameters:
-    - name: TargetVpnGateway
+    - name: targetVpnGateway
       required: true
       description: A full instance of a TargetVpnGateway
   deleteAll:

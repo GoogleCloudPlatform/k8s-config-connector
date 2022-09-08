@@ -29,7 +29,7 @@ func DCLZoneSchema() *dcl.Schema {
 				Description: "The function used to get information about a Zone",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Zone",
+						Name:        "zone",
 						Required:    true,
 						Description: "A full instance of a Zone",
 					},
@@ -39,7 +39,7 @@ func DCLZoneSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Zone",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Zone",
+						Name:        "zone",
 						Required:    true,
 						Description: "A full instance of a Zone",
 					},
@@ -49,7 +49,7 @@ func DCLZoneSchema() *dcl.Schema {
 				Description: "The function used to delete a Zone",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Zone",
+						Name:        "zone",
 						Required:    true,
 						Description: "A full instance of a Zone",
 					},

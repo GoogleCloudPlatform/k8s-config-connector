@@ -29,7 +29,7 @@ func DCLWorkloadSchema() *dcl.Schema {
 				Description: "The function used to get information about a Workload",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Workload",
+						Name:        "workload",
 						Required:    true,
 						Description: "A full instance of a Workload",
 					},
@@ -39,7 +39,7 @@ func DCLWorkloadSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Workload",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Workload",
+						Name:        "workload",
 						Required:    true,
 						Description: "A full instance of a Workload",
 					},
@@ -49,7 +49,7 @@ func DCLWorkloadSchema() *dcl.Schema {
 				Description: "The function used to delete a Workload",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Workload",
+						Name:        "workload",
 						Required:    true,
 						Description: "A full instance of a Workload",
 					},

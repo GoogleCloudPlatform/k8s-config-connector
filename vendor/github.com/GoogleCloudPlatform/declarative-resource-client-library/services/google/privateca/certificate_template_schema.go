@@ -43,7 +43,7 @@ func DCLCertificateTemplateSchema() *dcl.Schema {
 				Description: "The function used to get information about a CertificateTemplate",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "CertificateTemplate",
+						Name:        "certificateTemplate",
 						Required:    true,
 						Description: "A full instance of a CertificateTemplate",
 					},
@@ -53,7 +53,7 @@ func DCLCertificateTemplateSchema() *dcl.Schema {
 				Description: "The function used to apply information about a CertificateTemplate",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "CertificateTemplate",
+						Name:        "certificateTemplate",
 						Required:    true,
 						Description: "A full instance of a CertificateTemplate",
 					},
@@ -63,7 +63,7 @@ func DCLCertificateTemplateSchema() *dcl.Schema {
 				Description: "The function used to delete a CertificateTemplate",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "CertificateTemplate",
+						Name:        "certificateTemplate",
 						Required:    true,
 						Description: "A full instance of a CertificateTemplate",
 					},

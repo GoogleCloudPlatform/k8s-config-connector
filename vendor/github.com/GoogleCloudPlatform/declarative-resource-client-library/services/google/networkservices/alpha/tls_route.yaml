@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a TlsRoute
     parameters:
-    - name: TlsRoute
+    - name: tlsRoute
       required: true
       description: A full instance of a TlsRoute
   apply:
     description: The function used to apply information about a TlsRoute
     parameters:
-    - name: TlsRoute
+    - name: tlsRoute
       required: true
       description: A full instance of a TlsRoute
   delete:
     description: The function used to delete a TlsRoute
     parameters:
-    - name: TlsRoute
+    - name: tlsRoute
       required: true
       description: A full instance of a TlsRoute
   deleteAll:

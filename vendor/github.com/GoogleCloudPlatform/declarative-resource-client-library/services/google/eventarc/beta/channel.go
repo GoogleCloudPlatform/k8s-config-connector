@@ -23,17 +23,17 @@ import (
 )
 
 type Channel struct {
-	Name            *string           `json:"name"`
-	Uid             *string           `json:"uid"`
-	CreateTime      *string           `json:"createTime"`
-	UpdateTime      *string           `json:"updateTime"`
-	Provider        *string           `json:"provider"`
-	PubsubTopic     *string           `json:"pubsubTopic"`
-	State           *ChannelStateEnum `json:"state"`
-	ActivationToken *string           `json:"activationToken"`
-	CryptoKeyName   *string           `json:"cryptoKeyName"`
-	Project         *string           `json:"project"`
-	Location        *string           `json:"location"`
+	Name               *string           `json:"name"`
+	Uid                *string           `json:"uid"`
+	CreateTime         *string           `json:"createTime"`
+	UpdateTime         *string           `json:"updateTime"`
+	ThirdPartyProvider *string           `json:"thirdPartyProvider"`
+	PubsubTopic        *string           `json:"pubsubTopic"`
+	State              *ChannelStateEnum `json:"state"`
+	ActivationToken    *string           `json:"activationToken"`
+	CryptoKeyName      *string           `json:"cryptoKeyName"`
+	Project            *string           `json:"project"`
+	Location           *string           `json:"location"`
 }
 
 func (r *Channel) String() string {
@@ -83,17 +83,17 @@ func (r *Channel) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":             dcl.ValueOrEmptyString(nr.Name),
-		"uid":              dcl.ValueOrEmptyString(nr.Uid),
-		"create_time":      dcl.ValueOrEmptyString(nr.CreateTime),
-		"update_time":      dcl.ValueOrEmptyString(nr.UpdateTime),
-		"provider":         dcl.ValueOrEmptyString(nr.Provider),
-		"pubsub_topic":     dcl.ValueOrEmptyString(nr.PubsubTopic),
-		"state":            dcl.ValueOrEmptyString(nr.State),
-		"activation_token": dcl.ValueOrEmptyString(nr.ActivationToken),
-		"crypto_key_name":  dcl.ValueOrEmptyString(nr.CryptoKeyName),
-		"project":          dcl.ValueOrEmptyString(nr.Project),
-		"location":         dcl.ValueOrEmptyString(nr.Location),
+		"name":                 dcl.ValueOrEmptyString(nr.Name),
+		"uid":                  dcl.ValueOrEmptyString(nr.Uid),
+		"create_time":          dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":          dcl.ValueOrEmptyString(nr.UpdateTime),
+		"third_party_provider": dcl.ValueOrEmptyString(nr.ThirdPartyProvider),
+		"pubsub_topic":         dcl.ValueOrEmptyString(nr.PubsubTopic),
+		"state":                dcl.ValueOrEmptyString(nr.State),
+		"activation_token":     dcl.ValueOrEmptyString(nr.ActivationToken),
+		"crypto_key_name":      dcl.ValueOrEmptyString(nr.CryptoKeyName),
+		"project":              dcl.ValueOrEmptyString(nr.Project),
+		"location":             dcl.ValueOrEmptyString(nr.Location),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/channels/{{name}}", params), nil
 }

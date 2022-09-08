@@ -39,7 +39,7 @@ func DCLPacketMirroringSchema() *dcl.Schema {
 				Description: "The function used to get information about a PacketMirroring",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "PacketMirroring",
+						Name:        "packetMirroring",
 						Required:    true,
 						Description: "A full instance of a PacketMirroring",
 					},
@@ -49,7 +49,7 @@ func DCLPacketMirroringSchema() *dcl.Schema {
 				Description: "The function used to apply information about a PacketMirroring",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "PacketMirroring",
+						Name:        "packetMirroring",
 						Required:    true,
 						Description: "A full instance of a PacketMirroring",
 					},
@@ -59,7 +59,7 @@ func DCLPacketMirroringSchema() *dcl.Schema {
 				Description: "The function used to delete a PacketMirroring",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "PacketMirroring",
+						Name:        "packetMirroring",
 						Required:    true,
 						Description: "A full instance of a PacketMirroring",
 					},

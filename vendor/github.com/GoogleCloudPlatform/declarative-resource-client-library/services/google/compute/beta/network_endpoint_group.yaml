@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a NetworkEndpointGroup
     parameters:
-    - name: NetworkEndpointGroup
+    - name: networkEndpointGroup
       required: true
       description: A full instance of a NetworkEndpointGroup
   apply:
     description: The function used to apply information about a NetworkEndpointGroup
     parameters:
-    - name: NetworkEndpointGroup
+    - name: networkEndpointGroup
       required: true
       description: A full instance of a NetworkEndpointGroup
   delete:
     description: The function used to delete a NetworkEndpointGroup
     parameters:
-    - name: NetworkEndpointGroup
+    - name: networkEndpointGroup
       required: true
       description: A full instance of a NetworkEndpointGroup
   deleteAll:
@@ -261,12 +261,6 @@ components:
           x-dcl-go-name: SelfLink
           readOnly: true
           description: Server-defined URL for the resource.
-          x-kubernetes-immutable: true
-        selfLinkWithId:
-          type: string
-          x-dcl-go-name: SelfLinkWithId
-          readOnly: true
-          description: Server-defined URL for this resource with the resource id.
           x-kubernetes-immutable: true
         size:
           type: integer

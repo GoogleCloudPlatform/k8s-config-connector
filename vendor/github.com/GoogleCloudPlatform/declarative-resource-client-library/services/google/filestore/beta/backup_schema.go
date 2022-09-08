@@ -29,7 +29,7 @@ func DCLBackupSchema() *dcl.Schema {
 				Description: "The function used to get information about a Backup",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Backup",
+						Name:        "backup",
 						Required:    true,
 						Description: "A full instance of a Backup",
 					},
@@ -39,7 +39,7 @@ func DCLBackupSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Backup",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Backup",
+						Name:        "backup",
 						Required:    true,
 						Description: "A full instance of a Backup",
 					},
@@ -49,7 +49,7 @@ func DCLBackupSchema() *dcl.Schema {
 				Description: "The function used to delete a Backup",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Backup",
+						Name:        "backup",
 						Required:    true,
 						Description: "A full instance of a Backup",
 					},

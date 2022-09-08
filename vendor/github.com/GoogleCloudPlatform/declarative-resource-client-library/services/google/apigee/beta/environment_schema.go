@@ -30,7 +30,7 @@ func DCLEnvironmentSchema() *dcl.Schema {
 				Description: "The function used to get information about a Environment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Environment",
+						Name:        "environment",
 						Required:    true,
 						Description: "A full instance of a Environment",
 					},
@@ -40,7 +40,7 @@ func DCLEnvironmentSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Environment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Environment",
+						Name:        "environment",
 						Required:    true,
 						Description: "A full instance of a Environment",
 					},
@@ -50,7 +50,7 @@ func DCLEnvironmentSchema() *dcl.Schema {
 				Description: "The function used to delete a Environment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Environment",
+						Name:        "environment",
 						Required:    true,
 						Description: "A full instance of a Environment",
 					},
@@ -60,7 +60,7 @@ func DCLEnvironmentSchema() *dcl.Schema {
 				Description: "The function used to delete all Environment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:     "apigeeorganization",
+						Name:     "apigeeOrganization",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",
@@ -72,7 +72,7 @@ func DCLEnvironmentSchema() *dcl.Schema {
 				Description: "The function used to list information about many Environment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:     "apigeeorganization",
+						Name:     "apigeeOrganization",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",

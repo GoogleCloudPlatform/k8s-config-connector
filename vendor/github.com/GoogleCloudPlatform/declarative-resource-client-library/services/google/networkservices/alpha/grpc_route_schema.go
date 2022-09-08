@@ -29,7 +29,7 @@ func DCLGrpcRouteSchema() *dcl.Schema {
 				Description: "The function used to get information about a GrpcRoute",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "GrpcRoute",
+						Name:        "grpcRoute",
 						Required:    true,
 						Description: "A full instance of a GrpcRoute",
 					},
@@ -39,7 +39,7 @@ func DCLGrpcRouteSchema() *dcl.Schema {
 				Description: "The function used to apply information about a GrpcRoute",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "GrpcRoute",
+						Name:        "grpcRoute",
 						Required:    true,
 						Description: "A full instance of a GrpcRoute",
 					},
@@ -49,7 +49,7 @@ func DCLGrpcRouteSchema() *dcl.Schema {
 				Description: "The function used to delete a GrpcRoute",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "GrpcRoute",
+						Name:        "grpcRoute",
 						Required:    true,
 						Description: "A full instance of a GrpcRoute",
 					},

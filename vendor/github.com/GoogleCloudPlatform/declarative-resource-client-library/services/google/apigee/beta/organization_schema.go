@@ -29,7 +29,7 @@ func DCLOrganizationSchema() *dcl.Schema {
 				Description: "The function used to get information about a Organization",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Organization",
+						Name:        "organization",
 						Required:    true,
 						Description: "A full instance of a Organization",
 					},
@@ -39,7 +39,7 @@ func DCLOrganizationSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Organization",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Organization",
+						Name:        "organization",
 						Required:    true,
 						Description: "A full instance of a Organization",
 					},
@@ -49,7 +49,7 @@ func DCLOrganizationSchema() *dcl.Schema {
 				Description: "The function used to delete a Organization",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Organization",
+						Name:        "organization",
 						Required:    true,
 						Description: "A full instance of a Organization",
 					},

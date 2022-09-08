@@ -29,7 +29,7 @@ func DCLInterconnectAttachmentSchema() *dcl.Schema {
 				Description: "The function used to get information about a InterconnectAttachment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "InterconnectAttachment",
+						Name:        "interconnectAttachment",
 						Required:    true,
 						Description: "A full instance of a InterconnectAttachment",
 					},
@@ -39,7 +39,7 @@ func DCLInterconnectAttachmentSchema() *dcl.Schema {
 				Description: "The function used to apply information about a InterconnectAttachment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "InterconnectAttachment",
+						Name:        "interconnectAttachment",
 						Required:    true,
 						Description: "A full instance of a InterconnectAttachment",
 					},
@@ -49,7 +49,7 @@ func DCLInterconnectAttachmentSchema() *dcl.Schema {
 				Description: "The function used to delete a InterconnectAttachment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "InterconnectAttachment",
+						Name:        "interconnectAttachment",
 						Required:    true,
 						Description: "A full instance of a InterconnectAttachment",
 					},

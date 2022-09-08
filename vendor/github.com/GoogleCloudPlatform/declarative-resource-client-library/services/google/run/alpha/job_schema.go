@@ -30,7 +30,7 @@ func DCLJobSchema() *dcl.Schema {
 				Description: "The function used to get information about a Job",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Job",
+						Name:        "job",
 						Required:    true,
 						Description: "A full instance of a Job",
 					},
@@ -40,7 +40,7 @@ func DCLJobSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Job",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Job",
+						Name:        "job",
 						Required:    true,
 						Description: "A full instance of a Job",
 					},
@@ -50,7 +50,7 @@ func DCLJobSchema() *dcl.Schema {
 				Description: "The function used to delete a Job",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Job",
+						Name:        "job",
 						Required:    true,
 						Description: "A full instance of a Job",
 					},

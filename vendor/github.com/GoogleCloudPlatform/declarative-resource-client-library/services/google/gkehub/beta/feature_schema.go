@@ -30,7 +30,7 @@ func DCLFeatureSchema() *dcl.Schema {
 				Description: "The function used to get information about a Feature",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Feature",
+						Name:        "feature",
 						Required:    true,
 						Description: "A full instance of a Feature",
 					},
@@ -40,7 +40,7 @@ func DCLFeatureSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Feature",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Feature",
+						Name:        "feature",
 						Required:    true,
 						Description: "A full instance of a Feature",
 					},
@@ -50,7 +50,7 @@ func DCLFeatureSchema() *dcl.Schema {
 				Description: "The function used to delete a Feature",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Feature",
+						Name:        "feature",
 						Required:    true,
 						Description: "A full instance of a Feature",
 					},

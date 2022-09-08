@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a AutoscalingPolicy
     parameters:
-    - name: AutoscalingPolicy
+    - name: autoscalingPolicy
       required: true
       description: A full instance of a AutoscalingPolicy
   apply:
     description: The function used to apply information about a AutoscalingPolicy
     parameters:
-    - name: AutoscalingPolicy
+    - name: autoscalingPolicy
       required: true
       description: A full instance of a AutoscalingPolicy
   delete:
     description: The function used to delete a AutoscalingPolicy
     parameters:
-    - name: AutoscalingPolicy
+    - name: autoscalingPolicy
       required: true
       description: A full instance of a AutoscalingPolicy
   deleteAll:

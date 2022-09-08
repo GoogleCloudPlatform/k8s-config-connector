@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Subnetwork
     parameters:
-    - name: Subnetwork
+    - name: subnetwork
       required: true
       description: A full instance of a Subnetwork
   apply:
     description: The function used to apply information about a Subnetwork
     parameters:
-    - name: Subnetwork
+    - name: subnetwork
       required: true
       description: A full instance of a Subnetwork
   delete:
     description: The function used to delete a Subnetwork
     parameters:
-    - name: Subnetwork
+    - name: subnetwork
       required: true
       description: A full instance of a Subnetwork
   deleteAll:

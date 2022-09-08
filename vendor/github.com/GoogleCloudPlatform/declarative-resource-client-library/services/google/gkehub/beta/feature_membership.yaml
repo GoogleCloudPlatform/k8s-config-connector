@@ -21,19 +21,19 @@ paths:
   get:
     description: The function used to get information about a FeatureMembership
     parameters:
-    - name: FeatureMembership
+    - name: featureMembership
       required: true
       description: A full instance of a FeatureMembership
   apply:
     description: The function used to apply information about a FeatureMembership
     parameters:
-    - name: FeatureMembership
+    - name: featureMembership
       required: true
       description: A full instance of a FeatureMembership
   delete:
     description: The function used to delete a FeatureMembership
     parameters:
-    - name: FeatureMembership
+    - name: featureMembership
       required: true
       description: A full instance of a FeatureMembership
   deleteAll:

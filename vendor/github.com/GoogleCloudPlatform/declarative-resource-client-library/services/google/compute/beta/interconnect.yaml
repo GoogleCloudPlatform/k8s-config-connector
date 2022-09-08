@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Interconnect
     parameters:
-    - name: Interconnect
+    - name: interconnect
       required: true
       description: A full instance of a Interconnect
   apply:
     description: The function used to apply information about a Interconnect
     parameters:
-    - name: Interconnect
+    - name: interconnect
       required: true
       description: A full instance of a Interconnect
   delete:
     description: The function used to delete a Interconnect
     parameters:
-    - name: Interconnect
+    - name: interconnect
       required: true
       description: A full instance of a Interconnect
   deleteAll:

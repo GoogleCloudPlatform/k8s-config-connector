@@ -20,13 +20,13 @@ paths:
   get:
     description: The function used to get information about a CryptoKey
     parameters:
-    - name: CryptoKey
+    - name: cryptoKey
       required: true
       description: A full instance of a CryptoKey
   apply:
     description: The function used to apply information about a CryptoKey
     parameters:
-    - name: CryptoKey
+    - name: cryptoKey
       required: true
       description: A full instance of a CryptoKey
   list:
@@ -40,7 +40,7 @@ paths:
       required: true
       schema:
         type: string
-    - name: keyring
+    - name: keyRing
       required: true
       schema:
         type: string

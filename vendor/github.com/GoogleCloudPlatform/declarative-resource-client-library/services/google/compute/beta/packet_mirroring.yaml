@@ -28,19 +28,19 @@ paths:
   get:
     description: The function used to get information about a PacketMirroring
     parameters:
-    - name: PacketMirroring
+    - name: packetMirroring
       required: true
       description: A full instance of a PacketMirroring
   apply:
     description: The function used to apply information about a PacketMirroring
     parameters:
-    - name: PacketMirroring
+    - name: packetMirroring
       required: true
       description: A full instance of a PacketMirroring
   delete:
     description: The function used to delete a PacketMirroring
     parameters:
-    - name: PacketMirroring
+    - name: packetMirroring
       required: true
       description: A full instance of a PacketMirroring
   deleteAll:

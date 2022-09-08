@@ -38,7 +38,7 @@ func DCLReleaseSchema() *dcl.Schema {
 				Description: "The function used to get information about a Release",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Release",
+						Name:        "release",
 						Required:    true,
 						Description: "A full instance of a Release",
 					},
@@ -48,7 +48,7 @@ func DCLReleaseSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Release",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Release",
+						Name:        "release",
 						Required:    true,
 						Description: "A full instance of a Release",
 					},
@@ -58,7 +58,7 @@ func DCLReleaseSchema() *dcl.Schema {
 				Description: "The function used to delete a Release",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Release",
+						Name:        "release",
 						Required:    true,
 						Description: "A full instance of a Release",
 					},

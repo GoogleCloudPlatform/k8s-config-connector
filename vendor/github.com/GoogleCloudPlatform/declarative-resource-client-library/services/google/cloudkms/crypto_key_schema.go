@@ -30,7 +30,7 @@ func DCLCryptoKeySchema() *dcl.Schema {
 				Description: "The function used to get information about a CryptoKey",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "CryptoKey",
+						Name:        "cryptoKey",
 						Required:    true,
 						Description: "A full instance of a CryptoKey",
 					},
@@ -40,7 +40,7 @@ func DCLCryptoKeySchema() *dcl.Schema {
 				Description: "The function used to apply information about a CryptoKey",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "CryptoKey",
+						Name:        "cryptoKey",
 						Required:    true,
 						Description: "A full instance of a CryptoKey",
 					},
@@ -64,7 +64,7 @@ func DCLCryptoKeySchema() *dcl.Schema {
 						},
 					},
 					dcl.PathParameters{
-						Name:     "keyring",
+						Name:     "keyRing",
 						Required: true,
 						Schema: &dcl.PathParametersSchema{
 							Type: "string",

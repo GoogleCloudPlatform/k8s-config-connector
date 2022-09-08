@@ -440,10 +440,10 @@ func canonicalizeChannelDesiredState(rawDesired, rawInitial *Channel, opts ...dc
 	} else {
 		canonicalDesired.Name = rawDesired.Name
 	}
-	if dcl.StringCanonicalize(rawDesired.Provider, rawInitial.Provider) {
-		canonicalDesired.Provider = rawInitial.Provider
+	if dcl.StringCanonicalize(rawDesired.ThirdPartyProvider, rawInitial.ThirdPartyProvider) {
+		canonicalDesired.ThirdPartyProvider = rawInitial.ThirdPartyProvider
 	} else {
-		canonicalDesired.Provider = rawDesired.Provider
+		canonicalDesired.ThirdPartyProvider = rawDesired.ThirdPartyProvider
 	}
 	if dcl.IsZeroValue(rawDesired.CryptoKeyName) || (dcl.IsEmptyValueIndirect(rawDesired.CryptoKeyName) && dcl.IsEmptyValueIndirect(rawInitial.CryptoKeyName)) {
 		// Desired and initial values are equivalent, so set canonical desired value to initial value.
@@ -493,11 +493,11 @@ func canonicalizeChannelNewState(c *Client, rawNew, rawDesired *Channel) (*Chann
 	} else {
 	}
 
-	if dcl.IsEmptyValueIndirect(rawNew.Provider) && dcl.IsEmptyValueIndirect(rawDesired.Provider) {
-		rawNew.Provider = rawDesired.Provider
+	if dcl.IsEmptyValueIndirect(rawNew.ThirdPartyProvider) && dcl.IsEmptyValueIndirect(rawDesired.ThirdPartyProvider) {
+		rawNew.ThirdPartyProvider = rawDesired.ThirdPartyProvider
 	} else {
-		if dcl.StringCanonicalize(rawDesired.Provider, rawNew.Provider) {
-			rawNew.Provider = rawDesired.Provider
+		if dcl.StringCanonicalize(rawDesired.ThirdPartyProvider, rawNew.ThirdPartyProvider) {
+			rawNew.ThirdPartyProvider = rawDesired.ThirdPartyProvider
 		}
 	}
 
@@ -580,7 +580,7 @@ func diffChannel(c *Client, desired, actual *Channel, opts ...dcl.ApplyOption) (
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Provider, actual.Provider, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Provider")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ThirdPartyProvider, actual.ThirdPartyProvider, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Provider")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -639,7 +639,7 @@ func (r *Channel) urlNormalized() *Channel {
 	normalized := dcl.Copy(*r).(Channel)
 	normalized.Name = dcl.SelfLinkToName(r.Name)
 	normalized.Uid = dcl.SelfLinkToName(r.Uid)
-	normalized.Provider = dcl.SelfLinkToName(r.Provider)
+	normalized.ThirdPartyProvider = dcl.SelfLinkToName(r.ThirdPartyProvider)
 	normalized.PubsubTopic = dcl.SelfLinkToName(r.PubsubTopic)
 	normalized.ActivationToken = dcl.SelfLinkToName(r.ActivationToken)
 	normalized.CryptoKeyName = r.CryptoKeyName
@@ -703,7 +703,7 @@ func expandChannel(c *Client, f *Channel) (map[string]interface{}, error) {
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["name"] = v
 	}
-	if v := f.Provider; dcl.ValueShouldBeSent(v) {
+	if v := f.ThirdPartyProvider; dcl.ValueShouldBeSent(v) {
 		m["provider"] = v
 	}
 	if v := f.CryptoKeyName; dcl.ValueShouldBeSent(v) {
@@ -739,7 +739,7 @@ func flattenChannel(c *Client, i interface{}, res *Channel) *Channel {
 	resultRes.Uid = dcl.FlattenString(m["uid"])
 	resultRes.CreateTime = dcl.FlattenString(m["createTime"])
 	resultRes.UpdateTime = dcl.FlattenString(m["updateTime"])
-	resultRes.Provider = dcl.FlattenString(m["provider"])
+	resultRes.ThirdPartyProvider = dcl.FlattenString(m["provider"])
 	resultRes.PubsubTopic = dcl.FlattenString(m["pubsubTopic"])
 	resultRes.State = flattenChannelStateEnum(m["state"])
 	resultRes.ActivationToken = dcl.FlattenString(m["activationToken"])

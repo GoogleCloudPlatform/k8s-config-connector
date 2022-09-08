@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a ForwardingRule
     parameters:
-    - name: ForwardingRule
+    - name: forwardingRule
       required: true
       description: A full instance of a ForwardingRule
   apply:
     description: The function used to apply information about a ForwardingRule
     parameters:
-    - name: ForwardingRule
+    - name: forwardingRule
       required: true
       description: A full instance of a ForwardingRule
   delete:
     description: The function used to delete a ForwardingRule
     parameters:
-    - name: ForwardingRule
+    - name: forwardingRule
       required: true
       description: A full instance of a ForwardingRule
   deleteAll:

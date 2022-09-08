@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Tenant
     parameters:
-    - name: Tenant
+    - name: tenant
       required: true
       description: A full instance of a Tenant
   apply:
     description: The function used to apply information about a Tenant
     parameters:
-    - name: Tenant
+    - name: tenant
       required: true
       description: A full instance of a Tenant
   delete:
     description: The function used to delete a Tenant
     parameters:
-    - name: Tenant
+    - name: tenant
       required: true
       description: A full instance of a Tenant
   deleteAll:

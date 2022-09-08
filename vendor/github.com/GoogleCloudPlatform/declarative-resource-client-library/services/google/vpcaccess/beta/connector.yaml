@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Connector
     parameters:
-    - name: Connector
+    - name: connector
       required: true
       description: A full instance of a Connector
   apply:
     description: The function used to apply information about a Connector
     parameters:
-    - name: Connector
+    - name: connector
       required: true
       description: A full instance of a Connector
   delete:
     description: The function used to delete a Connector
     parameters:
-    - name: Connector
+    - name: connector
       required: true
       description: A full instance of a Connector
   deleteAll:

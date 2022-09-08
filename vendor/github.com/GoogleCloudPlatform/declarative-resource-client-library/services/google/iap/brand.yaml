@@ -20,13 +20,13 @@ paths:
   get:
     description: The function used to get information about a Brand
     parameters:
-    - name: Brand
+    - name: brand
       required: true
       description: A full instance of a Brand
   apply:
     description: The function used to apply information about a Brand
     parameters:
-    - name: Brand
+    - name: brand
       required: true
       description: A full instance of a Brand
   list:

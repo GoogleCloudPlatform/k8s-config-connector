@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a StoredInfoType
     parameters:
-    - name: StoredInfoType
+    - name: storedInfoType
       required: true
       description: A full instance of a StoredInfoType
   apply:
     description: The function used to apply information about a StoredInfoType
     parameters:
-    - name: StoredInfoType
+    - name: storedInfoType
       required: true
       description: A full instance of a StoredInfoType
   delete:
     description: The function used to delete a StoredInfoType
     parameters:
-    - name: StoredInfoType
+    - name: storedInfoType
       required: true
       description: A full instance of a StoredInfoType
   deleteAll:

@@ -23,19 +23,19 @@ paths:
   get:
     description: The function used to get information about a DeliveryPipeline
     parameters:
-    - name: DeliveryPipeline
+    - name: deliveryPipeline
       required: true
       description: A full instance of a DeliveryPipeline
   apply:
     description: The function used to apply information about a DeliveryPipeline
     parameters:
-    - name: DeliveryPipeline
+    - name: deliveryPipeline
       required: true
       description: A full instance of a DeliveryPipeline
   delete:
     description: The function used to delete a DeliveryPipeline
     parameters:
-    - name: DeliveryPipeline
+    - name: deliveryPipeline
       required: true
       description: A full instance of a DeliveryPipeline
   deleteAll:

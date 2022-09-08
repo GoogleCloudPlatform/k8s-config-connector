@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Spoke
     parameters:
-    - name: Spoke
+    - name: spoke
       required: true
       description: A full instance of a Spoke
   apply:
     description: The function used to apply information about a Spoke
     parameters:
-    - name: Spoke
+    - name: spoke
       required: true
       description: A full instance of a Spoke
   delete:
     description: The function used to delete a Spoke
     parameters:
-    - name: Spoke
+    - name: spoke
       required: true
       description: A full instance of a Spoke
   deleteAll:

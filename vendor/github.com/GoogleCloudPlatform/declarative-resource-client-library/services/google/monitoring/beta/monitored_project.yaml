@@ -31,32 +31,32 @@ paths:
   get:
     description: The function used to get information about a MonitoredProject
     parameters:
-    - name: MonitoredProject
+    - name: monitoredProject
       required: true
       description: A full instance of a MonitoredProject
   apply:
     description: The function used to apply information about a MonitoredProject
     parameters:
-    - name: MonitoredProject
+    - name: monitoredProject
       required: true
       description: A full instance of a MonitoredProject
   delete:
     description: The function used to delete a MonitoredProject
     parameters:
-    - name: MonitoredProject
+    - name: monitoredProject
       required: true
       description: A full instance of a MonitoredProject
   deleteAll:
     description: The function used to delete all MonitoredProject
     parameters:
-    - name: metricsscope
+    - name: metricsScope
       required: true
       schema:
         type: string
   list:
     description: The function used to list information about many MonitoredProject
     parameters:
-    - name: metricsscope
+    - name: metricsScope
       required: true
       schema:
         type: string

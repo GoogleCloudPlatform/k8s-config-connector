@@ -20,32 +20,32 @@ paths:
   get:
     description: The function used to get information about a Environment
     parameters:
-    - name: Environment
+    - name: environment
       required: true
       description: A full instance of a Environment
   apply:
     description: The function used to apply information about a Environment
     parameters:
-    - name: Environment
+    - name: environment
       required: true
       description: A full instance of a Environment
   delete:
     description: The function used to delete a Environment
     parameters:
-    - name: Environment
+    - name: environment
       required: true
       description: A full instance of a Environment
   deleteAll:
     description: The function used to delete all Environment
     parameters:
-    - name: apigeeorganization
+    - name: apigeeOrganization
       required: true
       schema:
         type: string
   list:
     description: The function used to list information about many Environment
     parameters:
-    - name: apigeeorganization
+    - name: apigeeOrganization
       required: true
       schema:
         type: string

@@ -29,7 +29,7 @@ func DCLHttpFilterSchema() *dcl.Schema {
 				Description: "The function used to get information about a HttpFilter",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "HttpFilter",
+						Name:        "httpFilter",
 						Required:    true,
 						Description: "A full instance of a HttpFilter",
 					},
@@ -39,7 +39,7 @@ func DCLHttpFilterSchema() *dcl.Schema {
 				Description: "The function used to apply information about a HttpFilter",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "HttpFilter",
+						Name:        "httpFilter",
 						Required:    true,
 						Description: "A full instance of a HttpFilter",
 					},
@@ -49,7 +49,7 @@ func DCLHttpFilterSchema() *dcl.Schema {
 				Description: "The function used to delete a HttpFilter",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "HttpFilter",
+						Name:        "httpFilter",
 						Required:    true,
 						Description: "A full instance of a HttpFilter",
 					},

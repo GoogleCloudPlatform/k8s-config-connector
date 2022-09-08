@@ -29,7 +29,7 @@ func DCLCapacityCommitmentSchema() *dcl.Schema {
 				Description: "The function used to get information about a CapacityCommitment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "CapacityCommitment",
+						Name:        "capacityCommitment",
 						Required:    true,
 						Description: "A full instance of a CapacityCommitment",
 					},
@@ -39,7 +39,7 @@ func DCLCapacityCommitmentSchema() *dcl.Schema {
 				Description: "The function used to apply information about a CapacityCommitment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "CapacityCommitment",
+						Name:        "capacityCommitment",
 						Required:    true,
 						Description: "A full instance of a CapacityCommitment",
 					},
@@ -49,7 +49,7 @@ func DCLCapacityCommitmentSchema() *dcl.Schema {
 				Description: "The function used to delete a CapacityCommitment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "CapacityCommitment",
+						Name:        "capacityCommitment",
 						Required:    true,
 						Description: "A full instance of a CapacityCommitment",
 					},

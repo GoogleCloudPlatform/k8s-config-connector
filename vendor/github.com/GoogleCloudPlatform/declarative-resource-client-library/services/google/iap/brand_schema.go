@@ -29,7 +29,7 @@ func DCLBrandSchema() *dcl.Schema {
 				Description: "The function used to get information about a Brand",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Brand",
+						Name:        "brand",
 						Required:    true,
 						Description: "A full instance of a Brand",
 					},
@@ -39,7 +39,7 @@ func DCLBrandSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Brand",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Brand",
+						Name:        "brand",
 						Required:    true,
 						Description: "A full instance of a Brand",
 					},

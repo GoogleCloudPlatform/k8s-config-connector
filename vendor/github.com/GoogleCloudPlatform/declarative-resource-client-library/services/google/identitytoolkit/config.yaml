@@ -20,13 +20,13 @@ paths:
   get:
     description: The function used to get information about a Config
     parameters:
-    - name: Config
+    - name: config
       required: true
       description: A full instance of a Config
   apply:
     description: The function used to apply information about a Config
     parameters:
-    - name: Config
+    - name: config
       required: true
       description: A full instance of a Config
 components:

@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a CapacityCommitment
     parameters:
-    - name: CapacityCommitment
+    - name: capacityCommitment
       required: true
       description: A full instance of a CapacityCommitment
   apply:
     description: The function used to apply information about a CapacityCommitment
     parameters:
-    - name: CapacityCommitment
+    - name: capacityCommitment
       required: true
       description: A full instance of a CapacityCommitment
   delete:
     description: The function used to delete a CapacityCommitment
     parameters:
-    - name: CapacityCommitment
+    - name: capacityCommitment
       required: true
       description: A full instance of a CapacityCommitment
   deleteAll:

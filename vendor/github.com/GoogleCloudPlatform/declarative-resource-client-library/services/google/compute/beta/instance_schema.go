@@ -30,7 +30,7 @@ func DCLInstanceSchema() *dcl.Schema {
 				Description: "The function used to get information about a Instance",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Instance",
+						Name:        "instance",
 						Required:    true,
 						Description: "A full instance of a Instance",
 					},
@@ -40,7 +40,7 @@ func DCLInstanceSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Instance",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Instance",
+						Name:        "instance",
 						Required:    true,
 						Description: "A full instance of a Instance",
 					},
@@ -50,7 +50,7 @@ func DCLInstanceSchema() *dcl.Schema {
 				Description: "The function used to delete a Instance",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Instance",
+						Name:        "instance",
 						Required:    true,
 						Description: "A full instance of a Instance",
 					},

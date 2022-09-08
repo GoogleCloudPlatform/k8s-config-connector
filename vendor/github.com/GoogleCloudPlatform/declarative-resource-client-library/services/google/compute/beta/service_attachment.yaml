@@ -26,19 +26,19 @@ paths:
   get:
     description: The function used to get information about a ServiceAttachment
     parameters:
-    - name: ServiceAttachment
+    - name: serviceAttachment
       required: true
       description: A full instance of a ServiceAttachment
   apply:
     description: The function used to apply information about a ServiceAttachment
     parameters:
-    - name: ServiceAttachment
+    - name: serviceAttachment
       required: true
       description: A full instance of a ServiceAttachment
   delete:
     description: The function used to delete a ServiceAttachment
     parameters:
-    - name: ServiceAttachment
+    - name: serviceAttachment
       required: true
       description: A full instance of a ServiceAttachment
   deleteAll:

@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a EndpointPolicy
     parameters:
-    - name: EndpointPolicy
+    - name: endpointPolicy
       required: true
       description: A full instance of a EndpointPolicy
   apply:
     description: The function used to apply information about a EndpointPolicy
     parameters:
-    - name: EndpointPolicy
+    - name: endpointPolicy
       required: true
       description: A full instance of a EndpointPolicy
   delete:
     description: The function used to delete a EndpointPolicy
     parameters:
-    - name: EndpointPolicy
+    - name: endpointPolicy
       required: true
       description: A full instance of a EndpointPolicy
   deleteAll:

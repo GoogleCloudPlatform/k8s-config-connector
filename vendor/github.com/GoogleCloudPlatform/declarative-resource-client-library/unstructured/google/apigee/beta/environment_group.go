@@ -119,9 +119,9 @@ func GetEnvironmentGroup(ctx context.Context, config *dcl.Config, u *unstructure
 	return EnvironmentGroupToUnstructured(r), nil
 }
 
-func ListEnvironmentGroup(ctx context.Context, config *dcl.Config, apigeeorganization string) ([]*unstructured.Resource, error) {
+func ListEnvironmentGroup(ctx context.Context, config *dcl.Config, apigeeOrganization string) ([]*unstructured.Resource, error) {
 	c := dclService.NewClient(config)
-	l, err := c.ListEnvironmentGroup(ctx, apigeeorganization)
+	l, err := c.ListEnvironmentGroup(ctx, apigeeOrganization)
 	if err != nil {
 		return nil, err
 	}

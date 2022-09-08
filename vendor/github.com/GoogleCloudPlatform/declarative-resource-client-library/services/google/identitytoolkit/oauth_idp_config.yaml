@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a OAuthIdpConfig
     parameters:
-    - name: OAuthIdpConfig
+    - name: oAuthIdpConfig
       required: true
       description: A full instance of a OAuthIdpConfig
   apply:
     description: The function used to apply information about a OAuthIdpConfig
     parameters:
-    - name: OAuthIdpConfig
+    - name: oAuthIdpConfig
       required: true
       description: A full instance of a OAuthIdpConfig
   delete:
     description: The function used to delete a OAuthIdpConfig
     parameters:
-    - name: OAuthIdpConfig
+    - name: oAuthIdpConfig
       required: true
       description: A full instance of a OAuthIdpConfig
   deleteAll:

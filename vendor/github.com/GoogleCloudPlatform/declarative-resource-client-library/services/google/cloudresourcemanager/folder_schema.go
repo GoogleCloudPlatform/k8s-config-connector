@@ -30,7 +30,7 @@ func DCLFolderSchema() *dcl.Schema {
 				Description: "The function used to get information about a Folder",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Folder",
+						Name:        "folder",
 						Required:    true,
 						Description: "A full instance of a Folder",
 					},
@@ -40,7 +40,7 @@ func DCLFolderSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Folder",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Folder",
+						Name:        "folder",
 						Required:    true,
 						Description: "A full instance of a Folder",
 					},
@@ -50,7 +50,7 @@ func DCLFolderSchema() *dcl.Schema {
 				Description: "The function used to delete a Folder",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Folder",
+						Name:        "folder",
 						Required:    true,
 						Description: "A full instance of a Folder",
 					},

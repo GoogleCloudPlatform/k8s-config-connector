@@ -32,19 +32,19 @@ paths:
   get:
     description: The function used to get information about a CertificateTemplate
     parameters:
-    - name: CertificateTemplate
+    - name: certificateTemplate
       required: true
       description: A full instance of a CertificateTemplate
   apply:
     description: The function used to apply information about a CertificateTemplate
     parameters:
-    - name: CertificateTemplate
+    - name: certificateTemplate
       required: true
       description: A full instance of a CertificateTemplate
   delete:
     description: The function used to delete a CertificateTemplate
     parameters:
-    - name: CertificateTemplate
+    - name: certificateTemplate
       required: true
       description: A full instance of a CertificateTemplate
   deleteAll:

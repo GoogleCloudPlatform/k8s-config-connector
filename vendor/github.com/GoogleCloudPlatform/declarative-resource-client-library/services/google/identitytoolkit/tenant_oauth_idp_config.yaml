@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a TenantOAuthIdpConfig
     parameters:
-    - name: TenantOAuthIdpConfig
+    - name: tenantOAuthIdpConfig
       required: true
       description: A full instance of a TenantOAuthIdpConfig
   apply:
     description: The function used to apply information about a TenantOAuthIdpConfig
     parameters:
-    - name: TenantOAuthIdpConfig
+    - name: tenantOAuthIdpConfig
       required: true
       description: A full instance of a TenantOAuthIdpConfig
   delete:
     description: The function used to delete a TenantOAuthIdpConfig
     parameters:
-    - name: TenantOAuthIdpConfig
+    - name: tenantOAuthIdpConfig
       required: true
       description: A full instance of a TenantOAuthIdpConfig
   deleteAll:

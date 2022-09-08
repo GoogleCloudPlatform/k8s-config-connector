@@ -23,19 +23,19 @@ paths:
   get:
     description: The function used to get information about a OSPolicyAssignment
     parameters:
-    - name: OSPolicyAssignment
+    - name: oSPolicyAssignment
       required: true
       description: A full instance of a OSPolicyAssignment
   apply:
     description: The function used to apply information about a OSPolicyAssignment
     parameters:
-    - name: OSPolicyAssignment
+    - name: oSPolicyAssignment
       required: true
       description: A full instance of a OSPolicyAssignment
   delete:
     description: The function used to delete a OSPolicyAssignment
     parameters:
-    - name: OSPolicyAssignment
+    - name: oSPolicyAssignment
       required: true
       description: A full instance of a OSPolicyAssignment
   deleteAll:

@@ -1656,9 +1656,9 @@ func GetCertificate(ctx context.Context, config *dcl.Config, u *unstructured.Res
 	return CertificateToUnstructured(r), nil
 }
 
-func ListCertificate(ctx context.Context, config *dcl.Config, project string, location string, capool string) ([]*unstructured.Resource, error) {
+func ListCertificate(ctx context.Context, config *dcl.Config, project string, location string, caPool string) ([]*unstructured.Resource, error) {
 	c := dclService.NewClient(config)
-	l, err := c.ListCertificate(ctx, project, location, capool)
+	l, err := c.ListCertificate(ctx, project, location, caPool)
 	if err != nil {
 		return nil, err
 	}

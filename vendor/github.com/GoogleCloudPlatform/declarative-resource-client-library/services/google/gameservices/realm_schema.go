@@ -29,7 +29,7 @@ func DCLRealmSchema() *dcl.Schema {
 				Description: "The function used to get information about a Realm",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Realm",
+						Name:        "realm",
 						Required:    true,
 						Description: "A full instance of a Realm",
 					},
@@ -39,7 +39,7 @@ func DCLRealmSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Realm",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Realm",
+						Name:        "realm",
 						Required:    true,
 						Description: "A full instance of a Realm",
 					},
@@ -49,7 +49,7 @@ func DCLRealmSchema() *dcl.Schema {
 				Description: "The function used to delete a Realm",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Realm",
+						Name:        "realm",
 						Required:    true,
 						Description: "A full instance of a Realm",
 					},

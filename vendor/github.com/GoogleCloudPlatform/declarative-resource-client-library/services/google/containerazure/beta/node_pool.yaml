@@ -26,19 +26,19 @@ paths:
   get:
     description: The function used to get information about a NodePool
     parameters:
-    - name: NodePool
+    - name: nodePool
       required: true
       description: A full instance of a NodePool
   apply:
     description: The function used to apply information about a NodePool
     parameters:
-    - name: NodePool
+    - name: nodePool
       required: true
       description: A full instance of a NodePool
   delete:
     description: The function used to delete a NodePool
     parameters:
-    - name: NodePool
+    - name: nodePool
       required: true
       description: A full instance of a NodePool
   deleteAll:

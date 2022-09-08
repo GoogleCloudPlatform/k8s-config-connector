@@ -28,19 +28,19 @@ paths:
   get:
     description: The function used to get information about a PatchDeployment
     parameters:
-    - name: PatchDeployment
+    - name: patchDeployment
       required: true
       description: A full instance of a PatchDeployment
   apply:
     description: The function used to apply information about a PatchDeployment
     parameters:
-    - name: PatchDeployment
+    - name: patchDeployment
       required: true
       description: A full instance of a PatchDeployment
   delete:
     description: The function used to delete a PatchDeployment
     parameters:
-    - name: PatchDeployment
+    - name: patchDeployment
       required: true
       description: A full instance of a PatchDeployment
   deleteAll:

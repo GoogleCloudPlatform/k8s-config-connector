@@ -29,7 +29,7 @@ func DCLLakeSchema() *dcl.Schema {
 				Description: "The function used to get information about a Lake",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Lake",
+						Name:        "lake",
 						Required:    true,
 						Description: "A full instance of a Lake",
 					},
@@ -39,7 +39,7 @@ func DCLLakeSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Lake",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Lake",
+						Name:        "lake",
 						Required:    true,
 						Description: "A full instance of a Lake",
 					},
@@ -49,7 +49,7 @@ func DCLLakeSchema() *dcl.Schema {
 				Description: "The function used to delete a Lake",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Lake",
+						Name:        "lake",
 						Required:    true,
 						Description: "A full instance of a Lake",
 					},

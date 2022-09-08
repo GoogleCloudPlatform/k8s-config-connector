@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a CertificateAuthority
     parameters:
-    - name: CertificateAuthority
+    - name: certificateAuthority
       required: true
       description: A full instance of a CertificateAuthority
   apply:
     description: The function used to apply information about a CertificateAuthority
     parameters:
-    - name: CertificateAuthority
+    - name: certificateAuthority
       required: true
       description: A full instance of a CertificateAuthority
   delete:
     description: The function used to delete a CertificateAuthority
     parameters:
-    - name: CertificateAuthority
+    - name: certificateAuthority
       required: true
       description: A full instance of a CertificateAuthority
   deleteAll:
@@ -46,7 +46,7 @@ paths:
       required: true
       schema:
         type: string
-    - name: capool
+    - name: caPool
       required: true
       schema:
         type: string
@@ -61,7 +61,7 @@ paths:
       required: true
       schema:
         type: string
-    - name: capool
+    - name: caPool
       required: true
       schema:
         type: string

@@ -29,7 +29,7 @@ func DCLAutoscalingPolicySchema() *dcl.Schema {
 				Description: "The function used to get information about a AutoscalingPolicy",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "AutoscalingPolicy",
+						Name:        "autoscalingPolicy",
 						Required:    true,
 						Description: "A full instance of a AutoscalingPolicy",
 					},
@@ -39,7 +39,7 @@ func DCLAutoscalingPolicySchema() *dcl.Schema {
 				Description: "The function used to apply information about a AutoscalingPolicy",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "AutoscalingPolicy",
+						Name:        "autoscalingPolicy",
 						Required:    true,
 						Description: "A full instance of a AutoscalingPolicy",
 					},
@@ -49,7 +49,7 @@ func DCLAutoscalingPolicySchema() *dcl.Schema {
 				Description: "The function used to delete a AutoscalingPolicy",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "AutoscalingPolicy",
+						Name:        "autoscalingPolicy",
 						Required:    true,
 						Description: "A full instance of a AutoscalingPolicy",
 					},

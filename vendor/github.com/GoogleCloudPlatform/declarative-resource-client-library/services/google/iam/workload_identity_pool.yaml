@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a WorkloadIdentityPool
     parameters:
-    - name: WorkloadIdentityPool
+    - name: workloadIdentityPool
       required: true
       description: A full instance of a WorkloadIdentityPool
   apply:
     description: The function used to apply information about a WorkloadIdentityPool
     parameters:
-    - name: WorkloadIdentityPool
+    - name: workloadIdentityPool
       required: true
       description: A full instance of a WorkloadIdentityPool
   delete:
     description: The function used to delete a WorkloadIdentityPool
     parameters:
-    - name: WorkloadIdentityPool
+    - name: workloadIdentityPool
       required: true
       description: A full instance of a WorkloadIdentityPool
   deleteAll:

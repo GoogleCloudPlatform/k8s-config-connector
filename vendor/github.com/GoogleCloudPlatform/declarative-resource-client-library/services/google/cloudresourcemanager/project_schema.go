@@ -30,7 +30,7 @@ func DCLProjectSchema() *dcl.Schema {
 				Description: "The function used to get information about a Project",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Project",
+						Name:        "project",
 						Required:    true,
 						Description: "A full instance of a Project",
 					},
@@ -40,7 +40,7 @@ func DCLProjectSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Project",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Project",
+						Name:        "project",
 						Required:    true,
 						Description: "A full instance of a Project",
 					},
@@ -50,7 +50,7 @@ func DCLProjectSchema() *dcl.Schema {
 				Description: "The function used to delete a Project",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Project",
+						Name:        "project",
 						Required:    true,
 						Description: "A full instance of a Project",
 					},

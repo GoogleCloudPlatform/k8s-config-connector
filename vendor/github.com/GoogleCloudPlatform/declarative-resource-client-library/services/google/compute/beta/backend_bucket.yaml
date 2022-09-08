@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a BackendBucket
     parameters:
-    - name: BackendBucket
+    - name: backendBucket
       required: true
       description: A full instance of a BackendBucket
   apply:
     description: The function used to apply information about a BackendBucket
     parameters:
-    - name: BackendBucket
+    - name: backendBucket
       required: true
       description: A full instance of a BackendBucket
   delete:
     description: The function used to delete a BackendBucket
     parameters:
-    - name: BackendBucket
+    - name: backendBucket
       required: true
       description: A full instance of a BackendBucket
   deleteAll:

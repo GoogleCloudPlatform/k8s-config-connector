@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Backup
     parameters:
-    - name: Backup
+    - name: backup
       required: true
       description: A full instance of a Backup
   apply:
     description: The function used to apply information about a Backup
     parameters:
-    - name: Backup
+    - name: backup
       required: true
       description: A full instance of a Backup
   delete:
     description: The function used to delete a Backup
     parameters:
-    - name: Backup
+    - name: backup
       required: true
       description: A full instance of a Backup
   deleteAll:

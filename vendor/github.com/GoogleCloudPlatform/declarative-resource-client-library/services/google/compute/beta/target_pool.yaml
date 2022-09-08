@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a TargetPool
     parameters:
-    - name: TargetPool
+    - name: targetPool
       required: true
       description: A full instance of a TargetPool
   apply:
     description: The function used to apply information about a TargetPool
     parameters:
-    - name: TargetPool
+    - name: targetPool
       required: true
       description: A full instance of a TargetPool
   delete:
     description: The function used to delete a TargetPool
     parameters:
-    - name: TargetPool
+    - name: targetPool
       required: true
       description: A full instance of a TargetPool
   deleteAll:

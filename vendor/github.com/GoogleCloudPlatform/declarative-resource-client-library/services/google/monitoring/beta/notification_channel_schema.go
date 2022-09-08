@@ -29,7 +29,7 @@ func DCLNotificationChannelSchema() *dcl.Schema {
 				Description: "The function used to get information about a NotificationChannel",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "NotificationChannel",
+						Name:        "notificationChannel",
 						Required:    true,
 						Description: "A full instance of a NotificationChannel",
 					},
@@ -39,7 +39,7 @@ func DCLNotificationChannelSchema() *dcl.Schema {
 				Description: "The function used to apply information about a NotificationChannel",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "NotificationChannel",
+						Name:        "notificationChannel",
 						Required:    true,
 						Description: "A full instance of a NotificationChannel",
 					},
@@ -49,7 +49,7 @@ func DCLNotificationChannelSchema() *dcl.Schema {
 				Description: "The function used to delete a NotificationChannel",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "NotificationChannel",
+						Name:        "notificationChannel",
 						Required:    true,
 						Description: "A full instance of a NotificationChannel",
 					},

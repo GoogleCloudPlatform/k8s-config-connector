@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a VpnTunnel
     parameters:
-    - name: VpnTunnel
+    - name: vpnTunnel
       required: true
       description: A full instance of a VpnTunnel
   apply:
     description: The function used to apply information about a VpnTunnel
     parameters:
-    - name: VpnTunnel
+    - name: vpnTunnel
       required: true
       description: A full instance of a VpnTunnel
   delete:
     description: The function used to delete a VpnTunnel
     parameters:
-    - name: VpnTunnel
+    - name: vpnTunnel
       required: true
       description: A full instance of a VpnTunnel
   deleteAll:
@@ -42,7 +42,7 @@ paths:
       required: true
       schema:
         type: string
-    - name: region
+    - name: location
       required: true
       schema:
         type: string
@@ -53,7 +53,7 @@ paths:
       required: true
       schema:
         type: string
-    - name: region
+    - name: location
       required: true
       schema:
         type: string
@@ -61,9 +61,7 @@ components:
   schemas:
     VpnTunnel:
       title: VpnTunnel
-      x-dcl-id: projects/{{project}}/regions/{{region}}/vpnTunnels/{{name}}
-      x-dcl-locations:
-      - region
+      x-dcl-id: projects/{{project}}/regions/{{location}}/vpnTunnels/{{name}}
       x-dcl-uses-state-hint: true
       x-dcl-parent-container: project
       x-dcl-labels: labels
@@ -126,6 +124,11 @@ components:
           items:
             type: string
             x-dcl-go-type: string
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: Name of the region where the VPN tunnel resides.
+          x-kubernetes-immutable: true
         name:
           type: string
           x-dcl-go-name: Name
@@ -177,13 +180,6 @@ components:
           - resource: Cloudresourcemanager/Project
             field: name
             parent: true
-        region:
-          type: string
-          x-dcl-go-name: Region
-          description: URL of the region where the VPN tunnel resides. You must specify
-            this field as part of the HTTP request URL. It is not settable as a field
-            in the request body.
-          x-kubernetes-immutable: true
         remoteTrafficSelector:
           type: array
           x-dcl-go-name: RemoteTrafficSelector

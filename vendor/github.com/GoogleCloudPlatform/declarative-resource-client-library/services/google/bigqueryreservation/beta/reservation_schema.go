@@ -29,7 +29,7 @@ func DCLReservationSchema() *dcl.Schema {
 				Description: "The function used to get information about a Reservation",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Reservation",
+						Name:        "reservation",
 						Required:    true,
 						Description: "A full instance of a Reservation",
 					},
@@ -39,7 +39,7 @@ func DCLReservationSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Reservation",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Reservation",
+						Name:        "reservation",
 						Required:    true,
 						Description: "A full instance of a Reservation",
 					},
@@ -49,7 +49,7 @@ func DCLReservationSchema() *dcl.Schema {
 				Description: "The function used to delete a Reservation",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Reservation",
+						Name:        "reservation",
 						Required:    true,
 						Description: "A full instance of a Reservation",
 					},

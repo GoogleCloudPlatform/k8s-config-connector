@@ -29,7 +29,7 @@ func DCLGroupSchema() *dcl.Schema {
 				Description: "The function used to get information about a Group",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Group",
+						Name:        "group",
 						Required:    true,
 						Description: "A full instance of a Group",
 					},
@@ -39,7 +39,7 @@ func DCLGroupSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Group",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Group",
+						Name:        "group",
 						Required:    true,
 						Description: "A full instance of a Group",
 					},
@@ -49,7 +49,7 @@ func DCLGroupSchema() *dcl.Schema {
 				Description: "The function used to delete a Group",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Group",
+						Name:        "group",
 						Required:    true,
 						Description: "A full instance of a Group",
 					},

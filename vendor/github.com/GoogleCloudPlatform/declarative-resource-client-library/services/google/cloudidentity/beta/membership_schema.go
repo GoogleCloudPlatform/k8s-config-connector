@@ -29,7 +29,7 @@ func DCLMembershipSchema() *dcl.Schema {
 				Description: "The function used to get information about a Membership",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Membership",
+						Name:        "membership",
 						Required:    true,
 						Description: "A full instance of a Membership",
 					},
@@ -39,7 +39,7 @@ func DCLMembershipSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Membership",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Membership",
+						Name:        "membership",
 						Required:    true,
 						Description: "A full instance of a Membership",
 					},
@@ -49,7 +49,7 @@ func DCLMembershipSchema() *dcl.Schema {
 				Description: "The function used to delete a Membership",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Membership",
+						Name:        "membership",
 						Required:    true,
 						Description: "A full instance of a Membership",
 					},

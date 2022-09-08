@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Object
     parameters:
-    - name: Object
+    - name: object
       required: true
       description: A full instance of a Object
   apply:
     description: The function used to apply information about a Object
     parameters:
-    - name: Object
+    - name: object
       required: true
       description: A full instance of a Object
   delete:
     description: The function used to delete a Object
     parameters:
-    - name: Object
+    - name: object
       required: true
       description: A full instance of a Object
   deleteAll:

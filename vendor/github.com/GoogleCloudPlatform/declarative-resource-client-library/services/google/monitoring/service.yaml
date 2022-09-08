@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Service
     parameters:
-    - name: Service
+    - name: service
       required: true
       description: A full instance of a Service
   apply:
     description: The function used to apply information about a Service
     parameters:
-    - name: Service
+    - name: service
       required: true
       description: A full instance of a Service
   delete:
     description: The function used to delete a Service
     parameters:
-    - name: Service
+    - name: service
       required: true
       description: A full instance of a Service
   deleteAll:

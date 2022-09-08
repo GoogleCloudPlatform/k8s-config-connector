@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Snapshot
     parameters:
-    - name: Snapshot
+    - name: snapshot
       required: true
       description: A full instance of a Snapshot
   apply:
     description: The function used to apply information about a Snapshot
     parameters:
-    - name: Snapshot
+    - name: snapshot
       required: true
       description: A full instance of a Snapshot
   delete:
     description: The function used to delete a Snapshot
     parameters:
-    - name: Snapshot
+    - name: snapshot
       required: true
       description: A full instance of a Snapshot
   deleteAll:
@@ -55,7 +55,6 @@ components:
       title: Snapshot
       x-dcl-id: projects/{{project}}/global/snapshots/{{name}}
       x-dcl-locations:
-      - zone
       - global
       x-dcl-uses-state-hint: true
       x-dcl-parent-container: project
@@ -173,7 +172,8 @@ components:
         sourceDisk:
           type: string
           x-dcl-go-name: SourceDisk
-          description: The source disk used to create this snapshot.
+          description: The source disk used to create this snapshot, in the format
+            `projects/{project}/zones/{zones}/disks/{name}`
           x-kubernetes-immutable: true
           x-dcl-references:
           - resource: Compute/Disk
@@ -202,11 +202,3 @@ components:
           description: A size of the storage used by the snapshot. As snapshots share
             storage, this number is expected to change with snapshot creation/deletion.
           x-kubernetes-immutable: true
-        zone:
-          type: string
-          x-dcl-go-name: Zone
-          description: The zone of the disk the snapshot is based on.
-          x-kubernetes-immutable: true
-          x-dcl-references:
-          - resource: Compute/Zone
-            field: name

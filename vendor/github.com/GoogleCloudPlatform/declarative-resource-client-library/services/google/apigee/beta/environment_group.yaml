@@ -20,32 +20,32 @@ paths:
   get:
     description: The function used to get information about a EnvironmentGroup
     parameters:
-    - name: EnvironmentGroup
+    - name: environmentGroup
       required: true
       description: A full instance of a EnvironmentGroup
   apply:
     description: The function used to apply information about a EnvironmentGroup
     parameters:
-    - name: EnvironmentGroup
+    - name: environmentGroup
       required: true
       description: A full instance of a EnvironmentGroup
   delete:
     description: The function used to delete a EnvironmentGroup
     parameters:
-    - name: EnvironmentGroup
+    - name: environmentGroup
       required: true
       description: A full instance of a EnvironmentGroup
   deleteAll:
     description: The function used to delete all EnvironmentGroup
     parameters:
-    - name: apigeeorganization
+    - name: apigeeOrganization
       required: true
       schema:
         type: string
   list:
     description: The function used to list information about many EnvironmentGroup
     parameters:
-    - name: apigeeorganization
+    - name: apigeeOrganization
       required: true
       schema:
         type: string

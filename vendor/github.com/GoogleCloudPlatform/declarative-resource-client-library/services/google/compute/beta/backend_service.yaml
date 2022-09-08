@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a BackendService
     parameters:
-    - name: BackendService
+    - name: backendService
       required: true
       description: A full instance of a BackendService
   apply:
     description: The function used to apply information about a BackendService
     parameters:
-    - name: BackendService
+    - name: backendService
       required: true
       description: A full instance of a BackendService
   delete:
     description: The function used to delete a BackendService
     parameters:
-    - name: BackendService
+    - name: backendService
       required: true
       description: A full instance of a BackendService
   deleteAll:
@@ -1160,12 +1160,6 @@ components:
           x-dcl-go-name: SelfLink
           readOnly: true
           description: Server-defined URL for the resource.
-          x-kubernetes-immutable: true
-        selfLinkWithId:
-          type: string
-          x-dcl-go-name: SelfLinkWithId
-          readOnly: true
-          description: Server-defined URL for this resource with the resource id.
           x-kubernetes-immutable: true
         sessionAffinity:
           type: string

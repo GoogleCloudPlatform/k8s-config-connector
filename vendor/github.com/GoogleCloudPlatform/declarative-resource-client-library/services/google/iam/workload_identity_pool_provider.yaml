@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a WorkloadIdentityPoolProvider
     parameters:
-    - name: WorkloadIdentityPoolProvider
+    - name: workloadIdentityPoolProvider
       required: true
       description: A full instance of a WorkloadIdentityPoolProvider
   apply:
     description: The function used to apply information about a WorkloadIdentityPoolProvider
     parameters:
-    - name: WorkloadIdentityPoolProvider
+    - name: workloadIdentityPoolProvider
       required: true
       description: A full instance of a WorkloadIdentityPoolProvider
   delete:
     description: The function used to delete a WorkloadIdentityPoolProvider
     parameters:
-    - name: WorkloadIdentityPoolProvider
+    - name: workloadIdentityPoolProvider
       required: true
       description: A full instance of a WorkloadIdentityPoolProvider
   deleteAll:
@@ -46,7 +46,7 @@ paths:
       required: true
       schema:
         type: string
-    - name: workloadidentitypool
+    - name: workloadIdentityPool
       required: true
       schema:
         type: string
@@ -61,7 +61,7 @@ paths:
       required: true
       schema:
         type: string
-    - name: workloadidentitypool
+    - name: workloadIdentityPool
       required: true
       schema:
         type: string

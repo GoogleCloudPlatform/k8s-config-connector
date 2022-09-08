@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a HealthCheck
     parameters:
-    - name: HealthCheck
+    - name: healthCheck
       required: true
       description: A full instance of a HealthCheck
   apply:
     description: The function used to apply information about a HealthCheck
     parameters:
-    - name: HealthCheck
+    - name: healthCheck
       required: true
       description: A full instance of a HealthCheck
   delete:
     description: The function used to delete a HealthCheck
     parameters:
-    - name: HealthCheck
+    - name: healthCheck
       required: true
       description: A full instance of a HealthCheck
   deleteAll:

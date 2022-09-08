@@ -29,7 +29,7 @@ func DCLSpokeSchema() *dcl.Schema {
 				Description: "The function used to get information about a Spoke",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Spoke",
+						Name:        "spoke",
 						Required:    true,
 						Description: "A full instance of a Spoke",
 					},
@@ -39,7 +39,7 @@ func DCLSpokeSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Spoke",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Spoke",
+						Name:        "spoke",
 						Required:    true,
 						Description: "A full instance of a Spoke",
 					},
@@ -49,7 +49,7 @@ func DCLSpokeSchema() *dcl.Schema {
 				Description: "The function used to delete a Spoke",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Spoke",
+						Name:        "spoke",
 						Required:    true,
 						Description: "A full instance of a Spoke",
 					},

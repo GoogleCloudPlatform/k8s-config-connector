@@ -30,7 +30,7 @@ func DCLAuthorizationPolicySchema() *dcl.Schema {
 				Description: "The function used to get information about a AuthorizationPolicy",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "AuthorizationPolicy",
+						Name:        "authorizationPolicy",
 						Required:    true,
 						Description: "A full instance of a AuthorizationPolicy",
 					},
@@ -40,7 +40,7 @@ func DCLAuthorizationPolicySchema() *dcl.Schema {
 				Description: "The function used to apply information about a AuthorizationPolicy",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "AuthorizationPolicy",
+						Name:        "authorizationPolicy",
 						Required:    true,
 						Description: "A full instance of a AuthorizationPolicy",
 					},
@@ -50,7 +50,7 @@ func DCLAuthorizationPolicySchema() *dcl.Schema {
 				Description: "The function used to delete a AuthorizationPolicy",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "AuthorizationPolicy",
+						Name:        "authorizationPolicy",
 						Required:    true,
 						Description: "A full instance of a AuthorizationPolicy",
 					},

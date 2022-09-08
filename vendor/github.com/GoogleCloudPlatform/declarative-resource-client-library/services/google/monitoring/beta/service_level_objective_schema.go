@@ -29,7 +29,7 @@ func DCLServiceLevelObjectiveSchema() *dcl.Schema {
 				Description: "The function used to get information about a ServiceLevelObjective",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "ServiceLevelObjective",
+						Name:        "serviceLevelObjective",
 						Required:    true,
 						Description: "A full instance of a ServiceLevelObjective",
 					},
@@ -39,7 +39,7 @@ func DCLServiceLevelObjectiveSchema() *dcl.Schema {
 				Description: "The function used to apply information about a ServiceLevelObjective",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "ServiceLevelObjective",
+						Name:        "serviceLevelObjective",
 						Required:    true,
 						Description: "A full instance of a ServiceLevelObjective",
 					},
@@ -49,7 +49,7 @@ func DCLServiceLevelObjectiveSchema() *dcl.Schema {
 				Description: "The function used to delete a ServiceLevelObjective",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "ServiceLevelObjective",
+						Name:        "serviceLevelObjective",
 						Required:    true,
 						Description: "A full instance of a ServiceLevelObjective",
 					},

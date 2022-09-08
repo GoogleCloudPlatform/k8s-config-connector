@@ -29,7 +29,7 @@ func DCLHttpRouteSchema() *dcl.Schema {
 				Description: "The function used to get information about a HttpRoute",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "HttpRoute",
+						Name:        "httpRoute",
 						Required:    true,
 						Description: "A full instance of a HttpRoute",
 					},
@@ -39,7 +39,7 @@ func DCLHttpRouteSchema() *dcl.Schema {
 				Description: "The function used to apply information about a HttpRoute",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "HttpRoute",
+						Name:        "httpRoute",
 						Required:    true,
 						Description: "A full instance of a HttpRoute",
 					},
@@ -49,7 +49,7 @@ func DCLHttpRouteSchema() *dcl.Schema {
 				Description: "The function used to delete a HttpRoute",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "HttpRoute",
+						Name:        "httpRoute",
 						Required:    true,
 						Description: "A full instance of a HttpRoute",
 					},

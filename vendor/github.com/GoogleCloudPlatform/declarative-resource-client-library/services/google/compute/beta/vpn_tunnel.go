@@ -27,7 +27,7 @@ type VpnTunnel struct {
 	Id                           *int64               `json:"id"`
 	Name                         *string              `json:"name"`
 	Description                  *string              `json:"description"`
-	Region                       *string              `json:"region"`
+	Location                     *string              `json:"location"`
 	TargetVpnGateway             *string              `json:"targetVpnGateway"`
 	VpnGateway                   *string              `json:"vpnGateway"`
 	VpnGatewayInterface          *int64               `json:"vpnGatewayInterface"`
@@ -98,7 +98,7 @@ func (r *VpnTunnel) ID() (string, error) {
 		"id":                              dcl.ValueOrEmptyString(nr.Id),
 		"name":                            dcl.ValueOrEmptyString(nr.Name),
 		"description":                     dcl.ValueOrEmptyString(nr.Description),
-		"region":                          dcl.ValueOrEmptyString(nr.Region),
+		"location":                        dcl.ValueOrEmptyString(nr.Location),
 		"target_vpn_gateway":              dcl.ValueOrEmptyString(nr.TargetVpnGateway),
 		"vpn_gateway":                     dcl.ValueOrEmptyString(nr.VpnGateway),
 		"vpn_gateway_interface":           dcl.ValueOrEmptyString(nr.VpnGatewayInterface),
@@ -117,7 +117,7 @@ func (r *VpnTunnel) ID() (string, error) {
 		"remote_traffic_selector":         dcl.ValueOrEmptyString(nr.RemoteTrafficSelector),
 		"project":                         dcl.ValueOrEmptyString(nr.Project),
 	}
-	return dcl.Nprintf("projects/{{project}}/regions/{{region}}/vpnTunnels/{{name}}", params), nil
+	return dcl.Nprintf("projects/{{project}}/regions/{{location}}/vpnTunnels/{{name}}", params), nil
 }
 
 const VpnTunnelMaxPage = -1
@@ -152,23 +152,23 @@ func (l *VpnTunnelList) Next(ctx context.Context, c *Client) error {
 	return err
 }
 
-func (c *Client) ListVpnTunnel(ctx context.Context, project, region string) (*VpnTunnelList, error) {
+func (c *Client) ListVpnTunnel(ctx context.Context, project, location string) (*VpnTunnelList, error) {
 	ctx = dcl.ContextWithRequestID(ctx)
 	ctx, cancel := context.WithTimeout(ctx, c.Config.TimeoutOr(0*time.Second))
 	defer cancel()
 
-	return c.ListVpnTunnelWithMaxResults(ctx, project, region, VpnTunnelMaxPage)
+	return c.ListVpnTunnelWithMaxResults(ctx, project, location, VpnTunnelMaxPage)
 
 }
 
-func (c *Client) ListVpnTunnelWithMaxResults(ctx context.Context, project, region string, pageSize int32) (*VpnTunnelList, error) {
+func (c *Client) ListVpnTunnelWithMaxResults(ctx context.Context, project, location string, pageSize int32) (*VpnTunnelList, error) {
 	ctx, cancel := context.WithTimeout(ctx, c.Config.TimeoutOr(0*time.Second))
 	defer cancel()
 
 	// Create a resource object so that we can use proper url normalization methods.
 	r := &VpnTunnel{
-		Project: &project,
-		Region:  &region,
+		Project:  &project,
+		Location: &location,
 	}
 	items, token, err := c.listVpnTunnel(ctx, r, "", pageSize)
 	if err != nil {
@@ -207,7 +207,7 @@ func (c *Client) GetVpnTunnel(ctx context.Context, r *VpnTunnel) (*VpnTunnel, er
 		return nil, err
 	}
 	result.Project = r.Project
-	result.Region = r.Region
+	result.Location = r.Location
 	result.Name = r.Name
 	if dcl.IsZeroValue(result.IkeVersion) {
 		result.IkeVersion = dcl.Int64(2)
@@ -241,8 +241,8 @@ func (c *Client) DeleteVpnTunnel(ctx context.Context, r *VpnTunnel) error {
 }
 
 // DeleteAllVpnTunnel deletes all resources that the filter functions returns true on.
-func (c *Client) DeleteAllVpnTunnel(ctx context.Context, project, region string, filter func(*VpnTunnel) bool) error {
-	listObj, err := c.ListVpnTunnel(ctx, project, region)
+func (c *Client) DeleteAllVpnTunnel(ctx context.Context, project, location string, filter func(*VpnTunnel) bool) error {
+	listObj, err := c.ListVpnTunnel(ctx, project, location)
 	if err != nil {
 		return err
 	}

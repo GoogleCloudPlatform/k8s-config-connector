@@ -39,7 +39,7 @@ func DCLPatchDeploymentSchema() *dcl.Schema {
 				Description: "The function used to get information about a PatchDeployment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "PatchDeployment",
+						Name:        "patchDeployment",
 						Required:    true,
 						Description: "A full instance of a PatchDeployment",
 					},
@@ -49,7 +49,7 @@ func DCLPatchDeploymentSchema() *dcl.Schema {
 				Description: "The function used to apply information about a PatchDeployment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "PatchDeployment",
+						Name:        "patchDeployment",
 						Required:    true,
 						Description: "A full instance of a PatchDeployment",
 					},
@@ -59,7 +59,7 @@ func DCLPatchDeploymentSchema() *dcl.Schema {
 				Description: "The function used to delete a PatchDeployment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "PatchDeployment",
+						Name:        "patchDeployment",
 						Required:    true,
 						Description: "A full instance of a PatchDeployment",
 					},

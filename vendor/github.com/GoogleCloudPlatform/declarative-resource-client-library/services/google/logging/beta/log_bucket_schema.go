@@ -29,7 +29,7 @@ func DCLLogBucketSchema() *dcl.Schema {
 				Description: "The function used to get information about a LogBucket",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "LogBucket",
+						Name:        "logBucket",
 						Required:    true,
 						Description: "A full instance of a LogBucket",
 					},
@@ -39,7 +39,7 @@ func DCLLogBucketSchema() *dcl.Schema {
 				Description: "The function used to apply information about a LogBucket",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "LogBucket",
+						Name:        "logBucket",
 						Required:    true,
 						Description: "A full instance of a LogBucket",
 					},
@@ -49,7 +49,7 @@ func DCLLogBucketSchema() *dcl.Schema {
 				Description: "The function used to delete a LogBucket",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "LogBucket",
+						Name:        "logBucket",
 						Required:    true,
 						Description: "A full instance of a LogBucket",
 					},

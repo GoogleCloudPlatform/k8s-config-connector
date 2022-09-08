@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a LogMetric
     parameters:
-    - name: LogMetric
+    - name: logMetric
       required: true
       description: A full instance of a LogMetric
   apply:
     description: The function used to apply information about a LogMetric
     parameters:
-    - name: LogMetric
+    - name: logMetric
       required: true
       description: A full instance of a LogMetric
   delete:
     description: The function used to delete a LogMetric
     parameters:
-    - name: LogMetric
+    - name: logMetric
       required: true
       description: A full instance of a LogMetric
   deleteAll:

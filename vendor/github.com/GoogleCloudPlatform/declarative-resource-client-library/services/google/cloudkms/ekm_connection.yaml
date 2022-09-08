@@ -20,13 +20,13 @@ paths:
   get:
     description: The function used to get information about a EkmConnection
     parameters:
-    - name: EkmConnection
+    - name: ekmConnection
       required: true
       description: A full instance of a EkmConnection
   apply:
     description: The function used to apply information about a EkmConnection
     parameters:
-    - name: EkmConnection
+    - name: ekmConnection
       required: true
       description: A full instance of a EkmConnection
   list:

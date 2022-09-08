@@ -29,7 +29,7 @@ func DCLDashboardSchema() *dcl.Schema {
 				Description: "The function used to get information about a Dashboard",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Dashboard",
+						Name:        "dashboard",
 						Required:    true,
 						Description: "A full instance of a Dashboard",
 					},
@@ -39,7 +39,7 @@ func DCLDashboardSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Dashboard",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Dashboard",
+						Name:        "dashboard",
 						Required:    true,
 						Description: "A full instance of a Dashboard",
 					},
@@ -49,7 +49,7 @@ func DCLDashboardSchema() *dcl.Schema {
 				Description: "The function used to delete a Dashboard",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Dashboard",
+						Name:        "dashboard",
 						Required:    true,
 						Description: "A full instance of a Dashboard",
 					},

@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Assignment
     parameters:
-    - name: Assignment
+    - name: assignment
       required: true
       description: A full instance of a Assignment
   apply:
     description: The function used to apply information about a Assignment
     parameters:
-    - name: Assignment
+    - name: assignment
       required: true
       description: A full instance of a Assignment
   delete:
     description: The function used to delete a Assignment
     parameters:
-    - name: Assignment
+    - name: assignment
       required: true
       description: A full instance of a Assignment
   deleteAll:

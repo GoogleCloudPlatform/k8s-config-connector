@@ -30,7 +30,7 @@ func DCLPolicySchema() *dcl.Schema {
 				Description: "The function used to get information about a Policy",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Policy",
+						Name:        "policy",
 						Required:    true,
 						Description: "A full instance of a Policy",
 					},
@@ -40,7 +40,7 @@ func DCLPolicySchema() *dcl.Schema {
 				Description: "The function used to apply information about a Policy",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Policy",
+						Name:        "policy",
 						Required:    true,
 						Description: "A full instance of a Policy",
 					},

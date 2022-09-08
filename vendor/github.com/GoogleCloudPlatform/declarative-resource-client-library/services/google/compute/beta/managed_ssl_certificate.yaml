@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a ManagedSslCertificate
     parameters:
-    - name: ManagedSslCertificate
+    - name: managedSslCertificate
       required: true
       description: A full instance of a ManagedSslCertificate
   apply:
     description: The function used to apply information about a ManagedSslCertificate
     parameters:
-    - name: ManagedSslCertificate
+    - name: managedSslCertificate
       required: true
       description: A full instance of a ManagedSslCertificate
   delete:
     description: The function used to delete a ManagedSslCertificate
     parameters:
-    - name: ManagedSslCertificate
+    - name: managedSslCertificate
       required: true
       description: A full instance of a ManagedSslCertificate
   deleteAll:

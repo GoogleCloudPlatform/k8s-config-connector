@@ -30,7 +30,7 @@ func DCLFeatureMembershipSchema() *dcl.Schema {
 				Description: "The function used to get information about a FeatureMembership",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "FeatureMembership",
+						Name:        "featureMembership",
 						Required:    true,
 						Description: "A full instance of a FeatureMembership",
 					},
@@ -40,7 +40,7 @@ func DCLFeatureMembershipSchema() *dcl.Schema {
 				Description: "The function used to apply information about a FeatureMembership",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "FeatureMembership",
+						Name:        "featureMembership",
 						Required:    true,
 						Description: "A full instance of a FeatureMembership",
 					},
@@ -50,7 +50,7 @@ func DCLFeatureMembershipSchema() *dcl.Schema {
 				Description: "The function used to delete a FeatureMembership",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "FeatureMembership",
+						Name:        "featureMembership",
 						Required:    true,
 						Description: "A full instance of a FeatureMembership",
 					},

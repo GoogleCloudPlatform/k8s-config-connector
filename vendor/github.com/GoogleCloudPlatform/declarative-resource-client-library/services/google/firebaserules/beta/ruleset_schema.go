@@ -38,7 +38,7 @@ func DCLRulesetSchema() *dcl.Schema {
 				Description: "The function used to get information about a Ruleset",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Ruleset",
+						Name:        "ruleset",
 						Required:    true,
 						Description: "A full instance of a Ruleset",
 					},
@@ -48,7 +48,7 @@ func DCLRulesetSchema() *dcl.Schema {
 				Description: "The function used to apply information about a Ruleset",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Ruleset",
+						Name:        "ruleset",
 						Required:    true,
 						Description: "A full instance of a Ruleset",
 					},
@@ -58,7 +58,7 @@ func DCLRulesetSchema() *dcl.Schema {
 				Description: "The function used to delete a Ruleset",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "Ruleset",
+						Name:        "ruleset",
 						Required:    true,
 						Description: "A full instance of a Ruleset",
 					},

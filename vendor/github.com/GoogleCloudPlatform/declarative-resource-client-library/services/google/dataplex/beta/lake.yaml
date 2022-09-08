@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Lake
     parameters:
-    - name: Lake
+    - name: lake
       required: true
       description: A full instance of a Lake
   apply:
     description: The function used to apply information about a Lake
     parameters:
-    - name: Lake
+    - name: lake
       required: true
       description: A full instance of a Lake
   delete:
     description: The function used to delete a Lake
     parameters:
-    - name: Lake
+    - name: lake
       required: true
       description: A full instance of a Lake
   deleteAll:

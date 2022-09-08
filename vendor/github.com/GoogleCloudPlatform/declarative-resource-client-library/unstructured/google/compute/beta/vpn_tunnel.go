@@ -56,6 +56,9 @@ func VpnTunnelToUnstructured(r *dclService.VpnTunnel) *unstructured.Resource {
 		rLocalTrafficSelector = append(rLocalTrafficSelector, rLocalTrafficSelectorVal)
 	}
 	u.Object["localTrafficSelector"] = rLocalTrafficSelector
+	if r.Location != nil {
+		u.Object["location"] = *r.Location
+	}
 	if r.Name != nil {
 		u.Object["name"] = *r.Name
 	}
@@ -73,9 +76,6 @@ func VpnTunnelToUnstructured(r *dclService.VpnTunnel) *unstructured.Resource {
 	}
 	if r.Project != nil {
 		u.Object["project"] = *r.Project
-	}
-	if r.Region != nil {
-		u.Object["region"] = *r.Region
 	}
 	var rRemoteTrafficSelector []interface{}
 	for _, rRemoteTrafficSelectorVal := range r.RemoteTrafficSelector {
@@ -163,6 +163,13 @@ func UnstructuredToVpnTunnel(u *unstructured.Resource) (*dclService.VpnTunnel, e
 			return nil, fmt.Errorf("r.LocalTrafficSelector: expected []interface{}")
 		}
 	}
+	if _, ok := u.Object["location"]; ok {
+		if s, ok := u.Object["location"].(string); ok {
+			r.Location = dcl.String(s)
+		} else {
+			return nil, fmt.Errorf("r.Location: expected string")
+		}
+	}
 	if _, ok := u.Object["name"]; ok {
 		if s, ok := u.Object["name"].(string); ok {
 			r.Name = dcl.String(s)
@@ -203,13 +210,6 @@ func UnstructuredToVpnTunnel(u *unstructured.Resource) (*dclService.VpnTunnel, e
 			r.Project = dcl.String(s)
 		} else {
 			return nil, fmt.Errorf("r.Project: expected string")
-		}
-	}
-	if _, ok := u.Object["region"]; ok {
-		if s, ok := u.Object["region"].(string); ok {
-			r.Region = dcl.String(s)
-		} else {
-			return nil, fmt.Errorf("r.Region: expected string")
 		}
 	}
 	if _, ok := u.Object["remoteTrafficSelector"]; ok {
@@ -295,9 +295,9 @@ func GetVpnTunnel(ctx context.Context, config *dcl.Config, u *unstructured.Resou
 	return VpnTunnelToUnstructured(r), nil
 }
 
-func ListVpnTunnel(ctx context.Context, config *dcl.Config, project string, region string) ([]*unstructured.Resource, error) {
+func ListVpnTunnel(ctx context.Context, config *dcl.Config, project string, location string) ([]*unstructured.Resource, error) {
 	c := dclService.NewClient(config)
-	l, err := c.ListVpnTunnel(ctx, project, region)
+	l, err := c.ListVpnTunnel(ctx, project, location)
 	if err != nil {
 		return nil, err
 	}

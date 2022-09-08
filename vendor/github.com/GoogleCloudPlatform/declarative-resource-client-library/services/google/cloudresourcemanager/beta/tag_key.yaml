@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a TagKey
     parameters:
-    - name: TagKey
+    - name: tagKey
       required: true
       description: A full instance of a TagKey
   apply:
     description: The function used to apply information about a TagKey
     parameters:
-    - name: TagKey
+    - name: tagKey
       required: true
       description: A full instance of a TagKey
   delete:
     description: The function used to delete a TagKey
     parameters:
-    - name: TagKey
+    - name: tagKey
       required: true
       description: A full instance of a TagKey
 components:

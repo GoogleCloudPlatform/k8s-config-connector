@@ -33,7 +33,7 @@ func DCLOSPolicyAssignmentSchema() *dcl.Schema {
 				Description: "The function used to get information about a OSPolicyAssignment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "OSPolicyAssignment",
+						Name:        "oSPolicyAssignment",
 						Required:    true,
 						Description: "A full instance of a OSPolicyAssignment",
 					},
@@ -43,7 +43,7 @@ func DCLOSPolicyAssignmentSchema() *dcl.Schema {
 				Description: "The function used to apply information about a OSPolicyAssignment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "OSPolicyAssignment",
+						Name:        "oSPolicyAssignment",
 						Required:    true,
 						Description: "A full instance of a OSPolicyAssignment",
 					},
@@ -53,7 +53,7 @@ func DCLOSPolicyAssignmentSchema() *dcl.Schema {
 				Description: "The function used to delete a OSPolicyAssignment",
 				Parameters: []dcl.PathParameters{
 					dcl.PathParameters{
-						Name:        "OSPolicyAssignment",
+						Name:        "oSPolicyAssignment",
 						Required:    true,
 						Description: "A full instance of a OSPolicyAssignment",
 					},

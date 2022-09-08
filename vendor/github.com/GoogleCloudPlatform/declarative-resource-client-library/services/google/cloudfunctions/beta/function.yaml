@@ -20,19 +20,19 @@ paths:
   get:
     description: The function used to get information about a Function
     parameters:
-    - name: Function
+    - name: function
       required: true
       description: A full instance of a Function
   apply:
     description: The function used to apply information about a Function
     parameters:
-    - name: Function
+    - name: function
       required: true
       description: A full instance of a Function
   delete:
     description: The function used to delete a Function
     parameters:
-    - name: Function
+    - name: function
       required: true
       description: A full instance of a Function
   deleteAll:
