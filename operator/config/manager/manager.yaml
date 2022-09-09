@@ -78,5 +78,6 @@ spec:
             drop:
             - all
           allowPrivilegeEscalation: false
+      enableServiceLinks: false
       serviceAccountName: configconnector-operator
       terminationGracePeriodSeconds: 10

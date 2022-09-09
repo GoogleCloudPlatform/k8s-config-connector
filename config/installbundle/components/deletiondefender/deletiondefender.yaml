@@ -75,4 +75,5 @@ spec:
             port: 23232
           initialDelaySeconds: 7
           periodSeconds: 3
+      enableServiceLinks: false
       terminationGracePeriodSeconds: 10
