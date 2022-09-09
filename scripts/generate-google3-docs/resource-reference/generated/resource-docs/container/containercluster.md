@@ -75,6 +75,9 @@ removes the default node pool created during cluster creation.
     <tr>
         <td><code>cnrm.cloud.google.com/remove-default-node-pool</code></td>
     </tr>
+    <tr>
+        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
+    </tr>
 </tbody>
 </table>
 

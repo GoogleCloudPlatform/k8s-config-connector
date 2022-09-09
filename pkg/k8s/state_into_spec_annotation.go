@@ -39,6 +39,17 @@ func EnsureSpecIntoSateAnnotation(obj *Resource) error {
 	return validateStateIntoSpecAnnotation(obj, obj.GroupVersionKind())
 }
 
+// ResourceSupportsStateAbsentInSpec returns true for resource kinds which
+// allow the 'state-into-spec' annotation to be set to 'absent'.
+func ResourceSupportsStateAbsentInSpec(kind string) bool {
+	switch kind {
+	// Setting 'state-into-spec' to 'absent' for ComputeAddress may hide 'spec.address' field from users and cause breaking change.
+	case "ComputeAddress":
+		return false
+	}
+	return true
+}
+
 func validateStateIntoSpecAnnotation(obj metav1.Object, gvk schema.GroupVersionKind) error {
 	val, found := GetAnnotation(StateIntoSpecAnnotation, obj)
 	if !found {
@@ -49,7 +60,7 @@ func validateStateIntoSpecAnnotation(obj metav1.Object, gvk schema.GroupVersionK
 		return fmt.Errorf("invalid value '%v' for '%v' annotation, can be one of {%v}", val, StateIntoSpecAnnotation, strings.Join(StateIntoSpecAnnotationValues, ", "))
 	}
 
-	if val == StateAbsentInSpec && !resourceSupportsStateAbsentInSpec(gvk.Kind) {
+	if val == StateAbsentInSpec && !ResourceSupportsStateAbsentInSpec(gvk.Kind) {
 		return fmt.Errorf("kind '%v' does not support having annotation '%v' set to value '%v'", gvk.Kind, StateIntoSpecAnnotation, val)
 	}
 	return nil
@@ -62,15 +73,4 @@ func isAcceptedValue(val string) bool {
 		}
 	}
 	return false
-}
-
-// resourceSupportsStateAbsentInSpec returns true for resource kinds which
-// allow the 'state-into-spec' annotation to be set to 'absent'.
-func resourceSupportsStateAbsentInSpec(kind string) bool {
-	switch kind {
-	// Setting 'state-into-spec' to 'absent' for ComputeAddress may hide 'spec.address' field from users and cause breaking change.
-	case "ComputeAddress":
-		return false
-	}
-	return true
 }
