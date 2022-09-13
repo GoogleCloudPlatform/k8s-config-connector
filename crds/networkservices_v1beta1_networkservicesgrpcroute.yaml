@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.93.0
+    cnrm.cloud.google.com/version: 1.94.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -205,13 +205,6 @@ spec:
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
-              routers:
-                description: 'Optional. Routers define a list of routers this GrpcRoute
-                  should be served by. Each router reference should match the pattern:
-                  `projects/*/locations/global/routers/`'
-                items:
-                  type: string
-                type: array
               rules:
                 description: Required. A list of detailed rules defining how to route
                   traffic. Within a single GrpcRoute, the GrpcRoute.RouteAction associated
@@ -411,8 +404,8 @@ spec:
                               type:
                                 description: 'Optional. Specifies how to match against
                                   the name. If not specified, a default value of "EXACT"
-                                  is used. Possible values: MATCH_TYPE_UNSPECIFIED,
-                                  MATCH_ANY, MATCH_ALL'
+                                  is used. Possible values: TYPE_UNSPECIFIED, EXACT,
+                                  REGULAR_EXPRESSION'
                                 type: string
                             required:
                             - grpcMethod
