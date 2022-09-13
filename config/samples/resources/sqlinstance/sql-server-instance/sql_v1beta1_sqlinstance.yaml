@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-kind: PubSubTopic
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
 metadata:
-  name: pubsubsubscription-dep
----
-apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-kind: PubSubTopic
-metadata:
-  name: pubsubsubscription-dep2
+  name: sqlinstance-sample-sqlserver
+  annotations:
+    # Replace ${PROJECT_ID?} with your project ID
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+spec:
+  region: us-central1
+  databaseVersion: SQLSERVER_2017_EXPRESS
+  settings:
+    tier: db-custom-1-3840
+    sqlServerAuditConfig:
+      bucketRef:
+        name: ${PROJECT_ID?}-sqlinstance-dep-sqlserver
+  rootPassword:
+    value: "1234"

@@ -700,7 +700,7 @@ observedGeneration: integer
 
 ## Sample YAML(s)
 
-### Typical Use Case
+### Basic Pubsub Subscription
 ```yaml
 # Copyright 2020 Google LLC
 #
@@ -721,26 +721,127 @@ kind: PubSubSubscription
 metadata:
   labels:
     label-one: "value-one"
-  name: pubsubsubscription-sample
+  name: pubsubsubscription-sample-basic
 spec:
   ackDeadlineSeconds: 15
   messageRetentionDuration: 86400s
   retainAckedMessages: false
   topicRef:
-    name: pubsubsubscription-dep
+    name: pubsubsubscription-dep1-basic
   deadLetterPolicy:
     deadLetterTopicRef:
-      name: pubsubsubscription-dep2
+      name: pubsubsubscription-dep2-basic
 ---
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
-  name: pubsubsubscription-dep
+  name: pubsubsubscription-dep1-basic
 ---
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
 metadata:
-  name: pubsubsubscription-dep2
+  name: pubsubsubscription-dep2-basic
+```
+
+### BigQuery Pubsub Subscription
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Replace ${PROJECT_ID?} below with your desired project ID.
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubSubscription
+metadata:
+  name: pubsubsubscription-sample-bigquery
+  annotations:
+    # Replace ${PROJECT_ID?} with your project ID
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+spec:
+  bigqueryConfig:
+    tableRef:
+      name: pubsubsubscription-dep-bigquery
+  topicRef:
+    name: pubsubsubscription-dep-bigquery
+---
+# Replace ${PROJECT_ID?} below with your desired project ID.
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  name: pubsubsubscription-dep-bigquery
+  annotations:
+    # Replace ${PROJECT_ID?} with your project ID
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+spec:
+  resourceID: pubsubsubscriptiondepbigquery
+---
+# Replace ${PROJECT_ID?} below with your desired project ID.
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: pubsubsubscription-dep-bigquery
+  annotations:
+    # Replace ${PROJECT_ID?} with your project ID
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+spec:
+  resourceID: pubsubsubscriptiondepbigquery
+  friendlyName: pubsubsubscription-dep-bigquery
+  datasetRef:
+    name: pubsubsubscription-dep-bigquery
+  schema: >
+    [
+      {
+        "name": "data",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The data"
+      }
+    ]
+---
+# Replace ${PROJECT_ID?} and ${PROJECT_NUMBER?} below with your desired project
+# ID and project number.
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: pubsubsubscription-dep1-bigquery
+spec:
+  member: serviceAccount:service-${PROJECT_NUMBER?}@gcp-sa-pubsub.iam.gserviceaccount.com
+  role: roles/bigquery.metadataViewer
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: projects/${PROJECT_ID?}
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: pubsubsubscription-dep2-bigquery
+spec:
+  member: serviceAccount:service-${PROJECT_NUMBER?}@gcp-sa-pubsub.iam.gserviceaccount.com
+  role: roles/bigquery.dataEditor
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: projects/${PROJECT_ID?}
+---
+# Replace ${PROJECT_ID?} below with your desired project ID.
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: pubsubsubscription-dep-bigquery
+  annotations:
+    # Replace ${PROJECT_ID?} with your project ID
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
 ```
 
 

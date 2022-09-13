@@ -591,5 +591,125 @@ spec:
       type: "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
 ```
 
+### Private Service Connection Region Network Endpoint Group
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRegionNetworkEndpointGroup
+metadata:
+  name: computeregionnetworkendpointgroup-sample-psc
+  annotations:
+    # Replace ${PROJECT_ID?} with your project ID
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+spec:
+  region: us-west3
+  networkEndpointType: PRIVATE_SERVICE_CONNECT
+  pscTargetService: https://www.googleapis.com/compute/v1/projects/${PROJECT_ID?}/regions/us-west3/serviceAttachments/computeregionnetworkendpointgroup-dep-psc
+  networkRef:
+    name: computeregionnetworkendpointgroup-dep-psc
+  subnetworkRef:
+    name: computeregionnetworkendpointgroup-dep2-psc
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computeregionnetworkendpointgroup-dep-psc
+  annotations:
+    # Replace ${PROJECT_ID?} with your project ID
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+spec:
+  location: us-west3
+  networkRef:
+    name: computeregionnetworkendpointgroup-dep-psc
+  loadBalancingScheme: INTERNAL
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  name: computeregionnetworkendpointgroup-dep-psc
+  annotations:
+    # Replace ${PROJECT_ID?} with your project ID
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+spec:
+  location: us-west3
+  networkRef:
+    name: computeregionnetworkendpointgroup-dep-psc
+  subnetworkRef:
+    name: computeregionnetworkendpointgroup-dep2-psc
+  loadBalancingScheme: INTERNAL
+  backendServiceRef:
+    name: computeregionnetworkendpointgroup-dep-psc
+  networkTier: PREMIUM
+  allPorts: true
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computeregionnetworkendpointgroup-dep-psc
+  annotations:
+    # Replace ${PROJECT_ID?} with your project ID
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeServiceAttachment
+metadata:
+  name: computeregionnetworkendpointgroup-dep-psc
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  location: us-west3
+  description: A sample service attachment
+  targetServiceRef:
+    name: computeregionnetworkendpointgroup-dep-psc
+  connectionPreference: ACCEPT_AUTOMATIC
+  natSubnets:
+    - name: computeregionnetworkendpointgroup-dep1-psc
+  enableProxyProtocol: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computeregionnetworkendpointgroup-dep1-psc
+  annotations:
+    # Replace ${PROJECT_ID?} with your project ID
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+spec:
+  region: us-west3
+  ipCidrRange: 10.2.0.0/16
+  networkRef:
+    name: computeregionnetworkendpointgroup-dep-psc
+  purpose: PRIVATE_SERVICE_CONNECT
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computeregionnetworkendpointgroup-dep2-psc
+  annotations:
+    # Replace ${PROJECT_ID?} with your project ID
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+spec:
+  ipCidrRange: 10.180.0.0/20
+  region: us-west3
+  networkRef:
+    name: computeregionnetworkendpointgroup-dep-psc
+```
+
 
 {% endblock %}

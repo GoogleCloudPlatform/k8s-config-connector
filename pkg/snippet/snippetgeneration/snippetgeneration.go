@@ -87,6 +87,7 @@ var preferredSampleForResource = map[string]string{
 	"osconfigospolicyassignment":        "fixed-os-policy-assignment",
 	"privatecacertificate":              "basic-certificate",
 	"project":                           "project-in-folder",
+	"pubsubsubscription":                "basic-pubsub-subscription",
 	"recaptchaenterprisekey":            "challenge-based-web-recaptcha-enterprise-key",
 	"resourcemanagerpolicy":             "organization-policy-for-project",
 	"secretmanagersecret":               "automatic-secret-replication",
