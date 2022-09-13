@@ -219,6 +219,8 @@ var testDisabledList = map[string]bool{
 	// Disable the test for now and re-enable it once the issue has been
 	// resolved.
 	"apigeeenvironment": true,
+	// TODO(b/246606623): GKE API issue causing nodepool test failure. Revert after omg/57044 is mitigated.
+	"basic-node-pool": true,
 }
 
 type Sample struct {
