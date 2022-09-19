@@ -743,6 +743,7 @@ spec:
         policyDir: "config-connector"
         syncWaitSecs: "20"
         syncRev: "HEAD"
+        secretType: "none"
     policyController:
       enabled: true
       exemptableNamespaces:
