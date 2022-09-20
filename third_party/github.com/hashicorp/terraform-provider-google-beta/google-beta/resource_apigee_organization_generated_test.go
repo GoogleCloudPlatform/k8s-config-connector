@@ -248,6 +248,16 @@ resource "google_apigee_organization" "org" {
   authorized_network                   = google_compute_network.apigee_network.id
   billing_type                         = "EVALUATION"
   runtime_database_encryption_key_name = google_kms_crypto_key.apigee_key.id
+  properties {
+    property {
+      name = "features.hybrid.enabled"
+      value = "true"
+    }
+    property {
+      name = "features.mart.connect.enabled"
+      value = "true"
+    }
+  }
 
   depends_on = [
     google_service_networking_connection.apigee_vpc_connection,

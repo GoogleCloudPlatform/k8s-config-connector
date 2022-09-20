@@ -37,6 +37,116 @@ func TestAccDNSResponsePolicyRule_update(t *testing.T) {
 	})
 }
 
+func TestAccDNSResponsePolicyRuleBehavior_update(t *testing.T) {
+	t.Parallel()
+
+	responsePolicyRuleSuffix := randString(t, 10)
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProvidersOiCS,
+		CheckDestroy: testAccCheckDNSResponsePolicyRuleDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccDnsResponsePolicyRuleBehavior_unspecified(responsePolicyRuleSuffix, "network-1"),
+			},
+			{
+				ResourceName:      "google_dns_response_policy_rule.example-response-policy-rule-behavior",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccDnsResponsePolicyRuleBehavior_byPass(responsePolicyRuleSuffix, "network-1"),
+			},
+			{
+				ResourceName:      "google_dns_response_policy_rule.example-response-policy-rule-behavior",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccDnsResponsePolicyRuleBehavior_unspecified(responsePolicyRuleSuffix, "network-1"),
+			},
+			{
+				ResourceName:      "google_dns_response_policy_rule.example-response-policy-rule-behavior",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccDnsResponsePolicyRuleBehavior_unspecified(suffix, network string) string {
+	return fmt.Sprintf(`
+
+resource "google_compute_network" "network-1" {
+  provider = google-beta
+
+  name                    = "tf-test-network-1-%s"
+  auto_create_subnetworks = false
+}
+
+resource "google_dns_response_policy" "response-policy" {
+  provider = google-beta
+
+  response_policy_name = "tf-test-response-policy-%s"
+
+  networks {
+    network_url = google_compute_network.%s.self_link
+  }
+}
+
+resource "google_dns_response_policy_rule" "example-response-policy-rule-behavior" {
+  provider = google-beta
+
+  response_policy = google_dns_response_policy.response-policy.response_policy_name
+  rule_name       = "tf-test-response-policy-rule-%s"
+  dns_name        = "dns.example.com."
+
+  local_data {
+    local_datas {
+    name   = "dns.example.com."
+    type   = "A"
+    ttl    = 300
+    rrdatas = ["192.0.2.91"]
+    }
+  }
+}
+
+`, suffix, suffix, network, suffix)
+}
+
+func testAccDnsResponsePolicyRuleBehavior_byPass(suffix, network string) string {
+	return fmt.Sprintf(`
+
+resource "google_compute_network" "network-1" {
+  provider = google-beta
+
+  name                    = "tf-test-network-1-%s"
+  auto_create_subnetworks = false
+}
+
+resource "google_dns_response_policy" "response-policy" {
+  provider = google-beta
+
+  response_policy_name = "tf-test-response-policy-%s"
+
+  networks {
+    network_url = google_compute_network.%s.self_link
+  }
+}
+
+resource "google_dns_response_policy_rule" "example-response-policy-rule-behavior" {
+  provider = google-beta
+
+  behavior        = "bypassResponsePolicy"
+  dns_name        = "dns.example.com."
+  rule_name       = "tf-test-response-policy-rule-%s"
+  response_policy = google_dns_response_policy.response-policy.response_policy_name
+
+}
+`, suffix, suffix, network, suffix)
+}
+
 func testAccDnsResponsePolicyRule_privateUpdate(suffix, network string) string {
 	return fmt.Sprintf(`
 resource "google_compute_network" "network-1" {
@@ -78,6 +188,6 @@ resource "google_dns_response_policy_rule" "example-response-policy-rule" {
       rrdatas = ["192.0.2.91"]
     }
   }
-}  
+}
 `, suffix, suffix, suffix, network, suffix)
 }

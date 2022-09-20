@@ -1,6 +1,7 @@
 advancedMachineFeatures:
   enableNestedVirtualization: boolean
   threadsPerCore: integer
+  visibleCoreCount: integer
 attachedDisk:
 - deviceName: string
   diskEncryptionKeyRaw:

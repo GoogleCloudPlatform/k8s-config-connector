@@ -79,6 +79,13 @@ spec:
                       maximum number of threads supported per core by the underlying
                       processor is assumed.
                     type: integer
+                  visibleCoreCount:
+                    description: The number of physical cores to expose to an instance.
+                      Multiply by the number of threads per core to compute the total
+                      number of virtual CPUs to expose to the instance. If unset,
+                      the number of cores is inferred from the instance\'s nominal
+                      CPU count and the underlying platform\'s SMT width.
+                    type: integer
                 type: object
               attachedDisk:
                 description: List of disks attached to the instance.

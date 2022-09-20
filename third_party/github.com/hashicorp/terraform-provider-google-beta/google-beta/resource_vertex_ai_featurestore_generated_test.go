@@ -27,7 +27,10 @@ func TestAccVertexAIFeaturestore_vertexAiFeaturestoreExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"org_id":          getTestOrgFromEnv(t),
+		"billing_account": getTestBillingAccountFromEnv(t),
+		"kms_key_name":    BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
+		"random_suffix":   randString(t, 10),
 	}
 
 	vcrTest(t, resource.TestCase{
@@ -59,6 +62,9 @@ resource "google_vertex_ai_featurestore" "featurestore" {
   region   = "us-central1"
   online_serving_config {
     fixed_node_count = 2
+  }
+  encryption_spec {
+    kms_key_name = "%{kms_key_name}"
   }
   force_destroy = true
 }

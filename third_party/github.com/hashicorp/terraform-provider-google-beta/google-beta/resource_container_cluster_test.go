@@ -953,6 +953,59 @@ func TestAccContainerCluster_withNodeConfig(t *testing.T) {
 	})
 }
 
+func TestAccContainerCluster_withNodePoolDefaults(t *testing.T) {
+	t.Parallel()
+	clusterName := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccContainerCluster_basic(clusterName),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckNoResourceAttr("google_container_cluster.primary",
+						"node_pool_defaults.0.node_config_defaults.0.gcfs_config.0.enabled"),
+				),
+			},
+			{
+				ResourceName:      "google_container_cluster.primary",
+				ImportStateId:     fmt.Sprintf("us-central1-a/%s", clusterName),
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerCluster_withNodePoolDefaults(clusterName, "true"),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("google_container_cluster.with_node_pool_defaults",
+						"node_pool_defaults.0.node_config_defaults.0.gcfs_config.#", "1"),
+					resource.TestCheckResourceAttr("google_container_cluster.with_node_pool_defaults",
+						"node_pool_defaults.0.node_config_defaults.0.gcfs_config.0.enabled", "true"),
+				),
+			},
+			{
+				ResourceName:      "google_container_cluster.with_node_pool_defaults",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerCluster_withNodePoolDefaults(clusterName, "false"),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("google_container_cluster.with_node_pool_defaults",
+						"node_pool_defaults.0.node_config_defaults.0.gcfs_config.#", "1"),
+					resource.TestCheckResourceAttr("google_container_cluster.with_node_pool_defaults",
+						"node_pool_defaults.0.node_config_defaults.0.gcfs_config.0.enabled", "false"),
+				),
+			},
+			{
+				ResourceName:      "google_container_cluster.with_node_pool_defaults",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
 func TestAccContainerCluster_withNodeConfigScopeAlias(t *testing.T) {
 	t.Parallel()
 
@@ -1354,6 +1407,68 @@ func TestAccContainerCluster_withNodePoolAutoscaling(t *testing.T) {
 				ResourceName:      "google_container_cluster.with_node_pool",
 				ImportState:       true,
 				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func TestAccContainerCluster_withNodePoolCIA(t *testing.T) {
+	t.Parallel()
+
+	clusterName := fmt.Sprintf("tf-test-cluster-nodepool-%s", randString(t, 10))
+	npName := fmt.Sprintf("tf-test-cluster-nodepool-%s", randString(t, 10))
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccContainerRegionalCluster_withNodePoolCIA(clusterName, npName),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("google_container_cluster.with_node_pool", "node_pool.0.autoscaling.0.min_node_count", "0"),
+					resource.TestCheckResourceAttr("google_container_cluster.with_node_pool", "node_pool.0.autoscaling.0.max_node_count", "0"),
+					resource.TestCheckResourceAttr("google_container_cluster.with_node_pool", "node_pool.0.autoscaling.0.total_min_node_count", "3"),
+					resource.TestCheckResourceAttr("google_container_cluster.with_node_pool", "node_pool.0.autoscaling.0.total_max_node_count", "21"),
+					resource.TestCheckResourceAttr("google_container_cluster.with_node_pool", "node_pool.0.autoscaling.0.location_policy", "BALANCED"),
+				),
+			},
+			{
+				ResourceName:            "google_container_cluster.with_node_pool",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"min_master_version"},
+			},
+			{
+				Config: testAccContainerRegionalClusterUpdate_withNodePoolCIA(clusterName, npName),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("google_container_cluster.with_node_pool", "node_pool.0.autoscaling.0.min_node_count", "0"),
+					resource.TestCheckResourceAttr("google_container_cluster.with_node_pool", "node_pool.0.autoscaling.0.max_node_count", "0"),
+					resource.TestCheckResourceAttr("google_container_cluster.with_node_pool", "node_pool.0.autoscaling.0.total_min_node_count", "4"),
+					resource.TestCheckResourceAttr("google_container_cluster.with_node_pool", "node_pool.0.autoscaling.0.total_max_node_count", "32"),
+					resource.TestCheckResourceAttr("google_container_cluster.with_node_pool", "node_pool.0.autoscaling.0.location_policy", "ANY"),
+				),
+			},
+			{
+				ResourceName:            "google_container_cluster.with_node_pool",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"min_master_version"},
+			},
+			{
+				Config: testAccContainerRegionalCluster_withNodePoolBasic(clusterName, npName),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckNoResourceAttr("google_container_cluster.with_node_pool", "node_pool.0.autoscaling.0.min_node_count"),
+					resource.TestCheckNoResourceAttr("google_container_cluster.with_node_pool", "node_pool.0.autoscaling.0.max_node_count"),
+					resource.TestCheckNoResourceAttr("google_container_cluster.with_node_pool", "node_pool.0.autoscaling.0.total_min_node_count"),
+					resource.TestCheckNoResourceAttr("google_container_cluster.with_node_pool", "node_pool.0.autoscaling.0.total_max_node_count"),
+				),
+			},
+			{
+				ResourceName:            "google_container_cluster.with_node_pool",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"min_master_version"},
 			},
 		},
 	})
@@ -2601,6 +2716,37 @@ func TestAccContainerCluster_errorNoClusterCreated(t *testing.T) {
 	})
 }
 
+func TestAccContainerCluster_withExternalIpsConfig(t *testing.T) {
+	t.Parallel()
+
+	clusterName := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
+	pid := getTestProjectFromEnv()
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccContainerCluster_withExternalIpsConfig(pid, clusterName, true),
+			},
+			{
+				ResourceName:      "google_container_cluster.with_external_ips_config",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerCluster_withExternalIpsConfig(pid, clusterName, false),
+			},
+			{
+				ResourceName:      "google_container_cluster.with_external_ips_config",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
 func TestAccContainerCluster_withMeshCertificatesConfig(t *testing.T) {
 	t.Parallel()
 
@@ -2638,6 +2784,37 @@ func TestAccContainerCluster_withMeshCertificatesConfig(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateVerifyIgnore: []string{"remove_default_node_pool"},
+			},
+		},
+	})
+}
+
+func TestAccContainerCluster_withCostManagementConfig(t *testing.T) {
+	t.Parallel()
+
+	clusterName := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
+	pid := getTestProjectFromEnv()
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccContainerCluster_updateCostManagementConfig(pid, clusterName, true),
+			},
+			{
+				ResourceName:      "google_container_cluster.with_cost_management_config",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerCluster_updateCostManagementConfig(pid, clusterName, false),
+			},
+			{
+				ResourceName:      "google_container_cluster.with_cost_management_config",
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})
@@ -3766,6 +3943,24 @@ resource "google_container_cluster" "with_node_config" {
 `, clusterName)
 }
 
+func testAccContainerCluster_withNodePoolDefaults(clusterName, enabled string) string {
+	return fmt.Sprintf(`
+resource "google_container_cluster" "with_node_pool_defaults" {
+  name               = "%s"
+  location           = "us-central1-f"
+  initial_node_count = 1
+
+  node_pool_defaults {
+    node_config_defaults {
+      gcfs_config {
+        enabled = "%s"
+      }
+    }
+  }
+}
+`, clusterName, enabled)
+}
+
 func testAccContainerCluster_withNodeConfigUpdate(clusterName string) string {
 	return fmt.Sprintf(`
 resource "google_container_cluster" "with_node_config" {
@@ -4525,6 +4720,61 @@ resource "google_container_cluster" "with_node_pool" {
   }
 }
 `, cluster, np)
+}
+
+func testAccContainerRegionalCluster_withNodePoolCIA(cluster, np string) string {
+	return fmt.Sprintf(`
+resource "google_container_cluster" "with_node_pool" {
+  name     = "%s"
+  location = "us-central1"
+  min_master_version = "1.24"
+
+  node_pool {
+    name               = "%s"
+    initial_node_count = 2
+    autoscaling {
+      total_min_node_count = 3
+      total_max_node_count = 21
+      location_policy = "BALANCED"
+    }
+  }
+}
+`, cluster, np)
+}
+
+func testAccContainerRegionalClusterUpdate_withNodePoolCIA(cluster, np string) string {
+	return fmt.Sprintf(`
+resource "google_container_cluster" "with_node_pool" {
+  name     = "%s"
+  location = "us-central1"
+  min_master_version = "1.24"
+
+  node_pool {
+    name               = "%s"
+    initial_node_count = 2
+    autoscaling {
+      total_min_node_count = 4
+      total_max_node_count = 32
+      location_policy = "ANY"
+    }
+  }
+}
+`, cluster, np)
+}
+
+func testAccContainerRegionalCluster_withNodePoolBasic(cluster, nodePool string) string {
+	return fmt.Sprintf(`
+resource "google_container_cluster" "with_node_pool" {
+  name     = "%s"
+  location = "us-central1"
+  min_master_version = "1.24"
+
+  node_pool {
+    name               = "%s"
+    initial_node_count = 2
+  }
+}
+`, cluster, nodePool)
 }
 
 func testAccContainerCluster_withNodePoolNamePrefix(cluster, npPrefix string) string {
@@ -5402,6 +5652,22 @@ resource "google_container_cluster" "with_resource_labels" {
 `, location)
 }
 
+func testAccContainerCluster_withExternalIpsConfig(projectID string, clusterName string, enabled bool) string {
+	return fmt.Sprintf(`
+	data "google_project" "project" {
+  		project_id = "%s"
+	}
+
+	resource "google_container_cluster" "with_external_ips_config" {
+		name               = "%s"
+		location           = "us-central1-a"
+		initial_node_count = 1
+		service_external_ips_config {
+			enabled = %v
+		}
+	}`, projectID, clusterName, enabled)
+}
+
 func testAccContainerCluster_withMeshCertificatesConfigEnabled(projectID string, clusterName string) string {
 	return fmt.Sprintf(`
 	data "google_project" "project" {
@@ -5440,6 +5706,22 @@ func testAccContainerCluster_updateMeshCertificatesConfig(projectID string, clus
 			mesh_certificates {
 			enable_certificates = %v
 			}
+	}`, projectID, clusterName, enabled)
+}
+
+func testAccContainerCluster_updateCostManagementConfig(projectID string, clusterName string, enabled bool) string {
+	return fmt.Sprintf(`
+	data "google_project" "project" {
+  		project_id = "%s"
+	}
+
+	resource "google_container_cluster" "with_cost_management_config" {
+		name               = "%s"
+		location           = "us-central1-a"
+		initial_node_count = 1
+		cost_management_config {
+			enabled = %v
+		}
 	}`, projectID, clusterName, enabled)
 }
 

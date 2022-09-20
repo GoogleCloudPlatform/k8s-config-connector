@@ -77,8 +77,11 @@
 #### Schema
 ```yaml
 autoscaling:
+  locationPolicy: string
   maxNodeCount: integer
   minNodeCount: integer
+  totalMaxNodeCount: integer
+  totalMinNodeCount: integer
 clusterRef:
   external: string
   name: string
@@ -188,22 +191,52 @@ version: string
     </tr>
     <tr>
         <td>
+            <p><code>autoscaling.locationPolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Location policy specifies the algorithm used when scaling-up the node pool. "BALANCED" - Is a best effort policy that aims to balance the sizes of available zones. "ANY" - Instructs the cluster autoscaler to prioritize utilization of unused reservations, and reduces preemption risk for Spot VMs.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>autoscaling.maxNodeCount</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Maximum number of nodes in the NodePool. Must be >= min_node_count.{% endverbatim %}</p>
+            <p>{% verbatim %}Maximum number of nodes per zone in the node pool. Must be >= min_node_count. Cannot be used with total limits.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>autoscaling.minNodeCount</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Minimum number of nodes in the NodePool. Must be >=0 and <= max_node_count.{% endverbatim %}</p>
+            <p>{% verbatim %}Minimum number of nodes per zone in the node pool. Must be >=0 and <= max_node_count. Cannot be used with total limits.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>autoscaling.totalMaxNodeCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Maximum number of all nodes in the node pool. Must be >= total_min_node_count. Cannot be used with per zone limits.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>autoscaling.totalMinNodeCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Minimum number of all nodes in the node pool. Must be >=0 and <= total_max_node_count. Cannot be used with per zone limits.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

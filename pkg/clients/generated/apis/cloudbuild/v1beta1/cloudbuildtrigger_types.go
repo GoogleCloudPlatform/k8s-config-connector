@@ -137,7 +137,7 @@ type TriggerGitFileSource struct {
 	Path string `json:"path"`
 
 	/* The type of the repo, since it may not be explicit from the repo field (e.g from a URL).
-	Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB"]. */
+	Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET"]. */
 	RepoType string `json:"repoType"`
 
 	/* The branch, tag, arbitrary ref, or SHA version of the repo to use when resolving the
@@ -387,7 +387,7 @@ type TriggerSourceToBuild struct {
 	Ref string `json:"ref"`
 
 	/* The type of the repo, since it may not be explicit from the repo field (e.g from a URL).
-	Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB"]. */
+	Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET"]. */
 	RepoType string `json:"repoType"`
 
 	/* The URI of the repo (required). */
@@ -652,6 +652,11 @@ type CloudBuildTriggerSpec struct {
 	a build. */
 	// +optional
 	IncludedFiles []string `json:"includedFiles,omitempty"`
+
+	/* Immutable. The [Cloud Build location](https://cloud.google.com/build/docs/locations) for the trigger.
+	If not specified, "global" is used. */
+	// +optional
+	Location *string `json:"location,omitempty"`
 
 	/* PubsubConfig describes the configuration of a trigger that creates
 	a build whenever a Pub/Sub message is published.

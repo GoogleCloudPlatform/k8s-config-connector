@@ -13,7 +13,7 @@
 # limitations under the License.
 
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_node_pool.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_node_pool.go
-index 32a37a037..724c6414d 100644
+index 40b76d61c..e599fe5ec 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_node_pool.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_node_pool.go
 @@ -79,7 +79,7 @@ var schemaNodePool = map[string]*schema.Schema{
@@ -25,24 +25,18 @@ index 32a37a037..724c6414d 100644
  		Elem: &schema.Resource{
  			Schema: map[string]*schema.Schema{
  				"min_node_count": {
-@@ -92,7 +92,7 @@ var schemaNodePool = map[string]*schema.Schema{
- 				"max_node_count": {
- 					Type:         schema.TypeInt,
- 					Required:     true,
--					ValidateFunc: validation.IntAtLeast(1),
-+					ValidateFunc: validation.IntAtLeast(0),
- 					Description:  `Maximum number of nodes in the NodePool. Must be >= min_node_count.`,
- 				},
- 			},
-@@ -892,11 +892,20 @@ func nodePoolUpdate(d *schema.ResourceData, meta interface{}, nodePoolInfo *Node
+@@ -951,14 +951,23 @@ func nodePoolUpdate(d *schema.ResourceData, meta interface{}, nodePoolInfo *Node
  		}
  		if v, ok := d.GetOk(prefix + "autoscaling"); ok {
  			autoscaling := v.([]interface{})[0].(map[string]interface{})
 -			update.DesiredNodePoolAutoscaling = &container.NodePoolAutoscaling{
--				Enabled:         true,
--				MinNodeCount:    int64(autoscaling["min_node_count"].(int)),
--				MaxNodeCount:    int64(autoscaling["max_node_count"].(int)),
--				ForceSendFields: []string{"MinNodeCount"},
+-				Enabled:           true,
+-				MinNodeCount:      int64(autoscaling["min_node_count"].(int)),
+-				MaxNodeCount:      int64(autoscaling["max_node_count"].(int)),
+-				TotalMinNodeCount: int64(autoscaling["total_min_node_count"].(int)),
+-				TotalMaxNodeCount: int64(autoscaling["total_max_node_count"].(int)),
+-				LocationPolicy:    autoscaling["location_policy"].(string),
+-				ForceSendFields:   []string{"MinNodeCount", "TotalMinNodeCount"},
 +			// disable autoscaling if both min/max node counts are set to 0
 +			minNodeCount := autoscaling["min_node_count"].(int)
 +			maxNodeCount := autoscaling["max_node_count"].(int)
@@ -52,10 +46,13 @@ index 32a37a037..724c6414d 100644
 +				}
 +			} else {
 +				update.DesiredNodePoolAutoscaling = &container.NodePoolAutoscaling{
-+					Enabled:         true,
-+					MinNodeCount:    int64(minNodeCount),
-+					MaxNodeCount:    int64(maxNodeCount),
-+					ForceSendFields: []string{"MinNodeCount"},
++					Enabled:           true,
++					MinNodeCount:      int64(minNodeCount),
++					MaxNodeCount:      int64(maxNodeCount),
++					TotalMinNodeCount: int64(autoscaling["total_min_node_count"].(int)),
++					TotalMaxNodeCount: int64(autoscaling["total_max_node_count"].(int)),
++					LocationPolicy:    autoscaling["location_policy"].(string),
++					ForceSendFields:   []string{"MinNodeCount", "TotalMinNodeCount"},
 +				}
  			}
  		} else {

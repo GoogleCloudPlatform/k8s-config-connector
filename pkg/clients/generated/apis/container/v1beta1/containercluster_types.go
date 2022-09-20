@@ -179,6 +179,11 @@ type ClusterConfigConnectorConfig struct {
 	Enabled bool `json:"enabled"`
 }
 
+type ClusterCostManagementConfig struct {
+	/* Whether to enable GKE cost allocation. When you enable GKE cost allocation, the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery. Defaults to false. */
+	Enabled bool `json:"enabled"`
+}
+
 type ClusterDailyMaintenanceWindow struct {
 	/*  */
 	// +optional
@@ -237,7 +242,7 @@ type ClusterGcePersistentDiskCsiDriverConfig struct {
 }
 
 type ClusterGcfsConfig struct {
-	/* Immutable. Whether or not GCFS is enabled. */
+	/* Whether or not GCFS is enabled. */
 	Enabled bool `json:"enabled"`
 }
 
@@ -553,10 +558,22 @@ type ClusterNodeConfig struct {
 	WorkloadMetadataConfig *ClusterWorkloadMetadataConfig `json:"workloadMetadataConfig,omitempty"`
 }
 
+type ClusterNodeConfigDefaults struct {
+	/* GCFS configuration for this node. */
+	// +optional
+	GcfsConfig *ClusterGcfsConfig `json:"gcfsConfig,omitempty"`
+}
+
 type ClusterNodePoolAutoConfig struct {
 	/* Collection of Compute Engine network tags that can be applied to a node's underlying VM instance. */
 	// +optional
 	NetworkTags *ClusterNetworkTags `json:"networkTags,omitempty"`
+}
+
+type ClusterNodePoolDefaults struct {
+	/* Subset of NodeConfig message that has defaults. */
+	// +optional
+	NodeConfigDefaults *ClusterNodeConfigDefaults `json:"nodeConfigDefaults,omitempty"`
 }
 
 type ClusterNotificationConfig struct {
@@ -681,6 +698,11 @@ type ClusterSandboxConfig struct {
 	SandboxType string `json:"sandboxType"`
 }
 
+type ClusterServiceExternalIpsConfig struct {
+	/* When enabled, services with exterenal ips specified will be allowed. */
+	Enabled bool `json:"enabled"`
+}
+
 type ClusterShieldedInstanceConfig struct {
 	/* Immutable. Defines whether the instance has integrity monitoring enabled. */
 	// +optional
@@ -762,6 +784,10 @@ type ContainerClusterSpec struct {
 	/* Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after cluster creation without deleting and recreating the entire cluster. */
 	// +optional
 	ConfidentialNodes *ClusterConfidentialNodes `json:"confidentialNodes,omitempty"`
+
+	/* Cost management configuration for the cluster. */
+	// +optional
+	CostManagementConfig *ClusterCostManagementConfig `json:"costManagementConfig,omitempty"`
 
 	/* Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key_name is the name of a CloudKMS key. */
 	// +optional
@@ -894,6 +920,10 @@ type ContainerClusterSpec struct {
 	// +optional
 	NodePoolAutoConfig *ClusterNodePoolAutoConfig `json:"nodePoolAutoConfig,omitempty"`
 
+	/* The default nodel pool settings for the entire cluster. */
+	// +optional
+	NodePoolDefaults *ClusterNodePoolDefaults `json:"nodePoolDefaults,omitempty"`
+
 	/*  */
 	// +optional
 	NodeVersion *string `json:"nodeVersion,omitempty"`
@@ -925,6 +955,10 @@ type ContainerClusterSpec struct {
 	/* Configuration for the ResourceUsageExportConfig feature. */
 	// +optional
 	ResourceUsageExportConfig *ClusterResourceUsageExportConfig `json:"resourceUsageExportConfig,omitempty"`
+
+	/* If set, and enabled=true, services with external ips field will not be blocked. */
+	// +optional
+	ServiceExternalIpsConfig *ClusterServiceExternalIpsConfig `json:"serviceExternalIpsConfig,omitempty"`
 
 	/*  */
 	// +optional

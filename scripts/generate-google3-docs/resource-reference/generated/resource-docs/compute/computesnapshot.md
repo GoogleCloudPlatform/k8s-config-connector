@@ -94,6 +94,7 @@
 ### Spec
 #### Schema
 ```yaml
+chainName: string
 description: string
 resourceID: string
 snapshotEncryptionKey:
@@ -139,6 +140,21 @@ zone: string
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td>
+            <p><code>chainName</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Creates the new snapshot in the snapshot chain labeled with the 
+specified name. The chain name must be 1-63 characters long and 
+comply with RFC1035. This is an uncommon option only for advanced 
+service owners who needs to create separate snapshot chains, for 
+example, for chargeback tracking.  When you describe your snapshot 
+resource, this field is visible only if it has a non-empty value.{% endverbatim %}</p>
+        </td>
+    </tr>
     <tr>
         <td>
             <p><code>description</code></p>

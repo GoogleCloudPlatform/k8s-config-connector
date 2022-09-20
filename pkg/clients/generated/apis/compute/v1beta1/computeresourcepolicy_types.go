@@ -132,6 +132,12 @@ type ResourcepolicySchedule struct {
 }
 
 type ResourcepolicySnapshotProperties struct {
+	/* Immutable. Creates the new snapshot in the snapshot chain labeled with the
+	specified name. The chain name must be 1-63 characters long and comply
+	with RFC1035. */
+	// +optional
+	ChainName *string `json:"chainName,omitempty"`
+
 	/* Immutable. Whether to perform a 'guest aware' snapshot. */
 	// +optional
 	GuestFlush *bool `json:"guestFlush,omitempty"`

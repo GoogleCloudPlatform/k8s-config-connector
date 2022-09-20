@@ -224,6 +224,11 @@ spec:
                     description: Immutable. Properties with which the snapshots are
                       created, such as labels.
                     properties:
+                      chainName:
+                        description: "Immutable. Creates the new snapshot in the snapshot
+                          chain labeled with the \nspecified name. The chain name
+                          must be 1-63 characters long and comply \nwith RFC1035."
+                        type: string
                       guestFlush:
                         description: Immutable. Whether to perform a 'guest aware'
                           snapshot.

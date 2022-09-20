@@ -190,7 +190,7 @@ type PubSubSubscriptionSpec struct {
 	// +optional
 	DeadLetterPolicy *SubscriptionDeadLetterPolicy `json:"deadLetterPolicy,omitempty"`
 
-	/* Immutable. If 'true', Pub/Sub provides the following guarantees for the delivery
+	/* If 'true', Pub/Sub provides the following guarantees for the delivery
 	of a message with a given value of messageId on this Subscriptions':
 
 	- The message sent to a subscriber is guaranteed not to be resent before the message's acknowledgement deadline expires.

@@ -86,6 +86,33 @@ func clusterSchemaNodeConfig() *schema.Schema {
 	return nodeConfigSch
 }
 
+// Defines default nodel pool settings for the entire cluster. These settings are
+// overridden if specified on the specific NodePool object.
+func clusterSchemaNodePoolDefaults() *schema.Schema {
+	return &schema.Schema{
+		Type:             schema.TypeList,
+		Optional:         true,
+		DiffSuppressFunc: emptyOrUnsetBlockDiffSuppress,
+		Description:      `The default nodel pool settings for the entire cluster.`,
+		MaxItems:         1,
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"node_config_defaults": {
+					Type:        schema.TypeList,
+					Optional:    true,
+					Description: `Subset of NodeConfig message that has defaults.`,
+					MaxItems:    1,
+					Elem: &schema.Resource{
+						Schema: map[string]*schema.Schema{
+							"gcfs_config": schemaGcfsConfig(false),
+						},
+					},
+				},
+			},
+		},
+	}
+}
+
 func rfc5545RecurrenceDiffSuppress(k, o, n string, d *schema.ResourceData) bool {
 	// This diff gets applied in the cloud console if you specify
 	// "FREQ=DAILY" in your config and add a maintenance exclusion.
@@ -971,6 +998,8 @@ func resourceContainerCluster() *schema.Resource {
 				ConflictsWith: []string{"enable_autopilot"},
 			},
 
+			"node_pool_defaults": clusterSchemaNodePoolDefaults(),
+
 			"node_pool_auto_config": {
 				Type:             schema.TypeList,
 				Optional:         true,
@@ -1275,6 +1304,23 @@ func resourceContainerCluster() *schema.Resource {
 				},
 			},
 
+			"service_external_ips_config": {
+				Type:        schema.TypeList,
+				MaxItems:    1,
+				Optional:    true,
+				Computed:    true,
+				Description: `If set, and enabled=true, services with external ips field will not be blocked`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"enabled": {
+							Type:        schema.TypeBool,
+							Required:    true,
+							Description: `When enabled, services with exterenal ips specified will be allowed.`,
+						},
+					},
+				},
+			},
+
 			"mesh_certificates": {
 				Type:        schema.TypeList,
 				MaxItems:    1,
@@ -1405,6 +1451,23 @@ func resourceContainerCluster() *schema.Resource {
 				Optional:    true,
 				Description: `The desired state of IPv6 connectivity to Google Services. By default, no private IPv6 access to or from Google Services (all access will be via IPv4).`,
 				Computed:    true,
+			},
+
+			"cost_management_config": {
+				Type:        schema.TypeList,
+				MaxItems:    1,
+				Optional:    true,
+				Computed:    true,
+				Description: `Cost management configuration for the cluster.`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"enabled": {
+							Type:        schema.TypeBool,
+							Required:    true,
+							Description: `Whether to enable GKE cost allocation. When you enable GKE cost allocation, the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery. Defaults to false.`,
+						},
+					},
+				},
 			},
 
 			"resource_usage_export_config": {
@@ -1595,11 +1658,12 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 			EnableL4ilbSubsetting:     d.Get("enable_l4_ilb_subsetting").(bool),
 			DnsConfig:                 expandDnsConfig(d.Get("dns_config")),
 		},
-		MasterAuth:         expandMasterAuth(d.Get("master_auth")),
-		NotificationConfig: expandNotificationConfig(d.Get("notification_config")),
-		ConfidentialNodes:  expandConfidentialNodes(d.Get("confidential_nodes")),
-		ResourceLabels:     expandStringMap(d, "resource_labels"),
-		NodePoolAutoConfig: expandNodePoolAutoConfig(d.Get("node_pool_auto_config")),
+		MasterAuth:           expandMasterAuth(d.Get("master_auth")),
+		NotificationConfig:   expandNotificationConfig(d.Get("notification_config")),
+		ConfidentialNodes:    expandConfidentialNodes(d.Get("confidential_nodes")),
+		ResourceLabels:       expandStringMap(d, "resource_labels"),
+		NodePoolAutoConfig:   expandNodePoolAutoConfig(d.Get("node_pool_auto_config")),
+		CostManagementConfig: expandCostManagementConfig(d.Get("cost_management_config")),
 	}
 
 	v := d.Get("enable_shielded_nodes")
@@ -1672,6 +1736,10 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		cluster.NodeConfig = expandNodeConfig([]interface{}{})
 	}
 
+	if v, ok := d.GetOk("node_pool_defaults"); ok {
+		cluster.NodePoolDefaults = expandNodePoolDefaults(v)
+	}
+
 	if v, ok := d.GetOk("node_config"); ok {
 		cluster.NodeConfig = expandNodeConfig(v)
 	}
@@ -1686,6 +1754,10 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 
 	if v, ok := d.GetOk("vertical_pod_autoscaling"); ok {
 		cluster.VerticalPodAutoscaling = expandVerticalPodAutoscaling(v)
+	}
+
+	if v, ok := d.GetOk("service_external_ips_config"); ok {
+		cluster.NetworkConfig.ServiceExternalIpsConfig = expandServiceExternalIpsConfig(v)
 	}
 
 	if v, ok := d.GetOk("mesh_certificates"); ok {
@@ -1969,6 +2041,10 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 	if err := d.Set("enable_l4_ilb_subsetting", cluster.NetworkConfig.EnableL4ilbSubsetting); err != nil {
 		return fmt.Errorf("Error setting enable_l4_ilb_subsetting: %s", err)
 	}
+
+	if err := d.Set("cost_management_config", flattenManagementConfig(cluster.CostManagementConfig)); err != nil {
+		return fmt.Errorf("Error setting cost_management_config: %s", err)
+	}
 	if err := d.Set("confidential_nodes", flattenConfidentialNodes(cluster.ConfidentialNodes)); err != nil {
 		return err
 	}
@@ -2039,6 +2115,10 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 		return err
 	}
 
+	if err := d.Set("service_external_ips_config", flattenServiceExternalIpsConfig(cluster.NetworkConfig.ServiceExternalIpsConfig)); err != nil {
+		return err
+	}
+
 	if err := d.Set("mesh_certificates", flattenMeshCertificates(cluster.MeshCertificates)); err != nil {
 		return err
 	}
@@ -2077,6 +2157,10 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 	}
 
 	if err := d.Set("node_pool_auto_config", flattenNodePoolAutoConfig(cluster.NodePoolAutoConfig)); err != nil {
+		return err
+	}
+
+	if err := d.Set("node_pool_defaults", flattenNodePoolDefaults(cluster.NodePoolDefaults)); err != nil {
 		return err
 	}
 
@@ -2368,6 +2452,23 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 
 		log.Printf("[INFO] GKE cluster %s L4 ILB Subsetting has been updated to %v", d.Id(), enabled)
+	}
+
+	if d.HasChange("cost_management_config") {
+		c := d.Get("cost_management_config")
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredCostManagementConfig: expandCostManagementConfig(c),
+			},
+		}
+
+		updateF := updateFunc(req, "updating cost management config")
+		// Call update serially.
+		if err := lockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s cost management config has been updated", d.Id())
 	}
 
 	if d.HasChange("authenticator_groups_config") {
@@ -2790,6 +2891,33 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 	}
 
+	if d.HasChange("service_external_ips_config") {
+		c := d.Get("service_external_ips_config")
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredServiceExternalIpsConfig: expandServiceExternalIpsConfig(c),
+			},
+		}
+
+		updateF := func() error {
+			name := containerClusterFullName(project, location, clusterName)
+			clusterUpdateCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.Update(name, req)
+			if config.UserProjectOverride {
+				clusterUpdateCall.Header().Add("X-Goog-User-Project", project)
+			}
+			op, err := clusterUpdateCall.Do()
+			if err != nil {
+				return err
+			}
+			// Wait until it's updated
+			return containerOperationWait(config, op, project, location, "updating GKE cluster service externalips config", userAgent, d.Timeout(schema.TimeoutUpdate))
+		}
+		if err := lockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+		log.Printf("[INFO] GKE cluster %s service externalips config  has been updated", d.Id())
+	}
+
 	if d.HasChange("mesh_certificates") {
 		c := d.Get("mesh_certificates")
 		req := &container.UpdateClusterRequest{
@@ -3024,6 +3152,27 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			return err
 		}
 		log.Printf("[INFO] GKE cluster %s resource usage export config has been updated", d.Id())
+	}
+
+	if d.HasChange("node_pool_defaults") && d.HasChange("node_pool_defaults.0.node_config_defaults.0.gcfs_config") {
+		if v, ok := d.GetOk("node_pool_defaults.0.node_config_defaults.0.gcfs_config"); ok {
+			gcfsConfig := v.([]interface{})[0].(map[string]interface{})
+			req := &container.UpdateClusterRequest{
+				Update: &container.ClusterUpdate{
+					DesiredGcfsConfig: &container.GcfsConfig{
+						Enabled: gcfsConfig["enabled"].(bool),
+					},
+				},
+			}
+
+			updateF := updateFunc(req, "updating GKE cluster desired gcfs config.")
+			// Call update serially.
+			if err := lockedCall(lockKey, updateF); err != nil {
+				return err
+			}
+
+			log.Printf("[INFO] GKE cluster %s default gcfs config has been updated", d.Id())
+		}
 	}
 
 	if d.HasChange("node_pool_auto_config.0.network_tags.0.tags") {
@@ -3712,6 +3861,18 @@ func expandVerticalPodAutoscaling(configured interface{}) *container.VerticalPod
 	}
 }
 
+func expandServiceExternalIpsConfig(configured interface{}) *container.ServiceExternalIPsConfig {
+	l := configured.([]interface{})
+	if len(l) == 0 {
+		return nil
+	}
+	config := l[0].(map[string]interface{})
+	return &container.ServiceExternalIPsConfig{
+		Enabled:         config["enabled"].(bool),
+		ForceSendFields: []string{"Enabled"},
+	}
+}
+
 func expandMeshCertificates(configured interface{}) *container.MeshCertificates {
 	l := configured.([]interface{})
 	if len(l) == 0 {
@@ -3820,6 +3981,20 @@ func expandDefaultMaxPodsConstraint(v interface{}) *container.MaxPodsConstraint 
 		MaxPodsPerNode: int64(v.(int)),
 	}
 }
+
+func expandCostManagementConfig(configured interface{}) *container.CostManagementConfig {
+	l := configured.([]interface{})
+	if len(l) == 0 {
+		return nil
+	}
+
+	config := l[0].(map[string]interface{})
+	return &container.CostManagementConfig{
+		Enabled:         config["enabled"].(bool),
+		ForceSendFields: []string{"Enabled"},
+	}
+}
+
 func expandResourceUsageExportConfig(configured interface{}) *container.ResourceUsageExportConfig {
 	l := configured.([]interface{})
 	if len(l) == 0 || l[0] == nil {
@@ -3911,6 +4086,30 @@ func expandContainerClusterAuthenticatorGroupsConfig(configured interface{}) *co
 	return &container.AuthenticatorGroupsConfig{
 		SecurityGroup: config["security_group"].(string),
 	}
+}
+
+func expandNodePoolDefaults(configured interface{}) *container.NodePoolDefaults {
+	l, ok := configured.([]interface{})
+	if !ok || l == nil || len(l) == 0 || l[0] == nil {
+		return nil
+	}
+	nodePoolDefaults := &container.NodePoolDefaults{}
+	config := l[0].(map[string]interface{})
+	if v, ok := config["node_config_defaults"]; ok && len(v.([]interface{})) > 0 {
+		nodePoolDefaults.NodeConfigDefaults = expandNodeConfigDefaults(v)
+	}
+	return nodePoolDefaults
+}
+
+func flattenNodePoolDefaults(c *container.NodePoolDefaults) []map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	result := make(map[string]interface{})
+	if c.NodeConfigDefaults != nil && c.NodeConfigDefaults.GcfsConfig != nil {
+		result["node_config_defaults"] = flattenNodeConfigDefaults(c.NodeConfigDefaults)
+	}
+	return []map[string]interface{}{result}
 }
 
 func expandNodePoolAutoConfig(configured interface{}) *container.NodePoolAutoConfig {
@@ -4418,6 +4617,17 @@ func flattenResourceUsageExportConfig(c *container.ResourceUsageExportConfig) []
 	}
 }
 
+func flattenServiceExternalIpsConfig(c *container.ServiceExternalIPsConfig) []map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return []map[string]interface{}{
+		{
+			"enabled": c.Enabled,
+		},
+	}
+}
+
 func flattenMeshCertificates(c *container.MeshCertificates) []map[string]interface{} {
 	if c == nil {
 		return nil
@@ -4425,6 +4635,17 @@ func flattenMeshCertificates(c *container.MeshCertificates) []map[string]interfa
 	return []map[string]interface{}{
 		{
 			"enable_certificates": c.EnableCertificates,
+		},
+	}
+}
+
+func flattenManagementConfig(c *container.CostManagementConfig) []map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+	return []map[string]interface{}{
+		{
+			"enabled": c.Enabled,
 		},
 	}
 }

@@ -18,6 +18,26 @@ var defaultOauthScopes = []string{
 	"https://www.googleapis.com/auth/trace.append",
 }
 
+func schemaGcfsConfig(forceNew bool) *schema.Schema {
+	return &schema.Schema{
+		Type:        schema.TypeList,
+		Optional:    true,
+		MaxItems:    1,
+		Description: `GCFS configuration for this node.`,
+		ForceNew:    forceNew,
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"enabled": {
+					Type:        schema.TypeBool,
+					Required:    true,
+					ForceNew:    forceNew,
+					Description: `Whether or not GCFS is enabled`,
+				},
+			},
+		},
+	}
+}
+
 func schemaNodeConfig() *schema.Schema {
 	return &schema.Schema{
 		Type:        schema.TypeList,
@@ -126,23 +146,7 @@ func schemaNodeConfig() *schema.Schema {
 					},
 				},
 
-				"gcfs_config": {
-					Type:        schema.TypeList,
-					Optional:    true,
-					MaxItems:    1,
-					Description: `GCFS configuration for this node.`,
-					ForceNew:    true,
-					Elem: &schema.Resource{
-						Schema: map[string]*schema.Schema{
-							"enabled": {
-								Type:        schema.TypeBool,
-								Required:    true,
-								ForceNew:    true,
-								Description: `Whether or not GCFS is enabled`,
-							},
-						},
-					},
-				},
+				"gcfs_config": schemaGcfsConfig(true),
 
 				"gvnic": {
 					Type:        schema.TypeList,
@@ -436,6 +440,23 @@ func schemaNodeConfig() *schema.Schema {
 	}
 }
 
+func expandNodeConfigDefaults(configured interface{}) *container.NodeConfigDefaults {
+	configs := configured.([]interface{})
+	if len(configs) == 0 || configs[0] == nil {
+		return nil
+	}
+	config := configs[0].(map[string]interface{})
+
+	nodeConfigDefaults := &container.NodeConfigDefaults{}
+	if v, ok := config["gcfs_config"]; ok && len(v.([]interface{})) > 0 {
+		gcfsConfig := v.([]interface{})[0].(map[string]interface{})
+		nodeConfigDefaults.GcfsConfig = &container.GcfsConfig{
+			Enabled: gcfsConfig["enabled"].(bool),
+		}
+	}
+	return nodeConfigDefaults
+}
+
 func expandNodeConfig(v interface{}) *container.NodeConfig {
 	nodeConfigs := v.([]interface{})
 	nc := &container.NodeConfig{
@@ -690,6 +711,19 @@ func expandLinuxNodeConfig(v interface{}) *container.LinuxNodeConfig {
 	return &container.LinuxNodeConfig{
 		Sysctls: m,
 	}
+}
+
+func flattenNodeConfigDefaults(c *container.NodeConfigDefaults) []map[string]interface{} {
+	result := make([]map[string]interface{}, 0, 1)
+
+	if c == nil {
+		return result
+	}
+
+	result = append(result, map[string]interface{}{
+		"gcfs_config": flattenGcfsConfig(c.GcfsConfig),
+	})
+	return result
 }
 
 func flattenNodeConfig(c *container.NodeConfig) []map[string]interface{} {

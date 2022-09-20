@@ -39,6 +39,15 @@ type ComputeTargetSSLProxySpec struct {
 	/* A reference to the ComputeBackendService resource. */
 	BackendServiceRef v1alpha1.ResourceRef `json:"backendServiceRef"`
 
+	/* A reference to the CertificateMap resource uri that identifies a
+	certificate map associated with the given target proxy. This
+	field can only be set for global target proxies. Accepted format is
+	'//certificatemanager.googleapis.com/projects/{project}/locations/{location}/certificateMaps/{resourceName}'.
+
+	Only `external` field is supported to configure the reference. */
+	// +optional
+	CertificateMapRef *v1alpha1.ResourceRef `json:"certificateMapRef,omitempty"`
+
 	/* Immutable. An optional description of this resource. */
 	// +optional
 	Description *string `json:"description,omitempty"`
@@ -53,7 +62,8 @@ type ComputeTargetSSLProxySpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/*  */
-	SslCertificates []v1alpha1.ResourceRef `json:"sslCertificates"`
+	// +optional
+	SslCertificates []v1alpha1.ResourceRef `json:"sslCertificates,omitempty"`
 
 	/* A reference to the ComputeSSLPolicy resource that will be
 	associated with the TargetSslProxy resource. If not set, the

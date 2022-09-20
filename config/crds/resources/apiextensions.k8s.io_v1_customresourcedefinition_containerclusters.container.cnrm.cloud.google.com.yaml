@@ -353,6 +353,18 @@ spec:
                 required:
                 - enabled
                 type: object
+              costManagementConfig:
+                description: Cost management configuration for the cluster.
+                properties:
+                  enabled:
+                    description: Whether to enable GKE cost allocation. When you enable
+                      GKE cost allocation, the cluster name and namespace of your
+                      GKE workloads appear in the labels field of the billing export
+                      to BigQuery. Defaults to false.
+                    type: boolean
+                required:
+                - enabled
+                type: object
               databaseEncryption:
                 description: 'Application-layer Secrets Encryption settings. The object
                   format is {state = string, key_name = string}. Valid values of state
@@ -1095,6 +1107,23 @@ spec:
                         type: array
                     type: object
                 type: object
+              nodePoolDefaults:
+                description: The default nodel pool settings for the entire cluster.
+                properties:
+                  nodeConfigDefaults:
+                    description: Subset of NodeConfig message that has defaults.
+                    properties:
+                      gcfsConfig:
+                        description: GCFS configuration for this node.
+                        properties:
+                          enabled:
+                            description: Whether or not GCFS is enabled.
+                            type: boolean
+                        required:
+                        - enabled
+                        type: object
+                    type: object
+                type: object
               nodeVersion:
                 type: string
               notificationConfig:
@@ -1257,6 +1286,17 @@ spec:
                     type: boolean
                 required:
                 - bigqueryDestination
+                type: object
+              serviceExternalIpsConfig:
+                description: If set, and enabled=true, services with external ips
+                  field will not be blocked.
+                properties:
+                  enabled:
+                    description: When enabled, services with exterenal ips specified
+                      will be allowed.
+                    type: boolean
+                required:
+                - enabled
                 type: object
               subnetworkRef:
                 oneOf:

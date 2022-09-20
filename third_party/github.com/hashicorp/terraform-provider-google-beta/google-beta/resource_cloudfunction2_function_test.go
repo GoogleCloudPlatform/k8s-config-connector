@@ -16,7 +16,7 @@ func TestAccCloudFunctions2Function_update(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCloudfunctions2functionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -53,21 +53,18 @@ func TestAccCloudFunctions2Function_update(t *testing.T) {
 func testAccCloudfunctions2function_basic(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_storage_bucket" "bucket" {
-  provider = google-beta
   name     = "tf-test-cloudfunctions2-function-bucket%{random_suffix}"
   location = "US"
   uniform_bucket_level_access = true
 }
  
 resource "google_storage_bucket_object" "object" {
-  provider = google-beta
   name   = "function-source.zip"
   bucket = google_storage_bucket.bucket.name
   source = "%{zip_path}"
 }
  
 resource "google_cloudfunctions2_function" "terraform-test2" {
-  provider = google-beta
   name = "tf-test-test-function%{random_suffix}"
   location = "us-central1"
   description = "a new function"
@@ -95,21 +92,18 @@ resource "google_cloudfunctions2_function" "terraform-test2" {
 func testAccCloudFunctions2Function_test_update(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_storage_bucket" "bucket" {
-  provider = google-beta
   name     = "tf-test-cloudfunctions2-function-bucket%{random_suffix}"
   location = "US"
   uniform_bucket_level_access = true
 }
  
 resource "google_storage_bucket_object" "object" {
-  provider = google-beta
   name   = "function-source.zip"
   bucket = google_storage_bucket.bucket.name
   source = "%{zip_path}"
 }
  
 resource "google_cloudfunctions2_function" "terraform-test2" {
-  provider = google-beta
   name = "tf-test-test-function%{random_suffix}"
   location = "us-central1"
   description = "an updated function"
@@ -137,21 +131,18 @@ resource "google_cloudfunctions2_function" "terraform-test2" {
 func testAccCloudFunctions2Function_test_redeploy(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_storage_bucket" "bucket" {
-  provider = google-beta
   name     = "tf-test-cloudfunctions2-function-bucket%{random_suffix}"
   location = "US"
   uniform_bucket_level_access = true
 }
  
 resource "google_storage_bucket_object" "object" {
-  provider = google-beta
   name   = "function-source.zip"
   bucket = google_storage_bucket.bucket.name
   source = "%{zip_path}"
 }
  
 resource "google_cloudfunctions2_function" "terraform-test2" {
-  provider = google-beta
   name = "tf-test-test-function%{random_suffix}"
   location = "us-west1"
   description = "function test"
@@ -194,7 +185,7 @@ func TestAccCloudFunctions2Function_fullUpdate(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCloudfunctions2functionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -217,21 +208,18 @@ func testAccCloudfunctions2function_cloudfunctions2BasicAuditlogsExample_update(
 # https://cloud.google.com/eventarc/docs/path-patterns
 
 resource "google_storage_bucket" "source-bucket" {
-  provider = google-beta
   name     = "tf-test-gcf-source-bucket%{random_suffix}"
   location = "US"
   uniform_bucket_level_access = true
 }
  
 resource "google_storage_bucket_object" "object" {
-  provider = google-beta
   name   = "function-source.zip"
   bucket = google_storage_bucket.source-bucket.name
   source = "%{zip_path}"  # Add path to the zipped function source code
 }
 
 resource "google_service_account" "account" {
-  provider     = google-beta
   account_id   = "tf-test-gcf-sa%{random_suffix}"
   display_name = "Test Service Account - used for both the cloud function and eventarc trigger in the test"
 }
@@ -240,7 +228,6 @@ resource "google_service_account" "account" {
 # Here we use Audit Logs to monitor the bucket so path patterns can be used in the example of
 # google_cloudfunctions2_function below (Audit Log events have path pattern support)
 resource "google_storage_bucket" "audit-log-bucket" {
-  provider = google-beta
   name     = "tf-test-gcf-auditlog-bucket%{random_suffix}"
   location = "us-central1"  # The trigger must be in the same location as the bucket
   uniform_bucket_level_access = true
@@ -248,14 +235,12 @@ resource "google_storage_bucket" "audit-log-bucket" {
 
 # Permissions on the service account used by the function and Eventarc trigger
 resource "google_project_iam_member" "invoking" {
-  provider = google-beta
   project = "%{project}"
   role    = "roles/run.invoker"
   member  = "serviceAccount:${google_service_account.account.email}"
 }
 
 resource "google_project_iam_member" "event-receiving" {
-  provider = google-beta
   project = "%{project}"
   role    = "roles/eventarc.eventReceiver"
   member  = "serviceAccount:${google_service_account.account.email}"
@@ -263,7 +248,6 @@ resource "google_project_iam_member" "event-receiving" {
 }
 
 resource "google_project_iam_member" "artifactregistry-reader" {
-  provider = google-beta
   project = "%{project}"
   role     = "roles/artifactregistry.reader"
   member   = "serviceAccount:${google_service_account.account.email}"
@@ -271,7 +255,6 @@ resource "google_project_iam_member" "artifactregistry-reader" {
 }
 
 resource "google_cloudfunctions2_function" "function" {
-  provider = google-beta
   depends_on = [
     google_project_iam_member.event-receiving,
     google_project_iam_member.artifactregistry-reader,

@@ -80,6 +80,10 @@ backendServiceRef:
   external: string
   name: string
   namespace: string
+certificateMapRef:
+  external: string
+  name: string
+  namespace: string
 description: string
 proxyHeader: string
 resourceID: string
@@ -142,6 +146,51 @@ sslPolicyRef:
     </tr>
     <tr>
         <td>
+            <p><code>certificateMapRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A reference to the CertificateMap resource uri that identifies a
+certificate map associated with the given target proxy. This
+field can only be set for global target proxies. Accepted format is
+'//certificatemanager.googleapis.com/projects/{project}/locations/{location}/certificateMaps/{resourceName}'.
+
+Only `external` field is supported to configure the reference.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>certificateMapRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `name` field of a `CertificateManagerCertificateMap` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>certificateMapRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>certificateMapRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>description</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -174,7 +223,7 @@ the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].{% endv
     <tr>
         <td>
             <p><code>sslCertificates</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
@@ -184,7 +233,7 @@ the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].{% endv
     <tr>
         <td>
             <p><code>sslCertificates[]</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>

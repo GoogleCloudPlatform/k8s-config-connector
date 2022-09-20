@@ -140,6 +140,8 @@ clusterTelemetry:
   type: string
 confidentialNodes:
   enabled: boolean
+costManagementConfig:
+  enabled: boolean
 databaseEncryption:
   keyName: string
   state: string
@@ -290,6 +292,10 @@ nodePoolAutoConfig:
   networkTags:
     tags:
     - string
+nodePoolDefaults:
+  nodeConfigDefaults:
+    gcfsConfig:
+      enabled: boolean
 nodeVersion: string
 notificationConfig:
   pubsub:
@@ -318,6 +324,8 @@ resourceUsageExportConfig:
     datasetId: string
   enableNetworkEgressMetering: boolean
   enableResourceConsumptionMetering: boolean
+serviceExternalIpsConfig:
+  enabled: boolean
 subnetworkRef:
   external: string
   name: string
@@ -895,6 +903,26 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Immutable. Whether Confidential Nodes feature is enabled for all nodes in this cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>costManagementConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Cost management configuration for the cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>costManagementConfig.enabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Whether to enable GKE cost allocation. When you enable GKE cost allocation, the cluster name and namespace of your GKE workloads appear in the labels field of the billing export to BigQuery. Defaults to false.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2411,6 +2439,46 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>nodePoolDefaults</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The default nodel pool settings for the entire cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodePoolDefaults.nodeConfigDefaults</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Subset of NodeConfig message that has defaults.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodePoolDefaults.nodeConfigDefaults.gcfsConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}GCFS configuration for this node.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodePoolDefaults.nodeConfigDefaults.gcfsConfig.enabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Whether or not GCFS is enabled.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>nodeVersion</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -2691,6 +2759,26 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Whether to enable resource consumption metering on this cluster. When enabled, a table will be created in the resource export BigQuery dataset to store resource consumption data. The resulting table can be joined with the resource usage table or with BigQuery billing export. Defaults to true.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>serviceExternalIpsConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}If set, and enabled=true, services with external ips field will not be blocked.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>serviceExternalIpsConfig.enabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}When enabled, services with exterenal ips specified will be allowed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -86,6 +86,40 @@ spec:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
+              certificateMapRef:
+                description: |-
+                  A reference to the CertificateMap resource uri that identifies a
+                  certificate map associated with the given target proxy. This
+                  field can only be set for global target proxies. Accepted format is
+                  '//certificatemanager.googleapis.com/projects/{project}/locations/{location}/certificateMaps/{resourceName}'.
+
+                  Only `external` field is supported to configure the reference.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: The `name` field of a `CertificateManagerCertificateMap`
+                      resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
               description:
                 description: Immutable. An optional description of this resource.
                 type: string
@@ -166,7 +200,6 @@ spec:
                 type: object
             required:
             - backendServiceRef
-            - sslCertificates
             type: object
           status:
             properties:

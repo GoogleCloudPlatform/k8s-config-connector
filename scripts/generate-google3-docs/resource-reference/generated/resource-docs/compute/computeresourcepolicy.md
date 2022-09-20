@@ -103,6 +103,7 @@ snapshotSchedulePolicy:
       - day: string
         startTime: string
   snapshotProperties:
+    chainName: string
     guestFlush: boolean
     labels:
       string: string
@@ -449,6 +450,18 @@ It must be in format "HH:MM", where HH : [00-23] and MM : [00-00] GMT.{% endverb
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Immutable. Properties with which the snapshots are created, such as labels.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>snapshotSchedulePolicy.snapshotProperties.chainName</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Creates the new snapshot in the snapshot chain labeled with the 
+specified name. The chain name must be 1-63 characters long and comply 
+with RFC1035.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -90,7 +90,7 @@ type LoggingLogSinkSpec struct {
 	// +optional
 	Disabled *bool `json:"disabled,omitempty"`
 
-	/* Log entries that match any of the exclusion filters will not be exported. If a log entry is matched by both filter and one of exclusion_filters it will not be exported. */
+	/* Log entries that match any of the exclusion filters will not be exported. If a log entry is matched by both filter and one of exclusion's filters, it will not be exported. */
 	// +optional
 	Exclusions []LogsinkExclusions `json:"exclusions,omitempty"`
 

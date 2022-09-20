@@ -493,12 +493,16 @@ resource "google_cloud_run_service" "default" {
         image = "us-docker.pkg.dev/cloudrun/container/hello"
       }
     }
+    metadata {
+      annotations = {
+        "run.googleapis.com/vpc-access-connector" = google_vpc_access_connector.default.name
+        "run.googleapis.com/vpc-access-egress"    = "all-traffic"
+      }
+    }
   }
 
   metadata {
     annotations = {
-      "run.googleapis.com/vpc-access-connector" = google_vpc_access_connector.default.name
-      "run.googleapis.com/vpc-access-egress"    = "all-traffic"
       "run.googleapis.com/ingress"              = "all"
     }
   }
@@ -516,7 +520,7 @@ func TestAccCloudRunService_cloudRunServiceScheduledExample(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCloudRunServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

@@ -968,6 +968,7 @@ google.golang.org/api/compute/v1
 google.golang.org/api/container/v1beta1
 google.golang.org/api/dataflow/v1b3
 google.golang.org/api/dataproc/v1beta2
+google.golang.org/api/datastream/v1
 google.golang.org/api/dns/v1
 google.golang.org/api/googleapi
 google.golang.org/api/googleapi/transport

@@ -78,6 +78,7 @@
 ```yaml
 description: string
 enabled: boolean
+forceDelete: boolean
 labels:
   string: string
 resourceID: string
@@ -128,6 +129,16 @@ type: string
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Whether notifications are forwarded to the described channel. This makes it possible to disable delivery of notifications to a particular channel without removing the channel from all alerting policies that reference the channel. This is a more convenient approach when the change is temporary and you want to receive notifications from the same set of alerting policies on the channel at some point in the future.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>forceDelete</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

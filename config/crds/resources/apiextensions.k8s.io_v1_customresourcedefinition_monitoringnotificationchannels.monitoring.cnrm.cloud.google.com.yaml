@@ -73,6 +73,8 @@ spec:
                   from the same set of alerting policies on the channel at some point
                   in the future.
                 type: boolean
+              forceDelete:
+                type: boolean
               labels:
                 additionalProperties:
                   type: string

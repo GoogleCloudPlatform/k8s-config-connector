@@ -96,6 +96,10 @@ type MonitoringNotificationChannelSpec struct {
 
 	/*  */
 	// +optional
+	ForceDelete *bool `json:"forceDelete,omitempty"`
+
+	/*  */
+	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
 
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */

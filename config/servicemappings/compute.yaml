@@ -2256,6 +2256,19 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: certificate_map
+          description: |-
+            A reference to the CertificateMap resource uri that identifies a
+            certificate map associated with the given target proxy. This
+            field can only be set for global target proxies. Accepted format is
+            '//certificatemanager.googleapis.com/projects/{project}/locations/{location}/certificateMaps/{resourceName}'.
+
+            Only `external` field is supported to configure the reference.
+          gvk:
+            kind: CertificateManagerCertificateMap
+            version: v1beta1
+            group: certificatemanager.cnrm.cloud.google.com
+          key: certificateMapRef
       containers:
         - type: project
           tfField: project

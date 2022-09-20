@@ -197,6 +197,7 @@ ignoredFiles:
 includeBuildLogs: string
 includedFiles:
 - string
+location: string
 pubsubConfig:
   serviceAccountRef:
     external: string
@@ -1450,7 +1451,7 @@ When using Pub/Sub, Webhook or Manual set the file name using git_file_source in
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The type of the repo, since it may not be explicit from the repo field (e.g from a URL). 
-Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB"].{% endverbatim %}</p>
+Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1662,6 +1663,17 @@ a build.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>location</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. The [Cloud Build location](https://cloud.google.com/build/docs/locations) for the trigger.
+If not specified, "global" is used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>pubsubConfig</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1855,7 +1867,7 @@ One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The type of the repo, since it may not be explicit from the repo field (e.g from a URL).
-Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB"].{% endverbatim %}</p>
+Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

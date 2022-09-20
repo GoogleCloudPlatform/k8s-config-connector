@@ -522,7 +522,7 @@ resource "google_project_service" "workflows" {
 # Create a service account for Eventarc trigger and Workflows
 resource "google_service_account" "eventarc_workflows_service_account" {
   provider = google-beta
-  account_id   = "eventarc-workflows-sa"
+  account_id   = "tf-test-eventarc-sa%{random_suffix}"
   display_name = "Eventarc Workflows Service Account"
 }
 
@@ -1400,6 +1400,7 @@ func TestAccCGCSnippet_storageObjectLifecycleSettingExample(t *testing.T) {
 func testAccCGCSnippet_storageObjectLifecycleSettingExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_storage_bucket" "auto_expire" {
+  provider      = google-beta
   name          = "tf-test-example-bucket%{random_suffix}"
   location      = "US"
   uniform_bucket_level_access = true

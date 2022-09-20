@@ -354,7 +354,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Log entries that match any of the exclusion filters will not be exported. If a log entry is matched by both filter and one of exclusion_filters it will not be exported.{% endverbatim %}</p>
+            <p>{% verbatim %}Log entries that match any of the exclusion filters will not be exported. If a log entry is matched by both filter and one of exclusion's filters, it will not be exported.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

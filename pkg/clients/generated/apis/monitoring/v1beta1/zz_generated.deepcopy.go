@@ -2025,6 +2025,11 @@ func (in *MonitoringNotificationChannelSpec) DeepCopyInto(out *MonitoringNotific
 		*out = new(bool)
 		**out = **in
 	}
+	if in.ForceDelete != nil {
+		in, out := &in.ForceDelete, &out.ForceDelete
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Labels != nil {
 		in, out := &in.Labels, &out.Labels
 		*out = make(map[string]string, len(*in))

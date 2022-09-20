@@ -1254,6 +1254,19 @@ func TestAccComputeInstance_private_image_family(t *testing.T) {
 	})
 }
 func TestAccComputeInstance_networkPerformanceConfig(t *testing.T) {
+	// This test /should/ be passing but the reason it's failing
+	// is very non-obvious and requires further investigation
+	//
+	// It's been failing in teamcity for > 90d so there is no
+	// starting point or obvious reason to potentially pivot off
+	//
+	// For whoever decides to investigate this. It looks like
+	// at the time the failure is due to a failure to start
+	// the compute instance after a config update. This results
+	// in it /unable to find the resource/ as the start operation
+	// never completes successful. I suspect a bad configuration
+	// but am unsure.
+	skipIfVcr(t)
 	t.Parallel()
 
 	var instance compute.Instance
@@ -4733,6 +4746,7 @@ resource "google_compute_instance" "foobar" {
   advanced_machine_features {
 	threads_per_core = 1
 	enable_nested_virtualization = true
+	visible_core_count = 1
   }
   allow_stopping_for_update = true
 }

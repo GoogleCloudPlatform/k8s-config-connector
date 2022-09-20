@@ -58,6 +58,12 @@ func resourceDNSResponsePolicyRule() *schema.Resource {
 				ForceNew:    true,
 				Description: `An identifier for this rule. Must be unique with the ResponsePolicy.`,
 			},
+			"behavior": {
+				Type:          schema.TypeString,
+				Optional:      true,
+				Description:   `Answer this query with a behavior rather than DNS data. Acceptable values are 'behaviorUnspecified', and 'bypassResponsePolicy'`,
+				ConflictsWith: []string{"local_data"},
+			},
 			"local_data": {
 				Type:     schema.TypeList,
 				Optional: true,
@@ -102,6 +108,7 @@ resolvers.`,
 						},
 					},
 				},
+				ConflictsWith: []string{"behavior"},
 			},
 			"project": {
 				Type:     schema.TypeString,
@@ -139,6 +146,12 @@ func resourceDNSResponsePolicyRuleCreate(d *schema.ResourceData, meta interface{
 		return err
 	} else if v, ok := d.GetOkExists("local_data"); !isEmptyValue(reflect.ValueOf(localDataProp)) && (ok || !reflect.DeepEqual(v, localDataProp)) {
 		obj["localData"] = localDataProp
+	}
+	behaviorProp, err := expandDNSResponsePolicyRuleBehavior(d.Get("behavior"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("behavior"); !isEmptyValue(reflect.ValueOf(behaviorProp)) && (ok || !reflect.DeepEqual(v, behaviorProp)) {
+		obj["behavior"] = behaviorProp
 	}
 
 	url, err := replaceVars(d, config, "{{DNSBasePath}}projects/{{project}}/responsePolicies/{{response_policy}}/rules")
@@ -220,6 +233,9 @@ func resourceDNSResponsePolicyRuleRead(d *schema.ResourceData, meta interface{})
 	if err := d.Set("local_data", flattenDNSResponsePolicyRuleLocalData(res["localData"], d, config)); err != nil {
 		return fmt.Errorf("Error reading ResponsePolicyRule: %s", err)
 	}
+	if err := d.Set("behavior", flattenDNSResponsePolicyRuleBehavior(res["behavior"], d, config)); err != nil {
+		return fmt.Errorf("Error reading ResponsePolicyRule: %s", err)
+	}
 
 	return nil
 }
@@ -251,6 +267,12 @@ func resourceDNSResponsePolicyRuleUpdate(d *schema.ResourceData, meta interface{
 		return err
 	} else if v, ok := d.GetOkExists("local_data"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, localDataProp)) {
 		obj["localData"] = localDataProp
+	}
+	behaviorProp, err := expandDNSResponsePolicyRuleBehavior(d.Get("behavior"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("behavior"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, behaviorProp)) {
+		obj["behavior"] = behaviorProp
 	}
 
 	url, err := replaceVars(d, config, "{{DNSBasePath}}projects/{{project}}/responsePolicies/{{response_policy}}/rules/{{rule_name}}")
@@ -404,6 +426,10 @@ func flattenDNSResponsePolicyRuleLocalDataLocalDatasRrdatas(v interface{}, d *sc
 	return v
 }
 
+func flattenDNSResponsePolicyRuleBehavior(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
 func expandDNSResponsePolicyRuleRuleName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
@@ -487,5 +513,9 @@ func expandDNSResponsePolicyRuleLocalDataLocalDatasTtl(v interface{}, d Terrafor
 }
 
 func expandDNSResponsePolicyRuleLocalDataLocalDatasRrdatas(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandDNSResponsePolicyRuleBehavior(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }

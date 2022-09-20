@@ -336,7 +336,7 @@ If this parameter is 0, a default value of 5 is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. If 'true', Pub/Sub provides the following guarantees for the delivery
+            <p>{% verbatim %}If 'true', Pub/Sub provides the following guarantees for the delivery
 of a message with a given value of messageId on this Subscriptions':
 
 - The message sent to a subscriber is guaranteed not to be resent before the message's acknowledgement deadline expires.

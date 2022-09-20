@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"time"
 
+	"cloud.google.com/go/bigtable"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
@@ -17,6 +19,11 @@ func resourceBigtableTable() *schema.Resource {
 
 		Importer: &schema.ResourceImporter{
 			State: resourceBigtableTableImport,
+		},
+
+		// Set a longer timeout for table creation as adding column families can be slow.
+		Timeouts: &schema.ResourceTimeout{
+			Create: schema.DefaultTimeout(45 * time.Minute),
 		},
 
 		// ----------------------------------------------------------------------
@@ -99,24 +106,16 @@ func resourceBigtableTableCreate(d *schema.ResourceData, meta interface{}) error
 
 	defer c.Close()
 
-	name := d.Get("name").(string)
+	tableId := d.Get("name").(string)
+	tblConf := bigtable.TableConf{TableID: tableId}
+
+	// Set the split keys if given.
 	if v, ok := d.GetOk("split_keys"); ok {
-		splitKeys := convertStringArr(v.([]interface{}))
-		// This method may return before the table's creation is complete - we may need to wait until
-		// it exists in the future.
-		err = c.CreatePresplitTable(ctx, name, splitKeys)
-		if err != nil {
-			return fmt.Errorf("Error creating presplit table. %s", err)
-		}
-	} else {
-		// This method may return before the table's creation is complete - we may need to wait until
-		// it exists in the future.
-		err = c.CreateTable(ctx, name)
-		if err != nil {
-			return fmt.Errorf("Error creating table. %s", err)
-		}
+		tblConf.SplitKeys = convertStringArr(v.([]interface{}))
 	}
 
+	// Set the column families if given.
+	columnFamilies := make(map[string]bigtable.GCPolicy)
 	if d.Get("column_family.#").(int) > 0 {
 		columns := d.Get("column_family").(*schema.Set).List()
 
@@ -124,11 +123,21 @@ func resourceBigtableTableCreate(d *schema.ResourceData, meta interface{}) error
 			column := co.(map[string]interface{})
 
 			if v, ok := column["family"]; ok {
-				if err := c.CreateColumnFamily(ctx, name, v.(string)); err != nil {
-					return fmt.Errorf("Error creating column family %s. %s", v, err)
-				}
+				// By default, there is no GC rules.
+				columnFamilies[v.(string)] = bigtable.NoGcPolicy()
 			}
 		}
+	}
+	tblConf.Families = columnFamilies
+
+	// This method may return before the table's creation is complete - we may need to wait until
+	// it exists in the future.
+	// Set a longer timeout as creating table and adding column families can be pretty slow.
+	ctxWithTimeout, cancel := context.WithTimeout(ctx, 20*time.Minute)
+	defer cancel() // Always call cancel.
+	err = c.CreateTableFromConf(ctxWithTimeout, &tblConf)
+	if err != nil {
+		return fmt.Errorf("Error creating table. %s", err)
 	}
 
 	id, err := replaceVars(d, config, "projects/{{project}}/instances/{{instance_name}}/tables/{{name}}")
