@@ -23,6 +23,9 @@ import (
 // timing out). Note that DCL only supports kind-specific timeouts (i.e. a kind
 // uses the same timeout for all DCL operations).
 var kindToTimeout = map[string]time.Duration{
+	// ApigeeOrganization operations could take a long time to complete. Setting
+	// it to 80 minutes to match the DCL configuration.
+	"ApigeeOrganization": 80 * time.Minute,
 	// DataprocCluster creations can take 35+ minutes because the long-running
 	// operation kicked off by DCL on GCP can take that long to time out and
 	// report errors if there are any issues (e.g. b/187470070#comment6). Let
