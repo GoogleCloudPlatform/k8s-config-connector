@@ -12,7 +12,7 @@ insertText: |
     messageRetentionDuration: \${5:86400s}
     retainAckedMessages: \${6:false}
     topicRef:
-      name: \${7:pubsubsubscription-dep}
+      name: \${7:pubsubsubscription-dep1-basic}
     deadLetterPolicy:
       deadLetterTopicRef:
-        name: \${8:pubsubsubscription-dep2}
+        name: \${8:pubsubsubscription-dep2-basic}
