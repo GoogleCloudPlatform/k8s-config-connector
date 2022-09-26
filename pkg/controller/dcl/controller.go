@@ -304,26 +304,13 @@ func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue 
 	return r.updateSpecAndStatusWithLiveState(ctx, newLite, resource, secretVersions)
 }
 
-// TODO(b/239067853): remove function after 100% of DCL resources have been approved for immediate reconcilation
-func supportsImmediateReconciliation(resourceKind string) bool {
-	switch resourceKind {
-	case "CloudFunctionsFunction",
-		"EventarcTrigger",
-		"MonitoringUptimeCheckConfig",
-		"NetworkServicesGRPCRoute",
-		"NetworkServicesTLSRoute":
-		return true
-	}
-	return false
-}
-
 func (r *Reconciler) supportsImmediateReconciliations() bool {
 	return r.immediateReconcileRequests != nil
 }
 
 func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.Resource, originErr error) (requeue bool, err error) {
 	refGVK, refNN, ok := lifecyclehandler.CausedByUnreadyOrNonexistentResourceRefs(originErr)
-	if !ok || !supportsImmediateReconciliation(resource.Kind) || !r.supportsImmediateReconciliations() {
+	if !ok || !r.supportsImmediateReconciliations() {
 		// Requeue resource immediately for reconciliation
 		// with exponential backoff applied
 		return true, r.HandleUnresolvableDeps(ctx, resource, originErr)

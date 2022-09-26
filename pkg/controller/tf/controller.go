@@ -301,26 +301,13 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 	return false, r.handleUpToDate(ctx, krmResource, newState, secretVersions)
 }
 
-// TODO(b/238913094): remove function after 100% of TF resources have been approved for immediate reconcilation
-func supportsImmediateReconciliation(resourceKind string) bool {
-	switch resourceKind {
-	case "ComputeTargetPool",
-		"ComputeNetworkEndpointGroup",
-		"ComputeDisk",
-		"ServiceDirectoryEndpoint",
-		"ServiceDirectoryService":
-		return true
-	}
-	return false
-}
-
 func (r *Reconciler) supportsImmediateReconciliations() bool {
 	return r.immediateReconcileRequests != nil
 }
 
 func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.Resource, originErr error) (requeue bool, err error) {
 	refGVK, refNN, ok := lifecyclehandler.CausedByUnreadyOrNonexistentResourceRefs(originErr)
-	if !ok || !supportsImmediateReconciliation(resource.Kind) || !r.supportsImmediateReconciliations() {
+	if !ok || !r.supportsImmediateReconciliations() {
 		// Requeue resource for immediate reconciliation
 		// with exponential backoff applied
 		return true, r.HandleUnresolvableDeps(ctx, resource, originErr)
