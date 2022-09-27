@@ -125,6 +125,7 @@ func TestAcquire(t *testing.T) {
 		// Note: ensuring that all fields are accounted for and not changed
 		// when applying the same YAMLs is handled separately by the NoChange
 		// test.
+		// TODO(b/239876828): Add "DataflowJob" back to acquisition tests.
 		kinds := map[string]bool{
 			// basic resource with no dependencies
 			"PubSubTopic": true,
@@ -132,8 +133,6 @@ func TestAcquire(t *testing.T) {
 			"PubSubSubscription": true,
 			// resource with no labels support
 			"BigQueryTable": true,
-			// resource acquirable by name only if in an active state
-			"DataflowJob": true,
 			// resource acquirable by displayName and parent org/folder ID if
 			// server-generated ID (i.e. folder ID) is not specified
 			"Folder": true,
