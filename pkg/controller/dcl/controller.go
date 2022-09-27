@@ -311,15 +311,13 @@ func (r *Reconciler) supportsImmediateReconciliations() bool {
 func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.Resource, originErr error) (requeue bool, err error) {
 	refGVK, refNN, ok := lifecyclehandler.CausedByUnreadyOrNonexistentResourceRefs(originErr)
 	if !ok || !r.supportsImmediateReconciliations() {
-		// Requeue resource immediately for reconciliation
-		// with exponential backoff applied
+		// Requeue resource for reconciliation with exponential backoff applied
 		return true, r.HandleUnresolvableDeps(ctx, resource, originErr)
 	}
 	// Don't start a watch on the reference if there
 	// are too many ongoing watches already
 	if !r.resourceWatcherRoutines.TryAcquire(1) {
-		// Requeue resource for immediate reconciliation
-		// with exponential backoff applied
+		// Requeue resource for reconciliation with exponential backoff applied
 		return true, r.HandleUnresolvableDeps(ctx, resource, originErr)
 	}
 
