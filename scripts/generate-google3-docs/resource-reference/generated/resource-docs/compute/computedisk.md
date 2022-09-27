@@ -1079,6 +1079,8 @@ project/zones/zone/instances/instance.{% endverbatim %}</p>
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeDisk
 metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
   name: computedisk-dep-regional
 spec:
   location: us-west1-c
@@ -1086,6 +1088,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeDisk
 metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
   name: computedisk-sample-regional
   labels:
     extra-gb: "100"
@@ -1093,8 +1097,8 @@ spec:
   description: A 600GB regional disk from a 500GB snapshot.
   location: us-central1
   replicaZones:
-    - "us-central1-a"
-    - "us-central1-f"
+    - https://www.googleapis.com/compute/v1/projects/${PROJECT_ID?}/zones/us-central1-a
+    - https://www.googleapis.com/compute/v1/projects/${PROJECT_ID?}/zones/us-central1-f
   size: 600
   physicalBlockSizeBytes: 16384
   snapshotRef:
@@ -1103,6 +1107,8 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSnapshot
 metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
   name: computedisk-dep-regional
 spec:
   sourceDiskRef:
