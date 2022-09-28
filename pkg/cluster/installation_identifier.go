@@ -18,8 +18,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/randomid"
 	"github.com/cenkalti/backoff"
-	"github.com/rs/xid"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -116,7 +116,7 @@ func createOrGetNamespaceIDConfigMap(namespaceIDConfigMapNN types.NamespacedName
 }
 
 func generateID() string {
-	return xid.New().String()
+	return randomid.New().String()
 }
 
 func newConfigMap(namespaceIDConfigMapNN types.NamespacedName) corev1.ConfigMap {

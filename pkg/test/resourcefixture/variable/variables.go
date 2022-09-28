@@ -22,16 +22,14 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/rs/xid"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/randomid"
 )
-
-var idRegex = regexp.MustCompile("[0-9a-v]")
 
 func NewUniqueId() string {
 	var id string
 	for i := 0; i < 3; i++ {
 		// generate a globally unique ID
-		id = xid.New().String()
+		id = randomid.New().String()
 		if isValidId(id) {
 			return id
 		}

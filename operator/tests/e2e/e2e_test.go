@@ -29,13 +29,13 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/scripts/utils"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/randomid"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 
 	"github.com/blang/semver"
 	"github.com/cenkalti/backoff"
 	"github.com/go-logr/logr"
 	"github.com/go-logr/zapr"
-	"github.com/rs/xid"
 	"go.uber.org/zap"
 	"google.golang.org/api/cloudbilling/v1"
 	"google.golang.org/api/cloudresourcemanager/v1"
@@ -1728,7 +1728,7 @@ func getAnnotationsForNS(ns *v1.Namespace) map[string]string {
 }
 
 func newUniqueTestId() string {
-	return xid.New().String()
+	return randomid.New().String()
 }
 
 func newLogger(name string) (logr.Logger, error) {

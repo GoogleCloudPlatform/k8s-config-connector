@@ -19,8 +19,8 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/randomid"
 
-	"github.com/rs/xid"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
@@ -69,7 +69,7 @@ func defaultNameIfNotPresent(u *unstructured.Unstructured) error {
 		return fmt.Errorf("error retrieving %v from unstruct: %w", k8s.ResourceIDFieldPath, err)
 	}
 	if !ok {
-		val = xid.New().String()
+		val = randomid.New().String()
 	}
 	if err := unstructured.SetNestedField(u.Object, val, strings.Split(namePath, ".")...); err != nil {
 		return fmt.Errorf("error setting %v to '%v': %w", namePath, val, err)

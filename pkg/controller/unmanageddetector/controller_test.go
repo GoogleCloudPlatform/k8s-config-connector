@@ -23,12 +23,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/unmanageddetector"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/randomid"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	"github.com/google/go-cmp/cmp"
-	"github.com/rs/xid"
 
 	corev1 "k8s.io/api/core/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -156,7 +156,7 @@ func newTestKindUnstructured(nn types.NamespacedName) *unstructured.Unstructured
 }
 
 func newControllerUnstructuredForNamespace(namespace string) *unstructured.Unstructured {
-	controllerName := fmt.Sprintf("%v-%v", k8s.ControllerManagerNamePrefix, xid.New().String())
+	controllerName := fmt.Sprintf("%v-%v", k8s.ControllerManagerNamePrefix, randomid.New().String())
 	return &unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"apiVersion": "apps/v1",

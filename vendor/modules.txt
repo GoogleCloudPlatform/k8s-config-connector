@@ -732,9 +732,6 @@ github.com/prometheus/procfs/internal/util
 # github.com/rainycape/unidecode v0.0.0-20150907023854-cb7f23ec59be
 ## explicit
 github.com/rainycape/unidecode
-# github.com/rs/xid v1.2.1
-## explicit
-github.com/rs/xid
 # github.com/russross/blackfriday v1.5.2
 ## explicit
 github.com/russross/blackfriday

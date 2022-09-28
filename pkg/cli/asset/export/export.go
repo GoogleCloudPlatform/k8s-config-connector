@@ -21,8 +21,8 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/serviceclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/randomid"
 
-	"github.com/rs/xid"
 	"google.golang.org/api/cloudasset/v1"
 	"google.golang.org/api/option"
 	"google.golang.org/api/storage/v1"
@@ -74,7 +74,7 @@ func NewTemporaryBucketAndObjectName(ctx context.Context, httpClient *http.Clien
 	if err != nil {
 		return "", "", fmt.Errorf("error getting project id: %v", err)
 	}
-	bucketName := fmt.Sprintf("export-%v", xid.New().String())
+	bucketName := fmt.Sprintf("export-%v", randomid.New().String())
 	bucket := &storage.Bucket{
 		Name: bucketName,
 	}
@@ -87,7 +87,7 @@ func NewTemporaryBucketAndObjectName(ctx context.Context, httpClient *http.Clien
 }
 
 func NewObjectName() string {
-	return xid.New().String()
+	return randomid.New().String()
 }
 
 func DeleteExport(ctx context.Context, httpClient *http.Client, bucketName, objectName string) error {
