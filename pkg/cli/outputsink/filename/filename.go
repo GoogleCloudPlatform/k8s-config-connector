@@ -108,9 +108,6 @@ func getParentPrefix(u *unstructured.Unstructured, smLoader *servicemappingloade
 	if err != nil {
 		return "", err
 	}
-	if err != nil {
-		return "", err
-	}
 	if len(parentRefs) == 0 {
 		return getHierarchalParentPath(u)
 	}
