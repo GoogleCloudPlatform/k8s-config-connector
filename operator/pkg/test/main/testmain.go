@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"log"
 	"sync"
+	"time"
 
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -53,7 +54,8 @@ func init() {
 // not require an external API server to execute.
 func StartTestEnv() (*rest.Config, func()) {
 	testEnv := &envtest.Environment{
-		CRDDirectoryPaths: []string{paths.GetOperatorCRDsPath()},
+		CRDDirectoryPaths:        []string{paths.GetOperatorCRDsPath()},
+		ControlPlaneStartTimeout: time.Minute,
 	}
 	var err error
 	cfg, err := testEnv.Start()

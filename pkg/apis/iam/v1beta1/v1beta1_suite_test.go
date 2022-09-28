@@ -18,6 +18,7 @@ import (
 	"log"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
@@ -32,7 +33,8 @@ var c client.Client
 
 func TestMain(m *testing.M) {
 	t := &envtest.Environment{
-		CRDDirectoryPaths: []string{repo.GetCRDsPath()},
+		CRDDirectoryPaths:        []string{repo.GetCRDsPath()},
+		ControlPlaneStartTimeout: time.Minute,
 	}
 
 	err := SchemeBuilder.AddToScheme(scheme.Scheme)

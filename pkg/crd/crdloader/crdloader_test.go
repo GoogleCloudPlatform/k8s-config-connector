@@ -16,6 +16,7 @@ package crdloader_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -63,7 +64,8 @@ func TestGetCRD(t *testing.T) {
 
 func TestCrdLoader_GetCRD(t *testing.T) {
 	env := &envtest.Environment{
-		CRDDirectoryPaths: []string{repo.GetCRDsPath()},
+		CRDDirectoryPaths:        []string{repo.GetCRDsPath()},
+		ControlPlaneStartTimeout: time.Minute,
 	}
 	cfg, err := env.Start()
 	if err != nil {

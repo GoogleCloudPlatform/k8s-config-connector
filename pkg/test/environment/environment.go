@@ -17,6 +17,7 @@ package testenvironment
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -48,7 +49,9 @@ func StartTestEnvironmentOrLogFatal(testType test.TestType, crds []*apiextension
 }
 
 func startTestEnvironment(testType test.TestType, crds []*apiextensions.CustomResourceDefinition, whCfgs []webhook.WebhookConfig) (*envtest.Environment, error) {
-	env := &envtest.Environment{}
+	env := &envtest.Environment{
+		ControlPlaneStartTimeout: time.Minute,
+	}
 	switch {
 	case len(crds) > 0:
 		env.CRDs = crds
