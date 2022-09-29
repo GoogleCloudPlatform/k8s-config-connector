@@ -79,7 +79,7 @@ func TestClusterModeManager(t *testing.T) {
 	}
 	stop := testcontroller.StartMgr(t, mgr)
 	defer stop()
-	basicPubSubFixture := getBasicPubSubTopicFixture(t)
+	basicPubSubFixture := getBasicPubSubSchemaFixture(t)
 	projectId := testgcp.GetDefaultProjectID(t)
 	for i := 0; i < 2; i++ {
 		tstContext := testrunner.NewTestContext(t, basicPubSubFixture, projectId)
@@ -95,7 +95,7 @@ func TestClusterModeManager(t *testing.T) {
 // not started controllers. Verify that only the first is reconciled, then start a second set of controllers and verify
 // the second is reconciled.
 func TestNamespacedModeManager(t *testing.T) {
-	basicPubSubFixture := getBasicPubSubTopicFixture(t)
+	basicPubSubFixture := getBasicPubSubSchemaFixture(t)
 	projectId := testgcp.GetDefaultProjectID(t)
 	tstContext1 := testrunner.NewTestContext(t, basicPubSubFixture, projectId)
 	tstContext2 := testrunner.NewTestContext(t, basicPubSubFixture, projectId)
@@ -156,9 +156,11 @@ func TestNamespacedModeManager(t *testing.T) {
 	waitForReconcile(t, kubeClient, tstContext2.CreateUnstruct)
 }
 
-func getBasicPubSubTopicFixture(t *testing.T) resourcefixture.ResourceFixture {
+// getBasicPubSubSchemaFixture returns the basic/pubsubschema fixture.
+// This is a relatively quick resource to create, that does not have any dependencies that must be created.
+func getBasicPubSubSchemaFixture(t *testing.T) resourcefixture.ResourceFixture {
 	lightFilter := func(name string, testType resourcefixture.TestType) bool {
-		return name == "pubsubtopic" && testType == resourcefixture.Basic
+		return name == "pubsubschema" && testType == resourcefixture.Basic
 	}
 	fixtures := resourcefixture.LoadWithFilter(t, lightFilter, nil)
 	if len(fixtures) != 1 {
