@@ -49,10 +49,11 @@ manifests: generate
 	rm kustomization.yaml
 
 # Format code
-fmt: addlicense-binary
+fmt:
 	make -C operator fmt
 	goimports -w pkg cmd scripts config/tests
-	addlicense -c "Google LLC" -l apache \
+	# 04bfe4ee9ca5764577b029acc6a1957fd1997153 includes fix to not log "Skipped" for each skipped file
+	GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache \
 	-ignore "vendor/**" -ignore "third_party/**" \
 	-ignore "config/crds/**" -ignore "config/cloudcodesnippets/**" \
 	-ignore "**/*.html" -ignore "config/installbundle/components/clusterroles/cnrm_admin.yaml" \
@@ -78,9 +79,3 @@ generate:
 	# This path will be covered by `generate-go-client` target specifically.
 	go generate $$(go list ./pkg/... ./cmd/... | grep -v ./pkg/clients/generated)
 	make fmt
-
-# Find or download addlicense binary
-addlicense-binary:
-ifeq (, $(shell which addlicense))
-	GOFLAGS='' go install github.com/google/addlicense@v1.0.0
-endif
