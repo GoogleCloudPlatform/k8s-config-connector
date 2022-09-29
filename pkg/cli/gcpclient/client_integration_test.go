@@ -20,6 +20,7 @@ package gcpclient_test
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"testing"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -35,6 +36,7 @@ import (
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
+	tfgooglebeta "github.com/hashicorp/terraform-provider-google-beta/google-beta"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
@@ -66,6 +68,19 @@ func TestGetNotFound(t *testing.T) {
 	}
 	if result != nil {
 		t.Fatalf("unexpected result value: got '%v', want '%v'", result, nil)
+	}
+}
+
+func init() {
+	// TODO: Can we initialize this globally once somewhere?
+	// (It shouldn't _really_ matter if we have multiple instances, it's just leaky and confusing)
+	tfgooglebeta.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+		t := test.NewHTTPRecorder(inner.Transport)
+		return &http.Client{Transport: t}
+	}
+	tfgooglebeta.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+		t := test.NewHTTPRecorder(inner.Transport)
+		return &http.Client{Transport: t}
 	}
 }
 
