@@ -110,7 +110,7 @@ func clientGet(t *testing.T, client gcpclient.Client, u *unstructured.Unstructur
 	t.Helper()
 	u, err := client.Get(u)
 	if err != nil {
-		t.Fatalf("error getting unstruct: %v", err)
+		t.Fatalf("error getting unstructured %s object %s: %v", u.GroupVersionKind().Kind, k8s.GetNamespacedName(u), err)
 	}
 	return u
 }
@@ -119,8 +119,9 @@ func clientApply(t *testing.T, client gcpclient.Client, u *unstructured.Unstruct
 	t.Helper()
 	newUnstruct, err := client.Apply(u)
 	if err != nil {
-		t.Fatalf("error applying: %v", err)
+		t.Fatalf("error applying %s object %s: %v", u.GroupVersionKind().Kind, k8s.GetNamespacedName(u), err)
 	}
+	t.Logf("applied %s object %s", u.GroupVersionKind().Kind, k8s.GetNamespacedName(u))
 	return newUnstruct
 }
 
@@ -130,8 +131,9 @@ func clientDelete(t *testing.T, client gcpclient.Client, u *unstructured.Unstruc
 		return
 	}
 	if err := client.Delete(u); err != nil {
-		t.Fatalf("error deleting: %v", err)
+		t.Fatalf("error deleting %s object %s: %v", u.GroupVersionKind().Kind, k8s.GetNamespacedName(u), err)
 	}
+	t.Logf("deleted %s object %s", u.GroupVersionKind().Kind, k8s.GetNamespacedName(u))
 }
 
 // the intention is for the returned delete function to be deferred as a catch all for resource leaks when a test fails
@@ -142,7 +144,7 @@ func buildDeleteFunc(t *testing.T, client gcpclient.Client, u *unstructured.Unst
 	return func() {
 		if err := client.Delete(u); err != nil {
 			// do not Fatal so that other delete functions will still run
-			t.Errorf("error deleting '%v': %v", u.GetName(), err)
+			t.Errorf("error deleting %s object %s: %v", u.GroupVersionKind().Kind, k8s.GetNamespacedName(u), err)
 		}
 	}
 }
