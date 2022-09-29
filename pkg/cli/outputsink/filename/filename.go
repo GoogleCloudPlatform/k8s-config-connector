@@ -182,9 +182,10 @@ func getFieldAsIAMResourceRef(u *unstructured.Unstructured, fieldName string) (*
 
 // trimExternalRef will take an external ref and remove any portion of the path before the hierarchal portion
 // for example,
-//   * https://www.googleapis.com/compute/v1/projects/kcc-test/global/networks/default
+//   - https://www.googleapis.com/compute/v1/projects/kcc-test/global/networks/default
+//
 // will turn into,
-//   * projects/kcc-test/global/networks/default
+//   - projects/kcc-test/global/networks/default
 func trimExternalRef(externalRef string) string {
 	splits := strings.Split(externalRef, "/")
 	for i, subStr := range splits {
