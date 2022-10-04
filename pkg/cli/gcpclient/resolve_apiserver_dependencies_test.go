@@ -31,6 +31,7 @@ import (
 	"gopkg.in/yaml.v2"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	kubeschema "k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 /*
@@ -40,18 +41,18 @@ import (
  */
 
 func resolveAPIServerDependenciesIfKCCManaged(t *testing.T, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *schema.Provider,
-	nameToResource map[string]*unstructured.Unstructured, resource *unstructured.Unstructured) {
+	resources []*unstructured.Unstructured, resource *unstructured.Unstructured) {
 	if !k8s.IsManagedByKCC(resource.GroupVersionKind()) {
 		return
 	}
-	externalizeReferences(t, smLoader, nameToResource, resource)
-	resolveSensitiveFields(t, smLoader, tfProvider, nameToResource, resource)
+	externalizeReferences(t, smLoader, resources, resource)
+	resolveSensitiveFields(t, smLoader, tfProvider, resources, resource)
 }
 
 // this function changes a SensitiveField to a "ValueFrom" to a "Value" so that the 'krmtotf' package will not try to resolve
 // the values using the client.Client
 func resolveSensitiveFields(t *testing.T, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *schema.Provider,
-	nameToResource map[string]*unstructured.Unstructured, resource *unstructured.Unstructured) {
+	resources []*unstructured.Unstructured, resource *unstructured.Unstructured) {
 	rc := testservicemapping.GetResourceConfig(t, smLoader, resource)
 	spec, ok := resource.Object["spec"]
 	if !ok {
@@ -61,13 +62,13 @@ func resolveSensitiveFields(t *testing.T, smLoader *servicemappingloader.Service
 	tfSchema := schema.Schema{
 		Elem: tfResource,
 	}
-	convertSensitiveFieldsInObjectToValue(t, nameToResource, &tfSchema, spec)
+	convertSensitiveFieldsInObjectToValue(t, resources, &tfSchema, spec)
 }
 
-func convertSensitiveFieldsInObjectToValue(t *testing.T, nameToResource map[string]*unstructured.Unstructured, tfSchema *schema.Schema, obj interface{}) {
+func convertSensitiveFieldsInObjectToValue(t *testing.T, resources []*unstructured.Unstructured, tfSchema *schema.Schema, obj interface{}) {
 	switch elem := tfSchema.Elem.(type) {
 	case *schema.Schema:
-		convertSensitiveFieldsToValue(t, nameToResource, elem, obj)
+		convertSensitiveFieldsToValue(t, resources, elem, obj)
 	case *schema.Resource:
 		for k, v := range elem.Schema {
 			mapValue, ok := obj.(map[string]interface{})
@@ -79,12 +80,12 @@ func convertSensitiveFieldsInObjectToValue(t *testing.T, nameToResource map[stri
 			if !ok {
 				continue
 			}
-			convertSensitiveFieldsToValue(t, nameToResource, v, val)
+			convertSensitiveFieldsToValue(t, resources, v, val)
 		}
 	}
 }
 
-func convertSensitiveFieldsToValue(t *testing.T, nameToResource map[string]*unstructured.Unstructured, tfSchema *schema.Schema, obj interface{}) {
+func convertSensitiveFieldsToValue(t *testing.T, resources []*unstructured.Unstructured, tfSchema *schema.Schema, obj interface{}) {
 	switch tfSchema.Type {
 	case schema.TypeString:
 		if !(tfSchema.Sensitive && isConfigurableField(tfSchema)) {
@@ -98,10 +99,7 @@ func convertSensitiveFieldsToValue(t *testing.T, nameToResource map[string]*unst
 			return
 		}
 		secretKeyRef := field.ValueFrom.SecretKeyRef
-		secretValue, ok := nameToResource[secretKeyRef.Name]
-		if !ok {
-			t.Fatalf("unable to find dependency secret resource '%v'", secretKeyRef.Name)
-		}
+		secretValue := findResource(t, resources, secretKeyRef.Name, kubeschema.GroupVersionKind{Group: "", Version: "v1", Kind: "Secret"})
 		value, err := getSecretValue(secretValue, secretKeyRef.Key)
 		if err != nil {
 			t.Fatalf("error getting secret value: %v", err)
@@ -125,7 +123,7 @@ func convertSensitiveFieldsToValue(t *testing.T, nameToResource map[string]*unst
 			t.Fatalf("error converting to list: %v", err)
 		}
 		for _, v := range values {
-			convertSensitiveFieldsInObjectToValue(t, nameToResource, tfSchema, v)
+			convertSensitiveFieldsInObjectToValue(t, resources, tfSchema, v)
 		}
 	}
 }
@@ -171,7 +169,7 @@ func isConfigurableField(schema *schema.Schema) bool {
 	return schema.Required || schema.Optional
 }
 
-func externalizeReferences(t *testing.T, smLoader *servicemappingloader.ServiceMappingLoader, nameToResource map[string]*unstructured.Unstructured, resource *unstructured.Unstructured) {
+func externalizeReferences(t *testing.T, smLoader *servicemappingloader.ServiceMappingLoader, resources []*unstructured.Unstructured, resource *unstructured.Unstructured) {
 	rc := testservicemapping.GetResourceConfig(t, smLoader, resource)
 	for _, ref := range rc.ResourceReferences {
 		// TODO: can we make this resolution of the reference key smoother across the codebase?
@@ -198,12 +196,12 @@ func externalizeReferences(t *testing.T, smLoader *servicemappingloader.ServiceM
 			}
 		}
 		for _, tc := range typeConfigs {
-			findMatchingReferencesAndExternalize(t, rootPath, tc, nameToResource, resource)
+			findMatchingReferencesAndExternalize(t, rootPath, tc, resources, resource)
 		}
 	}
 }
 
-func findMatchingReferencesAndExternalize(t *testing.T, rootPath []string, tc v1alpha1.TypeConfig, nameToResource map[string]*unstructured.Unstructured, resource *unstructured.Unstructured) {
+func findMatchingReferencesAndExternalize(t *testing.T, rootPath []string, tc v1alpha1.TypeConfig, resources []*unstructured.Unstructured, resource *unstructured.Unstructured) {
 	keyFields := rootPath
 	if tc.Key != "" {
 		keyFields = append(rootPath, tc.Key)
@@ -217,7 +215,7 @@ func findMatchingReferencesAndExternalize(t *testing.T, rootPath []string, tc v1
 	}
 	switch value := rawValue.(type) {
 	case map[string]interface{}:
-		externalizeReference(t, value, tc, nameToResource, resource)
+		externalizeReference(t, value, tc, resources, resource)
 	case []interface{}:
 		for _, v := range value {
 			mapValue, ok := v.(map[string]interface{})
@@ -225,7 +223,7 @@ func findMatchingReferencesAndExternalize(t *testing.T, rootPath []string, tc v1
 				t.Fatalf("unexpected non-map value in resource reference list value at '%v': %v",
 					strings.Join(rootPath, "."), v)
 			}
-			externalizeReference(t, mapValue, tc, nameToResource, resource)
+			externalizeReference(t, mapValue, tc, resources, resource)
 		}
 	}
 }
@@ -261,15 +259,34 @@ func getValueInSliceAwareNestedMap(object interface{}, path []string) (interface
 	return nil, false, fmt.Errorf("error, unknown type: %v", reflect.TypeOf(object).Name())
 }
 
-func externalizeReference(t *testing.T, value map[string]interface{}, tc v1alpha1.TypeConfig, nameToResource map[string]*unstructured.Unstructured, resource *unstructured.Unstructured) {
+func findResource(t *testing.T, resources []*unstructured.Unstructured, name string, gvk kubeschema.GroupVersionKind) *unstructured.Unstructured {
+	var matches []*unstructured.Unstructured
+	for _, r := range resources {
+		if r.GetName() != name {
+			continue
+		}
+		if r.GroupVersionKind() != gvk {
+			continue
+		}
+		matches = append(matches, r)
+	}
+	if len(matches) == 0 {
+		t.Fatalf("unable to find resource matching %v/%v", gvk, name)
+	}
+	if len(matches) > 1 {
+		t.Fatalf("found multiple resources matching %v/%v", gvk, name)
+	}
+
+	return matches[0]
+}
+
+func externalizeReference(t *testing.T, value map[string]interface{}, tc v1alpha1.TypeConfig, resources []*unstructured.Unstructured, resource *unstructured.Unstructured) {
 	resourceReference := toResourceReference(t, value)
 	if resourceReference.External != "" {
 		return
 	}
-	refResource, ok := nameToResource[resourceReference.Name]
-	if !ok {
-		t.Fatalf("unable to find resource '%v' referenced by '%v'", resourceReference.Name, resource.GetName())
-	}
+
+	refResource := findResource(t, resources, resourceReference.Name, tc.GVK)
 	externalVal := resolveTargetFieldValue(t, refResource, tc)
 	// Do basic value template expansion, as we don't have *krmtotf.Resource,
 	// *client.Client, or *servicemappingloader.ServiceMappingLoader present in

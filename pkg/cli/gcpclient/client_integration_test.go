@@ -72,24 +72,24 @@ func TestCRUD(t *testing.T) {
 	client := gcpclient.New(tfProvider, smLoader)
 	projectId := testgcp.GetDefaultProjectID(t)
 	testFunc := func(t *testing.T, testContext testrunner.TestContext) {
-		nameToResource := make(map[string]*unstructured.Unstructured)
+		var resources []*unstructured.Unstructured
 		for _, d := range testContext.DependencyUnstructs {
-			resolveAPIServerDependenciesIfKCCManaged(t, smLoader, tfProvider, nameToResource, d)
+			resolveAPIServerDependenciesIfKCCManaged(t, smLoader, tfProvider, resources, d)
 			if k8s.IsManagedByKCC(d.GroupVersionKind()) {
 				applyProjectRefOrAnnotation(t, smLoader, d, projectId)
 				defer buildDeleteFunc(t, client, d)()
 				d = clientApply(t, client, d)
 			}
-			nameToResource[d.GetName()] = d
+			resources = append(resources, d)
 		}
 		createUnstruct := testContext.CreateUnstruct
 		applyProjectRefOrAnnotation(t, smLoader, createUnstruct, projectId)
-		resolveAPIServerDependenciesIfKCCManaged(t, smLoader, tfProvider, nameToResource, createUnstruct)
+		resolveAPIServerDependenciesIfKCCManaged(t, smLoader, tfProvider, resources, createUnstruct)
 		defer buildDeleteFunc(t, client, createUnstruct)()
 		clientApply(t, client, createUnstruct)
 		clientGet(t, client, createUnstruct)
 		if testContext.UpdateUnstruct != nil {
-			resolveAPIServerDependenciesIfKCCManaged(t, smLoader, tfProvider, nameToResource, testContext.UpdateUnstruct)
+			resolveAPIServerDependenciesIfKCCManaged(t, smLoader, tfProvider, resources, testContext.UpdateUnstruct)
 			applyProjectRefOrAnnotation(t, smLoader, testContext.UpdateUnstruct, projectId)
 			clientApply(t, client, testContext.UpdateUnstruct)
 		}
