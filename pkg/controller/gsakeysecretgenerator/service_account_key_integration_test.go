@@ -103,9 +103,22 @@ func TestServiceAccountKey(t *testing.T) {
 	if !found || err != nil {
 		t.Fatalf("couldn't find name from %v status: %v", gsakey.GetName(), err)
 	}
-	if _, err := iamClient.Projects.ServiceAccounts.Keys.Get(keyName).Do(); err != nil {
-		t.Fatalf("error calling iam service to get the service account key %v: %v", keyName, err)
+
+	// Wait for key to propagate
+	// Per https://cloud.google.com/iam/docs/creating-managing-service-account-keys:
+	// "After you create a key, you might need to wait for 60 seconds or more before you perform another operation with the key."
+	var lastErr error
+	if err := wait.PollImmediate(10*time.Second, 2*time.Minute, func() (bool, error) {
+		if _, err := iamClient.Projects.ServiceAccounts.Keys.Get(keyName).Do(); err != nil {
+			lastErr = err
+			return false, nil
+		} else {
+			return true, nil
+		}
+	}); err != nil {
+		t.Fatalf("error calling iam service to get the service account key %v (despite polling, lastErr=%v): %v", keyName, lastErr, err)
 	}
+
 	// invoke the secret generator
 	if _, err := generator.Reconcile(context.TODO(), sakRequest); err != nil {
 		t.Fatalf("error reconciling iamserviceaccountkey %v to create a secret: %v", sakName, err)
