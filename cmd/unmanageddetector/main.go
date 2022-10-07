@@ -16,6 +16,9 @@ package main
 
 import (
 	goflag "flag"
+	"fmt"
+	"net/http"
+	_ "net/http/pprof" // Needed to allow pprof server to accept requests
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
@@ -33,20 +36,35 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
 )
 
-var logger = klog.Log
+var logger = klog.Log.WithName("setup")
 
 func main() {
 	stop := signals.SetupSignalHandler()
 
+	var enablePprof bool
+	var pprofPort int
+
 	profiler.AddFlag(flag.CommandLine)
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
+	flag.BoolVar(&enablePprof, "enable-pprof", false, "Enable the pprof server.")
+	flag.IntVar(&pprofPort, "pprof-port", 6060, "The port that the pprof server binds to if enabled.")
 	flag.Parse()
 
 	// Enable packages using the Kubernetes controller-runtime logging package to log
 	logging.SetupLogger()
 
+	// Start pprof server if enabled
+	if enablePprof {
+		go func() {
+			if err := http.ListenAndServe(fmt.Sprintf(":%d", pprofPort), nil); err != nil {
+				logger.Error(err, "error while running pprof server")
+			}
+		}()
+	}
+
+	// Start Cloud Profiler agent if enabled
 	if err := profiler.StartIfEnabled(); err != nil {
-		logging.Fatal(err, "error starting profiler")
+		logging.Fatal(err, "error starting Cloud Profiler agent")
 	}
 
 	// Get a config to talk to the apiserver

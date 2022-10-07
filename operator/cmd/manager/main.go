@@ -16,6 +16,9 @@ package main
 
 import (
 	goflag "flag"
+	"fmt"
+	"net/http"
+	_ "net/http/pprof" // Needed to allow pprof server to accept requests
 	"os"
 
 	corev1v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -51,6 +54,8 @@ func main() {
 	var metricsAddr string
 	var enableLeaderElection bool
 	var repoPath string
+	var enablePprof bool
+	var pprofPort int
 
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	profiler.AddFlag(flag.CommandLine)
@@ -58,15 +63,28 @@ func main() {
 	flag.StringVar(&metricsAddr, "metrics-addr", ":8080", "The address the metric endpoint binds to.")
 	flag.BoolVar(&enableLeaderElection, "enable-leader-election", false,
 		"Enable leader election for controller manager. Enabling this will ensure there is only one active controller manager.")
+	flag.BoolVar(&enablePprof, "enable-pprof", false, "Enable the pprof server.")
+	flag.IntVar(&pprofPort, "pprof-port", 6060, "The port that the pprof server binds to if enabled.")
 	flag.Parse()
 
 	ctrl.SetLogger(logging.BuildLogger(os.Stderr))
-	addon.Init()
 
+	// Start pprof server if enabled
+	if enablePprof {
+		go func() {
+			if err := http.ListenAndServe(fmt.Sprintf(":%d", pprofPort), nil); err != nil {
+				setupLog.Error(err, "error while running pprof server")
+			}
+		}()
+	}
+
+	// Start Cloud Profiler agent if enabled
 	if err := profiler.StartIfEnabled(); err != nil {
-		setupLog.Error(err, "problem running profiler")
+		setupLog.Error(err, "error starting Cloud Profiler agent")
 		os.Exit(1)
 	}
+
+	addon.Init()
 
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
 		Scheme:             scheme,

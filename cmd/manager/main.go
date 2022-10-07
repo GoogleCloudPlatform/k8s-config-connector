@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net/http"
+	_ "net/http/pprof" // Needed to allow pprof server to accept requests
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	controllermetrics "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
@@ -37,7 +39,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
 )
 
-var logger = klog.Log
+var logger = klog.Log.WithName("setup")
 
 func main() {
 	stop := signals.SetupSignalHandler()
@@ -47,19 +49,19 @@ func main() {
 		scopedNamespace          string
 		userProjectOverride      bool
 		billingProject           string
+		enablePprof              bool
+		pprofPort                int
 	)
 	flag.StringVar(&prometheusScrapeEndpoint, "prometheus-scrape-endpoint", ":8888", "configure the Prometheus scrape endpoint; :8888 as default")
 	flag.BoolVar(&controllermetrics.ResourceNameLabel, "resource-name-label", false, "option to enable the resource name label on some Prometheus metrics; false by default")
 	flag.BoolVar(&userProjectOverride, "user-project-override", false, "option to use the resource project for preconditions, quota, and billing, instead of the project the credentials belong to; false by default")
 	flag.StringVar(&billingProject, "billing-project", "", "project to use for preconditions, quota, and billing if --user-project-override is enabled; empty by default; if this is left empty but --user-project-override is enabled, the resource's project will be used")
 	flag.StringVar(&scopedNamespace, "scoped-namespace", "", "scope controllers to only watch resources in the specified namespace; if unspecified, controllers will run in cluster scope")
+	flag.BoolVar(&enablePprof, "enable-pprof", false, "Enable the pprof server.")
+	flag.IntVar(&pprofPort, "pprof-port", 6060, "The port that the pprof server binds to if enabled.")
 	profiler.AddFlag(flag.CommandLine)
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	flag.Parse()
-
-	if err := profiler.StartIfEnabled(); err != nil {
-		log.Fatal(err)
-	}
 
 	// Discard everything logged onto the Go standard logger. We do this since
 	// there are cases of Terraform logging sensitive data onto the Go standard
@@ -67,6 +69,20 @@ func main() {
 	log.SetOutput(ioutil.Discard)
 
 	logging.SetupLogger()
+
+	// Start pprof server if enabled
+	if enablePprof {
+		go func() {
+			if err := http.ListenAndServe(fmt.Sprintf(":%d", pprofPort), nil); err != nil {
+				logger.Error(err, "error while running pprof server")
+			}
+		}()
+	}
+
+	// Start Cloud Profiler agent if enabled
+	if err := profiler.StartIfEnabled(); err != nil {
+		logging.Fatal(err, "error starting Cloud Profiler agent")
+	}
 
 	// Get a config to talk to the apiserver
 	restCfg, err := config.GetConfig()

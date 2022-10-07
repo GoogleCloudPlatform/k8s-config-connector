@@ -19,6 +19,7 @@ import (
 	goflag "flag"
 	"fmt"
 	"net/http"
+	_ "net/http/pprof" // Needed to allow pprof server to accept requests
 	"os"
 	"time"
 
@@ -49,7 +50,7 @@ const (
 )
 
 var (
-	logger           = klog.Log
+	logger           = klog.Log.WithName("setup")
 	appliedResources = metrics.NewAppliedResourcesCollector()
 )
 
@@ -58,9 +59,13 @@ func main() {
 	var (
 		prometheusScrapeEndpoint string
 		metricInterval           int
+		enablePprof              bool
+		pprofPort                int
 	)
 	flag.StringVar(&prometheusScrapeEndpoint, "prometheus-scrape-endpoint", ":8888", "configure the Prometheus scrape endpoint; :8888 as default")
 	flag.IntVar(&metricInterval, "metric-interval", 60, "the time interval of each recording in seconds")
+	flag.BoolVar(&enablePprof, "enable-pprof", false, "Enable the pprof server.")
+	flag.IntVar(&pprofPort, "pprof-port", 6060, "The port that the pprof server binds to if enabled.")
 	profiler.AddFlag(flag.CommandLine)
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	flag.Parse()
@@ -70,8 +75,18 @@ func main() {
 
 	logger.Info("Recording the stats of Config Connector resources")
 
+	// Start pprof server if enabled
+	if enablePprof {
+		go func() {
+			if err := http.ListenAndServe(fmt.Sprintf(":%d", pprofPort), nil); err != nil {
+				logger.Error(err, "error while running pprof server")
+			}
+		}()
+	}
+
+	// Start Cloud Profiler agent if enabled
 	if err := profiler.StartIfEnabled(); err != nil {
-		logging.Fatal(err, "unable to start profiler.")
+		logging.Fatal(err, "error starting Cloud Profiler agent")
 	}
 
 	// Register the Prometheus metrics
