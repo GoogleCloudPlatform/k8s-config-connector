@@ -92,6 +92,7 @@ func getForAsset(ctx context.Context, client gcpclient.Client, smLoader *service
 }
 
 func newDependencies(t *testing.T) (gcpclient.Client, *servicemappingloader.ServiceMappingLoader, *schema.Provider, serviceclient.ServiceClient, error) {
+	ctx := context.TODO()
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
 		return nil, nil, nil, nil, fmt.Errorf("error loading service mappings: %v", err)
@@ -99,7 +100,7 @@ func newDependencies(t *testing.T) (gcpclient.Client, *servicemappingloader.Serv
 	config := tfprovider.Config{
 		AccessToken: "", // <- insert a valid oauth2 token here
 	}
-	tfProvider, err := tfprovider.New(config)
+	tfProvider, err := tfprovider.New(ctx, config)
 	if err != nil {
 		return nil, nil, nil, nil, fmt.Errorf("error loading terraform provider: %v", err)
 	}

@@ -15,6 +15,7 @@
 package tf
 
 import (
+	"context"
 	"fmt"
 
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
@@ -22,10 +23,12 @@ import (
 )
 
 func NewProvider(oauth2Token string) (*schema.Provider, error) {
+	ctx := context.TODO()
+
 	config := tfprovider.Config{
 		AccessToken: oauth2Token,
 	}
-	p, err := tfprovider.New(config)
+	p, err := tfprovider.New(ctx, config)
 	if err != nil {
 		return nil, fmt.Errorf("error creating tf provider: %v", err)
 	}

@@ -20,8 +20,8 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
+	"k8s.io/klog/v2"
 
-	"github.com/golang/glog"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta"
@@ -67,7 +67,7 @@ func NewConfig() Config {
 }
 
 // New builds a new tfschema.Provider for the google provider.
-func New(config Config) (*tfschema.Provider, error) {
+func New(ctx context.Context, config Config) (*tfschema.Provider, error) {
 	googleProvider := google.Provider()
 	cfgMap := map[string]interface{}{}
 	if config.AccessToken != "" {
@@ -80,16 +80,19 @@ func New(config Config) (*tfschema.Provider, error) {
 
 	schema := tfschema.InternalMap(googleProvider.Schema).CoreConfigSchema()
 	cfg := terraform.NewResourceConfigShimmed(krmtotf.MapToCtyVal(cfgMap, schema.ImpliedType()), schema)
-	if err := googleProvider.Configure(context.Background(), cfg); err != nil {
+	if err := googleProvider.Configure(ctx, cfg); err != nil {
 		return nil, fmt.Errorf("error configuring provider: %v", err)
 	}
 	return googleProvider, nil
 }
 
+// NewOrLogFatal calls New and panics on error
+// deprecated: Prefer New and handle the error
 func NewOrLogFatal(config Config) *tfschema.Provider {
-	p, err := New(config)
+	ctx := context.TODO()
+	p, err := New(ctx, config)
 	if err != nil {
-		glog.Fatal(err)
+		klog.Fatal(err)
 	}
 	return p
 }
