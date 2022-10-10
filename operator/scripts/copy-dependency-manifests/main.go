@@ -75,7 +75,7 @@ func copyViewerRole(objects []*manifest.Object) error {
 
 func findObject(objects []*manifest.Object, kind, name string) (*manifest.Object, bool) {
 	for _, o := range objects {
-		if o.Kind == kind && o.Name == name {
+		if o.Kind == kind && o.GetName() == name {
 			return o, true
 		}
 	}
@@ -85,10 +85,10 @@ func findObject(objects []*manifest.Object, kind, name string) (*manifest.Object
 func writeManifestObjectToFile(object *manifest.Object, outputPath string) error {
 	bytes, err := utils.UnstructToYaml(object.UnstructuredObject())
 	if err != nil {
-		return fmt.Errorf("error serializing %v '%v' to yaml", object.Kind, object.Name)
+		return fmt.Errorf("error serializing %v '%v' to yaml", object.Kind, object.GetName())
 	}
 	if err := ioutil.WriteFile(outputPath, bytes, fileMode); err != nil {
-		return fmt.Errorf("error writing unstructured %v '%v' to file", object.Kind, object.Name)
+		return fmt.Errorf("error writing unstructured %v '%v' to file", object.Kind, object.GetName())
 	}
 	return nil
 }

@@ -34,7 +34,7 @@ func NewErroringClient() client.Client {
 	return &errorClient{}
 }
 
-func (e *errorClient) Get(_ context.Context, key client.ObjectKey, _ client.Object) error {
+func (e *errorClient) Get(_ context.Context, key client.ObjectKey, _ client.Object, _ ...client.GetOption) error {
 	return fmt.Errorf("unexpected call to client.Get(...) for %v", key)
 }
 

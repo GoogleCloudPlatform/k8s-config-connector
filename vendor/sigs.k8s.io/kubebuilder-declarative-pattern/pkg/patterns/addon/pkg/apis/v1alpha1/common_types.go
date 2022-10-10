@@ -45,7 +45,7 @@ type CommonSpec struct {
 //go:generate go run ../../../../../../vendor/k8s.io/code-generator/cmd/deepcopy-gen/main.go -O zz_generated.deepcopy -i ./... -h ../../../../../../hack/boilerplate.go.txt
 // +k8s:deepcopy-gen=true
 
-// CommonSpec is a set of status attributes that must be exposed on all addons.
+// CommonStatus is a set of status attributes that must be exposed on all addons.
 type CommonStatus struct {
 	Healthy bool     `json:"healthy"`
 	Errors  []string `json:"errors,omitempty"`

@@ -7,6 +7,9 @@ import (
 	"strings"
 
 	"k8s.io/apimachinery/pkg/api/meta"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	utilerrors "k8s.io/apimachinery/pkg/util/errors"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 	"k8s.io/cli-runtime/pkg/printers"
 	"k8s.io/cli-runtime/pkg/resource"
@@ -18,12 +21,46 @@ import (
 )
 
 type DirectApplier struct {
+	inner directApplierSite
 }
 
 var _ Applier = &DirectApplier{}
 
-func NewDirectApplier() *DirectApplier {
-	return &DirectApplier{}
+type directApplier struct {
+}
+
+type directApplierSite interface {
+	Run(a *apply.ApplyOptions) error
+	NewBuilder(opt ApplierOptions) *resource.Builder
+	NewFactory(opt ApplierOptions) cmdutil.Factory
+}
+
+func (d *directApplier) Run(a *apply.ApplyOptions) error {
+	return a.Run()
+}
+
+func (d *directApplier) NewBuilder(opt ApplierOptions) *resource.Builder {
+	restClientGetter := &staticRESTClientGetter{
+		RESTMapper: opt.RESTMapper,
+		RESTConfig: opt.RESTConfig,
+	}
+	return resource.NewBuilder(restClientGetter)
+}
+
+func (d *directApplier) NewFactory(opt ApplierOptions) cmdutil.Factory {
+	var configFlags genericclioptions.ConfigFlags
+	if opt.RESTConfig != nil {
+		configFlags.WrapConfigFn = func(inner *rest.Config) *rest.Config {
+			return opt.RESTConfig
+		}
+	}
+	return cmdutil.NewFactory(&configFlags)
+}
+
+func NewDirectApplier() Applier {
+	return &DirectApplier{
+		inner: &directApplier{},
+	}
 }
 
 func (d *DirectApplier) Apply(ctx context.Context, opt ApplierOptions) error {
@@ -34,25 +71,35 @@ func (d *DirectApplier) Apply(ctx context.Context, opt ApplierOptions) error {
 	}
 	ioReader := strings.NewReader(opt.Manifest)
 
-	restClientGetter := &staticRESTClientGetter{
-		RESTMapper: opt.RESTMapper,
-		RESTConfig: opt.RESTConfig,
-	}
-	b := resource.NewBuilder(restClientGetter)
+	b := d.inner.NewBuilder(opt)
+	f := d.inner.NewFactory(opt)
 
 	if opt.Validate {
 		// This potentially causes redundant work, but validation isn't the common path
-		v, err := cmdutil.NewFactory(&genericclioptions.ConfigFlags{}).Validator(true)
+
+		dynamicClient, err := f.DynamicClient()
+		if err != nil {
+			return err
+		}
+		nqpv := resource.NewQueryParamVerifier(dynamicClient, f.OpenAPIGetter(), resource.QueryParamFieldValidation)
+
+		v, err := d.inner.NewFactory(opt).Validator(metav1.FieldValidationStrict, nqpv)
+
 		if err != nil {
 			return err
 		}
 		b.Schema(v)
 	}
 
-	res := b.Unstructured().Stream(ioReader, "manifestString").Do()
+	var errs []error
+	res := b.Unstructured().ContinueOnError().Stream(ioReader, "manifestString").Do()
 	infos, err := res.Infos()
 	if err != nil {
-		return err
+		errs = append(errs, err)
+
+		if len(infos) == 0 {
+			return err
+		}
 	}
 
 	// Populate the namespace on any namespace-scoped objects
@@ -60,12 +107,35 @@ func (d *DirectApplier) Apply(ctx context.Context, opt ApplierOptions) error {
 		visitor := resource.SetNamespace(opt.Namespace)
 		for _, info := range infos {
 			if err := info.Visit(visitor); err != nil {
-				return fmt.Errorf("error from SetNamespace: %w", err)
+				return utilerrors.NewAggregate(append(errs, fmt.Errorf("error from SetNamespace: %w", err)))
 			}
 		}
 	}
 
-	applyOpts := apply.NewApplyOptions(ioStreams)
+	printFlags := genericclioptions.NewPrintFlags("apply")
+	applyOpts := &apply.ApplyOptions{
+		Recorder:            &genericclioptions.NoopRecorder{},
+		VisitedUids:         sets.NewString(),
+		VisitedNamespaces:   sets.NewString(),
+		PrintFlags:          printFlags,
+		IOStreams:           ioStreams,
+		FieldManager:        "kubectl-client-side-apply",
+		ValidationDirective: metav1.FieldValidationStrict,
+	}
+
+	for i, arg := range opt.ExtraArgs {
+		switch arg {
+		case "--force":
+			applyOpts.ForceConflicts = true
+		case "--prune":
+			applyOpts.Prune = true
+		case "--selector":
+			applyOpts.Selector = opt.ExtraArgs[i+1]
+		default:
+			continue
+		}
+	}
+
 	applyOpts.Namespace = opt.Namespace
 	applyOpts.SetObjects(infos)
 	applyOpts.ToPrinter = func(operation string) (printers.ResourcePrinter, error) {
@@ -77,7 +147,10 @@ func (d *DirectApplier) Apply(ctx context.Context, opt ApplierOptions) error {
 		IOStreams: ioStreams,
 	}
 
-	return applyOpts.Run()
+	if err := d.inner.Run(applyOpts); err != nil {
+		return utilerrors.NewAggregate(append(errs, fmt.Errorf("error from apply yamls: %w", err)))
+	}
+	return utilerrors.NewAggregate(errs)
 }
 
 // staticRESTClientGetter returns a fixed RESTClient

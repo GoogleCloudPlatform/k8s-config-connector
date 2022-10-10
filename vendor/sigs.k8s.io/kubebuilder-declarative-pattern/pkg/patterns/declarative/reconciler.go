@@ -39,10 +39,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
+	"sigs.k8s.io/kustomize/api/krusty"
+	"sigs.k8s.io/kustomize/kyaml/filesys"
+
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/applier"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
-	"sigs.k8s.io/kustomize/api/filesys"
-	"sigs.k8s.io/kustomize/api/krusty"
 )
 
 var _ reconcile.Reconciler = &Reconciler{}
@@ -71,6 +72,30 @@ type kubectlClient interface {
 type DeclarativeObject interface {
 	runtime.Object
 	metav1.Object
+}
+
+// Pruner is a trait for addon CRDs that determines whether pruning behavior should be enabled for the current CR.
+// To enable this feature, it's necessary to enable WithApplyPrune. If WithApplyPrune is enabled but Pruner is not
+// implemented, Prune behavior is assumed by default.
+type Pruner interface {
+	Prune() bool
+}
+
+// PruneWhiteLister is a trait for addon CRDs that determines which kind of resources should be pruned. It's useful
+// when CR in installed by Addon and want to prune them automatically. The format of array item should be exactly like
+// <group>/<version>/<kind> (core group using 'core' indeed). For example: ["core/v1/ConfigMap", "batch/v1/Job"].
+// Notice: kubeadm has a built-in prune white list, and it will be ignored if this method is implemented.
+type PruneWhiteLister interface {
+	PruneWhiteList() []string
+}
+
+type ErrorResult struct {
+	Result reconcile.Result
+	Err    error
+}
+
+func (e *ErrorResult) Error() string {
+	return e.Err.Error()
 }
 
 // For mocking
@@ -118,6 +143,7 @@ func (r *Reconciler) Init(mgr manager.Manager, prototype DeclarativeObject, opts
 
 // +rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
 func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (result reconcile.Result, err error) {
+	var objects *manifest.Objects
 	log := log.Log
 	defer r.collectMetrics(request, result, err)
 
@@ -134,6 +160,22 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 		return reconcile.Result{}, err
 	}
 
+	// status.Reconciled should catch all error
+	defer func() {
+		// error is data
+		resultErr, ok := err.(*ErrorResult)
+		if ok {
+			result = resultErr.Result
+			err = resultErr.Err
+		}
+
+		if r.options.status != nil {
+			if statusErr := r.options.status.Reconciled(ctx, instance, objects, err); statusErr != nil {
+				log.Error(statusErr, "failed to reconcile status")
+			}
+		}
+	}()
+
 	if r.options.status != nil {
 		if err := r.options.status.Preflight(ctx, instance); err != nil {
 			log.Error(err, "preflight check failed, not reconciling")
@@ -141,10 +183,12 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 		}
 	}
 
-	return r.reconcileExists(ctx, request.NamespacedName, instance)
+	objects, err = r.reconcileExists(ctx, request.NamespacedName, instance)
+
+	return result, err
 }
 
-func (r *Reconciler) reconcileExists(ctx context.Context, name types.NamespacedName, instance DeclarativeObject) (reconcile.Result, error) {
+func (r *Reconciler) reconcileExists(ctx context.Context, name types.NamespacedName, instance DeclarativeObject) (*manifest.Objects, error) {
 	log := log.Log
 	log.WithValues("object", name.String()).Info("reconciling")
 
@@ -156,7 +200,7 @@ func (r *Reconciler) reconcileExists(ctx context.Context, name types.NamespacedN
 	objects, err := r.BuildDeploymentObjectsWithFs(ctx, name, instance, fs)
 	if err != nil {
 		log.Error(err, "building deployment objects")
-		return reconcile.Result{}, fmt.Errorf("error building deployment objects: %v", err)
+		return nil, fmt.Errorf("error building deployment objects: %v", err)
 	}
 	log.WithValues("objects", fmt.Sprintf("%d", len(objects.Items))).Info("built deployment objects")
 
@@ -166,35 +210,32 @@ func (r *Reconciler) reconcileExists(ctx context.Context, name types.NamespacedN
 			if !isValidVersion {
 				// r.client isn't exported so can't be updated in version check function
 				if err := r.client.Status().Update(ctx, instance); err != nil {
-					return reconcile.Result{}, err
+					return objects, err
 				}
 				r.recorder.Event(instance, "Warning", "Failed version check", err.Error())
 				log.Error(err, "Version check failed, not reconciling")
-				return reconcile.Result{}, nil
+				return objects, nil
 			}
 			log.Error(err, "Version check failed, trying to reconcile")
-			return reconcile.Result{}, err
+			return objects, err
 		}
 	}
-
-	defer func() {
-		if r.options.status != nil {
-			if err := r.options.status.Reconciled(ctx, instance, objects); err != nil {
-				log.Error(err, "failed to reconcile status")
-			}
-		}
-	}()
 
 	objects, err = parseListKind(objects)
 
 	if err != nil {
 		log.Error(err, "Parsing list kind")
-		return reconcile.Result{}, fmt.Errorf("error parsing list kind: %v", err)
+		return objects, fmt.Errorf("error parsing list kind: %v", err)
+	}
+
+	err = r.setNamespaces(ctx, instance, objects)
+	if err != nil {
+		return objects, err
 	}
 
 	err = r.injectOwnerRef(ctx, instance, objects)
 	if err != nil {
-		return reconcile.Result{}, err
+		return objects, err
 	}
 
 	var newItems []*manifest.Object
@@ -202,12 +243,12 @@ func (r *Reconciler) reconcileExists(ctx context.Context, name types.NamespacedN
 
 		unstruct, err := GetObjectFromCluster(obj, r)
 		if err != nil && !apierrors.IsNotFound(errors.Unwrap(err)) {
-			log.WithValues("name", obj.Name).Error(err, "Unable to get resource")
+			log.WithValues("name", obj.GetName()).Error(err, "Unable to get resource")
 		}
 		if unstruct != nil {
 			annotations := unstruct.GetAnnotations()
 			if _, ok := annotations["addons.k8s.io/ignore"]; ok {
-				log.WithValues("kind", obj.Kind).WithValues("name", obj.Name).Info("Found ignore annotation on object, " +
+				log.WithValues("kind", obj.Kind).WithValues("name", obj.GetName()).Info("Found ignore annotation on object, " +
 					"skipping object")
 				continue
 			}
@@ -221,19 +262,26 @@ func (r *Reconciler) reconcileExists(ctx context.Context, name types.NamespacedN
 	m, err := objects.JSONManifest()
 	if err != nil {
 		log.Error(err, "creating final manifest")
-		return reconcile.Result{}, fmt.Errorf("error creating manifest: %v", err)
+		return objects, fmt.Errorf("error creating manifest: %v", err)
 	}
 	manifestStr = m
 
 	extraArgs := []string{"--force"}
 
-	if r.options.prune {
+	// allow user disable prune in CR
+	if p, ok := instance.(Pruner); (!ok && r.options.prune) || (ok && r.options.prune && p.Prune()) {
 		var labels []string
 		for k, v := range r.options.labelMaker(ctx, instance) {
 			labels = append(labels, fmt.Sprintf("%s=%s", k, v))
 		}
 
 		extraArgs = append(extraArgs, "--prune", "--selector", strings.Join(labels, ","))
+
+		if lister, ok := instance.(PruneWhiteLister); ok {
+			for _, gvk := range lister.PruneWhiteList() {
+				extraArgs = append(extraArgs, "--prune-whitelist", gvk)
+			}
+		}
 	}
 
 	ns := ""
@@ -267,16 +315,16 @@ func (r *Reconciler) reconcileExists(ctx context.Context, name types.NamespacedN
 
 	if err := r.kubectl.Apply(ctx, applyOpt); err != nil {
 		log.Error(err, "applying manifest")
-		return reconcile.Result{}, fmt.Errorf("error applying manifest: %v", err)
+		return objects, fmt.Errorf("error applying manifest: %v", err)
 	}
 
 	if r.options.sink != nil {
 		if err := r.options.sink.Notify(ctx, instance, objects); err != nil {
 			log.Error(err, "notifying sink")
-			return reconcile.Result{}, err
+			return objects, err
 		}
 	}
-	return reconcile.Result{}, nil
+	return objects, nil
 }
 
 // BuildDeploymentObjects performs all manifest operations to build a final set of objects for deployment
@@ -324,15 +372,19 @@ func (r *Reconciler) BuildDeploymentObjectsWithFs(ctx context.Context, name type
 		}
 
 		if fs != nil {
-			// 5. Write objects to filesystem for kustomizing
+			// 5. Write objects to filesystem for kustomizing, allow multiple objects in a file
+			finalJson := []byte("")
+			separator := []byte("---\n")
 			for _, item := range objects.Items {
 				json, err := item.JSON()
 				if err != nil {
 					log.Error(err, "error converting object to json")
 					return nil, err
 				}
-				fs.WriteFile(string(manifestPath), json)
+				finalJson = append(finalJson, separator...)
+				finalJson = append(finalJson, json...)
 			}
+			fs.WriteFile(string(manifestPath), finalJson)
 			for _, blob := range objects.Blobs {
 				fs.WriteFile(string(manifestPath), blob)
 			}
@@ -460,6 +512,39 @@ func (r *Reconciler) validateOptions() error {
 	return nil
 }
 
+// setNamespaces will set the object on all namespace-scoped objects, unless the preserveNamespace option is set
+func (r *Reconciler) setNamespaces(ctx context.Context, instance DeclarativeObject, objects *manifest.Objects) error {
+	if r.options.preserveNamespace {
+		return nil
+	}
+
+	ns := instance.GetNamespace()
+	if ns == "" {
+		// No namespace to set
+		return nil
+	}
+
+	log := log.Log
+	log.WithValues("namespace", ns).Info("setting namespace")
+
+	for _, o := range objects.Items {
+		if o.GetNamespace() != "" {
+			continue
+		}
+
+		gvk := o.GroupVersionKind()
+		mapping, err := r.restMapper.RESTMapping(gvk.GroupKind(), gvk.Version)
+		if err != nil {
+			log.Error(err, "error getting scope for gvk", "gvk", gvk)
+			continue
+		}
+		if mapping.Scope.Name() == meta.RESTScopeNameNamespace {
+			o.SetNamespace(ns)
+		}
+	}
+	return nil
+}
+
 func (r *Reconciler) injectOwnerRef(ctx context.Context, instance DeclarativeObject, objects *manifest.Objects) error {
 	if r.options.ownerFn == nil {
 		return nil
@@ -493,10 +578,11 @@ func (r *Reconciler) injectOwnerRef(ctx context.Context, instance DeclarativeObj
 			continue
 		}
 
-		if owner.GetNamespace() != "" && owner.GetNamespace() != o.Namespace {
+		if owner.GetNamespace() != "" && owner.GetNamespace() != o.GetNamespace() {
 			// a namespaced object can only own objects within the same namespace, not objects in other namespaces or cluster-scoped objects
 			// for any other combination, skip setting owner reference here, to allow declarative.SourceAsOwner to be used for the
 			// subset of objects that make up a supported combination
+			log.WithValues("object", o).Info("not setting ownerRef across namespaces")
 			continue
 		}
 
@@ -584,9 +670,12 @@ func GetObjectFromCluster(obj *manifest.Object, r *Reconciler) (*unstructured.Un
 	if err != nil {
 		return nil, fmt.Errorf("unable to get mapping for resource %v: %w", gvk, err)
 	}
-	ns := obj.UnstructuredObject().GetNamespace()
-	unstruct, err := r.dynamicClient.Resource(mapping.Resource).Namespace(ns).Get(context.Background(),
-		obj.Name, getOptions)
+
+	ns, name := "", obj.GetName()
+	if mapping.Scope.Name() == meta.RESTScopeNameNamespace {
+		ns = obj.GetNamespace()
+	}
+	unstruct, err := r.dynamicClient.Resource(mapping.Resource).Namespace(ns).Get(context.Background(), name, getOptions)
 	if err != nil {
 		return nil, fmt.Errorf("unable to get object: %w", err)
 	}

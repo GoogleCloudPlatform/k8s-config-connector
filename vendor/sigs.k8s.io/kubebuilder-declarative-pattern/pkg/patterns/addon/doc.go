@@ -26,7 +26,7 @@ implements the addonsv1alpha1.CommonObject interface. The object represents the 
 to deploy an instance of a specific Addon in the cluster. This pattern manages a
 Kubernetes deployment for the specific addon based on the Addon Object.
 
-Writing an Addon Operator
+# Writing an Addon Operator
 
 Follow the dashboard walkthrough to stand up an addon operator[1]. Then dig into the
 declarative and addon patterns to extend it.

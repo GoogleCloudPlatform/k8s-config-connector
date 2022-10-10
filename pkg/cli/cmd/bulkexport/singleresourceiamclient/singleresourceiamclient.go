@@ -113,7 +113,7 @@ type singleResourceClient struct {
 	Resource *unstructured.Unstructured
 }
 
-func (c *singleResourceClient) Get(ctx context.Context, key client.ObjectKey, obj client.Object) error {
+func (c *singleResourceClient) Get(ctx context.Context, key client.ObjectKey, obj client.Object, _ ...client.GetOption) error {
 	unstructObj, ok := obj.(*unstructured.Unstructured)
 	if !ok {
 		return fmt.Errorf("unexpected argument to single resource client, type is '%v' instead of '%v'",

@@ -12,7 +12,7 @@ import (
 type FakeCache struct {
 }
 
-func (FakeCache) Get(ctx context.Context, key client.ObjectKey, obj client.Object) error {
+func (FakeCache) Get(ctx context.Context, key client.ObjectKey, obj client.Object, opts ...client.GetOption) error {
 	return errors.NewNotFound(schema.GroupResource{}, "")
 }
 
