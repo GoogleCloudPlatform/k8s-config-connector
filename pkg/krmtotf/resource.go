@@ -199,13 +199,16 @@ func (r *Resource) serverGeneratedIdInIdTemplate() bool {
 // GetServerGeneratedID gets the value of the resource's server-generated ID.
 // There are two cases:
 // (1) If the resource supports a server-generated `spec.resourceID`, return
-//     its value if specified.  If unspecified, continue to case (2) but
-//     extract out the resource ID segment from the server-generated ID field
-//     using the value template of the resource ID field.
+//
+//	its value if specified.  If unspecified, continue to case (2) but
+//	extract out the resource ID segment from the server-generated ID field
+//	using the value template of the resource ID field.
+//
 // (2) If the resource doesn't support a server-generated `spec.resourceID`
-//     field, then look up the field defined in ResourceConfig.ServerGeneratedIDField
-//     in `status` and return its value. Note: this value is not a resource ID,
-//     but a raw value in the status field.
+//
+//	field, then look up the field defined in ResourceConfig.ServerGeneratedIDField
+//	in `status` and return its value. Note: this value is not a resource ID,
+//	but a raw value in the status field.
 func (r *Resource) GetServerGeneratedID() (string, error) {
 	if SupportsResourceIDField(&r.ResourceConfig) && IsResourceIDFieldServerGenerated(&r.ResourceConfig) {
 		id, exists, err := unstructured.NestedString(r.Spec, k8s.ResourceIDFieldName)
@@ -259,8 +262,8 @@ func (r *Resource) GetServerGeneratedID() (string, error) {
 // There are two cases:
 // (1) If `spec.resourceID` is specified, return its value.
 // (2) Otherwise, (happens during KCC upgrade or resource creation), fall back to:
-//     * Value of `metadata.name` if the resource ID is user-specified.
-//     * Value of the server generated ID field in status if the resource ID is
+//   - Value of `metadata.name` if the resource ID is user-specified.
+//   - Value of the server generated ID field in status if the resource ID is
 //     server-generated.
 func (r *Resource) GetResourceID() (string, error) {
 	resourceID, exists, err := unstructured.NestedString(r.Spec, k8s.ResourceIDFieldName)

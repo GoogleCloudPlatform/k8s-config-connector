@@ -1,6 +1,6 @@
 module github.com/GoogleCloudPlatform/k8s-config-connector
 
-go 1.17
+go 1.19
 
 require (
 	cloud.google.com/go/profiler v0.1.0

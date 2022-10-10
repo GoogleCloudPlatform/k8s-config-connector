@@ -130,10 +130,10 @@ func resolveDesiredStateInSpecAndObservedStateInStatus(resource *Resource, state
 }
 
 // There are three scenarios for which we get the location value
-// 1. It is in the spec.location and has been supplied by the customer and is likely an "easy" value like us-central1
-// 2. It is in the state after a terraform import, i.e. the resource name was converted to TF state, and again it has an easy value like #1
-// 3. It is in the state after a terraform Read, in which case it likely came from in a GET response from the given service
-//    and is likely the fully qualified region / zone URL
+//  1. It is in the spec.location and has been supplied by the customer and is likely an "easy" value like us-central1
+//  2. It is in the state after a terraform import, i.e. the resource name was converted to TF state, and again it has an easy value like #1
+//  3. It is in the state after a terraform Read, in which case it likely came from in a GET response from the given service
+//     and is likely the fully qualified region / zone URL
 //
 // It is desired that we retain the 'easy' names from #1 and #2 so those are given precedence
 func getLocationValueFromResourceOrState(resource *Resource, state map[string]interface{}) (interface{}, bool) {
@@ -355,12 +355,12 @@ func getValueFromState(state map[string]interface{}, key string) (string, bool) 
 // appropriate Kind.
 //
 // prevSpec is used for multiple purposes:
-// - ensures the returned result has a similar order for objects in lists, reducing
-//   the percieved diff when applied.
-// - if server-side apply is used, the prevSpec value for a field will be used over
-//   the value in state if it is managed by KCC.
-// - for sets (which are represented as lists), the result is a merger of both the
-//   state and the prevSpec.
+//   - ensures the returned result has a similar order for objects in lists, reducing
+//     the percieved diff when applied.
+//   - if server-side apply is used, the prevSpec value for a field will be used over
+//     the value in state if it is managed by KCC.
+//   - for sets (which are represented as lists), the result is a merger of both the
+//     state and the prevSpec.
 func ConvertTFObjToKCCObj(state map[string]interface{}, prevSpec map[string]interface{},
 	schemas map[string]*tfschema.Schema, rc *corekccv1alpha1.ResourceConfig, prefix string,
 	managedFields *fieldpath.Set) map[string]interface{} {

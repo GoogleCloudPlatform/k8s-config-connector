@@ -49,11 +49,11 @@ func KRMResourceToTFResourceConfig(r *Resource, c client.Client, smLoader *servi
 
 // KRMResourceToTFResourceConfigFull is a more flexible version of KRMResourceToTFResourceConfig,
 // including the following additional flags:
-// - liveState: if set, these values will be used as the default values of the returned tfConfig, subject to
-//       be overriden by r.spec, etc.
-// - jsonSchema: if set, externally managed fields will be populated.
-// - mustResolveSensitiveFields: if set, sensitive fields will be resolved.
-// - defaultLabels: if set, these labels will be added to tfConfig.
+//   - liveState: if set, these values will be used as the default values of the returned tfConfig, subject to
+//     be overriden by r.spec, etc.
+//   - jsonSchema: if set, externally managed fields will be populated.
+//   - mustResolveSensitiveFields: if set, sensitive fields will be resolved.
+//   - defaultLabels: if set, these labels will be added to tfConfig.
 func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader,
 	liveState *terraform.InstanceState, jsonSchema *apiextensions.JSONSchemaProps, mustResolveSensitiveFields bool, defaultLabels map[string]string) (tfConfig *terraform.ResourceConfig, secretVersions map[string]string, err error) {
 	config := deepcopy.MapStringInterface(r.Spec)

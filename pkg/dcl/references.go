@@ -64,15 +64,19 @@ var (
 	}
 )
 
-/**
+/*
+*
 dclReferenceExtensionElem represents an element in a 'x-dcl-references' list.
 ```
- x-dcl-references:
- - field: name
-   parent: true
-   resource: SomeService/SomeResourceType
+
+	x-dcl-references:
+	- field: name
+	  parent: true
+	  resource: SomeService/SomeResourceType
+
 ```
-**/
+*
+*/
 type dclReferenceExtensionElem struct {
 	// Resource indicates the referenced resource type in the format: Service/ResourceKind, e.g. Compute/BackendBucket.
 	Resource string `json:"resource"`

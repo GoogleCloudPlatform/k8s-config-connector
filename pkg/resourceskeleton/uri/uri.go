@@ -77,9 +77,13 @@ var replaceRegex = regexp.MustCompile("(^|/){{.*?}}")
 
 // idTemplateToRegex replaces all fields in the id template that are 'user input' with a wildcard that matches everything except
 // the '/' character, i.e. the id template,
-//     projects/{{project}}/regions/{{region}}/forwardingRules/{{name}}
+//
+//	projects/{{project}}/regions/{{region}}/forwardingRules/{{name}}
+//
 // becomes
-//     projects/[^/]*/regions/[^/]*/forwardingRules/[^/]*
+//
+//	projects/[^/]*/regions/[^/]*/forwardingRules/[^/]*
+//
 // the expression [^/] is a negative match, meaning, match everything that is not a '/'
 func idTemplateToRegex(idTemplate string) string {
 	// add ($|\?.*) to the end of the id template to ensure that the string we are matching 'ends' with either the

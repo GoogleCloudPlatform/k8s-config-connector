@@ -87,7 +87,8 @@ func getPackageFunctionName(i interface{}) string {
 }
 
 // getFullFunctionName returns the fully qualified function name, ex:
-//   github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution.RecoverWithInternalError
+//
+//	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution.RecoverWithInternalError
 func getFullFunctionName(i interface{}) string {
 	return runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()
 }

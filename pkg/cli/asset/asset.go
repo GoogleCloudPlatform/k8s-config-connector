@@ -108,9 +108,12 @@ func matchAssetNameToRC(assetName string, resourceConfigs []v1alpha1.ResourceCon
 var replaceRegex = regexp.MustCompile("/{{.*?}}")
 
 // idTemplateToRegex replaces all fields in the id template that are 'user input' with wildcards, i.e. the id template,
-//     projects/{{project}}/regions/{{region}}/forwardingRules/{{name}}
+//
+//	projects/{{project}}/regions/{{region}}/forwardingRules/{{name}}
+//
 // becomes
-//     projects/.*/regions/.*/forwardingRules/.*
+//
+//	projects/.*/regions/.*/forwardingRules/.*
 func idTemplateToRegex(idTemplate string) string {
 	return replaceRegex.ReplaceAllString(idTemplate, ".*")
 }

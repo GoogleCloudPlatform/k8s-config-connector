@@ -15,7 +15,7 @@
 # This Dockefile builds a thin image containing the manager binary
 
 # Build the manager binary
-FROM golang:1.17 AS builder
+FROM golang:1.19 AS builder
 
 ENV GOFLAGS "-mod=vendor"
 

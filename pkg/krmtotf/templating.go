@@ -60,8 +60,8 @@ func resolveValueTemplateFromInterface(template string, val interface{}, r *Reso
 }
 
 // returns true if the value could have been obtained from the template, i.e. if 'template' is "folders/{{value}}"
-//    * if 'value' is "folders/1234567" the result will be true
-//    * if 'value' is "organizations/1234567" the result will be false
+//   - if 'value' is "folders/1234567" the result will be true
+//   - if 'value' is "organizations/1234567" the result will be false
 func valueMatchesTemplate(template string, value string) bool {
 	if template == "" {
 		return true

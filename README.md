@@ -32,7 +32,7 @@ For simple starter examples, see the [Resource reference](https://cloud.google.c
 - Debian (9/10/11)
 
 ### Software requirements
-- [go 1.17+]
+- [go 1.19+]
 - [git]
 - [make]
 - [jq]
@@ -136,7 +136,7 @@ For simple starter examples, see the [Resource reference](https://cloud.google.c
 
 Please refer to our [contribution guide] for more details.
 
-[go 1.17+]: https://go.dev/doc/install
+[go 1.19+]: https://go.dev/doc/install
 [git]: https://docs.github.com/en/get-started/quickstart/set-up-git
 [make]: https://www.gnu.org/software/make/
 [jq]: https://stedolan.github.io/jq/

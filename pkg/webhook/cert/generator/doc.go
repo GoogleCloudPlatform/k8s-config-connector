@@ -22,6 +22,7 @@ Create an instance of certGenerator.
 	cg := SelfSignedCertGenerator{}
 
 Generate the certificates.
+
 	certs, err := cg.Generate("foo.bar.com")
 	if err != nil {
 		// handle error

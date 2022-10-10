@@ -14,7 +14,7 @@
 
 # This Dockerfile builds an image containing builds of all the binaries built
 # from source (manager, webhook, etc.)
-FROM golang:1.17 AS builder
+FROM golang:1.19 AS builder
 
 ENV GOFLAGS "-mod=vendor"
 

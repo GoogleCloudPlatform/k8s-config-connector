@@ -25,7 +25,7 @@ GOBIN=$(shell go env GOBIN)
 endif
 
 CONTROLLER_GEN := $(GOBIN)/controller-gen
-CONTROLLER_GEN_VERSION := 0.6.2
+CONTROLLER_GEN_VERSION := 0.10.0
 
 all: manager
 
