@@ -15,6 +15,9 @@ and correct drift.
 Warning: We don't recommend having multiple <code>BigtableGCPolicy</code>s for the same
 column family as it may result in unexpected behavior.
 
+Note: <code>BigtableGCPolicy</code>s associated with a replicated table cannot be deleted directly.
+Instead, you must first un-replicate the instance by updating the instance to have one cluster.
+
 <table>
 <thead>
 <tr>
