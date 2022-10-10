@@ -18,7 +18,7 @@
 <th><strong>{{product_name_short}} Resource Name</strong></th>
 </tr>
 </thead>
-<tbody>
+<tbody class="list">
 <tr>
   <td><a href="/access-context-manager/docs/">{{acm_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/accesscontextmanager/accesscontextmanageraccesslevel.md">AccessContextManagerAccessLevel</a></td>
