@@ -16,8 +16,10 @@ package krmtohcl_test
 
 import (
 	"flag"
-	"fmt"
+	"io/fs"
 	"io/ioutil"
+	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/krmtohcl"
@@ -39,42 +41,22 @@ var update = flag.Bool("update", false, "update .golden files")
 func TestUnstructuredToHCL(t *testing.T) {
 	smLoader := testservicemappingloader.New(t)
 	tfProvider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
-	testCases := []struct {
-		Name          string
-		KRMFile       string
-		GoldenHCLFile string
-	}{
-		{
-			Name:          "ComputeInstance",
-			KRMFile:       "computeinstance.yaml",
-			GoldenHCLFile: "computeinstance.golden.tf",
-		},
-		{
-			Name:          "ContainerCluster",
-			KRMFile:       "containercluster.yaml",
-			GoldenHCLFile: "containercluster.golden.tf",
-		},
-		{
-			Name:          "PubSubSubscription",
-			KRMFile:       "pubsubsubscription.yaml",
-			GoldenHCLFile: "pubsubsubscription.golden.tf",
-		},
-		{
-			Name:          "StorageBucket",
-			KRMFile:       "storagebucket.yaml",
-			GoldenHCLFile: "storagebucket.golden.tf",
-		},
-	}
-	for _, tc := range testCases {
-		t.Run(tc.Name, func(t *testing.T) {
-			krmToHCL(t, tc.KRMFile, tc.GoldenHCLFile, smLoader, tfProvider)
+	testDir := "testdata"
+
+	testCases := FindTestCases(t, testDir, ".golden.tf")
+	for _, testCase := range testCases {
+		t.Run(testCase, func(t *testing.T) {
+			krmFile := testCase + ".yaml"
+			goldenHCLFile := testCase + ".golden.tf"
+
+			testUnstructuredToHCL(t, krmFile, goldenHCLFile, smLoader, tfProvider)
 		})
 	}
 }
 
-func krmToHCL(t *testing.T, krmFile, hclFile string, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *schema.Provider) {
+func testUnstructuredToHCL(t *testing.T, krmFile, goldenHCLFile string, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *schema.Provider) {
 	var u unstructured.Unstructured
-	testyaml.UnmarshalFile(t, fmt.Sprintf("testdata/%v", krmFile), &u)
+	testyaml.UnmarshalFile(t, krmFile, &u)
 	// the managed-by-cnrm is removed to test Terraform export for resources which are not managed by KCC.
 	labels := u.GetLabels()
 	delete(labels, "managed-by-cnrm")
@@ -83,7 +65,6 @@ func krmToHCL(t *testing.T, krmFile, hclFile string, smLoader *servicemappingloa
 	if err != nil {
 		t.Fatalf("error converting unstructured to HCL: %v", err)
 	}
-	goldenHCLFile := fmt.Sprintf("testdata/%v", hclFile)
 	if *update {
 		if err := ioutil.WriteFile(goldenHCLFile, []byte(hcl), 0644); err != nil {
 			t.Fatalf("error writing file '%v': %v", goldenHCLFile, err)
@@ -96,4 +77,24 @@ func krmToHCL(t *testing.T, krmFile, hclFile string, smLoader *servicemappingloa
 	goldenHCL := test.TrimLicenseHeaderFromTF(string(bytes))
 	// HCL output is not stable so we do a line by line comparison
 	testcmp.UnorderedLineByLineComparisonIgnoreBlankLines(t, goldenHCL, hcl)
+}
+
+// FindTestCases returns all the test cases under basedir.
+// It only returns ones which match the suffix, and strips the suffix.
+func FindTestCases(t *testing.T, basedir string, suffix string) []string {
+	var cases []string
+	if err := filepath.Walk(basedir, func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		p := path
+		if strings.HasSuffix(p, suffix) {
+			cases = append(cases, strings.TrimSuffix(p, suffix))
+		}
+		return nil
+	}); err != nil {
+		t.Fatalf("error from filepath.Walk(%q): %v", basedir, err)
+	}
+
+	return cases
 }

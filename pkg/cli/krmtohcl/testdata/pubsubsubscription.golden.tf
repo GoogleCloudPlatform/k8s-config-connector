@@ -22,8 +22,8 @@ resource "google_pubsub_subscription" "pubsubsubscription_sample" {
   }
 
   labels = {
-    cnrm-lease-holder-id  = "btpp498colih6qs1pe5g"
     cnrm-lease-expiration = "1603984859"
+    cnrm-lease-holder-id  = "btpp498colih6qs1pe5g"
     label-one             = "value-one"
   }
 

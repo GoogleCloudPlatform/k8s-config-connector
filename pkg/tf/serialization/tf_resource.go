@@ -81,7 +81,13 @@ func resourceOrSubresourceHCL(schema map[string]*tfschema.Schema, attributes map
 			if err != nil {
 				return "", err
 			}
-			for k, v := range m {
+			var keys []string
+			for k := range m {
+				keys = append(keys, k)
+			}
+			sort.Strings(keys)
+			for _, k := range keys {
+				v := m[k]
 				hcl.WriteString(fmt.Sprintf("%s = %q\n", k, v))
 			}
 			hcl.WriteString("}\n")

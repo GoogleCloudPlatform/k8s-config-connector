@@ -30,8 +30,8 @@ resource "google_compute_instance" "computetargetpool_dep4" {
   }
 
   labels = {
-    cnrm-lease-holder-id  = "btpp498colih6qs1pe5g"
     cnrm-lease-expiration = "1603985453"
+    cnrm-lease-holder-id  = "btpp498colih6qs1pe5g"
   }
 
   machine_type            = "n1-standard-1"
