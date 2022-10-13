@@ -23,28 +23,35 @@ controllers, CRDs, install bundles, and sample resource configurations.
 
 See https://cloud.google.com/config-connector/docs/overview.
 
-For simple starter examples, see the [Resource reference](https://cloud.google.com/config-connector/docs/reference/overview) and [Cloud Foundation Toolkit Config Connector Solutions](https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit/tree/master/config-connector/solutions).
+For simple starter examples, see the
+[Resource reference](https://cloud.google.com/config-connector/docs/reference/overview)
+and
+[Cloud Foundation Toolkit Config Connector Solutions](https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit/tree/master/config-connector/solutions).
 
 ## Building Config Connector
 
 ### Recommended Operating System
-- Ubuntu (18.04/20.04)
-- Debian (9/10/11)
+
+-   Ubuntu (18.04/20.04)
+-   Debian (9/10/11)
 
 ### Software requirements
-- [go 1.19+]
-- [git]
-- [make]
-- [jq]
-- [kubebuilder 2.3.1]
-- [kustomize 3.5.4]
-- [kube-apiserver 1.21.0]
+
+-   [go 1.19+]
+-   [git]
+-   [make]
+-   [jq]
+-   [kubebuilder 2.3.1]
+-   [kustomize 3.5.4]
+-   [kube-apiserver 1.21.0]
 
 ### Set up your environment
 
 #### Option 1: Set up an environment in a fresh VM (recommended)
 
-1.  Create an Ubuntu 20.04 [VM](https://cloud.google.com/compute/docs/create-linux-vm-instance) on Google Cloud.
+1.  Create an Ubuntu 20.04
+    [VM](https://cloud.google.com/compute/docs/create-linux-vm-instance) on
+    Google Cloud.
 
 1.  Open an SSH connection to the VM.
 
@@ -75,9 +82,23 @@ For simple starter examples, see the [Resource reference](https://cloud.google.c
     cd ~/go/src/github.com/GoogleCloudPlatform/k8s-config-connector/scripts/environment-setup
     ```
 
+1.  Set up sudoless Docker.
+
+    ```shell
+    ./docker-setup.sh
+    ```
+
+1.  Exit your current session, then SSH back in to the VM. Then run the
+    following to ensure you have set up sudoless docker correctly:
+
+    ```shell
+    docker run hello-world
+    ```
+
 1.  Install Golang.
 
     ```shell
+    cd ~/go/src/github.com/GoogleCloudPlatform/k8s-config-connector/scripts/environment-setup
     ./golang-setup.sh
     source ~/.profile
     ```
