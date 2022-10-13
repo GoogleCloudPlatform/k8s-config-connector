@@ -1,0 +1,11 @@
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogSink
+metadata:
+  name: logginglogsink-sample-folder
+spec:
+  folderRef:
+    external: logginglogsink-dep-folder
+  destination:
+    bigQueryDatasetRef:
+      external: logginglogsinkdepfolder
+  filter: resource.type="bigquery_project" AND logName:"cloudaudit.googleapis.com"
