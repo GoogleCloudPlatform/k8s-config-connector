@@ -29,6 +29,15 @@ If you want authoritative control over bindings, use
 If you want to manage the binding for only a single {{iam_name_short}} member, use
 <a href="/config-connector/docs/reference/resource-docs/iam/iampolicymember">IAMPolicyMember</a>.
 
+Warning: <code>IAMPartialPolicy</code> **should not** be used in conjunction with
+<code>IAMPolicy</code> for the same resource.
+
+Note: When you delete an <code>IAMPartialPolicy</code>, only the bindings specified in
+<code>spec</code> are deleted from the associated {{gcp_name_short}}
+resource's {{iam_name_short}} policy.
+
+Note: Updating <code>spec.resourceRef</code> is not allowed.
+
 <table>
 <thead>
 <tr>
@@ -74,15 +83,6 @@ If you want to manage the binding for only a single {{iam_name_short}} member, u
 
 </tbody>
 </table>
-
-Warning: <code>IAMPartialPolicy</code> **should not** be used in conjunction with
-<code>IAMPolicy</code> for the same resource.
-
-Note: When you delete an <code>IAMPartialPolicy</code>, only the bindings specified in
-<code>spec</code> are deleted from the associated {{gcp_name_short}}
-resource's {{iam_name_short}} policy.
-
-Note: Updating <code>spec.resourceRef</code> is not allowed.
 
 ## Supported Resources
 

@@ -20,6 +20,15 @@ If you want to manage multiple bindings, use
 If you want authoritative control over bindings, use
 <a href="/config-connector/docs/reference/resource-docs/iam/iampolicy">IAMPolicy</a>.
 
+Warning: <code>IAMPolicyMember</code> **should not** be used in conjunction with
+<code>IAMPolicy</code> for the same resource.
+
+Note: When you delete an <code>IAMPolicyMember</code>, only the binding for the given
+{{iam_name_short}} member and role is deleted from the associated
+{{gcp_name_short}} resource's {{iam_name_short}} policy.
+
+Note: Updating <code>spec</code> is not allowed.
+
 <table>
 <thead>
 <tr>
@@ -65,15 +74,6 @@ If you want authoritative control over bindings, use
 
 </tbody>
 </table>
-
-Warning: <code>IAMPolicyMember</code> **should not** be used in conjunction with
-<code>IAMPolicy</code> for the same resource.
-
-Note: When you delete an <code>IAMPolicyMember</code>, only the binding for the given
-{{iam_name_short}} member and role is deleted from the associated
-{{gcp_name_short}} resource's {{iam_name_short}} policy.
-
-Note: Updating <code>spec</code> is not allowed.
 
 ## Supported Resources
 

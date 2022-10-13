@@ -20,6 +20,25 @@ or <a href="/config-connector/docs/reference/resource-docs/iam/iampolicymember">
 If you want finer-grained control over audit configs, use
 <a href="/config-connector/docs/reference/resource-docs/iam/iamauditconfig">IAMAuditConfig</a>.
 
+Warning: Any existing bindings and audit configs are overwritten if not specified in the
+<code>IAMPolicy</code> resource. You can lock yourself out of your own
+{{gcp_name_short}} project by omitting the default bindings which grant
+you access. You can also cause some {{gcp_name_short}} services to stop
+working properly by omitting the default bindings created for default service
+accounts (for example, <a
+href="/compute/docs/access/service-accounts#google-managed_service_accounts">default
+{{gce_name_short}} service accounts</a>).
+
+Warning: When you delete an <code>IAMPolicy</code>, all the bindings and audit
+configs in the associated {{gcp_name_short}} resource's
+{{iam_name_short}} policy are deleted.
+
+Warning: <code>IAMPolicy</code> **should not**
+be used in conjunction with <code>IAMPolicyMember</code>,
+<code>IAMAuditConfig</code>, and <code>IAMPartialPolicy</code> for the same resource.
+
+Note: Updating <code>spec.resourceRef</code> is not allowed.
+
 <table>
 <thead>
 <tr>
@@ -65,25 +84,6 @@ If you want finer-grained control over audit configs, use
 
 </tbody>
 </table>
-
-Warning: Any existing bindings and audit configs are overwritten if not specified in the
-<code>IAMPolicy</code> resource. You can lock yourself out of your own
-{{gcp_name_short}} project by omitting the default bindings which grant
-you access. You can also cause some {{gcp_name_short}} services to stop
-working properly by omitting the default bindings created for default service
-accounts (for example, <a
-href="/compute/docs/access/service-accounts#google-managed_service_accounts">default
-{{gce_name_short}} service accounts</a>).
-
-Warning: When you delete an <code>IAMPolicy</code>, all the bindings and audit
-configs in the associated {{gcp_name_short}} resource's
-{{iam_name_short}} policy are deleted.
-
-Warning: <code>IAMPolicy</code> **should not**
-be used in conjunction with <code>IAMPolicyMember</code>,
-<code>IAMAuditConfig</code>, and <code>IAMPartialPolicy</code> for the same resource.
-
-Note: Updating <code>spec.resourceRef</code> is not allowed.
 
 ## Supported Resources
 

@@ -21,6 +21,12 @@ resource's {{iam_name_short}} policy.
 If you want to manage multiple audit configs, use
 <a href="/config-connector/docs/reference/resource-docs/iam/iampolicy">IAMPolicy</a>.
 
+Warning: <code>IAMAuditConfig</code> **should not** be used in conjunction with
+<code>IAMPolicy</code> for the same resource.
+
+Note: Updating <code>spec.service</code> and <code>spec.resourceRef</code> is
+not allowed.
+
 <table>
 <thead>
 <tr>
@@ -66,12 +72,6 @@ If you want to manage multiple audit configs, use
 
 </tbody>
 </table>
-
-Warning: <code>IAMAuditConfig</code> **should not** be used in conjunction with
-<code>IAMPolicy</code> for the same resource.
-
-Note: Updating <code>spec.service</code> and <code>spec.resourceRef</code> is
-not allowed.
 
 ## Supported Resources
 
