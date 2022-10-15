@@ -17,18 +17,21 @@ package mocktests
 import (
 	"context"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testreconciler "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller/reconciler"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 	tfgooglebeta "github.com/hashicorp/terraform-provider-google-beta/google-beta"
 	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	"sigs.k8s.io/yaml"
 )
 
 type httpRoundTripperKeyType int
@@ -48,9 +51,19 @@ func TestSecretManagerSecretVersion(t *testing.T) {
 	h.WithObjects(objects...)
 
 	t.Logf("creating mock cloud")
-	mockCloud := NewMockRoundTripper()
-	recorder := NewRecorder(mockCloud)
-	roundTripper := recorder
+
+	mockCloud := mockgcp.NewMockRoundTripper(t, h.Client, storage.NewInMemoryStorage())
+
+	roundTripper := http.RoundTripper(mockCloud)
+
+	artifacts := os.Getenv("ARTIFACTS")
+	if artifacts == "" {
+		t.Logf("env var ARTIFACTS is not set; will not record http log")
+	} else {
+		outputDir := filepath.Join(artifacts, "http-logs")
+
+		roundTripper = test.NewHTTPRecorder(mockCloud, outputDir)
+	}
 
 	h.Ctx = context.WithValue(h.Ctx, httpRoundTripperKey, roundTripper)
 
@@ -113,14 +126,5 @@ func TestSecretManagerSecretVersion(t *testing.T) {
 		if err != nil {
 			t.Errorf("reconcile failed: %v", err)
 		}
-
-		for _, request := range recorder.Requests {
-			y, err := yaml.Marshal(request)
-			if err != nil {
-				t.Fatalf("error from yaml.Marshal: %v", err)
-			}
-			t.Logf("request\n%s", string(y))
-		}
-		recorder.Requests = nil
 	}
 }

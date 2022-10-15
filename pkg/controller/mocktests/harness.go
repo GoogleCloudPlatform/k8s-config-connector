@@ -145,6 +145,9 @@ func (h *Harness) WithObjects(initObjs ...*unstructured.Unstructured) {
 
 	h.restConfig = &rest.Config{
 		Host: addr.String(),
+		ContentConfig: rest.ContentConfig{
+			ContentType: "application/json",
+		},
 	}
 
 	client, err := client.New(h.restConfig, client.Options{})

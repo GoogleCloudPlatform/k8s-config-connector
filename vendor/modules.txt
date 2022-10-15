@@ -23,6 +23,12 @@ cloud.google.com/go/iam
 # cloud.google.com/go/profiler v0.1.0
 ## explicit; go 1.16
 cloud.google.com/go/profiler
+# github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp v0.0.0-00010101000000-000000000000 => ./mockgcp
+## explicit; go 1.19
+github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp
+github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/secretmanager/v1
+github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecretmanager
+github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage
 # contrib.go.opencensus.io/exporter/prometheus v0.1.0
 ## explicit
 contrib.go.opencensus.io/exporter/prometheus
@@ -468,6 +474,11 @@ github.com/grpc-ecosystem/go-grpc-middleware/logging
 github.com/grpc-ecosystem/go-grpc-middleware/logging/logrus
 github.com/grpc-ecosystem/go-grpc-middleware/logging/logrus/ctxlogrus
 github.com/grpc-ecosystem/go-grpc-middleware/tags
+# github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3
+## explicit; go 1.17
+github.com/grpc-ecosystem/grpc-gateway/v2/internal/httprule
+github.com/grpc-ecosystem/grpc-gateway/v2/runtime
+github.com/grpc-ecosystem/grpc-gateway/v2/utilities
 # github.com/hashicorp/errwrap v1.0.0
 ## explicit
 github.com/hashicorp/errwrap
@@ -989,7 +1000,6 @@ google.golang.org/api/option/internaloption
 google.golang.org/api/pubsub/v1
 google.golang.org/api/redis/v1
 google.golang.org/api/runtimeconfig/v1beta1
-google.golang.org/api/secretmanager/v1
 google.golang.org/api/servicemanagement/v1
 google.golang.org/api/servicenetworking/v1
 google.golang.org/api/serviceusage/v1
@@ -1025,8 +1035,10 @@ google.golang.org/appengine/urlfetch
 ## explicit; go 1.19
 google.golang.org/genproto/googleapis/api/annotations
 google.golang.org/genproto/googleapis/api/expr/v1alpha1
+google.golang.org/genproto/googleapis/api/httpbody
 google.golang.org/genproto/googleapis/bigtable/admin/v2
 google.golang.org/genproto/googleapis/bigtable/v2
+google.golang.org/genproto/googleapis/cloud/secretmanager/v1
 google.golang.org/genproto/googleapis/devtools/cloudprofiler/v2
 google.golang.org/genproto/googleapis/iam/v1
 google.golang.org/genproto/googleapis/longrunning
@@ -1729,4 +1741,5 @@ sigs.k8s.io/structured-merge-diff/v4/value
 # sigs.k8s.io/yaml v1.3.0
 ## explicit; go 1.12
 sigs.k8s.io/yaml
+# github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 # github.com/hashicorp/terraform-provider-google-beta => ./third_party/github.com/hashicorp/terraform-provider-google-beta
