@@ -934,6 +934,7 @@ type backupDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         backupApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToBackupDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]backupDiff, error) {
@@ -953,7 +954,8 @@ func convertFieldDiffsToBackupDiffs(config *dcl.Config, fds []*dcl.FieldDiff, op
 	var diffs []backupDiff
 	// For each operation name, create a backupDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := backupDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := backupDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

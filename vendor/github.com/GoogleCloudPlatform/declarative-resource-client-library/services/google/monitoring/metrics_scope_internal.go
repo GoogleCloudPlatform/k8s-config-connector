@@ -616,6 +616,7 @@ type metricsScopeDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         metricsScopeApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToMetricsScopeDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]metricsScopeDiff, error) {
@@ -635,7 +636,8 @@ func convertFieldDiffsToMetricsScopeDiffs(config *dcl.Config, fds []*dcl.FieldDi
 	var diffs []metricsScopeDiff
 	// For each operation name, create a metricsScopeDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := metricsScopeDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := metricsScopeDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

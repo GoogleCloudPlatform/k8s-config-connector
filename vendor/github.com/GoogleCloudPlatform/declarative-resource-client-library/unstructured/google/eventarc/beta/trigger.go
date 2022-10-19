@@ -32,6 +32,16 @@ func TriggerToUnstructured(r *dclService.Trigger) *unstructured.Resource {
 		},
 		Object: make(map[string]interface{}),
 	}
+	if r.Channel != nil {
+		u.Object["channel"] = *r.Channel
+	}
+	if r.Conditions != nil {
+		rConditions := make(map[string]interface{})
+		for k, v := range r.Conditions {
+			rConditions[k] = v
+		}
+		u.Object["conditions"] = rConditions
+	}
 	if r.CreateTime != nil {
 		u.Object["createTime"] = *r.CreateTime
 	}
@@ -139,6 +149,26 @@ func TriggerToUnstructured(r *dclService.Trigger) *unstructured.Resource {
 
 func UnstructuredToTrigger(u *unstructured.Resource) (*dclService.Trigger, error) {
 	r := &dclService.Trigger{}
+	if _, ok := u.Object["channel"]; ok {
+		if s, ok := u.Object["channel"].(string); ok {
+			r.Channel = dcl.String(s)
+		} else {
+			return nil, fmt.Errorf("r.Channel: expected string")
+		}
+	}
+	if _, ok := u.Object["conditions"]; ok {
+		if rConditions, ok := u.Object["conditions"].(map[string]interface{}); ok {
+			m := make(map[string]string)
+			for k, v := range rConditions {
+				if s, ok := v.(string); ok {
+					m[k] = s
+				}
+			}
+			r.Conditions = m
+		} else {
+			return nil, fmt.Errorf("r.Conditions: expected map[string]interface{}")
+		}
+	}
 	if _, ok := u.Object["createTime"]; ok {
 		if s, ok := u.Object["createTime"].(string); ok {
 			r.CreateTime = dcl.String(s)

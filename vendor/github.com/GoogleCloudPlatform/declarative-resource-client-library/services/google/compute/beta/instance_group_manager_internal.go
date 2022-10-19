@@ -4133,14 +4133,14 @@ func compareInstanceGroupManagerStatefulPolicyPreservedStateNewStyle(d, a interf
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InternalIps, actual.InternalIps, dcl.DiffInfo{ObjectFunction: compareInstanceGroupManagerStatefulPolicyPreservedStateInternalIpsNewStyle, EmptyObject: EmptyInstanceGroupManagerStatefulPolicyPreservedStateInternalIps, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InternalIPs")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InternalIps, actual.InternalIps, dcl.DiffInfo{ObjectFunction: compareInstanceGroupManagerStatefulPolicyPreservedStateInternalIpsNewStyle, EmptyObject: EmptyInstanceGroupManagerStatefulPolicyPreservedStateInternalIps, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InternalIps")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExternalIps, actual.ExternalIps, dcl.DiffInfo{ObjectFunction: compareInstanceGroupManagerStatefulPolicyPreservedStateExternalIpsNewStyle, EmptyObject: EmptyInstanceGroupManagerStatefulPolicyPreservedStateExternalIps, OperationSelector: dcl.TriggersOperation("updateInstanceGroupManagerPatchOperation")}, fn.AddNest("ExternalIPs")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExternalIps, actual.ExternalIps, dcl.DiffInfo{ObjectFunction: compareInstanceGroupManagerStatefulPolicyPreservedStateExternalIpsNewStyle, EmptyObject: EmptyInstanceGroupManagerStatefulPolicyPreservedStateExternalIps, OperationSelector: dcl.TriggersOperation("updateInstanceGroupManagerPatchOperation")}, fn.AddNest("ExternalIps")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -6337,14 +6337,14 @@ func expandInstanceGroupManagerStatefulPolicyPreservedState(c *Client, f *Instan
 		m["disks"] = v
 	}
 	if v, err := expandInstanceGroupManagerStatefulPolicyPreservedStateInternalIpsMap(c, f.InternalIps, res); err != nil {
-		return nil, fmt.Errorf("error expanding InternalIps into internalIPs: %w", err)
+		return nil, fmt.Errorf("error expanding InternalIps into internalIps: %w", err)
 	} else if !dcl.IsEmptyValueIndirect(v) {
-		m["internalIPs"] = v
+		m["internalIps"] = v
 	}
 	if v, err := expandInstanceGroupManagerStatefulPolicyPreservedStateExternalIpsMap(c, f.ExternalIps, res); err != nil {
-		return nil, fmt.Errorf("error expanding ExternalIps into externalIPs: %w", err)
+		return nil, fmt.Errorf("error expanding ExternalIps into externalIps: %w", err)
 	} else if !dcl.IsEmptyValueIndirect(v) {
-		m["externalIPs"] = v
+		m["externalIps"] = v
 	}
 
 	return m, nil
@@ -6364,8 +6364,8 @@ func flattenInstanceGroupManagerStatefulPolicyPreservedState(c *Client, i interf
 		return EmptyInstanceGroupManagerStatefulPolicyPreservedState
 	}
 	r.Disks = flattenInstanceGroupManagerStatefulPolicyPreservedStateDisksMap(c, m["disks"], res)
-	r.InternalIps = flattenInstanceGroupManagerStatefulPolicyPreservedStateInternalIpsMap(c, m["internalIPs"], res)
-	r.ExternalIps = flattenInstanceGroupManagerStatefulPolicyPreservedStateExternalIpsMap(c, m["externalIPs"], res)
+	r.InternalIps = flattenInstanceGroupManagerStatefulPolicyPreservedStateInternalIpsMap(c, m["internalIps"], res)
+	r.ExternalIps = flattenInstanceGroupManagerStatefulPolicyPreservedStateExternalIpsMap(c, m["externalIps"], res)
 
 	return r
 }
@@ -7268,6 +7268,7 @@ type instanceGroupManagerDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         instanceGroupManagerApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToInstanceGroupManagerDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]instanceGroupManagerDiff, error) {
@@ -7287,7 +7288,8 @@ func convertFieldDiffsToInstanceGroupManagerDiffs(config *dcl.Config, fds []*dcl
 	var diffs []instanceGroupManagerDiff
 	// For each operation name, create a instanceGroupManagerDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := instanceGroupManagerDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := instanceGroupManagerDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

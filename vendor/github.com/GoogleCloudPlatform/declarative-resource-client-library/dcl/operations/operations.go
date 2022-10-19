@@ -54,11 +54,11 @@ func (e *StandardGCPOperationError) String() string {
 	}
 	var b strings.Builder
 	for _, err := range e.Errors {
-		fmt.Fprintf(&b, "error code %q, message: %s\n", err.Code, err.Message)
+		fmt.Fprintf(&b, "error code %q, message: %s, details: %+v\n", err.Code, err.Message, err.Details)
 	}
 
 	if e.Code != "" {
-		fmt.Fprintf(&b, "error code %q, message: %s\n", e.Code, e.Message)
+		fmt.Fprintf(&b, "error code %q, message: %s, details: %+v\n", e.Code, e.Message, e.Details)
 	}
 
 	return b.String()
@@ -66,8 +66,9 @@ func (e *StandardGCPOperationError) String() string {
 
 // StandardGCPOperationErrorError is a singular error in a GCP operation.
 type StandardGCPOperationErrorError struct {
-	Code    json.Number `json:"code"`
-	Message string      `json:"message"`
+	Code    json.Number              `json:"code"`
+	Message string                   `json:"message"`
+	Details []map[string]interface{} `json:"details"`
 }
 
 // Wait waits for an StandardGCPOperation to complete by fetching the operation until it completes.

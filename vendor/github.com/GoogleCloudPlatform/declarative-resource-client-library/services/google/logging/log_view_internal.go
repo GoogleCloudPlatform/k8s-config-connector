@@ -742,6 +742,7 @@ type logViewDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         logViewApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToLogViewDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]logViewDiff, error) {
@@ -761,7 +762,8 @@ func convertFieldDiffsToLogViewDiffs(config *dcl.Config, fds []*dcl.FieldDiff, o
 	var diffs []logViewDiff
 	// For each operation name, create a logViewDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := logViewDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := logViewDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

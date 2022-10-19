@@ -76,6 +76,10 @@ Warning: Configuring a Cloud Function is not supported in EventarcTrigger as of 
 ### Spec
 #### Schema
 ```yaml
+channelRef:
+  external: string
+  name: string
+  namespace: string
 destination:
   cloudFunctionRef:
     external: string
@@ -130,6 +134,47 @@ transport:
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td>
+            <p><code>channelRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>channelRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The name of the channel associated with the trigger in `projects/{project}/locations/{location}/channels/{channel}` format. You must provide a channel to receive events from Eventarc SaaS partners.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>channelRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}[WARNING] EventarcChannel not yet supported in Config Connector, use &#39;external&#39; field to reference existing resources.
+Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>channelRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
     <tr>
         <td>
             <p><code>destination</code></p>
@@ -622,6 +667,8 @@ conditions:
 createTime: string
 etag: string
 observedGeneration: integer
+resourceConditions:
+  string: string
 transport:
   pubsub:
     subscription: string
@@ -704,6 +751,13 @@ updateTime: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>resourceConditions</code></td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}Output only. The reason(s) why a trigger is in FAILED state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

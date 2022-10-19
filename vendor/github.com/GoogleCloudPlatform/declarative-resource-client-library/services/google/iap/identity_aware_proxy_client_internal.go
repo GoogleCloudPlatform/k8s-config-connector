@@ -603,6 +603,7 @@ type identityAwareProxyClientDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         identityAwareProxyClientApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToIdentityAwareProxyClientDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]identityAwareProxyClientDiff, error) {
@@ -622,7 +623,8 @@ func convertFieldDiffsToIdentityAwareProxyClientDiffs(config *dcl.Config, fds []
 	var diffs []identityAwareProxyClientDiff
 	// For each operation name, create a identityAwareProxyClientDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := identityAwareProxyClientDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := identityAwareProxyClientDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

@@ -713,7 +713,7 @@ func compareNetworkRoutingConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.RoutingMode, actual.RoutingMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RoutingMode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RoutingMode, actual.RoutingMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateNetworkUpdateOperation")}, fn.AddNest("RoutingMode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1043,6 +1043,7 @@ type networkDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         networkApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToNetworkDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]networkDiff, error) {
@@ -1062,7 +1063,8 @@ func convertFieldDiffsToNetworkDiffs(config *dcl.Config, fds []*dcl.FieldDiff, o
 	var diffs []networkDiff
 	// For each operation name, create a networkDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := networkDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := networkDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

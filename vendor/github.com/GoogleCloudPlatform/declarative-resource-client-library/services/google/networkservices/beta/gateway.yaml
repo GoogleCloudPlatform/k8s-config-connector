@@ -63,6 +63,7 @@ components:
       title: Gateway
       x-dcl-id: projects/{{project}}/locations/{{location}}/gateways/{{name}}
       x-dcl-parent-container: project
+      x-dcl-labels: labels
       x-dcl-has-create: true
       x-dcl-has-iam: false
       x-dcl-read-timeout: 0
@@ -177,12 +178,12 @@ components:
           x-dcl-go-name: Type
           x-dcl-go-type: GatewayTypeEnum
           description: 'Immutable. The type of the customer managed gateway. Possible
-            values: MATCH_TYPE_UNSPECIFIED, MATCH_ANY, MATCH_ALL'
+            values: TYPE_UNSPECIFIED, OPEN_MESH, SECURE_WEB_GATEWAY'
           x-kubernetes-immutable: true
           enum:
-          - MATCH_TYPE_UNSPECIFIED
-          - MATCH_ANY
-          - MATCH_ALL
+          - TYPE_UNSPECIFIED
+          - OPEN_MESH
+          - SECURE_WEB_GATEWAY
         updateTime:
           type: string
           format: date-time

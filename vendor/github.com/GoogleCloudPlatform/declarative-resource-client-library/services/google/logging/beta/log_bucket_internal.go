@@ -758,6 +758,7 @@ type logBucketDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         logBucketApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToLogBucketDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]logBucketDiff, error) {
@@ -777,7 +778,8 @@ func convertFieldDiffsToLogBucketDiffs(config *dcl.Config, fds []*dcl.FieldDiff,
 	var diffs []logBucketDiff
 	// For each operation name, create a logBucketDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := logBucketDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := logBucketDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

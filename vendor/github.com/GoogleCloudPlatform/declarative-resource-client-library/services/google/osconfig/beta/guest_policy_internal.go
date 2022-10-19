@@ -4618,35 +4618,35 @@ func compareGuestPolicyAssignmentNewStyle(d, a interface{}, fn dcl.FieldName) ([
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.GroupLabels, actual.GroupLabels, dcl.DiffInfo{ObjectFunction: compareGuestPolicyAssignmentGroupLabelsNewStyle, EmptyObject: EmptyGuestPolicyAssignmentGroupLabels, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GroupLabels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GroupLabels, actual.GroupLabels, dcl.DiffInfo{ObjectFunction: compareGuestPolicyAssignmentGroupLabelsNewStyle, EmptyObject: EmptyGuestPolicyAssignmentGroupLabels, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("GroupLabels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Zones, actual.Zones, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Zones")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Zones, actual.Zones, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Zones")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Instances, actual.Instances, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Instances")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Instances, actual.Instances, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Instances")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InstanceNamePrefixes, actual.InstanceNamePrefixes, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InstanceNamePrefixes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InstanceNamePrefixes, actual.InstanceNamePrefixes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("InstanceNamePrefixes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OSTypes, actual.OSTypes, dcl.DiffInfo{ObjectFunction: compareGuestPolicyAssignmentOSTypesNewStyle, EmptyObject: EmptyGuestPolicyAssignmentOSTypes, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("OsTypes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OSTypes, actual.OSTypes, dcl.DiffInfo{ObjectFunction: compareGuestPolicyAssignmentOSTypesNewStyle, EmptyObject: EmptyGuestPolicyAssignmentOSTypes, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("OsTypes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4675,7 +4675,7 @@ func compareGuestPolicyAssignmentGroupLabelsNewStyle(d, a interface{}, fn dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Labels, actual.Labels, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Labels")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4704,21 +4704,21 @@ func compareGuestPolicyAssignmentOSTypesNewStyle(d, a interface{}, fn dcl.FieldN
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.OSShortName, actual.OSShortName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("OsShortName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OSShortName, actual.OSShortName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("OsShortName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OSVersion, actual.OSVersion, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("OsVersion")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OSVersion, actual.OSVersion, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("OsVersion")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.OSArchitecture, actual.OSArchitecture, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("OsArchitecture")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.OSArchitecture, actual.OSArchitecture, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("OsArchitecture")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4747,21 +4747,21 @@ func compareGuestPolicyPackagesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DesiredState, actual.DesiredState, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DesiredState")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DesiredState, actual.DesiredState, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("DesiredState")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Manager, actual.Manager, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Manager")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Manager, actual.Manager, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Manager")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4790,28 +4790,28 @@ func compareGuestPolicyPackageRepositoriesNewStyle(d, a interface{}, fn dcl.Fiel
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Apt, actual.Apt, dcl.DiffInfo{ObjectFunction: compareGuestPolicyPackageRepositoriesAptNewStyle, EmptyObject: EmptyGuestPolicyPackageRepositoriesApt, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Apt")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Apt, actual.Apt, dcl.DiffInfo{ObjectFunction: compareGuestPolicyPackageRepositoriesAptNewStyle, EmptyObject: EmptyGuestPolicyPackageRepositoriesApt, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Apt")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Yum, actual.Yum, dcl.DiffInfo{ObjectFunction: compareGuestPolicyPackageRepositoriesYumNewStyle, EmptyObject: EmptyGuestPolicyPackageRepositoriesYum, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Yum")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Yum, actual.Yum, dcl.DiffInfo{ObjectFunction: compareGuestPolicyPackageRepositoriesYumNewStyle, EmptyObject: EmptyGuestPolicyPackageRepositoriesYum, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Yum")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Zypper, actual.Zypper, dcl.DiffInfo{ObjectFunction: compareGuestPolicyPackageRepositoriesZypperNewStyle, EmptyObject: EmptyGuestPolicyPackageRepositoriesZypper, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Zypper")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Zypper, actual.Zypper, dcl.DiffInfo{ObjectFunction: compareGuestPolicyPackageRepositoriesZypperNewStyle, EmptyObject: EmptyGuestPolicyPackageRepositoriesZypper, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Zypper")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Goo, actual.Goo, dcl.DiffInfo{ObjectFunction: compareGuestPolicyPackageRepositoriesGooNewStyle, EmptyObject: EmptyGuestPolicyPackageRepositoriesGoo, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Goo")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Goo, actual.Goo, dcl.DiffInfo{ObjectFunction: compareGuestPolicyPackageRepositoriesGooNewStyle, EmptyObject: EmptyGuestPolicyPackageRepositoriesGoo, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Goo")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4840,35 +4840,35 @@ func compareGuestPolicyPackageRepositoriesAptNewStyle(d, a interface{}, fn dcl.F
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ArchiveType, actual.ArchiveType, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ArchiveType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ArchiveType, actual.ArchiveType, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("ArchiveType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Distribution, actual.Distribution, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Distribution")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Distribution, actual.Distribution, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Distribution")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Components, actual.Components, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Components")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Components, actual.Components, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Components")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GpgKey, actual.GpgKey, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GpgKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GpgKey, actual.GpgKey, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("GpgKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4897,28 +4897,28 @@ func compareGuestPolicyPackageRepositoriesYumNewStyle(d, a interface{}, fn dcl.F
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BaseUrl, actual.BaseUrl, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("BaseUrl")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BaseUrl, actual.BaseUrl, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("BaseUrl")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GpgKeys, actual.GpgKeys, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GpgKeys")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GpgKeys, actual.GpgKeys, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("GpgKeys")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4947,28 +4947,28 @@ func compareGuestPolicyPackageRepositoriesZypperNewStyle(d, a interface{}, fn dc
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DisplayName, actual.DisplayName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("DisplayName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BaseUrl, actual.BaseUrl, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("BaseUrl")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BaseUrl, actual.BaseUrl, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("BaseUrl")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GpgKeys, actual.GpgKeys, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GpgKeys")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GpgKeys, actual.GpgKeys, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("GpgKeys")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4997,14 +4997,14 @@ func compareGuestPolicyPackageRepositoriesGooNewStyle(d, a interface{}, fn dcl.F
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5033,42 +5033,42 @@ func compareGuestPolicyRecipesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Version, actual.Version, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Version")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Version, actual.Version, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Version")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Artifacts, actual.Artifacts, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesArtifactsNewStyle, EmptyObject: EmptyGuestPolicyRecipesArtifacts, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Artifacts")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Artifacts, actual.Artifacts, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesArtifactsNewStyle, EmptyObject: EmptyGuestPolicyRecipesArtifacts, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Artifacts")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InstallSteps, actual.InstallSteps, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesInstallStepsNewStyle, EmptyObject: EmptyGuestPolicyRecipesInstallSteps, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InstallSteps")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InstallSteps, actual.InstallSteps, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesInstallStepsNewStyle, EmptyObject: EmptyGuestPolicyRecipesInstallSteps, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("InstallSteps")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UpdateSteps, actual.UpdateSteps, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesUpdateStepsNewStyle, EmptyObject: EmptyGuestPolicyRecipesUpdateSteps, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UpdateSteps")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UpdateSteps, actual.UpdateSteps, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesUpdateStepsNewStyle, EmptyObject: EmptyGuestPolicyRecipesUpdateSteps, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("UpdateSteps")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DesiredState, actual.DesiredState, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DesiredState")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DesiredState, actual.DesiredState, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("DesiredState")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5097,28 +5097,28 @@ func compareGuestPolicyRecipesArtifactsNewStyle(d, a interface{}, fn dcl.FieldNa
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Id, actual.Id, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Id")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Remote, actual.Remote, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesArtifactsRemoteNewStyle, EmptyObject: EmptyGuestPolicyRecipesArtifactsRemote, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Remote")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Remote, actual.Remote, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesArtifactsRemoteNewStyle, EmptyObject: EmptyGuestPolicyRecipesArtifactsRemote, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Remote")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Gcs, actual.Gcs, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesArtifactsGcsNewStyle, EmptyObject: EmptyGuestPolicyRecipesArtifactsGcs, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Gcs")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Gcs, actual.Gcs, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesArtifactsGcsNewStyle, EmptyObject: EmptyGuestPolicyRecipesArtifactsGcs, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Gcs")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowInsecure, actual.AllowInsecure, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AllowInsecure")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowInsecure, actual.AllowInsecure, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("AllowInsecure")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5147,14 +5147,14 @@ func compareGuestPolicyRecipesArtifactsRemoteNewStyle(d, a interface{}, fn dcl.F
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Uri, actual.Uri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Uri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Checksum, actual.Checksum, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Checksum")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Checksum, actual.Checksum, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Checksum")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5183,21 +5183,21 @@ func compareGuestPolicyRecipesArtifactsGcsNewStyle(d, a interface{}, fn dcl.Fiel
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Bucket, actual.Bucket, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Bucket")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Object, actual.Object, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Object")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Generation, actual.Generation, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Generation")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Generation, actual.Generation, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Generation")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5226,49 +5226,49 @@ func compareGuestPolicyRecipesInstallStepsNewStyle(d, a interface{}, fn dcl.Fiel
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.FileCopy, actual.FileCopy, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesInstallStepsFileCopyNewStyle, EmptyObject: EmptyGuestPolicyRecipesInstallStepsFileCopy, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FileCopy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FileCopy, actual.FileCopy, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesInstallStepsFileCopyNewStyle, EmptyObject: EmptyGuestPolicyRecipesInstallStepsFileCopy, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("FileCopy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ArchiveExtraction, actual.ArchiveExtraction, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesInstallStepsArchiveExtractionNewStyle, EmptyObject: EmptyGuestPolicyRecipesInstallStepsArchiveExtraction, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ArchiveExtraction")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ArchiveExtraction, actual.ArchiveExtraction, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesInstallStepsArchiveExtractionNewStyle, EmptyObject: EmptyGuestPolicyRecipesInstallStepsArchiveExtraction, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("ArchiveExtraction")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MsiInstallation, actual.MsiInstallation, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesInstallStepsMsiInstallationNewStyle, EmptyObject: EmptyGuestPolicyRecipesInstallStepsMsiInstallation, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MsiInstallation")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MsiInstallation, actual.MsiInstallation, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesInstallStepsMsiInstallationNewStyle, EmptyObject: EmptyGuestPolicyRecipesInstallStepsMsiInstallation, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("MsiInstallation")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DpkgInstallation, actual.DpkgInstallation, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesInstallStepsDpkgInstallationNewStyle, EmptyObject: EmptyGuestPolicyRecipesInstallStepsDpkgInstallation, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DpkgInstallation")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DpkgInstallation, actual.DpkgInstallation, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesInstallStepsDpkgInstallationNewStyle, EmptyObject: EmptyGuestPolicyRecipesInstallStepsDpkgInstallation, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("DpkgInstallation")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RpmInstallation, actual.RpmInstallation, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesInstallStepsRpmInstallationNewStyle, EmptyObject: EmptyGuestPolicyRecipesInstallStepsRpmInstallation, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RpmInstallation")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RpmInstallation, actual.RpmInstallation, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesInstallStepsRpmInstallationNewStyle, EmptyObject: EmptyGuestPolicyRecipesInstallStepsRpmInstallation, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("RpmInstallation")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FileExec, actual.FileExec, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesInstallStepsFileExecNewStyle, EmptyObject: EmptyGuestPolicyRecipesInstallStepsFileExec, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FileExec")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FileExec, actual.FileExec, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesInstallStepsFileExecNewStyle, EmptyObject: EmptyGuestPolicyRecipesInstallStepsFileExec, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("FileExec")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ScriptRun, actual.ScriptRun, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesInstallStepsScriptRunNewStyle, EmptyObject: EmptyGuestPolicyRecipesInstallStepsScriptRun, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ScriptRun")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ScriptRun, actual.ScriptRun, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesInstallStepsScriptRunNewStyle, EmptyObject: EmptyGuestPolicyRecipesInstallStepsScriptRun, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("ScriptRun")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5297,28 +5297,28 @@ func compareGuestPolicyRecipesInstallStepsFileCopyNewStyle(d, a interface{}, fn 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Destination, actual.Destination, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Destination")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Destination, actual.Destination, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Destination")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Overwrite, actual.Overwrite, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Overwrite")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Overwrite, actual.Overwrite, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Overwrite")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Permissions, actual.Permissions, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Permissions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Permissions, actual.Permissions, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Permissions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5347,21 +5347,21 @@ func compareGuestPolicyRecipesInstallStepsArchiveExtractionNewStyle(d, a interfa
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Destination, actual.Destination, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Destination")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Destination, actual.Destination, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Destination")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5390,21 +5390,21 @@ func compareGuestPolicyRecipesInstallStepsMsiInstallationNewStyle(d, a interface
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Flags, actual.Flags, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Flags")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Flags, actual.Flags, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Flags")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowedExitCodes, actual.AllowedExitCodes, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AllowedExitCodes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowedExitCodes, actual.AllowedExitCodes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("AllowedExitCodes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5433,7 +5433,7 @@ func compareGuestPolicyRecipesInstallStepsDpkgInstallationNewStyle(d, a interfac
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5462,7 +5462,7 @@ func compareGuestPolicyRecipesInstallStepsRpmInstallationNewStyle(d, a interface
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5491,28 +5491,28 @@ func compareGuestPolicyRecipesInstallStepsFileExecNewStyle(d, a interface{}, fn 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Args, actual.Args, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Args")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Args, actual.Args, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Args")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowedExitCodes, actual.AllowedExitCodes, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AllowedExitCodes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowedExitCodes, actual.AllowedExitCodes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("AllowedExitCodes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5541,21 +5541,21 @@ func compareGuestPolicyRecipesInstallStepsScriptRunNewStyle(d, a interface{}, fn
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Script, actual.Script, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Script")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Script, actual.Script, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Script")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowedExitCodes, actual.AllowedExitCodes, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AllowedExitCodes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowedExitCodes, actual.AllowedExitCodes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("AllowedExitCodes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Interpreter, actual.Interpreter, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Interpreter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Interpreter, actual.Interpreter, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Interpreter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5584,49 +5584,49 @@ func compareGuestPolicyRecipesUpdateStepsNewStyle(d, a interface{}, fn dcl.Field
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.FileCopy, actual.FileCopy, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesUpdateStepsFileCopyNewStyle, EmptyObject: EmptyGuestPolicyRecipesUpdateStepsFileCopy, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FileCopy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FileCopy, actual.FileCopy, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesUpdateStepsFileCopyNewStyle, EmptyObject: EmptyGuestPolicyRecipesUpdateStepsFileCopy, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("FileCopy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ArchiveExtraction, actual.ArchiveExtraction, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesUpdateStepsArchiveExtractionNewStyle, EmptyObject: EmptyGuestPolicyRecipesUpdateStepsArchiveExtraction, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ArchiveExtraction")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ArchiveExtraction, actual.ArchiveExtraction, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesUpdateStepsArchiveExtractionNewStyle, EmptyObject: EmptyGuestPolicyRecipesUpdateStepsArchiveExtraction, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("ArchiveExtraction")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MsiInstallation, actual.MsiInstallation, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesUpdateStepsMsiInstallationNewStyle, EmptyObject: EmptyGuestPolicyRecipesUpdateStepsMsiInstallation, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MsiInstallation")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MsiInstallation, actual.MsiInstallation, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesUpdateStepsMsiInstallationNewStyle, EmptyObject: EmptyGuestPolicyRecipesUpdateStepsMsiInstallation, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("MsiInstallation")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DpkgInstallation, actual.DpkgInstallation, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesUpdateStepsDpkgInstallationNewStyle, EmptyObject: EmptyGuestPolicyRecipesUpdateStepsDpkgInstallation, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DpkgInstallation")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DpkgInstallation, actual.DpkgInstallation, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesUpdateStepsDpkgInstallationNewStyle, EmptyObject: EmptyGuestPolicyRecipesUpdateStepsDpkgInstallation, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("DpkgInstallation")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RpmInstallation, actual.RpmInstallation, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesUpdateStepsRpmInstallationNewStyle, EmptyObject: EmptyGuestPolicyRecipesUpdateStepsRpmInstallation, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RpmInstallation")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RpmInstallation, actual.RpmInstallation, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesUpdateStepsRpmInstallationNewStyle, EmptyObject: EmptyGuestPolicyRecipesUpdateStepsRpmInstallation, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("RpmInstallation")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FileExec, actual.FileExec, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesUpdateStepsFileExecNewStyle, EmptyObject: EmptyGuestPolicyRecipesUpdateStepsFileExec, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FileExec")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FileExec, actual.FileExec, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesUpdateStepsFileExecNewStyle, EmptyObject: EmptyGuestPolicyRecipesUpdateStepsFileExec, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("FileExec")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ScriptRun, actual.ScriptRun, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesUpdateStepsScriptRunNewStyle, EmptyObject: EmptyGuestPolicyRecipesUpdateStepsScriptRun, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ScriptRun")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ScriptRun, actual.ScriptRun, dcl.DiffInfo{ObjectFunction: compareGuestPolicyRecipesUpdateStepsScriptRunNewStyle, EmptyObject: EmptyGuestPolicyRecipesUpdateStepsScriptRun, OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("ScriptRun")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5655,28 +5655,28 @@ func compareGuestPolicyRecipesUpdateStepsFileCopyNewStyle(d, a interface{}, fn d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Destination, actual.Destination, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Destination")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Destination, actual.Destination, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Destination")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Overwrite, actual.Overwrite, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Overwrite")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Overwrite, actual.Overwrite, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Overwrite")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Permissions, actual.Permissions, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Permissions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Permissions, actual.Permissions, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Permissions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5705,21 +5705,21 @@ func compareGuestPolicyRecipesUpdateStepsArchiveExtractionNewStyle(d, a interfac
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Destination, actual.Destination, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Destination")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Destination, actual.Destination, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Destination")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Type, actual.Type, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Type")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5748,21 +5748,21 @@ func compareGuestPolicyRecipesUpdateStepsMsiInstallationNewStyle(d, a interface{
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Flags, actual.Flags, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Flags")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Flags, actual.Flags, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Flags")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowedExitCodes, actual.AllowedExitCodes, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AllowedExitCodes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowedExitCodes, actual.AllowedExitCodes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("AllowedExitCodes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5791,7 +5791,7 @@ func compareGuestPolicyRecipesUpdateStepsDpkgInstallationNewStyle(d, a interface
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5820,7 +5820,7 @@ func compareGuestPolicyRecipesUpdateStepsRpmInstallationNewStyle(d, a interface{
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5849,28 +5849,28 @@ func compareGuestPolicyRecipesUpdateStepsFileExecNewStyle(d, a interface{}, fn d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ArtifactId, actual.ArtifactId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("ArtifactId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LocalPath, actual.LocalPath, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("LocalPath")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Args, actual.Args, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Args")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Args, actual.Args, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Args")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowedExitCodes, actual.AllowedExitCodes, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AllowedExitCodes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowedExitCodes, actual.AllowedExitCodes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("AllowedExitCodes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5899,21 +5899,21 @@ func compareGuestPolicyRecipesUpdateStepsScriptRunNewStyle(d, a interface{}, fn 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Script, actual.Script, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Script")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Script, actual.Script, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Script")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AllowedExitCodes, actual.AllowedExitCodes, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AllowedExitCodes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AllowedExitCodes, actual.AllowedExitCodes, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("AllowedExitCodes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Interpreter, actual.Interpreter, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Interpreter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Interpreter, actual.Interpreter, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateGuestPolicyUpdateGuestPolicyOperation")}, fn.AddNest("Interpreter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -10124,6 +10124,7 @@ type guestPolicyDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         guestPolicyApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToGuestPolicyDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]guestPolicyDiff, error) {
@@ -10143,7 +10144,8 @@ func convertFieldDiffsToGuestPolicyDiffs(config *dcl.Config, fds []*dcl.FieldDif
 	var diffs []guestPolicyDiff
 	// For each operation name, create a guestPolicyDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := guestPolicyDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := guestPolicyDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

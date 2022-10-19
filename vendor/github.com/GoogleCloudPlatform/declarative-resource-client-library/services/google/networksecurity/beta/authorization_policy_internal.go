@@ -2019,6 +2019,7 @@ type authorizationPolicyDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         authorizationPolicyApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToAuthorizationPolicyDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]authorizationPolicyDiff, error) {
@@ -2038,7 +2039,8 @@ func convertFieldDiffsToAuthorizationPolicyDiffs(config *dcl.Config, fds []*dcl.
 	var diffs []authorizationPolicyDiff
 	// For each operation name, create a authorizationPolicyDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := authorizationPolicyDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := authorizationPolicyDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

@@ -314,19 +314,13 @@ components:
                         x-dcl-go-type: NotePackageDistributionLatestVersionKindEnum
                         description: 'Distinguish between sentinel MIN/MAX versions
                           and normal versions. If kind is not NORMAL, then the other
-                          fields are ignored. Possible values: NOTE_KIND_UNSPECIFIED,
-                          VULNERABILITY, BUILD, IMAGE, PACKAGE, DEPLOYMENT, DISCOVERY,
-                          ATTESTATION, UPGRADE'
+                          fields are ignored. Possible values: VERSION_KIND_UNSPECIFIED,
+                          NORMAL, MINIMUM, MAXIMUM'
                         enum:
-                        - NOTE_KIND_UNSPECIFIED
-                        - VULNERABILITY
-                        - BUILD
-                        - IMAGE
-                        - PACKAGE
-                        - DEPLOYMENT
-                        - DISCOVERY
-                        - ATTESTATION
-                        - UPGRADE
+                        - VERSION_KIND_UNSPECIFIED
+                        - NORMAL
+                        - MINIMUM
+                        - MAXIMUM
                       name:
                         type: string
                         x-dcl-go-name: Name
@@ -629,6 +623,7 @@ components:
                         x-dcl-go-name: FullName
                         description: Human readable version string. This string is
                           of the form :- and is only set when kind is NORMAL.
+                        x-dcl-server-default: true
                       kind:
                         type: string
                         x-dcl-go-name: Kind

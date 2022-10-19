@@ -1464,6 +1464,7 @@ type rulesetDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         rulesetApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToRulesetDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]rulesetDiff, error) {
@@ -1483,7 +1484,8 @@ func convertFieldDiffsToRulesetDiffs(config *dcl.Config, fds []*dcl.FieldDiff, o
 	var diffs []rulesetDiff
 	// For each operation name, create a rulesetDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := rulesetDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := rulesetDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

@@ -384,7 +384,6 @@ components:
                 underlying managed AWS resources. Specify at most 50 pairs containing
                 alphanumerics, spaces, and symbols (.+-=_:@/). Keys can be up to 127
                 Unicode characters. Values can be up to 255 Unicode characters.
-              x-kubernetes-immutable: true
             version:
               type: string
               x-dcl-go-name: Version
@@ -476,6 +475,28 @@ components:
                     - COMPONENT_UNSPECIFIED
                     - SYSTEM_COMPONENTS
                     - WORKLOADS
+        monitoringConfig:
+          type: object
+          x-dcl-go-name: MonitoringConfig
+          x-dcl-go-type: ClusterMonitoringConfig
+          description: Monitoring configuration.
+          x-kubernetes-immutable: true
+          x-dcl-server-default: true
+          properties:
+            managedPrometheusConfig:
+              type: object
+              x-dcl-go-name: ManagedPrometheusConfig
+              x-dcl-go-type: ClusterMonitoringConfigManagedPrometheusConfig
+              description: Configuration of the Google Cloud Managed Service for Prometheus.
+              x-kubernetes-immutable: true
+              x-dcl-server-default: true
+              properties:
+                enabled:
+                  type: boolean
+                  x-dcl-go-name: Enabled
+                  description: Configuration of the enable Managed Collection.
+                  x-kubernetes-immutable: true
+                  x-dcl-server-default: true
         name:
           type: string
           x-dcl-go-name: Name

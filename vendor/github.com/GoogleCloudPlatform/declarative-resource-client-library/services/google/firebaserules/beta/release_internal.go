@@ -649,6 +649,7 @@ type releaseDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         releaseApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToReleaseDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]releaseDiff, error) {
@@ -668,7 +669,8 @@ func convertFieldDiffsToReleaseDiffs(config *dcl.Config, fds []*dcl.FieldDiff, o
 	var diffs []releaseDiff
 	// For each operation name, create a releaseDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := releaseDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := releaseDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

@@ -6675,6 +6675,7 @@ type httpRouteDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         httpRouteApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToHttpRouteDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]httpRouteDiff, error) {
@@ -6694,7 +6695,8 @@ func convertFieldDiffsToHttpRouteDiffs(config *dcl.Config, fds []*dcl.FieldDiff,
 	var diffs []httpRouteDiff
 	// For each operation name, create a httpRouteDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := httpRouteDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := httpRouteDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

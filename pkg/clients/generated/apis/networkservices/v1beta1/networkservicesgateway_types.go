@@ -48,10 +48,6 @@ type NetworkServicesGatewaySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Optional. Set of label tags associated with the Gateway resource. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
-
 	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
@@ -72,7 +68,7 @@ type NetworkServicesGatewaySpec struct {
 	// +optional
 	ServerTlsPolicyRef *v1alpha1.ResourceRef `json:"serverTlsPolicyRef,omitempty"`
 
-	/* Immutable. Immutable. The type of the customer managed gateway. Possible values: MATCH_TYPE_UNSPECIFIED, MATCH_ANY, MATCH_ALL */
+	/* Immutable. Immutable. The type of the customer managed gateway. Possible values: TYPE_UNSPECIFIED, OPEN_MESH, SECURE_WEB_GATEWAY */
 	// +optional
 	Type *string `json:"type,omitempty"`
 }

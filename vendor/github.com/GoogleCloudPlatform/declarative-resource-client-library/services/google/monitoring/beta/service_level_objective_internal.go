@@ -8429,6 +8429,7 @@ type serviceLevelObjectiveDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         serviceLevelObjectiveApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToServiceLevelObjectiveDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]serviceLevelObjectiveDiff, error) {
@@ -8448,7 +8449,8 @@ func convertFieldDiffsToServiceLevelObjectiveDiffs(config *dcl.Config, fds []*dc
 	var diffs []serviceLevelObjectiveDiff
 	// For each operation name, create a serviceLevelObjectiveDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := serviceLevelObjectiveDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := serviceLevelObjectiveDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

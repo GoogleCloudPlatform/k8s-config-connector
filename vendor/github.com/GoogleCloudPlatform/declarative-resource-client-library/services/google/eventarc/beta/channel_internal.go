@@ -847,6 +847,7 @@ type channelDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         channelApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToChannelDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]channelDiff, error) {
@@ -866,7 +867,8 @@ func convertFieldDiffsToChannelDiffs(config *dcl.Config, fds []*dcl.FieldDiff, o
 	var diffs []channelDiff
 	// For each operation name, create a channelDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := channelDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := channelDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

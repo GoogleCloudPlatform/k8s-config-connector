@@ -751,6 +751,7 @@ type environmentDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         environmentApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToEnvironmentDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]environmentDiff, error) {
@@ -770,7 +771,8 @@ func convertFieldDiffsToEnvironmentDiffs(config *dcl.Config, fds []*dcl.FieldDif
 	var diffs []environmentDiff
 	// For each operation name, create a environmentDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := environmentDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := environmentDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

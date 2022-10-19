@@ -335,6 +335,11 @@ var serviceList = []ServiceMetadata{
 		DCLVersion: "beta",
 		Resources: []Resource{
 			{
+				Kind: "EventarcChannel",
+				// This resource is not implemented yet, only define it to enable external-only references.
+				Releasable: false,
+			},
+			{
 				Kind:                           "EventarcTrigger",
 				Releasable:                     true,
 				SupportsHierarchicalReferences: true,

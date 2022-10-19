@@ -71,12 +71,6 @@ spec:
                   valid if the type of Mesh is SIDECAR.
                 format: int64
                 type: integer
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. Set of label tags associated with the Mesh
-                  resource.
-                type: object
               location:
                 description: Immutable. The location for the resource
                 type: string

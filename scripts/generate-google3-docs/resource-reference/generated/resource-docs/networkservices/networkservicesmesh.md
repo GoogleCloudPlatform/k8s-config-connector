@@ -81,8 +81,6 @@ Before you upgrade Config Connector to a later version, we recommended that you 
 ```yaml
 description: string
 interceptionPort: integer
-labels:
-  string: string
 location: string
 projectRef:
   external: string
@@ -116,16 +114,6 @@ resourceID: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}Optional. If set to a valid TCP port (1-65535), instructs the SIDECAR proxy to listen on the specified port of localhost (127.0.0.1) address. The SIDECAR proxy will expect all traffic to be redirected to this port regardless of its actual ip:port destination. If unset, a port &#39;15001&#39; is used as the interception port. This field is only valid if the type of Mesh is SIDECAR.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>labels</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Optional. Set of label tags associated with the Mesh resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

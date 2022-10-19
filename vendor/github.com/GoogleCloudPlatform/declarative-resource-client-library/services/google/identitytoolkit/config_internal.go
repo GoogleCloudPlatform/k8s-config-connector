@@ -9008,6 +9008,7 @@ type configDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         configApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToConfigDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]configDiff, error) {
@@ -9027,7 +9028,8 @@ func convertFieldDiffsToConfigDiffs(config *dcl.Config, fds []*dcl.FieldDiff, op
 	var diffs []configDiff
 	// For each operation name, create a configDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := configDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := configDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

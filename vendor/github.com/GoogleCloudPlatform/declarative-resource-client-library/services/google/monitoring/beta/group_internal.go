@@ -712,6 +712,7 @@ type groupDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         groupApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToGroupDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]groupDiff, error) {
@@ -731,7 +732,8 @@ func convertFieldDiffsToGroupDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opt
 	var diffs []groupDiff
 	// For each operation name, create a groupDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := groupDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := groupDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

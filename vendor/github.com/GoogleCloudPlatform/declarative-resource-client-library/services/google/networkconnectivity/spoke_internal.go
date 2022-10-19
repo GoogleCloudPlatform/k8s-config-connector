@@ -2098,6 +2098,7 @@ type spokeDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         spokeApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToSpokeDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]spokeDiff, error) {
@@ -2117,7 +2118,8 @@ func convertFieldDiffsToSpokeDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opt
 	var diffs []spokeDiff
 	// For each operation name, create a spokeDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := spokeDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := spokeDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

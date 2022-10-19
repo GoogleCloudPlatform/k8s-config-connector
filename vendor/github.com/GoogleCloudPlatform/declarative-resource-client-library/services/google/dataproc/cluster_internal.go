@@ -2854,8 +2854,7 @@ func canonicalizeClusterConfigSoftwareConfig(des, initial *ClusterConfigSoftware
 	} else {
 		cDes.ImageVersion = des.ImageVersion
 	}
-	if dcl.IsZeroValue(des.Properties) || (dcl.IsEmptyValueIndirect(des.Properties) && dcl.IsEmptyValueIndirect(initial.Properties)) {
-		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+	if canonicalizeSoftwareConfigProperties(des.Properties, initial.Properties) || dcl.IsZeroValue(des.Properties) {
 		cDes.Properties = initial.Properties
 	} else {
 		cDes.Properties = des.Properties
@@ -2914,6 +2913,9 @@ func canonicalizeNewClusterConfigSoftwareConfig(c *Client, des, nw *ClusterConfi
 
 	if dcl.StringCanonicalize(des.ImageVersion, nw.ImageVersion) {
 		nw.ImageVersion = des.ImageVersion
+	}
+	if canonicalizeSoftwareConfigProperties(des.Properties, nw.Properties) {
+		nw.Properties = des.Properties
 	}
 
 	return nw
@@ -5236,7 +5238,7 @@ func compareClusterConfigSoftwareConfigNewStyle(d, a interface{}, fn dcl.FieldNa
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Properties, actual.Properties, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Properties")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Properties, actual.Properties, dcl.DiffInfo{CustomDiff: canonicalizeSoftwareConfigProperties, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Properties")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -9799,6 +9801,7 @@ type clusterDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         clusterApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToClusterDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]clusterDiff, error) {
@@ -9818,7 +9821,8 @@ func convertFieldDiffsToClusterDiffs(config *dcl.Config, fds []*dcl.FieldDiff, o
 	var diffs []clusterDiff
 	// For each operation name, create a clusterDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := clusterDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := clusterDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

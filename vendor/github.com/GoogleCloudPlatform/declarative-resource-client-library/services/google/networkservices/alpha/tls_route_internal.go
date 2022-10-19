@@ -1913,6 +1913,7 @@ type tlsRouteDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         tlsRouteApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToTlsRouteDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]tlsRouteDiff, error) {
@@ -1932,7 +1933,8 @@ func convertFieldDiffsToTlsRouteDiffs(config *dcl.Config, fds []*dcl.FieldDiff, 
 	var diffs []tlsRouteDiff
 	// For each operation name, create a tlsRouteDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := tlsRouteDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := tlsRouteDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

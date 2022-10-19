@@ -100,6 +100,7 @@ func DCLGrpcRouteSchema() *dcl.Schema {
 					Title:           "GrpcRoute",
 					ID:              "projects/{{project}}/locations/{{location}}/grpcRoutes/{{name}}",
 					ParentContainer: "project",
+					LabelsField:     "labels",
 					HasCreate:       true,
 					SchemaProperty: dcl.Property{
 						Type: "object",

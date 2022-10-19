@@ -87,6 +87,11 @@ func (op *CRMOperation) Wait(ctx context.Context, c *dcl.Config, basePath, verb 
 		op.version = "v3"
 	}
 
+	if t, ok := op.Metadata["@type"].(string); ok && t == "type.googleapis.com/google.cloud.resourcemanager.v3.DeleteTagValueMetadata" {
+		// TagValue delete operation requires the use of the v3 endpoint
+		op.version = "v3"
+	}
+
 	if op.Done {
 		c.Logger.Infof("Completed operation: %v", op)
 		return nil

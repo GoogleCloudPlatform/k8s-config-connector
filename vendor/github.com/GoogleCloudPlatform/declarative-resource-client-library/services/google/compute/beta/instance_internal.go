@@ -366,7 +366,9 @@ func newUpdateInstanceSetMachineTypeRequest(ctx context.Context, f *Instance, c 
 	res := f
 	_ = res
 
-	if v := f.MachineType; !dcl.IsEmptyValueIndirect(v) {
+	if v, err := dcl.DeriveFromPattern("zones/%s/machineTypes/%s", f.MachineType, dcl.SelfLinkToName(f.Zone), f.MachineType); err != nil {
+		return nil, fmt.Errorf("error expanding MachineType into machineType: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
 		req["machineType"] = v
 	}
 	return req, nil
@@ -1228,8 +1230,7 @@ func canonicalizeInstanceDesiredState(rawDesired, rawInitial *Instance, opts ...
 	} else {
 		canonicalDesired.Metadata = rawDesired.Metadata
 	}
-	if dcl.IsZeroValue(rawDesired.MachineType) || (dcl.IsEmptyValueIndirect(rawDesired.MachineType) && dcl.IsEmptyValueIndirect(rawInitial.MachineType)) {
-		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+	if dcl.PartialSelfLinkToSelfLink(rawDesired.MachineType, rawInitial.MachineType) {
 		canonicalDesired.MachineType = rawInitial.MachineType
 	} else {
 		canonicalDesired.MachineType = rawDesired.MachineType
@@ -1353,6 +1354,9 @@ func canonicalizeInstanceNewState(c *Client, rawNew, rawDesired *Instance) (*Ins
 	if dcl.IsEmptyValueIndirect(rawNew.MachineType) && dcl.IsEmptyValueIndirect(rawDesired.MachineType) {
 		rawNew.MachineType = rawDesired.MachineType
 	} else {
+		if dcl.PartialSelfLinkToSelfLink(rawDesired.MachineType, rawNew.MachineType) {
+			rawNew.MachineType = rawDesired.MachineType
+		}
 	}
 
 	if dcl.IsEmptyValueIndirect(rawNew.MinCpuPlatform) && dcl.IsEmptyValueIndirect(rawDesired.MinCpuPlatform) {
@@ -4081,7 +4085,9 @@ func expandInstance(c *Client, f *Instance) (map[string]interface{}, error) {
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["metadata"] = v
 	}
-	if v := f.MachineType; dcl.ValueShouldBeSent(v) {
+	if v, err := dcl.DeriveFromPattern("zones/%s/machineTypes/%s", f.MachineType, dcl.SelfLinkToName(f.Zone), f.MachineType); err != nil {
+		return nil, fmt.Errorf("error expanding MachineType into machineType: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["machineType"] = v
 	}
 	if v := f.MinCpuPlatform; dcl.ValueShouldBeSent(v) {
@@ -6153,6 +6159,7 @@ type instanceDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         instanceApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToInstanceDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]instanceDiff, error) {
@@ -6172,7 +6179,8 @@ func convertFieldDiffsToInstanceDiffs(config *dcl.Config, fds []*dcl.FieldDiff, 
 	var diffs []instanceDiff
 	// For each operation name, create a instanceDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := instanceDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := instanceDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

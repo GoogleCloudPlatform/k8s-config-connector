@@ -709,6 +709,7 @@ type assignmentDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         assignmentApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToAssignmentDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]assignmentDiff, error) {
@@ -728,7 +729,8 @@ func convertFieldDiffsToAssignmentDiffs(config *dcl.Config, fds []*dcl.FieldDiff
 	var diffs []assignmentDiff
 	// For each operation name, create a assignmentDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := assignmentDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := assignmentDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

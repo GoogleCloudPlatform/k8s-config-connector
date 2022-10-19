@@ -1560,6 +1560,10 @@ func (r *InspectTemplate) ID() (string, error) {
 		"parent":         dcl.ValueOrEmptyString(nr.Parent),
 		"location":       dcl.ValueOrEmptyString(nr.Location),
 	}
+	if dcl.IsRegion(nr.Location) {
+		return dcl.Nprintf("{{parent}}/locations/{{location}}/inspectTemplates/{{name}}", params), nil
+	}
+
 	return dcl.Nprintf("{{parent}}/inspectTemplates/{{name}}", params), nil
 }
 

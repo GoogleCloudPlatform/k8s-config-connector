@@ -1611,6 +1611,7 @@ type metricDescriptorDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         metricDescriptorApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToMetricDescriptorDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]metricDescriptorDiff, error) {
@@ -1630,7 +1631,8 @@ func convertFieldDiffsToMetricDescriptorDiffs(config *dcl.Config, fds []*dcl.Fie
 	var diffs []metricDescriptorDiff
 	// For each operation name, create a metricDescriptorDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := metricDescriptorDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := metricDescriptorDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

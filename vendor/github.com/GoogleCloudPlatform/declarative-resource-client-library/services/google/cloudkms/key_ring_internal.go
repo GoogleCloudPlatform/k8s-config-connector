@@ -495,6 +495,7 @@ type keyRingDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         keyRingApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToKeyRingDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]keyRingDiff, error) {
@@ -514,7 +515,8 @@ func convertFieldDiffsToKeyRingDiffs(config *dcl.Config, fds []*dcl.FieldDiff, o
 	var diffs []keyRingDiff
 	// For each operation name, create a keyRingDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := keyRingDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := keyRingDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

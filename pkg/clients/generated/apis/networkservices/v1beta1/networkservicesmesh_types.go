@@ -44,10 +44,6 @@ type NetworkServicesMeshSpec struct {
 	// +optional
 	InterceptionPort *int `json:"interceptionPort,omitempty"`
 
-	/* Optional. Set of label tags associated with the Mesh resource. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
-
 	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 

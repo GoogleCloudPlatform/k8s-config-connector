@@ -91,12 +91,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. Set of label tags associated with the TcpRoute
-                  resource.
-                type: object
               location:
                 description: Immutable. The location for the resource
                 type: string

@@ -742,6 +742,7 @@ type folderDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         folderApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToFolderDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]folderDiff, error) {
@@ -761,7 +762,8 @@ func convertFieldDiffsToFolderDiffs(config *dcl.Config, fds []*dcl.FieldDiff, op
 	var diffs []folderDiff
 	// For each operation name, create a folderDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := folderDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := folderDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

@@ -84,8 +84,6 @@ gateways:
 - external: string
   name: string
   namespace: string
-labels:
-  string: string
 location: string
 meshes:
 - external: string
@@ -175,16 +173,6 @@ rules:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>labels</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Optional. Set of label tags associated with the TcpRoute resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

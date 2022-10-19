@@ -737,6 +737,7 @@ type firewallPolicyDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         firewallPolicyApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToFirewallPolicyDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]firewallPolicyDiff, error) {
@@ -756,7 +757,8 @@ func convertFieldDiffsToFirewallPolicyDiffs(config *dcl.Config, fds []*dcl.Field
 	var diffs []firewallPolicyDiff
 	// For each operation name, create a firewallPolicyDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := firewallPolicyDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := firewallPolicyDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

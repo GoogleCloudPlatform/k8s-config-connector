@@ -1883,6 +1883,7 @@ type lakeDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         lakeApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToLakeDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]lakeDiff, error) {
@@ -1902,7 +1903,8 @@ func convertFieldDiffsToLakeDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts
 	var diffs []lakeDiff
 	// For each operation name, create a lakeDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := lakeDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := lakeDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

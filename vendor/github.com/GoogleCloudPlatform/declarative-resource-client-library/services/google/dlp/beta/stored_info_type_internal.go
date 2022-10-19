@@ -3623,6 +3623,7 @@ type storedInfoTypeDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         storedInfoTypeApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToStoredInfoTypeDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]storedInfoTypeDiff, error) {
@@ -3642,7 +3643,8 @@ func convertFieldDiffsToStoredInfoTypeDiffs(config *dcl.Config, fds []*dcl.Field
 	var diffs []storedInfoTypeDiff
 	// For each operation name, create a storedInfoTypeDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := storedInfoTypeDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := storedInfoTypeDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

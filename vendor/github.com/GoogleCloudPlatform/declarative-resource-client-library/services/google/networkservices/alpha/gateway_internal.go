@@ -736,8 +736,8 @@ func (r *Gateway) urlNormalized() *Gateway {
 	normalized.Name = dcl.SelfLinkToName(r.Name)
 	normalized.Description = dcl.SelfLinkToName(r.Description)
 	normalized.Scope = dcl.SelfLinkToName(r.Scope)
-	normalized.ServerTlsPolicy = dcl.SelfLinkToName(r.ServerTlsPolicy)
-	normalized.AuthorizationPolicy = dcl.SelfLinkToName(r.AuthorizationPolicy)
+	normalized.ServerTlsPolicy = r.ServerTlsPolicy
+	normalized.AuthorizationPolicy = r.AuthorizationPolicy
 	normalized.Project = dcl.SelfLinkToName(r.Project)
 	normalized.Location = dcl.SelfLinkToName(r.Location)
 	normalized.SelfLink = dcl.SelfLinkToName(r.SelfLink)
@@ -964,6 +964,7 @@ type gatewayDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         gatewayApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToGatewayDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]gatewayDiff, error) {
@@ -983,7 +984,8 @@ func convertFieldDiffsToGatewayDiffs(config *dcl.Config, fds []*dcl.FieldDiff, o
 	var diffs []gatewayDiff
 	// For each operation name, create a gatewayDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := gatewayDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := gatewayDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

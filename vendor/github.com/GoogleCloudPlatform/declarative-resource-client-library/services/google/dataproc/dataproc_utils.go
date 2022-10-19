@@ -18,8 +18,8 @@ import (
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 )
 
-func encodeJobCreateRequest(m map[string]interface{}) map[string]interface{} {
-	req := make(map[string]interface{}, 1)
+func encodeJobCreateRequest(m map[string]any) map[string]any {
+	req := make(map[string]any, 1)
 	dcl.PutMapEntry(req, []string{"job"}, m)
 	return req
 }
@@ -29,6 +29,12 @@ func expandClusterProject(_ *Client, project *string, _ *Cluster) (*string, erro
 }
 
 // CompareClusterConfigMasterConfigNewStyle exposes the compareClusterConfigMasterConfigNewStyle function for testing.
-func CompareClusterConfigMasterConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+func CompareClusterConfigMasterConfigNewStyle(d, a any, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
 	return compareClusterConfigMasterConfigNewStyle(d, a, fn)
+}
+
+func canonicalizeSoftwareConfigProperties(o, n any) bool {
+	// This field is a map that contains both client provided and server provided values. It
+	// is also immutable, so always return "no diff".
+	return true
 }

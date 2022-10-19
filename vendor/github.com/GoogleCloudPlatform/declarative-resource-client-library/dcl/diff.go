@@ -22,10 +22,11 @@ import (
 // DiffInfo is a struct that contains all information about the diff that's about to occur.
 type DiffInfo struct {
 	// Ignore + OutputOnly cause the diff checker to always return no-diff.
-	Ignore          bool
-	OutputOnly      bool
-	IgnoredPrefixes []string
-	Type            string
+	Ignore           bool
+	OutputOnly       bool
+	MergeNestedDiffs bool
+	IgnoredPrefixes  []string
+	Type             string
 
 	// ObjectFunction is the function used to diff a Nested Object.
 	ObjectFunction func(desired, actual interface{}, fn FieldName) ([]*FieldDiff, error)
@@ -290,23 +291,25 @@ func Diff(desired, actual interface{}, info DiffInfo, fn FieldName) ([]*FieldDif
 		if err != nil {
 			return nil, err
 		}
-		// Replace any nested diffs with a recreate operation with a diff in this field.
-		nonRecreateCount := 0
-		for _, d := range ds {
-			if len(d.ResultingOperation) == 0 {
-				return nil, fmt.Errorf("diff found in field %q with no operation", d.FieldName)
+		if info.MergeNestedDiffs {
+			// Replace any nested diffs with a recreate operation with a diff in this field.
+			nonRecreateCount := 0
+			for _, d := range ds {
+				if len(d.ResultingOperation) == 0 {
+					return nil, fmt.Errorf("diff found in field %q with no operation", d.FieldName)
+				}
+				if d.ResultingOperation[0] != "Recreate" {
+					ds[nonRecreateCount] = d
+					nonRecreateCount++
+				}
 			}
-			if d.ResultingOperation[0] != "Recreate" {
-				ds[nonRecreateCount] = d
+			if nonRecreateCount < len(ds) {
+				// At least one nested diff requires a recreate.
+				ds[nonRecreateCount] = &FieldDiff{FieldName: fn.FieldName, Desired: desired, Actual: actual}
 				nonRecreateCount++
 			}
+			ds = ds[:nonRecreateCount]
 		}
-		if nonRecreateCount < len(ds) {
-			// At least one nested diff requires a recreate.
-			ds[nonRecreateCount] = &FieldDiff{FieldName: fn.FieldName, Desired: desired, Actual: actual}
-			nonRecreateCount++
-		}
-		ds = ds[:nonRecreateCount]
 		diffs = append(diffs, ds...)
 	default:
 		return nil, fmt.Errorf("no diffing logic exists for type: %q", desiredType)

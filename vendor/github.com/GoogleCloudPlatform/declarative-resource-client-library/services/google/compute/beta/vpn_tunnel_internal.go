@@ -1115,6 +1115,7 @@ type vpnTunnelDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         vpnTunnelApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToVpnTunnelDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]vpnTunnelDiff, error) {
@@ -1134,7 +1135,8 @@ func convertFieldDiffsToVpnTunnelDiffs(config *dcl.Config, fds []*dcl.FieldDiff,
 	var diffs []vpnTunnelDiff
 	// For each operation name, create a vpnTunnelDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := vpnTunnelDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := vpnTunnelDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

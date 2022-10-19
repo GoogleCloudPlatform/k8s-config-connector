@@ -1929,6 +1929,7 @@ type instanceDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         instanceApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToInstanceDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]instanceDiff, error) {
@@ -1948,7 +1949,8 @@ func convertFieldDiffsToInstanceDiffs(config *dcl.Config, fds []*dcl.FieldDiff, 
 	var diffs []instanceDiff
 	// For each operation name, create a instanceDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := instanceDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := instanceDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

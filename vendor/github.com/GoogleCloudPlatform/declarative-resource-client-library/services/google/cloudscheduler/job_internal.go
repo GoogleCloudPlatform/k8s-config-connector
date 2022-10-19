@@ -26,6 +26,9 @@ import (
 
 func (r *Job) validate() error {
 
+	if err := dcl.ValidateAtMostOneOfFieldsSet([]string{"PubsubTarget", "AppEngineHttpTarget", "HttpTarget"}, r.PubsubTarget, r.AppEngineHttpTarget, r.HttpTarget); err != nil {
+		return err
+	}
 	if err := dcl.Required(r, "name"); err != nil {
 		return err
 	}
@@ -490,6 +493,28 @@ func (c *Client) jobDiffsForRawDesired(ctx context.Context, rawDesired *Job, opt
 
 func canonicalizeJobInitialState(rawInitial, rawDesired *Job) (*Job, error) {
 	// TODO(magic-modules-eng): write canonicalizer once relevant traits are added.
+
+	if !dcl.IsZeroValue(rawInitial.PubsubTarget) {
+		// Check if anything else is set.
+		if dcl.AnySet(rawInitial.AppEngineHttpTarget, rawInitial.HttpTarget) {
+			rawInitial.PubsubTarget = EmptyJobPubsubTarget
+		}
+	}
+
+	if !dcl.IsZeroValue(rawInitial.AppEngineHttpTarget) {
+		// Check if anything else is set.
+		if dcl.AnySet(rawInitial.PubsubTarget, rawInitial.HttpTarget) {
+			rawInitial.AppEngineHttpTarget = EmptyJobAppEngineHttpTarget
+		}
+	}
+
+	if !dcl.IsZeroValue(rawInitial.HttpTarget) {
+		// Check if anything else is set.
+		if dcl.AnySet(rawInitial.PubsubTarget, rawInitial.AppEngineHttpTarget) {
+			rawInitial.HttpTarget = EmptyJobHttpTarget
+		}
+	}
+
 	return rawInitial, nil
 }
 
@@ -513,6 +538,31 @@ func canonicalizeJobDesiredState(rawDesired, rawInitial *Job, opts ...dcl.ApplyO
 
 		return rawDesired, nil
 	}
+
+	if rawDesired.PubsubTarget != nil || rawInitial.PubsubTarget != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.AppEngineHttpTarget, rawDesired.HttpTarget) {
+			rawDesired.PubsubTarget = nil
+			rawInitial.PubsubTarget = nil
+		}
+	}
+
+	if rawDesired.AppEngineHttpTarget != nil || rawInitial.AppEngineHttpTarget != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.PubsubTarget, rawDesired.HttpTarget) {
+			rawDesired.AppEngineHttpTarget = nil
+			rawInitial.AppEngineHttpTarget = nil
+		}
+	}
+
+	if rawDesired.HttpTarget != nil || rawInitial.HttpTarget != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.PubsubTarget, rawDesired.AppEngineHttpTarget) {
+			rawDesired.HttpTarget = nil
+			rawInitial.HttpTarget = nil
+		}
+	}
+
 	canonicalDesired := &Job{}
 	if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawInitial.Name) {
 		canonicalDesired.Name = rawInitial.Name
@@ -3848,6 +3898,7 @@ type jobDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         jobApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToJobDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]jobDiff, error) {
@@ -3867,7 +3918,8 @@ func convertFieldDiffsToJobDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts 
 	var diffs []jobDiff
 	// For each operation name, create a jobDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := jobDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := jobDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

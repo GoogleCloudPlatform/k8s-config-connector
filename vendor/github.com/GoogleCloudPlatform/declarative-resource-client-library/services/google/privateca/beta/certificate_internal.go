@@ -11705,6 +11705,7 @@ type certificateDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         certificateApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToCertificateDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]certificateDiff, error) {
@@ -11724,7 +11725,8 @@ func convertFieldDiffsToCertificateDiffs(config *dcl.Config, fds []*dcl.FieldDif
 	var diffs []certificateDiff
 	// For each operation name, create a certificateDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := certificateDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := certificateDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

@@ -1071,6 +1071,9 @@ components:
               description: If provided, will be used as the default for all values
                 in InspectConfig. `inspect_config` will be merged into the values
                 persisted as part of the template.
+              x-dcl-references:
+              - resource: Dlp/InspectTemplate
+                field: name
             storageConfig:
               type: object
               x-dcl-go-name: StorageConfig

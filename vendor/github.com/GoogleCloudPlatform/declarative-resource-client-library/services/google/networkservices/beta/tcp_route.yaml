@@ -63,6 +63,7 @@ components:
       title: TcpRoute
       x-dcl-id: projects/{{project}}/locations/{{location}}/tcpRoutes/{{name}}
       x-dcl-parent-container: project
+      x-dcl-labels: labels
       x-dcl-has-create: true
       x-dcl-has-iam: false
       x-dcl-read-timeout: 0

@@ -16,6 +16,7 @@ package iam
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"io/ioutil"
 	"regexp"
 	"strings"
@@ -142,4 +143,80 @@ func (c *Client) getWorkloadIdentityPoolRaw(ctx context.Context, r *WorkloadIden
 	}
 
 	return b, nil
+}
+
+// normalizeServiceAccountName converts name to short name and removes domain from the tail.
+// Example: Example: projects/xyz/serviceAccounts/test-id-xcad-1665079476@xyz.iam.gserviceaccount.com becomes test-id-xcad-1665079476
+func normalizeServiceAccountName(name *string) *string {
+	newName := dcl.SelfLinkToName(name)
+	*newName = strings.Split(*newName, "@")[0]
+	return newName
+}
+
+func (r *ServiceAccount) getURL(userBasePath string) (string, error) {
+	nr := r.urlNormalized()
+	nr.Name = normalizeServiceAccountName(nr.Name)
+	params := map[string]any{
+		"project": dcl.ValueOrEmptyString(nr.Project),
+		"name":    dcl.ValueOrEmptyString(nr.Name),
+	}
+	return dcl.URL("projects/{{project}}/serviceAccounts/{{name}}@{{project}}.iam.gserviceaccount.com", nr.basePath(), userBasePath, params), nil
+}
+
+func (r *ServiceAccount) createURL(userBasePath string) (string, error) {
+	nr := r.urlNormalized()
+	nr.Name = normalizeServiceAccountName(nr.Name)
+	params := map[string]any{
+		"project": dcl.ValueOrEmptyString(nr.Project),
+	}
+	return dcl.URL("projects/{{project}}/serviceAccounts", nr.basePath(), userBasePath, params), nil
+}
+
+func (r *ServiceAccount) deleteURL(userBasePath string) (string, error) {
+	nr := r.urlNormalized()
+	nr.Name = normalizeServiceAccountName(nr.Name)
+	params := map[string]any{
+		"project": dcl.ValueOrEmptyString(nr.Project),
+		"name":    dcl.ValueOrEmptyString(nr.Name),
+	}
+	return dcl.URL("projects/{{project}}/serviceAccounts/{{name}}@{{project}}.iam.gserviceaccount.com", nr.basePath(), userBasePath, params), nil
+}
+
+// SetPolicyURL constructs url for setting IAM Policy.
+func (r *ServiceAccount) SetPolicyURL(userBasePath string) string {
+	nr := r.urlNormalized()
+	fields := map[string]any{
+		"project": *nr.Project,
+		"name":    *nr.Name,
+	}
+	return dcl.URL("projects/{{project}}/serviceAccounts/{{name}}@{{project}}.iam.gserviceaccount.com:setIamPolicy", nr.basePath(), userBasePath, fields)
+}
+
+func (r *ServiceAccount) getPolicyURL(userBasePath string) string {
+	nr := r.urlNormalized()
+	fields := map[string]any{
+		"project": *nr.Project,
+		"name":    *nr.Name,
+	}
+	return dcl.URL("projects/{{project}}/serviceAccounts/{{name}}@{{project}}.iam.gserviceaccount.com:getIamPolicy", nr.basePath(), userBasePath, fields)
+}
+
+// We are using CUSTOM_URL_METHOD trait on GetIAMPolicy and SetIAMPolicy which requires us to define these custom methods for IAM.
+
+// SetPolicyVerb sets the verb for SetPolicy.
+func (r *ServiceAccount) SetPolicyVerb() string {
+	return "POST"
+}
+
+// IAMPolicyVersion defines version for IAMPolicy.
+func (r *ServiceAccount) IAMPolicyVersion() int {
+	return 3
+}
+
+// GetPolicy gets the IAM policy.
+func (r *ServiceAccount) GetPolicy(basePath string) (string, string, *bytes.Buffer, error) {
+	u := r.getPolicyURL(basePath)
+	body := &bytes.Buffer{}
+	body.WriteString(fmt.Sprintf(`{"options":{"requestedPolicyVersion": %d}}`, r.IAMPolicyVersion()))
+	return u, "POST", body, nil
 }

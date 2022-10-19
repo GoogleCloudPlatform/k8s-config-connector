@@ -1065,6 +1065,12 @@ func DCLJobTriggerSchema() *dcl.Schema {
 										Type:        "string",
 										GoName:      "InspectTemplateName",
 										Description: "If provided, will be used as the default for all values in InspectConfig. `inspect_config` will be merged into the values persisted as part of the template.",
+										ResourceReferences: []*dcl.PropertyResourceReference{
+											&dcl.PropertyResourceReference{
+												Resource: "Dlp/InspectTemplate",
+												Field:    "name",
+											},
+										},
 									},
 									"storageConfig": &dcl.Property{
 										Type:        "object",

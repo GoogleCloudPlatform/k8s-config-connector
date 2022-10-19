@@ -108,6 +108,10 @@ type TriggerTransport struct {
 }
 
 type EventarcTriggerSpec struct {
+	/* Immutable. */
+	// +optional
+	ChannelRef *v1alpha1.ResourceRef `json:"channelRef,omitempty"`
+
 	/* Required. Destination specifies where the events should be sent to. */
 	Destination TriggerDestination `json:"destination"`
 
@@ -153,6 +157,8 @@ type EventarcTriggerStatus struct {
 	Etag string `json:"etag,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	/* Output only. The reason(s) why a trigger is in FAILED state. */
+	ResourceConditions map[string]string `json:"resourceConditions,omitempty"`
 	/*  */
 	Transport TriggerTransportStatus `json:"transport,omitempty"`
 	/* Output only. Server assigned unique identifier for the trigger. The value is a UUID4 string and guaranteed to remain unchanged until the resource is deleted. */

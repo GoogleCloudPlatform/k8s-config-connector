@@ -114,7 +114,7 @@ components:
               type: object
               x-dcl-go-name: TargetsPresentCondition
               x-dcl-go-type: DeliveryPipelineConditionTargetsPresentCondition
-              description: Detalis around targets enumerated in the pipeline.
+              description: Details around targets enumerated in the pipeline.
               properties:
                 missingTargets:
                   type: array
@@ -216,6 +216,24 @@ components:
                     items:
                       type: string
                       x-dcl-go-type: string
+                  strategy:
+                    type: object
+                    x-dcl-go-name: Strategy
+                    x-dcl-go-type: DeliveryPipelineSerialPipelineStagesStrategy
+                    description: Optional. The strategy to use for a `Rollout` to
+                      this stage.
+                    properties:
+                      standard:
+                        type: object
+                        x-dcl-go-name: Standard
+                        x-dcl-go-type: DeliveryPipelineSerialPipelineStagesStrategyStandard
+                        description: Standard deployment strategy executes a single
+                          deploy and allows verifying the deployment.
+                        properties:
+                          verify:
+                            type: boolean
+                            x-dcl-go-name: Verify
+                            description: Whether to verify a deployment.
                   targetId:
                     type: string
                     x-dcl-go-name: TargetId

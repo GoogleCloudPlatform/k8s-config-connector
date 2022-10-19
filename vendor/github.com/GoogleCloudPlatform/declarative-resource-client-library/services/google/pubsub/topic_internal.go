@@ -956,6 +956,7 @@ type topicDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         topicApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToTopicDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]topicDiff, error) {
@@ -975,7 +976,8 @@ func convertFieldDiffsToTopicDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opt
 	var diffs []topicDiff
 	// For each operation name, create a topicDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := topicDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := topicDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

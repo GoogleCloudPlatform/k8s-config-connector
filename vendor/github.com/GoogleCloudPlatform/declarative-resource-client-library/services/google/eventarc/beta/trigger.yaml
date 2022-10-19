@@ -77,6 +77,24 @@ components:
       - project
       - location
       properties:
+        channel:
+          type: string
+          x-dcl-go-name: Channel
+          description: Optional. The name of the channel associated with the trigger
+            in `projects/{project}/locations/{location}/channels/{channel}` format.
+            You must provide a channel to receive events from Eventarc SaaS partners.
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Eventarc/Channel
+            field: name
+        conditions:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: Conditions
+          readOnly: true
+          description: Output only. The reason(s) why a trigger is in FAILED state.
+          x-kubernetes-immutable: true
         createTime:
           type: string
           format: date-time

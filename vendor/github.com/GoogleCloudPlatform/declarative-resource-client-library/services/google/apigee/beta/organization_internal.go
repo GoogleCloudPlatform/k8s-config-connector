@@ -1132,14 +1132,14 @@ func compareOrganizationAddonsConfigNewStyle(d, a interface{}, fn dcl.FieldName)
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.AdvancedApiOpsConfig, actual.AdvancedApiOpsConfig, dcl.DiffInfo{ObjectFunction: compareOrganizationAddonsConfigAdvancedApiOpsConfigNewStyle, EmptyObject: EmptyOrganizationAddonsConfigAdvancedApiOpsConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AdvancedApiOpsConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AdvancedApiOpsConfig, actual.AdvancedApiOpsConfig, dcl.DiffInfo{ObjectFunction: compareOrganizationAddonsConfigAdvancedApiOpsConfigNewStyle, EmptyObject: EmptyOrganizationAddonsConfigAdvancedApiOpsConfig, OperationSelector: dcl.TriggersOperation("updateOrganizationSetAddonsOperation")}, fn.AddNest("AdvancedApiOpsConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MonetizationConfig, actual.MonetizationConfig, dcl.DiffInfo{ObjectFunction: compareOrganizationAddonsConfigMonetizationConfigNewStyle, EmptyObject: EmptyOrganizationAddonsConfigMonetizationConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MonetizationConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MonetizationConfig, actual.MonetizationConfig, dcl.DiffInfo{ObjectFunction: compareOrganizationAddonsConfigMonetizationConfigNewStyle, EmptyObject: EmptyOrganizationAddonsConfigMonetizationConfig, OperationSelector: dcl.TriggersOperation("updateOrganizationSetAddonsOperation")}, fn.AddNest("MonetizationConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1168,7 +1168,7 @@ func compareOrganizationAddonsConfigAdvancedApiOpsConfigNewStyle(d, a interface{
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOrganizationSetAddonsOperation")}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1197,7 +1197,7 @@ func compareOrganizationAddonsConfigMonetizationConfigNewStyle(d, a interface{},
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOrganizationSetAddonsOperation")}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1948,6 +1948,7 @@ type organizationDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         organizationApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToOrganizationDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]organizationDiff, error) {
@@ -1967,7 +1968,8 @@ func convertFieldDiffsToOrganizationDiffs(config *dcl.Config, fds []*dcl.FieldDi
 	var diffs []organizationDiff
 	// For each operation name, create a organizationDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := organizationDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := organizationDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

@@ -24,9 +24,6 @@ import (
 
 func (r *FeatureMembership) validate() error {
 
-	if err := dcl.Required(r, "configmanagement"); err != nil {
-		return err
-	}
 	if err := dcl.RequiredParameter(r.Project, "Project"); err != nil {
 		return err
 	}
@@ -39,11 +36,19 @@ func (r *FeatureMembership) validate() error {
 	if err := dcl.RequiredParameter(r.Membership, "Membership"); err != nil {
 		return err
 	}
+	if !dcl.IsEmptyValueIndirect(r.Mesh) {
+		if err := r.Mesh.validate(); err != nil {
+			return err
+		}
+	}
 	if !dcl.IsEmptyValueIndirect(r.Configmanagement) {
 		if err := r.Configmanagement.validate(); err != nil {
 			return err
 		}
 	}
+	return nil
+}
+func (r *FeatureMembershipMesh) validate() error {
 	return nil
 }
 func (r *FeatureMembershipConfigmanagement) validate() error {
@@ -158,6 +163,11 @@ func newUpdateFeatureMembershipUpdateFeatureMembershipRequest(ctx context.Contex
 	res := f
 	_ = res
 
+	if v, err := expandFeatureMembershipMesh(c, f.Mesh, res); err != nil {
+		return nil, fmt.Errorf("error expanding Mesh into mesh: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		req["mesh"] = v
+	}
 	if v, err := expandFeatureMembershipConfigmanagement(c, f.Configmanagement, res); err != nil {
 		return nil, fmt.Errorf("error expanding Configmanagement into configmanagement: %w", err)
 	} else if !dcl.IsEmptyValueIndirect(v) {
@@ -287,11 +297,13 @@ func canonicalizeFeatureMembershipDesiredState(rawDesired, rawInitial *FeatureMe
 	if rawInitial == nil {
 		// Since the initial state is empty, the desired state is all we have.
 		// We canonicalize the remaining nested objects with nil to pick up defaults.
+		rawDesired.Mesh = canonicalizeFeatureMembershipMesh(rawDesired.Mesh, nil, opts...)
 		rawDesired.Configmanagement = canonicalizeFeatureMembershipConfigmanagement(rawDesired.Configmanagement, nil, opts...)
 
 		return rawDesired, nil
 	}
 	canonicalDesired := &FeatureMembership{}
+	canonicalDesired.Mesh = canonicalizeFeatureMembershipMesh(rawDesired.Mesh, rawInitial.Mesh, opts...)
 	canonicalDesired.Configmanagement = canonicalizeFeatureMembershipConfigmanagement(rawDesired.Configmanagement, rawInitial.Configmanagement, opts...)
 	if dcl.NameToSelfLink(rawDesired.Project, rawInitial.Project) {
 		canonicalDesired.Project = rawInitial.Project
@@ -319,6 +331,12 @@ func canonicalizeFeatureMembershipDesiredState(rawDesired, rawInitial *FeatureMe
 
 func canonicalizeFeatureMembershipNewState(c *Client, rawNew, rawDesired *FeatureMembership) (*FeatureMembership, error) {
 
+	if dcl.IsEmptyValueIndirect(rawNew.Mesh) && dcl.IsEmptyValueIndirect(rawDesired.Mesh) {
+		rawNew.Mesh = rawDesired.Mesh
+	} else {
+		rawNew.Mesh = canonicalizeNewFeatureMembershipMesh(c, rawDesired.Mesh, rawNew.Mesh)
+	}
+
 	if dcl.IsEmptyValueIndirect(rawNew.Configmanagement) && dcl.IsEmptyValueIndirect(rawDesired.Configmanagement) {
 		rawNew.Configmanagement = rawDesired.Configmanagement
 	} else {
@@ -334,6 +352,118 @@ func canonicalizeFeatureMembershipNewState(c *Client, rawNew, rawDesired *Featur
 	rawNew.Membership = rawDesired.Membership
 
 	return rawNew, nil
+}
+
+func canonicalizeFeatureMembershipMesh(des, initial *FeatureMembershipMesh, opts ...dcl.ApplyOption) *FeatureMembershipMesh {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &FeatureMembershipMesh{}
+
+	if dcl.IsZeroValue(des.Management) || (dcl.IsEmptyValueIndirect(des.Management) && dcl.IsEmptyValueIndirect(initial.Management)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.Management = initial.Management
+	} else {
+		cDes.Management = des.Management
+	}
+
+	return cDes
+}
+
+func canonicalizeFeatureMembershipMeshSlice(des, initial []FeatureMembershipMesh, opts ...dcl.ApplyOption) []FeatureMembershipMesh {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]FeatureMembershipMesh, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeFeatureMembershipMesh(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]FeatureMembershipMesh, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeFeatureMembershipMesh(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewFeatureMembershipMesh(c *Client, des, nw *FeatureMembershipMesh) *FeatureMembershipMesh {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for FeatureMembershipMesh while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	return nw
+}
+
+func canonicalizeNewFeatureMembershipMeshSet(c *Client, des, nw []FeatureMembershipMesh) []FeatureMembershipMesh {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []FeatureMembershipMesh
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareFeatureMembershipMeshNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewFeatureMembershipMeshSlice(c *Client, des, nw []FeatureMembershipMesh) []FeatureMembershipMesh {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []FeatureMembershipMesh
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewFeatureMembershipMesh(c, &d, &n))
+	}
+
+	return items
 }
 
 func canonicalizeFeatureMembershipConfigmanagement(des, initial *FeatureMembershipConfigmanagement, opts ...dcl.ApplyOption) *FeatureMembershipConfigmanagement {
@@ -1294,7 +1424,14 @@ func diffFeatureMembership(c *Client, desired, actual *FeatureMembership, opts .
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.Configmanagement, actual.Configmanagement, dcl.DiffInfo{ObjectFunction: compareFeatureMembershipConfigmanagementNewStyle, EmptyObject: EmptyFeatureMembershipConfigmanagement, OperationSelector: dcl.TriggersOperation("updateFeatureMembershipUpdateFeatureMembershipOperation")}, fn.AddNest("Configmanagement")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Mesh, actual.Mesh, dcl.DiffInfo{ObjectFunction: compareFeatureMembershipMeshNewStyle, EmptyObject: EmptyFeatureMembershipMesh, OperationSelector: dcl.TriggersOperation("updateFeatureMembershipUpdateFeatureMembershipOperation")}, fn.AddNest("Mesh")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		newDiffs = append(newDiffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.Configmanagement, actual.Configmanagement, dcl.DiffInfo{MergeNestedDiffs: true, ObjectFunction: compareFeatureMembershipConfigmanagementNewStyle, EmptyObject: EmptyFeatureMembershipConfigmanagement, OperationSelector: dcl.TriggersOperation("updateFeatureMembershipUpdateFeatureMembershipOperation")}, fn.AddNest("Configmanagement")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1331,6 +1468,35 @@ func diffFeatureMembership(c *Client, desired, actual *FeatureMembership, opts .
 
 	return newDiffs, nil
 }
+func compareFeatureMembershipMeshNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*FeatureMembershipMesh)
+	if !ok {
+		desiredNotPointer, ok := d.(FeatureMembershipMesh)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a FeatureMembershipMesh or *FeatureMembershipMesh", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*FeatureMembershipMesh)
+	if !ok {
+		actualNotPointer, ok := a.(FeatureMembershipMesh)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a FeatureMembershipMesh", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.Management, actual.Management, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateFeatureMembershipUpdateFeatureMembershipOperation")}, fn.AddNest("Management")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
 func compareFeatureMembershipConfigmanagementNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
 	var diffs []*dcl.FieldDiff
 
@@ -1750,6 +1916,11 @@ func expandFeatureMembership(c *Client, f *FeatureMembership) (map[string]interf
 	m := make(map[string]interface{})
 	res := f
 	_ = res
+	if v, err := expandFeatureMembershipMesh(c, f.Mesh, res); err != nil {
+		return nil, fmt.Errorf("error expanding Mesh into mesh: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["mesh"] = v
+	}
 	if v, err := expandFeatureMembershipConfigmanagement(c, f.Configmanagement, res); err != nil {
 		return nil, fmt.Errorf("error expanding Configmanagement into configmanagement: %w", err)
 	} else if !dcl.IsEmptyValueIndirect(v) {
@@ -1791,6 +1962,7 @@ func flattenFeatureMembership(c *Client, i interface{}, res *FeatureMembership) 
 	}
 
 	resultRes := &FeatureMembership{}
+	resultRes.Mesh = flattenFeatureMembershipMesh(c, m["mesh"], res)
 	resultRes.Configmanagement = flattenFeatureMembershipConfigmanagement(c, m["configmanagement"], res)
 	resultRes.Project = dcl.FlattenString(m["project"])
 	resultRes.Location = dcl.FlattenString(m["location"])
@@ -1798,6 +1970,120 @@ func flattenFeatureMembership(c *Client, i interface{}, res *FeatureMembership) 
 	resultRes.Membership = dcl.FlattenString(m["membership"])
 
 	return resultRes
+}
+
+// expandFeatureMembershipMeshMap expands the contents of FeatureMembershipMesh into a JSON
+// request object.
+func expandFeatureMembershipMeshMap(c *Client, f map[string]FeatureMembershipMesh, res *FeatureMembership) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandFeatureMembershipMesh(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandFeatureMembershipMeshSlice expands the contents of FeatureMembershipMesh into a JSON
+// request object.
+func expandFeatureMembershipMeshSlice(c *Client, f []FeatureMembershipMesh, res *FeatureMembership) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandFeatureMembershipMesh(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenFeatureMembershipMeshMap flattens the contents of FeatureMembershipMesh from a JSON
+// response object.
+func flattenFeatureMembershipMeshMap(c *Client, i interface{}, res *FeatureMembership) map[string]FeatureMembershipMesh {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]FeatureMembershipMesh{}
+	}
+
+	if len(a) == 0 {
+		return map[string]FeatureMembershipMesh{}
+	}
+
+	items := make(map[string]FeatureMembershipMesh)
+	for k, item := range a {
+		items[k] = *flattenFeatureMembershipMesh(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenFeatureMembershipMeshSlice flattens the contents of FeatureMembershipMesh from a JSON
+// response object.
+func flattenFeatureMembershipMeshSlice(c *Client, i interface{}, res *FeatureMembership) []FeatureMembershipMesh {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []FeatureMembershipMesh{}
+	}
+
+	if len(a) == 0 {
+		return []FeatureMembershipMesh{}
+	}
+
+	items := make([]FeatureMembershipMesh, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenFeatureMembershipMesh(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandFeatureMembershipMesh expands an instance of FeatureMembershipMesh into a JSON
+// request object.
+func expandFeatureMembershipMesh(c *Client, f *FeatureMembershipMesh, res *FeatureMembership) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.Management; !dcl.IsEmptyValueIndirect(v) {
+		m["management"] = v
+	}
+
+	return m, nil
+}
+
+// flattenFeatureMembershipMesh flattens an instance of FeatureMembershipMesh from a JSON
+// response object.
+func flattenFeatureMembershipMesh(c *Client, i interface{}, res *FeatureMembership) *FeatureMembershipMesh {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &FeatureMembershipMesh{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyFeatureMembershipMesh
+	}
+	r.Management = flattenFeatureMembershipMeshManagementEnum(m["management"])
+
+	return r
 }
 
 // expandFeatureMembershipConfigmanagementMap expands the contents of FeatureMembershipConfigmanagement into a JSON
@@ -2698,6 +2984,57 @@ func flattenFeatureMembershipConfigmanagementHierarchyController(c *Client, i in
 	return r
 }
 
+// flattenFeatureMembershipMeshManagementEnumMap flattens the contents of FeatureMembershipMeshManagementEnum from a JSON
+// response object.
+func flattenFeatureMembershipMeshManagementEnumMap(c *Client, i interface{}, res *FeatureMembership) map[string]FeatureMembershipMeshManagementEnum {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]FeatureMembershipMeshManagementEnum{}
+	}
+
+	if len(a) == 0 {
+		return map[string]FeatureMembershipMeshManagementEnum{}
+	}
+
+	items := make(map[string]FeatureMembershipMeshManagementEnum)
+	for k, item := range a {
+		items[k] = *flattenFeatureMembershipMeshManagementEnum(item.(interface{}))
+	}
+
+	return items
+}
+
+// flattenFeatureMembershipMeshManagementEnumSlice flattens the contents of FeatureMembershipMeshManagementEnum from a JSON
+// response object.
+func flattenFeatureMembershipMeshManagementEnumSlice(c *Client, i interface{}, res *FeatureMembership) []FeatureMembershipMeshManagementEnum {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []FeatureMembershipMeshManagementEnum{}
+	}
+
+	if len(a) == 0 {
+		return []FeatureMembershipMeshManagementEnum{}
+	}
+
+	items := make([]FeatureMembershipMeshManagementEnum, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenFeatureMembershipMeshManagementEnum(item.(interface{})))
+	}
+
+	return items
+}
+
+// flattenFeatureMembershipMeshManagementEnum asserts that an interface is a string, and returns a
+// pointer to a *FeatureMembershipMeshManagementEnum with the same value as that string.
+func flattenFeatureMembershipMeshManagementEnum(i interface{}) *FeatureMembershipMeshManagementEnum {
+	s, ok := i.(string)
+	if !ok {
+		return nil
+	}
+
+	return FeatureMembershipMeshManagementEnumRef(s)
+}
+
 // flattenFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnumMap flattens the contents of FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum from a JSON
 // response object.
 func flattenFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnumMap(c *Client, i interface{}, res *FeatureMembership) map[string]FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum {
@@ -2795,6 +3132,7 @@ type featureMembershipDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         featureMembershipApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToFeatureMembershipDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]featureMembershipDiff, error) {
@@ -2814,7 +3152,8 @@ func convertFieldDiffsToFeatureMembershipDiffs(config *dcl.Config, fds []*dcl.Fi
 	var diffs []featureMembershipDiff
 	// For each operation name, create a featureMembershipDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := featureMembershipDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := featureMembershipDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {
@@ -2841,6 +3180,17 @@ func convertOpNameToFeatureMembershipApiOperation(opName string, fieldDiffs []*d
 }
 
 func extractFeatureMembershipFields(r *FeatureMembership) error {
+	vMesh := r.Mesh
+	if vMesh == nil {
+		// note: explicitly not the empty object.
+		vMesh = &FeatureMembershipMesh{}
+	}
+	if err := extractFeatureMembershipMeshFields(r, vMesh); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vMesh) {
+		r.Mesh = vMesh
+	}
 	vConfigmanagement := r.Configmanagement
 	if vConfigmanagement == nil {
 		// note: explicitly not the empty object.
@@ -2852,6 +3202,9 @@ func extractFeatureMembershipFields(r *FeatureMembership) error {
 	if !dcl.IsEmptyValueIndirect(vConfigmanagement) {
 		r.Configmanagement = vConfigmanagement
 	}
+	return nil
+}
+func extractFeatureMembershipMeshFields(r *FeatureMembership, o *FeatureMembershipMesh) error {
 	return nil
 }
 func extractFeatureMembershipConfigmanagementFields(r *FeatureMembership, o *FeatureMembershipConfigmanagement) error {
@@ -2943,6 +3296,17 @@ func extractFeatureMembershipConfigmanagementHierarchyControllerFields(r *Featur
 }
 
 func postReadExtractFeatureMembershipFields(r *FeatureMembership) error {
+	vMesh := r.Mesh
+	if vMesh == nil {
+		// note: explicitly not the empty object.
+		vMesh = &FeatureMembershipMesh{}
+	}
+	if err := postReadExtractFeatureMembershipMeshFields(r, vMesh); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vMesh) {
+		r.Mesh = vMesh
+	}
 	vConfigmanagement := r.Configmanagement
 	if vConfigmanagement == nil {
 		// note: explicitly not the empty object.
@@ -2954,6 +3318,9 @@ func postReadExtractFeatureMembershipFields(r *FeatureMembership) error {
 	if !dcl.IsEmptyValueIndirect(vConfigmanagement) {
 		r.Configmanagement = vConfigmanagement
 	}
+	return nil
+}
+func postReadExtractFeatureMembershipMeshFields(r *FeatureMembership, o *FeatureMembershipMesh) error {
 	return nil
 }
 func postReadExtractFeatureMembershipConfigmanagementFields(r *FeatureMembership, o *FeatureMembershipConfigmanagement) error {

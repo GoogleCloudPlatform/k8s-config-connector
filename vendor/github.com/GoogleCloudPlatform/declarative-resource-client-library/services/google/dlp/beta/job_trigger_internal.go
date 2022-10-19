@@ -1043,7 +1043,8 @@ func canonicalizeJobTriggerInspectJob(des, initial *JobTriggerInspectJob, opts .
 
 	cDes.StorageConfig = canonicalizeJobTriggerInspectJobStorageConfig(des.StorageConfig, initial.StorageConfig, opts...)
 	cDes.InspectConfig = canonicalizeJobTriggerInspectJobInspectConfig(des.InspectConfig, initial.InspectConfig, opts...)
-	if dcl.StringCanonicalize(des.InspectTemplateName, initial.InspectTemplateName) || dcl.IsZeroValue(des.InspectTemplateName) {
+	if dcl.IsZeroValue(des.InspectTemplateName) || (dcl.IsEmptyValueIndirect(des.InspectTemplateName) && dcl.IsEmptyValueIndirect(initial.InspectTemplateName)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
 		cDes.InspectTemplateName = initial.InspectTemplateName
 	} else {
 		cDes.InspectTemplateName = des.InspectTemplateName
@@ -1097,9 +1098,6 @@ func canonicalizeNewJobTriggerInspectJob(c *Client, des, nw *JobTriggerInspectJo
 
 	nw.StorageConfig = canonicalizeNewJobTriggerInspectJobStorageConfig(c, des.StorageConfig, nw.StorageConfig)
 	nw.InspectConfig = canonicalizeNewJobTriggerInspectJobInspectConfig(c, des.InspectConfig, nw.InspectConfig)
-	if dcl.StringCanonicalize(des.InspectTemplateName, nw.InspectTemplateName) {
-		nw.InspectTemplateName = des.InspectTemplateName
-	}
 	nw.Actions = canonicalizeNewJobTriggerInspectJobActionsSlice(c, des.Actions, nw.Actions)
 
 	return nw
@@ -9325,7 +9323,7 @@ func compareJobTriggerInspectJobNewStyle(d, a interface{}, fn dcl.FieldName) ([]
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InspectTemplateName, actual.InspectTemplateName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobTriggerUpdateJobTriggerOperation")}, fn.AddNest("InspectTemplateName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InspectTemplateName, actual.InspectTemplateName, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateJobTriggerUpdateJobTriggerOperation")}, fn.AddNest("InspectTemplateName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -20349,6 +20347,7 @@ type jobTriggerDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         jobTriggerApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToJobTriggerDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]jobTriggerDiff, error) {
@@ -20368,7 +20367,8 @@ func convertFieldDiffsToJobTriggerDiffs(config *dcl.Config, fds []*dcl.FieldDiff
 	var diffs []jobTriggerDiff
 	// For each operation name, create a jobTriggerDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := jobTriggerDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := jobTriggerDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

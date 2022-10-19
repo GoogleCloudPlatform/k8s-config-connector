@@ -2041,7 +2041,6 @@ func canonicalizeNewCaPoolIssuancePolicyBaselineValuesCaOptions(c *Client, des, 
 	if dcl.BoolCanonicalize(des.IsCa, nw.IsCa) {
 		nw.IsCa = des.IsCa
 	}
-	nw.MaxIssuerPathLength = des.MaxIssuerPathLength
 
 	return nw
 }
@@ -6597,6 +6596,7 @@ type caPoolDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         caPoolApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToCaPoolDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]caPoolDiff, error) {
@@ -6616,7 +6616,8 @@ func convertFieldDiffsToCaPoolDiffs(config *dcl.Config, fds []*dcl.FieldDiff, op
 	var diffs []caPoolDiff
 	// For each operation name, create a caPoolDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := caPoolDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := caPoolDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

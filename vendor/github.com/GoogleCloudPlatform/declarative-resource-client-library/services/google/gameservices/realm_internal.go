@@ -27,6 +27,9 @@ import (
 
 func (r *Realm) validate() error {
 
+	if err := dcl.RequiredParameter(r.Name, "Name"); err != nil {
+		return err
+	}
 	if err := dcl.Required(r, "timeZone"); err != nil {
 		return err
 	}
@@ -439,7 +442,7 @@ func canonicalizeRealmDesiredState(rawDesired, rawInitial *Realm, opts ...dcl.Ap
 		return rawDesired, nil
 	}
 	canonicalDesired := &Realm{}
-	if dcl.StringCanonicalize(rawDesired.Name, rawInitial.Name) {
+	if dcl.NameToSelfLink(rawDesired.Name, rawInitial.Name) {
 		canonicalDesired.Name = rawInitial.Name
 	} else {
 		canonicalDesired.Name = rawDesired.Name
@@ -476,13 +479,7 @@ func canonicalizeRealmDesiredState(rawDesired, rawInitial *Realm, opts ...dcl.Ap
 
 func canonicalizeRealmNewState(c *Client, rawNew, rawDesired *Realm) (*Realm, error) {
 
-	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
-		rawNew.Name = rawDesired.Name
-	} else {
-		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
-			rawNew.Name = rawDesired.Name
-		}
-	}
+	rawNew.Name = rawDesired.Name
 
 	if dcl.IsEmptyValueIndirect(rawNew.CreateTime) && dcl.IsEmptyValueIndirect(rawDesired.CreateTime) {
 		rawNew.CreateTime = rawDesired.CreateTime
@@ -662,7 +659,9 @@ func expandRealm(c *Client, f *Realm) (map[string]interface{}, error) {
 	m := make(map[string]interface{})
 	res := f
 	_ = res
-	if v := f.Name; dcl.ValueShouldBeSent(v) {
+	if v, err := dcl.EmptyValue(); err != nil {
+		return nil, fmt.Errorf("error expanding Name into name: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["name"] = v
 	}
 	if v := f.Labels; dcl.ValueShouldBeSent(v) {
@@ -758,6 +757,7 @@ type realmDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         realmApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToRealmDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]realmDiff, error) {
@@ -777,7 +777,8 @@ func convertFieldDiffsToRealmDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opt
 	var diffs []realmDiff
 	// For each operation name, create a realmDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := realmDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := realmDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

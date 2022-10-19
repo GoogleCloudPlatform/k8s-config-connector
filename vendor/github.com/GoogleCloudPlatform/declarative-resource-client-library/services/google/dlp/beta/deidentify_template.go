@@ -10752,6 +10752,10 @@ func (r *DeidentifyTemplate) ID() (string, error) {
 		"parent":            dcl.ValueOrEmptyString(nr.Parent),
 		"location":          dcl.ValueOrEmptyString(nr.Location),
 	}
+	if dcl.IsRegion(nr.Location) {
+		return dcl.Nprintf("{{parent}}/locations/{{location}}/deidentifyTemplates/{{name}}", params), nil
+	}
+
 	return dcl.Nprintf("{{parent}}/deidentifyTemplates/{{name}}", params), nil
 }
 

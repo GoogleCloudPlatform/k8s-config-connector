@@ -44,6 +44,7 @@ type Cluster struct {
 	Location               *string                        `json:"location"`
 	Fleet                  *ClusterFleet                  `json:"fleet"`
 	LoggingConfig          *ClusterLoggingConfig          `json:"loggingConfig"`
+	MonitoringConfig       *ClusterMonitoringConfig       `json:"monitoringConfig"`
 }
 
 func (r *Cluster) String() string {
@@ -999,6 +1000,98 @@ func (r *ClusterLoggingConfigComponentConfig) HashCode() string {
 	return fmt.Sprintf("%x", hash)
 }
 
+type ClusterMonitoringConfig struct {
+	empty                   bool                                            `json:"-"`
+	ManagedPrometheusConfig *ClusterMonitoringConfigManagedPrometheusConfig `json:"managedPrometheusConfig"`
+}
+
+type jsonClusterMonitoringConfig ClusterMonitoringConfig
+
+func (r *ClusterMonitoringConfig) UnmarshalJSON(data []byte) error {
+	var res jsonClusterMonitoringConfig
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+
+	var m map[string]interface{}
+	json.Unmarshal(data, &m)
+
+	if len(m) == 0 {
+		*r = *EmptyClusterMonitoringConfig
+	} else {
+
+		r.ManagedPrometheusConfig = res.ManagedPrometheusConfig
+
+	}
+	return nil
+}
+
+// This object is used to assert a desired state where this ClusterMonitoringConfig is
+// empty. Go lacks global const objects, but this object should be treated
+// as one. Modifying this object will have undesirable results.
+var EmptyClusterMonitoringConfig *ClusterMonitoringConfig = &ClusterMonitoringConfig{empty: true}
+
+func (r *ClusterMonitoringConfig) Empty() bool {
+	return r.empty
+}
+
+func (r *ClusterMonitoringConfig) String() string {
+	return dcl.SprintResource(r)
+}
+
+func (r *ClusterMonitoringConfig) HashCode() string {
+	// Placeholder for a more complex hash method that handles ordering, etc
+	// Hash resource body for easy comparison later
+	hash := sha256.New().Sum([]byte(r.String()))
+	return fmt.Sprintf("%x", hash)
+}
+
+type ClusterMonitoringConfigManagedPrometheusConfig struct {
+	empty   bool  `json:"-"`
+	Enabled *bool `json:"enabled"`
+}
+
+type jsonClusterMonitoringConfigManagedPrometheusConfig ClusterMonitoringConfigManagedPrometheusConfig
+
+func (r *ClusterMonitoringConfigManagedPrometheusConfig) UnmarshalJSON(data []byte) error {
+	var res jsonClusterMonitoringConfigManagedPrometheusConfig
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+
+	var m map[string]interface{}
+	json.Unmarshal(data, &m)
+
+	if len(m) == 0 {
+		*r = *EmptyClusterMonitoringConfigManagedPrometheusConfig
+	} else {
+
+		r.Enabled = res.Enabled
+
+	}
+	return nil
+}
+
+// This object is used to assert a desired state where this ClusterMonitoringConfigManagedPrometheusConfig is
+// empty. Go lacks global const objects, but this object should be treated
+// as one. Modifying this object will have undesirable results.
+var EmptyClusterMonitoringConfigManagedPrometheusConfig *ClusterMonitoringConfigManagedPrometheusConfig = &ClusterMonitoringConfigManagedPrometheusConfig{empty: true}
+
+func (r *ClusterMonitoringConfigManagedPrometheusConfig) Empty() bool {
+	return r.empty
+}
+
+func (r *ClusterMonitoringConfigManagedPrometheusConfig) String() string {
+	return dcl.SprintResource(r)
+}
+
+func (r *ClusterMonitoringConfigManagedPrometheusConfig) HashCode() string {
+	// Placeholder for a more complex hash method that handles ordering, etc
+	// Hash resource body for easy comparison later
+	hash := sha256.New().Sum([]byte(r.String()))
+	return fmt.Sprintf("%x", hash)
+}
+
 // Describe returns a simple description of this resource to ensure that automated tools
 // can identify it.
 func (r *Cluster) Describe() dcl.ServiceTypeVersion {
@@ -1034,6 +1127,7 @@ func (r *Cluster) ID() (string, error) {
 		"location":                 dcl.ValueOrEmptyString(nr.Location),
 		"fleet":                    dcl.ValueOrEmptyString(nr.Fleet),
 		"logging_config":           dcl.ValueOrEmptyString(nr.LoggingConfig),
+		"monitoring_config":        dcl.ValueOrEmptyString(nr.MonitoringConfig),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/awsClusters/{{name}}", params), nil
 }

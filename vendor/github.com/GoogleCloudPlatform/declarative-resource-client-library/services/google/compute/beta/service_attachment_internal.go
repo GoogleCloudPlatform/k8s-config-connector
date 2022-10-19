@@ -1886,6 +1886,7 @@ type serviceAttachmentDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         serviceAttachmentApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToServiceAttachmentDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]serviceAttachmentDiff, error) {
@@ -1905,7 +1906,8 @@ func convertFieldDiffsToServiceAttachmentDiffs(config *dcl.Config, fds []*dcl.Fi
 	var diffs []serviceAttachmentDiff
 	// For each operation name, create a serviceAttachmentDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := serviceAttachmentDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := serviceAttachmentDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

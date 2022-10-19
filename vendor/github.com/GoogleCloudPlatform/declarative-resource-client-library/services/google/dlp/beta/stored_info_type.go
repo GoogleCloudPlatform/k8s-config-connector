@@ -545,6 +545,10 @@ func (r *StoredInfoType) ID() (string, error) {
 		"parent":                  dcl.ValueOrEmptyString(nr.Parent),
 		"location":                dcl.ValueOrEmptyString(nr.Location),
 	}
+	if dcl.IsRegion(nr.Location) {
+		return dcl.Nprintf("{{parent}}/locations/{{location}}/storedInfoTypes/{{name}}", params), nil
+	}
+
 	return dcl.Nprintf("{{parent}}/storedInfoTypes/{{name}}", params), nil
 }
 

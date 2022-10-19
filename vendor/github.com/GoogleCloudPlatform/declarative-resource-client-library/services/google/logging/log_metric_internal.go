@@ -1803,21 +1803,21 @@ func compareLogMetricBucketOptionsNewStyle(d, a interface{}, fn dcl.FieldName) (
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.LinearBuckets, actual.LinearBuckets, dcl.DiffInfo{ObjectFunction: compareLogMetricBucketOptionsLinearBucketsNewStyle, EmptyObject: EmptyLogMetricBucketOptionsLinearBuckets, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LinearBuckets")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LinearBuckets, actual.LinearBuckets, dcl.DiffInfo{ObjectFunction: compareLogMetricBucketOptionsLinearBucketsNewStyle, EmptyObject: EmptyLogMetricBucketOptionsLinearBuckets, OperationSelector: dcl.TriggersOperation("updateLogMetricUpdateOperation")}, fn.AddNest("LinearBuckets")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExponentialBuckets, actual.ExponentialBuckets, dcl.DiffInfo{ObjectFunction: compareLogMetricBucketOptionsExponentialBucketsNewStyle, EmptyObject: EmptyLogMetricBucketOptionsExponentialBuckets, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExponentialBuckets")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExponentialBuckets, actual.ExponentialBuckets, dcl.DiffInfo{ObjectFunction: compareLogMetricBucketOptionsExponentialBucketsNewStyle, EmptyObject: EmptyLogMetricBucketOptionsExponentialBuckets, OperationSelector: dcl.TriggersOperation("updateLogMetricUpdateOperation")}, fn.AddNest("ExponentialBuckets")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExplicitBuckets, actual.ExplicitBuckets, dcl.DiffInfo{ObjectFunction: compareLogMetricBucketOptionsExplicitBucketsNewStyle, EmptyObject: EmptyLogMetricBucketOptionsExplicitBuckets, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExplicitBuckets")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExplicitBuckets, actual.ExplicitBuckets, dcl.DiffInfo{ObjectFunction: compareLogMetricBucketOptionsExplicitBucketsNewStyle, EmptyObject: EmptyLogMetricBucketOptionsExplicitBuckets, OperationSelector: dcl.TriggersOperation("updateLogMetricUpdateOperation")}, fn.AddNest("ExplicitBuckets")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1846,21 +1846,21 @@ func compareLogMetricBucketOptionsLinearBucketsNewStyle(d, a interface{}, fn dcl
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.NumFiniteBuckets, actual.NumFiniteBuckets, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NumFiniteBuckets")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NumFiniteBuckets, actual.NumFiniteBuckets, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateLogMetricUpdateOperation")}, fn.AddNest("NumFiniteBuckets")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Width, actual.Width, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Width")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Width, actual.Width, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateLogMetricUpdateOperation")}, fn.AddNest("Width")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Offset, actual.Offset, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Offset")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Offset, actual.Offset, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateLogMetricUpdateOperation")}, fn.AddNest("Offset")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1889,21 +1889,21 @@ func compareLogMetricBucketOptionsExponentialBucketsNewStyle(d, a interface{}, f
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.NumFiniteBuckets, actual.NumFiniteBuckets, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NumFiniteBuckets")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NumFiniteBuckets, actual.NumFiniteBuckets, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateLogMetricUpdateOperation")}, fn.AddNest("NumFiniteBuckets")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GrowthFactor, actual.GrowthFactor, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GrowthFactor")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GrowthFactor, actual.GrowthFactor, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateLogMetricUpdateOperation")}, fn.AddNest("GrowthFactor")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Scale, actual.Scale, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Scale")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Scale, actual.Scale, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateLogMetricUpdateOperation")}, fn.AddNest("Scale")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1932,7 +1932,7 @@ func compareLogMetricBucketOptionsExplicitBucketsNewStyle(d, a interface{}, fn d
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Bounds, actual.Bounds, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Bounds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Bounds, actual.Bounds, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateLogMetricUpdateOperation")}, fn.AddNest("Bounds")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3181,6 +3181,7 @@ type logMetricDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         logMetricApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToLogMetricDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]logMetricDiff, error) {
@@ -3200,7 +3201,8 @@ func convertFieldDiffsToLogMetricDiffs(config *dcl.Config, fds []*dcl.FieldDiff,
 	var diffs []logMetricDiff
 	// For each operation name, create a logMetricDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := logMetricDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := logMetricDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

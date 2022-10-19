@@ -14,7 +14,6 @@
 package iam
 
 import (
-	"bytes"
 	"context"
 	"crypto/sha256"
 	"encoding/json"
@@ -467,11 +466,4 @@ func applyServiceAccountDiff(c *Client, ctx context.Context, desired *ServiceAcc
 	}
 	c.Config.Logger.InfoWithContext(ctx, "Done Apply.")
 	return newState, nil
-}
-
-func (r *ServiceAccount) GetPolicy(basePath string) (string, string, *bytes.Buffer, error) {
-	u := r.getPolicyURL(basePath)
-	body := &bytes.Buffer{}
-	body.WriteString(fmt.Sprintf(`{"options":{"requestedPolicyVersion": %d}}`, r.IAMPolicyVersion()))
-	return u, "POST", body, nil
 }

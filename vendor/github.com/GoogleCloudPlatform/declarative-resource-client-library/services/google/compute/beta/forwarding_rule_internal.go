@@ -1708,6 +1708,7 @@ func (r *ForwardingRule) marshal(c *Client) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error marshalling ForwardingRule: %w", err)
 	}
+	m = forwardingRuleEncodeCreateRequest(m)
 
 	return json.Marshal(m)
 }
@@ -2576,6 +2577,7 @@ type forwardingRuleDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         forwardingRuleApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToForwardingRuleDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]forwardingRuleDiff, error) {
@@ -2595,7 +2597,8 @@ func convertFieldDiffsToForwardingRuleDiffs(config *dcl.Config, fds []*dcl.Field
 	var diffs []forwardingRuleDiff
 	// For each operation name, create a forwardingRuleDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := forwardingRuleDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := forwardingRuleDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

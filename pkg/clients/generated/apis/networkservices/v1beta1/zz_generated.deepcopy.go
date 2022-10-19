@@ -1234,13 +1234,6 @@ func (in *NetworkServicesGRPCRouteSpec) DeepCopyInto(out *NetworkServicesGRPCRou
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.Labels != nil {
-		in, out := &in.Labels, &out.Labels
-		*out = make(map[string]string, len(*in))
-		for key, val := range *in {
-			(*out)[key] = val
-		}
-	}
 	if in.Meshes != nil {
 		in, out := &in.Meshes, &out.Meshes
 		*out = make([]v1alpha1.ResourceRef, len(*in))
@@ -1371,13 +1364,6 @@ func (in *NetworkServicesGatewaySpec) DeepCopyInto(out *NetworkServicesGatewaySp
 		in, out := &in.Description, &out.Description
 		*out = new(string)
 		**out = **in
-	}
-	if in.Labels != nil {
-		in, out := &in.Labels, &out.Labels
-		*out = make(map[string]string, len(*in))
-		for key, val := range *in {
-			(*out)[key] = val
-		}
 	}
 	if in.Ports != nil {
 		in, out := &in.Ports, &out.Ports
@@ -1513,13 +1499,6 @@ func (in *NetworkServicesHTTPRouteSpec) DeepCopyInto(out *NetworkServicesHTTPRou
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.Labels != nil {
-		in, out := &in.Labels, &out.Labels
-		*out = make(map[string]string, len(*in))
-		for key, val := range *in {
-			(*out)[key] = val
-		}
-	}
 	if in.Meshes != nil {
 		in, out := &in.Meshes, &out.Meshes
 		*out = make([]v1alpha1.ResourceRef, len(*in))
@@ -1646,13 +1625,6 @@ func (in *NetworkServicesMeshSpec) DeepCopyInto(out *NetworkServicesMeshSpec) {
 		*out = new(int)
 		**out = **in
 	}
-	if in.Labels != nil {
-		in, out := &in.Labels, &out.Labels
-		*out = make(map[string]string, len(*in))
-		for key, val := range *in {
-			(*out)[key] = val
-		}
-	}
 	out.ProjectRef = in.ProjectRef
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
@@ -1766,13 +1738,6 @@ func (in *NetworkServicesTCPRouteSpec) DeepCopyInto(out *NetworkServicesTCPRoute
 		in, out := &in.Gateways, &out.Gateways
 		*out = make([]v1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
-	}
-	if in.Labels != nil {
-		in, out := &in.Labels, &out.Labels
-		*out = make(map[string]string, len(*in))
-		for key, val := range *in {
-			(*out)[key] = val
-		}
 	}
 	if in.Meshes != nil {
 		in, out := &in.Meshes, &out.Meshes

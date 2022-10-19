@@ -125,6 +125,12 @@ type FeaturemembershipHierarchyController struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+type FeaturemembershipMesh struct {
+	/* Whether to automatically manage Service Mesh. Possible values: MANAGEMENT_UNSPECIFIED, MANAGEMENT_AUTOMATIC, MANAGEMENT_MANUAL */
+	// +optional
+	Management *string `json:"management,omitempty"`
+}
+
 type FeaturemembershipMonitoring struct {
 	/*  Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export. */
 	// +optional
@@ -167,7 +173,8 @@ type FeaturemembershipPolicyController struct {
 
 type GKEHubFeatureMembershipSpec struct {
 	/* Config Management-specific spec. */
-	Configmanagement FeaturemembershipConfigmanagement `json:"configmanagement"`
+	// +optional
+	Configmanagement *FeaturemembershipConfigmanagement `json:"configmanagement,omitempty"`
 
 	/* Immutable. */
 	FeatureRef v1alpha1.ResourceRef `json:"featureRef"`
@@ -177,6 +184,10 @@ type GKEHubFeatureMembershipSpec struct {
 
 	/* Immutable. */
 	MembershipRef v1alpha1.ResourceRef `json:"membershipRef"`
+
+	/* Manage Mesh Features */
+	// +optional
+	Mesh *FeaturemembershipMesh `json:"mesh,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`

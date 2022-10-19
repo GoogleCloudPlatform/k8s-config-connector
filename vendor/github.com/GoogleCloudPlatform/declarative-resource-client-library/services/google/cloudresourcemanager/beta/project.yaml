@@ -37,10 +37,18 @@ paths:
       description: A full instance of a Project
   deleteAll:
     description: The function used to delete all Project
-    parameters: []
+    parameters:
+    - name: parent
+      required: true
+      schema:
+        type: string
   list:
     description: The function used to list information about many Project
-    parameters: []
+    parameters:
+    - name: parent
+      required: true
+      schema:
+        type: string
 components:
   schemas:
     Project:
@@ -98,6 +106,7 @@ components:
             the `UpdateProject` method; the end user must have the `resourcemanager.projects.create`
             permission on the parent. Read-write. '
           x-kubernetes-immutable: true
+          x-dcl-forward-slash-allowed: true
         projectNumber:
           type: integer
           format: int64

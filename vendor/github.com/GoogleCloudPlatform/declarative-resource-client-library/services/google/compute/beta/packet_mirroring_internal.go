@@ -2673,6 +2673,7 @@ type packetMirroringDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         packetMirroringApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToPacketMirroringDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]packetMirroringDiff, error) {
@@ -2692,7 +2693,8 @@ func convertFieldDiffsToPacketMirroringDiffs(config *dcl.Config, fds []*dcl.Fiel
 	var diffs []packetMirroringDiff
 	// For each operation name, create a packetMirroringDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := packetMirroringDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := packetMirroringDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

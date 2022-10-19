@@ -413,7 +413,7 @@ func (v NotePackageDistributionLatestVersionKindEnum) Validate() error {
 		// Empty enum is okay.
 		return nil
 	}
-	for _, s := range []string{"NOTE_KIND_UNSPECIFIED", "VULNERABILITY", "BUILD", "IMAGE", "PACKAGE", "DEPLOYMENT", "DISCOVERY", "ATTESTATION", "UPGRADE"} {
+	for _, s := range []string{"VERSION_KIND_UNSPECIFIED", "NORMAL", "MINIMUM", "MAXIMUM"} {
 		if string(v) == s {
 			return nil
 		}

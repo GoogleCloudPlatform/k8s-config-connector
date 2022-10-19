@@ -80,10 +80,6 @@ type NetworkServicesTCPRouteSpec struct {
 	// +optional
 	Gateways []v1alpha1.ResourceRef `json:"gateways,omitempty"`
 
-	/* Optional. Set of label tags associated with the TcpRoute resource. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
-
 	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 

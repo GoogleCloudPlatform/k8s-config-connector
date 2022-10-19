@@ -144,7 +144,7 @@ func DCLChannelSchema() *dcl.Schema {
 							"name": &dcl.Property{
 								Type:        "string",
 								GoName:      "Name",
-								Description: "Required. The resource name of the channel. Must be unique within the location on the project and must be in `projects/{project}/locations/{location}/channels/{channel_id}` format.",
+								Description: "Required. The resource name of the channel. Must be unique within the location on the project.",
 								Immutable:   true,
 							},
 							"project": &dcl.Property{

@@ -3550,6 +3550,7 @@ type membershipDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         membershipApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToMembershipDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]membershipDiff, error) {
@@ -3569,7 +3570,8 @@ func convertFieldDiffsToMembershipDiffs(config *dcl.Config, fds []*dcl.FieldDiff
 	var diffs []membershipDiff
 	// For each operation name, create a membershipDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := membershipDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := membershipDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

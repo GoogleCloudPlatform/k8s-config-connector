@@ -63,6 +63,7 @@ components:
       title: ServiceBinding
       x-dcl-id: projects/{{project}}/locations/{{location}}/serviceBindings/{{name}}
       x-dcl-parent-container: project
+      x-dcl-labels: labels
       x-dcl-has-create: true
       x-dcl-has-iam: false
       x-dcl-read-timeout: 0
@@ -120,8 +121,11 @@ components:
           type: string
           x-dcl-go-name: Service
           description: Required. The full service directory service name of the format
-            /projects/*/locations/*/namespaces/*/services/*
+            projects/*/locations/*/namespaces/*/services/*
           x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Servicedirectory/Service
+            field: name
         updateTime:
           type: string
           format: date-time

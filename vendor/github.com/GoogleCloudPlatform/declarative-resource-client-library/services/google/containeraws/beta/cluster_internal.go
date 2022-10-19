@@ -81,6 +81,11 @@ func (r *Cluster) validate() error {
 			return err
 		}
 	}
+	if !dcl.IsEmptyValueIndirect(r.MonitoringConfig) {
+		if err := r.MonitoringConfig.validate(); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 func (r *ClusterNetworking) validate() error {
@@ -228,6 +233,17 @@ func (r *ClusterLoggingConfig) validate() error {
 	return nil
 }
 func (r *ClusterLoggingConfigComponentConfig) validate() error {
+	return nil
+}
+func (r *ClusterMonitoringConfig) validate() error {
+	if !dcl.IsEmptyValueIndirect(r.ManagedPrometheusConfig) {
+		if err := r.ManagedPrometheusConfig.validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (r *ClusterMonitoringConfigManagedPrometheusConfig) validate() error {
 	return nil
 }
 func (r *Cluster) basePath() string {
@@ -664,6 +680,7 @@ func canonicalizeClusterDesiredState(rawDesired, rawInitial *Cluster, opts ...dc
 		rawDesired.WorkloadIdentityConfig = canonicalizeClusterWorkloadIdentityConfig(rawDesired.WorkloadIdentityConfig, nil, opts...)
 		rawDesired.Fleet = canonicalizeClusterFleet(rawDesired.Fleet, nil, opts...)
 		rawDesired.LoggingConfig = canonicalizeClusterLoggingConfig(rawDesired.LoggingConfig, nil, opts...)
+		rawDesired.MonitoringConfig = canonicalizeClusterMonitoringConfig(rawDesired.MonitoringConfig, nil, opts...)
 
 		return rawDesired, nil
 	}
@@ -704,6 +721,7 @@ func canonicalizeClusterDesiredState(rawDesired, rawInitial *Cluster, opts ...dc
 	}
 	canonicalDesired.Fleet = canonicalizeClusterFleet(rawDesired.Fleet, rawInitial.Fleet, opts...)
 	canonicalDesired.LoggingConfig = canonicalizeClusterLoggingConfig(rawDesired.LoggingConfig, rawInitial.LoggingConfig, opts...)
+	canonicalDesired.MonitoringConfig = canonicalizeClusterMonitoringConfig(rawDesired.MonitoringConfig, rawInitial.MonitoringConfig, opts...)
 
 	return canonicalDesired, nil
 }
@@ -824,6 +842,12 @@ func canonicalizeClusterNewState(c *Client, rawNew, rawDesired *Cluster) (*Clust
 		rawNew.LoggingConfig = rawDesired.LoggingConfig
 	} else {
 		rawNew.LoggingConfig = canonicalizeNewClusterLoggingConfig(c, rawDesired.LoggingConfig, rawNew.LoggingConfig)
+	}
+
+	if dcl.IsEmptyValueIndirect(rawNew.MonitoringConfig) && dcl.IsEmptyValueIndirect(rawDesired.MonitoringConfig) {
+		rawNew.MonitoringConfig = rawDesired.MonitoringConfig
+	} else {
+		rawNew.MonitoringConfig = canonicalizeNewClusterMonitoringConfig(c, rawDesired.MonitoringConfig, rawNew.MonitoringConfig)
 	}
 
 	return rawNew, nil
@@ -2792,6 +2816,230 @@ func canonicalizeNewClusterLoggingConfigComponentConfigSlice(c *Client, des, nw 
 	return items
 }
 
+func canonicalizeClusterMonitoringConfig(des, initial *ClusterMonitoringConfig, opts ...dcl.ApplyOption) *ClusterMonitoringConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterMonitoringConfig{}
+
+	cDes.ManagedPrometheusConfig = canonicalizeClusterMonitoringConfigManagedPrometheusConfig(des.ManagedPrometheusConfig, initial.ManagedPrometheusConfig, opts...)
+
+	return cDes
+}
+
+func canonicalizeClusterMonitoringConfigSlice(des, initial []ClusterMonitoringConfig, opts ...dcl.ApplyOption) []ClusterMonitoringConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterMonitoringConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterMonitoringConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterMonitoringConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterMonitoringConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterMonitoringConfig(c *Client, des, nw *ClusterMonitoringConfig) *ClusterMonitoringConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterMonitoringConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	nw.ManagedPrometheusConfig = canonicalizeNewClusterMonitoringConfigManagedPrometheusConfig(c, des.ManagedPrometheusConfig, nw.ManagedPrometheusConfig)
+
+	return nw
+}
+
+func canonicalizeNewClusterMonitoringConfigSet(c *Client, des, nw []ClusterMonitoringConfig) []ClusterMonitoringConfig {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterMonitoringConfig
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterMonitoringConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterMonitoringConfigSlice(c *Client, des, nw []ClusterMonitoringConfig) []ClusterMonitoringConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterMonitoringConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterMonitoringConfig(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeClusterMonitoringConfigManagedPrometheusConfig(des, initial *ClusterMonitoringConfigManagedPrometheusConfig, opts ...dcl.ApplyOption) *ClusterMonitoringConfigManagedPrometheusConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterMonitoringConfigManagedPrometheusConfig{}
+
+	if dcl.BoolCanonicalize(des.Enabled, initial.Enabled) || dcl.IsZeroValue(des.Enabled) {
+		cDes.Enabled = initial.Enabled
+	} else {
+		cDes.Enabled = des.Enabled
+	}
+
+	return cDes
+}
+
+func canonicalizeClusterMonitoringConfigManagedPrometheusConfigSlice(des, initial []ClusterMonitoringConfigManagedPrometheusConfig, opts ...dcl.ApplyOption) []ClusterMonitoringConfigManagedPrometheusConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterMonitoringConfigManagedPrometheusConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterMonitoringConfigManagedPrometheusConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterMonitoringConfigManagedPrometheusConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterMonitoringConfigManagedPrometheusConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterMonitoringConfigManagedPrometheusConfig(c *Client, des, nw *ClusterMonitoringConfigManagedPrometheusConfig) *ClusterMonitoringConfigManagedPrometheusConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterMonitoringConfigManagedPrometheusConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	if dcl.BoolCanonicalize(des.Enabled, nw.Enabled) {
+		nw.Enabled = des.Enabled
+	}
+
+	return nw
+}
+
+func canonicalizeNewClusterMonitoringConfigManagedPrometheusConfigSet(c *Client, des, nw []ClusterMonitoringConfigManagedPrometheusConfig) []ClusterMonitoringConfigManagedPrometheusConfig {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterMonitoringConfigManagedPrometheusConfig
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterMonitoringConfigManagedPrometheusConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterMonitoringConfigManagedPrometheusConfigSlice(c *Client, des, nw []ClusterMonitoringConfigManagedPrometheusConfig) []ClusterMonitoringConfigManagedPrometheusConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterMonitoringConfigManagedPrometheusConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterMonitoringConfigManagedPrometheusConfig(c, &d, &n))
+	}
+
+	return items
+}
+
 // The differ returns a list of diffs, along with a list of operations that should be taken
 // to remedy them. Right now, it does not attempt to consolidate operations - if several
 // fields can be fixed with a patch update, it will perform the patch several times.
@@ -2943,6 +3191,13 @@ func diffCluster(c *Client, desired, actual *Cluster, opts ...dcl.ApplyOption) (
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if ds, err := dcl.Diff(desired.MonitoringConfig, actual.MonitoringConfig, dcl.DiffInfo{ObjectFunction: compareClusterMonitoringConfigNewStyle, EmptyObject: EmptyClusterMonitoringConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MonitoringConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		newDiffs = append(newDiffs, ds...)
+	}
+
 	return newDiffs, nil
 }
 func compareClusterNetworkingNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
@@ -3078,7 +3333,7 @@ func compareClusterControlPlaneNewStyle(d, a interface{}, fn dcl.FieldName) ([]*
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Tags, actual.Tags, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Tags")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Tags, actual.Tags, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateClusterUpdateAwsClusterOperation")}, fn.AddNest("Tags")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3591,6 +3846,64 @@ func compareClusterLoggingConfigComponentConfigNewStyle(d, a interface{}, fn dcl
 	return diffs, nil
 }
 
+func compareClusterMonitoringConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterMonitoringConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterMonitoringConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterMonitoringConfig or *ClusterMonitoringConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterMonitoringConfig)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterMonitoringConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterMonitoringConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.ManagedPrometheusConfig, actual.ManagedPrometheusConfig, dcl.DiffInfo{ObjectFunction: compareClusterMonitoringConfigManagedPrometheusConfigNewStyle, EmptyObject: EmptyClusterMonitoringConfigManagedPrometheusConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ManagedPrometheusConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareClusterMonitoringConfigManagedPrometheusConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterMonitoringConfigManagedPrometheusConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterMonitoringConfigManagedPrometheusConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterMonitoringConfigManagedPrometheusConfig or *ClusterMonitoringConfigManagedPrometheusConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterMonitoringConfigManagedPrometheusConfig)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterMonitoringConfigManagedPrometheusConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterMonitoringConfigManagedPrometheusConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.Enabled, actual.Enabled, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Enabled")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
 // urlNormalized returns a copy of the resource struct with values normalized
 // for URL substitutions. For instance, it converts long-form self-links to
 // short-form so they can be substituted in.
@@ -3706,6 +4019,11 @@ func expandCluster(c *Client, f *Cluster) (map[string]interface{}, error) {
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["loggingConfig"] = v
 	}
+	if v, err := expandClusterMonitoringConfig(c, f.MonitoringConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding MonitoringConfig into monitoringConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["monitoringConfig"] = v
+	}
 
 	return m, nil
 }
@@ -3741,6 +4059,7 @@ func flattenCluster(c *Client, i interface{}, res *Cluster) *Cluster {
 	resultRes.Location = dcl.FlattenString(m["location"])
 	resultRes.Fleet = flattenClusterFleet(c, m["fleet"], res)
 	resultRes.LoggingConfig = flattenClusterLoggingConfig(c, m["loggingConfig"], res)
+	resultRes.MonitoringConfig = flattenClusterMonitoringConfig(c, m["monitoringConfig"], res)
 
 	return resultRes
 }
@@ -5692,6 +6011,236 @@ func flattenClusterLoggingConfigComponentConfig(c *Client, i interface{}, res *C
 	return r
 }
 
+// expandClusterMonitoringConfigMap expands the contents of ClusterMonitoringConfig into a JSON
+// request object.
+func expandClusterMonitoringConfigMap(c *Client, f map[string]ClusterMonitoringConfig, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterMonitoringConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterMonitoringConfigSlice expands the contents of ClusterMonitoringConfig into a JSON
+// request object.
+func expandClusterMonitoringConfigSlice(c *Client, f []ClusterMonitoringConfig, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterMonitoringConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterMonitoringConfigMap flattens the contents of ClusterMonitoringConfig from a JSON
+// response object.
+func flattenClusterMonitoringConfigMap(c *Client, i interface{}, res *Cluster) map[string]ClusterMonitoringConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterMonitoringConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterMonitoringConfig{}
+	}
+
+	items := make(map[string]ClusterMonitoringConfig)
+	for k, item := range a {
+		items[k] = *flattenClusterMonitoringConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterMonitoringConfigSlice flattens the contents of ClusterMonitoringConfig from a JSON
+// response object.
+func flattenClusterMonitoringConfigSlice(c *Client, i interface{}, res *Cluster) []ClusterMonitoringConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterMonitoringConfig{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterMonitoringConfig{}
+	}
+
+	items := make([]ClusterMonitoringConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterMonitoringConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterMonitoringConfig expands an instance of ClusterMonitoringConfig into a JSON
+// request object.
+func expandClusterMonitoringConfig(c *Client, f *ClusterMonitoringConfig, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v, err := expandClusterMonitoringConfigManagedPrometheusConfig(c, f.ManagedPrometheusConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding ManagedPrometheusConfig into managedPrometheusConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["managedPrometheusConfig"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterMonitoringConfig flattens an instance of ClusterMonitoringConfig from a JSON
+// response object.
+func flattenClusterMonitoringConfig(c *Client, i interface{}, res *Cluster) *ClusterMonitoringConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterMonitoringConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterMonitoringConfig
+	}
+	r.ManagedPrometheusConfig = flattenClusterMonitoringConfigManagedPrometheusConfig(c, m["managedPrometheusConfig"], res)
+
+	return r
+}
+
+// expandClusterMonitoringConfigManagedPrometheusConfigMap expands the contents of ClusterMonitoringConfigManagedPrometheusConfig into a JSON
+// request object.
+func expandClusterMonitoringConfigManagedPrometheusConfigMap(c *Client, f map[string]ClusterMonitoringConfigManagedPrometheusConfig, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterMonitoringConfigManagedPrometheusConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterMonitoringConfigManagedPrometheusConfigSlice expands the contents of ClusterMonitoringConfigManagedPrometheusConfig into a JSON
+// request object.
+func expandClusterMonitoringConfigManagedPrometheusConfigSlice(c *Client, f []ClusterMonitoringConfigManagedPrometheusConfig, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterMonitoringConfigManagedPrometheusConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterMonitoringConfigManagedPrometheusConfigMap flattens the contents of ClusterMonitoringConfigManagedPrometheusConfig from a JSON
+// response object.
+func flattenClusterMonitoringConfigManagedPrometheusConfigMap(c *Client, i interface{}, res *Cluster) map[string]ClusterMonitoringConfigManagedPrometheusConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterMonitoringConfigManagedPrometheusConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterMonitoringConfigManagedPrometheusConfig{}
+	}
+
+	items := make(map[string]ClusterMonitoringConfigManagedPrometheusConfig)
+	for k, item := range a {
+		items[k] = *flattenClusterMonitoringConfigManagedPrometheusConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterMonitoringConfigManagedPrometheusConfigSlice flattens the contents of ClusterMonitoringConfigManagedPrometheusConfig from a JSON
+// response object.
+func flattenClusterMonitoringConfigManagedPrometheusConfigSlice(c *Client, i interface{}, res *Cluster) []ClusterMonitoringConfigManagedPrometheusConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterMonitoringConfigManagedPrometheusConfig{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterMonitoringConfigManagedPrometheusConfig{}
+	}
+
+	items := make([]ClusterMonitoringConfigManagedPrometheusConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterMonitoringConfigManagedPrometheusConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterMonitoringConfigManagedPrometheusConfig expands an instance of ClusterMonitoringConfigManagedPrometheusConfig into a JSON
+// request object.
+func expandClusterMonitoringConfigManagedPrometheusConfig(c *Client, f *ClusterMonitoringConfigManagedPrometheusConfig, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.Enabled; !dcl.IsEmptyValueIndirect(v) {
+		m["enabled"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterMonitoringConfigManagedPrometheusConfig flattens an instance of ClusterMonitoringConfigManagedPrometheusConfig from a JSON
+// response object.
+func flattenClusterMonitoringConfigManagedPrometheusConfig(c *Client, i interface{}, res *Cluster) *ClusterMonitoringConfigManagedPrometheusConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterMonitoringConfigManagedPrometheusConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterMonitoringConfigManagedPrometheusConfig
+	}
+	r.Enabled = dcl.FlattenBool(m["enabled"])
+
+	return r
+}
+
 // flattenClusterControlPlaneRootVolumeVolumeTypeEnumMap flattens the contents of ClusterControlPlaneRootVolumeVolumeTypeEnum from a JSON
 // response object.
 func flattenClusterControlPlaneRootVolumeVolumeTypeEnumMap(c *Client, i interface{}, res *Cluster) map[string]ClusterControlPlaneRootVolumeVolumeTypeEnum {
@@ -5993,6 +6542,7 @@ type clusterDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         clusterApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToClusterDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]clusterDiff, error) {
@@ -6012,7 +6562,8 @@ func convertFieldDiffsToClusterDiffs(config *dcl.Config, fds []*dcl.FieldDiff, o
 	var diffs []clusterDiff
 	// For each operation name, create a clusterDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := clusterDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := clusterDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {
@@ -6104,6 +6655,17 @@ func extractClusterFields(r *Cluster) error {
 	}
 	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
 		r.LoggingConfig = vLoggingConfig
+	}
+	vMonitoringConfig := r.MonitoringConfig
+	if vMonitoringConfig == nil {
+		// note: explicitly not the empty object.
+		vMonitoringConfig = &ClusterMonitoringConfig{}
+	}
+	if err := extractClusterMonitoringConfigFields(r, vMonitoringConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vMonitoringConfig) {
+		r.MonitoringConfig = vMonitoringConfig
 	}
 	return nil
 }
@@ -6254,6 +6816,23 @@ func extractClusterLoggingConfigFields(r *Cluster, o *ClusterLoggingConfig) erro
 func extractClusterLoggingConfigComponentConfigFields(r *Cluster, o *ClusterLoggingConfigComponentConfig) error {
 	return nil
 }
+func extractClusterMonitoringConfigFields(r *Cluster, o *ClusterMonitoringConfig) error {
+	vManagedPrometheusConfig := o.ManagedPrometheusConfig
+	if vManagedPrometheusConfig == nil {
+		// note: explicitly not the empty object.
+		vManagedPrometheusConfig = &ClusterMonitoringConfigManagedPrometheusConfig{}
+	}
+	if err := extractClusterMonitoringConfigManagedPrometheusConfigFields(r, vManagedPrometheusConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vManagedPrometheusConfig) {
+		o.ManagedPrometheusConfig = vManagedPrometheusConfig
+	}
+	return nil
+}
+func extractClusterMonitoringConfigManagedPrometheusConfigFields(r *Cluster, o *ClusterMonitoringConfigManagedPrometheusConfig) error {
+	return nil
+}
 
 func postReadExtractClusterFields(r *Cluster) error {
 	vNetworking := r.Networking
@@ -6321,6 +6900,17 @@ func postReadExtractClusterFields(r *Cluster) error {
 	}
 	if !dcl.IsEmptyValueIndirect(vLoggingConfig) {
 		r.LoggingConfig = vLoggingConfig
+	}
+	vMonitoringConfig := r.MonitoringConfig
+	if vMonitoringConfig == nil {
+		// note: explicitly not the empty object.
+		vMonitoringConfig = &ClusterMonitoringConfig{}
+	}
+	if err := postReadExtractClusterMonitoringConfigFields(r, vMonitoringConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vMonitoringConfig) {
+		r.MonitoringConfig = vMonitoringConfig
 	}
 	return nil
 }
@@ -6469,5 +7059,22 @@ func postReadExtractClusterLoggingConfigFields(r *Cluster, o *ClusterLoggingConf
 	return nil
 }
 func postReadExtractClusterLoggingConfigComponentConfigFields(r *Cluster, o *ClusterLoggingConfigComponentConfig) error {
+	return nil
+}
+func postReadExtractClusterMonitoringConfigFields(r *Cluster, o *ClusterMonitoringConfig) error {
+	vManagedPrometheusConfig := o.ManagedPrometheusConfig
+	if vManagedPrometheusConfig == nil {
+		// note: explicitly not the empty object.
+		vManagedPrometheusConfig = &ClusterMonitoringConfigManagedPrometheusConfig{}
+	}
+	if err := extractClusterMonitoringConfigManagedPrometheusConfigFields(r, vManagedPrometheusConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vManagedPrometheusConfig) {
+		o.ManagedPrometheusConfig = vManagedPrometheusConfig
+	}
+	return nil
+}
+func postReadExtractClusterMonitoringConfigManagedPrometheusConfigFields(r *Cluster, o *ClusterMonitoringConfigManagedPrometheusConfig) error {
 	return nil
 }

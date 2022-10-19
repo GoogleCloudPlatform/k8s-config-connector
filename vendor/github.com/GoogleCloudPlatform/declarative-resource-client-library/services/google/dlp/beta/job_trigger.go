@@ -3641,6 +3641,10 @@ func (r *JobTrigger) ID() (string, error) {
 		"parent":        dcl.ValueOrEmptyString(nr.Parent),
 		"location":      dcl.ValueOrEmptyString(nr.Location),
 	}
+	if dcl.IsRegion(nr.Location) {
+		return dcl.Nprintf("{{parent}}/locations/{{location}}/jobTriggers/{{name}}", params), nil
+	}
+
 	return dcl.Nprintf("{{parent}}/jobTriggers/{{name}}", params), nil
 }
 

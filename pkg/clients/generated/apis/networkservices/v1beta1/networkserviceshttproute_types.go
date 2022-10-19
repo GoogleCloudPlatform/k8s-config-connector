@@ -359,10 +359,6 @@ type NetworkServicesHTTPRouteSpec struct {
 	/* Required. Hostnames define a set of hosts that should match against the HTTP host header to select a HttpRoute to process the request. Hostname is the fully qualified domain name of a network host, as defined by RFC 1123 with the exception that ip addresses are not allowed. Wildcard hosts are supported as "*" (no prefix or suffix allowed). */
 	Hostnames []string `json:"hostnames"`
 
-	/* Optional. Set of label tags associated with the HttpRoute resource. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
-
 	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 

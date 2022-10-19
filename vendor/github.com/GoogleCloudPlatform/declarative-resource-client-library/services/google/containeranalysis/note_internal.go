@@ -3553,14 +3553,14 @@ func compareNoteRelatedUrlNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.F
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Label, actual.Label, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Label")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Label, actual.Label, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Label")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3589,42 +3589,42 @@ func compareNoteVulnerabilityNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dc
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CvssScore, actual.CvssScore, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CvssScore")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CvssScore, actual.CvssScore, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("CvssScore")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Severity, actual.Severity, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Severity")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Severity, actual.Severity, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Severity")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Details, actual.Details, dcl.DiffInfo{ObjectFunction: compareNoteVulnerabilityDetailsNewStyle, EmptyObject: EmptyNoteVulnerabilityDetails, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Details")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Details, actual.Details, dcl.DiffInfo{ObjectFunction: compareNoteVulnerabilityDetailsNewStyle, EmptyObject: EmptyNoteVulnerabilityDetails, OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Details")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CvssV3, actual.CvssV3, dcl.DiffInfo{ObjectFunction: compareNoteVulnerabilityCvssV3NewStyle, EmptyObject: EmptyNoteVulnerabilityCvssV3, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CvssV3")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CvssV3, actual.CvssV3, dcl.DiffInfo{ObjectFunction: compareNoteVulnerabilityCvssV3NewStyle, EmptyObject: EmptyNoteVulnerabilityCvssV3, OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("CvssV3")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.WindowsDetails, actual.WindowsDetails, dcl.DiffInfo{ObjectFunction: compareNoteVulnerabilityWindowsDetailsNewStyle, EmptyObject: EmptyNoteVulnerabilityWindowsDetails, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("WindowsDetails")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WindowsDetails, actual.WindowsDetails, dcl.DiffInfo{ObjectFunction: compareNoteVulnerabilityWindowsDetailsNewStyle, EmptyObject: EmptyNoteVulnerabilityWindowsDetails, OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("WindowsDetails")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SourceUpdateTime, actual.SourceUpdateTime, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SourceUpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SourceUpdateTime, actual.SourceUpdateTime, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("SourceUpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3653,84 +3653,84 @@ func compareNoteVulnerabilityDetailsNewStyle(d, a interface{}, fn dcl.FieldName)
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.SeverityName, actual.SeverityName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SeverityName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SeverityName, actual.SeverityName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("SeverityName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PackageType, actual.PackageType, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PackageType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PackageType, actual.PackageType, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("PackageType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AffectedCpeUri, actual.AffectedCpeUri, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AffectedCpeUri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AffectedCpeUri, actual.AffectedCpeUri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("AffectedCpeUri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AffectedPackage, actual.AffectedPackage, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AffectedPackage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AffectedPackage, actual.AffectedPackage, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("AffectedPackage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AffectedVersionStart, actual.AffectedVersionStart, dcl.DiffInfo{ObjectFunction: compareNoteVulnerabilityDetailsAffectedVersionStartNewStyle, EmptyObject: EmptyNoteVulnerabilityDetailsAffectedVersionStart, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AffectedVersionStart")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AffectedVersionStart, actual.AffectedVersionStart, dcl.DiffInfo{ObjectFunction: compareNoteVulnerabilityDetailsAffectedVersionStartNewStyle, EmptyObject: EmptyNoteVulnerabilityDetailsAffectedVersionStart, OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("AffectedVersionStart")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AffectedVersionEnd, actual.AffectedVersionEnd, dcl.DiffInfo{ObjectFunction: compareNoteVulnerabilityDetailsAffectedVersionEndNewStyle, EmptyObject: EmptyNoteVulnerabilityDetailsAffectedVersionEnd, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AffectedVersionEnd")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AffectedVersionEnd, actual.AffectedVersionEnd, dcl.DiffInfo{ObjectFunction: compareNoteVulnerabilityDetailsAffectedVersionEndNewStyle, EmptyObject: EmptyNoteVulnerabilityDetailsAffectedVersionEnd, OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("AffectedVersionEnd")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FixedCpeUri, actual.FixedCpeUri, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FixedCpeUri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FixedCpeUri, actual.FixedCpeUri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("FixedCpeUri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FixedPackage, actual.FixedPackage, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FixedPackage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FixedPackage, actual.FixedPackage, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("FixedPackage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FixedVersion, actual.FixedVersion, dcl.DiffInfo{ObjectFunction: compareNoteVulnerabilityDetailsFixedVersionNewStyle, EmptyObject: EmptyNoteVulnerabilityDetailsFixedVersion, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FixedVersion")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FixedVersion, actual.FixedVersion, dcl.DiffInfo{ObjectFunction: compareNoteVulnerabilityDetailsFixedVersionNewStyle, EmptyObject: EmptyNoteVulnerabilityDetailsFixedVersion, OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("FixedVersion")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IsObsolete, actual.IsObsolete, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IsObsolete")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IsObsolete, actual.IsObsolete, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("IsObsolete")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SourceUpdateTime, actual.SourceUpdateTime, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SourceUpdateTime")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SourceUpdateTime, actual.SourceUpdateTime, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("SourceUpdateTime")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3759,35 +3759,35 @@ func compareNoteVulnerabilityDetailsAffectedVersionStartNewStyle(d, a interface{
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Epoch, actual.Epoch, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Epoch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Epoch, actual.Epoch, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Epoch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Revision, actual.Revision, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Revision")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Revision, actual.Revision, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Revision")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Kind, actual.Kind, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Kind")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Kind, actual.Kind, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Kind")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FullName, actual.FullName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FullName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FullName, actual.FullName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("FullName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3816,35 +3816,35 @@ func compareNoteVulnerabilityDetailsAffectedVersionEndNewStyle(d, a interface{},
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Epoch, actual.Epoch, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Epoch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Epoch, actual.Epoch, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Epoch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Revision, actual.Revision, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Revision")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Revision, actual.Revision, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Revision")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Kind, actual.Kind, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Kind")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Kind, actual.Kind, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Kind")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FullName, actual.FullName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FullName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FullName, actual.FullName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("FullName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3873,35 +3873,35 @@ func compareNoteVulnerabilityDetailsFixedVersionNewStyle(d, a interface{}, fn dc
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Epoch, actual.Epoch, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Epoch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Epoch, actual.Epoch, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Epoch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Revision, actual.Revision, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Revision")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Revision, actual.Revision, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Revision")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Kind, actual.Kind, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Kind")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Kind, actual.Kind, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Kind")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FullName, actual.FullName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FullName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FullName, actual.FullName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("FullName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3930,77 +3930,77 @@ func compareNoteVulnerabilityCvssV3NewStyle(d, a interface{}, fn dcl.FieldName) 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.BaseScore, actual.BaseScore, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("BaseScore")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BaseScore, actual.BaseScore, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("BaseScore")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExploitabilityScore, actual.ExploitabilityScore, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ExploitabilityScore")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExploitabilityScore, actual.ExploitabilityScore, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("ExploitabilityScore")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ImpactScore, actual.ImpactScore, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ImpactScore")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ImpactScore, actual.ImpactScore, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("ImpactScore")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AttackVector, actual.AttackVector, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AttackVector")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AttackVector, actual.AttackVector, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("AttackVector")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AttackComplexity, actual.AttackComplexity, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AttackComplexity")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AttackComplexity, actual.AttackComplexity, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("AttackComplexity")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PrivilegesRequired, actual.PrivilegesRequired, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PrivilegesRequired")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PrivilegesRequired, actual.PrivilegesRequired, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("PrivilegesRequired")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.UserInteraction, actual.UserInteraction, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UserInteraction")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.UserInteraction, actual.UserInteraction, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("UserInteraction")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Scope, actual.Scope, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Scope")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Scope, actual.Scope, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Scope")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ConfidentialityImpact, actual.ConfidentialityImpact, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ConfidentialityImpact")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ConfidentialityImpact, actual.ConfidentialityImpact, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("ConfidentialityImpact")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IntegrityImpact, actual.IntegrityImpact, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IntegrityImpact")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IntegrityImpact, actual.IntegrityImpact, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("IntegrityImpact")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AvailabilityImpact, actual.AvailabilityImpact, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AvailabilityImpact")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AvailabilityImpact, actual.AvailabilityImpact, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("AvailabilityImpact")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4029,28 +4029,28 @@ func compareNoteVulnerabilityWindowsDetailsNewStyle(d, a interface{}, fn dcl.Fie
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CpeUri, actual.CpeUri, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CpeUri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CpeUri, actual.CpeUri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("CpeUri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FixingKbs, actual.FixingKbs, dcl.DiffInfo{ObjectFunction: compareNoteVulnerabilityWindowsDetailsFixingKbsNewStyle, EmptyObject: EmptyNoteVulnerabilityWindowsDetailsFixingKbs, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FixingKbs")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FixingKbs, actual.FixingKbs, dcl.DiffInfo{ObjectFunction: compareNoteVulnerabilityWindowsDetailsFixingKbsNewStyle, EmptyObject: EmptyNoteVulnerabilityWindowsDetailsFixingKbs, OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("FixingKbs")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4079,14 +4079,14 @@ func compareNoteVulnerabilityWindowsDetailsFixingKbsNewStyle(d, a interface{}, f
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4115,7 +4115,7 @@ func compareNoteBuildNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldD
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.BuilderVersion, actual.BuilderVersion, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("BuilderVersion")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BuilderVersion, actual.BuilderVersion, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("BuilderVersion")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4144,14 +4144,14 @@ func compareNoteImageNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldD
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ResourceUrl, actual.ResourceUrl, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ResourceUrl")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ResourceUrl, actual.ResourceUrl, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("ResourceUrl")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Fingerprint, actual.Fingerprint, dcl.DiffInfo{ObjectFunction: compareNoteImageFingerprintNewStyle, EmptyObject: EmptyNoteImageFingerprint, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Fingerprint")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Fingerprint, actual.Fingerprint, dcl.DiffInfo{ObjectFunction: compareNoteImageFingerprintNewStyle, EmptyObject: EmptyNoteImageFingerprint, OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Fingerprint")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4180,21 +4180,21 @@ func compareNoteImageFingerprintNewStyle(d, a interface{}, fn dcl.FieldName) ([]
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.V1Name, actual.V1Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("V1Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.V1Name, actual.V1Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("V1Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.V2Blob, actual.V2Blob, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("V2Blob")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.V2Blob, actual.V2Blob, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("V2Blob")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.V2Name, actual.V2Name, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("V2Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.V2Name, actual.V2Name, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("V2Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4223,14 +4223,14 @@ func compareNotePackageNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Fiel
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Distribution, actual.Distribution, dcl.DiffInfo{ObjectFunction: compareNotePackageDistributionNewStyle, EmptyObject: EmptyNotePackageDistribution, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Distribution")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Distribution, actual.Distribution, dcl.DiffInfo{ObjectFunction: compareNotePackageDistributionNewStyle, EmptyObject: EmptyNotePackageDistribution, OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Distribution")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4259,42 +4259,42 @@ func compareNotePackageDistributionNewStyle(d, a interface{}, fn dcl.FieldName) 
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.CpeUri, actual.CpeUri, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("CpeUri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CpeUri, actual.CpeUri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("CpeUri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Architecture, actual.Architecture, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Architecture")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Architecture, actual.Architecture, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Architecture")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LatestVersion, actual.LatestVersion, dcl.DiffInfo{ObjectFunction: compareNotePackageDistributionLatestVersionNewStyle, EmptyObject: EmptyNotePackageDistributionLatestVersion, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LatestVersion")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LatestVersion, actual.LatestVersion, dcl.DiffInfo{ObjectFunction: compareNotePackageDistributionLatestVersionNewStyle, EmptyObject: EmptyNotePackageDistributionLatestVersion, OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("LatestVersion")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Maintainer, actual.Maintainer, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Maintainer")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Maintainer, actual.Maintainer, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Maintainer")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Url, actual.Url, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Url")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Description, actual.Description, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Description")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4323,35 +4323,35 @@ func compareNotePackageDistributionLatestVersionNewStyle(d, a interface{}, fn dc
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Epoch, actual.Epoch, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Epoch")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Epoch, actual.Epoch, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Epoch")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Name")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Revision, actual.Revision, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Revision")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Revision, actual.Revision, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Revision")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Kind, actual.Kind, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Kind")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Kind, actual.Kind, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Kind")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FullName, actual.FullName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FullName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FullName, actual.FullName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("FullName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4380,7 +4380,7 @@ func compareNoteDiscoveryNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.AnalysisKind, actual.AnalysisKind, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AnalysisKind")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AnalysisKind, actual.AnalysisKind, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("AnalysisKind")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4409,7 +4409,7 @@ func compareNoteDeploymentNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.F
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ResourceUri, actual.ResourceUri, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ResourceUri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ResourceUri, actual.ResourceUri, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("ResourceUri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4438,7 +4438,7 @@ func compareNoteAttestationNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Hint, actual.Hint, dcl.DiffInfo{ObjectFunction: compareNoteAttestationHintNewStyle, EmptyObject: EmptyNoteAttestationHint, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Hint")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Hint, actual.Hint, dcl.DiffInfo{ObjectFunction: compareNoteAttestationHintNewStyle, EmptyObject: EmptyNoteAttestationHint, OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("Hint")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4467,7 +4467,7 @@ func compareNoteAttestationHintNewStyle(d, a interface{}, fn dcl.FieldName) ([]*
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.HumanReadableName, actual.HumanReadableName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("HumanReadableName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.HumanReadableName, actual.HumanReadableName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("HumanReadableName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -7847,6 +7847,7 @@ type noteDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         noteApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToNoteDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]noteDiff, error) {
@@ -7866,7 +7867,8 @@ func convertFieldDiffsToNoteDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts
 	var diffs []noteDiff
 	// For each operation name, create a noteDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := noteDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := noteDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

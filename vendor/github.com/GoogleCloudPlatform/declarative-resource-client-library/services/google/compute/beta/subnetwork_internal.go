@@ -1896,6 +1896,7 @@ type subnetworkDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         subnetworkApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToSubnetworkDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]subnetworkDiff, error) {
@@ -1915,7 +1916,8 @@ func convertFieldDiffsToSubnetworkDiffs(config *dcl.Config, fds []*dcl.FieldDiff
 	var diffs []subnetworkDiff
 	// For each operation name, create a subnetworkDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := subnetworkDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := subnetworkDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

@@ -1061,6 +1061,7 @@ type oAuthIdpConfigDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         oAuthIdpConfigApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToOAuthIdpConfigDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]oAuthIdpConfigDiff, error) {
@@ -1080,7 +1081,8 @@ func convertFieldDiffsToOAuthIdpConfigDiffs(config *dcl.Config, fds []*dcl.Field
 	var diffs []oAuthIdpConfigDiff
 	// For each operation name, create a oAuthIdpConfigDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := oAuthIdpConfigDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := oAuthIdpConfigDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

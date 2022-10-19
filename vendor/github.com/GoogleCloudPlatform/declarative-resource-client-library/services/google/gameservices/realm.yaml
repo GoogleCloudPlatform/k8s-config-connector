@@ -71,6 +71,7 @@ components:
       x-dcl-delete-timeout: 0
       type: object
       required:
+      - name
       - timeZone
       - location
       - project

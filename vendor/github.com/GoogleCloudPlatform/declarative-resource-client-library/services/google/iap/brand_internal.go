@@ -517,6 +517,7 @@ type brandDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         brandApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToBrandDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]brandDiff, error) {
@@ -536,7 +537,8 @@ func convertFieldDiffsToBrandDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opt
 	var diffs []brandDiff
 	// For each operation name, create a brandDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := brandDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := brandDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

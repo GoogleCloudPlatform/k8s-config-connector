@@ -3773,6 +3773,7 @@ type assetDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         assetApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToAssetDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]assetDiff, error) {
@@ -3792,7 +3793,8 @@ func convertFieldDiffsToAssetDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opt
 	var diffs []assetDiff
 	// For each operation name, create a assetDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := assetDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := assetDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

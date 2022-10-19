@@ -673,6 +673,7 @@ type clientDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         clientApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToClientDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]clientDiff, error) {
@@ -692,7 +693,8 @@ func convertFieldDiffsToClientDiffs(config *dcl.Config, fds []*dcl.FieldDiff, op
 	var diffs []clientDiff
 	// For each operation name, create a clientDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := clientDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := clientDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

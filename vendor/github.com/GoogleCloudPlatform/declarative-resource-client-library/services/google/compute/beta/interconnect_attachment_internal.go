@@ -2082,6 +2082,7 @@ type interconnectAttachmentDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         interconnectAttachmentApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToInterconnectAttachmentDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]interconnectAttachmentDiff, error) {
@@ -2101,7 +2102,8 @@ func convertFieldDiffsToInterconnectAttachmentDiffs(config *dcl.Config, fds []*d
 	var diffs []interconnectAttachmentDiff
 	// For each operation name, create a interconnectAttachmentDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := interconnectAttachmentDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := interconnectAttachmentDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

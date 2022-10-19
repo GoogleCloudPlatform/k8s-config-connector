@@ -1280,6 +1280,7 @@ type routeDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         routeApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToRouteDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]routeDiff, error) {
@@ -1299,7 +1300,8 @@ func convertFieldDiffsToRouteDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opt
 	var diffs []routeDiff
 	// For each operation name, create a routeDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := routeDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := routeDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

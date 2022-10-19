@@ -79,6 +79,9 @@ components:
           x-dcl-go-name: AppEngineHttpTarget
           x-dcl-go-type: JobAppEngineHttpTarget
           description: App Engine HTTP target.
+          x-dcl-conflicts:
+          - pubsubTarget
+          - httpTarget
           properties:
             appEngineRouting:
               type: object
@@ -202,6 +205,9 @@ components:
           x-dcl-go-name: HttpTarget
           x-dcl-go-type: JobHttpTarget
           description: HTTP target.
+          x-dcl-conflicts:
+          - pubsubTarget
+          - appEngineHttpTarget
           required:
           - uri
           properties:
@@ -339,6 +345,9 @@ components:
           x-dcl-go-name: PubsubTarget
           x-dcl-go-type: JobPubsubTarget
           description: Pub/Sub target.
+          x-dcl-conflicts:
+          - appEngineHttpTarget
+          - httpTarget
           required:
           - topicName
           properties:

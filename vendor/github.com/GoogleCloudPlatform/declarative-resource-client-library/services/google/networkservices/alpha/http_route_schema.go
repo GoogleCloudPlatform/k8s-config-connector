@@ -100,6 +100,7 @@ func DCLHttpRouteSchema() *dcl.Schema {
 					Title:           "HttpRoute",
 					ID:              "projects/{{project}}/locations/{{location}}/httpRoutes/{{name}}",
 					ParentContainer: "project",
+					LabelsField:     "labels",
 					HasCreate:       true,
 					SchemaProperty: dcl.Property{
 						Type: "object",

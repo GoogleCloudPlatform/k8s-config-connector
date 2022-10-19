@@ -2630,6 +2630,7 @@ type zoneDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         zoneApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToZoneDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]zoneDiff, error) {
@@ -2649,7 +2650,8 @@ func convertFieldDiffsToZoneDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts
 	var diffs []zoneDiff
 	// For each operation name, create a zoneDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := zoneDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := zoneDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

@@ -120,6 +120,8 @@ membershipRef:
   external: string
   name: string
   namespace: string
+mesh:
+  management: string
 projectRef:
   external: string
   name: string
@@ -136,7 +138,7 @@ projectRef:
     <tr>
         <td>
             <p><code>configmanagement</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -577,6 +579,26 @@ Allowed value: The Google Cloud resource name of a `GKEHubMembership` resource (
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mesh</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Manage Mesh Features{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mesh.management</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Whether to automatically manage Service Mesh. Possible values: MANAGEMENT_UNSPECIFIED, MANAGEMENT_AUTOMATIC, MANAGEMENT_MANUAL{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

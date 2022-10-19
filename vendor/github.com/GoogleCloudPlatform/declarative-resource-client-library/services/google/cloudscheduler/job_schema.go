@@ -114,6 +114,10 @@ func DCLJobSchema() *dcl.Schema {
 								GoName:      "AppEngineHttpTarget",
 								GoType:      "JobAppEngineHttpTarget",
 								Description: "App Engine HTTP target.",
+								Conflicts: []string{
+									"pubsubTarget",
+									"httpTarget",
+								},
 								Properties: map[string]*dcl.Property{
 									"appEngineRouting": &dcl.Property{
 										Type:        "object",
@@ -195,6 +199,10 @@ func DCLJobSchema() *dcl.Schema {
 								GoName:      "HttpTarget",
 								GoType:      "JobHttpTarget",
 								Description: "HTTP target.",
+								Conflicts: []string{
+									"pubsubTarget",
+									"appEngineHttpTarget",
+								},
 								Required: []string{
 									"uri",
 								},
@@ -320,6 +328,10 @@ func DCLJobSchema() *dcl.Schema {
 								GoName:      "PubsubTarget",
 								GoType:      "JobPubsubTarget",
 								Description: "Pub/Sub target.",
+								Conflicts: []string{
+									"appEngineHttpTarget",
+									"httpTarget",
+								},
 								Required: []string{
 									"topicName",
 								},

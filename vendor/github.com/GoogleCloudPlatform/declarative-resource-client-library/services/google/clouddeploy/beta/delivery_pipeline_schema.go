@@ -151,7 +151,7 @@ func DCLDeliveryPipelineSchema() *dcl.Schema {
 										Type:        "object",
 										GoName:      "TargetsPresentCondition",
 										GoType:      "DeliveryPipelineConditionTargetsPresentCondition",
-										Description: "Detalis around targets enumerated in the pipeline.",
+										Description: "Details around targets enumerated in the pipeline.",
 										Properties: map[string]*dcl.Property{
 											"missingTargets": &dcl.Property{
 												Type:        "array",
@@ -263,6 +263,27 @@ func DCLDeliveryPipelineSchema() *dcl.Schema {
 													Items: &dcl.Property{
 														Type:   "string",
 														GoType: "string",
+													},
+												},
+												"strategy": &dcl.Property{
+													Type:        "object",
+													GoName:      "Strategy",
+													GoType:      "DeliveryPipelineSerialPipelineStagesStrategy",
+													Description: "Optional. The strategy to use for a `Rollout` to this stage.",
+													Properties: map[string]*dcl.Property{
+														"standard": &dcl.Property{
+															Type:        "object",
+															GoName:      "Standard",
+															GoType:      "DeliveryPipelineSerialPipelineStagesStrategyStandard",
+															Description: "Standard deployment strategy executes a single deploy and allows verifying the deployment.",
+															Properties: map[string]*dcl.Property{
+																"verify": &dcl.Property{
+																	Type:        "boolean",
+																	GoName:      "Verify",
+																	Description: "Whether to verify a deployment.",
+																},
+															},
+														},
 													},
 												},
 												"targetId": &dcl.Property{

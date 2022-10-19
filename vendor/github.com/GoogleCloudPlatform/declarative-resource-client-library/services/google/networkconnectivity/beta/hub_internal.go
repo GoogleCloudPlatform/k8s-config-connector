@@ -1046,6 +1046,7 @@ type hubDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         hubApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToHubDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]hubDiff, error) {
@@ -1065,7 +1066,8 @@ func convertFieldDiffsToHubDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts 
 	var diffs []hubDiff
 	// For each operation name, create a hubDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := hubDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := hubDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

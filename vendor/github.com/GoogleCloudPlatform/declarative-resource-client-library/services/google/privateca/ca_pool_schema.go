@@ -99,7 +99,6 @@ func DCLCaPoolSchema() *dcl.Schema {
 				"CaPool": &dcl.Component{
 					Title:           "CaPool",
 					ID:              "projects/{{project}}/locations/{{location}}/caPools/{{name}}",
-					UsesStateHint:   true,
 					ParentContainer: "project",
 					LabelsField:     "labels",
 					HasCreate:       true,
@@ -278,7 +277,6 @@ func DCLCaPoolSchema() *dcl.Schema {
 														Format:      "int64",
 														GoName:      "MaxIssuerPathLength",
 														Description: "Optional. Refers to the path length restriction X.509 extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail. If this value is missing, the max path length will be omitted from the CA certificate.",
-														Unreadable:  true,
 													},
 												},
 											},

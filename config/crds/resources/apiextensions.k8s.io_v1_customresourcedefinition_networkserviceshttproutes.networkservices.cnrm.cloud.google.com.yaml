@@ -101,12 +101,6 @@ spec:
                 items:
                   type: string
                 type: array
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. Set of label tags associated with the HttpRoute
-                  resource.
-                type: object
               location:
                 description: Immutable. The location for the resource
                 type: string

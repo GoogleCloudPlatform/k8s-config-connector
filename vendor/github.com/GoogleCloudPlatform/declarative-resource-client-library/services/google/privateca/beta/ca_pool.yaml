@@ -62,7 +62,6 @@ components:
     CaPool:
       title: CaPool
       x-dcl-id: projects/{{project}}/locations/{{location}}/caPools/{{name}}
-      x-dcl-uses-state-hint: true
       x-dcl-parent-container: project
       x-dcl-labels: labels
       x-dcl-has-create: true
@@ -245,7 +244,6 @@ components:
                         If this value is less than 0, the request will fail. If this
                         value is missing, the max path length will be omitted from
                         the CA certificate.
-                      x-dcl-mutable-unreadable: true
                 keyUsage:
                   type: object
                   x-dcl-go-name: KeyUsage

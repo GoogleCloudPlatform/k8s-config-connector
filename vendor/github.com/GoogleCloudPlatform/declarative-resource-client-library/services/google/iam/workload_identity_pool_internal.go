@@ -757,6 +757,7 @@ type workloadIdentityPoolDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         workloadIdentityPoolApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToWorkloadIdentityPoolDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]workloadIdentityPoolDiff, error) {
@@ -776,7 +777,8 @@ func convertFieldDiffsToWorkloadIdentityPoolDiffs(config *dcl.Config, fds []*dcl
 	var diffs []workloadIdentityPoolDiff
 	// For each operation name, create a workloadIdentityPoolDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := workloadIdentityPoolDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := workloadIdentityPoolDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

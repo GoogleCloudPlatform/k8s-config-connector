@@ -1331,6 +1331,7 @@ type ekmConnectionDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         ekmConnectionApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToEkmConnectionDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]ekmConnectionDiff, error) {
@@ -1350,7 +1351,8 @@ func convertFieldDiffsToEkmConnectionDiffs(config *dcl.Config, fds []*dcl.FieldD
 	var diffs []ekmConnectionDiff
 	// For each operation name, create a ekmConnectionDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := ekmConnectionDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := ekmConnectionDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

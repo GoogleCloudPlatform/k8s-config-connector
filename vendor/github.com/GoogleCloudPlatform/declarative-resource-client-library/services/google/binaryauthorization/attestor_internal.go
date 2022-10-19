@@ -1592,6 +1592,7 @@ type attestorDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         attestorApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToAttestorDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]attestorDiff, error) {
@@ -1611,7 +1612,8 @@ func convertFieldDiffsToAttestorDiffs(config *dcl.Config, fds []*dcl.FieldDiff, 
 	var diffs []attestorDiff
 	// For each operation name, create a attestorDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := attestorDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := attestorDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

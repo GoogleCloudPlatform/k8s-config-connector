@@ -58,7 +58,7 @@ func (v GatewayTypeEnum) Validate() error {
 		// Empty enum is okay.
 		return nil
 	}
-	for _, s := range []string{"MATCH_TYPE_UNSPECIFIED", "MATCH_ANY", "MATCH_ALL"} {
+	for _, s := range []string{"TYPE_UNSPECIFIED", "OPEN_MESH", "SECURE_WEB_GATEWAY"} {
 		if string(v) == s {
 			return nil
 		}

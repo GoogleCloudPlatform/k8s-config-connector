@@ -2504,6 +2504,7 @@ type clientTlsPolicyDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         clientTlsPolicyApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToClientTlsPolicyDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]clientTlsPolicyDiff, error) {
@@ -2523,7 +2524,8 @@ func convertFieldDiffsToClientTlsPolicyDiffs(config *dcl.Config, fds []*dcl.Fiel
 	var diffs []clientTlsPolicyDiff
 	// For each operation name, create a clientTlsPolicyDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := clientTlsPolicyDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := clientTlsPolicyDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

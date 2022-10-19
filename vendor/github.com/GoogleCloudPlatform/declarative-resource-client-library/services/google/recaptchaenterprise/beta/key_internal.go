@@ -2144,6 +2144,7 @@ type keyDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         keyApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToKeyDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]keyDiff, error) {
@@ -2163,7 +2164,8 @@ func convertFieldDiffsToKeyDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts 
 	var diffs []keyDiff
 	// For each operation name, create a keyDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := keyDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := keyDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

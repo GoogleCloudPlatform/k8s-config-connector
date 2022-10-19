@@ -56772,6 +56772,7 @@ type dashboardDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         dashboardApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToDashboardDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]dashboardDiff, error) {
@@ -56791,7 +56792,8 @@ func convertFieldDiffsToDashboardDiffs(config *dcl.Config, fds []*dcl.FieldDiff,
 	var diffs []dashboardDiff
 	// For each operation name, create a dashboardDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := dashboardDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := dashboardDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

@@ -58,6 +58,38 @@ spec:
             type: object
           spec:
             properties:
+              channelRef:
+                description: Immutable.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: Optional. The name of the channel associated with
+                      the trigger in `projects/{project}/locations/{location}/channels/{channel}`
+                      format. You must provide a channel to receive events from Eventarc
+                      SaaS partners.
+                    type: string
+                  name:
+                    description: |-
+                      [WARNING] EventarcChannel not yet supported in Config Connector, use 'external' field to reference existing resources.
+                      Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
               destination:
                 description: Required. Destination specifies where the events should
                   be sent to.
@@ -414,6 +446,12 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              resourceConditions:
+                additionalProperties:
+                  type: string
+                description: Output only. The reason(s) why a trigger is in FAILED
+                  state.
+                type: object
               transport:
                 properties:
                   pubsub:

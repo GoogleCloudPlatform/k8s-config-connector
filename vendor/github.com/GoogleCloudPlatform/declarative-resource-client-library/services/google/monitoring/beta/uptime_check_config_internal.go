@@ -2982,6 +2982,7 @@ type uptimeCheckConfigDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         uptimeCheckConfigApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToUptimeCheckConfigDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]uptimeCheckConfigDiff, error) {
@@ -3001,7 +3002,8 @@ func convertFieldDiffsToUptimeCheckConfigDiffs(config *dcl.Config, fds []*dcl.Fi
 	var diffs []uptimeCheckConfigDiff
 	// For each operation name, create a uptimeCheckConfigDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := uptimeCheckConfigDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := uptimeCheckConfigDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

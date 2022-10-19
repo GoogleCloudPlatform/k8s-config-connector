@@ -1957,6 +1957,7 @@ type tcpRouteDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         tcpRouteApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToTcpRouteDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]tcpRouteDiff, error) {
@@ -1976,7 +1977,8 @@ func convertFieldDiffsToTcpRouteDiffs(config *dcl.Config, fds []*dcl.FieldDiff, 
 	var diffs []tcpRouteDiff
 	// For each operation name, create a tcpRouteDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := tcpRouteDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := tcpRouteDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

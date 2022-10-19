@@ -1954,7 +1954,7 @@ func compareBudgetBudgetFilterNewStyle(d, a interface{}, fn dcl.FieldName) ([]*d
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CustomPeriod, actual.CustomPeriod, dcl.DiffInfo{ObjectFunction: compareBudgetBudgetFilterCustomPeriodNewStyle, EmptyObject: EmptyBudgetBudgetFilterCustomPeriod, OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("CustomPeriod")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CustomPeriod, actual.CustomPeriod, dcl.DiffInfo{MergeNestedDiffs: true, ObjectFunction: compareBudgetBudgetFilterCustomPeriodNewStyle, EmptyObject: EmptyBudgetBudgetFilterCustomPeriod, OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("CustomPeriod")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2219,14 +2219,14 @@ func compareBudgetThresholdRulesNewStyle(d, a interface{}, fn dcl.FieldName) ([]
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ThresholdPercent, actual.ThresholdPercent, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ThresholdPercent")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ThresholdPercent, actual.ThresholdPercent, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("ThresholdPercent")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SpendBasis, actual.SpendBasis, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SpendBasis")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SpendBasis, actual.SpendBasis, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("SpendBasis")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3822,6 +3822,7 @@ type budgetDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         budgetApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToBudgetDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]budgetDiff, error) {
@@ -3841,7 +3842,8 @@ func convertFieldDiffsToBudgetDiffs(config *dcl.Config, fds []*dcl.FieldDiff, op
 	var diffs []budgetDiff
 	// For each operation name, create a budgetDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := budgetDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := budgetDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

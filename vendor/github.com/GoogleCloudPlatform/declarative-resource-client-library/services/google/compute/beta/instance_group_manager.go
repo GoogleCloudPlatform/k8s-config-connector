@@ -1341,6 +1341,14 @@ func (r *InstanceGroupManager) ID() (string, error) {
 		"project":               dcl.ValueOrEmptyString(nr.Project),
 		"location":              dcl.ValueOrEmptyString(nr.Location),
 	}
+	if dcl.IsRegion(nr.Location) {
+		return dcl.Nprintf("projects/{{project}}/regions/{{location}}/instanceGroupManagers/{{name}}", params), nil
+	}
+
+	if dcl.IsZone(nr.Location) {
+		return dcl.Nprintf("projects/{{project}}/zones/{{location}}/instanceGroupManagers/{{name}}", params), nil
+	}
+
 	return dcl.Nprintf("", params), nil
 }
 

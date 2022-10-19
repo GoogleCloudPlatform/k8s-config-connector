@@ -100,6 +100,7 @@ func DCLGatewaySchema() *dcl.Schema {
 					Title:           "Gateway",
 					ID:              "projects/{{project}}/locations/{{location}}/gateways/{{name}}",
 					ParentContainer: "project",
+					LabelsField:     "labels",
 					HasCreate:       true,
 					SchemaProperty: dcl.Property{
 						Type: "object",
@@ -220,12 +221,12 @@ func DCLGatewaySchema() *dcl.Schema {
 								Type:        "string",
 								GoName:      "Type",
 								GoType:      "GatewayTypeEnum",
-								Description: "Immutable. The type of the customer managed gateway. Possible values: MATCH_TYPE_UNSPECIFIED, MATCH_ANY, MATCH_ALL",
+								Description: "Immutable. The type of the customer managed gateway. Possible values: TYPE_UNSPECIFIED, OPEN_MESH, SECURE_WEB_GATEWAY",
 								Immutable:   true,
 								Enum: []string{
-									"MATCH_TYPE_UNSPECIFIED",
-									"MATCH_ANY",
-									"MATCH_ALL",
+									"TYPE_UNSPECIFIED",
+									"OPEN_MESH",
+									"SECURE_WEB_GATEWAY",
 								},
 							},
 							"updateTime": &dcl.Property{

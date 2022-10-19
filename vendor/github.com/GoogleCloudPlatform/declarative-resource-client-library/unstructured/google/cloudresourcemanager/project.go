@@ -125,9 +125,9 @@ func GetProject(ctx context.Context, config *dcl.Config, u *unstructured.Resourc
 	return ProjectToUnstructured(r), nil
 }
 
-func ListProject(ctx context.Context, config *dcl.Config) ([]*unstructured.Resource, error) {
+func ListProject(ctx context.Context, config *dcl.Config, parent string) ([]*unstructured.Resource, error) {
 	c := dclService.NewClient(config)
-	l, err := c.ListProject(ctx)
+	l, err := c.ListProject(ctx, parent)
 	if err != nil {
 		return nil, err
 	}

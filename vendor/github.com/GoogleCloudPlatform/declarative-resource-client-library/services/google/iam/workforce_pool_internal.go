@@ -833,6 +833,7 @@ type workforcePoolDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         workforcePoolApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToWorkforcePoolDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]workforcePoolDiff, error) {
@@ -852,7 +853,8 @@ func convertFieldDiffsToWorkforcePoolDiffs(config *dcl.Config, fds []*dcl.FieldD
 	var diffs []workforcePoolDiff
 	// For each operation name, create a workforcePoolDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := workforcePoolDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := workforcePoolDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

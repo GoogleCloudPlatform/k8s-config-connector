@@ -58,9 +58,27 @@ func DCLProjectSchema() *dcl.Schema {
 			},
 			DeleteAll: &dcl.Path{
 				Description: "The function used to delete all Project",
+				Parameters: []dcl.PathParameters{
+					dcl.PathParameters{
+						Name:     "parent",
+						Required: true,
+						Schema: &dcl.PathParametersSchema{
+							Type: "string",
+						},
+					},
+				},
 			},
 			List: &dcl.Path{
 				Description: "The function used to list information about many Project",
+				Parameters: []dcl.PathParameters{
+					dcl.PathParameters{
+						Name:     "parent",
+						Required: true,
+						Schema: &dcl.PathParametersSchema{
+							Type: "string",
+						},
+					},
+				},
 			},
 		},
 		Components: &dcl.Components{
@@ -109,10 +127,11 @@ func DCLProjectSchema() *dcl.Schema {
 								Immutable:   true,
 							},
 							"parent": &dcl.Property{
-								Type:        "string",
-								GoName:      "Parent",
-								Description: "An optional reference to a parent Resource. Supported values include organizations/<org_id> and folders/<folder_id>. Once set, the parent cannot be cleared. The `parent` can be set on creation or using the `UpdateProject` method; the end user must have the `resourcemanager.projects.create` permission on the parent. Read-write. ",
-								Immutable:   true,
+								Type:                "string",
+								GoName:              "Parent",
+								Description:         "An optional reference to a parent Resource. Supported values include organizations/<org_id> and folders/<folder_id>. Once set, the parent cannot be cleared. The `parent` can be set on creation or using the `UpdateProject` method; the end user must have the `resourcemanager.projects.create` permission on the parent. Read-write. ",
+								Immutable:           true,
+								ForwardSlashAllowed: true,
 							},
 							"projectNumber": &dcl.Property{
 								Type:        "integer",

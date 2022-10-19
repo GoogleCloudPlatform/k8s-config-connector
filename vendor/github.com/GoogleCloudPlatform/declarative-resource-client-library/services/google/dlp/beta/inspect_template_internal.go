@@ -8764,6 +8764,7 @@ type inspectTemplateDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         inspectTemplateApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToInspectTemplateDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]inspectTemplateDiff, error) {
@@ -8783,7 +8784,8 @@ func convertFieldDiffsToInspectTemplateDiffs(config *dcl.Config, fds []*dcl.Fiel
 	var diffs []inspectTemplateDiff
 	// For each operation name, create a inspectTemplateDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := inspectTemplateDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := inspectTemplateDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

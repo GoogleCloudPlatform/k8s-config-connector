@@ -1845,6 +1845,7 @@ type workloadDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         workloadApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToWorkloadDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]workloadDiff, error) {
@@ -1864,7 +1865,8 @@ func convertFieldDiffsToWorkloadDiffs(config *dcl.Config, fds []*dcl.FieldDiff, 
 	var diffs []workloadDiff
 	// For each operation name, create a workloadDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := workloadDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := workloadDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

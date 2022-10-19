@@ -1109,6 +1109,7 @@ type connectorDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         connectorApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToConnectorDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]connectorDiff, error) {
@@ -1128,7 +1129,8 @@ func convertFieldDiffsToConnectorDiffs(config *dcl.Config, fds []*dcl.FieldDiff,
 	var diffs []connectorDiff
 	// For each operation name, create a connectorDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := connectorDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := connectorDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

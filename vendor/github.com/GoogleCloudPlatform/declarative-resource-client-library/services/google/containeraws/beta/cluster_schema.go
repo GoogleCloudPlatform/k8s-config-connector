@@ -428,7 +428,6 @@ func DCLClusterSchema() *dcl.Schema {
 										},
 										GoName:      "Tags",
 										Description: "Optional. A set of AWS resource tags to propagate to all underlying managed AWS resources. Specify at most 50 pairs containing alphanumerics, spaces, and symbols (.+-=_:@/). Keys can be up to 127 Unicode characters. Values can be up to 255 Unicode characters.",
-										Immutable:   true,
 									},
 									"version": &dcl.Property{
 										Type:        "string",
@@ -532,6 +531,33 @@ func DCLClusterSchema() *dcl.Schema {
 														"WORKLOADS",
 													},
 												},
+											},
+										},
+									},
+								},
+							},
+							"monitoringConfig": &dcl.Property{
+								Type:          "object",
+								GoName:        "MonitoringConfig",
+								GoType:        "ClusterMonitoringConfig",
+								Description:   "Monitoring configuration.",
+								Immutable:     true,
+								ServerDefault: true,
+								Properties: map[string]*dcl.Property{
+									"managedPrometheusConfig": &dcl.Property{
+										Type:          "object",
+										GoName:        "ManagedPrometheusConfig",
+										GoType:        "ClusterMonitoringConfigManagedPrometheusConfig",
+										Description:   "Configuration of the Google Cloud Managed Service for Prometheus.",
+										Immutable:     true,
+										ServerDefault: true,
+										Properties: map[string]*dcl.Property{
+											"enabled": &dcl.Property{
+												Type:          "boolean",
+												GoName:        "Enabled",
+												Description:   "Configuration of the enable Managed Collection.",
+												Immutable:     true,
+												ServerDefault: true,
 											},
 										},
 									},

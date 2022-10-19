@@ -1893,6 +1893,7 @@ type policyDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         policyApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToPolicyDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]policyDiff, error) {
@@ -1912,7 +1913,8 @@ func convertFieldDiffsToPolicyDiffs(config *dcl.Config, fds []*dcl.FieldDiff, op
 	var diffs []policyDiff
 	// For each operation name, create a policyDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := policyDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := policyDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

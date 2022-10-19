@@ -2765,6 +2765,7 @@ type nodePoolDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         nodePoolApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToNodePoolDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]nodePoolDiff, error) {
@@ -2784,7 +2785,8 @@ func convertFieldDiffsToNodePoolDiffs(config *dcl.Config, fds []*dcl.FieldDiff, 
 	var diffs []nodePoolDiff
 	// For each operation name, create a nodePoolDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := nodePoolDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := nodePoolDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

@@ -100,6 +100,7 @@ func DCLServiceBindingSchema() *dcl.Schema {
 					Title:           "ServiceBinding",
 					ID:              "projects/{{project}}/locations/{{location}}/serviceBindings/{{name}}",
 					ParentContainer: "project",
+					LabelsField:     "labels",
 					HasCreate:       true,
 					SchemaProperty: dcl.Property{
 						Type: "object",
@@ -161,8 +162,14 @@ func DCLServiceBindingSchema() *dcl.Schema {
 							"service": &dcl.Property{
 								Type:        "string",
 								GoName:      "Service",
-								Description: "Required. The full service directory service name of the format /projects/*/locations/*/namespaces/*/services/*",
+								Description: "Required. The full service directory service name of the format projects/*/locations/*/namespaces/*/services/*",
 								Immutable:   true,
+								ResourceReferences: []*dcl.PropertyResourceReference{
+									&dcl.PropertyResourceReference{
+										Resource: "Servicedirectory/Service",
+										Field:    "name",
+									},
+								},
 							},
 							"updateTime": &dcl.Property{
 								Type:        "string",

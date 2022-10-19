@@ -2279,6 +2279,7 @@ type functionDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         functionApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToFunctionDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]functionDiff, error) {
@@ -2298,7 +2299,8 @@ func convertFieldDiffsToFunctionDiffs(config *dcl.Config, fds []*dcl.FieldDiff, 
 	var diffs []functionDiff
 	// For each operation name, create a functionDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := functionDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := functionDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

@@ -2725,6 +2725,7 @@ type cryptoKeyDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         cryptoKeyApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToCryptoKeyDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]cryptoKeyDiff, error) {
@@ -2744,7 +2745,8 @@ func convertFieldDiffsToCryptoKeyDiffs(config *dcl.Config, fds []*dcl.FieldDiff,
 	var diffs []cryptoKeyDiff
 	// For each operation name, create a cryptoKeyDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := cryptoKeyDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := cryptoKeyDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

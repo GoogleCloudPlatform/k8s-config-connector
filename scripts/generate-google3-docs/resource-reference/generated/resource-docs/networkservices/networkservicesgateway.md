@@ -86,8 +86,6 @@ authorizationPolicyRef:
   name: string
   namespace: string
 description: string
-labels:
-  string: string
 location: string
 ports:
 - integer
@@ -181,16 +179,6 @@ Allowed value: The Google Cloud resource name of a `NetworkSecurityAuthorization
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Optional. A free-text description of the resource. Max length 1024 characters.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>labels</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Optional. Set of label tags associated with the Gateway resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -334,7 +322,7 @@ Allowed value: The Google Cloud resource name of a `NetworkSecurityServerTLSPoli
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Immutable. The type of the customer managed gateway. Possible values: MATCH_TYPE_UNSPECIFIED, MATCH_ANY, MATCH_ALL{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Immutable. The type of the customer managed gateway. Possible values: TYPE_UNSPECIFIED, OPEN_MESH, SECURE_WEB_GATEWAY{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

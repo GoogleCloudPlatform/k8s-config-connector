@@ -508,6 +508,7 @@ type googleChannelConfigDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         googleChannelConfigApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToGoogleChannelConfigDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]googleChannelConfigDiff, error) {
@@ -527,7 +528,8 @@ func convertFieldDiffsToGoogleChannelConfigDiffs(config *dcl.Config, fds []*dcl.
 	var diffs []googleChannelConfigDiff
 	// For each operation name, create a googleChannelConfigDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := googleChannelConfigDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := googleChannelConfigDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

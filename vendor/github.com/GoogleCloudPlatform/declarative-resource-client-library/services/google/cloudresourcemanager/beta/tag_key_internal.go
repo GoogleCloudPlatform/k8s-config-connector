@@ -765,6 +765,7 @@ type tagKeyDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         tagKeyApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToTagKeyDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]tagKeyDiff, error) {
@@ -784,7 +785,8 @@ func convertFieldDiffsToTagKeyDiffs(config *dcl.Config, fds []*dcl.FieldDiff, op
 	var diffs []tagKeyDiff
 	// For each operation name, create a tagKeyDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := tagKeyDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := tagKeyDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

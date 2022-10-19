@@ -100,6 +100,7 @@ func DCLMeshSchema() *dcl.Schema {
 					Title:           "Mesh",
 					ID:              "projects/{{project}}/locations/{{location}}/meshes/{{name}}",
 					ParentContainer: "project",
+					LabelsField:     "labels",
 					HasCreate:       true,
 					SchemaProperty: dcl.Property{
 						Type: "object",

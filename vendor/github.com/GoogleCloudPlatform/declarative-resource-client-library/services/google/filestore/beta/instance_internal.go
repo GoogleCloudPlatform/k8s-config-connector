@@ -1109,35 +1109,35 @@ func compareInstanceFileSharesNfsExportOptionsNewStyle(d, a interface{}, fn dcl.
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.IPRanges, actual.IPRanges, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IpRanges")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IPRanges, actual.IPRanges, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInstanceUpdateInstanceOperation")}, fn.AddNest("IpRanges")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AccessMode, actual.AccessMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AccessMode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AccessMode, actual.AccessMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInstanceUpdateInstanceOperation")}, fn.AddNest("AccessMode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SquashMode, actual.SquashMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SquashMode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SquashMode, actual.SquashMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInstanceUpdateInstanceOperation")}, fn.AddNest("SquashMode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AnonUid, actual.AnonUid, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AnonUid")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AnonUid, actual.AnonUid, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInstanceUpdateInstanceOperation")}, fn.AddNest("AnonUid")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AnonGid, actual.AnonGid, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AnonGid")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AnonGid, actual.AnonGid, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateInstanceUpdateInstanceOperation")}, fn.AddNest("AnonGid")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2008,6 +2008,7 @@ type instanceDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         instanceApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToInstanceDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]instanceDiff, error) {
@@ -2027,7 +2028,8 @@ func convertFieldDiffsToInstanceDiffs(config *dcl.Config, fds []*dcl.FieldDiff, 
 	var diffs []instanceDiff
 	// For each operation name, create a instanceDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := instanceDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := instanceDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

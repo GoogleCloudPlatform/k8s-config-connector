@@ -1161,6 +1161,7 @@ type tenantDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         tenantApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToTenantDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]tenantDiff, error) {
@@ -1180,7 +1181,8 @@ func convertFieldDiffsToTenantDiffs(config *dcl.Config, fds []*dcl.FieldDiff, op
 	var diffs []tenantDiff
 	// For each operation name, create a tenantDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := tenantDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := tenantDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

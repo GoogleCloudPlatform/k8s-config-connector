@@ -17609,6 +17609,7 @@ type workflowTemplateDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         workflowTemplateApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToWorkflowTemplateDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]workflowTemplateDiff, error) {
@@ -17628,7 +17629,8 @@ func convertFieldDiffsToWorkflowTemplateDiffs(config *dcl.Config, fds []*dcl.Fie
 	var diffs []workflowTemplateDiff
 	// For each operation name, create a workflowTemplateDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := workflowTemplateDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := workflowTemplateDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

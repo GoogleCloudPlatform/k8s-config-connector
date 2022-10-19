@@ -37,6 +37,8 @@ type Trigger struct {
 	Etag             *string                   `json:"etag"`
 	Project          *string                   `json:"project"`
 	Location         *string                   `json:"location"`
+	Channel          *string                   `json:"channel"`
+	Conditions       map[string]string         `json:"conditions"`
 }
 
 func (r *Trigger) String() string {
@@ -383,6 +385,8 @@ func (r *Trigger) ID() (string, error) {
 		"etag":              dcl.ValueOrEmptyString(nr.Etag),
 		"project":           dcl.ValueOrEmptyString(nr.Project),
 		"location":          dcl.ValueOrEmptyString(nr.Location),
+		"channel":           dcl.ValueOrEmptyString(nr.Channel),
+		"conditions":        dcl.ValueOrEmptyString(nr.Conditions),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/triggers/{{name}}", params), nil
 }

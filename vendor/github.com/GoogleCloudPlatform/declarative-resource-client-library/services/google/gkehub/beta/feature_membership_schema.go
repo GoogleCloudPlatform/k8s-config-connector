@@ -119,7 +119,6 @@ func DCLFeatureMembershipSchema() *dcl.Schema {
 					SchemaProperty: dcl.Property{
 						Type: "object",
 						Required: []string{
-							"configmanagement",
 							"project",
 							"location",
 							"feature",
@@ -352,6 +351,25 @@ func DCLFeatureMembershipSchema() *dcl.Schema {
 									&dcl.PropertyResourceReference{
 										Resource: "Gkehub/Membership",
 										Field:    "name",
+									},
+								},
+							},
+							"mesh": &dcl.Property{
+								Type:        "object",
+								GoName:      "Mesh",
+								GoType:      "FeatureMembershipMesh",
+								Description: "Manage Mesh Features",
+								Properties: map[string]*dcl.Property{
+									"management": &dcl.Property{
+										Type:        "string",
+										GoName:      "Management",
+										GoType:      "FeatureMembershipMeshManagementEnum",
+										Description: "Whether to automatically manage Service Mesh. Possible values: MANAGEMENT_UNSPECIFIED, MANAGEMENT_AUTOMATIC, MANAGEMENT_MANUAL",
+										Enum: []string{
+											"MANAGEMENT_UNSPECIFIED",
+											"MANAGEMENT_AUTOMATIC",
+											"MANAGEMENT_MANUAL",
+										},
 									},
 								},
 							},

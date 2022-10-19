@@ -781,6 +781,7 @@ type meshDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         meshApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToMeshDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]meshDiff, error) {
@@ -800,7 +801,8 @@ func convertFieldDiffsToMeshDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts
 	var diffs []meshDiff
 	// For each operation name, create a meshDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := meshDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := meshDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

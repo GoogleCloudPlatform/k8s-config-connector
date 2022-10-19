@@ -77,6 +77,13 @@ func WrapTargetPoolHealthCheck(m map[string]interface{}) map[string]interface{} 
 	}
 }
 
+// forwardingRuleEncodeCreateRequest removes the labels parameter - it cannot be supplied on create.
+func forwardingRuleEncodeCreateRequest(m map[string]any) map[string]any {
+	// labels cannot be specified on create
+	delete(m, "labels")
+	return m
+}
+
 // forwardingRuleSetLabelsPostCreate adds a 'setLabels' operation after
 // a create operation, because creation cannot set labels due to a
 // long-standing bug in the API for most compute networking resources.

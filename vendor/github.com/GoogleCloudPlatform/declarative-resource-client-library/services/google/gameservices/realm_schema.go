@@ -105,6 +105,7 @@ func DCLRealmSchema() *dcl.Schema {
 					SchemaProperty: dcl.Property{
 						Type: "object",
 						Required: []string{
+							"name",
 							"timeZone",
 							"location",
 							"project",

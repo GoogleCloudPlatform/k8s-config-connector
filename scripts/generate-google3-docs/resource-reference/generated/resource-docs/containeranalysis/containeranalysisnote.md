@@ -454,7 +454,7 @@ vulnerability:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Distinguish between sentinel MIN/MAX versions and normal versions. If kind is not NORMAL, then the other fields are ignored. Possible values: NOTE_KIND_UNSPECIFIED, VULNERABILITY, BUILD, IMAGE, PACKAGE, DEPLOYMENT, DISCOVERY, ATTESTATION, UPGRADE{% endverbatim %}</p>
+            <p>{% verbatim %}Distinguish between sentinel MIN/MAX versions and normal versions. If kind is not NORMAL, then the other fields are ignored. Possible values: VERSION_KIND_UNSPECIFIED, NORMAL, MINIMUM, MAXIMUM{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

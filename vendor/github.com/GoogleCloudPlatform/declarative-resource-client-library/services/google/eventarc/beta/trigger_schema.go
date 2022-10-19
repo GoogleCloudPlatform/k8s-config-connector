@@ -112,6 +112,28 @@ func DCLTriggerSchema() *dcl.Schema {
 							"location",
 						},
 						Properties: map[string]*dcl.Property{
+							"channel": &dcl.Property{
+								Type:        "string",
+								GoName:      "Channel",
+								Description: "Optional. The name of the channel associated with the trigger in `projects/{project}/locations/{location}/channels/{channel}` format. You must provide a channel to receive events from Eventarc SaaS partners.",
+								Immutable:   true,
+								ResourceReferences: []*dcl.PropertyResourceReference{
+									&dcl.PropertyResourceReference{
+										Resource: "Eventarc/Channel",
+										Field:    "name",
+									},
+								},
+							},
+							"conditions": &dcl.Property{
+								Type: "object",
+								AdditionalProperties: &dcl.Property{
+									Type: "string",
+								},
+								GoName:      "Conditions",
+								ReadOnly:    true,
+								Description: "Output only. The reason(s) why a trigger is in FAILED state.",
+								Immutable:   true,
+							},
 							"createTime": &dcl.Property{
 								Type:        "string",
 								Format:      "date-time",

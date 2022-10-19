@@ -61046,6 +61046,7 @@ type deidentifyTemplateDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         deidentifyTemplateApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToDeidentifyTemplateDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]deidentifyTemplateDiff, error) {
@@ -61065,7 +61066,8 @@ func convertFieldDiffsToDeidentifyTemplateDiffs(config *dcl.Config, fds []*dcl.F
 	var diffs []deidentifyTemplateDiff
 	// For each operation name, create a deidentifyTemplateDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := deidentifyTemplateDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := deidentifyTemplateDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

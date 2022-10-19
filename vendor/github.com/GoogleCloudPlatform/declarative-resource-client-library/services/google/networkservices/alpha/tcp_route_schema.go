@@ -100,6 +100,7 @@ func DCLTcpRouteSchema() *dcl.Schema {
 					Title:           "TcpRoute",
 					ID:              "projects/{{project}}/locations/{{location}}/tcpRoutes/{{name}}",
 					ParentContainer: "project",
+					LabelsField:     "labels",
 					HasCreate:       true,
 					SchemaProperty: dcl.Property{
 						Type: "object",

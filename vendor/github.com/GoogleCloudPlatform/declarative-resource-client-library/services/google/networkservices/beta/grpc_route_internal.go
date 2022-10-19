@@ -3975,6 +3975,7 @@ type grpcRouteDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         grpcRouteApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToGrpcRouteDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]grpcRouteDiff, error) {
@@ -3994,7 +3995,8 @@ func convertFieldDiffsToGrpcRouteDiffs(config *dcl.Config, fds []*dcl.FieldDiff,
 	var diffs []grpcRouteDiff
 	// For each operation name, create a grpcRouteDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := grpcRouteDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := grpcRouteDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

@@ -698,6 +698,7 @@ type logExclusionDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         logExclusionApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToLogExclusionDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]logExclusionDiff, error) {
@@ -717,7 +718,8 @@ func convertFieldDiffsToLogExclusionDiffs(config *dcl.Config, fds []*dcl.FieldDi
 	var diffs []logExclusionDiff
 	// For each operation name, create a logExclusionDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := logExclusionDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := logExclusionDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

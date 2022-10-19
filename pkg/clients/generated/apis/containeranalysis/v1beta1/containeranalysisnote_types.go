@@ -278,7 +278,7 @@ type NoteLatestVersion struct {
 	// +optional
 	FullName *string `json:"fullName,omitempty"`
 
-	/* Distinguish between sentinel MIN/MAX versions and normal versions. If kind is not NORMAL, then the other fields are ignored. Possible values: NOTE_KIND_UNSPECIFIED, VULNERABILITY, BUILD, IMAGE, PACKAGE, DEPLOYMENT, DISCOVERY, ATTESTATION, UPGRADE */
+	/* Distinguish between sentinel MIN/MAX versions and normal versions. If kind is not NORMAL, then the other fields are ignored. Possible values: VERSION_KIND_UNSPECIFIED, NORMAL, MINIMUM, MAXIMUM */
 	Kind string `json:"kind"`
 
 	/* The main part of the version name. */

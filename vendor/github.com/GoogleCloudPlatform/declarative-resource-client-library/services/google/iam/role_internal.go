@@ -1181,6 +1181,7 @@ type roleDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         roleApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToRoleDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]roleDiff, error) {
@@ -1200,7 +1201,8 @@ func convertFieldDiffsToRoleDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts
 	var diffs []roleDiff
 	// For each operation name, create a roleDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := roleDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := roleDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

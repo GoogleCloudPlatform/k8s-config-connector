@@ -415,6 +415,10 @@ func (r *ForwardingRule) ID() (string, error) {
 		"psc_connection_id":               dcl.ValueOrEmptyString(nr.PscConnectionId),
 		"psc_connection_status":           dcl.ValueOrEmptyString(nr.PscConnectionStatus),
 	}
+	if dcl.IsRegion(nr.Location) {
+		return dcl.Nprintf("projects/{{project}}/regions/{{location}}/forwardingRules/{{name}}", params), nil
+	}
+
 	return dcl.Nprintf("projects/{{project}}/global/forwardingRules/{{name}}", params), nil
 }
 

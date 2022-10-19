@@ -1099,6 +1099,7 @@ type tenantOAuthIdpConfigDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         tenantOAuthIdpConfigApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToTenantOAuthIdpConfigDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]tenantOAuthIdpConfigDiff, error) {
@@ -1118,7 +1119,8 @@ func convertFieldDiffsToTenantOAuthIdpConfigDiffs(config *dcl.Config, fds []*dcl
 	var diffs []tenantOAuthIdpConfigDiff
 	// For each operation name, create a tenantOAuthIdpConfigDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := tenantOAuthIdpConfigDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := tenantOAuthIdpConfigDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

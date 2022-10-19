@@ -42,13 +42,6 @@ func (r *Project) getURL(userBasePath string) (string, error) {
 	return dcl.URL("v1/projects/{{name}}", nr.basePath(), userBasePath, params), nil
 }
 
-func (r *Project) listURL(userBasePath string) (string, error) {
-	nr := r.urlNormalized()
-	params := map[string]interface{}{}
-	return dcl.URL("v1/projects", nr.basePath(), userBasePath, params), nil
-
-}
-
 func (r *Project) createURL(userBasePath string) (string, error) {
 	nr := r.urlNormalized()
 	params := map[string]interface{}{}
@@ -194,8 +187,8 @@ func (c *Client) listProjectRaw(ctx context.Context, r *Project, pageToken strin
 }
 
 type listProjectOperation struct {
-	Items []map[string]interface{} `json:"items"`
-	Token string                   `json:"nextPageToken"`
+	Projects []map[string]interface{} `json:"projects"`
+	Token    string                   `json:"nextPageToken"`
 }
 
 func (c *Client) listProject(ctx context.Context, r *Project, pageToken string, pageSize int32) ([]*Project, string, error) {
@@ -210,11 +203,12 @@ func (c *Client) listProject(ctx context.Context, r *Project, pageToken string, 
 	}
 
 	var l []*Project
-	for _, v := range m.Items {
+	for _, v := range m.Projects {
 		res, err := unmarshalMapProject(v, c, r)
 		if err != nil {
 			return nil, m.Token, err
 		}
+		res.Parent = r.Parent
 		l = append(l, res)
 	}
 
@@ -548,7 +542,7 @@ func diffProject(c *Client, desired, actual *Project, opts ...dcl.ApplyOption) (
 func (r *Project) urlNormalized() *Project {
 	normalized := dcl.Copy(*r).(Project)
 	normalized.DisplayName = dcl.SelfLinkToName(r.DisplayName)
-	normalized.Parent = dcl.SelfLinkToName(r.Parent)
+	normalized.Parent = r.Parent
 	normalized.Name = dcl.SelfLinkToName(r.Name)
 	return &normalized
 }
@@ -722,6 +716,7 @@ type projectDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         projectApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToProjectDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]projectDiff, error) {
@@ -741,7 +736,8 @@ func convertFieldDiffsToProjectDiffs(config *dcl.Config, fds []*dcl.FieldDiff, o
 	var diffs []projectDiff
 	// For each operation name, create a projectDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := projectDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := projectDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {

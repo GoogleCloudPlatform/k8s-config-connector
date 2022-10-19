@@ -92,6 +92,7 @@ components:
           description: Information specifying an Anthos Cluster.
           x-dcl-conflicts:
           - gke
+          - run
           properties:
             membership:
               type: string
@@ -146,6 +147,13 @@ components:
                   within a bucket ("gs://my-bucket/my-dir"). If unspecified, a default
                   bucket located in the same region will be used.
                 x-dcl-server-default: true
+              executionTimeout:
+                type: string
+                x-dcl-go-name: ExecutionTimeout
+                description: Optional. Execution timeout for a Cloud Build Execution.
+                  This must be between 10m and 24h in seconds format. If unspecified,
+                  a default timeout of 1h is used.
+                x-dcl-server-default: true
               serviceAccount:
                 type: string
                 x-dcl-go-name: ServiceAccount
@@ -183,6 +191,7 @@ components:
           description: Information specifying a GKE Cluster.
           x-dcl-conflicts:
           - anthosCluster
+          - run
           properties:
             cluster:
               type: string
@@ -236,6 +245,22 @@ components:
           type: boolean
           x-dcl-go-name: RequireApproval
           description: Optional. Whether or not the `Target` requires approval.
+        run:
+          type: object
+          x-dcl-go-name: Run
+          x-dcl-go-type: TargetRun
+          description: Information specifying a Cloud Run deployment target.
+          x-dcl-conflicts:
+          - gke
+          - anthosCluster
+          required:
+          - location
+          properties:
+            location:
+              type: string
+              x-dcl-go-name: Location
+              description: Required. The location where the Cloud Run Service should
+                be located. Format is `projects/{project}/locations/{location}`.
         targetId:
           type: string
           x-dcl-go-name: TargetId

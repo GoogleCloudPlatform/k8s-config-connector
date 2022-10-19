@@ -128,6 +128,7 @@ func DCLTargetSchema() *dcl.Schema {
 								Description: "Information specifying an Anthos Cluster.",
 								Conflicts: []string{
 									"gke",
+									"run",
 								},
 								Properties: map[string]*dcl.Property{
 									"membership": &dcl.Property{
@@ -183,6 +184,12 @@ func DCLTargetSchema() *dcl.Schema {
 											Description:   "Optional. Cloud Storage location in which to store execution outputs. This can either be a bucket (\"gs://my-bucket\") or a path within a bucket (\"gs://my-bucket/my-dir\"). If unspecified, a default bucket located in the same region will be used.",
 											ServerDefault: true,
 										},
+										"executionTimeout": &dcl.Property{
+											Type:          "string",
+											GoName:        "ExecutionTimeout",
+											Description:   "Optional. Execution timeout for a Cloud Build Execution. This must be between 10m and 24h in seconds format. If unspecified, a default timeout of 1h is used.",
+											ServerDefault: true,
+										},
 										"serviceAccount": &dcl.Property{
 											Type:          "string",
 											GoName:        "ServiceAccount",
@@ -226,6 +233,7 @@ func DCLTargetSchema() *dcl.Schema {
 								Description: "Information specifying a GKE Cluster.",
 								Conflicts: []string{
 									"anthosCluster",
+									"run",
 								},
 								Properties: map[string]*dcl.Property{
 									"cluster": &dcl.Property{
@@ -283,6 +291,26 @@ func DCLTargetSchema() *dcl.Schema {
 								Type:        "boolean",
 								GoName:      "RequireApproval",
 								Description: "Optional. Whether or not the `Target` requires approval.",
+							},
+							"run": &dcl.Property{
+								Type:        "object",
+								GoName:      "Run",
+								GoType:      "TargetRun",
+								Description: "Information specifying a Cloud Run deployment target.",
+								Conflicts: []string{
+									"gke",
+									"anthosCluster",
+								},
+								Required: []string{
+									"location",
+								},
+								Properties: map[string]*dcl.Property{
+									"location": &dcl.Property{
+										Type:        "string",
+										GoName:      "Location",
+										Description: "Required. The location where the Cloud Run Service should be located. Format is `projects/{project}/locations/{location}`.",
+									},
+								},
 							},
 							"targetId": &dcl.Property{
 								Type:        "string",

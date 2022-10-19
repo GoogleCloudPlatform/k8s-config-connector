@@ -515,6 +515,7 @@ type monitoredProjectDiff struct {
 	// The diff should include one or the other of RequiresRecreate or UpdateOp.
 	RequiresRecreate bool
 	UpdateOp         monitoredProjectApiOperation
+	FieldName        string // used for error logging
 }
 
 func convertFieldDiffsToMonitoredProjectDiffs(config *dcl.Config, fds []*dcl.FieldDiff, opts []dcl.ApplyOption) ([]monitoredProjectDiff, error) {
@@ -534,7 +535,8 @@ func convertFieldDiffsToMonitoredProjectDiffs(config *dcl.Config, fds []*dcl.Fie
 	var diffs []monitoredProjectDiff
 	// For each operation name, create a monitoredProjectDiff which contains the operation.
 	for opName, fieldDiffs := range opNamesToFieldDiffs {
-		diff := monitoredProjectDiff{}
+		// Use the first field diff's field name for logging required recreate error.
+		diff := monitoredProjectDiff{FieldName: fieldDiffs[0].FieldName}
 		if opName == "Recreate" {
 			diff.RequiresRecreate = true
 		} else {
