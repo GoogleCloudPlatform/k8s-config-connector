@@ -110,6 +110,16 @@ and
     source ~/.profile
     ```
 
+1.  Set up a GKE cluster for testing purposes.
+
+    NOTE: `gcp-setup.sh` assumes the VM you are running it from is in a GCP
+    project which does not already have a GKE cluster with Config Connector
+    already set up.
+
+    ```shell
+    ./gcp-setup.sh
+    ```
+
 #### Option 2: Set up an environment manually yourself
 
 1.  Install all [required dependencies](#software-requirements)
@@ -151,6 +161,64 @@ and
 
     ```shell
     make config-connector
+    ```
+
+### Create a Resource
+
+1.  Enable Pub/Sub for your project.
+
+    ```shell
+    gcloud services enable pubsub.googleapis.com
+    ```
+
+1.  Create a Pub/Sub subscription. You may need to wait ~10-15 minutes to let
+    your cluster get set up after running `make deploy`.
+
+    ```shell
+    cd $GOPATH/src/github.com/GoogleCloudPlatform/k8s-config-connector
+    kubectl apply -f config/samples/resources/pubsubsubscription/basic-pubsub-subscription
+    ```
+
+1.  Wait a few minutes and then make sure your subscription exists in GCP.
+
+    ```shell
+    gcloud pubsub subscriptions list
+    ```
+
+    If you see a subscription, then your cluster is properly functioning and
+    actuating K8s resources onto GCP.
+
+### Make a Code Change
+
+At this point, your cluster is running a CNRM Controller Manager image built on
+your system. Let's make a code change to verify that you are ready to start
+development.
+
+1.  Edit
+    $GOPATH/src/github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager/main.go.
+    Insert the `log.Printf(...)` statement below on the first line of the
+    `main()` function.
+
+    ```shell
+    package manager
+
+    func main() {
+        log.Printf("I have finished the getting started guide.")
+        ...
+    }
+    ```
+
+1.  Build and deploy your change, force a pull of the container image.
+
+    ```shell
+    make deploy-controller && kubectl delete pods --namespace cnrm-system --all
+    ```
+
+1.  Verify your new log statement is on the first line of the logs for the CNRM
+    Controller Manager pod.
+
+    ```shell
+    kubectl --namespace cnrm-system logs cnrm-controller-manager-0
     ```
 
 ## Contributing to Config Connector

@@ -14,6 +14,23 @@
 
 export GOFLAGS=-mod=vendor
 
+PROJECT_ID := $(shell gcloud config get-value project)
+SHORT_SHA := $(shell git rev-parse --short=7 HEAD)
+BUILDER_IMG ?= gcr.io/${PROJECT_ID}/builder:${SHORT_SHA}
+CONTROLLER_IMG ?= gcr.io/${PROJECT_ID}/controller:${SHORT_SHA}
+RECORDER_IMG ?= gcr.io/${PROJECT_ID}/recorder:${SHORT_SHA}
+WEBHOOK_IMG ?= gcr.io/${PROJECT_ID}/webhook:${SHORT_SHA}
+DELETION_DEFENDER_IMG ?= gcr.io/${PROJECT_ID}/deletiondefender:${SHORT_SHA}
+UNMANAGED_DETECTOR_IMG ?= gcr.io/${PROJECT_ID}/unmanageddetector:${SHORT_SHA}
+
+# Use Docker BuildKit when building images to allow usage of 'setcap' in
+# multi-stage builds (https://github.com/moby/moby/issues/38132)
+DOCKER_BUILD := DOCKER_BUILDKIT=1 docker build
+
+ifneq ($(origin KUBECONTEXT), undefined)
+CONTEXT_FLAG := --context ${KUBECONTEXT}
+endif
+
 all: test manager operator config-connector
 
 # Run tests
@@ -80,3 +97,64 @@ generate:
 	# This path will be covered by `generate-go-client` target specifically.
 	go generate $$(go list ./pkg/... ./cmd/... | grep -v ./pkg/clients/generated)
 	make fmt
+
+# Build the docker images
+docker-build: docker-build-manager docker-build-recorder docker-build-webhook docker-build-deletiondefender docker-build-unmanageddetector
+
+# build all the binaries into the builder docker image
+docker-build-builder:
+	$(DOCKER_BUILD) . -f build/builder/Dockerfile -t ${BUILDER_IMG}
+
+# Build the manager docker image
+docker-build-manager: docker-build-builder
+	$(DOCKER_BUILD) -t ${CONTROLLER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/manager/Dockerfile
+	@echo "updating kustomize image patch file for manager resource"
+	cp config/installbundle/components/manager/base/manager_image_patch_template.yaml config/installbundle/components/manager/base/manager_image_patch.yaml
+	sed -i'' -e 's@image: .*@image: '"${CONTROLLER_IMG}"'@' ./config/installbundle/components/manager/base/manager_image_patch.yaml
+
+# Build the recorder docker image
+docker-build-recorder: docker-build-builder
+	$(DOCKER_BUILD) -t ${RECORDER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/recorder/Dockerfile
+	@echo "updating kustomize image patch file for recorder resource"
+	cp config/installbundle/components/recorder/recorder_image_patch_template.yaml config/installbundle/components/recorder/recorder_image_patch.yaml
+	sed -i'' -e 's@image: .*@image: '"${RECORDER_IMG}"'@' ./config/installbundle/components/recorder/recorder_image_patch.yaml
+
+# Build the webhook docker image
+docker-build-webhook: docker-build-builder
+	$(DOCKER_BUILD) -t ${WEBHOOK_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/webhook/Dockerfile
+	@echo "updating kustomize image patch file for webhook resource"
+	cp config/installbundle/components/webhook/webhook_image_patch_template.yaml config/installbundle/components/webhook/webhook_image_patch.yaml
+	sed -i'' -e 's@image: .*@image: '"${WEBHOOK_IMG}"'@' ./config/installbundle/components/webhook/webhook_image_patch.yaml
+
+docker-build-deletiondefender: docker-build-builder
+	$(DOCKER_BUILD) -t ${DELETION_DEFENDER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/deletiondefender/Dockerfile
+	@echo "updating kustomize image patch file for deletion defender resource"
+	cp config/installbundle/components/deletiondefender/deletiondefender_image_patch_template.yaml config/installbundle/components/deletiondefender/deletiondefender_image_patch.yaml
+	sed -i'' -e 's@image: .*@image: '"${DELETION_DEFENDER_IMG}"'@' ./config/installbundle/components/deletiondefender/deletiondefender_image_patch.yaml
+
+docker-build-unmanageddetector: docker-build-builder
+	$(DOCKER_BUILD) -t ${UNMANAGED_DETECTOR_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/unmanageddetector/Dockerfile
+	@echo "updating kustomize image patch file for unmanaged detector resource"
+	cp config/installbundle/components/unmanageddetector/unmanageddetector_image_patch_template.yaml config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
+	sed -i'' -e 's@image: .*@image: '"${UNMANAGED_DETECTOR_IMG}"'@' ./config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
+
+# Push the docker image
+docker-push:
+	docker push ${CONTROLLER_IMG}
+	docker push ${RECORDER_IMG}
+	docker push ${WEBHOOK_IMG}
+	docker push ${DELETION_DEFENDER_IMG}
+	docker push ${UNMANAGED_DETECTOR_IMG}
+
+# Deploy controller in the configured Kubernetes cluster in ~/.kube/config
+deploy: manifests install
+	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
+
+# Install CRDs into a cluster
+install: manifests
+	kubectl apply -f config/crds/resources/ ${CONTEXT_FLAG}
+
+# Deploy controller only, this will skip CRD install in the configured K8s and usually runs much
+# faster than "make deploy". It is useful if you only want to quickly apply code change in controller
+deploy-controller: docker-build docker-push
+	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
