@@ -57,10 +57,10 @@ resource "google_dataproc_metastore_federation" "default" {
   version       = "3.1.2"
 
   backend_metastores {
-      rank           = "1"
-      name           = google_dataproc_metastore_service.default.id
-      metastore_type = "DATAPROC_METASTORE" 
-    }
+    rank           = "1"
+    name           = google_dataproc_metastore_service.default.id
+    metastore_type = "DATAPROC_METASTORE" 
+  }
 }
 
 resource "google_dataproc_metastore_service" "default" {
@@ -74,6 +74,71 @@ resource "google_dataproc_metastore_service" "default" {
     version           = "3.1.2"
     endpoint_protocol = "GRPC"
   }
+}
+`, context)
+}
+
+func TestAccDataprocMetastoreFederation_dataprocMetastoreFederationBigqueryExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProvidersOiCS,
+		CheckDestroy: testAccCheckDataprocMetastoreFederationDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccDataprocMetastoreFederation_dataprocMetastoreFederationBigqueryExample(context),
+			},
+			{
+				ResourceName:            "google_dataproc_metastore_federation.default",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"federation_id", "location"},
+			},
+		},
+	})
+}
+
+func testAccDataprocMetastoreFederation_dataprocMetastoreFederationBigqueryExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_dataproc_metastore_federation" "default" {
+  provider      = google-beta
+  location      = "us-central1"
+  federation_id = "tf-test-fed-2%{random_suffix}"
+  version       = "3.1.2"
+
+  backend_metastores {
+    rank           = "2"
+    name           = data.google_project.project.id
+    metastore_type = "BIGQUERY" 
+  }
+
+  backend_metastores {
+    rank           = "1"
+    name           = google_dataproc_metastore_service.default.id
+    metastore_type = "DATAPROC_METASTORE" 
+  }
+}
+
+resource "google_dataproc_metastore_service" "default" {
+  provider   = google-beta
+  service_id = "tf-test-fed-2%{random_suffix}"
+  location   = "us-central1"
+  tier       = "DEVELOPER"
+
+
+  hive_metastore_config {
+    version           = "3.1.2"
+    endpoint_protocol = "GRPC"
+  }
+}
+
+data "google_project" "project" {
+  provider      = google-beta
 }
 `, context)
 }

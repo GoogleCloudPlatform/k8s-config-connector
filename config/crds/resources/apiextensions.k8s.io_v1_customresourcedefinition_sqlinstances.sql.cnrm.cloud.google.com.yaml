@@ -94,6 +94,9 @@ spec:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
+              maintenanceVersion:
+                description: Maintenance version.
+                type: string
               masterInstanceRef:
                 oneOf:
                 - not:
@@ -147,7 +150,7 @@ spec:
                     type: string
                   connectRetryInterval:
                     description: Immutable. The number of seconds between connect
-                      retries.
+                      retries. MySQL's default is 60 seconds.
                     type: integer
                   dumpFilePath:
                     description: Immutable. Path to a SQL file in Google Cloud Storage
@@ -287,7 +290,7 @@ spec:
                       settings.backup_configuration.enabled is set to true.
                       For MySQL instances, ensure that settings.backup_configuration.binary_log_enabled is set to true.
                       For Postgres instances, ensure that settings.backup_configuration.point_in_time_recovery_enabled
-                      is set to true.
+                      is set to true. Defaults to ZONAL.
                     type: string
                   backupConfiguration:
                     properties:
@@ -349,7 +352,7 @@ spec:
                     type: array
                   diskAutoresize:
                     description: Enables auto-resizing of the storage size. Defaults
-                      to true. Set to false if you want to set disk_size.
+                      to true.
                     type: boolean
                   diskAutoresizeLimit:
                     description: The maximum size, in GB, to which storage capacity
@@ -358,11 +361,12 @@ spec:
                     type: integer
                   diskSize:
                     description: The size of data disk, in GB. Size of a running instance
-                      cannot be reduced but can be increased. If you want to set this
-                      field, set disk_autoresize to false.
+                      cannot be reduced but can be increased. The minimum value is
+                      10GB.
                     type: integer
                   diskType:
-                    description: 'The type of data disk: PD_SSD or PD_HDD.'
+                    description: 'The type of data disk: PD_SSD or PD_HDD. Defaults
+                      to PD_SSD.'
                     type: string
                   insightsConfig:
                     description: Configuration of Query Insights.
@@ -559,6 +563,11 @@ spec:
             type: object
           status:
             properties:
+              availableMaintenanceVersions:
+                description: Available Maintenance versions.
+                items:
+                  type: string
+                type: array
               conditions:
                 description: Conditions represent the latest available observation
                   of the resource's current state.

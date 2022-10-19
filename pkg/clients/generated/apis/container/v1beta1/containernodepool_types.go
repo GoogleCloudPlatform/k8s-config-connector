@@ -67,6 +67,14 @@ type NodepoolGcfsConfig struct {
 	Enabled bool `json:"enabled"`
 }
 
+type NodepoolGpuSharingConfig struct {
+	/* Immutable. The type of GPU sharing strategy to enable on the GPU node. Possible values are described in the API package (https://pkg.go.dev/google.golang.org/api/container/v1#GPUSharingConfig). */
+	GpuSharingStrategy string `json:"gpuSharingStrategy"`
+
+	/* Immutable. The maximum number of containers that can share a GPU. */
+	MaxSharedClientsPerGpu int `json:"maxSharedClientsPerGpu"`
+}
+
 type NodepoolGuestAccelerator struct {
 	/* Immutable. The number of the accelerator cards exposed to an instance. */
 	Count int `json:"count"`
@@ -74,6 +82,10 @@ type NodepoolGuestAccelerator struct {
 	/* Immutable. Size of partitions to create on the GPU. Valid values are described in the NVIDIA mig user guide (https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning). */
 	// +optional
 	GpuPartitionSize *string `json:"gpuPartitionSize,omitempty"`
+
+	/* Immutable. Configuration for GPU sharing. */
+	// +optional
+	GpuSharingConfig *NodepoolGpuSharingConfig `json:"gpuSharingConfig,omitempty"`
 
 	/* Immutable. The accelerator type resource name. */
 	Type string `json:"type"`

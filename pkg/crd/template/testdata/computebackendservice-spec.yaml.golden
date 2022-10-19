@@ -50,6 +50,7 @@ circuitBreakers:
   maxRequests: integer
   maxRequestsPerConnection: integer
   maxRetries: integer
+compressionMode: string
 connectionDrainingTimeoutSec: integer
 connectionTrackingPolicy:
   connectionPersistenceOnUnhealthyBackends: string

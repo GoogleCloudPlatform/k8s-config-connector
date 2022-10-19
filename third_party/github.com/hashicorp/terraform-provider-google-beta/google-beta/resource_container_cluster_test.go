@@ -246,6 +246,46 @@ func TestAccContainerCluster_withNotificationConfig(t *testing.T) {
 	})
 }
 
+func TestAccContainerCluster_withFilteredNotificationConfig(t *testing.T) {
+	t.Parallel()
+
+	clusterName := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
+	topic := fmt.Sprintf("tf-test-topic-%s", randString(t, 10))
+	newTopic := fmt.Sprintf("tf-test-topic-%s", randString(t, 10))
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccContainerCluster_withFilteredNotificationConfig(clusterName, topic),
+			},
+			{
+				ResourceName:      "google_container_cluster.filtered_notification_config",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerCluster_withFilteredNotificationConfigUpdate(clusterName, newTopic),
+			},
+			{
+				ResourceName:      "google_container_cluster.filtered_notification_config",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerCluster_disableFilteredNotificationConfig(clusterName, newTopic),
+			},
+			{
+				ResourceName:      "google_container_cluster.filtered_notification_config",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
 func TestAccContainerCluster_withConfidentialNodes(t *testing.T) {
 	t.Parallel()
 
@@ -2237,6 +2277,14 @@ func TestAccContainerCluster_withLoggingConfig(t *testing.T) {
 				ImportStateVerify: true,
 			},
 			{
+				Config: testAccContainerCluster_withLoggingConfigDisabled(clusterName),
+			},
+			{
+				ResourceName:      "google_container_cluster.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
 				Config: testAccContainerCluster_withLoggingConfigUpdated(clusterName),
 			},
 			{
@@ -2266,61 +2314,77 @@ func TestAccContainerCluster_withMonitoringConfig(t *testing.T) {
 		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccContainerCluster_basic(clusterName),
+				Config: testAccContainerCluster_basic_1_23_8(clusterName),
 			},
 			{
-				ResourceName:      "google_container_cluster.primary",
-				ImportState:       true,
-				ImportStateVerify: true,
+				ResourceName:            "google_container_cluster.primary",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"min_master_version"},
 			},
 			{
 				Config: testAccContainerCluster_withMonitoringConfigEnabled(clusterName),
 			},
 			{
-				ResourceName:      "google_container_cluster.primary",
-				ImportState:       true,
-				ImportStateVerify: true,
+				ResourceName:            "google_container_cluster.primary",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"min_master_version"},
+			},
+			{
+				Config: testAccContainerCluster_withMonitoringConfigDisabled(clusterName),
+			},
+			{
+				ResourceName:            "google_container_cluster.primary",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"min_master_version"},
 			},
 			{
 				Config: testAccContainerCluster_withMonitoringConfigUpdated(clusterName),
 			},
 			{
-				ResourceName:      "google_container_cluster.primary",
-				ImportState:       true,
-				ImportStateVerify: true,
+				ResourceName:            "google_container_cluster.primary",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"min_master_version"},
 			},
 			{
 				Config: testAccContainerCluster_withMonitoringConfigPrometheusUpdated(clusterName),
 			},
 			{
-				ResourceName:      "google_container_cluster.primary",
-				ImportState:       true,
-				ImportStateVerify: true,
+				ResourceName:            "google_container_cluster.primary",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"min_master_version"},
 			},
 			// Back to basic settings to test setting Prometheus on its own
 			{
-				Config: testAccContainerCluster_basic(clusterName),
+				Config: testAccContainerCluster_basic_1_23_8(clusterName),
 			},
 			{
-				ResourceName:      "google_container_cluster.primary",
-				ImportState:       true,
-				ImportStateVerify: true,
+				ResourceName:            "google_container_cluster.primary",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"min_master_version"},
 			},
 			{
 				Config: testAccContainerCluster_withMonitoringConfigPrometheusOnly(clusterName),
 			},
 			{
-				ResourceName:      "google_container_cluster.primary",
-				ImportState:       true,
-				ImportStateVerify: true,
+				ResourceName:            "google_container_cluster.primary",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"min_master_version"},
 			},
 			{
-				Config: testAccContainerCluster_basic(clusterName),
+				Config: testAccContainerCluster_basic_1_23_8(clusterName),
 			},
 			{
-				ResourceName:      "google_container_cluster.primary",
-				ImportState:       true,
-				ImportStateVerify: true,
+				ResourceName:            "google_container_cluster.primary",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"min_master_version"},
 			},
 		},
 	})
@@ -3410,7 +3474,7 @@ resource "google_container_cluster" "notification_config" {
   notification_config {
 	pubsub {
 	  enabled = true
-	  topic = google_pubsub_topic.%s.id
+	  topic   = google_pubsub_topic.%s.id
 	}
   }
 }
@@ -3430,6 +3494,78 @@ resource "google_container_cluster" "notification_config" {
   }
 }
 `, clusterName)
+}
+
+func testAccContainerCluster_withFilteredNotificationConfig(clusterName string, topic string) string {
+
+	return fmt.Sprintf(`
+
+resource "google_pubsub_topic" "%s" {
+  name = "%s"
+}
+
+resource "google_container_cluster" "filtered_notification_config" {
+  name               = "%s"
+  location           = "us-central1-a"
+  initial_node_count = 3
+  notification_config {
+	pubsub {
+	  enabled = true
+	  topic   = google_pubsub_topic.%s.id
+	  filter {
+		event_type = ["UPGRADE_EVENT", "SECURITY_BULLETIN_EVENT"]
+	  }
+	}
+  }
+}
+`, topic, topic, clusterName, topic)
+}
+
+func testAccContainerCluster_withFilteredNotificationConfigUpdate(clusterName string, topic string) string {
+
+	return fmt.Sprintf(`
+
+resource "google_pubsub_topic" "%s" {
+  name = "%s"
+}
+
+resource "google_container_cluster" "filtered_notification_config" {
+  name               = "%s"
+  location           = "us-central1-a"
+  initial_node_count = 3
+  notification_config {
+	pubsub {
+	  enabled = true
+	  topic   = google_pubsub_topic.%s.id
+	  filter {
+		event_type = ["UPGRADE_AVAILABLE_EVENT"]
+	  }
+	}
+  }
+}
+`, topic, topic, clusterName, topic)
+}
+
+func testAccContainerCluster_disableFilteredNotificationConfig(clusterName string, topic string) string {
+
+	return fmt.Sprintf(`
+
+resource "google_pubsub_topic" "%s" {
+  name = "%s"
+}
+
+resource "google_container_cluster" "filtered_notification_config" {
+  name               = "%s"
+  location           = "us-central1-a"
+  initial_node_count = 3
+  notification_config {
+	pubsub {
+	  enabled = true
+	  topic   = google_pubsub_topic.%s.id
+	}
+  }
+}
+`, topic, topic, clusterName, topic)
 }
 
 func testAccContainerCluster_withConfidentialNodes(clusterName string, npName string) string {
@@ -5979,6 +6115,19 @@ resource "google_container_cluster" "primary" {
 `, name)
 }
 
+func testAccContainerCluster_withLoggingConfigDisabled(name string) string {
+	return fmt.Sprintf(`
+resource "google_container_cluster" "primary" {
+  name               = "%s"
+  location           = "us-central1-a"
+  initial_node_count = 1
+  logging_config {
+	  enable_components = []
+  }
+}
+`, name)
+}
+
 func testAccContainerCluster_withLoggingConfigUpdated(name string) string {
 	return fmt.Sprintf(`
 resource "google_container_cluster" "primary" {
@@ -5995,14 +6144,39 @@ resource "google_container_cluster" "primary" {
 `, name)
 }
 
+func testAccContainerCluster_basic_1_23_8(name string) string {
+	return fmt.Sprintf(`
+resource "google_container_cluster" "primary" {
+  name               = "%s"
+  location           = "us-central1-a"
+  initial_node_count = 1
+  min_master_version = "1.23.8-gke.1900"
+}
+`, name)
+}
+
 func testAccContainerCluster_withMonitoringConfigEnabled(name string) string {
 	return fmt.Sprintf(`
 resource "google_container_cluster" "primary" {
   name               = "%s"
   location           = "us-central1-a"
   initial_node_count = 1
+  min_master_version = "1.23.8-gke.1900"
   monitoring_config {
       enable_components = [ "SYSTEM_COMPONENTS", "APISERVER", "CONTROLLER_MANAGER", "SCHEDULER" ]
+  }
+}
+`, name)
+}
+
+func testAccContainerCluster_withMonitoringConfigDisabled(name string) string {
+	return fmt.Sprintf(`
+resource "google_container_cluster" "primary" {
+  name               = "%s"
+  location           = "us-central1-a"
+  initial_node_count = 1
+  monitoring_config {
+      enable_components = []
   }
 }
 `, name)
@@ -6014,6 +6188,7 @@ resource "google_container_cluster" "primary" {
   name               = "%s"
   location           = "us-central1-a"
   initial_node_count = 1
+	min_master_version = "1.23.8-gke.1900"
   monitoring_config {
          enable_components = [ "SYSTEM_COMPONENTS", "APISERVER", "CONTROLLER_MANAGER", "SCHEDULER", "WORKLOADS" ]
   }
@@ -6027,6 +6202,7 @@ resource "google_container_cluster" "primary" {
   name               = "%s"
   location           = "us-central1-a"
   initial_node_count = 1
+	min_master_version = "1.23.8-gke.1900"
   monitoring_config {
          enable_components = [ "SYSTEM_COMPONENTS", "APISERVER", "CONTROLLER_MANAGER", "SCHEDULER", "WORKLOADS" ]
          managed_prometheus {
@@ -6043,6 +6219,7 @@ resource "google_container_cluster" "primary" {
   name               = "%s"
   location           = "us-central1-a"
   initial_node_count = 1
+	min_master_version = "1.23.8-gke.1900"
   monitoring_config {
          managed_prometheus {
                  enabled = true

@@ -399,6 +399,12 @@ Modules API set_num_instances() you must use 'lifecycle.ignore_changes = ["manua
 Please see the app.yaml reference for valid values at 'https://cloud.google.com/appengine/docs/standard/<language>/config/appref'\
 Substitute '<language>' with 'python', 'java', 'php', 'ruby', 'go' or 'nodejs'.`,
 			},
+			"service_account": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Optional:    true,
+				Description: `The identity that the deployed version will run as. Admin API will use the App Engine Appspot service account as default if this field is neither provided in app.yaml file nor through CLI flag.`,
+			},
 			"threadsafe": {
 				Type:        schema.TypeBool,
 				Optional:    true,
@@ -421,6 +427,11 @@ Substitute '<language>' with 'python', 'java', 'php', 'ruby', 'go' or 'nodejs'.`
 							Type:        schema.TypeString,
 							Required:    true,
 							Description: `Full Serverless VPC Access Connector name e.g. /projects/my-project/locations/us-central1/connectors/c1.`,
+						},
+						"egress_setting": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: `The egress setting for the connector, controlling what traffic is diverted through it.`,
 						},
 					},
 				},
@@ -470,6 +481,12 @@ func resourceAppEngineStandardAppVersionCreate(d *schema.ResourceData, meta inte
 		return err
 	} else if v, ok := d.GetOkExists("runtime"); !isEmptyValue(reflect.ValueOf(runtimeProp)) && (ok || !reflect.DeepEqual(v, runtimeProp)) {
 		obj["runtime"] = runtimeProp
+	}
+	serviceAccountProp, err := expandAppEngineStandardAppVersionServiceAccount(d.Get("service_account"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("service_account"); !isEmptyValue(reflect.ValueOf(serviceAccountProp)) && (ok || !reflect.DeepEqual(v, serviceAccountProp)) {
+		obj["serviceAccount"] = serviceAccountProp
 	}
 	threadsafeProp, err := expandAppEngineStandardAppVersionThreadsafe(d.Get("threadsafe"), d, config)
 	if err != nil {
@@ -663,6 +680,9 @@ func resourceAppEngineStandardAppVersionRead(d *schema.ResourceData, meta interf
 	if err := d.Set("runtime", flattenAppEngineStandardAppVersionRuntime(res["runtime"], d, config)); err != nil {
 		return fmt.Errorf("Error reading StandardAppVersion: %s", err)
 	}
+	if err := d.Set("service_account", flattenAppEngineStandardAppVersionServiceAccount(res["serviceAccount"], d, config)); err != nil {
+		return fmt.Errorf("Error reading StandardAppVersion: %s", err)
+	}
 	if err := d.Set("app_engine_apis", flattenAppEngineStandardAppVersionAppEngineApis(res["appEngineApis"], d, config)); err != nil {
 		return fmt.Errorf("Error reading StandardAppVersion: %s", err)
 	}
@@ -724,6 +744,12 @@ func resourceAppEngineStandardAppVersionUpdate(d *schema.ResourceData, meta inte
 		return err
 	} else if v, ok := d.GetOkExists("runtime"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, runtimeProp)) {
 		obj["runtime"] = runtimeProp
+	}
+	serviceAccountProp, err := expandAppEngineStandardAppVersionServiceAccount(d.Get("service_account"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("service_account"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, serviceAccountProp)) {
+		obj["serviceAccount"] = serviceAccountProp
 	}
 	threadsafeProp, err := expandAppEngineStandardAppVersionThreadsafe(d.Get("threadsafe"), d, config)
 	if err != nil {
@@ -956,6 +982,10 @@ func flattenAppEngineStandardAppVersionRuntime(v interface{}, d *schema.Resource
 	return v
 }
 
+func flattenAppEngineStandardAppVersionServiceAccount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
 func flattenAppEngineStandardAppVersionAppEngineApis(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	return v
 }
@@ -1116,9 +1146,15 @@ func flattenAppEngineStandardAppVersionVPCAccessConnector(v interface{}, d *sche
 	transformed := make(map[string]interface{})
 	transformed["name"] =
 		flattenAppEngineStandardAppVersionVPCAccessConnectorName(original["name"], d, config)
+	transformed["egress_setting"] =
+		flattenAppEngineStandardAppVersionVPCAccessConnectorEgressSetting(original["egressSetting"], d, config)
 	return []interface{}{transformed}
 }
 func flattenAppEngineStandardAppVersionVPCAccessConnectorName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenAppEngineStandardAppVersionVPCAccessConnectorEgressSetting(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	return v
 }
 
@@ -1347,6 +1383,10 @@ func expandAppEngineStandardAppVersionVersionId(v interface{}, d TerraformResour
 }
 
 func expandAppEngineStandardAppVersionRuntime(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandAppEngineStandardAppVersionServiceAccount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
 
@@ -1752,10 +1792,21 @@ func expandAppEngineStandardAppVersionVPCAccessConnector(v interface{}, d Terraf
 		transformed["name"] = transformedName
 	}
 
+	transformedEgressSetting, err := expandAppEngineStandardAppVersionVPCAccessConnectorEgressSetting(original["egress_setting"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedEgressSetting); val.IsValid() && !isEmptyValue(val) {
+		transformed["egressSetting"] = transformedEgressSetting
+	}
+
 	return transformed, nil
 }
 
 func expandAppEngineStandardAppVersionVPCAccessConnectorName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandAppEngineStandardAppVersionVPCAccessConnectorEgressSetting(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
 

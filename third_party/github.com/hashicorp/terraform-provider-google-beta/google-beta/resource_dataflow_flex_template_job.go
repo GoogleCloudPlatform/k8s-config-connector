@@ -57,8 +57,6 @@ func resourceDataflowFlexTemplateJob() *schema.Resource {
 				Type:             schema.TypeMap,
 				Optional:         true,
 				DiffSuppressFunc: resourceDataflowJobLabelDiffSuppress,
-				// TODO add support for labels when the API supports it
-				Deprecated: "Deprecated until the API supports this field",
 			},
 
 			"parameters": {
@@ -117,6 +115,9 @@ func resourceDataflowFlexTemplateJobCreate(d *schema.ResourceData, meta interfac
 			ContainerSpecGcsPath: d.Get("container_spec_gcs_path").(string),
 			JobName:              d.Get("name").(string),
 			Parameters:           expandStringMap(d, "parameters"),
+			Environment: &dataflow.FlexTemplateRuntimeEnvironment{
+				AdditionalUserLabels: expandStringMap(d, "labels"),
+			},
 		},
 	}
 
@@ -126,6 +127,13 @@ func resourceDataflowFlexTemplateJobCreate(d *schema.ResourceData, meta interfac
 	}
 
 	job := response.Job
+
+	//adding wait time for setting all the parameters into state file
+	err = waitForDataflowJobState(d, config, job.Id, userAgent, d.Timeout(schema.TimeoutUpdate), "JOB_STATE_RUNNING")
+	if err != nil {
+		return fmt.Errorf("Error waiting for job with job ID %q to be running: %s", job.Id, err)
+	}
+
 	d.SetId(job.Id)
 	if err := d.Set("job_id", job.Id); err != nil {
 		return fmt.Errorf("Error setting job_id: %s", err)
@@ -247,7 +255,10 @@ func resourceDataflowFlexTemplateJobUpdate(d *schema.ResourceData, meta interfac
 			ContainerSpecGcsPath: d.Get("container_spec_gcs_path").(string),
 			JobName:              d.Get("name").(string),
 			Parameters:           expandStringMap(d, "parameters"),
-			Update:               true,
+			Environment: &dataflow.FlexTemplateRuntimeEnvironment{
+				AdditionalUserLabels: expandStringMap(d, "labels"),
+			},
+			Update: true,
 		},
 	}
 

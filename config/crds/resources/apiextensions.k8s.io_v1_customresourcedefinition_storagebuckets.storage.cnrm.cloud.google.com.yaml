@@ -94,6 +94,23 @@ spec:
                       type: array
                   type: object
                 type: array
+              customPlacementConfig:
+                description: The bucket's custom location configuration, which specifies
+                  the individual regions that comprise a dual-region bucket. If the
+                  bucket is designated a single or multi-region, the parameters are
+                  empty.
+                properties:
+                  dataLocations:
+                    description: 'Immutable. The list of individual regions that comprise
+                      a dual-region bucket. See the docs for a list of acceptable
+                      regions. Note: If any of the data_locations changes, it will
+                      recreate the bucket.'
+                    items:
+                      type: string
+                    type: array
+                required:
+                - dataLocations
+                type: object
               defaultEventBasedHold:
                 description: Whether or not to automatically apply an eventBasedHold
                   to new objects added to the bucket.

@@ -176,6 +176,14 @@ func TestAccComputeSecurityPolicy_withAdaptiveProtection(t *testing.T) {
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
+			{
+				Config: testAccComputeSecurityPolicy_withAdaptiveProtectionUpdate(spName),
+			},
+			{
+				ResourceName:      "google_compute_security_policy.policy",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
 		},
 	})
 }
@@ -423,6 +431,14 @@ resource "google_compute_security_policy" "policy" {
 
   advanced_options_config {
     json_parsing = "STANDARD"
+    json_custom_config {
+      content_types = [
+        "application/json",
+        "application/vnd.api+json",
+        "application/vnd.collection+json",
+        "application/vnd.hyper+json"
+      ]
+    }
     log_level    = "VERBOSE"
   }
 }
@@ -440,6 +456,22 @@ resource "google_compute_security_policy" "policy" {
       enable = true
       rule_visibility = "STANDARD"
 	}
+  }
+}
+`, spName)
+}
+
+func testAccComputeSecurityPolicy_withAdaptiveProtectionUpdate(spName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_security_policy" "policy" {
+  name        = "%s"
+  description = "updated description"
+
+  adaptive_protection_config {
+    layer_7_ddos_defense_config {
+      enable = false
+      rule_visibility = "STANDARD"
+    }
   }
 }
 `, spName)

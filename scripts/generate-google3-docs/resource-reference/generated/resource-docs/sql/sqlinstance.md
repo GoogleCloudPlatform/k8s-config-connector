@@ -87,6 +87,7 @@ encryptionKMSCryptoKeyRef:
   external: string
   name: string
   namespace: string
+maintenanceVersion: string
 masterInstanceRef:
   external: string
   name: string
@@ -245,6 +246,16 @@ settings:
     </tr>
     <tr>
         <td>
+            <p><code>maintenanceVersion</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Maintenance version.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>masterInstanceRef</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -340,7 +351,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. The number of seconds between connect retries.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The number of seconds between connect retries. MySQL's default is 60 seconds.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -606,7 +617,7 @@ Specifying this field has no-ops; it's recommended to remove this field from you
 settings.backup_configuration.enabled is set to true.
 For MySQL instances, ensure that settings.backup_configuration.binary_log_enabled is set to true.
 For Postgres instances, ensure that settings.backup_configuration.point_in_time_recovery_enabled
-is set to true.{% endverbatim %}</p>
+is set to true. Defaults to ZONAL.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -777,7 +788,7 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Enables auto-resizing of the storage size. Defaults to true. Set to false if you want to set disk_size.{% endverbatim %}</p>
+            <p>{% verbatim %}Enables auto-resizing of the storage size. Defaults to true.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -797,7 +808,7 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The size of data disk, in GB. Size of a running instance cannot be reduced but can be increased. If you want to set this field, set disk_autoresize to false.{% endverbatim %}</p>
+            <p>{% verbatim %}The size of data disk, in GB. Size of a running instance cannot be reduced but can be increased. The minimum value is 10GB.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -807,7 +818,7 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The type of data disk: PD_SSD or PD_HDD.{% endverbatim %}</p>
+            <p>{% verbatim %}The type of data disk: PD_SSD or PD_HDD. Defaults to PD_SSD.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1251,6 +1262,8 @@ Specifying this field has no-ops; it's recommended to remove this field from you
 ### Status
 #### Schema
 ```yaml
+availableMaintenanceVersions:
+- string
 conditions:
 - lastTransitionTime: string
   message: string
@@ -1283,6 +1296,20 @@ serviceAccountEmailAddress: string
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td><code>availableMaintenanceVersions</code></td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Available Maintenance versions.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>availableMaintenanceVersions[]</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
     <tr>
         <td><code>conditions</code></td>
         <td>

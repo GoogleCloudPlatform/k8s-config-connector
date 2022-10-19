@@ -24,7 +24,7 @@ clone-terraform-google-provider-beta:
 	rm -rf github.com/hashicorp/terraform-provider-google-beta
 	mkdir -p github.com/hashicorp
 	cd github.com/hashicorp && git clone https://github.com/hashicorp/terraform-provider-google-beta
-	git -C github.com/hashicorp/terraform-provider-google-beta checkout v4.37.0
+	git -C github.com/hashicorp/terraform-provider-google-beta checkout v4.41.0
 	rm -rf github.com/hashicorp/terraform-provider-google-beta/.git
 
 .PHONY: apply-patches
@@ -269,3 +269,15 @@ apply-patches:
 	# Allow specifying custom HTTP clients to support mock testing
 	# See b/238356047 for context
 	git apply ../hack/terraform-overrides/mock-http-clients.patch
+	# Change TF read to return non-empty resource when state is DESTROYED.
+	# This was the behavior before the upgrade to TF v4.41.0. This is done
+	# since some users might have been depending on KCC to update
+	# status.destroyTime when the resource is DESTROYED.
+	# TODO(b/254533796): Re-evaluate if this patch is worth keeping.
+	git apply ../hack/terraform-overrides/secret_manager_secret_version_destroyed.patch
+	# Make persistence_config.rdb_snapshot_period optional. The field was
+	# marked required incorrectly which prevents KCC from updating the
+	# resource on the K8s API server if any of the other subfields of
+	# persistence_config are defaulted by GCP.
+	# TODO(b/254717047): Remove this patch once TF fixes the field.
+	git apply ../hack/terraform-overrides/redis_instance_rdb_snapshot_period.patch

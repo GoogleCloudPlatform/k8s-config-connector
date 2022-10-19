@@ -142,6 +142,34 @@ Cloud Pub/Sub topic. Not having adequate permissions will cause the calls that s
 					},
 				},
 			},
+			"notification_configs": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: `A list of notifcation configs that configure the notification for every resource mutation in this FHIR store.`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"pubsub_topic": {
+							Type:     schema.TypeString,
+							Required: true,
+							Description: `The Cloud Pub/Sub topic that notifications of changes are published on. Supplied by the client.
+PubsubMessage.Data will contain the resource name. PubsubMessage.MessageId is the ID of this message.
+It is guaranteed to be unique within the topic. PubsubMessage.PublishTime is the time at which the message
+was published. Notifications are only sent if the topic is non-empty. Topic names must be scoped to a
+project. service-PROJECT_NUMBER@gcp-sa-healthcare.iam.gserviceaccount.com must have publisher permissions on the given
+Cloud Pub/Sub topic. Not having adequate permissions will cause the calls that send notifications to fail.`,
+						},
+						"send_full_resource": {
+							Type:     schema.TypeBool,
+							Optional: true,
+							Description: `Whether to send full FHIR resource to this Pub/Sub topic for Create and Update operation.
+Note that setting this to true does not guarantee that all resources will be sent in the format of 
+full FHIR resource. When a resource change is too large or during heavy traffic, only the resource name will be
+sent. Clients should always check the "payloadType" label from a Pub/Sub message to determine whether 
+it needs to fetch the full resource as a separate operation.`,
+						},
+					},
+				},
+			},
 			"stream_configs": {
 				Type:     schema.TypeList,
 				Optional: true,
@@ -294,6 +322,12 @@ func resourceHealthcareFhirStoreCreate(d *schema.ResourceData, meta interface{})
 	} else if v, ok := d.GetOkExists("stream_configs"); !isEmptyValue(reflect.ValueOf(streamConfigsProp)) && (ok || !reflect.DeepEqual(v, streamConfigsProp)) {
 		obj["streamConfigs"] = streamConfigsProp
 	}
+	notificationConfigsProp, err := expandHealthcareFhirStoreNotificationConfigs(d.Get("notification_configs"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("notification_configs"); !isEmptyValue(reflect.ValueOf(notificationConfigsProp)) && (ok || !reflect.DeepEqual(v, notificationConfigsProp)) {
+		obj["notificationConfigs"] = notificationConfigsProp
+	}
 
 	url, err := replaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/fhirStores?fhirStoreId={{name}}")
 	if err != nil {
@@ -388,6 +422,9 @@ func resourceHealthcareFhirStoreRead(d *schema.ResourceData, meta interface{}) e
 	if err := d.Set("stream_configs", flattenHealthcareFhirStoreStreamConfigs(res["streamConfigs"], d, config)); err != nil {
 		return fmt.Errorf("Error reading FhirStore: %s", err)
 	}
+	if err := d.Set("notification_configs", flattenHealthcareFhirStoreNotificationConfigs(res["notificationConfigs"], d, config)); err != nil {
+		return fmt.Errorf("Error reading FhirStore: %s", err)
+	}
 
 	return nil
 }
@@ -426,6 +463,12 @@ func resourceHealthcareFhirStoreUpdate(d *schema.ResourceData, meta interface{})
 	} else if v, ok := d.GetOkExists("stream_configs"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, streamConfigsProp)) {
 		obj["streamConfigs"] = streamConfigsProp
 	}
+	notificationConfigsProp, err := expandHealthcareFhirStoreNotificationConfigs(d.Get("notification_configs"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("notification_configs"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, notificationConfigsProp)) {
+		obj["notificationConfigs"] = notificationConfigsProp
+	}
 
 	url, err := replaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/fhirStores/{{name}}")
 	if err != nil {
@@ -449,6 +492,10 @@ func resourceHealthcareFhirStoreUpdate(d *schema.ResourceData, meta interface{})
 
 	if d.HasChange("stream_configs") {
 		updateMask = append(updateMask, "streamConfigs")
+	}
+
+	if d.HasChange("notification_configs") {
+		updateMask = append(updateMask, "notificationConfigs")
 	}
 	// updateMask is a URL parameter but not present in the schema, so replaceVars
 	// won't set it
@@ -646,6 +693,33 @@ func flattenHealthcareFhirStoreStreamConfigsBigqueryDestinationSchemaConfigRecur
 	return v // let terraform core handle it otherwise
 }
 
+func flattenHealthcareFhirStoreNotificationConfigs(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return v
+	}
+	l := v.([]interface{})
+	transformed := make([]interface{}, 0, len(l))
+	for _, raw := range l {
+		original := raw.(map[string]interface{})
+		if len(original) < 1 {
+			// Do not include empty json objects coming back from the api
+			continue
+		}
+		transformed = append(transformed, map[string]interface{}{
+			"pubsub_topic":       flattenHealthcareFhirStoreNotificationConfigsPubsubTopic(original["pubsubTopic"], d, config),
+			"send_full_resource": flattenHealthcareFhirStoreNotificationConfigsSendFullResource(original["sendFullResource"], d, config),
+		})
+	}
+	return transformed
+}
+func flattenHealthcareFhirStoreNotificationConfigsPubsubTopic(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenHealthcareFhirStoreNotificationConfigsSendFullResource(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
 func expandHealthcareFhirStoreName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
@@ -798,6 +872,43 @@ func expandHealthcareFhirStoreStreamConfigsBigqueryDestinationSchemaConfigSchema
 }
 
 func expandHealthcareFhirStoreStreamConfigsBigqueryDestinationSchemaConfigRecursiveStructureDepth(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandHealthcareFhirStoreNotificationConfigs(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	l := v.([]interface{})
+	req := make([]interface{}, 0, len(l))
+	for _, raw := range l {
+		if raw == nil {
+			continue
+		}
+		original := raw.(map[string]interface{})
+		transformed := make(map[string]interface{})
+
+		transformedPubsubTopic, err := expandHealthcareFhirStoreNotificationConfigsPubsubTopic(original["pubsub_topic"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedPubsubTopic); val.IsValid() && !isEmptyValue(val) {
+			transformed["pubsubTopic"] = transformedPubsubTopic
+		}
+
+		transformedSendFullResource, err := expandHealthcareFhirStoreNotificationConfigsSendFullResource(original["send_full_resource"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedSendFullResource); val.IsValid() && !isEmptyValue(val) {
+			transformed["sendFullResource"] = transformedSendFullResource
+		}
+
+		req = append(req, transformed)
+	}
+	return req, nil
+}
+
+func expandHealthcareFhirStoreNotificationConfigsPubsubTopic(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandHealthcareFhirStoreNotificationConfigsSendFullResource(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
 

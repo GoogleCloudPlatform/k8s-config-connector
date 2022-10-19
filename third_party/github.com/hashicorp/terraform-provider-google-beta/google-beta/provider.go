@@ -229,6 +229,14 @@ func Provider() *schema.Provider {
 					"GOOGLE_BIGQUERY_CONNECTION_CUSTOM_ENDPOINT",
 				}, DefaultBasePaths[BigqueryConnectionBasePathKey]),
 			},
+			"bigquery_datapolicy_custom_endpoint": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				ValidateFunc: validateCustomEndpoint,
+				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
+					"GOOGLE_BIGQUERY_DATAPOLICY_CUSTOM_ENDPOINT",
+				}, DefaultBasePaths[BigqueryDatapolicyBasePathKey]),
+			},
 			"bigquery_data_transfer_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
@@ -316,6 +324,14 @@ func Provider() *schema.Provider {
 				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
 					"GOOGLE_CLOUD_IDENTITY_CUSTOM_ENDPOINT",
 				}, DefaultBasePaths[CloudIdentityBasePathKey]),
+			},
+			"cloud_ids_custom_endpoint": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				ValidateFunc: validateCustomEndpoint,
+				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
+					"GOOGLE_CLOUD_IDS_CUSTOM_ENDPOINT",
+				}, DefaultBasePaths[CloudIdsBasePathKey]),
 			},
 			"cloud_iot_custom_endpoint": {
 				Type:         schema.TypeString,
@@ -613,6 +629,14 @@ func Provider() *schema.Provider {
 					"GOOGLE_NOTEBOOKS_CUSTOM_ENDPOINT",
 				}, DefaultBasePaths[NotebooksBasePathKey]),
 			},
+			"org_policy_custom_endpoint": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				ValidateFunc: validateCustomEndpoint,
+				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
+					"GOOGLE_ORG_POLICY_CUSTOM_ENDPOINT",
+				}, DefaultBasePaths[OrgPolicyBasePathKey]),
+			},
 			"os_config_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
@@ -830,12 +854,14 @@ func Provider() *schema.Provider {
 			"google_access_approval_organization_service_account": dataSourceAccessApprovalOrganizationServiceAccount(),
 			"google_access_approval_project_service_account":      dataSourceAccessApprovalProjectServiceAccount(),
 			"google_active_folder":                                dataSourceGoogleActiveFolder(),
+			"google_artifact_registry_repository":                 dataSourceArtifactRegistryRepository(),
 			"google_app_engine_default_service_account":           dataSourceGoogleAppEngineDefaultServiceAccount(),
 			"google_billing_account":                              dataSourceGoogleBillingAccount(),
 			"google_bigquery_default_service_account":             dataSourceGoogleBigqueryDefaultServiceAccount(),
 			"google_client_config":                                dataSourceGoogleClientConfig(),
 			"google_client_openid_userinfo":                       dataSourceGoogleClientOpenIDUserinfo(),
 			"google_cloudfunctions_function":                      dataSourceGoogleCloudFunctionsFunction(),
+			"google_cloudfunctions2_function":                     dataSourceGoogleCloudFunctions2Function(),
 			"google_cloud_identity_groups":                        dataSourceGoogleCloudIdentityGroups(),
 			"google_cloud_identity_group_memberships":             dataSourceGoogleCloudIdentityGroupMemberships(),
 			"google_cloud_run_locations":                          dataSourceGoogleCloudRunLocations(),
@@ -867,6 +893,7 @@ func Provider() *schema.Provider {
 			"google_compute_resource_policy":                      dataSourceGoogleComputeResourcePolicy(),
 			"google_compute_router":                               dataSourceGoogleComputeRouter(),
 			"google_compute_router_status":                        dataSourceGoogleComputeRouterStatus(),
+			"google_compute_snapshot":                             dataSourceGoogleComputeSnapshot(),
 			"google_compute_ssl_certificate":                      dataSourceGoogleComputeSslCertificate(),
 			"google_compute_ssl_policy":                           dataSourceGoogleComputeSslPolicy(),
 			"google_compute_subnetwork":                           dataSourceGoogleComputeSubnetwork(),
@@ -937,6 +964,7 @@ func Provider() *schema.Provider {
 			"google_tags_tag_key":                                 dataSourceGoogleTagsTagKey(),
 			"google_tags_tag_value":                               dataSourceGoogleTagsTagValue(),
 			"google_tpu_tensorflow_versions":                      dataSourceTpuTensorflowVersions(),
+			"google_vpc_access_connector":                         dataSourceVPCAccessConnector(),
 			"google_redis_instance":                               dataSourceGoogleRedisInstance(),
 			// ####### END datasources ###########
 		},
@@ -952,9 +980,9 @@ func Provider() *schema.Provider {
 	return provider
 }
 
-// Generated resources: 261
-// Generated IAM resources: 171
-// Total generated resources: 432
+// Generated resources: 269
+// Generated IAM resources: 177
+// Total generated resources: 446
 func ResourceMap() map[string]*schema.Resource {
 	resourceMap, _ := ResourceMapWithErrors()
 	return resourceMap
@@ -1025,10 +1053,18 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_bigquery_analytics_hub_data_exchange_iam_binding":      ResourceIamBinding(BigqueryAnalyticsHubDataExchangeIamSchema, BigqueryAnalyticsHubDataExchangeIamUpdaterProducer, BigqueryAnalyticsHubDataExchangeIdParseFunc),
 			"google_bigquery_analytics_hub_data_exchange_iam_member":       ResourceIamMember(BigqueryAnalyticsHubDataExchangeIamSchema, BigqueryAnalyticsHubDataExchangeIamUpdaterProducer, BigqueryAnalyticsHubDataExchangeIdParseFunc),
 			"google_bigquery_analytics_hub_data_exchange_iam_policy":       ResourceIamPolicy(BigqueryAnalyticsHubDataExchangeIamSchema, BigqueryAnalyticsHubDataExchangeIamUpdaterProducer, BigqueryAnalyticsHubDataExchangeIdParseFunc),
+			"google_bigquery_analytics_hub_listing":                        resourceBigqueryAnalyticsHubListing(),
+			"google_bigquery_analytics_hub_listing_iam_binding":            ResourceIamBinding(BigqueryAnalyticsHubListingIamSchema, BigqueryAnalyticsHubListingIamUpdaterProducer, BigqueryAnalyticsHubListingIdParseFunc),
+			"google_bigquery_analytics_hub_listing_iam_member":             ResourceIamMember(BigqueryAnalyticsHubListingIamSchema, BigqueryAnalyticsHubListingIamUpdaterProducer, BigqueryAnalyticsHubListingIdParseFunc),
+			"google_bigquery_analytics_hub_listing_iam_policy":             ResourceIamPolicy(BigqueryAnalyticsHubListingIamSchema, BigqueryAnalyticsHubListingIamUpdaterProducer, BigqueryAnalyticsHubListingIdParseFunc),
 			"google_bigquery_connection":                                   resourceBigqueryConnectionConnection(),
 			"google_bigquery_connection_iam_binding":                       ResourceIamBinding(BigqueryConnectionConnectionIamSchema, BigqueryConnectionConnectionIamUpdaterProducer, BigqueryConnectionConnectionIdParseFunc),
 			"google_bigquery_connection_iam_member":                        ResourceIamMember(BigqueryConnectionConnectionIamSchema, BigqueryConnectionConnectionIamUpdaterProducer, BigqueryConnectionConnectionIdParseFunc),
 			"google_bigquery_connection_iam_policy":                        ResourceIamPolicy(BigqueryConnectionConnectionIamSchema, BigqueryConnectionConnectionIamUpdaterProducer, BigqueryConnectionConnectionIdParseFunc),
+			"google_bigquery_datapolicy_data_policy":                       resourceBigqueryDatapolicyDataPolicy(),
+			"google_bigquery_datapolicy_data_policy_iam_binding":           ResourceIamBinding(BigqueryDatapolicyDataPolicyIamSchema, BigqueryDatapolicyDataPolicyIamUpdaterProducer, BigqueryDatapolicyDataPolicyIdParseFunc),
+			"google_bigquery_datapolicy_data_policy_iam_member":            ResourceIamMember(BigqueryDatapolicyDataPolicyIamSchema, BigqueryDatapolicyDataPolicyIamUpdaterProducer, BigqueryDatapolicyDataPolicyIdParseFunc),
+			"google_bigquery_datapolicy_data_policy_iam_policy":            ResourceIamPolicy(BigqueryDatapolicyDataPolicyIamSchema, BigqueryDatapolicyDataPolicyIamUpdaterProducer, BigqueryDatapolicyDataPolicyIdParseFunc),
 			"google_bigquery_data_transfer_config":                         resourceBigqueryDataTransferConfig(),
 			"google_bigquery_reservation":                                  resourceBigqueryReservationReservation(),
 			"google_bigtable_app_profile":                                  resourceBigtableAppProfile(),
@@ -1055,6 +1091,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_cloudfunctions2_function_iam_policy":                   ResourceIamPolicy(Cloudfunctions2functionIamSchema, Cloudfunctions2functionIamUpdaterProducer, Cloudfunctions2functionIdParseFunc),
 			"google_cloud_identity_group":                                  resourceCloudIdentityGroup(),
 			"google_cloud_identity_group_membership":                       resourceCloudIdentityGroupMembership(),
+			"google_cloud_ids_endpoint":                                    resourceCloudIdsEndpoint(),
 			"google_cloudiot_registry":                                     resourceCloudIotDeviceRegistry(),
 			"google_cloudiot_registry_iam_binding":                         ResourceIamBinding(CloudIotDeviceRegistryIamSchema, CloudIotDeviceRegistryIamUpdaterProducer, CloudIotDeviceRegistryIdParseFunc),
 			"google_cloudiot_registry_iam_member":                          ResourceIamMember(CloudIotDeviceRegistryIamSchema, CloudIotDeviceRegistryIamUpdaterProducer, CloudIotDeviceRegistryIdParseFunc),
@@ -1158,6 +1195,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_compute_target_https_proxy":                            resourceComputeTargetHttpsProxy(),
 			"google_compute_region_target_http_proxy":                      resourceComputeRegionTargetHttpProxy(),
 			"google_compute_region_target_https_proxy":                     resourceComputeRegionTargetHttpsProxy(),
+			"google_compute_region_target_tcp_proxy":                       resourceComputeRegionTargetTcpProxy(),
 			"google_compute_target_instance":                               resourceComputeTargetInstance(),
 			"google_compute_target_ssl_proxy":                              resourceComputeTargetSslProxy(),
 			"google_compute_target_tcp_proxy":                              resourceComputeTargetTcpProxy(),
@@ -1206,6 +1244,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_dataproc_metastore_federation_iam_policy":              ResourceIamPolicy(DataprocMetastoreFederationIamSchema, DataprocMetastoreFederationIamUpdaterProducer, DataprocMetastoreFederationIdParseFunc),
 			"google_datastore_index":                                       resourceDatastoreIndex(),
 			"google_datastream_connection_profile":                         resourceDatastreamConnectionProfile(),
+			"google_datastream_private_connection":                         resourceDatastreamPrivateConnection(),
 			"google_deployment_manager_deployment":                         resourceDeploymentManagerDeployment(),
 			"google_dialogflow_agent":                                      resourceDialogflowAgent(),
 			"google_dialogflow_intent":                                     resourceDialogflowIntent(),
@@ -1280,6 +1319,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_iap_tunnel_iam_policy":                                 ResourceIamPolicy(IapTunnelIamSchema, IapTunnelIamUpdaterProducer, IapTunnelIdParseFunc),
 			"google_iap_brand":                                             resourceIapBrand(),
 			"google_iap_client":                                            resourceIapClient(),
+			"google_identity_platform_config":                              resourceIdentityPlatformConfig(),
 			"google_identity_platform_default_supported_idp_config":        resourceIdentityPlatformDefaultSupportedIdpConfig(),
 			"google_identity_platform_tenant_default_supported_idp_config": resourceIdentityPlatformTenantDefaultSupportedIdpConfig(),
 			"google_identity_platform_inbound_saml_config":                 resourceIdentityPlatformInboundSamlConfig(),
@@ -1315,6 +1355,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_notebooks_runtime_iam_member":                          ResourceIamMember(NotebooksRuntimeIamSchema, NotebooksRuntimeIamUpdaterProducer, NotebooksRuntimeIdParseFunc),
 			"google_notebooks_runtime_iam_policy":                          ResourceIamPolicy(NotebooksRuntimeIamSchema, NotebooksRuntimeIamUpdaterProducer, NotebooksRuntimeIdParseFunc),
 			"google_notebooks_location":                                    resourceNotebooksLocation(),
+			"google_org_policy_custom_constraint":                          resourceOrgPolicyCustomConstraint(),
 			"google_os_config_patch_deployment":                            resourceOSConfigPatchDeployment(),
 			"google_os_config_guest_policies":                              resourceOSConfigGuestPolicies(),
 			"google_os_login_ssh_public_key":                               resourceOSLoginSSHPublicKey(),
@@ -1393,6 +1434,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_vertex_ai_dataset":                                     resourceVertexAIDataset(),
 			"google_vertex_ai_featurestore":                                resourceVertexAIFeaturestore(),
 			"google_vertex_ai_featurestore_entitytype":                     resourceVertexAIFeaturestoreEntitytype(),
+			"google_vertex_ai_featurestore_entitytype_feature":             resourceVertexAIFeaturestoreEntitytypeFeature(),
 			"google_vertex_ai_metadata_store":                              resourceVertexAIMetadataStore(),
 			"google_vpc_access_connector":                                  resourceVPCAccessConnector(),
 			"google_workflows_workflow":                                    resourceWorkflowsWorkflow(),
@@ -1636,6 +1678,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
 	config.BigQueryBasePath = d.Get("big_query_custom_endpoint").(string)
 	config.BigqueryAnalyticsHubBasePath = d.Get("bigquery_analytics_hub_custom_endpoint").(string)
 	config.BigqueryConnectionBasePath = d.Get("bigquery_connection_custom_endpoint").(string)
+	config.BigqueryDatapolicyBasePath = d.Get("bigquery_datapolicy_custom_endpoint").(string)
 	config.BigqueryDataTransferBasePath = d.Get("bigquery_data_transfer_custom_endpoint").(string)
 	config.BigqueryReservationBasePath = d.Get("bigquery_reservation_custom_endpoint").(string)
 	config.BigtableBasePath = d.Get("bigtable_custom_endpoint").(string)
@@ -1647,6 +1690,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
 	config.CloudFunctionsBasePath = d.Get("cloud_functions_custom_endpoint").(string)
 	config.Cloudfunctions2BasePath = d.Get("cloudfunctions2_custom_endpoint").(string)
 	config.CloudIdentityBasePath = d.Get("cloud_identity_custom_endpoint").(string)
+	config.CloudIdsBasePath = d.Get("cloud_ids_custom_endpoint").(string)
 	config.CloudIotBasePath = d.Get("cloud_iot_custom_endpoint").(string)
 	config.CloudRunBasePath = d.Get("cloud_run_custom_endpoint").(string)
 	config.CloudSchedulerBasePath = d.Get("cloud_scheduler_custom_endpoint").(string)
@@ -1684,6 +1728,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
 	config.NetworkManagementBasePath = d.Get("network_management_custom_endpoint").(string)
 	config.NetworkServicesBasePath = d.Get("network_services_custom_endpoint").(string)
 	config.NotebooksBasePath = d.Get("notebooks_custom_endpoint").(string)
+	config.OrgPolicyBasePath = d.Get("org_policy_custom_endpoint").(string)
 	config.OSConfigBasePath = d.Get("os_config_custom_endpoint").(string)
 	config.OSLoginBasePath = d.Get("os_login_custom_endpoint").(string)
 	config.PrivatecaBasePath = d.Get("privateca_custom_endpoint").(string)

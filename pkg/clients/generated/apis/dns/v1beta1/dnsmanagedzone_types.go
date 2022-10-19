@@ -35,6 +35,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type ManagedzoneCloudLoggingConfig struct {
+	/* If set, enable query logging for this ManagedZone. False by default, making logging opt-in. */
+	EnableLogging bool `json:"enableLogging"`
+}
+
 type ManagedzoneDefaultKeySpecs struct {
 	/* String mnemonic specifying the DNSSEC algorithm of this key Possible values: ["ecdsap256sha256", "ecdsap384sha384", "rsasha1", "rsasha256", "rsasha512"]. */
 	// +optional
@@ -133,6 +138,10 @@ type ManagedzoneTargetNetwork struct {
 }
 
 type DNSManagedZoneSpec struct {
+	/* Cloud logging configuration. */
+	// +optional
+	CloudLoggingConfig *ManagedzoneCloudLoggingConfig `json:"cloudLoggingConfig,omitempty"`
+
 	/* A textual description field. Defaults to 'Managed by Config Connector'. */
 	// +optional
 	Description *string `json:"description,omitempty"`

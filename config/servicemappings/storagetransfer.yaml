@@ -53,3 +53,12 @@ spec:
         kind: StorageBucket
         version: v1beta1
         group: storage.cnrm.cloud.google.com
+    - tfField: notification_config.pubsub_topic
+      key: topicRef
+      gvk:
+        kind: PubSubTopic
+        version: v1beta1
+        group: pubsub.cnrm.cloud.google.com
+      description: |-
+        The PubSubTopic to which to publish notifications.
+      valueTemplate: "projects/{{project}}/topics/{{value}}"

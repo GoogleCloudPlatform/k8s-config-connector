@@ -16,6 +16,7 @@ package google
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -25,10 +26,13 @@ func TestAccPrivatecaCertificateTemplateIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"role":            "roles/privateca.templateUser",
-		"condition_title": "expires_after_2019_12_31",
-		"condition_expr":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"random_suffix":           randString(t, 10),
+		"role":                    "roles/privateca.templateUser",
+		"condition_title":         "expires_after_2019_12_31",
+		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"condition_desc":          "Expiring at midnight of 2019-12-31",
+		"condition_title_no_desc": "expires_after_2019_12_31-no-description",
+		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
 	vcrTest(t, resource.TestCase{
@@ -62,10 +66,13 @@ func TestAccPrivatecaCertificateTemplateIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"role":            "roles/privateca.templateUser",
-		"condition_title": "expires_after_2019_12_31",
-		"condition_expr":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"random_suffix":           randString(t, 10),
+		"role":                    "roles/privateca.templateUser",
+		"condition_title":         "expires_after_2019_12_31",
+		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"condition_desc":          "Expiring at midnight of 2019-12-31",
+		"condition_title_no_desc": "expires_after_2019_12_31-no-description",
+		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
 	vcrTest(t, resource.TestCase{
@@ -90,10 +97,13 @@ func TestAccPrivatecaCertificateTemplateIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"role":            "roles/privateca.templateUser",
-		"condition_title": "expires_after_2019_12_31",
-		"condition_expr":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"random_suffix":           randString(t, 10),
+		"role":                    "roles/privateca.templateUser",
+		"condition_title":         "expires_after_2019_12_31",
+		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"condition_desc":          "Expiring at midnight of 2019-12-31",
+		"condition_title_no_desc": "expires_after_2019_12_31-no-description",
+		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
 	vcrTest(t, resource.TestCase{
@@ -126,10 +136,13 @@ func TestAccPrivatecaCertificateTemplateIamBindingGenerated_withCondition(t *tes
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"role":            "roles/privateca.templateUser",
-		"condition_title": "expires_after_2019_12_31",
-		"condition_expr":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"random_suffix":           randString(t, 10),
+		"role":                    "roles/privateca.templateUser",
+		"condition_title":         "expires_after_2019_12_31",
+		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"condition_desc":          "Expiring at midnight of 2019-12-31",
+		"condition_title_no_desc": "expires_after_2019_12_31-no-description",
+		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
 	vcrTest(t, resource.TestCase{
@@ -155,10 +168,13 @@ func TestAccPrivatecaCertificateTemplateIamBindingGenerated_withAndWithoutCondit
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"role":            "roles/privateca.templateUser",
-		"condition_title": "expires_after_2019_12_31",
-		"condition_expr":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"random_suffix":           randString(t, 10),
+		"role":                    "roles/privateca.templateUser",
+		"condition_title":         "expires_after_2019_12_31",
+		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"condition_desc":          "Expiring at midnight of 2019-12-31",
+		"condition_title_no_desc": "expires_after_2019_12_31-no-description",
+		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
 	vcrTest(t, resource.TestCase{
@@ -180,6 +196,12 @@ func TestAccPrivatecaCertificateTemplateIamBindingGenerated_withAndWithoutCondit
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
+			{
+				ResourceName:      "google_privateca_certificate_template_iam_binding.foo3",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/certificateTemplates/%s roles/privateca.templateUser %s", getTestProjectFromEnv(), getTestRegionFromEnv(), fmt.Sprintf("tf-test-my-template%s", context["random_suffix"]), context["condition_title_no_desc"]),
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
 		},
 	})
 }
@@ -188,10 +210,13 @@ func TestAccPrivatecaCertificateTemplateIamMemberGenerated_withCondition(t *test
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"role":            "roles/privateca.templateUser",
-		"condition_title": "expires_after_2019_12_31",
-		"condition_expr":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"random_suffix":           randString(t, 10),
+		"role":                    "roles/privateca.templateUser",
+		"condition_title":         "expires_after_2019_12_31",
+		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"condition_desc":          "Expiring at midnight of 2019-12-31",
+		"condition_title_no_desc": "expires_after_2019_12_31-no-description",
+		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
 	vcrTest(t, resource.TestCase{
@@ -217,10 +242,13 @@ func TestAccPrivatecaCertificateTemplateIamMemberGenerated_withAndWithoutConditi
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"role":            "roles/privateca.templateUser",
-		"condition_title": "expires_after_2019_12_31",
-		"condition_expr":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"random_suffix":           randString(t, 10),
+		"role":                    "roles/privateca.templateUser",
+		"condition_title":         "expires_after_2019_12_31",
+		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"condition_desc":          "Expiring at midnight of 2019-12-31",
+		"condition_title_no_desc": "expires_after_2019_12_31-no-description",
+		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
 	vcrTest(t, resource.TestCase{
@@ -242,6 +270,12 @@ func TestAccPrivatecaCertificateTemplateIamMemberGenerated_withAndWithoutConditi
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
+			{
+				ResourceName:      "google_privateca_certificate_template_iam_member.foo3",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/certificateTemplates/%s roles/privateca.templateUser user:admin@hashicorptest.com %s", getTestProjectFromEnv(), getTestRegionFromEnv(), fmt.Sprintf("tf-test-my-template%s", context["random_suffix"]), context["condition_title_no_desc"]),
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
 		},
 	})
 }
@@ -250,11 +284,18 @@ func TestAccPrivatecaCertificateTemplateIamPolicyGenerated_withCondition(t *test
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"role":            "roles/privateca.templateUser",
-		"condition_title": "expires_after_2019_12_31",
-		"condition_expr":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"random_suffix":           randString(t, 10),
+		"role":                    "roles/privateca.templateUser",
+		"condition_title":         "expires_after_2019_12_31",
+		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"condition_desc":          "Expiring at midnight of 2019-12-31",
+		"condition_title_no_desc": "expires_after_2019_12_31-no-description",
+		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
+
+	// Test should have 2 bindings: one with a description and one without. Any < chars are converted to a unicode character by the API.
+	expectedPolicyData := Nprintf(`{"bindings":[{"condition":{"description":"%{condition_desc}","expression":"%{condition_expr}","title":"%{condition_title}"},"members":["user:admin@hashicorptest.com"],"role":"%{role}"},{"condition":{"expression":"%{condition_expr}","title":"%{condition_title}-no-description"},"members":["user:admin@hashicorptest.com"],"role":"%{role}"}]}`, context)
+	expectedPolicyData = strings.Replace(expectedPolicyData, "<", "\\u003c", -1)
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
@@ -262,6 +303,12 @@ func TestAccPrivatecaCertificateTemplateIamPolicyGenerated_withCondition(t *test
 		Steps: []resource.TestStep{
 			{
 				Config: testAccPrivatecaCertificateTemplateIamPolicy_withConditionGenerated(context),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					// TODO(SarahFrench) - uncomment once https://github.com/GoogleCloudPlatform/magic-modules/pull/6466 merged
+					// resource.TestCheckResourceAttr("data.google_iam_policy.foo", "policy_data", expectedPolicyData),
+					resource.TestCheckResourceAttr("google_privateca_certificate_template_iam_policy.foo", "policy_data", expectedPolicyData),
+					resource.TestCheckResourceAttrWith("data.google_iam_policy.foo", "policy_data", checkGoogleIamPolicy),
+				),
 			},
 			{
 				ResourceName:      "google_privateca_certificate_template_iam_policy.foo",
@@ -441,7 +488,7 @@ resource "google_privateca_certificate_template_iam_binding" "foo" {
   members = ["user:admin@hashicorptest.com"]
   condition {
     title       = "%{condition_title}"
-    description = "Expiring at midnight of 2019-12-31"
+    description = "%{condition_desc}"
     expression  = "%{condition_expr}"
   }
 }
@@ -479,8 +526,20 @@ resource "google_privateca_certificate_template_iam_binding" "foo2" {
   members = ["user:admin@hashicorptest.com"]
   condition {
     title       = "%{condition_title}"
-    description = "Expiring at midnight of 2019-12-31"
+    description = "%{condition_desc}"
     expression  = "%{condition_expr}"
+  }
+}
+
+resource "google_privateca_certificate_template_iam_binding" "foo3" {
+  certificate_template = google_privateca_certificate_template.default.id
+  role = "%{role}"
+  members = ["user:admin@hashicorptest.com"]
+  condition {
+    # Check that lack of description doesn't cause any issues
+    # Relates to issue : https://github.com/hashicorp/terraform-provider-google/issues/8701
+    title       = "%{condition_title_no_desc}"
+    expression  = "%{condition_expr_no_desc}"
   }
 }
 `, context)
@@ -511,7 +570,7 @@ resource "google_privateca_certificate_template_iam_member" "foo" {
   member = "user:admin@hashicorptest.com"
   condition {
     title       = "%{condition_title}"
-    description = "Expiring at midnight of 2019-12-31"
+    description = "%{condition_desc}"
     expression  = "%{condition_expr}"
   }
 }
@@ -549,8 +608,20 @@ resource "google_privateca_certificate_template_iam_member" "foo2" {
   member = "user:admin@hashicorptest.com"
   condition {
     title       = "%{condition_title}"
-    description = "Expiring at midnight of 2019-12-31"
+    description = "%{condition_desc}"
     expression  = "%{condition_expr}"
+  }
+}
+
+resource "google_privateca_certificate_template_iam_member" "foo3" {
+  certificate_template = google_privateca_certificate_template.default.id
+  role = "%{role}"
+  member = "user:admin@hashicorptest.com"
+  condition {
+    # Check that lack of description doesn't cause any issues
+    # Relates to issue : https://github.com/hashicorp/terraform-provider-google/issues/8701
+    title       = "%{condition_title_no_desc}"
+    expression  = "%{condition_expr_no_desc}"
   }
 }
 `, context)
@@ -580,8 +651,18 @@ data "google_iam_policy" "foo" {
     role = "%{role}"
     members = ["user:admin@hashicorptest.com"]
     condition {
+      # Check that lack of description doesn't cause any issues
+      # Relates to issue : https://github.com/hashicorp/terraform-provider-google/issues/8701
+      title       = "%{condition_title_no_desc}"
+      expression  = "%{condition_expr_no_desc}"
+    }
+  }
+  binding {
+    role = "%{role}"
+    members = ["user:admin@hashicorptest.com"]
+    condition {
       title       = "%{condition_title}"
-      description = "Expiring at midnight of 2019-12-31"
+      description = "%{condition_desc}"
       expression  = "%{condition_expr}"
     }
   }

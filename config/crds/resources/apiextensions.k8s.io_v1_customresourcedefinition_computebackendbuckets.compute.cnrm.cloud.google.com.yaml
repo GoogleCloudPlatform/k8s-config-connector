@@ -183,6 +183,11 @@ spec:
                       header. The actual headers served in responses will not be altered.
                     type: integer
                 type: object
+              compressionMode:
+                description: 'Compress text responses using Brotli or gzip compression,
+                  based on the client''s Accept-Encoding header. Possible values:
+                  ["AUTOMATIC", "DISABLED"].'
+                type: string
               customResponseHeaders:
                 description: Headers that the HTTP/S load balancer should add to proxied
                   responses.

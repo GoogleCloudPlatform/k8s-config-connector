@@ -577,6 +577,101 @@ func TestRetryTimeDuration_URLTimeoutsShouldRetry(t *testing.T) {
 	}
 }
 
+func TestRetryWithPolling_noRetry(t *testing.T) {
+	retryCount := 0
+	retryFunc := func() (interface{}, error) {
+		retryCount++
+		return "", &googleapi.Error{
+			Code: 400,
+		}
+	}
+	result, err := retryWithPolling(retryFunc, time.Duration(1000)*time.Millisecond, time.Duration(100)*time.Millisecond)
+	if err == nil || err.(*googleapi.Error).Code != 400 || result.(string) != "" {
+		t.Errorf("unexpected error %v and result %v", err, result)
+	}
+	if retryCount != 1 {
+		t.Errorf("expected error function to be called exactly once, but was called %d times", retryCount)
+	}
+}
+
+func TestRetryWithPolling_notRetryable(t *testing.T) {
+	retryCount := 0
+	retryFunc := func() (interface{}, error) {
+		retryCount++
+		return "", &googleapi.Error{
+			Code: 400,
+		}
+	}
+	// Retryable if the error code is not 400.
+	isRetryableFunc := func(err error) (bool, string) {
+		return err.(*googleapi.Error).Code != 400, ""
+	}
+	result, err := retryWithPolling(retryFunc, time.Duration(1000)*time.Millisecond, time.Duration(100)*time.Millisecond, isRetryableFunc)
+	if err == nil || err.(*googleapi.Error).Code != 400 || result.(string) != "" {
+		t.Errorf("unexpected error %v and result %v", err, result)
+	}
+	if retryCount != 1 {
+		t.Errorf("expected error function to be called exactly once, but was called %d times", retryCount)
+	}
+}
+
+func TestRetryWithPolling_retriedAndSucceeded(t *testing.T) {
+	retryCount := 0
+	// Retry once and succeeds.
+	retryFunc := func() (interface{}, error) {
+		retryCount++
+		// Error code of 200 is retryable.
+		if retryCount < 2 {
+			return "", &googleapi.Error{
+				Code: 200,
+			}
+		}
+		return "Ok", nil
+	}
+	// Retryable if the error code is not 400.
+	isRetryableFunc := func(err error) (bool, string) {
+		return err.(*googleapi.Error).Code != 400, ""
+	}
+	result, err := retryWithPolling(retryFunc, time.Duration(1000)*time.Millisecond, time.Duration(100)*time.Millisecond, isRetryableFunc)
+	if err != nil {
+		t.Errorf("unexpected error %v", err)
+	}
+	if result.(string) != "Ok" {
+		t.Errorf("unexpected result %v", result)
+	}
+	if retryCount != 2 {
+		t.Errorf("expected error function to be called exactly twice, but was called %d times", retryCount)
+	}
+}
+
+func TestRetryWithPolling_retriedAndFailed(t *testing.T) {
+	retryCount := 0
+	// Retry once and fails.
+	retryFunc := func() (interface{}, error) {
+		retryCount++
+		// Error code of 200 is retryable.
+		if retryCount < 2 {
+			return "", &googleapi.Error{
+				Code: 200,
+			}
+		}
+		return "", &googleapi.Error{
+			Code: 400,
+		}
+	}
+	// Retryable if the error code is not 400.
+	isRetryableFunc := func(err error) (bool, string) {
+		return err.(*googleapi.Error).Code != 400, ""
+	}
+	result, err := retryWithPolling(retryFunc, time.Duration(1000)*time.Millisecond, time.Duration(100)*time.Millisecond, isRetryableFunc)
+	if err == nil || err.(*googleapi.Error).Code != 400 || result.(string) != "" {
+		t.Errorf("unexpected error %v and result %v", err, result)
+	}
+	if retryCount != 2 {
+		t.Errorf("expected error function to be called exactly twice, but was called %d times", retryCount)
+	}
+}
+
 func TestConflictError(t *testing.T) {
 	confErr := &googleapi.Error{
 		Code: 409,
@@ -646,6 +741,31 @@ func TestCheckGCSName(t *testing.T) {
 			t.Errorf("The bucket name %s was expected to pass validation and did not pass.", bucketName)
 		} else if !valid && err == nil {
 			t.Errorf("The bucket name %s was NOT expected to pass validation and passed.", bucketName)
+		}
+	}
+}
+
+func TestCheckGoogleIamPolicy(t *testing.T) {
+	cases := []struct {
+		valid bool
+		json  string
+	}{
+		{
+			valid: false,
+			json:  `{"bindings":[{"condition":{"description":"","expression":"request.time \u003c timestamp(\"2020-01-01T00:00:00Z\")","title":"expires_after_2019_12_31-no-description"},"members":["user:admin@example.com"],"role":"roles/privateca.certificateManager"},{"condition":{"description":"Expiring at midnight of 2019-12-31","expression":"request.time \u003c timestamp(\"2020-01-01T00:00:00Z\")","title":"expires_after_2019_12_31"},"members":["user:admin@example.com"],"role":"roles/privateca.certificateManager"}]}`,
+		},
+		{
+			valid: true,
+			json:  `{"bindings":[{"condition":{"expression":"request.time \u003c timestamp(\"2020-01-01T00:00:00Z\")","title":"expires_after_2019_12_31-no-description"},"members":["user:admin@example.com"],"role":"roles/privateca.certificateManager"},{"condition":{"description":"Expiring at midnight of 2019-12-31","expression":"request.time \u003c timestamp(\"2020-01-01T00:00:00Z\")","title":"expires_after_2019_12_31"},"members":["user:admin@example.com"],"role":"roles/privateca.certificateManager"}]}`,
+		},
+	}
+
+	for _, tc := range cases {
+		err := checkGoogleIamPolicy(tc.json)
+		if tc.valid && err != nil {
+			t.Errorf("The JSON is marked as valid but triggered an error: %s", tc.json)
+		} else if !tc.valid && err == nil {
+			t.Errorf("The JSON is marked as not valid but failed to trigger an error: %s", tc.json)
 		}
 	}
 }

@@ -852,6 +852,22 @@ spec:
                             the GPU. Valid values are described in the NVIDIA mig
                             user guide (https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).
                           type: string
+                        gpuSharingConfig:
+                          description: Immutable. Configuration for GPU sharing.
+                          properties:
+                            gpuSharingStrategy:
+                              description: Immutable. The type of GPU sharing strategy
+                                to enable on the GPU node. Possible values are described
+                                in the API package (https://pkg.go.dev/google.golang.org/api/container/v1#GPUSharingConfig).
+                              type: string
+                            maxSharedClientsPerGpu:
+                              description: Immutable. The maximum number of containers
+                                that can share a GPU.
+                              type: integer
+                          required:
+                          - gpuSharingStrategy
+                          - maxSharedClientsPerGpu
+                          type: object
                         type:
                           description: Immutable. The accelerator type resource name.
                           type: string
@@ -1135,6 +1151,23 @@ spec:
                       enabled:
                         description: Whether or not the notification config is enabled.
                         type: boolean
+                      filter:
+                        description: Allows filtering to one or more specific event
+                          types. If event types are present, those and only those
+                          event types will be transmitted to the cluster. Other types
+                          will be skipped. If no filter is specified, or no event
+                          types are present, all event types will be sent.
+                        properties:
+                          eventType:
+                            description: Can be used to filter what notifications
+                              are sent. Valid values include include UPGRADE_AVAILABLE_EVENT,
+                              UPGRADE_EVENT and SECURITY_BULLETIN_EVENT.
+                            items:
+                              type: string
+                            type: array
+                        required:
+                        - eventType
+                        type: object
                       topicRef:
                         description: The PubSubTopic to send the notification to.
                         oneOf:

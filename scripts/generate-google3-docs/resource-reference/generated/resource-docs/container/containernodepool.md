@@ -111,6 +111,9 @@ nodeConfig:
   guestAccelerator:
   - count: integer
     gpuPartitionSize: string
+    gpuSharingConfig:
+      gpuSharingStrategy: string
+      maxSharedClientsPerGpu: integer
     type: string
   gvnic:
     enabled: boolean
@@ -537,6 +540,36 @@ version: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Size of partitions to create on the GPU. Valid values are described in the NVIDIA mig user guide (https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.guestAccelerator[].gpuSharingConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Configuration for GPU sharing.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.guestAccelerator[].gpuSharingConfig.gpuSharingStrategy</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. The type of GPU sharing strategy to enable on the GPU node. Possible values are described in the API package (https://pkg.go.dev/google.golang.org/api/container/v1#GPUSharingConfig).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.guestAccelerator[].gpuSharingConfig.maxSharedClientsPerGpu</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. The maximum number of containers that can share a GPU.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

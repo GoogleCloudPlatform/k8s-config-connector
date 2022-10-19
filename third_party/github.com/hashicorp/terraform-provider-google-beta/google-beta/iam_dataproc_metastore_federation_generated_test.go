@@ -94,10 +94,10 @@ resource "google_dataproc_metastore_federation" "default" {
   version       = "3.1.2"
 
   backend_metastores {
-      rank           = "1"
-      name           = google_dataproc_metastore_service.default.id
-      metastore_type = "DATAPROC_METASTORE" 
-    }
+    rank           = "1"
+    name           = google_dataproc_metastore_service.default.id
+    metastore_type = "DATAPROC_METASTORE" 
+  }
 }
 
 resource "google_dataproc_metastore_service" "default" {
@@ -133,10 +133,10 @@ resource "google_dataproc_metastore_federation" "default" {
   version       = "3.1.2"
 
   backend_metastores {
-      rank           = "1"
-      name           = google_dataproc_metastore_service.default.id
-      metastore_type = "DATAPROC_METASTORE" 
-    }
+    rank           = "1"
+    name           = google_dataproc_metastore_service.default.id
+    metastore_type = "DATAPROC_METASTORE" 
+  }
 }
 
 resource "google_dataproc_metastore_service" "default" {
@@ -179,10 +179,10 @@ resource "google_dataproc_metastore_federation" "default" {
   version       = "3.1.2"
 
   backend_metastores {
-      rank           = "1"
-      name           = google_dataproc_metastore_service.default.id
-      metastore_type = "DATAPROC_METASTORE" 
-    }
+    rank           = "1"
+    name           = google_dataproc_metastore_service.default.id
+    metastore_type = "DATAPROC_METASTORE" 
+  }
 }
 
 resource "google_dataproc_metastore_service" "default" {
@@ -221,10 +221,10 @@ resource "google_dataproc_metastore_federation" "default" {
   version       = "3.1.2"
 
   backend_metastores {
-      rank           = "1"
-      name           = google_dataproc_metastore_service.default.id
-      metastore_type = "DATAPROC_METASTORE" 
-    }
+    rank           = "1"
+    name           = google_dataproc_metastore_service.default.id
+    metastore_type = "DATAPROC_METASTORE" 
+  }
 }
 
 resource "google_dataproc_metastore_service" "default" {
@@ -260,10 +260,10 @@ resource "google_dataproc_metastore_federation" "default" {
   version       = "3.1.2"
 
   backend_metastores {
-      rank           = "1"
-      name           = google_dataproc_metastore_service.default.id
-      metastore_type = "DATAPROC_METASTORE" 
-    }
+    rank           = "1"
+    name           = google_dataproc_metastore_service.default.id
+    metastore_type = "DATAPROC_METASTORE" 
+  }
 }
 
 resource "google_dataproc_metastore_service" "default" {

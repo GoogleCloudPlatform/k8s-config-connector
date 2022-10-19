@@ -42,6 +42,10 @@ type SecuritypolicyAdaptiveProtectionConfig struct {
 }
 
 type SecuritypolicyAdvancedOptionsConfig struct {
+	/* Custom configuration to apply the JSON parsing. Only applicable when JSON parsing is set to STANDARD. */
+	// +optional
+	JsonCustomConfig *SecuritypolicyJsonCustomConfig `json:"jsonCustomConfig,omitempty"`
+
 	/* JSON body parsing. Supported values include: "DISABLED", "STANDARD". */
 	// +optional
 	JsonParsing *string `json:"jsonParsing,omitempty"`
@@ -76,6 +80,11 @@ type SecuritypolicyExceedRedirectOptions struct {
 type SecuritypolicyExpr struct {
 	/* Textual representation of an expression in Common Expression Language syntax. The application context of the containing message determines which well-known feature set of CEL is supported. */
 	Expression string `json:"expression"`
+}
+
+type SecuritypolicyJsonCustomConfig struct {
+	/* A list of custom Content-Type header values to apply the JSON parsing. */
+	ContentTypes []string `json:"contentTypes"`
 }
 
 type SecuritypolicyLayer7DdosDefenseConfig struct {

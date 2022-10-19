@@ -182,6 +182,7 @@ type Config struct {
 	BigQueryBasePath             string
 	BigqueryAnalyticsHubBasePath string
 	BigqueryConnectionBasePath   string
+	BigqueryDatapolicyBasePath   string
 	BigqueryDataTransferBasePath string
 	BigqueryReservationBasePath  string
 	BigtableBasePath             string
@@ -193,6 +194,7 @@ type Config struct {
 	CloudFunctionsBasePath       string
 	Cloudfunctions2BasePath      string
 	CloudIdentityBasePath        string
+	CloudIdsBasePath             string
 	CloudIotBasePath             string
 	CloudRunBasePath             string
 	CloudSchedulerBasePath       string
@@ -230,6 +232,7 @@ type Config struct {
 	NetworkManagementBasePath    string
 	NetworkServicesBasePath      string
 	NotebooksBasePath            string
+	OrgPolicyBasePath            string
 	OSConfigBasePath             string
 	OSLoginBasePath              string
 	PrivatecaBasePath            string
@@ -284,6 +287,7 @@ const ArtifactRegistryBasePathKey = "ArtifactRegistry"
 const BigQueryBasePathKey = "BigQuery"
 const BigqueryAnalyticsHubBasePathKey = "BigqueryAnalyticsHub"
 const BigqueryConnectionBasePathKey = "BigqueryConnection"
+const BigqueryDatapolicyBasePathKey = "BigqueryDatapolicy"
 const BigqueryDataTransferBasePathKey = "BigqueryDataTransfer"
 const BigqueryReservationBasePathKey = "BigqueryReservation"
 const BigtableBasePathKey = "Bigtable"
@@ -295,6 +299,7 @@ const CloudBuildBasePathKey = "CloudBuild"
 const CloudFunctionsBasePathKey = "CloudFunctions"
 const Cloudfunctions2BasePathKey = "Cloudfunctions2"
 const CloudIdentityBasePathKey = "CloudIdentity"
+const CloudIdsBasePathKey = "CloudIds"
 const CloudIotBasePathKey = "CloudIot"
 const CloudRunBasePathKey = "CloudRun"
 const CloudSchedulerBasePathKey = "CloudScheduler"
@@ -332,6 +337,7 @@ const MonitoringBasePathKey = "Monitoring"
 const NetworkManagementBasePathKey = "NetworkManagement"
 const NetworkServicesBasePathKey = "NetworkServices"
 const NotebooksBasePathKey = "Notebooks"
+const OrgPolicyBasePathKey = "OrgPolicy"
 const OSConfigBasePathKey = "OSConfig"
 const OSLoginBasePathKey = "OSLogin"
 const PrivatecaBasePathKey = "Privateca"
@@ -380,8 +386,9 @@ var DefaultBasePaths = map[string]string{
 	BigQueryBasePathKey:             "https://bigquery.googleapis.com/bigquery/v2/",
 	BigqueryAnalyticsHubBasePathKey: "https://analyticshub.googleapis.com/v1beta1/",
 	BigqueryConnectionBasePathKey:   "https://bigqueryconnection.googleapis.com/v1/",
+	BigqueryDatapolicyBasePathKey:   "https://bigquerydatapolicy.googleapis.com/v1beta1/",
 	BigqueryDataTransferBasePathKey: "https://bigquerydatatransfer.googleapis.com/v1/",
-	BigqueryReservationBasePathKey:  "https://bigqueryreservation.googleapis.com/v1beta1/",
+	BigqueryReservationBasePathKey:  "https://bigqueryreservation.googleapis.com/v1/",
 	BigtableBasePathKey:             "https://bigtableadmin.googleapis.com/v2/",
 	BillingBasePathKey:              "https://billingbudgets.googleapis.com/v1/",
 	BinaryAuthorizationBasePathKey:  "https://binaryauthorization.googleapis.com/v1/",
@@ -391,6 +398,7 @@ var DefaultBasePaths = map[string]string{
 	CloudFunctionsBasePathKey:       "https://cloudfunctions.googleapis.com/v1/",
 	Cloudfunctions2BasePathKey:      "https://cloudfunctions.googleapis.com/v2beta/",
 	CloudIdentityBasePathKey:        "https://cloudidentity.googleapis.com/v1beta1/",
+	CloudIdsBasePathKey:             "https://ids.googleapis.com/v1/",
 	CloudIotBasePathKey:             "https://cloudiot.googleapis.com/v1/",
 	CloudRunBasePathKey:             "https://{{location}}-run.googleapis.com/",
 	CloudSchedulerBasePathKey:       "https://cloudscheduler.googleapis.com/v1/",
@@ -428,6 +436,7 @@ var DefaultBasePaths = map[string]string{
 	NetworkManagementBasePathKey:    "https://networkmanagement.googleapis.com/v1/",
 	NetworkServicesBasePathKey:      "https://networkservices.googleapis.com/v1/",
 	NotebooksBasePathKey:            "https://notebooks.googleapis.com/v1/",
+	OrgPolicyBasePathKey:            "https://orgpolicy.googleapis.com/v2/",
 	OSConfigBasePathKey:             "https://osconfig.googleapis.com/v1beta/",
 	OSLoginBasePathKey:              "https://oslogin.googleapis.com/v1/",
 	PrivatecaBasePathKey:            "https://privateca.googleapis.com/v1/",
@@ -1267,6 +1276,7 @@ func ConfigureBasePaths(c *Config) {
 	c.BigQueryBasePath = DefaultBasePaths[BigQueryBasePathKey]
 	c.BigqueryAnalyticsHubBasePath = DefaultBasePaths[BigqueryAnalyticsHubBasePathKey]
 	c.BigqueryConnectionBasePath = DefaultBasePaths[BigqueryConnectionBasePathKey]
+	c.BigqueryDatapolicyBasePath = DefaultBasePaths[BigqueryDatapolicyBasePathKey]
 	c.BigqueryDataTransferBasePath = DefaultBasePaths[BigqueryDataTransferBasePathKey]
 	c.BigqueryReservationBasePath = DefaultBasePaths[BigqueryReservationBasePathKey]
 	c.BigtableBasePath = DefaultBasePaths[BigtableBasePathKey]
@@ -1278,6 +1288,7 @@ func ConfigureBasePaths(c *Config) {
 	c.CloudFunctionsBasePath = DefaultBasePaths[CloudFunctionsBasePathKey]
 	c.Cloudfunctions2BasePath = DefaultBasePaths[Cloudfunctions2BasePathKey]
 	c.CloudIdentityBasePath = DefaultBasePaths[CloudIdentityBasePathKey]
+	c.CloudIdsBasePath = DefaultBasePaths[CloudIdsBasePathKey]
 	c.CloudIotBasePath = DefaultBasePaths[CloudIotBasePathKey]
 	c.CloudRunBasePath = DefaultBasePaths[CloudRunBasePathKey]
 	c.CloudSchedulerBasePath = DefaultBasePaths[CloudSchedulerBasePathKey]
@@ -1315,6 +1326,7 @@ func ConfigureBasePaths(c *Config) {
 	c.NetworkManagementBasePath = DefaultBasePaths[NetworkManagementBasePathKey]
 	c.NetworkServicesBasePath = DefaultBasePaths[NetworkServicesBasePathKey]
 	c.NotebooksBasePath = DefaultBasePaths[NotebooksBasePathKey]
+	c.OrgPolicyBasePath = DefaultBasePaths[OrgPolicyBasePathKey]
 	c.OSConfigBasePath = DefaultBasePaths[OSConfigBasePathKey]
 	c.OSLoginBasePath = DefaultBasePaths[OSLoginBasePathKey]
 	c.PrivatecaBasePath = DefaultBasePaths[PrivatecaBasePathKey]

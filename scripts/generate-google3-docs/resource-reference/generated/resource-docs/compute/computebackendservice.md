@@ -137,6 +137,7 @@ circuitBreakers:
   maxRequests: integer
   maxRequestsPerConnection: integer
   maxRetries: integer
+compressionMode: string
 connectionDrainingTimeoutSec: integer
 connectionTrackingPolicy:
   connectionPersistenceOnUnhealthyBackends: string
@@ -880,6 +881,16 @@ will effectively disable keep alive.{% endverbatim %}</p>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}The maximum number of parallel retries to the backend cluster.
 Defaults to 3.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>compressionMode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Compress text responses using Brotli or gzip compression, based on the client's Accept-Encoding header. Possible values: ["AUTOMATIC", "DISABLED"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

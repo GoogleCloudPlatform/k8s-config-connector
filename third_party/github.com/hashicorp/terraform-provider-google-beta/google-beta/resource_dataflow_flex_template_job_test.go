@@ -204,6 +204,9 @@ resource "google_dataflow_flex_template_job" "job" {
     qps = "1"
     %s
   }
+  labels = {
+   "my_labels" = "value"
+  }
 }
 `, job, topicField)
 }
@@ -236,6 +239,9 @@ resource "google_dataflow_flex_template_job" "job" {
     topic = "projects/myproject/topics/mytopic"
     serviceAccount = google_service_account.dataflow-sa.email
     zone = "%s"
+  }
+  labels = {
+   "my_labels" = "value"
   }
 }
 `, accountId, job, zone)

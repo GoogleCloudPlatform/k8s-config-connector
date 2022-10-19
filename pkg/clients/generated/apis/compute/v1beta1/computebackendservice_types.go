@@ -620,6 +620,10 @@ type ComputeBackendServiceSpec struct {
 	// +optional
 	CircuitBreakers *BackendserviceCircuitBreakers `json:"circuitBreakers,omitempty"`
 
+	/* Compress text responses using Brotli or gzip compression, based on the client's Accept-Encoding header. Possible values: ["AUTOMATIC", "DISABLED"]. */
+	// +optional
+	CompressionMode *string `json:"compressionMode,omitempty"`
+
 	/* Time for which instance will be drained (not accept new
 	connections, but still work to finish started). */
 	// +optional

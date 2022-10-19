@@ -407,6 +407,11 @@ spec:
                       Defaults to 3.
                     type: integer
                 type: object
+              compressionMode:
+                description: 'Compress text responses using Brotli or gzip compression,
+                  based on the client''s Accept-Encoding header. Possible values:
+                  ["AUTOMATIC", "DISABLED"].'
+                type: string
               connectionDrainingTimeoutSec:
                 description: |-
                   Time for which instance will be drained (not accept new

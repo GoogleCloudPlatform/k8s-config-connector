@@ -13,20 +13,15 @@
 # limitations under the License.
 
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_gc_policy.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_gc_policy.go
-index 07f9c3986..6b87410ce 100644
+index cf23d4939..70b55640e 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_gc_policy.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_gc_policy.go
-@@ -180,7 +180,12 @@ func resourceBigtableGCPolicyRead(d *schema.ResourceData, meta interface{}) erro
+@@ -269,6 +269,8 @@ func resourceBigtableGCPolicyRead(d *schema.ResourceData, meta interface{}) erro
  
- 	for _, fi := range ti.FamilyInfos {
- 		if fi.Name == columnFamily {
--			d.SetId(fi.GCPolicy)
-+			if fi.GCPolicy == "<never>" {
-+				log.Printf("[WARN] Removing %s because it's gone.", d.Id())
-+				d.SetId("")
-+			} else {
-+				d.SetId(fi.GCPolicy)
-+			}
- 			break
+ 		// No GC Policy.
+ 		if fi.FullGCPolicy.String() == "" {
++			log.Printf("[WARN] Removing %s because it's gone.", d.Id())
++			d.SetId("")
+ 			return nil
  		}
- 	}
+ 

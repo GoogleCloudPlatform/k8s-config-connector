@@ -216,7 +216,7 @@ type InstanceReplicaConfiguration struct {
 	// +optional
 	ClientKey *string `json:"clientKey,omitempty"`
 
-	/* Immutable. The number of seconds between connect retries. */
+	/* Immutable. The number of seconds between connect retries. MySQL's default is 60 seconds. */
 	// +optional
 	ConnectRetryInterval *int `json:"connectRetryInterval,omitempty"`
 
@@ -278,7 +278,7 @@ type InstanceSettings struct {
 	settings.backup_configuration.enabled is set to true.
 	For MySQL instances, ensure that settings.backup_configuration.binary_log_enabled is set to true.
 	For Postgres instances, ensure that settings.backup_configuration.point_in_time_recovery_enabled
-	is set to true. */
+	is set to true. Defaults to ZONAL. */
 	// +optional
 	AvailabilityType *string `json:"availabilityType,omitempty"`
 
@@ -299,7 +299,7 @@ type InstanceSettings struct {
 	// +optional
 	DatabaseFlags []InstanceDatabaseFlags `json:"databaseFlags,omitempty"`
 
-	/* Enables auto-resizing of the storage size. Defaults to true. Set to false if you want to set disk_size. */
+	/* Enables auto-resizing of the storage size. Defaults to true. */
 	// +optional
 	DiskAutoresize *bool `json:"diskAutoresize,omitempty"`
 
@@ -307,11 +307,11 @@ type InstanceSettings struct {
 	// +optional
 	DiskAutoresizeLimit *int `json:"diskAutoresizeLimit,omitempty"`
 
-	/* The size of data disk, in GB. Size of a running instance cannot be reduced but can be increased. If you want to set this field, set disk_autoresize to false. */
+	/* The size of data disk, in GB. Size of a running instance cannot be reduced but can be increased. The minimum value is 10GB. */
 	// +optional
 	DiskSize *int `json:"diskSize,omitempty"`
 
-	/* The type of data disk: PD_SSD or PD_HDD. */
+	/* The type of data disk: PD_SSD or PD_HDD. Defaults to PD_SSD. */
 	// +optional
 	DiskType *string `json:"diskType,omitempty"`
 
@@ -380,6 +380,10 @@ type SQLInstanceSpec struct {
 	// +optional
 	EncryptionKMSCryptoKeyRef *v1alpha1.ResourceRef `json:"encryptionKMSCryptoKeyRef,omitempty"`
 
+	/* Maintenance version. */
+	// +optional
+	MaintenanceVersion *string `json:"maintenanceVersion,omitempty"`
+
 	/*  */
 	// +optional
 	MasterInstanceRef *v1alpha1.ResourceRef `json:"masterInstanceRef,omitempty"`
@@ -436,6 +440,8 @@ type SQLInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   SQLInstance's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* Available Maintenance versions. */
+	AvailableMaintenanceVersions []string `json:"availableMaintenanceVersions,omitempty"`
 	/* The connection name of the instance to be used in connection strings. For example, when connecting with Cloud SQL Proxy. */
 	ConnectionName string `json:"connectionName,omitempty"`
 	/*  */

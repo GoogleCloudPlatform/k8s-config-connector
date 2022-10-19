@@ -25,6 +25,7 @@ var (
 		"transfer_spec.0.transfer_options.0.overwrite_objects_already_existing_in_sink",
 		"transfer_spec.0.transfer_options.0.delete_objects_unique_in_sink",
 		"transfer_spec.0.transfer_options.0.delete_objects_from_source_after_transfer",
+		"transfer_spec.0.transfer_options.0.overwrite_when",
 	}
 
 	transferSpecDataSourceKeys = []string{
@@ -140,6 +141,36 @@ func resourceStorageTransferJob() *schema.Resource {
 					},
 				},
 				Description: `Transfer specification.`,
+			},
+			"notification_config": {
+				Type:     schema.TypeList,
+				Optional: true,
+				MaxItems: 1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"pubsub_topic": {
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: `The Topic.name of the Pub/Sub topic to which to publish notifications.`,
+						},
+						"event_types": {
+							Type:     schema.TypeSet,
+							Optional: true,
+							Elem: &schema.Schema{
+								Type:         schema.TypeString,
+								ValidateFunc: validation.StringInSlice([]string{"TRANSFER_OPERATION_SUCCESS", "TRANSFER_OPERATION_FAILED", "TRANSFER_OPERATION_ABORTED"}, false),
+							},
+							Description: `Event types for which a notification is desired. If empty, send notifications for all event types. The valid types are "TRANSFER_OPERATION_SUCCESS", "TRANSFER_OPERATION_FAILED", "TRANSFER_OPERATION_ABORTED".`,
+						},
+						"payload_format": {
+							Type:         schema.TypeString,
+							Required:     true,
+							ValidateFunc: validation.StringInSlice([]string{"NONE", "JSON"}, false),
+							Description:  `The desired format of the notification message payloads. One of "NONE" or "JSON".`,
+						},
+					},
+				},
+				Description: `Notification configuration.`,
 			},
 			"schedule": {
 				Type:     schema.TypeList,
@@ -283,6 +314,13 @@ func transferOptionsSchema() *schema.Schema {
 					AtLeastOneOf:  transferOptionsKeys,
 					ConflictsWith: []string{"transfer_spec.transfer_options.delete_objects_unique_in_sink"},
 					Description:   `Whether objects should be deleted from the source after they are transferred to the sink. Note that this option and delete_objects_unique_in_sink are mutually exclusive.`,
+				},
+				"overwrite_when": {
+					Type:         schema.TypeString,
+					Optional:     true,
+					AtLeastOneOf: transferOptionsKeys,
+					ValidateFunc: validation.StringInSlice([]string{"DIFFERENT", "NEVER", "ALWAYS"}, false),
+					Description:  `When to overwrite objects that already exist in the sink. If not set, overwrite behavior is determined by overwriteObjectsAlreadyExistingInSink.`,
 				},
 			},
 		},
@@ -494,11 +532,12 @@ func resourceStorageTransferJobCreate(d *schema.ResourceData, meta interface{}) 
 	}
 
 	transferJob := &storagetransfer.TransferJob{
-		Description:  d.Get("description").(string),
-		ProjectId:    project,
-		Status:       d.Get("status").(string),
-		Schedule:     expandTransferSchedules(d.Get("schedule").([]interface{})),
-		TransferSpec: expandTransferSpecs(d.Get("transfer_spec").([]interface{})),
+		Description:        d.Get("description").(string),
+		ProjectId:          project,
+		Status:             d.Get("status").(string),
+		Schedule:           expandTransferSchedules(d.Get("schedule").([]interface{})),
+		TransferSpec:       expandTransferSpecs(d.Get("transfer_spec").([]interface{})),
+		NotificationConfig: expandTransferJobNotificationConfig(d.Get("notification_config").([]interface{})),
 	}
 
 	var res *storagetransfer.TransferJob
@@ -575,6 +614,11 @@ func resourceStorageTransferJobRead(d *schema.ResourceData, meta interface{}) er
 		return err
 	}
 
+	err = d.Set("notification_config", flattenTransferJobNotificationConfig(res.NotificationConfig))
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -618,6 +662,15 @@ func resourceStorageTransferJobUpdate(d *schema.ResourceData, meta interface{}) 
 		if v, ok := d.GetOk("transfer_spec"); ok {
 			fieldMask = append(fieldMask, "transfer_spec")
 			transferJob.TransferSpec = expandTransferSpecs(v.([]interface{}))
+		}
+	}
+
+	if d.HasChange("notification_config") {
+		fieldMask = append(fieldMask, "notification_config")
+		if v, ok := d.GetOk("notification_config"); ok {
+			transferJob.NotificationConfig = expandTransferJobNotificationConfig(v.([]interface{}))
+		} else {
+			transferJob.NotificationConfig = nil
 		}
 	}
 
@@ -786,7 +839,7 @@ func expandTransferSchedules(transferSchedules []interface{}) *storagetransfer.S
 }
 
 func flattenTransferSchedule(transferSchedule *storagetransfer.Schedule) []map[string]interface{} {
-	if reflect.DeepEqual(transferSchedule, &storagetransfer.Schedule{}) {
+	if transferSchedule == nil || reflect.DeepEqual(transferSchedule, &storagetransfer.Schedule{}) {
 		return nil
 	}
 
@@ -995,6 +1048,7 @@ func expandTransferOptions(options []interface{}) *storagetransfer.TransferOptio
 		DeleteObjectsFromSourceAfterTransfer:  option["delete_objects_from_source_after_transfer"].(bool),
 		DeleteObjectsUniqueInSink:             option["delete_objects_unique_in_sink"].(bool),
 		OverwriteObjectsAlreadyExistingInSink: option["overwrite_objects_already_existing_in_sink"].(bool),
+		OverwriteWhen:                         option["overwrite_when"].(string),
 	}
 }
 
@@ -1003,6 +1057,7 @@ func flattenTransferOption(option *storagetransfer.TransferOptions) []map[string
 		"delete_objects_from_source_after_transfer":  option.DeleteObjectsFromSourceAfterTransfer,
 		"delete_objects_unique_in_sink":              option.DeleteObjectsUniqueInSink,
 		"overwrite_objects_already_existing_in_sink": option.OverwriteObjectsAlreadyExistingInSink,
+		"overwrite_when":                             option.OverwriteWhen,
 	}
 
 	return []map[string]interface{}{data}
@@ -1061,4 +1116,40 @@ func flattenTransferSpec(transferSpec *storagetransfer.TransferSpec, d *schema.R
 
 func usingPosix(transferSpec *storagetransfer.TransferSpec) bool {
 	return transferSpec.PosixDataSource != nil || transferSpec.PosixDataSink != nil
+}
+
+func expandTransferJobNotificationConfig(notificationConfigs []interface{}) *storagetransfer.NotificationConfig {
+	if len(notificationConfigs) == 0 || notificationConfigs[0] == nil {
+		return nil
+	}
+
+	notificationConfig := notificationConfigs[0].(map[string]interface{})
+	var apiData = &storagetransfer.NotificationConfig{
+		PayloadFormat: notificationConfig["payload_format"].(string),
+		PubsubTopic:   notificationConfig["pubsub_topic"].(string),
+	}
+
+	if notificationConfig["event_types"] != nil {
+		apiData.EventTypes = convertStringArr(notificationConfig["event_types"].(*schema.Set).List())
+	}
+
+	log.Printf("[DEBUG] apiData: %v\n\n", apiData)
+	return apiData
+}
+
+func flattenTransferJobNotificationConfig(notificationConfig *storagetransfer.NotificationConfig) []map[string]interface{} {
+	if notificationConfig == nil {
+		return nil
+	}
+
+	data := map[string]interface{}{
+		"payload_format": notificationConfig.PayloadFormat,
+		"pubsub_topic":   notificationConfig.PubsubTopic,
+	}
+
+	if notificationConfig.EventTypes != nil {
+		data["event_types"] = convertStringArrToInterface(notificationConfig.EventTypes)
+	}
+
+	return []map[string]interface{}{data}
 }

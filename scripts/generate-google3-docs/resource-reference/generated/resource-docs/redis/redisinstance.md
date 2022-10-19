@@ -107,6 +107,11 @@ maintenanceSchedule:
   scheduleDeadlineTime: string
   startTime: string
 memorySizeGb: integer
+persistenceConfig:
+  persistenceMode: string
+  rdbNextSnapshotTime: string
+  rdbSnapshotPeriod: string
+  rdbSnapshotStartTime: string
 readReplicasMode: string
 redisConfigs:
   string: string
@@ -490,6 +495,72 @@ resolution and up to nine fractional digits.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>persistenceConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Maintenance policy for an instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>persistenceConfig.persistenceMode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Controls whether Persistence features are enabled. If not provided, the existing value will be used.
+
+- DISABLED: 	Persistence is disabled for the instance, and any existing snapshots are deleted.
+- RDB: RDB based Persistence is enabled. Possible values: ["DISABLED", "RDB"].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>persistenceConfig.rdbNextSnapshotTime</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The next time that a snapshot attempt is scheduled to occur.
+A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up
+to nine fractional digits.
+Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>persistenceConfig.rdbSnapshotPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Available snapshot periods for scheduling.
+
+- ONE_HOUR:	Snapshot every 1 hour.
+- SIX_HOURS:	Snapshot every 6 hours.
+- TWELVE_HOURS:	Snapshot every 12 hours.
+- TWENTY_FOUR_HOURS:	Snapshot every 24 horus. Possible values: ["ONE_HOUR", "SIX_HOURS", "TWELVE_HOURS", "TWENTY_FOUR_HOURS"].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>persistenceConfig.rdbSnapshotStartTime</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Date and time that the first snapshot was/will be attempted,
+and to which future snapshots will be aligned. If not provided,
+the current time will be used.
+A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution
+and up to nine fractional digits.
+Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>readReplicasMode</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -497,9 +568,9 @@ resolution and up to nine fractional digits.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Optional. Read replica mode. Can only be specified when trying to create the instance.
 If not set, Memorystore Redis backend will default to READ_REPLICAS_DISABLED.
-- READ_REPLICAS_DISABLED: If disabled, read endpoint will not be provided and the 
+- READ_REPLICAS_DISABLED: If disabled, read endpoint will not be provided and the
 instance cannot scale up or down the number of replicas.
-- READ_REPLICAS_ENABLED: If enabled, read endpoint will be provided and the instance 
+- READ_REPLICAS_ENABLED: If enabled, read endpoint will be provided and the instance
 can scale up and down the number of replicas. Possible values: ["READ_REPLICAS_DISABLED", "READ_REPLICAS_ENABLED"].{% endverbatim %}</p>
         </td>
     </tr>
@@ -523,7 +594,7 @@ https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locat
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The version of Redis software. If not provided, latest supported
-version will be used. Please check the API documentation linked 
+version will be used. Please check the API documentation linked
 at the top for the latest valid values.{% endverbatim %}</p>
         </td>
     </tr>
@@ -544,9 +615,9 @@ at the top for the latest valid values.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Optional. The number of replica nodes. The valid range for the Standard Tier with 
+            <p>{% verbatim %}Optional. The number of replica nodes. The valid range for the Standard Tier with
 read replicas enabled is [1-5] and defaults to 2. If read replicas are not enabled
-for a Standard Tier instance, the only valid value is 1 and the default is 1. 
+for a Standard Tier instance, the only valid value is 1 and the default is 1.
 The valid value for basic tier is 0 and the default is also 0.{% endverbatim %}</p>
         </td>
     </tr>
@@ -583,7 +654,7 @@ network.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Optional. Additional IP range for node placement. Required when enabling read replicas on
 an existing instance. For DIRECT_PEERING mode value must be a CIDR range of size /28, or
-"auto". For PRIVATE_SERVICE_ACCESS mode value must be the name of an allocated address 
+"auto". For PRIVATE_SERVICE_ACCESS mode value must be the name of an allocated address
 range associated with the private service access connection, or "auto".{% endverbatim %}</p>
         </td>
     </tr>
@@ -795,7 +866,7 @@ will exhibit some lag behind the primary. Write requests must target 'host'.{% e
         <td><code>readEndpointPort</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Output only. The port number of the exposed readonly redis endpoint. Standard tier only. 
+            <p>{% verbatim %}Output only. The port number of the exposed readonly redis endpoint. Standard tier only.
 Write requests should target 'port'.{% endverbatim %}</p>
         </td>
     </tr>

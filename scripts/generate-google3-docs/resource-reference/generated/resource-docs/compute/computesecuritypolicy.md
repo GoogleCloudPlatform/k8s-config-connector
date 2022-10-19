@@ -81,6 +81,9 @@ adaptiveProtectionConfig:
     enable: boolean
     ruleVisibility: string
 advancedOptionsConfig:
+  jsonCustomConfig:
+    contentTypes:
+    - string
   jsonParsing: string
   logLevel: string
 description: string
@@ -173,6 +176,36 @@ type: string
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Advanced Options Config of this security policy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>advancedOptionsConfig.jsonCustomConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Custom configuration to apply the JSON parsing. Only applicable when JSON parsing is set to STANDARD.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>advancedOptionsConfig.jsonCustomConfig.contentTypes</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}A list of custom Content-Type header values to apply the JSON parsing.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>advancedOptionsConfig.jsonCustomConfig.contentTypes[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

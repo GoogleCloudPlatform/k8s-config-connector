@@ -45,14 +45,36 @@ type UserPassword struct {
 	ValueFrom *UserValueFrom `json:"valueFrom,omitempty"`
 }
 
-type UserSqlServerUserDetails struct {
-	/* If the user has been disabled. */
+type UserPasswordPolicy struct {
+	/* Number of failed attempts allowed before the user get locked. */
 	// +optional
-	Disabled *bool `json:"disabled,omitempty"`
+	AllowedFailedAttempts *int `json:"allowedFailedAttempts,omitempty"`
 
-	/* The server roles for this user in the database. */
+	/* If true, the check that will lock user after too many failed login attempts will be enabled. */
 	// +optional
-	ServerRoles []string `json:"serverRoles,omitempty"`
+	EnableFailedAttemptsCheck *bool `json:"enableFailedAttemptsCheck,omitempty"`
+
+	/* If true, the user must specify the current password before changing the password. This flag is supported only for MySQL. */
+	// +optional
+	EnablePasswordVerification *bool `json:"enablePasswordVerification,omitempty"`
+
+	/* Password expiration duration with one week grace period. */
+	// +optional
+	PasswordExpirationDuration *string `json:"passwordExpirationDuration,omitempty"`
+
+	/*  */
+	// +optional
+	Status []UserStatus `json:"status,omitempty"`
+}
+
+type UserStatus struct {
+	/* If true, user does not have login privileges. */
+	// +optional
+	Locked *bool `json:"locked,omitempty"`
+
+	/* Password expiration duration with one week grace period. */
+	// +optional
+	PasswordExpirationTime *string `json:"passwordExpirationTime,omitempty"`
 }
 
 type UserValueFrom struct {
@@ -74,18 +96,26 @@ type SQLUserSpec struct {
 	// +optional
 	Password *UserPassword `json:"password,omitempty"`
 
+	/*  */
+	// +optional
+	PasswordPolicy *UserPasswordPolicy `json:"passwordPolicy,omitempty"`
+
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	/*  */
-	// +optional
-	SqlServerUserDetails *UserSqlServerUserDetails `json:"sqlServerUserDetails,omitempty"`
 
 	/* Immutable. The user type. It determines the method to authenticate the user during login.
 	   The default is the database's built-in user type. Flags include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT". */
 	// +optional
 	Type *string `json:"type,omitempty"`
+}
+
+type UserSqlServerUserDetailsStatus struct {
+	/* If the user has been disabled. */
+	Disabled bool `json:"disabled,omitempty"`
+
+	/* The server roles for this user in the database. */
+	ServerRoles []string `json:"serverRoles,omitempty"`
 }
 
 type SQLUserStatus struct {
@@ -94,6 +124,8 @@ type SQLUserStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	/*  */
+	SqlServerUserDetails []UserSqlServerUserDetailsStatus `json:"sqlServerUserDetails,omitempty"`
 }
 
 // +genclient

@@ -93,6 +93,11 @@ func resourceSecretManagerSecretVersion() *schema.Resource {
 				Description: `The resource name of the SecretVersion. Format:
 'projects/{{project}}/secrets/{{secret_id}}/versions/{{version}}'`,
 			},
+			"version": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: `The version of the Secret.`,
+			},
 		},
 		UseJSONNumber: true,
 	}
@@ -197,6 +202,9 @@ func resourceSecretManagerSecretVersionRead(d *schema.ResourceData, meta interfa
 	if err := d.Set("name", flattenSecretManagerSecretVersionName(res["name"], d, config)); err != nil {
 		return fmt.Errorf("Error reading SecretVersion: %s", err)
 	}
+	if err := d.Set("version", flattenSecretManagerSecretVersionVersion(res["version"], d, config)); err != nil {
+		return fmt.Errorf("Error reading SecretVersion: %s", err)
+	}
 	if err := d.Set("create_time", flattenSecretManagerSecretVersionCreateTime(res["createTime"], d, config)); err != nil {
 		return fmt.Errorf("Error reading SecretVersion: %s", err)
 	}
@@ -263,13 +271,20 @@ func resourceSecretManagerSecretVersionImport(d *schema.ResourceData, meta inter
 
 	name := d.Get("name").(string)
 	secretRegex := regexp.MustCompile("(projects/.+/secrets/.+)/versions/.+$")
+	versionRegex := regexp.MustCompile("projects/(.+)/secrets/(.+)/versions/(.+)$")
 
 	parts := secretRegex.FindStringSubmatch(name)
 	if len(parts) != 2 {
-		panic(fmt.Sprintf("Version name doesn not fit the format `projects/{{project}}/secrets/{{secret}}/versions/{{version}}`"))
+		panic(fmt.Sprintf("Version name does not fit the format `projects/{{project}}/secrets/{{secret}}/versions/{{version}}`"))
 	}
 	if err := d.Set("secret", parts[1]); err != nil {
 		return nil, fmt.Errorf("Error setting secret: %s", err)
+	}
+
+	parts = versionRegex.FindStringSubmatch(name)
+
+	if err := d.Set("version", parts[3]); err != nil {
+		return nil, fmt.Errorf("Error setting version: %s", err)
 	}
 
 	return []*schema.ResourceData{d}, nil
@@ -285,6 +300,18 @@ func flattenSecretManagerSecretVersionEnabled(v interface{}, d *schema.ResourceD
 
 func flattenSecretManagerSecretVersionName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	return v
+}
+
+func flattenSecretManagerSecretVersionVersion(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	name := d.Get("name").(string)
+	secretRegex := regexp.MustCompile("projects/(.+)/secrets/(.+)/versions/(.+)$")
+
+	parts := secretRegex.FindStringSubmatch(name)
+	if len(parts) != 4 {
+		panic(fmt.Sprintf("Version name does not fit the format `projects/{{project}}/secrets/{{secret}}/versions/{{version}}`"))
+	}
+
+	return parts[3]
 }
 
 func flattenSecretManagerSecretVersionCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
@@ -381,4 +408,12 @@ func expandSecretManagerSecretVersionPayloadSecretData(v interface{}, d Terrafor
 	}
 
 	return base64.StdEncoding.EncodeToString([]byte(v.(string))), nil
+}
+
+func resourceSecretManagerSecretVersionDecoder(d *schema.ResourceData, meta interface{}, res map[string]interface{}) (map[string]interface{}, error) {
+	if v := res["state"]; v == "DESTROYED" {
+		return nil, nil
+	}
+
+	return res, nil
 }

@@ -26,8 +26,7 @@ spec:
       kind: DataflowFlexTemplateJob
       metadataMapping:
         name: name
-      # While FlexTemplateJobs should ideally support labels
-      # they are currently not adequately supported by the provider.
+      # TODO(b/254868598): Enable support for labels field
       ignoredFields:
         - labels
       serverGeneratedIDField: "job_id"

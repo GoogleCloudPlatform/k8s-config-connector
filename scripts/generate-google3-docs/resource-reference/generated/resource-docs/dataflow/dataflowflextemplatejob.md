@@ -254,7 +254,7 @@ metadata:
 spec:
   region: us-central1
   # This is a public, Google-maintained Dataflow Job flex template of a batch job
-  containerSpecGcsPath: gs://dataflow-templates/2020-08-31-00_RC00/flex/File_Format_Conversion
+  containerSpecGcsPath: gs://dataflow-templates/2022-10-03-00_RC00/flex/File_Format_Conversion
   parameters:
     inputFileFormat: csv
     outputFileFormat: avro

@@ -110,6 +110,8 @@ encryptionConfiguration:
 expirationTime: integer
 externalDataConfiguration:
   autodetect: boolean
+  avroOptions:
+    useAvroLogicalTypes: boolean
   compression: string
   connectionId: string
   csvOptions:
@@ -320,6 +322,26 @@ view:
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Let BigQuery try to autodetect the schema and format of the table.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>externalDataConfiguration.avroOptions</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Additional options if source_format is set to "AVRO".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>externalDataConfiguration.avroOptions.useAvroLogicalTypes</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}If sourceFormat is set to "AVRO", indicates whether to interpret logical types as the corresponding BigQuery data type (for example, TIMESTAMP), instead of using the raw type (for example, INTEGER).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

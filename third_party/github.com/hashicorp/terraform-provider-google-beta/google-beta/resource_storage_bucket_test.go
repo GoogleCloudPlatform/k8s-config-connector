@@ -103,6 +103,29 @@ func TestAccStorageBucket_lowercaseLocation(t *testing.T) {
 	})
 }
 
+func TestAccStorageBucket_dualLocation(t *testing.T) {
+	t.Parallel()
+
+	bucketName := testBucketName(t)
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccStorageBucketDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccStorageBucket_dualLocation(bucketName),
+			},
+			{
+				ResourceName:            "google_storage_bucket.bucket",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"force_destroy"},
+			},
+		},
+	})
+}
+
 func TestAccStorageBucket_customAttributes(t *testing.T) {
 	t.Parallel()
 
@@ -470,6 +493,22 @@ func TestAccStorageBucket_update(t *testing.T) {
 			},
 			{
 				Config: testAccStorageBucket_customAttributes_withLifecycle2(bucketName),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckStorageBucketExists(
+						t, "google_storage_bucket.bucket", bucketName, &updated),
+					testAccCheckStorageBucketWasUpdated(&updated, &recreated),
+					resource.TestCheckResourceAttr(
+						"google_storage_bucket.bucket", "force_destroy", "true"),
+				),
+			},
+			{
+				ResourceName:            "google_storage_bucket.bucket",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"force_destroy"},
+			},
+			{
+				Config: testAccStorageBucket_customAttributes_withLifecycle1Update(bucketName),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckStorageBucketExists(
 						t, "google_storage_bucket.bucket", bucketName, &updated),
@@ -1028,6 +1067,85 @@ func TestAccStorageBucket_retentionPolicyLocked(t *testing.T) {
 	})
 }
 
+func TestLabelDiffSuppress(t *testing.T) {
+	cases := map[string]struct {
+		K, Old, New        string
+		ExpectDiffSuppress bool
+	}{
+		"missing goog-dataplex-asset-id": {
+			K:                  "labels.goog-dataplex-asset-id",
+			Old:                "test-bucket",
+			New:                "",
+			ExpectDiffSuppress: true,
+		},
+		"explicit goog-dataplex-asset-id": {
+			K:                  "labels.goog-dataplex-asset-id",
+			Old:                "test-bucket",
+			New:                "test-bucket-1",
+			ExpectDiffSuppress: false,
+		},
+		"missing goog-dataplex-lake-id": {
+			K:                  "labels.goog-dataplex-lake-id",
+			Old:                "test-lake",
+			New:                "",
+			ExpectDiffSuppress: true,
+		},
+		"explicit goog-dataplex-lake-id": {
+			K:                  "labels.goog-dataplex-lake-id",
+			Old:                "test-lake",
+			New:                "test-lake-1",
+			ExpectDiffSuppress: false,
+		},
+		"missing goog-dataplex-project-id": {
+			K:                  "labels.goog-dataplex-project-id",
+			Old:                "test-project-12345",
+			New:                "",
+			ExpectDiffSuppress: true,
+		},
+		"explicit goog-dataplex-project-id": {
+			K:                  "labels.goog-dataplex-project-id",
+			Old:                "test-project-12345",
+			New:                "test-project-12345-1",
+			ExpectDiffSuppress: false,
+		},
+		"missing goog-dataplex-zone-id": {
+			K:                  "labels.goog-dataplex-zone-id",
+			Old:                "test-zone1",
+			New:                "",
+			ExpectDiffSuppress: true,
+		},
+		"explicit goog-dataplex-zone-id": {
+			K:                  "labels.goog-dataplex-zone-id",
+			Old:                "test-zone1",
+			New:                "test-zone1-1",
+			ExpectDiffSuppress: false,
+		},
+		"labels.%": {
+			K:                  "labels.%",
+			Old:                "5",
+			New:                "1",
+			ExpectDiffSuppress: true,
+		},
+		"deleted custom key": {
+			K:                  "labels.my-label",
+			Old:                "my-value",
+			New:                "",
+			ExpectDiffSuppress: false,
+		},
+		"added custom key": {
+			K:                  "labels.my-label",
+			Old:                "",
+			New:                "my-value",
+			ExpectDiffSuppress: false,
+		},
+	}
+	for tn, tc := range cases {
+		if resourceDataplexLabelDiffSuppress(tc.K, tc.Old, tc.New, nil) != tc.ExpectDiffSuppress {
+			t.Errorf("bad: %s, %q: %q => %q expect DiffSuppress to return %t", tn, tc.K, tc.Old, tc.New, tc.ExpectDiffSuppress)
+		}
+	}
+}
+
 func testAccCheckStorageBucketExists(t *testing.T, n string, bucketName string, bucket *storage.Bucket) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		rs, ok := s.RootModule().Resources[n]
@@ -1214,6 +1332,19 @@ resource "google_storage_bucket" "bucket" {
 `, bucketName)
 }
 
+func testAccStorageBucket_dualLocation(bucketName string) string {
+	return fmt.Sprintf(`
+resource "google_storage_bucket" "bucket" {
+  name          = "%s"
+  location      = "ASIA"
+  force_destroy = true
+  custom_placement_config {
+    data_locations = ["ASIA-EAST1", "ASIA-SOUTHEAST1"]
+  }
+}
+`, bucketName)
+}
+
 func testAccStorageBucket_customAttributes(bucketName string) string {
 	return fmt.Sprintf(`
 resource "google_storage_bucket" "bucket" {
@@ -1236,6 +1367,24 @@ resource "google_storage_bucket" "bucket" {
     }
     condition {
       age = 10
+    }
+  }
+}
+`, bucketName)
+}
+
+func testAccStorageBucket_customAttributes_withLifecycle1Update(bucketName string) string {
+	return fmt.Sprintf(`
+resource "google_storage_bucket" "bucket" {
+  name          = "%s"
+  location      = "EU"
+  force_destroy = "true"
+  lifecycle_rule {
+    action {
+      type = "Delete"
+    }
+    condition {
+      age = 0
     }
   }
 }

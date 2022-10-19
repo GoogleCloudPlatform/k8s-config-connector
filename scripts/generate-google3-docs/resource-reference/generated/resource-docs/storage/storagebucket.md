@@ -112,6 +112,9 @@ cors:
   - string
   responseHeader:
   - string
+customPlacementConfig:
+  dataLocations:
+  - string
 defaultEventBasedHold: boolean
 encryption:
   kmsKeyRef:
@@ -258,6 +261,36 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         <td>
             <p><code>cors[].responseHeader[]</code></p>
             <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>customPlacementConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The bucket's custom location configuration, which specifies the individual regions that comprise a dual-region bucket. If the bucket is designated a single or multi-region, the parameters are empty.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>customPlacementConfig.dataLocations</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Immutable. The list of individual regions that comprise a dual-region bucket. See the docs for a list of acceptable regions. Note: If any of the data_locations changes, it will recreate the bucket.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>customPlacementConfig.dataLocations[]</code></p>
+            <p><i>Required*</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>

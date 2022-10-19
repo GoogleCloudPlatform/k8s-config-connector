@@ -128,6 +128,7 @@ load:
   encoding: string
   fieldDelimiter: string
   ignoreUnknownValues: boolean
+  jsonExtension: string
   maxBadRecords: integer
   nullMarker: string
   projectionFields:
@@ -753,6 +754,18 @@ and if there are too many bad records, an invalid error is returned in the job r
 The default value is false. The sourceFormat property determines what BigQuery treats as an extra value:
 CSV: Trailing columns
 JSON: Named values that don't match any column names.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>load.jsonExtension</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. If sourceFormat is set to newline-delimited JSON, indicates whether it should be processed as a JSON variant such as GeoJSON.
+For a sourceFormat other than JSON, omit this field. If the sourceFormat is newline-delimited JSON: - for newline-delimited
+GeoJSON: set to GEOJSON.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

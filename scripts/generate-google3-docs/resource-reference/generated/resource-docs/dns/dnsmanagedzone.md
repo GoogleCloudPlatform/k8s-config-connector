@@ -79,6 +79,8 @@
 ### Spec
 #### Schema
 ```yaml
+cloudLoggingConfig:
+  enableLogging: boolean
 description: string
 dnsName: string
 dnssecConfig:
@@ -121,6 +123,26 @@ visibility: string
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td>
+            <p><code>cloudLoggingConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Cloud logging configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cloudLoggingConfig.enableLogging</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}If set, enable query logging for this ManagedZone. False by default, making logging opt-in.{% endverbatim %}</p>
+        </td>
+    </tr>
     <tr>
         <td>
             <p><code>description</code></p>

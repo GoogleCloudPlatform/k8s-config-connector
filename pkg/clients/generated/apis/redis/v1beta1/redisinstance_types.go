@@ -82,6 +82,40 @@ type InstanceMaintenanceSchedule struct {
 	StartTime *string `json:"startTime,omitempty"`
 }
 
+type InstancePersistenceConfig struct {
+	/* Optional. Controls whether Persistence features are enabled. If not provided, the existing value will be used.
+
+	- DISABLED: 	Persistence is disabled for the instance, and any existing snapshots are deleted.
+	- RDB: RDB based Persistence is enabled. Possible values: ["DISABLED", "RDB"]. */
+	// +optional
+	PersistenceMode *string `json:"persistenceMode,omitempty"`
+
+	/* Output only. The next time that a snapshot attempt is scheduled to occur.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up
+	to nine fractional digits.
+	Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
+	// +optional
+	RdbNextSnapshotTime *string `json:"rdbNextSnapshotTime,omitempty"`
+
+	/* Optional. Available snapshot periods for scheduling.
+
+	- ONE_HOUR:	Snapshot every 1 hour.
+	- SIX_HOURS:	Snapshot every 6 hours.
+	- TWELVE_HOURS:	Snapshot every 12 hours.
+	- TWENTY_FOUR_HOURS:	Snapshot every 24 horus. Possible values: ["ONE_HOUR", "SIX_HOURS", "TWELVE_HOURS", "TWENTY_FOUR_HOURS"]. */
+	// +optional
+	RdbSnapshotPeriod *string `json:"rdbSnapshotPeriod,omitempty"`
+
+	/* Optional. Date and time that the first snapshot was/will be attempted,
+	and to which future snapshots will be aligned. If not provided,
+	the current time will be used.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution
+	and up to nine fractional digits.
+	Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
+	// +optional
+	RdbSnapshotStartTime *string `json:"rdbSnapshotStartTime,omitempty"`
+}
+
 type InstanceStartTime struct {
 	/* Hours of day in 24 hour format. Should be from 0 to 23.
 	An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
@@ -181,6 +215,10 @@ type RedisInstanceSpec struct {
 
 	/* Redis memory size in GiB. */
 	MemorySizeGb int `json:"memorySizeGb"`
+
+	/* Maintenance policy for an instance. */
+	// +optional
+	PersistenceConfig *InstancePersistenceConfig `json:"persistenceConfig,omitempty"`
 
 	/* Optional. Read replica mode. Can only be specified when trying to create the instance.
 	If not set, Memorystore Redis backend will default to READ_REPLICAS_DISABLED.

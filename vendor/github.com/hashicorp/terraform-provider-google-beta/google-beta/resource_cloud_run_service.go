@@ -349,6 +349,103 @@ https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apimachi
 														},
 													},
 												},
+												"startup_probe": {
+													Type:     schema.TypeList,
+													Computed: true,
+													Optional: true,
+													Description: `Startup probe of application within the container.
+All other probes are disabled if a startup probe is provided, until it
+succeeds. Container will not be added to service endpoints if the probe fails.`,
+													MaxItems: 1,
+													Elem: &schema.Resource{
+														Schema: map[string]*schema.Schema{
+															"failure_threshold": {
+																Type:     schema.TypeInt,
+																Optional: true,
+																Description: `Minimum consecutive failures for the probe to be considered failed after
+having succeeded. Defaults to 3. Minimum value is 1.`,
+																Default: 3,
+															},
+															"http_get": {
+																Type:        schema.TypeList,
+																Optional:    true,
+																Description: `HttpGet specifies the http request to perform.`,
+																MaxItems:    1,
+																Elem: &schema.Resource{
+																	Schema: map[string]*schema.Schema{
+																		"http_headers": {
+																			Type:        schema.TypeList,
+																			Optional:    true,
+																			Description: `Custom headers to set in the request. HTTP allows repeated headers.`,
+																			Elem: &schema.Resource{
+																				Schema: map[string]*schema.Schema{
+																					"name": {
+																						Type:        schema.TypeString,
+																						Required:    true,
+																						Description: `The header field name.`,
+																					},
+																					"value": {
+																						Type:        schema.TypeString,
+																						Optional:    true,
+																						Description: `The header field value.`,
+																						Default:     "",
+																					},
+																				},
+																			},
+																		},
+																		"path": {
+																			Type:        schema.TypeString,
+																			Optional:    true,
+																			Description: `Path to access on the HTTP server. If set, it should not be empty string.`,
+																			Default:     "/",
+																		},
+																	},
+																},
+																ExactlyOneOf: []string{},
+															},
+															"initial_delay_seconds": {
+																Type:     schema.TypeInt,
+																Optional: true,
+																Description: `Number of seconds after the container has started before the probe is
+initiated.
+Defaults to 0 seconds. Minimum value is 0. Maximum value is 240.`,
+																Default: 0,
+															},
+															"period_seconds": {
+																Type:     schema.TypeInt,
+																Optional: true,
+																Description: `How often (in seconds) to perform the probe.
+Default to 10 seconds. Minimum value is 1. Maximum value is 240.`,
+																Default: 10,
+															},
+															"tcp_socket": {
+																Type:        schema.TypeList,
+																Optional:    true,
+																Description: `TcpSocket specifies an action involving a TCP port.`,
+																MaxItems:    1,
+																Elem: &schema.Resource{
+																	Schema: map[string]*schema.Schema{
+																		"port": {
+																			Type:        schema.TypeInt,
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `Port number to access on the container. Number must be in the range 1 to 65535.`,
+																		},
+																	},
+																},
+																ExactlyOneOf: []string{},
+															},
+															"timeout_seconds": {
+																Type:     schema.TypeInt,
+																Optional: true,
+																Description: `Number of seconds after which the probe times out.
+Defaults to 1 second. Minimum value is 1. Maximum value is 3600.
+Must be smaller than periodSeconds.`,
+																Default: 1,
+															},
+														},
+													},
+												},
 												"volume_mounts": {
 													Type:     schema.TypeList,
 													Optional: true,
@@ -1368,6 +1465,7 @@ func flattenCloudRunServiceSpecTemplateSpecContainers(v interface{}, d *schema.R
 			"ports":         flattenCloudRunServiceSpecTemplateSpecContainersPorts(original["ports"], d, config),
 			"resources":     flattenCloudRunServiceSpecTemplateSpecContainersResources(original["resources"], d, config),
 			"volume_mounts": flattenCloudRunServiceSpecTemplateSpecContainersVolumeMounts(original["volumeMounts"], d, config),
+			"startup_probe": flattenCloudRunServiceSpecTemplateSpecContainersStartupProbe(original["startupProbe"], d, config),
 		})
 	}
 	return transformed
@@ -1640,6 +1738,173 @@ func flattenCloudRunServiceSpecTemplateSpecContainersVolumeMountsMountPath(v int
 }
 
 func flattenCloudRunServiceSpecTemplateSpecContainersVolumeMountsName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenCloudRunServiceSpecTemplateSpecContainersStartupProbe(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["initial_delay_seconds"] =
+		flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeInitialDelaySeconds(original["initialDelaySeconds"], d, config)
+	transformed["timeout_seconds"] =
+		flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeTimeoutSeconds(original["timeoutSeconds"], d, config)
+	transformed["period_seconds"] =
+		flattenCloudRunServiceSpecTemplateSpecContainersStartupProbePeriodSeconds(original["periodSeconds"], d, config)
+	transformed["failure_threshold"] =
+		flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeFailureThreshold(original["failureThreshold"], d, config)
+	transformed["tcp_socket"] =
+		flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeTcpSocket(original["tcpSocket"], d, config)
+	transformed["http_get"] =
+		flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGet(original["httpGet"], d, config)
+	return []interface{}{transformed}
+}
+func flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeInitialDelaySeconds(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	// Handles the string fixed64 format
+	if strVal, ok := v.(string); ok {
+		if intVal, err := stringToFixed64(strVal); err == nil {
+			return intVal
+		}
+	}
+
+	// number values are represented as float64
+	if floatVal, ok := v.(float64); ok {
+		intVal := int(floatVal)
+		return intVal
+	}
+
+	return v // let terraform core handle it otherwise
+}
+
+func flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeTimeoutSeconds(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	// Handles the string fixed64 format
+	if strVal, ok := v.(string); ok {
+		if intVal, err := stringToFixed64(strVal); err == nil {
+			return intVal
+		}
+	}
+
+	// number values are represented as float64
+	if floatVal, ok := v.(float64); ok {
+		intVal := int(floatVal)
+		return intVal
+	}
+
+	return v // let terraform core handle it otherwise
+}
+
+func flattenCloudRunServiceSpecTemplateSpecContainersStartupProbePeriodSeconds(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	// Handles the string fixed64 format
+	if strVal, ok := v.(string); ok {
+		if intVal, err := stringToFixed64(strVal); err == nil {
+			return intVal
+		}
+	}
+
+	// number values are represented as float64
+	if floatVal, ok := v.(float64); ok {
+		intVal := int(floatVal)
+		return intVal
+	}
+
+	return v // let terraform core handle it otherwise
+}
+
+func flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeFailureThreshold(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	// Handles the string fixed64 format
+	if strVal, ok := v.(string); ok {
+		if intVal, err := stringToFixed64(strVal); err == nil {
+			return intVal
+		}
+	}
+
+	// number values are represented as float64
+	if floatVal, ok := v.(float64); ok {
+		intVal := int(floatVal)
+		return intVal
+	}
+
+	return v // let terraform core handle it otherwise
+}
+
+func flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeTcpSocket(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["port"] =
+		flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeTcpSocketPort(original["port"], d, config)
+	return []interface{}{transformed}
+}
+func flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeTcpSocketPort(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	// Handles the string fixed64 format
+	if strVal, ok := v.(string); ok {
+		if intVal, err := stringToFixed64(strVal); err == nil {
+			return intVal
+		}
+	}
+
+	// number values are represented as float64
+	if floatVal, ok := v.(float64); ok {
+		intVal := int(floatVal)
+		return intVal
+	}
+
+	return v // let terraform core handle it otherwise
+}
+
+func flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGet(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["path"] =
+		flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGetPath(original["path"], d, config)
+	transformed["http_headers"] =
+		flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGetHttpHeaders(original["httpHeaders"], d, config)
+	return []interface{}{transformed}
+}
+func flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGetPath(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGetHttpHeaders(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return v
+	}
+	l := v.([]interface{})
+	transformed := make([]interface{}, 0, len(l))
+	for _, raw := range l {
+		original := raw.(map[string]interface{})
+		if len(original) < 1 {
+			// Do not include empty json objects coming back from the api
+			continue
+		}
+		transformed = append(transformed, map[string]interface{}{
+			"name":  flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGetHttpHeadersName(original["name"], d, config),
+			"value": flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGetHttpHeadersValue(original["value"], d, config),
+		})
+	}
+	return transformed
+}
+func flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGetHttpHeadersName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGetHttpHeadersValue(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	return v
 }
 
@@ -2310,6 +2575,13 @@ func expandCloudRunServiceSpecTemplateSpecContainers(v interface{}, d TerraformR
 			transformed["volumeMounts"] = transformedVolumeMounts
 		}
 
+		transformedStartupProbe, err := expandCloudRunServiceSpecTemplateSpecContainersStartupProbe(original["startup_probe"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedStartupProbe); val.IsValid() && !isEmptyValue(val) {
+			transformed["startupProbe"] = transformedStartupProbe
+		}
+
 		req = append(req, transformed)
 	}
 	return req, nil
@@ -2705,6 +2977,166 @@ func expandCloudRunServiceSpecTemplateSpecContainersVolumeMountsMountPath(v inte
 }
 
 func expandCloudRunServiceSpecTemplateSpecContainersVolumeMountsName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunServiceSpecTemplateSpecContainersStartupProbe(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedInitialDelaySeconds, err := expandCloudRunServiceSpecTemplateSpecContainersStartupProbeInitialDelaySeconds(original["initial_delay_seconds"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedInitialDelaySeconds); val.IsValid() && !isEmptyValue(val) {
+		transformed["initialDelaySeconds"] = transformedInitialDelaySeconds
+	}
+
+	transformedTimeoutSeconds, err := expandCloudRunServiceSpecTemplateSpecContainersStartupProbeTimeoutSeconds(original["timeout_seconds"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedTimeoutSeconds); val.IsValid() && !isEmptyValue(val) {
+		transformed["timeoutSeconds"] = transformedTimeoutSeconds
+	}
+
+	transformedPeriodSeconds, err := expandCloudRunServiceSpecTemplateSpecContainersStartupProbePeriodSeconds(original["period_seconds"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedPeriodSeconds); val.IsValid() && !isEmptyValue(val) {
+		transformed["periodSeconds"] = transformedPeriodSeconds
+	}
+
+	transformedFailureThreshold, err := expandCloudRunServiceSpecTemplateSpecContainersStartupProbeFailureThreshold(original["failure_threshold"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedFailureThreshold); val.IsValid() && !isEmptyValue(val) {
+		transformed["failureThreshold"] = transformedFailureThreshold
+	}
+
+	transformedTcpSocket, err := expandCloudRunServiceSpecTemplateSpecContainersStartupProbeTcpSocket(original["tcp_socket"], d, config)
+	if err != nil {
+		return nil, err
+	} else {
+		transformed["tcpSocket"] = transformedTcpSocket
+	}
+
+	transformedHttpGet, err := expandCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGet(original["http_get"], d, config)
+	if err != nil {
+		return nil, err
+	} else {
+		transformed["httpGet"] = transformedHttpGet
+	}
+
+	return transformed, nil
+}
+
+func expandCloudRunServiceSpecTemplateSpecContainersStartupProbeInitialDelaySeconds(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunServiceSpecTemplateSpecContainersStartupProbeTimeoutSeconds(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunServiceSpecTemplateSpecContainersStartupProbePeriodSeconds(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunServiceSpecTemplateSpecContainersStartupProbeFailureThreshold(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunServiceSpecTemplateSpecContainersStartupProbeTcpSocket(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedPort, err := expandCloudRunServiceSpecTemplateSpecContainersStartupProbeTcpSocketPort(original["port"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedPort); val.IsValid() && !isEmptyValue(val) {
+		transformed["port"] = transformedPort
+	}
+
+	return transformed, nil
+}
+
+func expandCloudRunServiceSpecTemplateSpecContainersStartupProbeTcpSocketPort(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGet(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedPath, err := expandCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGetPath(original["path"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedPath); val.IsValid() && !isEmptyValue(val) {
+		transformed["path"] = transformedPath
+	}
+
+	transformedHttpHeaders, err := expandCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGetHttpHeaders(original["http_headers"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedHttpHeaders); val.IsValid() && !isEmptyValue(val) {
+		transformed["httpHeaders"] = transformedHttpHeaders
+	}
+
+	return transformed, nil
+}
+
+func expandCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGetPath(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGetHttpHeaders(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	l := v.([]interface{})
+	req := make([]interface{}, 0, len(l))
+	for _, raw := range l {
+		if raw == nil {
+			continue
+		}
+		original := raw.(map[string]interface{})
+		transformed := make(map[string]interface{})
+
+		transformedName, err := expandCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGetHttpHeadersName(original["name"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+			transformed["name"] = transformedName
+		}
+
+		transformedValue, err := expandCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGetHttpHeadersValue(original["value"], d, config)
+		if err != nil {
+			return nil, err
+		} else {
+			transformed["value"] = transformedValue
+		}
+
+		req = append(req, transformed)
+	}
+	return req, nil
+}
+
+func expandCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGetHttpHeadersName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGetHttpHeadersValue(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
 

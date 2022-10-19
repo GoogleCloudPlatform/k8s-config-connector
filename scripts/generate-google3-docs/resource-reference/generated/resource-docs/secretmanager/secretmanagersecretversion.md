@@ -234,6 +234,7 @@ createTime: string
 destroyTime: string
 name: string
 observedGeneration: integer
+version: string
 ```
 
 <table class="properties responsive">
@@ -319,6 +320,13 @@ observedGeneration: integer
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>version</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The version of the Secret.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

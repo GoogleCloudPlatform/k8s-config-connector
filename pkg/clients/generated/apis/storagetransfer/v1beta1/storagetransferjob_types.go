@@ -109,6 +109,18 @@ type JobHttpDataSource struct {
 	ListUrl string `json:"listUrl"`
 }
 
+type JobNotificationConfig struct {
+	/* Event types for which a notification is desired. If empty, send notifications for all event types. The valid types are "TRANSFER_OPERATION_SUCCESS", "TRANSFER_OPERATION_FAILED", "TRANSFER_OPERATION_ABORTED". */
+	// +optional
+	EventTypes []string `json:"eventTypes,omitempty"`
+
+	/* The desired format of the notification message payloads. One of "NONE" or "JSON". */
+	PayloadFormat string `json:"payloadFormat"`
+
+	/* The PubSubTopic to which to publish notifications. */
+	TopicRef v1alpha1.ResourceRef `json:"topicRef"`
+}
+
 type JobObjectConditions struct {
 	/* exclude_prefixes must follow the requirements described for include_prefixes. */
 	// +optional
@@ -222,6 +234,10 @@ type JobTransferOptions struct {
 	/* Whether overwriting objects that already exist in the sink is allowed. */
 	// +optional
 	OverwriteObjectsAlreadyExistingInSink *bool `json:"overwriteObjectsAlreadyExistingInSink,omitempty"`
+
+	/* When to overwrite objects that already exist in the sink. If not set, overwrite behavior is determined by overwriteObjectsAlreadyExistingInSink. */
+	// +optional
+	OverwriteWhen *string `json:"overwriteWhen,omitempty"`
 }
 
 type JobTransferSpec struct {
@@ -271,6 +287,10 @@ type JobValueFrom struct {
 type StorageTransferJobSpec struct {
 	/* Unique description to identify the Transfer Job. */
 	Description string `json:"description"`
+
+	/* Notification configuration. */
+	// +optional
+	NotificationConfig *JobNotificationConfig `json:"notificationConfig,omitempty"`
 
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional

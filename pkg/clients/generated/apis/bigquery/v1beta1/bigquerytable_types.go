@@ -35,6 +35,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type TableAvroOptions struct {
+	/* If sourceFormat is set to "AVRO", indicates whether to interpret logical types as the corresponding BigQuery data type (for example, TIMESTAMP), instead of using the raw type (for example, INTEGER). */
+	UseAvroLogicalTypes bool `json:"useAvroLogicalTypes"`
+}
+
 type TableCsvOptions struct {
 	/* Indicates if BigQuery should accept rows that are missing trailing optional columns. */
 	// +optional
@@ -72,6 +77,10 @@ type TableEncryptionConfiguration struct {
 type TableExternalDataConfiguration struct {
 	/* Let BigQuery try to autodetect the schema and format of the table. */
 	Autodetect bool `json:"autodetect"`
+
+	/* Additional options if source_format is set to "AVRO". */
+	// +optional
+	AvroOptions *TableAvroOptions `json:"avroOptions,omitempty"`
 
 	/* The compression type of the data source. Valid values are "NONE" or "GZIP". */
 	// +optional

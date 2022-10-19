@@ -236,6 +236,11 @@ type ClusterExclusionOptions struct {
 	Scope string `json:"scope"`
 }
 
+type ClusterFilter struct {
+	/* Can be used to filter what notifications are sent. Valid values include include UPGRADE_AVAILABLE_EVENT, UPGRADE_EVENT and SECURITY_BULLETIN_EVENT. */
+	EventType []string `json:"eventType"`
+}
+
 type ClusterGcePersistentDiskCsiDriverConfig struct {
 	/*  */
 	Enabled bool `json:"enabled"`
@@ -256,6 +261,14 @@ type ClusterGkeBackupAgentConfig struct {
 	Enabled bool `json:"enabled"`
 }
 
+type ClusterGpuSharingConfig struct {
+	/* Immutable. The type of GPU sharing strategy to enable on the GPU node. Possible values are described in the API package (https://pkg.go.dev/google.golang.org/api/container/v1#GPUSharingConfig). */
+	GpuSharingStrategy string `json:"gpuSharingStrategy"`
+
+	/* Immutable. The maximum number of containers that can share a GPU. */
+	MaxSharedClientsPerGpu int `json:"maxSharedClientsPerGpu"`
+}
+
 type ClusterGuestAccelerator struct {
 	/* Immutable. The number of the accelerator cards exposed to an instance. */
 	Count int `json:"count"`
@@ -263,6 +276,10 @@ type ClusterGuestAccelerator struct {
 	/* Immutable. Size of partitions to create on the GPU. Valid values are described in the NVIDIA mig user guide (https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning). */
 	// +optional
 	GpuPartitionSize *string `json:"gpuPartitionSize,omitempty"`
+
+	/* Immutable. Configuration for GPU sharing. */
+	// +optional
+	GpuSharingConfig *ClusterGpuSharingConfig `json:"gpuSharingConfig,omitempty"`
 
 	/* Immutable. The accelerator type resource name. */
 	Type string `json:"type"`
@@ -628,6 +645,10 @@ type ClusterPrivateClusterConfig struct {
 type ClusterPubsub struct {
 	/* Whether or not the notification config is enabled. */
 	Enabled bool `json:"enabled"`
+
+	/* Allows filtering to one or more specific event types. If event types are present, those and only those event types will be transmitted to the cluster. Other types will be skipped. If no filter is specified, or no event types are present, all event types will be sent. */
+	// +optional
+	Filter *ClusterFilter `json:"filter,omitempty"`
 
 	/* The PubSubTopic to send the notification to. */
 	// +optional

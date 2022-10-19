@@ -112,15 +112,6 @@ var NetworkConnectivityEndpointEntry = &schema.Schema{
 	}, ""),
 }
 
-var OrgPolicyEndpointEntryKey = "org_policy_custom_endpoint"
-var OrgPolicyEndpointEntry = &schema.Schema{
-	Type:     schema.TypeString,
-	Optional: true,
-	DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-		"GOOGLE_ORG_POLICY_CUSTOM_ENDPOINT",
-	}, ""),
-}
-
 var RecaptchaEnterpriseEndpointEntryKey = "recaptcha_enterprise_custom_endpoint"
 var RecaptchaEnterpriseEndpointEntry = &schema.Schema{
 	Type:     schema.TypeString,
@@ -141,7 +132,6 @@ type DCLConfig struct {
 	FirebaserulesBasePath        string
 	GKEHubFeatureBasePath        string
 	NetworkConnectivityBasePath  string
-	OrgPolicyBasePath            string
 	RecaptchaEnterpriseBasePath  string
 }
 
@@ -156,7 +146,6 @@ func configureDCLProvider(provider *schema.Provider) {
 	provider.Schema[FirebaserulesEndpointEntryKey] = FirebaserulesEndpointEntry
 	provider.Schema[GKEHubFeatureEndpointEntryKey] = GKEHubFeatureEndpointEntry
 	provider.Schema[NetworkConnectivityEndpointEntryKey] = NetworkConnectivityEndpointEntry
-	provider.Schema[OrgPolicyEndpointEntryKey] = OrgPolicyEndpointEntry
 	provider.Schema[RecaptchaEnterpriseEndpointEntryKey] = RecaptchaEnterpriseEndpointEntry
 }
 
@@ -171,7 +160,6 @@ func providerDCLConfigure(d *schema.ResourceData, config *Config) interface{} {
 	config.FirebaserulesBasePath = d.Get(FirebaserulesEndpointEntryKey).(string)
 	config.GKEHubFeatureBasePath = d.Get(GKEHubFeatureEndpointEntryKey).(string)
 	config.NetworkConnectivityBasePath = d.Get(NetworkConnectivityEndpointEntryKey).(string)
-	config.OrgPolicyBasePath = d.Get(OrgPolicyEndpointEntryKey).(string)
 	config.RecaptchaEnterpriseBasePath = d.Get(RecaptchaEnterpriseEndpointEntryKey).(string)
 	config.CloudBuildWorkerPoolBasePath = d.Get(CloudBuildWorkerPoolEndpointEntryKey).(string)
 	return config

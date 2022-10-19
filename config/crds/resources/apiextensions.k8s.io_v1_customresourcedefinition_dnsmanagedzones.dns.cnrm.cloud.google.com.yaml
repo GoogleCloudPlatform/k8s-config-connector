@@ -58,6 +58,16 @@ spec:
             type: object
           spec:
             properties:
+              cloudLoggingConfig:
+                description: Cloud logging configuration.
+                properties:
+                  enableLogging:
+                    description: If set, enable query logging for this ManagedZone.
+                      False by default, making logging opt-in.
+                    type: boolean
+                required:
+                - enableLogging
+                type: object
               description:
                 description: A textual description field. Defaults to 'Managed by
                   Config Connector'.

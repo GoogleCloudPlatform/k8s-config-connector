@@ -90,11 +90,11 @@ func clusterSchemaNodeConfig() *schema.Schema {
 // overridden if specified on the specific NodePool object.
 func clusterSchemaNodePoolDefaults() *schema.Schema {
 	return &schema.Schema{
-		Type:             schema.TypeList,
-		Optional:         true,
-		DiffSuppressFunc: emptyOrUnsetBlockDiffSuppress,
-		Description:      `The default nodel pool settings for the entire cluster.`,
-		MaxItems:         1,
+		Type:        schema.TypeList,
+		Optional:    true,
+		Computed:    true,
+		Description: `The default nodel pool settings for the entire cluster.`,
+		MaxItems:    1,
 		Elem: &schema.Resource{
 			Schema: map[string]*schema.Schema{
 				"node_config_defaults": {
@@ -832,6 +832,25 @@ func resourceContainerCluster() *schema.Resource {
 										Optional:    true,
 										Description: `The pubsub topic to push upgrade notifications to. Must be in the same project as the cluster. Must be in the format: projects/{project}/topics/{topic}.`,
 									},
+									"filter": {
+										Type:        schema.TypeList,
+										Optional:    true,
+										MaxItems:    1,
+										Description: `Allows filtering to one or more specific event types. If event types are present, those and only those event types will be transmitted to the cluster. Other types will be skipped. If no filter is specified, or no event types are present, all event types will be sent`,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"event_type": {
+													Type:        schema.TypeList,
+													Required:    true,
+													Description: `Can be used to filter what notifications are sent. Valid values include include UPGRADE_AVAILABLE_EVENT, UPGRADE_EVENT and SECURITY_BULLETIN_EVENT`,
+													Elem: &schema.Schema{
+														Type:         schema.TypeString,
+														ValidateFunc: validation.StringInSlice([]string{"UPGRADE_AVAILABLE_EVENT", "UPGRADE_EVENT", "SECURITY_BULLETIN_EVENT"}, false),
+													},
+												},
+											},
+										},
+									},
 								},
 							},
 						},
@@ -1001,11 +1020,11 @@ func resourceContainerCluster() *schema.Resource {
 			"node_pool_defaults": clusterSchemaNodePoolDefaults(),
 
 			"node_pool_auto_config": {
-				Type:             schema.TypeList,
-				Optional:         true,
-				DiffSuppressFunc: emptyOrUnsetBlockDiffSuppress,
-				MaxItems:         1,
-				Description:      `Node pool configs that apply to all auto-provisioned node pools in autopilot clusters and node auto-provisioning enabled clusters.`,
+				Type:        schema.TypeList,
+				Optional:    true,
+				Computed:    true,
+				MaxItems:    1,
+				Description: `Node pool configs that apply to all auto-provisioned node pools in autopilot clusters and node auto-provisioning enabled clusters.`,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"network_tags": {
@@ -3714,12 +3733,22 @@ func expandNotificationConfig(configured interface{}) *container.NotificationCon
 		if len(v.([]interface{})) > 0 {
 			pubsub := notificationConfig["pubsub"].([]interface{})[0].(map[string]interface{})
 
-			return &container.NotificationConfig{
+			nc := &container.NotificationConfig{
 				Pubsub: &container.PubSub{
 					Enabled: pubsub["enabled"].(bool),
 					Topic:   pubsub["topic"].(string),
 				},
 			}
+
+			if vv, ok := pubsub["filter"]; ok && len(vv.([]interface{})) > 0 {
+				filter := vv.([]interface{})[0].(map[string]interface{})
+				eventType := filter["event_type"].([]interface{})
+				nc.Pubsub.Filter = &container.Filter{
+					EventType: convertStringArr(eventType),
+				}
+			}
+
+			return nc
 		}
 	}
 
@@ -4041,14 +4070,19 @@ func expandDnsConfig(configured interface{}) *container.DNSConfig {
 
 func expandContainerClusterLoggingConfig(configured interface{}) *container.LoggingConfig {
 	l := configured.([]interface{})
-	if len(l) == 0 || l[0] == nil {
+	if len(l) == 0 {
 		return nil
 	}
 
-	config := l[0].(map[string]interface{})
+	var components []string
+	if l[0] != nil {
+		config := l[0].(map[string]interface{})
+		components = convertStringArr(config["enable_components"].([]interface{}))
+	}
+
 	return &container.LoggingConfig{
 		ComponentConfig: &container.LoggingComponentConfig{
-			EnableComponents: convertStringArr(config["enable_components"].([]interface{})),
+			EnableComponents: components,
 		},
 	}
 }
@@ -4061,7 +4095,7 @@ func expandMonitoringConfig(configured interface{}) *container.MonitoringConfig 
 	mc := &container.MonitoringConfig{}
 	config := l[0].(map[string]interface{})
 
-	if v, ok := config["enable_components"]; ok && len(v.([]interface{})) > 0 {
+	if v, ok := config["enable_components"]; ok {
 		enable_components := v.([]interface{})
 		mc.ComponentConfig = &container.MonitoringComponentConfig{
 			EnableComponents: convertStringArr(enable_components),
@@ -4105,10 +4139,12 @@ func flattenNodePoolDefaults(c *container.NodePoolDefaults) []map[string]interfa
 	if c == nil {
 		return nil
 	}
+
 	result := make(map[string]interface{})
 	if c.NodeConfigDefaults != nil && c.NodeConfigDefaults.GcfsConfig != nil {
 		result["node_config_defaults"] = flattenNodeConfigDefaults(c.NodeConfigDefaults)
 	}
+
 	return []map[string]interface{}{result}
 }
 
@@ -4143,6 +4179,27 @@ func expandNodePoolAutoConfigNetworkTags(configured interface{}) *container.Netw
 func flattenNotificationConfig(c *container.NotificationConfig) []map[string]interface{} {
 	if c == nil {
 		return nil
+	}
+
+	if c.Pubsub.Filter != nil {
+		filter := []map[string]interface{}{}
+		if len(c.Pubsub.Filter.EventType) > 0 {
+			filter = append(filter, map[string]interface{}{
+				"event_type": c.Pubsub.Filter.EventType,
+			})
+		}
+
+		return []map[string]interface{}{
+			{
+				"pubsub": []map[string]interface{}{
+					{
+						"enabled": c.Pubsub.Enabled,
+						"topic":   c.Pubsub.Topic,
+						"filter":  filter,
+					},
+				},
+			},
+		}
 	}
 
 	return []map[string]interface{}{
@@ -4719,6 +4776,7 @@ func flattenNodePoolAutoConfig(c *container.NodePoolAutoConfig) []map[string]int
 	if c.NetworkTags != nil {
 		result["network_tags"] = flattenNodePoolAutoConfigNetworkTags(c.NetworkTags)
 	}
+
 	return []map[string]interface{}{result}
 }
 

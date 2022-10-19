@@ -392,6 +392,12 @@ spec:
                       CSV: Trailing columns
                       JSON: Named values that don't match any column names.
                     type: boolean
+                  jsonExtension:
+                    description: |-
+                      Immutable. If sourceFormat is set to newline-delimited JSON, indicates whether it should be processed as a JSON variant such as GeoJSON.
+                      For a sourceFormat other than JSON, omit this field. If the sourceFormat is newline-delimited JSON: - for newline-delimited
+                      GeoJSON: set to GEOJSON.
+                    type: string
                   maxBadRecords:
                     description: |-
                       Immutable. The maximum number of bad records that BigQuery can ignore when running the job. If the number of bad records exceeds this value,

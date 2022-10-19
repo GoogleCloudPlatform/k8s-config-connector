@@ -92,11 +92,15 @@ password:
     secretKeyRef:
       key: string
       name: string
+passwordPolicy:
+  allowedFailedAttempts: integer
+  enableFailedAttemptsCheck: boolean
+  enablePasswordVerification: boolean
+  passwordExpirationDuration: string
+  status:
+  - locked: boolean
+    passwordExpirationTime: string
 resourceID: string
-sqlServerUserDetails:
-  disabled: boolean
-  serverRoles:
-  - string
 type: string
 ```
 
@@ -220,17 +224,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>resourceID</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>sqlServerUserDetails</code></p>
+            <p><code>passwordPolicy</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -240,32 +234,92 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>sqlServerUserDetails.disabled</code></p>
+            <p><code>passwordPolicy.allowedFailedAttempts</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Number of failed attempts allowed before the user get locked.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>passwordPolicy.enableFailedAttemptsCheck</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}If the user has been disabled.{% endverbatim %}</p>
+            <p>{% verbatim %}If true, the check that will lock user after too many failed login attempts will be enabled.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>sqlServerUserDetails.serverRoles</code></p>
+            <p><code>passwordPolicy.enablePasswordVerification</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The server roles for this user in the database.{% endverbatim %}</p>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}If true, the user must specify the current password before changing the password. This flag is supported only for MySQL.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>sqlServerUserDetails.serverRoles[]</code></p>
+            <p><code>passwordPolicy.passwordExpirationDuration</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Password expiration duration with one week grace period.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>passwordPolicy.status</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>passwordPolicy.status[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>passwordPolicy.status[].locked</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}If true, user does not have login privileges.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>passwordPolicy.status[].passwordExpirationTime</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Password expiration duration with one week grace period.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>resourceID</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -296,6 +350,10 @@ conditions:
   status: string
   type: string
 observedGeneration: integer
+sqlServerUserDetails:
+- disabled: boolean
+  serverRoles:
+  - string
 ```
 
 <table class="properties responsive">
@@ -359,6 +417,41 @@ observedGeneration: integer
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>sqlServerUserDetails</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>sqlServerUserDetails[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>sqlServerUserDetails[].disabled</code></td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}If the user has been disabled.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>sqlServerUserDetails[].serverRoles</code></td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The server roles for this user in the database.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>sqlServerUserDetails[].serverRoles[]</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

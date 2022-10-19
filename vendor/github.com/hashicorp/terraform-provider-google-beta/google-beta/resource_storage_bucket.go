@@ -79,10 +79,12 @@ func resourceStorageBucket() *schema.Resource {
 			},
 
 			"labels": {
-				Type:        schema.TypeMap,
-				Optional:    true,
-				Elem:        &schema.Schema{Type: schema.TypeString},
-				Description: `A set of key/value label pairs to assign to the bucket.`,
+				Type:     schema.TypeMap,
+				Optional: true,
+				// GCP (Dataplex) automatically adds labels
+				DiffSuppressFunc: resourceDataplexLabelDiffSuppress,
+				Elem:             &schema.Schema{Type: schema.TypeString},
+				Description:      `A set of key/value label pairs to assign to the bucket.`,
 			},
 
 			"location": {
@@ -363,6 +365,27 @@ func resourceStorageBucket() *schema.Resource {
 				Computed:    true,
 				Description: `Enables uniform bucket-level access on a bucket.`,
 			},
+			"custom_placement_config": {
+				Type:     schema.TypeList,
+				Optional: true,
+				MaxItems: 1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"data_locations": {
+							Type:     schema.TypeSet,
+							Required: true,
+							ForceNew: true,
+							MaxItems: 2,
+							MinItems: 2,
+							Elem: &schema.Schema{
+								Type: schema.TypeString,
+							},
+							Description: `The list of individual regions that comprise a dual-region bucket. See the docs for a list of acceptable regions. Note: If any of the data_locations changes, it will recreate the bucket.`,
+						},
+					},
+				},
+				Description: `The bucket's custom location configuration, which specifies the individual regions that comprise a dual-region bucket. If the bucket is designated a single or multi-region, the parameters are empty.`,
+			},
 			"public_access_prevention": {
 				Type:        schema.TypeString,
 				Optional:    true,
@@ -372,6 +395,22 @@ func resourceStorageBucket() *schema.Resource {
 		},
 		UseJSONNumber: true,
 	}
+}
+
+const resourceDataplexGoogleProvidedLabelPrefix = "labels.goog-dataplex"
+
+func resourceDataplexLabelDiffSuppress(k, old, new string, d *schema.ResourceData) bool {
+	if strings.HasPrefix(k, resourceDataplexGoogleProvidedLabelPrefix) && new == "" {
+		return true
+	}
+
+	// Let diff be determined by labels (above)
+	if strings.HasPrefix(k, "labels.%") {
+		return true
+	}
+
+	// For other keys, don't suppress diff.
+	return false
 }
 
 // Is the old bucket retention policy locked?
@@ -468,6 +507,10 @@ func resourceStorageBucketCreate(d *schema.ResourceData, meta interface{}) error
 		sb.Billing = &storage.BucketBilling{
 			RequesterPays: v.(bool),
 		}
+	}
+
+	if v, ok := d.GetOk("custom_placement_config"); ok {
+		sb.CustomPlacementConfig = expandBucketCustomPlacementConfig(v.([]interface{}))
 	}
 
 	var res *storage.Bucket
@@ -875,6 +918,42 @@ func flattenBucketEncryption(enc *storage.BucketEncryption) []map[string]interfa
 	return encryption
 }
 
+func expandBucketCustomPlacementConfig(configured interface{}) *storage.BucketCustomPlacementConfig {
+	cfcs := configured.([]interface{})
+	if len(cfcs) == 0 || cfcs[0] == nil {
+		return nil
+	}
+	cfc := cfcs[0].(map[string]interface{})
+	bucketcfc := &storage.BucketCustomPlacementConfig{
+		DataLocations: expandBucketDataLocations(cfc["data_locations"]),
+	}
+	return bucketcfc
+}
+
+func flattenBucketCustomPlacementConfig(cfc *storage.BucketCustomPlacementConfig) []map[string]interface{} {
+	customPlacementConfig := make([]map[string]interface{}, 0, 1)
+
+	if cfc == nil {
+		return customPlacementConfig
+	}
+
+	customPlacementConfig = append(customPlacementConfig, map[string]interface{}{
+		"data_locations": cfc.DataLocations,
+	})
+
+	return customPlacementConfig
+}
+
+func expandBucketDataLocations(configured interface{}) []string {
+	l := configured.(*schema.Set).List()
+
+	req := make([]string, 0, len(l))
+	for _, raw := range l {
+		req = append(req, raw.(string))
+	}
+	return req
+}
+
 func expandBucketLogging(configured interface{}) *storage.BucketLogging {
 	loggings := configured.([]interface{})
 	if len(loggings) == 0 {
@@ -1164,6 +1243,7 @@ func expandStorageBucketLifecycleRuleCondition(v interface{}) (*storage.BucketLi
 
 	if v, ok := condition["age"]; ok {
 		transformed.Age = int64(v.(int))
+		transformed.ForceSendFields = append(transformed.ForceSendFields, "Age")
 	}
 
 	if v, ok := condition["created_before"]; ok {
@@ -1413,6 +1493,9 @@ func setStorageBucket(d *schema.ResourceData, config *Config, res *storage.Bucke
 	}
 	if err := d.Set("retention_policy", flattenBucketRetentionPolicy(res.RetentionPolicy)); err != nil {
 		return fmt.Errorf("Error setting retention_policy: %s", err)
+	}
+	if err := d.Set("custom_placement_config", flattenBucketCustomPlacementConfig(res.CustomPlacementConfig)); err != nil {
+		return fmt.Errorf("Error setting custom_placement_config: %s", err)
 	}
 
 	if res.IamConfiguration != nil && res.IamConfiguration.UniformBucketLevelAccess != nil {

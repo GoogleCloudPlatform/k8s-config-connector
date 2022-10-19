@@ -117,6 +117,7 @@ cdnPolicy:
   requestCoalescing: boolean
   serveWhileStale: integer
   signedUrlCacheMaxAgeSec: integer
+compressionMode: string
 customResponseHeaders:
 - string
 description: string
@@ -395,6 +396,16 @@ Cloud CDN will internally behave as though
 all responses from this backend had a "Cache-Control: public,
 max-age=[TTL]" header, regardless of any existing Cache-Control
 header. The actual headers served in responses will not be altered.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>compressionMode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Compress text responses using Brotli or gzip compression, based on the client's Accept-Encoding header. Possible values: ["AUTOMATIC", "DISABLED"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -130,6 +130,10 @@ type ComputeBackendBucketSpec struct {
 	// +optional
 	CdnPolicy *BackendbucketCdnPolicy `json:"cdnPolicy,omitempty"`
 
+	/* Compress text responses using Brotli or gzip compression, based on the client's Accept-Encoding header. Possible values: ["AUTOMATIC", "DISABLED"]. */
+	// +optional
+	CompressionMode *string `json:"compressionMode,omitempty"`
+
 	/* Headers that the HTTP/S load balancer should add to proxied responses. */
 	// +optional
 	CustomResponseHeaders []string `json:"customResponseHeaders,omitempty"`

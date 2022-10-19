@@ -16,6 +16,7 @@ package google
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -25,11 +26,14 @@ func TestAccStorageBucketIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"role":            "roles/storage.objectViewer",
-		"admin_role":      "roles/storage.admin",
-		"condition_title": "expires_after_2019_12_31",
-		"condition_expr":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"random_suffix":           randString(t, 10),
+		"role":                    "roles/storage.objectViewer",
+		"admin_role":              "roles/storage.admin",
+		"condition_title":         "expires_after_2019_12_31",
+		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"condition_desc":          "Expiring at midnight of 2019-12-31",
+		"condition_title_no_desc": "expires_after_2019_12_31-no-description",
+		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
 	vcrTest(t, resource.TestCase{
@@ -63,11 +67,14 @@ func TestAccStorageBucketIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"role":            "roles/storage.objectViewer",
-		"admin_role":      "roles/storage.admin",
-		"condition_title": "expires_after_2019_12_31",
-		"condition_expr":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"random_suffix":           randString(t, 10),
+		"role":                    "roles/storage.objectViewer",
+		"admin_role":              "roles/storage.admin",
+		"condition_title":         "expires_after_2019_12_31",
+		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"condition_desc":          "Expiring at midnight of 2019-12-31",
+		"condition_title_no_desc": "expires_after_2019_12_31-no-description",
+		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
 	vcrTest(t, resource.TestCase{
@@ -94,11 +101,14 @@ func TestAccStorageBucketIamPolicyGenerated(t *testing.T) {
 	// This may skip test, so do it first
 	sa := getTestServiceAccountFromEnv(t)
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"role":            "roles/storage.objectViewer",
-		"admin_role":      "roles/storage.admin",
-		"condition_title": "expires_after_2019_12_31",
-		"condition_expr":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"random_suffix":           randString(t, 10),
+		"role":                    "roles/storage.objectViewer",
+		"admin_role":              "roles/storage.admin",
+		"condition_title":         "expires_after_2019_12_31",
+		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"condition_desc":          "Expiring at midnight of 2019-12-31",
+		"condition_title_no_desc": "expires_after_2019_12_31-no-description",
+		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 	context["service_account"] = sa
 
@@ -132,11 +142,14 @@ func TestAccStorageBucketIamBindingGenerated_withCondition(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"role":            "roles/storage.objectViewer",
-		"admin_role":      "roles/storage.admin",
-		"condition_title": "expires_after_2019_12_31",
-		"condition_expr":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"random_suffix":           randString(t, 10),
+		"role":                    "roles/storage.objectViewer",
+		"admin_role":              "roles/storage.admin",
+		"condition_title":         "expires_after_2019_12_31",
+		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"condition_desc":          "Expiring at midnight of 2019-12-31",
+		"condition_title_no_desc": "expires_after_2019_12_31-no-description",
+		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
 	vcrTest(t, resource.TestCase{
@@ -162,11 +175,14 @@ func TestAccStorageBucketIamBindingGenerated_withAndWithoutCondition(t *testing.
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"role":            "roles/storage.objectViewer",
-		"admin_role":      "roles/storage.admin",
-		"condition_title": "expires_after_2019_12_31",
-		"condition_expr":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"random_suffix":           randString(t, 10),
+		"role":                    "roles/storage.objectViewer",
+		"admin_role":              "roles/storage.admin",
+		"condition_title":         "expires_after_2019_12_31",
+		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"condition_desc":          "Expiring at midnight of 2019-12-31",
+		"condition_title_no_desc": "expires_after_2019_12_31-no-description",
+		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
 	vcrTest(t, resource.TestCase{
@@ -188,6 +204,12 @@ func TestAccStorageBucketIamBindingGenerated_withAndWithoutCondition(t *testing.
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
+			{
+				ResourceName:      "google_storage_bucket_iam_binding.foo3",
+				ImportStateId:     fmt.Sprintf("b/%s roles/storage.objectViewer %s", fmt.Sprintf("tf-test-my-bucket%s", context["random_suffix"]), context["condition_title_no_desc"]),
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
 		},
 	})
 }
@@ -196,11 +218,14 @@ func TestAccStorageBucketIamMemberGenerated_withCondition(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"role":            "roles/storage.objectViewer",
-		"admin_role":      "roles/storage.admin",
-		"condition_title": "expires_after_2019_12_31",
-		"condition_expr":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"random_suffix":           randString(t, 10),
+		"role":                    "roles/storage.objectViewer",
+		"admin_role":              "roles/storage.admin",
+		"condition_title":         "expires_after_2019_12_31",
+		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"condition_desc":          "Expiring at midnight of 2019-12-31",
+		"condition_title_no_desc": "expires_after_2019_12_31-no-description",
+		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
 	vcrTest(t, resource.TestCase{
@@ -226,11 +251,14 @@ func TestAccStorageBucketIamMemberGenerated_withAndWithoutCondition(t *testing.T
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"role":            "roles/storage.objectViewer",
-		"admin_role":      "roles/storage.admin",
-		"condition_title": "expires_after_2019_12_31",
-		"condition_expr":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"random_suffix":           randString(t, 10),
+		"role":                    "roles/storage.objectViewer",
+		"admin_role":              "roles/storage.admin",
+		"condition_title":         "expires_after_2019_12_31",
+		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"condition_desc":          "Expiring at midnight of 2019-12-31",
+		"condition_title_no_desc": "expires_after_2019_12_31-no-description",
+		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
 	vcrTest(t, resource.TestCase{
@@ -252,6 +280,12 @@ func TestAccStorageBucketIamMemberGenerated_withAndWithoutCondition(t *testing.T
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
+			{
+				ResourceName:      "google_storage_bucket_iam_member.foo3",
+				ImportStateId:     fmt.Sprintf("b/%s roles/storage.objectViewer user:admin@hashicorptest.com %s", fmt.Sprintf("tf-test-my-bucket%s", context["random_suffix"]), context["condition_title_no_desc"]),
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
 		},
 	})
 }
@@ -262,13 +296,20 @@ func TestAccStorageBucketIamPolicyGenerated_withCondition(t *testing.T) {
 	// This may skip test, so do it first
 	sa := getTestServiceAccountFromEnv(t)
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"role":            "roles/storage.objectViewer",
-		"admin_role":      "roles/storage.admin",
-		"condition_title": "expires_after_2019_12_31",
-		"condition_expr":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"random_suffix":           randString(t, 10),
+		"role":                    "roles/storage.objectViewer",
+		"admin_role":              "roles/storage.admin",
+		"condition_title":         "expires_after_2019_12_31",
+		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
+		"condition_desc":          "Expiring at midnight of 2019-12-31",
+		"condition_title_no_desc": "expires_after_2019_12_31-no-description",
+		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 	context["service_account"] = sa
+
+	// Test should have 3 bindings: one with a description and one without, and a third for an admin role. Any < chars are converted to a unicode character by the API.
+	expectedPolicyData := Nprintf(`{"bindings":[{"members":["serviceAccount:%{service_account}"],"role":"%{admin_role}"},{"condition":{"description":"%{condition_desc}","expression":"%{condition_expr}","title":"%{condition_title}"},"members":["user:admin@hashicorptest.com"],"role":"%{role}"},{"condition":{"expression":"%{condition_expr}","title":"%{condition_title}-no-description"},"members":["user:admin@hashicorptest.com"],"role":"%{role}"}]}`, context)
+	expectedPolicyData = strings.Replace(expectedPolicyData, "<", "\\u003c", -1)
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
@@ -276,6 +317,12 @@ func TestAccStorageBucketIamPolicyGenerated_withCondition(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccStorageBucketIamPolicy_withConditionGenerated(context),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					// TODO(SarahFrench) - uncomment once https://github.com/GoogleCloudPlatform/magic-modules/pull/6466 merged
+					// resource.TestCheckResourceAttr("data.google_iam_policy.foo", "policy_data", expectedPolicyData),
+					resource.TestCheckResourceAttr("google_storage_bucket_iam_policy.foo", "policy_data", expectedPolicyData),
+					resource.TestCheckResourceAttrWith("data.google_iam_policy.foo", "policy_data", checkGoogleIamPolicy),
+				),
 			},
 			{
 				ResourceName:      "google_storage_bucket_iam_policy.foo",
@@ -393,7 +440,7 @@ resource "google_storage_bucket_iam_binding" "foo" {
   members = ["user:admin@hashicorptest.com"]
   condition {
     title       = "%{condition_title}"
-    description = "Expiring at midnight of 2019-12-31"
+    description = "%{condition_desc}"
     expression  = "%{condition_expr}"
   }
 }
@@ -420,8 +467,20 @@ resource "google_storage_bucket_iam_binding" "foo2" {
   members = ["user:admin@hashicorptest.com"]
   condition {
     title       = "%{condition_title}"
-    description = "Expiring at midnight of 2019-12-31"
+    description = "%{condition_desc}"
     expression  = "%{condition_expr}"
+  }
+}
+
+resource "google_storage_bucket_iam_binding" "foo3" {
+  bucket = google_storage_bucket.default.name
+  role = "%{role}"
+  members = ["user:admin@hashicorptest.com"]
+  condition {
+    # Check that lack of description doesn't cause any issues
+    # Relates to issue : https://github.com/hashicorp/terraform-provider-google/issues/8701
+    title       = "%{condition_title_no_desc}"
+    expression  = "%{condition_expr_no_desc}"
   }
 }
 `, context)
@@ -441,7 +500,7 @@ resource "google_storage_bucket_iam_member" "foo" {
   member = "user:admin@hashicorptest.com"
   condition {
     title       = "%{condition_title}"
-    description = "Expiring at midnight of 2019-12-31"
+    description = "%{condition_desc}"
     expression  = "%{condition_expr}"
   }
 }
@@ -468,8 +527,20 @@ resource "google_storage_bucket_iam_member" "foo2" {
   member = "user:admin@hashicorptest.com"
   condition {
     title       = "%{condition_title}"
-    description = "Expiring at midnight of 2019-12-31"
+    description = "%{condition_desc}"
     expression  = "%{condition_expr}"
+  }
+}
+
+resource "google_storage_bucket_iam_member" "foo3" {
+  bucket = google_storage_bucket.default.name
+  role = "%{role}"
+  member = "user:admin@hashicorptest.com"
+  condition {
+    # Check that lack of description doesn't cause any issues
+    # Relates to issue : https://github.com/hashicorp/terraform-provider-google/issues/8701
+    title       = "%{condition_title_no_desc}"
+    expression  = "%{condition_expr_no_desc}"
   }
 }
 `, context)
@@ -488,8 +559,18 @@ data "google_iam_policy" "foo" {
     role = "%{role}"
     members = ["user:admin@hashicorptest.com"]
     condition {
+      # Check that lack of description doesn't cause any issues
+      # Relates to issue : https://github.com/hashicorp/terraform-provider-google/issues/8701
+      title       = "%{condition_title_no_desc}"
+      expression  = "%{condition_expr_no_desc}"
+    }
+  }
+  binding {
+    role = "%{role}"
+    members = ["user:admin@hashicorptest.com"]
+    condition {
       title       = "%{condition_title}"
-      description = "Expiring at midnight of 2019-12-31"
+      description = "%{condition_desc}"
       expression  = "%{condition_expr}"
     }
   }

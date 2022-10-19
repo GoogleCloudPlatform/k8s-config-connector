@@ -109,6 +109,11 @@ type BucketCors struct {
 	ResponseHeader []string `json:"responseHeader,omitempty"`
 }
 
+type BucketCustomPlacementConfig struct {
+	/* Immutable. The list of individual regions that comprise a dual-region bucket. See the docs for a list of acceptable regions. Note: If any of the data_locations changes, it will recreate the bucket. */
+	DataLocations []string `json:"dataLocations"`
+}
+
 type BucketEncryption struct {
 	/*  */
 	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
@@ -164,6 +169,10 @@ type StorageBucketSpec struct {
 	/* The bucket's Cross-Origin Resource Sharing (CORS) configuration. */
 	// +optional
 	Cors []BucketCors `json:"cors,omitempty"`
+
+	/* The bucket's custom location configuration, which specifies the individual regions that comprise a dual-region bucket. If the bucket is designated a single or multi-region, the parameters are empty. */
+	// +optional
+	CustomPlacementConfig *BucketCustomPlacementConfig `json:"customPlacementConfig,omitempty"`
 
 	/* Whether or not to automatically apply an eventBasedHold to new objects added to the bucket. */
 	// +optional
