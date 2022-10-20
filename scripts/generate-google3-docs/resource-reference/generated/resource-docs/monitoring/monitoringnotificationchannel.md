@@ -555,6 +555,61 @@ spec:
   enabled: false
 ```
 
+### Pubsub Monitoring Notification Channel
+```yaml
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringNotificationChannel
+metadata:
+  # The metadata.labels field doesn&#39;t configure the notification channel
+  # Specify notification channel configuration in spec.labels
+  labels:
+    response-priority: all
+    target-user: automation
+  name: monitoringnotificationchannel-sample-pubsub
+spec:
+  type: pubsub
+  # The spec.labels field below is for configuring the desired behaviour of the notification channel
+  # It does not apply labels to the resource in the cluster
+  labels:
+    # Replace ${PROJECT_ID?} with the Pub/Sub topic&#39;s project ID.
+    topic: projects/${PROJECT_ID?}/topics/monitoringnotificationchannel-dep-pubsub
+  description: A channel that sends notifications to a Pub/Sub topic.
+  enabled: true
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: monitoringnotificationchannel-dep-pubsub
+spec:
+  # Replace ${PROJECT_NUMBER?} with your project number.
+  member: serviceAccount:service-${PROJECT_NUMBER?}@gcp-sa-monitoring-notification.iam.gserviceaccount.com
+  role: roles/pubsub.publisher
+  resourceRef:
+    kind: PubSubTopic
+    name: monitoringnotificationchannel-dep-pubsub
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  labels:
+    label-one: &#34;value-one&#34;
+  name: monitoringnotificationchannel-dep-pubsub
+```
+
 ### Sms Monitoring Notification Channel
 ```yaml
 # Copyright 2020 Google LLC
