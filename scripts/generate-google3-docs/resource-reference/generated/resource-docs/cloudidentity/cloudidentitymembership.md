@@ -160,7 +160,7 @@ Allowed value: The Google Cloud resource name of a `CloudIdentityGroup` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source&#39;s requirements. Must be unique within a `namespace`.{% endverbatim %}</p>
+            <p>{% verbatim %}The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -190,7 +190,7 @@ Allowed value: The Google Cloud resource name of a `CloudIdentityGroup` resource
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of a group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source&#39;s requirements. Must be unique within a `namespace`.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The ID of the entity. For Google-managed entities, the `id` must be the email address of a group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -329,7 +329,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -357,7 +357,7 @@ updateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -399,7 +399,7 @@ updateTime: string
         <td><code>displayName.familyName</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. Member&#39;s family name{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Member's family name{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -413,7 +413,7 @@ updateTime: string
         <td><code>displayName.givenName</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. Member&#39;s given name{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Member's given name{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -446,14 +446,14 @@ updateTime: string
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -483,21 +483,21 @@ spec:
     id: example.com
   parent: customers/C00qzcxfe
   labels:
-    cloudidentity.googleapis.com/groups.discussion_forum: &#34;&#34;
+    cloudidentity.googleapis.com/groups.discussion_forum: ""
 ```
 
 ### Membership With Manager Role
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -526,7 +526,7 @@ spec:
     id: example.com
   parent: customers/C00qzcxfe
   labels:
-    cloudidentity.googleapis.com/groups.discussion_forum: &#34;&#34;
+    cloudidentity.googleapis.com/groups.discussion_forum: ""
 ```
 
 

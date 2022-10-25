@@ -113,7 +113,7 @@ workloadIdentityPoolRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[A Common Expression Language](https://opensource.google/projects/cel) expression, in plain text, to restrict what otherwise valid authentication credentials issued by the provider should not be accepted. The expression must output a boolean representing whether to allow the federation. The following keywords may be referenced in the expressions: * `assertion`: JSON representing the authentication credential issued by the provider. * `google`: The Google attributes mapped from the assertion in the `attribute_mappings`. * `attribute`: The custom attributes mapped from the assertion in the `attribute_mappings`. The maximum length of the attribute condition expression is 4096 characters. If unspecified, all valid authentication credential are accepted. The following example shows how to only allow credentials with a mapped `google.groups` value of `admins`: ``` &#34;&#39;admins&#39; in google.groups&#34; ```{% endverbatim %}</p>
+            <p>{% verbatim %}[A Common Expression Language](https://opensource.google/projects/cel) expression, in plain text, to restrict what otherwise valid authentication credentials issued by the provider should not be accepted. The expression must output a boolean representing whether to allow the federation. The following keywords may be referenced in the expressions: * `assertion`: JSON representing the authentication credential issued by the provider. * `google`: The Google attributes mapped from the assertion in the `attribute_mappings`. * `attribute`: The custom attributes mapped from the assertion in the `attribute_mappings`. The maximum length of the attribute condition expression is 4096 characters. If unspecified, all valid authentication credential are accepted. The following example shows how to only allow credentials with a mapped `google.groups` value of `admins`: ``` "'admins' in google.groups" ```{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -123,7 +123,7 @@ workloadIdentityPoolRef:
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Maps attributes from authentication credentials issued by an external identity provider to Google Cloud attributes, such as `subject` and `segment`. Each key must be a string specifying the Google Cloud IAM attribute to map to. The following keys are supported: * `google.subject`: The principal IAM is authenticating. You can reference this value in IAM bindings. This is also the subject that appears in Cloud Logging logs. Cannot exceed 127 characters. * `google.groups`: Groups the external identity belongs to. You can grant groups access to resources using an IAM `principalSet` binding; access applies to all members of the group. You can also provide custom attributes by specifying `attribute.{custom_attribute}`, where `{custom_attribute}` is the name of the custom attribute to be mapped. You can define a maximum of 50 custom attributes. The maximum length of a mapped attribute key is 100 characters, and the key may only contain the characters [a-z0-9_]. You can reference these attributes in IAM policies to define fine-grained access for a workload to Google Cloud resources. For example: * `google.subject`: `principal://iam.googleapis.com/projects/{project}/locations/{location}/workloadIdentityPools/{pool}/subject/{value}` * `google.groups`: `principalSet://iam.googleapis.com/projects/{project}/locations/{location}/workloadIdentityPools/{pool}/group/{value}` * `attribute.{custom_attribute}`: `principalSet://iam.googleapis.com/projects/{project}/locations/{location}/workloadIdentityPools/{pool}/attribute.{custom_attribute}/{value}` Each value must be a [Common Expression Language] (https://opensource.google/projects/cel) function that maps an identity provider credential to the normalized attribute specified by the corresponding map key. You can use the `assertion` keyword in the expression to access a JSON representation of the authentication credential issued by the provider. The maximum length of an attribute mapping expression is 2048 characters. When evaluated, the total size of all mapped attributes must not exceed 8KB. For AWS providers, if no attribute mapping is defined, the following default mapping applies: ``` { &#34;google.subject&#34;:&#34;assertion.arn&#34;, &#34;attribute.aws_role&#34;: &#34;assertion.arn.contains(&#39;assumed-role&#39;)&#34; &#34; ? assertion.arn.extract(&#39;{account_arn}assumed-role/&#39;)&#34; &#34; &#43; &#39;assumed-role/&#39;&#34; &#34; &#43; assertion.arn.extract(&#39;assumed-role/{role_name}/&#39;)&#34; &#34; : assertion.arn&#34;, } ``` If any custom attribute mappings are defined, they must include a mapping to the `google.subject` attribute. For OIDC providers, you must supply a custom mapping, which must include the `google.subject` attribute. For example, the following maps the `sub` claim of the incoming credential to the `subject` attribute on a Google token: ``` {&#34;google.subject&#34;: &#34;assertion.sub&#34;} ```{% endverbatim %}</p>
+            <p>{% verbatim %}Maps attributes from authentication credentials issued by an external identity provider to Google Cloud attributes, such as `subject` and `segment`. Each key must be a string specifying the Google Cloud IAM attribute to map to. The following keys are supported: * `google.subject`: The principal IAM is authenticating. You can reference this value in IAM bindings. This is also the subject that appears in Cloud Logging logs. Cannot exceed 127 characters. * `google.groups`: Groups the external identity belongs to. You can grant groups access to resources using an IAM `principalSet` binding; access applies to all members of the group. You can also provide custom attributes by specifying `attribute.{custom_attribute}`, where `{custom_attribute}` is the name of the custom attribute to be mapped. You can define a maximum of 50 custom attributes. The maximum length of a mapped attribute key is 100 characters, and the key may only contain the characters [a-z0-9_]. You can reference these attributes in IAM policies to define fine-grained access for a workload to Google Cloud resources. For example: * `google.subject`: `principal://iam.googleapis.com/projects/{project}/locations/{location}/workloadIdentityPools/{pool}/subject/{value}` * `google.groups`: `principalSet://iam.googleapis.com/projects/{project}/locations/{location}/workloadIdentityPools/{pool}/group/{value}` * `attribute.{custom_attribute}`: `principalSet://iam.googleapis.com/projects/{project}/locations/{location}/workloadIdentityPools/{pool}/attribute.{custom_attribute}/{value}` Each value must be a [Common Expression Language] (https://opensource.google/projects/cel) function that maps an identity provider credential to the normalized attribute specified by the corresponding map key. You can use the `assertion` keyword in the expression to access a JSON representation of the authentication credential issued by the provider. The maximum length of an attribute mapping expression is 2048 characters. When evaluated, the total size of all mapped attributes must not exceed 8KB. For AWS providers, if no attribute mapping is defined, the following default mapping applies: ``` { "google.subject":"assertion.arn", "attribute.aws_role": "assertion.arn.contains('assumed-role')" " ? assertion.arn.extract('{account_arn}assumed-role/')" " + 'assumed-role/'" " + assertion.arn.extract('assumed-role/{role_name}/')" " : assertion.arn", } ``` If any custom attribute mappings are defined, they must include a mapping to the `google.subject` attribute. For OIDC providers, you must supply a custom mapping, which must include the `google.subject` attribute. For example, the following maps the `sub` claim of the incoming credential to the `subject` attribute on a Google token: ``` {"google.subject": "assertion.sub"} ```{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -371,7 +371,7 @@ state: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -399,7 +399,7 @@ state: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -439,14 +439,14 @@ state: string
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -458,20 +458,20 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project id
-    external: &#34;projects/${PROJECT_ID?}&#34;
-  location: &#34;global&#34;
+    external: "projects/${PROJECT_ID?}"
+  location: "global"
   workloadIdentityPoolRef:
-    name: &#34;iamwipp-dep-aws&#34;
-  displayName: &#34;sample-provider&#34;
-  description: &#34;A sample workload identity pool provider using aws&#34;
+    name: "iamwipp-dep-aws"
+  displayName: "sample-provider"
+  description: "A sample workload identity pool provider using aws"
   disabled: false
   attributeMapping:
-    google.subject: &#34;true&#34;
-  attributeCondition: &#34;true&#34;
+    google.subject: "true"
+  attributeCondition: "true"
   aws:
-    accountId: &#34;999999999999&#34;
+    accountId: "999999999999"
     stsUri:
-    - &#34;https://sts.amazonaws.com/sample-sts&#34;
+    - "https://sts.amazonaws.com/sample-sts"
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMWorkloadIdentityPool
@@ -480,10 +480,10 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project id
-    external: &#34;projects/${PROJECT_ID?}&#34;
-  location: &#34;global&#34;
-  displayName: &#34;sample-pool&#34;
-  description: &#34;A sample workload identity pool using a newly created project&#34;
+    external: "projects/${PROJECT_ID?}"
+  location: "global"
+  displayName: "sample-pool"
+  description: "A sample workload identity pool using a newly created project"
   disabled: false
 ```
 
@@ -491,14 +491,14 @@ spec:
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -510,16 +510,16 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project id
-    external: &#34;projects/${PROJECT_ID?}&#34;
-  location: &#34;global&#34;
+    external: "projects/${PROJECT_ID?}"
+  location: "global"
   workloadIdentityPoolRef:
-    name: &#34;iamwipp-dep-oidc&#34;
+    name: "iamwipp-dep-oidc"
   attributeMapping:
-    google.subject: &#34;true&#34;
+    google.subject: "true"
   oidc:
-    issuerUri: &#34;https://example.com/&#34;
+    issuerUri: "https://example.com/"
     allowedAudiences:
-    - &#34;sample-audience&#34;
+    - "sample-audience"
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMWorkloadIdentityPool
@@ -528,10 +528,10 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project id
-    external: &#34;projects/${PROJECT_ID?}&#34;
-  location: &#34;global&#34;
-  displayName: &#34;sample-pool&#34;
-  description: &#34;A sample workload identity pool using a newly created project&#34;
+    external: "projects/${PROJECT_ID?}"
+  location: "global"
+  displayName: "sample-pool"
+  description: "A sample workload identity pool using a newly created project"
   disabled: false
 ```
 

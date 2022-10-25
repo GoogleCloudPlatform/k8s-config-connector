@@ -239,7 +239,7 @@ used only for internal load balancing.{% endverbatim %}</p>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}The IP address that this forwarding rule is serving on behalf of.
 
-Addresses are restricted based on the forwarding rule&#39;s load
+Addresses are restricted based on the forwarding rule's load
 balancing scheme (EXTERNAL or INTERNAL) and scope (global or
 regional).
 
@@ -371,7 +371,7 @@ For more information about forwarding rules, refer to [Forwarding rule concepts]
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Location represents the geographical location of the ComputeForwardingRule. Specify a region name or &#34;global&#34; for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/){% endverbatim %}</p>
+            <p>{% verbatim %}Location represents the geographical location of the ComputeForwardingRule. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/){% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -381,7 +381,7 @@ For more information about forwarding rules, refer to [Forwarding rule concepts]
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. Opaque filter criteria used by Loadbalancer to restrict routing configuration to a limited set of [xDS](https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md) compliant clients. In their xDS requests to Loadbalancer, xDS clients present [node metadata](https://github.com/envoyproxy/data-plane-api/search?q=%22message&#43;Node%22&#43;in%3A%2Fenvoy%2Fapi%2Fv2%2Fcore%2Fbase.proto&amp;). If a match takes place, the relevant configuration is made available to those proxies. Otherwise, all the resources (e.g. `TargetHttpProxy`, `UrlMap`) referenced by the `ForwardingRule` will not be visible to those proxies.
+            <p>{% verbatim %}Immutable. Opaque filter criteria used by Loadbalancer to restrict routing configuration to a limited set of [xDS](https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md) compliant clients. In their xDS requests to Loadbalancer, xDS clients present [node metadata](https://github.com/envoyproxy/data-plane-api/search?q=%22message+Node%22+in%3A%2Fenvoy%2Fapi%2Fv2%2Fcore%2Fbase.proto&). If a match takes place, the relevant configuration is made available to those proxies. Otherwise, all the resources (e.g. `TargetHttpProxy`, `UrlMap`) referenced by the `ForwardingRule` will not be visible to those proxies.
 
 For each `metadataFilter` in this list, if its `filterMatchCriteria` is set to MATCH_ANY, at least one of the `filterLabel`s must match the corresponding label provided in the metadata. If its `filterMatchCriteria` is set to MATCH_ALL, then all of its `filterLabel`s must match with corresponding labels provided in the metadata.
 
@@ -529,7 +529,7 @@ field is not specified, the default network will be used.{% endverbatim %}</p>
 *   TargetSslProxy: 25, 43, 110, 143, 195, 443, 465, 587, 700, 993, 995, 1688, 1883, 5222
 *   TargetVpnGateway: 500, 4500
 
-@pattern: d&#43;(?:-d&#43;)?.{% endverbatim %}</p>
+@pattern: d+(?:-d+)?.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -539,7 +539,7 @@ field is not specified, the default network will be used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. This field is used along with the `backend_service` field for internal load balancing. When the load balancing scheme is `INTERNAL`, a list of ports can be configured, for example, [&#39;80&#39;], [&#39;8000&#39;,&#39;9000&#39;]. Only packets addressed to these ports are forwarded to the backends configured with the forwarding rule. If the forwarding rule&#39;s loadBalancingScheme is INTERNAL, you can specify ports in one of the following ways: * A list of up to five ports, which can be non-contiguous * Keyword `ALL`, which causes the forwarding rule to forward traffic on any port of the forwarding rule&#39;s protocol. @pattern: d&#43;(?:-d&#43;)? For more information, refer to [Port specifications](/load-balancing/docs/forwarding-rule-concepts#port_specifications).{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. This field is used along with the `backend_service` field for internal load balancing. When the load balancing scheme is `INTERNAL`, a list of ports can be configured, for example, ['80'], ['8000','9000']. Only packets addressed to these ports are forwarded to the backends configured with the forwarding rule. If the forwarding rule's loadBalancingScheme is INTERNAL, you can specify ports in one of the following ways: * A list of up to five ports, which can be non-contiguous * Keyword `ALL`, which causes the forwarding rule to forward traffic on any port of the forwarding rule's protocol. @pattern: d+(?:-d+)? For more information, refer to [Port specifications](/load-balancing/docs/forwarding-rule-concepts#port_specifications).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -947,7 +947,7 @@ serviceName: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -975,7 +975,7 @@ serviceName: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1050,14 +1050,14 @@ serviceName: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1066,16 +1066,16 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
   name: computeforwardingrule-sample-global-with-target-http-proxy
 spec:
-  description: &#34;A global forwarding rule&#34;
+  description: "A global forwarding rule"
   target:
     targetHTTPProxyRef:
       name: computeforwardingrule-dep-global-with-target-http-proxy
-  portRange: &#34;80&#34;
-  ipProtocol: &#34;TCP&#34;
-  ipVersion: &#34;IPV4&#34;
+  portRange: "80"
+  ipProtocol: "TCP"
+  ipVersion: "IPV4"
   location: global
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
@@ -1122,14 +1122,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1138,16 +1138,16 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
   name: computeforwardingrule-sample-global-with-target-ssl-proxy
 spec:
-  description: &#34;A global forwarding rule&#34;
+  description: "A global forwarding rule"
   target:
     targetSSLProxyRef:
       name: computeforwardingrule-dep-global-with-target-ssl-proxy
-  portRange: &#34;995&#34;
-  ipProtocol: &#34;TCP&#34;
-  ipVersion: &#34;IPV4&#34;
+  portRange: "995"
+  ipProtocol: "TCP"
+  ipVersion: "IPV4"
   location: global
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
@@ -1212,44 +1212,44 @@ stringData:
     DTIwMDkyODIyMjgyOVowTzELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAldBMSEwHwYD
     VQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQxEDAOBgNVBAMMB0V4YW1wbGUw
     ggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDWLvOZIail12i6NXIqOspV
-    corkuS1Nl0ayrl0VuKHCvheun/s7lLLgEfifzRueYlSUtdGg4atWIwEKsbIE&#43;AF9
-    uUTzkq/t6zHxFAAWgVZ6/hW696jqcZX3yU&#43;LCuHPLSN0ruqD6ZygnYDVciDmYwxe
+    corkuS1Nl0ayrl0VuKHCvheun/s7lLLgEfifzRueYlSUtdGg4atWIwEKsbIE+AF9
+    uUTzkq/t6zHxFAAWgVZ6/hW696jqcZX3yU+LCuHPLSN0ruqD6ZygnYDVciDmYwxe
     601xNfOOYRlm6dGRx6uTxGDZtfu8zsaNI0UxTugTp2x5cKB66SbgdlIJvc2Hb54a
-    7qOsb9CIf&#43;rrK2xUdJUj4ueUEIMxjnY2u/Dc71SgfBVn&#43;yFfN9MHNdcTWPXEUClE
-    Fxd/MB3dGn7hVavXyvy3NT4tWhBgYBphfEUudDFej5MmVq56JOEQ2UtaQ&#43;Imscud
+    7qOsb9CIf+rrK2xUdJUj4ueUEIMxjnY2u/Dc71SgfBVn+yFfN9MHNdcTWPXEUClE
+    Fxd/MB3dGn7hVavXyvy3NT4tWhBgYBphfEUudDFej5MmVq56JOEQ2UtaQ+Imscud
     AgMBAAEwDQYJKoZIhvcNAQELBQADggEBAMYTQyjVlo6TCYoyK6akjPX7vRiwCCAh
     jqsEu3bZqwUreOhZgRAyEXrq68dtXwTbwdisQmnhpBeBQuX4WWeas9TiycZ13TA1
-    Z&#43;h518D9OVXjrNs7oE3QNFeTom807IW16YydlrZMLKO8mQg6/BXfSHbLwuQHSIYS
-    JD&#43;uOfnkr08ORBbLGgBKKpy7ngflIkdSrQPmCYmYlvoy&#43;goMAEVi0K3Y1wVzAF4k
-    O4v8f7GXkNarsFT1QM82JboVV5uwX&#43;uDmi858WKDHYGv2Ypv6yy93vdV0Xt/IBj3
+    Z+h518D9OVXjrNs7oE3QNFeTom807IW16YydlrZMLKO8mQg6/BXfSHbLwuQHSIYS
+    JD+uOfnkr08ORBbLGgBKKpy7ngflIkdSrQPmCYmYlvoy+goMAEVi0K3Y1wVzAF4k
+    O4v8f7GXkNarsFT1QM82JboVV5uwX+uDmi858WKDHYGv2Ypv6yy93vdV0Xt/IBj3
     95/RDisBzcL7Ynpl34AAr5MLm7yCSsPrAmgevX4BOtcVc4rSXj5rcoE=
     -----END CERTIFICATE-----
   privateKey: |
     -----BEGIN RSA PRIVATE KEY-----
     MIIEpQIBAAKCAQEA1i7zmSGopddoujVyKjrKVXKK5LktTZdGsq5dFbihwr4Xrp/7
     O5Sy4BH4n80bnmJUlLXRoOGrViMBCrGyBPgBfblE85Kv7esx8RQAFoFWev4Vuveo
-    6nGV98lPiwrhzy0jdK7qg&#43;mcoJ2A1XIg5mMMXutNcTXzjmEZZunRkcerk8Rg2bX7
-    vM7GjSNFMU7oE6dseXCgeukm4HZSCb3Nh2&#43;eGu6jrG/QiH/q6ytsVHSVI&#43;LnlBCD
-    MY52Nrvw3O9UoHwVZ/shXzfTBzXXE1j1xFApRBcXfzAd3Rp&#43;4VWr18r8tzU&#43;LVoQ
-    YGAaYXxFLnQxXo&#43;TJlaueiThENlLWkPiJrHLnQIDAQABAoIBAQDMo/WZlQBG3Cay
-    64fV83AI7jTozkkLvoMNC&#43;3iaBMeN3P3I&#43;HuDmhOEL2lKVq/HKJFp&#43;bPuW50EWPY
-    bOlzN&#43;Zs0kygEMJJJxQDjCF9XzxarVPj3OcmgTpRkqWOaupPgYhD3zAws080YuiK
-    h84Jcg&#43;KzXWjunGn0vxrSPI0QDueJR2i03tEDBAtMZ0pvAsJ0gmXRdzGOc2uRzDm
+    6nGV98lPiwrhzy0jdK7qg+mcoJ2A1XIg5mMMXutNcTXzjmEZZunRkcerk8Rg2bX7
+    vM7GjSNFMU7oE6dseXCgeukm4HZSCb3Nh2+eGu6jrG/QiH/q6ytsVHSVI+LnlBCD
+    MY52Nrvw3O9UoHwVZ/shXzfTBzXXE1j1xFApRBcXfzAd3Rp+4VWr18r8tzU+LVoQ
+    YGAaYXxFLnQxXo+TJlaueiThENlLWkPiJrHLnQIDAQABAoIBAQDMo/WZlQBG3Cay
+    64fV83AI7jTozkkLvoMNC+3iaBMeN3P3I+HuDmhOEL2lKVq/HKJFp+bPuW50EWPY
+    bOlzN+Zs0kygEMJJJxQDjCF9XzxarVPj3OcmgTpRkqWOaupPgYhD3zAws080YuiK
+    h84Jcg+KzXWjunGn0vxrSPI0QDueJR2i03tEDBAtMZ0pvAsJ0gmXRdzGOc2uRzDm
     fbS3y/JIufClO28OzjJ5AJkbc9XgRDeCDOFY2D375bCg2boPYmP7Iw0HVU3RQhcr
-    t&#43;US27VQBRJF4cQ2CCyr0ZbdaPn41v&#43;/A/qxF6ZPguyy&#43;KoyQjCqK8iFArRQ48hJ
-    cR2pFx4hAoGBAP2uXIJAdAemrOunv2CWlUHI2iHj/kJ1AXRMpiT&#43;eF0US9E6tipE
-    mL63HkUhiAs2nJnPi3RDxP&#43;kAO2Z3anqjm1KCeGj&#43;IYYZMavnkC8EVybv9lDwORy
+    t+US27VQBRJF4cQ2CCyr0ZbdaPn41v+/A/qxF6ZPguyy+KoyQjCqK8iFArRQ48hJ
+    cR2pFx4hAoGBAP2uXIJAdAemrOunv2CWlUHI2iHj/kJ1AXRMpiT+eF0US9E6tipE
+    mL63HkUhiAs2nJnPi3RDxP+kAO2Z3anqjm1KCeGj+IYYZMavnkC8EVybv9lDwORy
     e2O1bfRc/tGa341KmvXLbp8oVMIYIvKz2cZmHGJ4V4DTq8dTvmqoE4/VAoGBANgk
     KWY5MJToZJJ5bV0mc2stmGt/IAZZPlKjVmKOjDyzqHRLAhsmbMyUhhgZtyj0dzSW
-    ILEeaEJknYRrOB48D6IqkB8VnFJyHUG8l&#43;Za41adqRQNid0S5n50/&#43;eYbjZpYCrA
+    ILEeaEJknYRrOB48D6IqkB8VnFJyHUG8l+Za41adqRQNid0S5n50/+eYbjZpYCrA
     SGmC2dhPZvRD6tOyEEJF5PZMvqxDcNRilc627HipAoGBAKzqrSQbyvtsIXKAZXLx
-    McwlnIp9XlLubo9Xr&#43;iHjIPl0chMvN8S4wscxwVYVeNO1nABiI03pJCcugU7XFz2
-    BR952EJ2AnFlL0w/aR&#43;3Eh6OC7eM927Amlrc0JZAzXESoE8vC3F/uWfDlgK3cRr&#43;
-    fPM/pxl37i1iGzVDYAhTiQIBAoGAPW25nmXumsOZoc&#43;E945wCywAP7z3mxZOEip9
-    6LDexnnBDJws0w6OqW4k1kCov6kLIBTy4aPkucniwrm&#43;T0l&#43;n/Y807jOntfz3LT&#43;
+    McwlnIp9XlLubo9Xr+iHjIPl0chMvN8S4wscxwVYVeNO1nABiI03pJCcugU7XFz2
+    BR952EJ2AnFlL0w/aR+3Eh6OC7eM927Amlrc0JZAzXESoE8vC3F/uWfDlgK3cRr+
+    fPM/pxl37i1iGzVDYAhTiQIBAoGAPW25nmXumsOZoc+E945wCywAP7z3mxZOEip9
+    6LDexnnBDJws0w6OqW4k1kCov6kLIBTy4aPkucniwrm+T0l+n/Y807jOntfz3LT+
     7ucx6XIRlbNrVTuD6rjR6j52RFyaikvvyJz50PJwLkgHO3dGC6/VrPKO1mKsdJA4
     R3HRr1ECgYEAobNQbQSLrSWZ1cozJbmNgRqqvxDNSEDi8LpXukOAw4pz1km7o3ob
-    hCy1ksfFzsp5glYqwZd/Bahk64u3mII&#43;rKoYwYLrH2l2aFDmMbdTfQUycpQZyi3&#43;
+    hCy1ksfFzsp5glYqwZd/Bahk64u3mII+rKoYwYLrH2l2aFDmMbdTfQUycpQZyi3+
     VtGS1PFoKx9fSFDNHhR5ZhfasQcuKHYfeFfO2/DoOxQkNCI1y4I2huo=
     -----END RSA PRIVATE KEY-----
 ```
@@ -1258,14 +1258,14 @@ stringData:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1274,16 +1274,16 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
   name: computeforwardingrule-sample-global-with-target-tcp-proxy
 spec:
-  description: &#34;A global forwarding rule&#34;
+  description: "A global forwarding rule"
   target:
     targetTCPProxyRef:
       name: computeforwardingrule-dep-global-with-target-tcp-proxy
-  portRange: &#34;110&#34;
-  ipProtocol: &#34;TCP&#34;
-  ipVersion: &#34;IPV4&#34;
+  portRange: "110"
+  ipProtocol: "TCP"
+  ipVersion: "IPV4"
   location: global
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
@@ -1320,14 +1320,14 @@ spec:
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1336,18 +1336,18 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
   name: computeforwardingrule-sample-global-with-grpc-proxy
 spec:
-  description: &#34;A global forwarding rule&#34;
+  description: "A global forwarding rule"
   target:
     targetGRPCProxyRef:
       name: computeforwardingrule-dep-global-with-grpc-proxy
   loadBalancingScheme: INTERNAL_SELF_MANAGED
   ipAddress:
-    ip: &#34;0.0.0.0&#34;
-  portRange: &#34;80&#34;
-  ipProtocol: &#34;TCP&#34;
+    ip: "0.0.0.0"
+  portRange: "80"
+  ipProtocol: "TCP"
   location: global
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
@@ -1384,14 +1384,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1400,14 +1400,14 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
   name: computeforwardingrule-sample-regional
 spec:
-  description: &#34;A regional forwarding rule&#34;
+  description: "A regional forwarding rule"
   target:
     targetVPNGatewayRef:
       name: computeforwardingrule-dep-regional
-  ipProtocol: &#34;ESP&#34;
+  ipProtocol: "ESP"
   location: us-central1
   ipAddress:
     addressRef:
@@ -1418,7 +1418,7 @@ kind: ComputeAddress
 metadata:
   name: computeforwardingrule-dep-regional
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
 spec:
   location: us-central1
 ---

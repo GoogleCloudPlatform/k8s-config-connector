@@ -114,7 +114,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The host the user can connect from. This is only supported for MySQL instances. Don&#39;t set this field for PostgreSQL instances. Can be an IP address. Changing this forces a new resource to be created.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The host the user can connect from. This is only supported for MySQL instances. Don't set this field for PostgreSQL instances. Can be an IP address. Changing this forces a new resource to be created.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -175,7 +175,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value of the field. Cannot be used if &#39;valueFrom&#39; is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Value of the field. Cannot be used if 'valueFrom' is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -185,7 +185,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Source for the field&#39;s value. Cannot be used if &#39;value&#39; is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Source for the field's value. Cannot be used if 'value' is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -195,7 +195,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource&#39;s namespace.{% endverbatim %}</p>
+            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource's namespace.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -276,7 +276,7 @@ type: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The user type. It determines the method to authenticate the user during login.
-                The default is the database&#39;s built-in user type. Flags include &#34;BUILT_IN&#34;, &#34;CLOUD_IAM_USER&#34;, or &#34;CLOUD_IAM_SERVICE_ACCOUNT&#34;.{% endverbatim %}</p>
+                The default is the database's built-in user type. Flags include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT".{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -309,7 +309,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -337,7 +337,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -370,14 +370,14 @@ observedGeneration: integer
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -389,7 +389,7 @@ metadata:
 spec:
   instanceRef:
     name: sqluser-dep
-  host: &#34;%&#34;
+  host: "%"
   password:
     valueFrom:
       secretKeyRef:
@@ -407,7 +407,7 @@ apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLInstance
 metadata:
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
   name: sqluser-dep
 spec:
   region: us-central1

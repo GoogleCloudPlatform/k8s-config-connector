@@ -157,9 +157,9 @@ availability domain, they will not be put in the same low latency network.{% end
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Collocation specifies whether to place VMs inside the same availability domain on the same low-latency network.
-Specify &#39;COLLOCATED&#39; to enable collocation. Can only be specified with &#39;vm_count&#39;. If compute instances are created
-with a COLLOCATED policy, then exactly &#39;vm_count&#39; instances must be created at the same time with the resource policy
-attached. Possible values: [&#34;COLLOCATED&#34;].{% endverbatim %}</p>
+Specify 'COLLOCATED' to enable collocation. Can only be specified with 'vm_count'. If compute instances are created
+with a COLLOCATED policy, then exactly 'vm_count' instances must be created at the same time with the resource policy
+attached. Possible values: ["COLLOCATED"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -313,7 +313,7 @@ from the tz database: http://en.wikipedia.org/wiki/Tz_database.{% endverbatim %}
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Specifies the behavior to apply to scheduled snapshots when
-the source disk is deleted. Default value: &#34;KEEP_AUTO_SNAPSHOTS&#34; Possible values: [&#34;KEEP_AUTO_SNAPSHOTS&#34;, &#34;APPLY_RETENTION_POLICY&#34;].{% endverbatim %}</p>
+the source disk is deleted. Default value: "KEEP_AUTO_SNAPSHOTS" Possible values: ["KEEP_AUTO_SNAPSHOTS", "APPLY_RETENTION_POLICY"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -323,7 +323,7 @@ the source disk is deleted. Default value: &#34;KEEP_AUTO_SNAPSHOTS&#34; Possibl
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Contains one of an &#39;hourlySchedule&#39;, &#39;dailySchedule&#39;, or &#39;weeklySchedule&#39;.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Contains one of an 'hourlySchedule', 'dailySchedule', or 'weeklySchedule'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -386,7 +386,7 @@ both 13:00-5 and 08:00 are valid.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Time within the window to start the operations.
-It must be in an hourly format &#34;HH:MM&#34;,
+It must be in an hourly format "HH:MM",
 where HH : [00-23] and MM : [00] GMT.
 eg: 21:00.{% endverbatim %}</p>
         </td>
@@ -428,7 +428,7 @@ eg: 21:00.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The day of the week to create the snapshot. e.g. MONDAY Possible values: [&#34;MONDAY&#34;, &#34;TUESDAY&#34;, &#34;WEDNESDAY&#34;, &#34;THURSDAY&#34;, &#34;FRIDAY&#34;, &#34;SATURDAY&#34;, &#34;SUNDAY&#34;].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The day of the week to create the snapshot. e.g. MONDAY Possible values: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -439,7 +439,7 @@ eg: 21:00.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Time within the window to start the operations.
-It must be in format &#34;HH:MM&#34;, where HH : [00-23] and MM : [00-00] GMT.{% endverbatim %}</p>
+It must be in format "HH:MM", where HH : [00-23] and MM : [00-00] GMT.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -471,7 +471,7 @@ with RFC1035.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Whether to perform a &#39;guest aware&#39; snapshot.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Whether to perform a 'guest aware' snapshot.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -536,7 +536,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -564,7 +564,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -604,14 +604,14 @@ selfLink: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -626,7 +626,7 @@ spec:
     schedule:
       dailySchedule:
         daysInCycle: 1
-        startTime: &#34;00:00&#34;
+        startTime: "00:00"
     retentionPolicy:
       maxRetentionDays: 8
       onSourceDiskDelete: KEEP_AUTO_SNAPSHOTS
@@ -635,22 +635,22 @@ spec:
       - us-central1
       guestFlush: true
       labels:
-        autodeleted: &#34;false&#34;
-        interval: &#34;daily&#34;
+        autodeleted: "false"
+        interval: "daily"
 ```
 
 ### Hourly Resource Policy Schedule
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -665,28 +665,28 @@ spec:
     schedule:
       hourlySchedule:
         hoursInCycle: 4
-        startTime: &#34;13:00&#34;
+        startTime: "13:00"
     retentionPolicy:
       maxRetentionDays: 2
       onSourceDiskDelete: APPLY_RETENTION_POLICY
     snapshotProperties:
       labels:
-        autodeleted: &#34;true&#34;
-        interval: &#34;hourly&#34;
+        autodeleted: "true"
+        interval: "hourly"
 ```
 
 ### Weekly Resource Policy Schedule
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -701,11 +701,11 @@ spec:
     schedule:
       weeklySchedule:
         dayOfWeeks:
-        - startTime: &#34;08:00&#34;
+        - startTime: "08:00"
           day: MONDAY
-        - startTime: &#34;15:00&#34;
+        - startTime: "15:00"
           day: WEDNESDAY
-        - startTime: &#34;23:00&#34;
+        - startTime: "23:00"
           day: FRIDAY
     retentionPolicy:
       maxRetentionDays: 12
@@ -714,8 +714,8 @@ spec:
       - us
       guestFlush: false
       labels:
-        autodeleted: &#34;false&#34;
-        interval: &#34;weekly&#34;
+        autodeleted: "false"
+        interval: "weekly"
 ```
 
 

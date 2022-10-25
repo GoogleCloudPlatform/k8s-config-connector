@@ -128,7 +128,7 @@ if any. Set by the API if undefined.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The type of address to reserve. Default value: &#34;EXTERNAL&#34; Possible values: [&#34;INTERNAL&#34;, &#34;EXTERNAL&#34;].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The type of address to reserve. Default value: "EXTERNAL" Possible values: ["INTERNAL", "EXTERNAL"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -148,7 +148,7 @@ if any. Set by the API if undefined.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The IP Version that will be used by this address. The default value is &#39;IPV4&#39;. Possible values: [&#34;IPV4&#34;, &#34;IPV6&#34;]. This field can only be specified for a global address.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The IP Version that will be used by this address. The default value is 'IPV4'. Possible values: ["IPV4", "IPV6"]. This field can only be specified for a global address.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -158,7 +158,7 @@ if any. Set by the API if undefined.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Location represents the geographical location of the ComputeAddress. Specify a region name or &#34;global&#34; for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/){% endverbatim %}</p>
+            <p>{% verbatim %}Location represents the geographical location of the ComputeAddress. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/){% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -213,7 +213,7 @@ IPSEC_INTERCONNECT purposes.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The networking tier used for configuring this address. If this field is not
-specified, it is assumed to be PREMIUM. Possible values: [&#34;PREMIUM&#34;, &#34;STANDARD&#34;].{% endverbatim %}</p>
+specified, it is assumed to be PREMIUM. Possible values: ["PREMIUM", "STANDARD"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -272,7 +272,7 @@ This should only be set when using an Internal address.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}The subnetwork in which to reserve the address. If an IP address is
-specified, it must be within the subnetwork&#39;s IP range.  This field
+specified, it must be within the subnetwork's IP range.  This field
 can only be used with INTERNAL type with GCE_ENDPOINT/DNS_RESOLVER
 purposes.{% endverbatim %}</p>
         </td>
@@ -340,7 +340,7 @@ users:
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -368,7 +368,7 @@ users:
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -437,14 +437,14 @@ internally during updates.{% endverbatim %}</p>
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -454,7 +454,7 @@ kind: ComputeAddress
 metadata:
   name: computeaddress-sample-global
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
 spec:
   addressType: INTERNAL
   description: a test global address
@@ -478,14 +478,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -495,7 +495,7 @@ kind: ComputeAddress
 metadata:
   name: computeaddress-sample-regional
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
 spec:
   addressType: INTERNAL
   description: a test regional address

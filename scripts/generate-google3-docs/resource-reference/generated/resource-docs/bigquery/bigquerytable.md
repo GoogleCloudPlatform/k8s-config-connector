@@ -329,7 +329,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The compression type of the data source. Valid values are &#34;NONE&#34; or &#34;GZIP&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}The compression type of the data source. Valid values are "NONE" or "GZIP".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -339,7 +339,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The connection specifying the credentials to be used to read external storage, such as Azure Blob, Cloud Storage, or S3. The connectionId can have the form &#34;{{project}}.{{location}}.{{connection_id}}&#34; or &#34;projects/{{project}}/locations/{{location}}/connections/{{connection_id}}&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}The connection specifying the credentials to be used to read external storage, such as Azure Blob, Cloud Storage, or S3. The connectionId can have the form "{{project}}.{{location}}.{{connection_id}}" or "projects/{{project}}/locations/{{location}}/connections/{{connection_id}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -349,7 +349,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Additional properties to set if source_format is set to &#34;CSV&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Additional properties to set if source_format is set to "CSV".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -419,7 +419,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Additional options if source_format is set to &#34;GOOGLE_SHEETS&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Additional options if source_format is set to "GOOGLE_SHEETS".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -429,7 +429,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Range of a sheet to query from. Only used when non-empty. At least one of range or skip_leading_rows must be set. Typical format: &#34;sheet_name!top_left_cell_id:bottom_right_cell_id&#34; For example: &#34;sheet1!A1:B20&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Range of a sheet to query from. Only used when non-empty. At least one of range or skip_leading_rows must be set. Typical format: "sheet_name!top_left_cell_id:bottom_right_cell_id" For example: "sheet1!A1:B20".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -519,7 +519,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The data format. Supported values are: &#34;CSV&#34;, &#34;GOOGLE_SHEETS&#34;, &#34;NEWLINE_DELIMITED_JSON&#34;, &#34;AVRO&#34;, &#34;PARQUET&#34;, &#34;ORC&#34; and &#34;DATASTORE_BACKUP&#34;. To use &#34;GOOGLE_SHEETS&#34; the scopes must include &#34;googleapis.com/auth/drive.readonly&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}The data format. Supported values are: "CSV", "GOOGLE_SHEETS", "NEWLINE_DELIMITED_JSON", "AVRO", "PARQUET", "ORC" and "DATASTORE_BACKUP". To use "GOOGLE_SHEETS" the scopes must include "googleapis.com/auth/drive.readonly".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -749,7 +749,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Specifies whether to use BigQuery&#39;s legacy SQL for this view. The default value is true. If set to false, the view will use BigQuery&#39;s standard SQL.{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies whether to use BigQuery's legacy SQL for this view. The default value is true. If set to false, the view will use BigQuery's standard SQL.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -791,7 +791,7 @@ type: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -819,7 +819,7 @@ type: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -875,7 +875,7 @@ type: string
         <td><code>numLongTermBytes</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The number of bytes in the table that are considered &#34;long-term storage&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}The number of bytes in the table that are considered "long-term storage".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -915,14 +915,14 @@ type: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -932,10 +932,10 @@ kind: BigQueryTable
 metadata:
   name: bigquerytablesample
   labels:
-    data-source: &#34;external&#34;
-    schema-type: &#34;auto-junk&#34;
+    data-source: "external"
+    schema-type: "auto-junk"
 spec:
-  description: &#34;BigQuery Sample Table&#34;
+  description: "BigQuery Sample Table"
   datasetRef:
     name: bigquerytabledep
   friendlyName: bigquerytable-sample
@@ -946,8 +946,8 @@ spec:
     maxBadRecords: 10
     sourceFormat: CSV
     sourceUris:
-      - &#34;gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt&#34;
-      - &#34;gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20180201_01_T2/LC08_L1GT_044034_20130330_20180201_01_T2_ANG.txt&#34;
+      - "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"
+      - "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20180201_01_T2/LC08_L1GT_044034_20130330_20180201_01_T2_ANG.txt"
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset

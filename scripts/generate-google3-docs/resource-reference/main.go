@@ -16,13 +16,13 @@ package main
 
 import (
 	"fmt"
-	"html/template"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"sort"
 	"strings"
+	"text/template"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	iamapi "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
@@ -113,7 +113,7 @@ type resource struct {
 	Kind                                           string
 	Spec                                           string
 	Status                                         string
-	ShortNames                                     template.HTML
+	ShortNames                                     string
 	Annotations                                    []string
 	IAM                                            *IAM
 	SampleYamls                                    map[string]string
@@ -188,7 +188,7 @@ func templateForGVK(gvk schema.GroupVersionKind) (*template.Template, error) {
 		filepath.Join(templatesPath, "shared/iamsupport.tmpl"),
 		filepath.Join(templatesPath, "shared/resource.tmpl"),
 	}
-	template, err := template.New(templateFileName).Funcs(sprig.HtmlFuncMap()).ParseFiles(templateFiles...)
+	template, err := template.New(templateFileName).Funcs(sprig.TxtFuncMap()).ParseFiles(templateFiles...)
 	if err != nil {
 		return nil, fmt.Errorf("error parsing template files: %v", err)
 	}
@@ -252,13 +252,7 @@ func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappi
 	r.FullyQualifiedName = crd.Name
 	r.Kind = crd.Spec.Names.Kind
 	crd.Spec.Names.ShortNames = append(crd.Spec.Names.ShortNames, strings.ToLower(r.Kind))
-
-	var shortNamesHTML []string
-	for _, shortName := range crd.Spec.Names.ShortNames {
-		shortNamesHTML = append(shortNamesHTML, template.HTMLEscapeString(shortName))
-	}
-	r.ShortNames = template.HTML(strings.Join(shortNamesHTML, "<br>"))
-
+	r.ShortNames = strings.Join(crd.Spec.Names.ShortNames, "<br>")
 	specYaml, err := crdtemplate.SpecToYAML(crd)
 	if err != nil {
 		return nil, fmt.Errorf("error converting spec to YAML: %v", err)

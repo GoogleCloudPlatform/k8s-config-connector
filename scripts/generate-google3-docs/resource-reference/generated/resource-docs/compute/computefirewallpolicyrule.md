@@ -115,7 +115,7 @@ targetServiceAccounts:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The Action to perform when the client connection triggers the rule. Can currently be either &#34;allow&#34; or &#34;deny()&#34; where valid values for status are 403, 404, and 502.{% endverbatim %}</p>
+            <p>{% verbatim %}The Action to perform when the client connection triggers the rule. Can currently be either "allow" or "deny()" where valid values for status are 403, 404, and 502.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -155,7 +155,7 @@ targetServiceAccounts:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Denotes whether to enable logging for a particular rule. If logging is enabled, logs will be exported to the configured export destination in Stackdriver. Logs may be exported to BigQuery or Pub/Sub. Note: you cannot enable logging on &#34;goto_next&#34; rules.{% endverbatim %}</p>
+            <p>{% verbatim %}Denotes whether to enable logging for a particular rule. If logging is enabled, logs will be exported to the configured export destination in Stackdriver. Logs may be exported to BigQuery or Pub/Sub. Note: you cannot enable logging on "goto_next" rules.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -207,7 +207,7 @@ Allowed value: The Google Cloud resource name of a `ComputeFirewallPolicy` resou
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding &#39;action&#39; is enforced.{% endverbatim %}</p>
+            <p>{% verbatim %}A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding 'action' is enforced.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -440,7 +440,7 @@ ruleTupleCount: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -468,7 +468,7 @@ ruleTupleCount: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -515,14 +515,14 @@ ruleTupleCount: integer
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -532,18 +532,18 @@ kind: ComputeFirewallPolicyRule
 metadata:
   name: firewallpolicyrule-sample
 spec:
-  action: &#34;deny&#34;
-  description: &#34;A Firewall Policy Rule&#34;
-  direction: &#34;INGRESS&#34;
+  action: "deny"
+  description: "A Firewall Policy Rule"
+  direction: "INGRESS"
   disabled: false
   enableLogging: false
   firewallPolicyRef:
     name: firewallpolicyrule-dep
   match:
     layer4Configs:
-    - ipProtocol: &#34;tcp&#34;
+    - ipProtocol: "tcp"
     srcIPRanges:
-    - &#34;10.100.0.1/32&#34;
+    - "10.100.0.1/32"
   priority: 9000
   targetResources:
     - name: firewallpolicyrule-dep
@@ -556,12 +556,12 @@ metadata:
   name: firewallpolicyrule-dep
 spec:
   organizationRef:
-    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
-    external: &#34;organizations/${ORG_ID?}&#34;
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "organizations/${ORG_ID?}"
   # ComputeFirewallPolicy shortNames must be unique in the organization in
   # which the firewall policy is created
   shortName: ${PROJECT_ID?}-short
-  description: &#34;A basic organization firewall policy&#34;
+  description: "A basic organization firewall policy"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
@@ -576,7 +576,7 @@ kind: IAMServiceAccount
 metadata:
   annotations:
     # Replace ${PROJECT_ID?} with your project ID.
-    cnrm.cloud.google.com/project-id: &#34;${PROJECT_ID?}&#34;
+    cnrm.cloud.google.com/project-id: "${PROJECT_ID?}"
   name: firewallpolicyrule-dep
 ```
 

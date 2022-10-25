@@ -876,7 +876,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The thresholds used to determine the state of the scorecard given the time series&#39; current value. For an actual value x, the scorecard is in a danger state if x is less than or equal to a danger threshold that triggers below, or greater than or equal to a danger threshold that triggers above. Similarly, if x is above/below a warning threshold that triggers above/below, then the scorecard is in a warning state - unless x also puts it in a danger state. (Danger trumps warning.)  As an example, consider a scorecard with the following four thresholds: {   value: 90,   category: &#39;DANGER&#39;,   trigger: &#39;ABOVE&#39;, },: {   value: 70,   category: &#39;WARNING&#39;,   trigger: &#39;ABOVE&#39;, }, {   value: 10,   category: &#39;DANGER&#39;,   trigger: &#39;BELOW&#39;, }, {   value: 20,   category: &#39;WARNING&#39;,   trigger: &#39;BELOW&#39;, }  Then: values less than or equal to 10 would put the scorecard in a DANGER state, values greater than 10 but less than or equal to 20 a WARNING state, values strictly between 20 and 70 an OK state, values greater than or equal to 70 but less than 90 a WARNING state, and values greater than or equal to 90 a DANGER state.{% endverbatim %}</p>
+            <p>{% verbatim %}The thresholds used to determine the state of the scorecard given the time series' current value. For an actual value x, the scorecard is in a danger state if x is less than or equal to a danger threshold that triggers below, or greater than or equal to a danger threshold that triggers above. Similarly, if x is above/below a warning threshold that triggers above/below, then the scorecard is in a warning state - unless x also puts it in a danger state. (Danger trumps warning.)  As an example, consider a scorecard with the following four thresholds: {   value: 90,   category: 'DANGER',   trigger: 'ABOVE', },: {   value: 70,   category: 'WARNING',   trigger: 'ABOVE', }, {   value: 10,   category: 'DANGER',   trigger: 'BELOW', }, {   value: 20,   category: 'WARNING',   trigger: 'BELOW', }  Then: values less than or equal to 10 would put the scorecard in a DANGER state, values greater than 10 but less than or equal to 20 a WARNING state, values strictly between 20 and 70 an OK state, values greater than or equal to 70 but less than 90 a WARNING state, and values greater than or equal to 90 a DANGER state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1506,7 +1506,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label&#39;s value. {% endverbatim %}</p>
+            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value. {% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2166,7 +2166,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The number of columns into which the view&#39;s width is divided. If omitted or set to zero, a system default will be used while rendering.{% endverbatim %}</p>
+            <p>{% verbatim %}The number of columns into which the view's width is divided. If omitted or set to zero, a system default will be used while rendering.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2346,7 +2346,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The thresholds used to determine the state of the scorecard given the time series&#39; current value. For an actual value x, the scorecard is in a danger state if x is less than or equal to a danger threshold that triggers below, or greater than or equal to a danger threshold that triggers above. Similarly, if x is above/below a warning threshold that triggers above/below, then the scorecard is in a warning state - unless x also puts it in a danger state. (Danger trumps warning.)  As an example, consider a scorecard with the following four thresholds: {   value: 90,   category: &#39;DANGER&#39;,   trigger: &#39;ABOVE&#39;, },: {   value: 70,   category: &#39;WARNING&#39;,   trigger: &#39;ABOVE&#39;, }, {   value: 10,   category: &#39;DANGER&#39;,   trigger: &#39;BELOW&#39;, }, {   value: 20,   category: &#39;WARNING&#39;,   trigger: &#39;BELOW&#39;, }  Then: values less than or equal to 10 would put the scorecard in a DANGER state, values greater than 10 but less than or equal to 20 a WARNING state, values strictly between 20 and 70 an OK state, values greater than or equal to 70 but less than 90 a WARNING state, and values greater than or equal to 90 a DANGER state.{% endverbatim %}</p>
+            <p>{% verbatim %}The thresholds used to determine the state of the scorecard given the time series' current value. For an actual value x, the scorecard is in a danger state if x is less than or equal to a danger threshold that triggers below, or greater than or equal to a danger threshold that triggers above. Similarly, if x is above/below a warning threshold that triggers above/below, then the scorecard is in a warning state - unless x also puts it in a danger state. (Danger trumps warning.)  As an example, consider a scorecard with the following four thresholds: {   value: 90,   category: 'DANGER',   trigger: 'ABOVE', },: {   value: 70,   category: 'WARNING',   trigger: 'ABOVE', }, {   value: 10,   category: 'DANGER',   trigger: 'BELOW', }, {   value: 20,   category: 'WARNING',   trigger: 'BELOW', }  Then: values less than or equal to 10 would put the scorecard in a DANGER state, values greater than 10 but less than or equal to 20 a WARNING state, values strictly between 20 and 70 an OK state, values greater than or equal to 70 but less than 90 a WARNING state, and values greater than or equal to 90 a DANGER state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2976,7 +2976,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label&#39;s value. {% endverbatim %}</p>
+            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value. {% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3826,7 +3826,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The thresholds used to determine the state of the scorecard given the time series&#39; current value. For an actual value x, the scorecard is in a danger state if x is less than or equal to a danger threshold that triggers below, or greater than or equal to a danger threshold that triggers above. Similarly, if x is above/below a warning threshold that triggers above/below, then the scorecard is in a warning state - unless x also puts it in a danger state. (Danger trumps warning.)  As an example, consider a scorecard with the following four thresholds: {   value: 90,   category: &#39;DANGER&#39;,   trigger: &#39;ABOVE&#39;, },: {   value: 70,   category: &#39;WARNING&#39;,   trigger: &#39;ABOVE&#39;, }, {   value: 10,   category: &#39;DANGER&#39;,   trigger: &#39;BELOW&#39;, }, {   value: 20,   category: &#39;WARNING&#39;,   trigger: &#39;BELOW&#39;, }  Then: values less than or equal to 10 would put the scorecard in a DANGER state, values greater than 10 but less than or equal to 20 a WARNING state, values strictly between 20 and 70 an OK state, values greater than or equal to 70 but less than 90 a WARNING state, and values greater than or equal to 90 a DANGER state.{% endverbatim %}</p>
+            <p>{% verbatim %}The thresholds used to determine the state of the scorecard given the time series' current value. For an actual value x, the scorecard is in a danger state if x is less than or equal to a danger threshold that triggers below, or greater than or equal to a danger threshold that triggers above. Similarly, if x is above/below a warning threshold that triggers above/below, then the scorecard is in a warning state - unless x also puts it in a danger state. (Danger trumps warning.)  As an example, consider a scorecard with the following four thresholds: {   value: 90,   category: 'DANGER',   trigger: 'ABOVE', },: {   value: 70,   category: 'WARNING',   trigger: 'ABOVE', }, {   value: 10,   category: 'DANGER',   trigger: 'BELOW', }, {   value: 20,   category: 'WARNING',   trigger: 'BELOW', }  Then: values less than or equal to 10 would put the scorecard in a DANGER state, values greater than 10 but less than or equal to 20 a WARNING state, values strictly between 20 and 70 an OK state, values greater than or equal to 70 but less than 90 a WARNING state, and values greater than or equal to 90 a DANGER state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4456,7 +4456,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label&#39;s value. {% endverbatim %}</p>
+            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value. {% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5388,7 +5388,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The thresholds used to determine the state of the scorecard given the time series&#39; current value. For an actual value x, the scorecard is in a danger state if x is less than or equal to a danger threshold that triggers below, or greater than or equal to a danger threshold that triggers above. Similarly, if x is above/below a warning threshold that triggers above/below, then the scorecard is in a warning state - unless x also puts it in a danger state. (Danger trumps warning.)  As an example, consider a scorecard with the following four thresholds: {   value: 90,   category: &#39;DANGER&#39;,   trigger: &#39;ABOVE&#39;, },: {   value: 70,   category: &#39;WARNING&#39;,   trigger: &#39;ABOVE&#39;, }, {   value: 10,   category: &#39;DANGER&#39;,   trigger: &#39;BELOW&#39;, }, {   value: 20,   category: &#39;WARNING&#39;,   trigger: &#39;BELOW&#39;, }  Then: values less than or equal to 10 would put the scorecard in a DANGER state, values greater than 10 but less than or equal to 20 a WARNING state, values strictly between 20 and 70 an OK state, values greater than or equal to 70 but less than 90 a WARNING state, and values greater than or equal to 90 a DANGER state.{% endverbatim %}</p>
+            <p>{% verbatim %}The thresholds used to determine the state of the scorecard given the time series' current value. For an actual value x, the scorecard is in a danger state if x is less than or equal to a danger threshold that triggers below, or greater than or equal to a danger threshold that triggers above. Similarly, if x is above/below a warning threshold that triggers above/below, then the scorecard is in a warning state - unless x also puts it in a danger state. (Danger trumps warning.)  As an example, consider a scorecard with the following four thresholds: {   value: 90,   category: 'DANGER',   trigger: 'ABOVE', },: {   value: 70,   category: 'WARNING',   trigger: 'ABOVE', }, {   value: 10,   category: 'DANGER',   trigger: 'BELOW', }, {   value: 20,   category: 'WARNING',   trigger: 'BELOW', }  Then: values less than or equal to 10 would put the scorecard in a DANGER state, values greater than 10 but less than or equal to 20 a WARNING state, values strictly between 20 and 70 an OK state, values greater than or equal to 70 but less than 90 a WARNING state, and values greater than or equal to 90 a DANGER state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6018,7 +6018,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label&#39;s value. {% endverbatim %}</p>
+            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value. {% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6682,7 +6682,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6710,7 +6710,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6750,14 +6750,14 @@ observedGeneration: integer
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -6769,49 +6769,49 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID
-    external: &#34;projects/${PROJECT_ID?}&#34;
-  displayName: &#34;monitoringdashboard-sample&#34;
+    external: "projects/${PROJECT_ID?}"
+  displayName: "monitoringdashboard-sample"
   columnLayout:
     columns:
     - weight: 2
       widgets:
-      - title: &#34;Widget 1&#34;
+      - title: "Widget 1"
         xyChart:
           dataSets:
           - timeSeriesQuery:
               timeSeriesFilter:
-                filter: metric.type=&#34;agent.googleapis.com/nginx/connections/accepted_count&#34;
+                filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
                 aggregation:
-                  perSeriesAligner: &#34;ALIGN_RATE&#34;
-              unitOverride: &#34;1&#34;
+                  perSeriesAligner: "ALIGN_RATE"
+              unitOverride: "1"
             plotType: LINE
           timeshiftDuration: 0s
           yAxis:
             label: y1Axis
             scale: LINEAR
       - text:
-          content: &#34;Widget 2&#34;
-          format: &#34;MARKDOWN&#34;
-      - title: &#34;Widget 3&#34;
+          content: "Widget 2"
+          format: "MARKDOWN"
+      - title: "Widget 3"
         xyChart:
           dataSets:
           - timeSeriesQuery:
               timeSeriesFilter:
-                filter: metric.type=&#34;agent.googleapis.com/nginx/connections/accepted_count&#34;
+                filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
                 aggregation:
                   perSeriesAligner: ALIGN_RATE
-              unitOverride: &#34;1&#34;
-            plotType: &#34;STACKED_BAR&#34;
+              unitOverride: "1"
+            plotType: "STACKED_BAR"
           timeshiftDuration: 0s
           yAxis:
             label: y1Axis
             scale: LINEAR
-      - title: &#34;Widget 4&#34;
+      - title: "Widget 4"
         logsPanel:
-          filter: metric.type=&#34;agent.googleapis.com/nginx/connections/accepted_count&#34;
+          filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
           resourceNames:
             # Replace ${PROJECT_ID?} with the ID of the project you wish to monitor
-            - external: &#34;projects/${PROJECT_ID?}&#34;
+            - external: "projects/${PROJECT_ID?}"
 ```
 
 

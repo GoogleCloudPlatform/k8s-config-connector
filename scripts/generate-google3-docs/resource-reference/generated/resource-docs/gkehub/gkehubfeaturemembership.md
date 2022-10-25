@@ -314,7 +314,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Specifies whether the Config Sync Repo is in &#34;hierarchical&#34; or &#34;unstructured&#34; mode.{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies whether the Config Sync Repo is in "hierarchical" or "unstructured" mode.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -424,7 +424,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Specifies the backends Policy Controller should export metrics to. For example, to specify metrics should be exported to Cloud Monitoring and Prometheus, specify backends: [&#34;cloudmonitoring&#34;, &#34;prometheus&#34;]. Default: [&#34;cloudmonitoring&#34;, &#34;prometheus&#34;]{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies the backends Policy Controller should export metrics to. For example, to specify metrics should be exported to Cloud Monitoring and Prometheus, specify backends: ["cloudmonitoring", "prometheus"]. Default: ["cloudmonitoring", "prometheus"]{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -671,7 +671,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -699,7 +699,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -732,14 +732,14 @@ observedGeneration: integer
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -760,20 +760,20 @@ spec:
     configSync:
       sourceFormat: unstructured
       git:
-        syncRepo: &#34;https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit&#34;
-        syncBranch: &#34;master&#34;
-        policyDir: &#34;config-connector&#34;
-        syncWaitSecs: &#34;20&#34;
-        syncRev: &#34;HEAD&#34;
-        secretType: &#34;none&#34;
+        syncRepo: "https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit"
+        syncBranch: "master"
+        policyDir: "config-connector"
+        syncWaitSecs: "20"
+        syncRev: "HEAD"
+        secretType: "none"
     policyController:
       enabled: true
       exemptableNamespaces:
-        - &#34;test-namespace&#34;
+        - "test-namespace"
       referentialRulesEnabled: true
       logDeniesEnabled: true
       templateLibraryInstalled: true
-      auditIntervalSeconds: &#34;20&#34;
+      auditIntervalSeconds: "20"
     binauthz:
       enabled: true
     hierarchyController:
@@ -802,7 +802,7 @@ spec:
   projectRef:
     name: gkehubfeaturemembership-dep
   location: global
-  # The resourceID must be &#34;configmanagement&#34; if you want to use Anthos config
+  # The resourceID must be "configmanagement" if you want to use Anthos config
   # management feature.
   resourceID: configmanagement
 ---
@@ -830,18 +830,18 @@ metadata:
 spec:
   name: Config Connector Sample
   organizationRef:
-    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
-    external: &#34;${ORG_ID?}&#34;
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "${ORG_ID?}"
   billingAccountRef:
-    # Replace &#34;${BILLING_ACCOUNT_ID?}&#34; with the numeric ID for your billing account
-    external: &#34;${BILLING_ACCOUNT_ID?}&#34;
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
 ---
 apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep
-    cnrm.cloud.google.com/disable-dependent-services: &#34;false&#34;
+    cnrm.cloud.google.com/disable-dependent-services: "false"
   name: gkehubfeaturemembership-dep-1
 spec:
   resourceID: container.googleapis.com
@@ -851,7 +851,7 @@ kind: Service
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep
-    cnrm.cloud.google.com/disable-dependent-services: &#34;false&#34;
+    cnrm.cloud.google.com/disable-dependent-services: "false"
   name: gkehubfeaturemembership-dep-2
 spec:
   resourceID: gkehub.googleapis.com
@@ -861,7 +861,7 @@ kind: Service
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep
-    cnrm.cloud.google.com/disable-dependent-services: &#34;false&#34;
+    cnrm.cloud.google.com/disable-dependent-services: "false"
   name: gkehubfeaturemembership-dep-3
 spec:
   resourceID: anthosconfigmanagement.googleapis.com

@@ -197,7 +197,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Interval between the start of each scheduled transfer. If unspecified, the default value is 24 hours. This value may not be less than 1 hour. A duration in seconds with up to nine fractional digits, terminated by &#39;s&#39;. Example: &#34;3.5s&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Interval between the start of each scheduled transfer. If unspecified, the default value is 24 hours. This value may not be less than 1 hour. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -287,7 +287,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The time in UTC at which the transfer will be scheduled to start in a day. Transfers may start later than this time. If not specified, recurring and one-time transfers that are scheduled to run today will run immediately; recurring transfers that are scheduled to run on a future date will start at approximately midnight UTC on that date. Note that when configuring a transfer with the Cloud Platform Console, the transfer&#39;s start time in a day is specified in your local timezone.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The time in UTC at which the transfer will be scheduled to start in a day. Transfers may start later than this time. If not specified, recurring and one-time transfers that are scheduled to run today will run immediately; recurring transfers that are scheduled to run on a future date will start at approximately midnight UTC on that date. Note that when configuring a transfer with the Cloud Platform Console, the transfer's start time in a day is specified in your local timezone.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -387,7 +387,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value of the field. Cannot be used if &#39;valueFrom&#39; is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Value of the field. Cannot be used if 'valueFrom' is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -397,7 +397,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Source for the field&#39;s value. Cannot be used if &#39;value&#39; is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Source for the field's value. Cannot be used if 'value' is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -407,7 +407,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource&#39;s namespace.{% endverbatim %}</p>
+            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource's namespace.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -447,7 +447,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value of the field. Cannot be used if &#39;valueFrom&#39; is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Value of the field. Cannot be used if 'valueFrom' is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -457,7 +457,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Source for the field&#39;s value. Cannot be used if &#39;value&#39; is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Source for the field's value. Cannot be used if 'value' is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -467,7 +467,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource&#39;s namespace.{% endverbatim %}</p>
+            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource's namespace.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -507,7 +507,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The Amazon Resource Name (ARN) of the role to support temporary credentials via &#39;AssumeRoleWithWebIdentity&#39;. For more information about ARNs, see [IAM ARNs](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-arns). When a role ARN is provided, Transfer Service fetches temporary credentials for the session using a &#39;AssumeRoleWithWebIdentity&#39; call for the provided role using the [GoogleServiceAccount][] for this project.{% endverbatim %}</p>
+            <p>{% verbatim %}The Amazon Resource Name (ARN) of the role to support temporary credentials via 'AssumeRoleWithWebIdentity'. For more information about ARNs, see [IAM ARNs](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-arns). When a role ARN is provided, Transfer Service fetches temporary credentials for the session using a 'AssumeRoleWithWebIdentity' call for the provided role using the [GoogleServiceAccount][] for this project.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -547,7 +547,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value of the field. Cannot be used if &#39;valueFrom&#39; is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Value of the field. Cannot be used if 'valueFrom' is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -557,7 +557,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Source for the field&#39;s value. Cannot be used if &#39;value&#39; is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Source for the field's value. Cannot be used if 'value' is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -567,7 +567,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource&#39;s namespace.{% endverbatim %}</p>
+            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource's namespace.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -607,7 +607,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Root path to transfer objects. Must be an empty string or full path name that ends with a &#39;/&#39;. This field is treated as an object prefix. As such, it should generally not begin with a &#39;/&#39;.{% endverbatim %}</p>
+            <p>{% verbatim %}Root path to transfer objects. Must be an empty string or full path name that ends with a '/'. This field is treated as an object prefix. As such, it should generally not begin with a '/'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -767,7 +767,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Only objects that satisfy these object conditions are included in the set of data source and data sink objects. Object conditions based on objects&#39; last_modification_time do not exclude objects in a data sink.{% endverbatim %}</p>
+            <p>{% verbatim %}Only objects that satisfy these object conditions are included in the set of data source and data sink objects. Object conditions based on objects' last_modification_time do not exclude objects in a data sink.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -817,7 +817,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A duration in seconds with up to nine fractional digits, terminated by &#39;s&#39;. Example: &#34;3.5s&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -827,7 +827,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A duration in seconds with up to nine fractional digits, terminated by &#39;s&#39;. Example: &#34;3.5s&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -877,7 +877,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Characteristics of how to treat files from datasource and sink during job. If the option delete_objects_unique_in_sink is true, object conditions based on objects&#39; last_modification_time are ignored and do not exclude objects in a data source or a data sink.{% endverbatim %}</p>
+            <p>{% verbatim %}Characteristics of how to treat files from datasource and sink during job. If the option delete_objects_unique_in_sink is true, object conditions based on objects' last_modification_time are ignored and do not exclude objects in a data source or a data sink.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -944,7 +944,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -972,7 +972,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1033,14 +1033,14 @@ observedGeneration: integer
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1050,7 +1050,7 @@ kind: StorageTransferJob
 metadata:
   name: storagetransferjob-sample
 spec:
-  description: &#34;Sample storage transfer job&#34;
+  description: "Sample storage transfer job"
   schedule:
     startTimeOfDay:
       seconds: 0

@@ -215,10 +215,10 @@ you do not need to provide a key to use the disk later.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The encryption key used to encrypt the disk. Your project&#39;s Compute
+            <p>{% verbatim %}The encryption key used to encrypt the disk. Your project's Compute
 Engine System service account
-(&#39;service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com&#39;)
-must have &#39;roles/cloudkms.cryptoKeyEncrypterDecrypter&#39; to use this
+('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
+must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
 feature. See
 https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys{% endverbatim %}</p>
         </td>
@@ -312,7 +312,7 @@ RFC 4648 base64 to either encrypt or decrypt this resource.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value of the field. Cannot be used if &#39;valueFrom&#39; is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Value of the field. Cannot be used if 'valueFrom' is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -322,7 +322,7 @@ RFC 4648 base64 to either encrypt or decrypt this resource.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Source for the field&#39;s value. Cannot be used if &#39;value&#39; is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Source for the field's value. Cannot be used if 'value' is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -332,7 +332,7 @@ RFC 4648 base64 to either encrypt or decrypt this resource.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource&#39;s namespace.{% endverbatim %}</p>
+            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource's namespace.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -447,7 +447,7 @@ encryption key that protects this resource.{% endverbatim %}</p>
 in a request, a default value is used. Currently supported sizes
 are 4096 and 16384, other sizes may be added in the future.
 If an unsupported value is requested, the error message will list
-the supported values for the caller&#39;s project.{% endverbatim %}</p>
+the supported values for the caller's project.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -588,11 +588,11 @@ the supported values for the caller&#39;s project.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}Size of the persistent disk, specified in GB. You can specify this
-field when creating a persistent disk using the &#39;image&#39; or
-&#39;snapshot&#39; parameter, or specify it alone to create an empty
+field when creating a persistent disk using the 'image' or
+'snapshot' parameter, or specify it alone to create an empty
 persistent disk.
 
-If you specify this field along with &#39;image&#39; or &#39;snapshot&#39;,
+If you specify this field along with 'image' or 'snapshot',
 the value must not be less than the size of the image
 or the size of the snapshot.
 
@@ -658,10 +658,10 @@ the source image is protected by a customer-supplied encryption key.{% endverbat
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The encryption key used to encrypt the disk. Your project&#39;s Compute
+            <p>{% verbatim %}The encryption key used to encrypt the disk. Your project's Compute
 Engine System service account
-(&#39;service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com&#39;)
-must have &#39;roles/cloudkms.cryptoKeyEncrypterDecrypter&#39; to use this
+('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
+must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
 feature. See
 https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys{% endverbatim %}</p>
         </td>
@@ -778,10 +778,10 @@ key.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The encryption key used to encrypt the disk. Your project&#39;s Compute
+            <p>{% verbatim %}The encryption key used to encrypt the disk. Your project's Compute
 Engine System service account
-(&#39;service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com&#39;)
-must have &#39;roles/cloudkms.cryptoKeyEncrypterDecrypter&#39; to use this
+('service-{{PROJECT_NUMBER}}@compute-system.iam.gserviceaccount.com')
+must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this
 feature. See
 https://cloud.google.com/compute/docs/disks/customer-managed-encryption#encrypt_a_new_persistent_disk_with_your_own_keys{% endverbatim %}</p>
         </td>
@@ -929,7 +929,7 @@ users:
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -957,7 +957,7 @@ users:
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1064,14 +1064,14 @@ project/zones/zone/instances/instance.{% endverbatim %}</p>
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1092,7 +1092,7 @@ metadata:
     cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
   name: computedisk-sample-regional
   labels:
-    extra-gb: &#34;100&#34;
+    extra-gb: "100"
 spec:
   description: A 600GB regional disk from a 500GB snapshot.
   location: us-central1
@@ -1120,14 +1120,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1137,7 +1137,7 @@ kind: ComputeDisk
 metadata:
   name: computedisk-sample-zonal
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
 spec:
   description: a sample encrypted, blank disk
   diskEncryptionKey:
@@ -1156,7 +1156,7 @@ kind: Secret
 metadata:
   name: computedisk-dep-zonal
 stringData:
-  sharedSecret: &#34;SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0=&#34;
+  sharedSecret: "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
 ```
 
 

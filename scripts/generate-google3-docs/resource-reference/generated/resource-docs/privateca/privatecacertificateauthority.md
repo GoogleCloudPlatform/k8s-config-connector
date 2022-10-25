@@ -243,7 +243,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The &#34;common name&#34; of the subject.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The "common name" of the subject.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -573,7 +573,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Optional. Refers to the &#34;CA&#34; X.509 extension, which is a boolean value. When this value is missing, the extension will be omitted from the CA certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. Refers to the "CA" X.509 extension, which is a boolean value. When this value is missing, the extension will be omitted from the CA certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -623,7 +623,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. The key may be used for cryptographic commitments. Note that this may also be referred to as &#34;non-repudiation&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The key may be used for cryptographic commitments. Note that this may also be referred to as "non-repudiation".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -713,7 +713,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as &#34;TLS WWW client authentication&#34;, though regularly used for non-WWW TLS.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as "TLS WWW client authentication", though regularly used for non-WWW TLS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -723,7 +723,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as &#34;Signing of downloadable executable code client authentication&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as "Signing of downloadable executable code client authentication".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -733,7 +733,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as &#34;Email protection&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as "Email protection".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -743,7 +743,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as &#34;Signing OCSP responses&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as "Signing OCSP responses".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -753,7 +753,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as &#34;TLS WWW server authentication&#34;, though regularly used for non-WWW TLS.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW server authentication", though regularly used for non-WWW TLS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -763,7 +763,7 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as &#34;Binding the hash of an object to a time&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as "Binding the hash of an object to a time".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -925,7 +925,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The resource name for an existing Cloud KMS CryptoKeyVersion in the format `projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*`. This option enables full flexibility in the key&#39;s capabilities and properties.{% endverbatim %}</p>
+            <p>{% verbatim %}The resource name for an existing Cloud KMS CryptoKeyVersion in the format `projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*`. This option enables full flexibility in the key's capabilities and properties.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -935,7 +935,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[WARNING] KMSCryptoKeyVersion not yet supported in Config Connector, use &#39;external&#39; field to reference existing resources.
+            <p>{% verbatim %}[WARNING] KMSCryptoKeyVersion not yet supported in Config Connector, use 'external' field to reference existing resources.
 Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
         </td>
     </tr>
@@ -956,7 +956,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Required. The desired lifetime of the CA certificate. Used to create the &#34;not_before_time&#34; and &#34;not_after_time&#34; fields inside an X.509 certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Required. The desired lifetime of the CA certificate. Used to create the "not_before_time" and "not_after_time" fields inside an X.509 certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1171,14 +1171,14 @@ updateTime: string
         <td><code>accessUrls.caCertificateAccessUrl</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The URL where this CertificateAuthority&#39;s CA certificate is published. This will only be set for CAs that have been activated.{% endverbatim %}</p>
+            <p>{% verbatim %}The URL where this CertificateAuthority's CA certificate is published. This will only be set for CAs that have been activated.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>accessUrls.crlAccessUrls</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The URLs where this CertificateAuthority&#39;s CRLs are published. This will only be set for CAs that have been activated.{% endverbatim %}</p>
+            <p>{% verbatim %}The URLs where this CertificateAuthority's CRLs are published. This will only be set for CAs that have been activated.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1192,7 +1192,7 @@ updateTime: string
         <td><code>caCertificateDescriptions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Output only. A structured description of this CertificateAuthority&#39;s CA certificate and its issuers. Ordered as self-to-root.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. A structured description of this CertificateAuthority's CA certificate and its issuers. Ordered as self-to-root.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1206,7 +1206,7 @@ updateTime: string
         <td><code>caCertificateDescriptions[].aiaIssuingCertificateUrls</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Describes lists of issuer CA certificate URLs that appear in the &#34;Authority Information Access&#34; extension in the certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Describes lists of issuer CA certificate URLs that appear in the "Authority Information Access" extension in the certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1304,7 +1304,7 @@ updateTime: string
         <td><code>caCertificateDescriptions[].subjectDescription.notAfterTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time after which the certificate is expired. Per RFC 5280, the validity period for a certificate is the period of time from not_before_time through not_after_time, inclusive. Corresponds to &#39;not_before_time&#39; &#43; &#39;lifetime&#39; - 1 second.{% endverbatim %}</p>
+            <p>{% verbatim %}The time after which the certificate is expired. Per RFC 5280, the validity period for a certificate is the period of time from not_before_time through not_after_time, inclusive. Corresponds to 'not_before_time' + 'lifetime' - 1 second.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1325,7 +1325,7 @@ updateTime: string
         <td><code>caCertificateDescriptions[].subjectDescription.subject.commonName</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The &#34;common name&#34; of the subject.{% endverbatim %}</p>
+            <p>{% verbatim %}The "common name" of the subject.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1563,7 +1563,7 @@ updateTime: string
         <td><code>caCertificateDescriptions[].x509Description.aiaOcspServers</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Optional. Describes Online Certificate Status Protocol (OCSP) endpoint addresses that appear in the &#34;Authority Information Access&#34; extension in the certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Describes Online Certificate Status Protocol (OCSP) endpoint addresses that appear in the "Authority Information Access" extension in the certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1584,7 +1584,7 @@ updateTime: string
         <td><code>caCertificateDescriptions[].x509Description.caOptions.isCa</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. Refers to the &#34;CA&#34; X.509 extension, which is a boolean value. When this value is missing, the extension will be omitted from the CA certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Refers to the "CA" X.509 extension, which is a boolean value. When this value is missing, the extension will be omitted from the CA certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1619,7 +1619,7 @@ updateTime: string
         <td><code>caCertificateDescriptions[].x509Description.keyUsage.baseKeyUsage.contentCommitment</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}The key may be used for cryptographic commitments. Note that this may also be referred to as &#34;non-repudiation&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}The key may be used for cryptographic commitments. Note that this may also be referred to as "non-repudiation".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1682,42 +1682,42 @@ updateTime: string
         <td><code>caCertificateDescriptions[].x509Description.keyUsage.extendedKeyUsage.clientAuth</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as &#34;TLS WWW client authentication&#34;, though regularly used for non-WWW TLS.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as "TLS WWW client authentication", though regularly used for non-WWW TLS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>caCertificateDescriptions[].x509Description.keyUsage.extendedKeyUsage.codeSigning</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as &#34;Signing of downloadable executable code client authentication&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as "Signing of downloadable executable code client authentication".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>caCertificateDescriptions[].x509Description.keyUsage.extendedKeyUsage.emailProtection</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as &#34;Email protection&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as "Email protection".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>caCertificateDescriptions[].x509Description.keyUsage.extendedKeyUsage.ocspSigning</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as &#34;Signing OCSP responses&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as "Signing OCSP responses".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>caCertificateDescriptions[].x509Description.keyUsage.extendedKeyUsage.serverAuth</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as &#34;TLS WWW server authentication&#34;, though regularly used for non-WWW TLS.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW server authentication", though regularly used for non-WWW TLS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>caCertificateDescriptions[].x509Description.keyUsage.extendedKeyUsage.timeStamping</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as &#34;Binding the hash of an object to a time&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as "Binding the hash of an object to a time".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1780,7 +1780,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1808,7 +1808,7 @@ updateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1864,7 +1864,7 @@ updateTime: string
         <td><code>config.x509Config.aiaOcspServers</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Optional. Describes Online Certificate Status Protocol (OCSP) endpoint addresses that appear in the &#34;Authority Information Access&#34; extension in the certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Describes Online Certificate Status Protocol (OCSP) endpoint addresses that appear in the "Authority Information Access" extension in the certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1906,7 +1906,7 @@ updateTime: string
         <td><code>pemCaCertificates</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Output only. This CertificateAuthority&#39;s certificate chain, including the current CertificateAuthority&#39;s certificate. Ordered such that the root issuer is the final element (consistent with RFC 5246). For a self-signed CA, this will only list the current CertificateAuthority&#39;s certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. This CertificateAuthority's certificate chain, including the current CertificateAuthority's certificate. Ordered such that the root issuer is the final element (consistent with RFC 5246). For a self-signed CA, this will only list the current CertificateAuthority's certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1981,14 +1981,14 @@ updateTime: string
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1997,13 +1997,13 @@ apiVersion: privateca.cnrm.cloud.google.com/v1beta1
 kind: PrivateCACertificateAuthority
 metadata:
   labels:
-    label-two: &#34;value-two&#34;
+    label-two: "value-two"
   name: privatecacertificateauthority-sample
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
     external: projects/${PROJECT_ID?}
-  location: &#34;us-central1&#34;
+  location: "us-central1"
   type: SELF_SIGNED
   caPoolRef:
     name: privatecacertificateauthority-dep
@@ -2032,19 +2032,19 @@ apiVersion: privateca.cnrm.cloud.google.com/v1beta1
 kind: PrivateCACAPool
 metadata:
   labels:
-    label-two: &#34;value-two&#34;
+    label-two: "value-two"
   name: privatecacertificateauthority-dep
   # PrivateCACertificateAuthority cannot be deleted immediately, and must wait
-  # 30 days in a &#39;DELETED&#39; status before it is fully deleted. Since a PrivateCACAPool
-  # with a PrivateCACertificateAuthority in &#39;DELETED&#39; status cannot be deleted
+  # 30 days in a 'DELETED' status before it is fully deleted. Since a PrivateCACAPool
+  # with a PrivateCACertificateAuthority in 'DELETED' status cannot be deleted
   # itself, we abandon this resource on deletion.
   annotations:
-    cnrm.cloud.google.com/deletion-policy: &#34;abandon&#34;
+    cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
     external: projects/${PROJECT_ID?}
-  location: &#34;us-central1&#34;
+  location: "us-central1"
   tier: ENTERPRISE
   issuancePolicy:
     allowedKeyTypes:
@@ -2100,7 +2100,7 @@ spec:
       celExpression:
         title: Sample expression
         description: Always false
-        expression: &#39;false&#39;
+        expression: 'false'
         location: devops.ca_pool.json
       allowSubjectPassthrough: false
       allowSubjectAltNamesPassthrough: false

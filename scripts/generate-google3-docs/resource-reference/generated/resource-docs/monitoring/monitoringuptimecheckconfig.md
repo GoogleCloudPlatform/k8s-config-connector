@@ -214,7 +214,7 @@ timeout: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value of the field. Cannot be used if &#39;valueFrom&#39; is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Value of the field. Cannot be used if 'valueFrom' is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -224,7 +224,7 @@ timeout: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Source for the field&#39;s value. Cannot be used if &#39;value&#39; is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Source for the field's value. Cannot be used if 'value' is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -234,7 +234,7 @@ timeout: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource&#39;s namespace.{% endverbatim %}</p>
+            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource's namespace.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -274,7 +274,7 @@ timeout: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The request body associated with the HTTP POST request. If `content_type` is `URL_ENCODED`, the body passed in must be URL-encoded. Users can provide a `Content-Length` header via the `headers` field or the API will do so. If the `request_method` is `GET` and `body` is not empty, the API will return an error. The maximum byte size is 1 megabyte. Note: As with all `bytes` fields JSON representations are base64 encoded. e.g.: &#34;foo=bar&#34; in URL-encoded form is &#34;foo%3Dbar&#34; and in base64 encoding is &#34;Zm9vJTI1M0RiYXI=&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}The request body associated with the HTTP POST request. If `content_type` is `URL_ENCODED`, the body passed in must be URL-encoded. Users can provide a `Content-Length` header via the `headers` field or the API will do so. If the `request_method` is `GET` and `body` is not empty, the API will return an error. The maximum byte size is 1 megabyte. Note: As with all `bytes` fields JSON representations are base64 encoded. e.g.: "foo=bar" in URL-encoded form is "foo%3Dbar" and in base64 encoding is "Zm9vJTI1M0RiYXI=".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -314,7 +314,7 @@ timeout: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional (defaults to &#34;/&#34;). The path to the page against which to run the check. Will be combined with the `host` (specified within the `monitored_resource`) and `port` to construct the full URL. If the provided path does not begin with &#34;/&#34;, a &#34;/&#34; will be prepended automatically.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional (defaults to "/"). The path to the page against which to run the check. Will be combined with the `host` (specified within the `monitored_resource`) and `port` to construct the full URL. If the provided path does not begin with "/", a "/" will be prepended automatically.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -591,7 +591,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -619,7 +619,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -652,14 +652,14 @@ observedGeneration: integer
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -672,24 +672,24 @@ spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
     external: projects/${PROJECT_ID?}
-  displayName: &#34;A sample http uptime check config&#34;
+  displayName: "A sample http uptime check config"
   period: 60s
   timeout: 30s
   contentMatchers:
-    - content: &#34;.*&#34;
-      matcher: &#34;MATCHES_REGEX&#34;
+    - content: ".*"
+      matcher: "MATCHES_REGEX"
   selectedRegions:
     - USA
   monitoredResource:
-    type: &#34;uptime_url&#34;
+    type: "uptime_url"
     filterLabels:
-      host: &#34;192.168.1.1&#34;
+      host: "192.168.1.1"
       # Replace ${PROJECT_ID?} with the ID of a monitored project.
       project_id: ${PROJECT_ID?}
   httpCheck:
     requestMethod: POST
     useSsl: true
-    path: &#34;/main&#34;
+    path: "/main"
     port: 80
     authInfo:
       username: test
@@ -700,10 +700,10 @@ spec:
             key: password
     maskHeaders: true
     headers:
-      header-one: &#34;value-one&#34;
-    contentType: &#34;URL_ENCODED&#34;
+      header-one: "value-one"
+    contentType: "URL_ENCODED"
     validateSsl: false
-    body: &#34;c3RyaW5nCg==&#34;
+    body: "c3RyaW5nCg=="
 ---
 apiVersion: v1
 kind: Secret
@@ -717,14 +717,14 @@ data:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -737,7 +737,7 @@ spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
     external: projects/${PROJECT_ID?}
-  displayName: &#34;A sample TCP uptime check config&#34;
+  displayName: "A sample TCP uptime check config"
   timeout: 30s
   resourceGroup:
     groupRef:
@@ -755,7 +755,7 @@ spec:
     # Replace ${PROJECT_ID?} with your project ID.
     external: projects/${PROJECT_ID?}
   filter: resource.metadata.region=europe-west2
-  displayName: &#34;A sample monitoring group&#34;
+  displayName: "A sample monitoring group"
 ```
 
 

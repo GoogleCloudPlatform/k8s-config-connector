@@ -300,7 +300,7 @@ sessionAffinity: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. How to distribute load. Options are &#34;NONE&#34; (no affinity). &#34;CLIENT_IP&#34; (hash of the source/dest addresses / ports), and &#34;CLIENT_IP_PROTO&#34; also includes the protocol (default &#34;NONE&#34;).{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. How to distribute load. Options are "NONE" (no affinity). "CLIENT_IP" (hash of the source/dest addresses / ports), and "CLIENT_IP_PROTO" also includes the protocol (default "NONE").{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -332,7 +332,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -360,7 +360,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -400,14 +400,14 @@ selfLink: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -429,7 +429,7 @@ metadata:
 spec:
   backupTargetPoolRef:
     name: computetargetpool-dep
-  description: A pool of compute instances to use as a backend to a load balancer, with health check and backup pool. A hash of requester&#39;s IP is used to determine session affinity to instances.
+  description: A pool of compute instances to use as a backend to a load balancer, with health check and backup pool. A hash of requester's IP is used to determine session affinity to instances.
   instances:
   - name: computetargetpool-dep1
   - name: computetargetpool-dep2

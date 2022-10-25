@@ -128,7 +128,7 @@ visibility: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A textual description field. Defaults to &#39;Managed by Config Connector&#39;.{% endverbatim %}</p>
+            <p>{% verbatim %}A textual description field. Defaults to 'Managed by Config Connector'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -138,7 +138,7 @@ visibility: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The DNS name of this managed zone, for instance &#34;example.com.&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The DNS name of this managed zone, for instance "example.com.".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -161,7 +161,7 @@ visibility: string
             <p>{% verbatim %}Specifies parameters that will be used for generating initial DnsKeys
 for this ManagedZone. If you provide a spec for keySigning or zoneSigning,
 you must also provide one for the other.
-default_key_specs can only be updated when the state is &#39;off&#39;.{% endverbatim %}</p>
+default_key_specs can only be updated when the state is 'off'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -181,7 +181,7 @@ default_key_specs can only be updated when the state is &#39;off&#39;.{% endverb
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}String mnemonic specifying the DNSSEC algorithm of this key Possible values: [&#34;ecdsap256sha256&#34;, &#34;ecdsap384sha384&#34;, &#34;rsasha1&#34;, &#34;rsasha256&#34;, &#34;rsasha512&#34;].{% endverbatim %}</p>
+            <p>{% verbatim %}String mnemonic specifying the DNSSEC algorithm of this key Possible values: ["ecdsap256sha256", "ecdsap384sha384", "rsasha1", "rsasha256", "rsasha512"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -206,7 +206,7 @@ signing key (ZSK). Key signing keys have the Secure Entry
 Point flag set and, when active, will only be used to sign
 resource record sets of type DNSKEY. Zone signing keys do
 not have the Secure Entry Point flag set and will be used
-to sign all other types of resource record sets. Possible values: [&#34;keySigning&#34;, &#34;zoneSigning&#34;].{% endverbatim %}</p>
+to sign all other types of resource record sets. Possible values: ["keySigning", "zoneSigning"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -237,7 +237,7 @@ to sign all other types of resource record sets. Possible values: [&#34;keySigni
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Specifies the mechanism used to provide authenticated denial-of-existence responses.
-non_existence can only be updated when the state is &#39;off&#39;. Possible values: [&#34;nsec&#34;, &#34;nsec3&#34;].{% endverbatim %}</p>
+non_existence can only be updated when the state is 'off'. Possible values: ["nsec", "nsec3"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -247,7 +247,7 @@ non_existence can only be updated when the state is &#39;off&#39;. Possible valu
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Specifies whether DNSSEC is enabled, and what mode it is in Possible values: [&#34;off&#34;, &#34;on&#34;, &#34;transfer&#34;].{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies whether DNSSEC is enabled, and what mode it is in Possible values: ["off", "on", "transfer"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -291,9 +291,9 @@ one target is given.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Forwarding path for this TargetNameServer. If unset or &#39;default&#39; Cloud DNS will make forwarding
+            <p>{% verbatim %}Forwarding path for this TargetNameServer. If unset or 'default' Cloud DNS will make forwarding
 decision based on address ranges, i.e. RFC1918 addresses go to the VPC, Non-RFC1918 addresses go
-to the Internet. When set to &#39;private&#39;, Cloud DNS will always send queries through VPC for this target Possible values: [&#34;default&#34;, &#34;private&#34;].{% endverbatim %}</p>
+to the Internet. When set to 'private', Cloud DNS will always send queries through VPC for this target Possible values: ["default", "private"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -457,7 +457,7 @@ resources that the zone is visible from.{% endverbatim %}</p>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Immutable. Specifies if this is a managed reverse lookup zone. If true, Cloud DNS will resolve reverse
 lookup queries using automatically configured records for VPC resources. This only applies
-to networks listed under &#39;private_visibility_config&#39;.{% endverbatim %}</p>
+to networks listed under 'private_visibility_config'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -489,9 +489,9 @@ to networks listed under &#39;private_visibility_config&#39;.{% endverbatim %}</
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The fully qualified or partial URL of the service directory namespace that should be
 associated with the zone. This should be formatted like
-&#39;https://servicedirectory.googleapis.com/v1/projects/{project}/locations/{location}/namespaces/{namespace_id}&#39;
-or simply &#39;projects/{project}/locations/{location}/namespaces/{namespace_id}&#39;
-Ignored for &#39;public&#39; visibility zones.{% endverbatim %}</p>
+'https://servicedirectory.googleapis.com/v1/projects/{project}/locations/{location}/namespaces/{namespace_id}'
+or simply 'projects/{project}/locations/{location}/namespaces/{namespace_id}'
+Ignored for 'public' visibility zones.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -501,8 +501,8 @@ Ignored for &#39;public&#39; visibility zones.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The zone&#39;s visibility: public zones are exposed to the Internet,
-while private zones are visible only to Virtual Private Cloud resources. Default value: &#34;public&#34; Possible values: [&#34;private&#34;, &#34;public&#34;].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The zone's visibility: public zones are exposed to the Internet,
+while private zones are visible only to Virtual Private Cloud resources. Default value: "public" Possible values: ["private", "public"].{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -539,7 +539,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -567,7 +567,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -630,14 +630,14 @@ defined by the server.{% endverbatim %}</p>
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -646,11 +646,11 @@ apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
 metadata:
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
   name: dnsmanagedzone-sample
 spec:
-  description: &#34;Example DNS zone&#34;
-  dnsName: &#34;cnrm-dns-example.com.&#34;
+  description: "Example DNS zone"
+  dnsName: "cnrm-dns-example.com."
   visibility: private
   privateVisibilityConfig:
     networks:

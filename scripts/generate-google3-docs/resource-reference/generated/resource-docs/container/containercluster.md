@@ -651,7 +651,7 @@ workloadIdentityConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Per-cluster configuration of Node Auto-Provisioning with Cluster Autoscaler to automatically adjust the size of the cluster and create/delete node pools based on the current needs of the cluster&#39;s workload. See the guide to using Node Auto-Provisioning for more details.{% endverbatim %}</p>
+            <p>{% verbatim %}Per-cluster configuration of Node Auto-Provisioning with Cluster Autoscaler to automatically adjust the size of the cluster and create/delete node pools based on the current needs of the cluster's workload. See the guide to using Node Auto-Provisioning for more details.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -892,7 +892,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can&#39;t be changed (or added/removed) after cluster creation without deleting and recreating the entire cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after cluster creation without deleting and recreating the entire cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -932,7 +932,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: &#34;ENCRYPTED&#34;; &#34;DECRYPTED&#34;. key_name is the name of a CloudKMS key.{% endverbatim %}</p>
+            <p>{% verbatim %}Application-layer Secrets Encryption settings. The object format is {state = string, key_name = string}. Valid values of state are: "ENCRYPTED"; "DECRYPTED". key_name is the name of a CloudKMS key.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -972,7 +972,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. The default maximum number of pods per node in this cluster. This doesn&#39;t work on &#34;routes-based&#34; clusters, clusters that don&#39;t have IP Aliasing enabled.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The default maximum number of pods per node in this cluster. This doesn't work on "routes-based" clusters, clusters that don't have IP Aliasing enabled.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1152,7 +1152,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. The number of nodes to create in this cluster&#39;s default node pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Must be set if node_pool is not set. If you&#39;re using google_container_node_pool objects with no default node pool, you&#39;ll need to set this to a value of at least 1, alongside setting remove_default_node_pool to true.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The number of nodes to create in this cluster's default node pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Must be set if node_pool is not set. If you're using google_container_node_pool objects with no default node pool, you'll need to set this to a value of at least 1, alongside setting remove_default_node_pool to true.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1182,7 +1182,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The name of the existing secondary range in the cluster&#39;s subnetwork to use for pod IP addresses. Alternatively, cluster_ipv4_cidr_block can be used to automatically create a GKE-managed one.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The name of the existing secondary range in the cluster's subnetwork to use for pod IP addresses. Alternatively, cluster_ipv4_cidr_block can be used to automatically create a GKE-managed one.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1202,7 +1202,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The name of the existing secondary range in the cluster&#39;s subnetwork to use for service ClusterIPs. Alternatively, services_ipv4_cidr_block can be used to automatically create a GKE-managed one.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The name of the existing secondary range in the cluster's subnetwork to use for service ClusterIPs. Alternatively, services_ipv4_cidr_block can be used to automatically create a GKE-managed one.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1272,7 +1272,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Time window specified for daily maintenance operations. Specify start_time in RFC3339 format &#34;HH:MM”, where HH : [00-23] and MM : [00-59] GMT.{% endverbatim %}</p>
+            <p>{% verbatim %}Time window specified for daily maintenance operations. Specify start_time in RFC3339 format "HH:MM”, where HH : [00-23] and MM : [00-59] GMT.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1412,7 +1412,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}DEPRECATED. Basic authentication was removed for GKE cluster versions &gt;= 1.19. The authentication information for accessing the Kubernetes master. Some values in this block are only returned by the API if your service account has permission to get credentials for your GKE cluster. If you see an unexpected diff unsetting your client cert, ensure you have the container.clusters.getCredentials permission.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. Basic authentication was removed for GKE cluster versions >= 1.19. The authentication information for accessing the Kubernetes master. Some values in this block are only returned by the API if your service account has permission to get credentials for your GKE cluster. If you see an unexpected diff unsetting your client cert, ensure you have the container.clusters.getCredentials permission.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1482,7 +1482,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value of the field. Cannot be used if &#39;valueFrom&#39; is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Value of the field. Cannot be used if 'valueFrom' is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1492,7 +1492,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Source for the field&#39;s value. Cannot be used if &#39;value&#39; is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Source for the field's value. Cannot be used if 'value' is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1502,7 +1502,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource&#39;s namespace.{% endverbatim %}</p>
+            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource's namespace.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1612,7 +1612,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The minimum version of the master. GKE will auto-update the master to new versions, so this does not guarantee the current master version--use the read-only master_version field to obtain that. If unset, the cluster&#39;s version will be set by GKE to the version of the most recent official release (which is not necessarily the latest version).{% endverbatim %}</p>
+            <p>{% verbatim %}The minimum version of the master. GKE will auto-update the master to new versions, so this does not guarantee the current master version--use the read-only master_version field to obtain that. If unset, the cluster's version will be set by GKE to the version of the most recent official release (which is not necessarily the latest version).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1972,7 +1972,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Set the CPU CFS quota period value &#39;cpu.cfs_period_us&#39;.{% endverbatim %}</p>
+            <p>{% verbatim %}Set the CPU CFS quota period value 'cpu.cfs_period_us'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2194,7 +2194,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Type of the sandbox to use for the node (e.g. &#39;gvisor&#39;).{% endverbatim %}</p>
+            <p>{% verbatim %}Type of the sandbox to use for the node (e.g. 'gvisor').{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2384,7 +2384,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The list of zones in which the cluster&#39;s nodes are located. Nodes must be in the region of their regional cluster or in the same region as their cluster&#39;s zone for zonal clusters. If this is specified for a zonal cluster, omit the cluster&#39;s zone.{% endverbatim %}</p>
+            <p>{% verbatim %}The list of zones in which the cluster's nodes are located. Nodes must be in the region of their regional cluster or in the same region as their cluster's zone for zonal clusters. If this is specified for a zonal cluster, omit the cluster's zone.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2414,7 +2414,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Collection of Compute Engine network tags that can be applied to a node&#39;s underlying VM instance.{% endverbatim %}</p>
+            <p>{% verbatim %}Collection of Compute Engine network tags that can be applied to a node's underlying VM instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2594,7 +2594,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. When true, the cluster&#39;s private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2604,7 +2604,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Enables the private cluster feature, creating a private endpoint on the cluster. In a private cluster, nodes only have RFC 1918 private addresses and communicate with the master&#39;s private endpoint via private networking.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Enables the private cluster feature, creating a private endpoint on the cluster. In a private cluster, nodes only have RFC 1918 private addresses and communicate with the master's private endpoint via private networking.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2634,7 +2634,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The IP range in CIDR notation to use for the hosted master network. This range will be used for assigning private IP addresses to the cluster master(s) and the ILB VIP. This range must not overlap with any other ranges in use within the cluster&#39;s network, and it must be a /28 subnet. See Private Cluster Limitations for more details. This field only applies to private clusters, when enable_private_nodes is true.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The IP range in CIDR notation to use for the hosted master network. This range will be used for assigning private IP addresses to the cluster master(s) and the ILB VIP. This range must not overlap with any other ranges in use within the cluster's network, and it must be a /28 subnet. See Private Cluster Limitations for more details. This field only applies to private clusters, when enable_private_nodes is true.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2654,7 +2654,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The internal IP address of this cluster&#39;s master endpoint.{% endverbatim %}</p>
+            <p>{% verbatim %}The internal IP address of this cluster's master endpoint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2664,7 +2664,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The external IP address of this cluster&#39;s master endpoint.{% endverbatim %}</p>
+            <p>{% verbatim %}The external IP address of this cluster's master endpoint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2684,7 +2684,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Configuration options for the Release channel feature, which provide more control over automatic upgrades of your GKE clusters. Note that removing this field from your config will not unenroll it. Instead, use the &#34;UNSPECIFIED&#34; channel.{% endverbatim %}</p>
+            <p>{% verbatim %}Configuration options for the Release channel feature, which provide more control over automatic upgrades of your GKE clusters. Note that removing this field from your config will not unenroll it. Instead, use the "UNSPECIFIED" channel.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2909,7 +2909,7 @@ tpuIpv4CidrBlock: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2937,7 +2937,7 @@ tpuIpv4CidrBlock: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2958,7 +2958,7 @@ tpuIpv4CidrBlock: string
         <td><code>endpoint</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The IP address of this cluster&#39;s Kubernetes master.{% endverbatim %}</p>
+            <p>{% verbatim %}The IP address of this cluster's Kubernetes master.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3019,14 +3019,14 @@ tpuIpv4CidrBlock: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -3047,14 +3047,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -3087,28 +3087,28 @@ spec:
       disabled: false
   loggingConfig:
     enableComponents:
-      - &#34;SYSTEM_COMPONENTS&#34;
-      - &#34;WORKLOADS&#34;
+      - "SYSTEM_COMPONENTS"
+      - "WORKLOADS"
   monitoringConfig:
     enableComponents:
-      - &#34;SYSTEM_COMPONENTS&#34;
+      - "SYSTEM_COMPONENTS"
   workloadIdentityConfig:
     # Replace ${PROJECT_ID?} with your project ID.
-    workloadPool: &#34;${PROJECT_ID?}.svc.id.goog&#34;
+    workloadPool: "${PROJECT_ID?}.svc.id.goog"
 ```
 
 ### Vpc Native Container Cluster
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.

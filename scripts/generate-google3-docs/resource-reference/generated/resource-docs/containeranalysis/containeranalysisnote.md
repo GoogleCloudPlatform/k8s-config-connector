@@ -204,7 +204,7 @@ vulnerability:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The human readable name of this attestation authority, for example &#34;qa&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The human readable name of this attestation authority, for example "qa".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -314,7 +314,7 @@ vulnerability:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The layer ID of the final layer in the Docker image&#39;s v1 representation.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The layer ID of the final layer in the Docker image's v1 representation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1074,7 +1074,7 @@ vulnerability:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Windows details get their own format because the information format and model don&#39;t match a normal detail. Specifically Windows updates are done as patches, thus Windows vulnerabilities really are a missing package, rather than a package being at an incorrect version.{% endverbatim %}</p>
+            <p>{% verbatim %}Windows details get their own format because the information format and model don't match a normal detail. Specifically Windows updates are done as patches, thus Windows vulnerabilities really are a missing package, rather than a package being at an incorrect version.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1134,7 +1134,7 @@ vulnerability:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The KB name (generally of the form KB&#43; (e.g., KB123456)).{% endverbatim %}</p>
+            <p>{% verbatim %}The KB name (generally of the form KB+ (e.g., KB123456)).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1192,7 +1192,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1220,7 +1220,7 @@ updateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1262,7 +1262,7 @@ updateTime: string
         <td><code>image.fingerprint.v2Name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The name of the image&#39;s v2 blobs computed via: ) Only the name of the final blob is kept.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The name of the image's v2 blobs computed via: ) Only the name of the final blob is kept.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1288,14 +1288,14 @@ updateTime: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1305,16 +1305,16 @@ kind: ContainerAnalysisNote
 metadata:
   name: containeranalysisnote-sample
 spec:
-  shortDescription: &#34;short description&#34;
-  longDescription: &#34;long description&#34;
+  shortDescription: "short description"
+  longDescription: "long description"
   relatedUrl:
-  - url: &#34;some.url&#34;
-    label: &#34;test&#34;
-  - url: &#34;google.com&#34;
-    label: &#34;google&#34;
+  - url: "some.url"
+    label: "test"
+  - url: "google.com"
+    label: "google"
   attestation:
     hint:
-      humanReadableName: &#34;Attestor Note&#34;
+      humanReadableName: "Attestor Note"
 ```
 
 

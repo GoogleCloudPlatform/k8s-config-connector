@@ -225,17 +225,17 @@ port_name are defined, port takes precedence.{% endverbatim %}</p>
             <p>{% verbatim %}Specifies how port is selected for health checking, can be one of the
 following values:
 
-  * &#39;USE_FIXED_PORT&#39;: The port number in &#39;port&#39; is used for health checking.
+  * 'USE_FIXED_PORT': The port number in 'port' is used for health checking.
 
-  * &#39;USE_NAMED_PORT&#39;: The &#39;portName&#39; is used for health checking.
+  * 'USE_NAMED_PORT': The 'portName' is used for health checking.
 
-  * &#39;USE_SERVING_PORT&#39;: For NetworkEndpointGroup, the port specified for each
+  * 'USE_SERVING_PORT': For NetworkEndpointGroup, the port specified for each
   network endpoint is used for health checking. For other backends, the
   port or named port specified in the Backend Service is used for health
   checking.
 
-If not specified, gRPC health check follows behavior specified in &#39;port&#39; and
-&#39;portName&#39; fields. Possible values: [&#34;USE_FIXED_PORT&#34;, &#34;USE_NAMED_PORT&#34;, &#34;USE_SERVING_PORT&#34;].{% endverbatim %}</p>
+If not specified, gRPC health check follows behavior specified in 'port' and
+'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -303,17 +303,17 @@ port_name are defined, port takes precedence.{% endverbatim %}</p>
             <p>{% verbatim %}Specifies how port is selected for health checking, can be one of the
 following values:
 
-  * &#39;USE_FIXED_PORT&#39;: The port number in &#39;port&#39; is used for health checking.
+  * 'USE_FIXED_PORT': The port number in 'port' is used for health checking.
 
-  * &#39;USE_NAMED_PORT&#39;: The &#39;portName&#39; is used for health checking.
+  * 'USE_NAMED_PORT': The 'portName' is used for health checking.
 
-  * &#39;USE_SERVING_PORT&#39;: For NetworkEndpointGroup, the port specified for each
+  * 'USE_SERVING_PORT': For NetworkEndpointGroup, the port specified for each
   network endpoint is used for health checking. For other backends, the
   port or named port specified in the Backend Service is used for health
   checking.
 
-If not specified, HTTP2 health check follows behavior specified in &#39;port&#39; and
-&#39;portName&#39; fields. Possible values: [&#34;USE_FIXED_PORT&#34;, &#34;USE_NAMED_PORT&#34;, &#34;USE_SERVING_PORT&#34;].{% endverbatim %}</p>
+If not specified, HTTP2 health check follows behavior specified in 'port' and
+'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -324,7 +324,7 @@ If not specified, HTTP2 health check follows behavior specified in &#39;port&#39
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Specifies the type of proxy header to append before sending data to the
-backend. Default value: &#34;NONE&#34; Possible values: [&#34;NONE&#34;, &#34;PROXY_V1&#34;].{% endverbatim %}</p>
+backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -404,17 +404,17 @@ port_name are defined, port takes precedence.{% endverbatim %}</p>
             <p>{% verbatim %}Specifies how port is selected for health checking, can be one of the
 following values:
 
-  * &#39;USE_FIXED_PORT&#39;: The port number in &#39;port&#39; is used for health checking.
+  * 'USE_FIXED_PORT': The port number in 'port' is used for health checking.
 
-  * &#39;USE_NAMED_PORT&#39;: The &#39;portName&#39; is used for health checking.
+  * 'USE_NAMED_PORT': The 'portName' is used for health checking.
 
-  * &#39;USE_SERVING_PORT&#39;: For NetworkEndpointGroup, the port specified for each
+  * 'USE_SERVING_PORT': For NetworkEndpointGroup, the port specified for each
   network endpoint is used for health checking. For other backends, the
   port or named port specified in the Backend Service is used for health
   checking.
 
-If not specified, HTTP health check follows behavior specified in &#39;port&#39; and
-&#39;portName&#39; fields. Possible values: [&#34;USE_FIXED_PORT&#34;, &#34;USE_NAMED_PORT&#34;, &#34;USE_SERVING_PORT&#34;].{% endverbatim %}</p>
+If not specified, HTTP health check follows behavior specified in 'port' and
+'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -425,7 +425,7 @@ If not specified, HTTP health check follows behavior specified in &#39;port&#39;
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Specifies the type of proxy header to append before sending data to the
-backend. Default value: &#34;NONE&#34; Possible values: [&#34;NONE&#34;, &#34;PROXY_V1&#34;].{% endverbatim %}</p>
+backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -505,17 +505,17 @@ port_name are defined, port takes precedence.{% endverbatim %}</p>
             <p>{% verbatim %}Specifies how port is selected for health checking, can be one of the
 following values:
 
-  * &#39;USE_FIXED_PORT&#39;: The port number in &#39;port&#39; is used for health checking.
+  * 'USE_FIXED_PORT': The port number in 'port' is used for health checking.
 
-  * &#39;USE_NAMED_PORT&#39;: The &#39;portName&#39; is used for health checking.
+  * 'USE_NAMED_PORT': The 'portName' is used for health checking.
 
-  * &#39;USE_SERVING_PORT&#39;: For NetworkEndpointGroup, the port specified for each
+  * 'USE_SERVING_PORT': For NetworkEndpointGroup, the port specified for each
   network endpoint is used for health checking. For other backends, the
   port or named port specified in the Backend Service is used for health
   checking.
 
-If not specified, HTTPS health check follows behavior specified in &#39;port&#39; and
-&#39;portName&#39; fields. Possible values: [&#34;USE_FIXED_PORT&#34;, &#34;USE_NAMED_PORT&#34;, &#34;USE_SERVING_PORT&#34;].{% endverbatim %}</p>
+If not specified, HTTPS health check follows behavior specified in 'port' and
+'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -526,7 +526,7 @@ If not specified, HTTPS health check follows behavior specified in &#39;port&#39
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Specifies the type of proxy header to append before sending data to the
-backend. Default value: &#34;NONE&#34; Possible values: [&#34;NONE&#34;, &#34;PROXY_V1&#34;].{% endverbatim %}</p>
+backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -559,7 +559,7 @@ can only be ASCII.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Location represents the geographical location of the ComputeHealthCheck. Specify a region name or &#34;global&#34; for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/){% endverbatim %}</p>
+            <p>{% verbatim %}Location represents the geographical location of the ComputeHealthCheck. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/){% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -635,17 +635,17 @@ port_name are defined, port takes precedence.{% endverbatim %}</p>
             <p>{% verbatim %}Specifies how port is selected for health checking, can be one of the
 following values:
 
-  * &#39;USE_FIXED_PORT&#39;: The port number in &#39;port&#39; is used for health checking.
+  * 'USE_FIXED_PORT': The port number in 'port' is used for health checking.
 
-  * &#39;USE_NAMED_PORT&#39;: The &#39;portName&#39; is used for health checking.
+  * 'USE_NAMED_PORT': The 'portName' is used for health checking.
 
-  * &#39;USE_SERVING_PORT&#39;: For NetworkEndpointGroup, the port specified for each
+  * 'USE_SERVING_PORT': For NetworkEndpointGroup, the port specified for each
   network endpoint is used for health checking. For other backends, the
   port or named port specified in the Backend Service is used for health
   checking.
 
-If not specified, SSL health check follows behavior specified in &#39;port&#39; and
-&#39;portName&#39; fields. Possible values: [&#34;USE_FIXED_PORT&#34;, &#34;USE_NAMED_PORT&#34;, &#34;USE_SERVING_PORT&#34;].{% endverbatim %}</p>
+If not specified, SSL health check follows behavior specified in 'port' and
+'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -656,7 +656,7 @@ If not specified, SSL health check follows behavior specified in &#39;port&#39; 
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Specifies the type of proxy header to append before sending data to the
-backend. Default value: &#34;NONE&#34; Possible values: [&#34;NONE&#34;, &#34;PROXY_V1&#34;].{% endverbatim %}</p>
+backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -726,17 +726,17 @@ port_name are defined, port takes precedence.{% endverbatim %}</p>
             <p>{% verbatim %}Specifies how port is selected for health checking, can be one of the
 following values:
 
-  * &#39;USE_FIXED_PORT&#39;: The port number in &#39;port&#39; is used for health checking.
+  * 'USE_FIXED_PORT': The port number in 'port' is used for health checking.
 
-  * &#39;USE_NAMED_PORT&#39;: The &#39;portName&#39; is used for health checking.
+  * 'USE_NAMED_PORT': The 'portName' is used for health checking.
 
-  * &#39;USE_SERVING_PORT&#39;: For NetworkEndpointGroup, the port specified for each
+  * 'USE_SERVING_PORT': For NetworkEndpointGroup, the port specified for each
   network endpoint is used for health checking. For other backends, the
   port or named port specified in the Backend Service is used for health
   checking.
 
-If not specified, TCP health check follows behavior specified in &#39;port&#39; and
-&#39;portName&#39; fields. Possible values: [&#34;USE_FIXED_PORT&#34;, &#34;USE_NAMED_PORT&#34;, &#34;USE_SERVING_PORT&#34;].{% endverbatim %}</p>
+If not specified, TCP health check follows behavior specified in 'port' and
+'portName' fields. Possible values: ["USE_FIXED_PORT", "USE_NAMED_PORT", "USE_SERVING_PORT"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -747,7 +747,7 @@ If not specified, TCP health check follows behavior specified in &#39;port&#39; 
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Specifies the type of proxy header to append before sending data to the
-backend. Default value: &#34;NONE&#34; Possible values: [&#34;NONE&#34;, &#34;PROXY_V1&#34;].{% endverbatim %}</p>
+backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -829,7 +829,7 @@ type: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -857,7 +857,7 @@ type: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -911,14 +911,14 @@ type: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -938,14 +938,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.

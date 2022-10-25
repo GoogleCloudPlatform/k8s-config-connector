@@ -200,7 +200,7 @@ timeZone: string
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}HTTP request headers. This map contains the header field names and values. Headers can be set when the job is created. Cloud Scheduler sets some headers to default values: * `User-Agent`: By default, this header is `&#34;App Engine-Google; (&#43;http://code.google.com/appengine)&#34;`. This header can be modified, but Cloud Scheduler will append `&#34;App Engine-Google; (&#43;http://code.google.com/appengine)&#34;` to the modified `User-Agent`. * `X-CloudScheduler`: This header will be set to true. The headers below are output only. They cannot be set or overridden: * `X-Google-*`: For Google internal use only. * `X-App Engine-*`: For Google internal use only. In addition, some App Engine headers, which contain job-specific information, are also be sent to the job handler.{% endverbatim %}</p>
+            <p>{% verbatim %}HTTP request headers. This map contains the header field names and values. Headers can be set when the job is created. Cloud Scheduler sets some headers to default values: * `User-Agent`: By default, this header is `"App Engine-Google; (+http://code.google.com/appengine)"`. This header can be modified, but Cloud Scheduler will append `"App Engine-Google; (+http://code.google.com/appengine)"` to the modified `User-Agent`. * `X-CloudScheduler`: This header will be set to true. The headers below are output only. They cannot be set or overridden: * `X-Google-*`: For Google internal use only. * `X-App Engine-*`: For Google internal use only. In addition, some App Engine headers, which contain job-specific information, are also be sent to the job handler.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -220,7 +220,7 @@ timeZone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The relative URI. The relative URL must begin with &#34;/&#34; and must be a valid HTTP relative URL. It can contain a path, query string arguments, and `#` fragments. If the relative URL is empty, then the root path &#34;/&#34; will be used. No spaces are allowed, and the maximum length allowed is 2083 characters.{% endverbatim %}</p>
+            <p>{% verbatim %}The relative URI. The relative URL must begin with "/" and must be a valid HTTP relative URL. It can contain a path, query string arguments, and `#` fragments. If the relative URL is empty, then the root path "/" will be used. No spaces are allowed, and the maximum length allowed is 2083 characters.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -270,7 +270,7 @@ timeZone: string
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}The user can specify HTTP request headers to send with the job&#39;s HTTP request. This map contains the header field names and values. Repeated headers are not supported, but a header value can contain commas. These headers represent a subset of the headers that will accompany the job&#39;s HTTP request. Some HTTP request headers will be ignored or replaced. A partial list of headers that will be ignored or replaced is below: - Host: This will be computed by Cloud Scheduler and derived from uri. * `Content-Length`: This will be computed by Cloud Scheduler. * `User-Agent`: This will be set to `&#34;Google-Cloud-Scheduler&#34;`. * `X-Google-*`: Google internal use only. * `X-appengine-*`: Google internal use only. The total size of headers must be less than 80KB.{% endverbatim %}</p>
+            <p>{% verbatim %}The user can specify HTTP request headers to send with the job's HTTP request. This map contains the header field names and values. Repeated headers are not supported, but a header value can contain commas. These headers represent a subset of the headers that will accompany the job's HTTP request. Some HTTP request headers will be ignored or replaced. A partial list of headers that will be ignored or replaced is below: - Host: This will be computed by Cloud Scheduler and derived from uri. * `Content-Length`: This will be computed by Cloud Scheduler. * `User-Agent`: This will be set to `"Google-Cloud-Scheduler"`. * `X-Google-*`: Google internal use only. * `X-appengine-*`: Google internal use only. The total size of headers must be less than 80KB.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -300,7 +300,7 @@ timeZone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}OAuth scope to be used for generating OAuth access token. If not specified, &#34;https://www.googleapis.com/auth/cloud-platform&#34; will be used.{% endverbatim %}</p>
+            <p>{% verbatim %}OAuth scope to be used for generating OAuth access token. If not specified, "https://www.googleapis.com/auth/cloud-platform" will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -414,7 +414,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The full URI path that the request will be sent to. This string must begin with either &#34;http://&#34; or &#34;https://&#34;. Some examples of valid values for uri are: `http://acme.com` and `https://acme.com/sales:8080`. Cloud Scheduler will encode some characters for safety and compatibility. The maximum allowed URL length is 2083 characters after encoding.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The full URI path that the request will be sent to. This string must begin with either "http://" or "https://". Some examples of valid values for uri are: `http://acme.com` and `https://acme.com/sales:8080`. Cloud Scheduler will encode some characters for safety and compatibility. The maximum allowed URL length is 2083 characters after encoding.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -474,7 +474,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The name of the Cloud Pub/Sub topic to which messages will be published when a job is delivered. The topic name must be in the same format as required by Pub/Sub&#39;s [PublishRequest.name](https://cloud.google.com/pubsub/docs/reference/rpc/google.pubsub.v1#publishrequest), for example `projects/PROJECT_ID/topics/TOPIC_ID`. The topic must be in the same project as the Cloud Scheduler job.
+            <p>{% verbatim %}Required. The name of the Cloud Pub/Sub topic to which messages will be published when a job is delivered. The topic name must be in the same format as required by Pub/Sub's [PublishRequest.name](https://cloud.google.com/pubsub/docs/reference/rpc/google.pubsub.v1#publishrequest), for example `projects/PROJECT_ID/topics/TOPIC_ID`. The topic must be in the same project as the Cloud Scheduler job.
 
 Allowed value: The Google Cloud resource name of a `PubSubTopic` resource (format: `projects/{{project}}/topics/{{name}}`).{% endverbatim %}</p>
         </td>
@@ -536,7 +536,7 @@ Allowed value: The Google Cloud resource name of a `PubSubTopic` resource (forma
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The time between retries will double `max_doublings` times. A job&#39;s retry interval starts at min_backoff_duration, then doubles `max_doublings` times, then increases linearly, and finally retries at intervals of max_backoff_duration up to retry_count times. For example, if min_backoff_duration is 10s, max_backoff_duration is 300s, and `max_doublings` is 3, then the a job will first be retried in 10s. The retry interval will double three times, and then increase linearly by 2^3 * 10s. Finally, the job will retry at intervals of max_backoff_duration until the job has been attempted retry_count times. Thus, the requests will retry at 10s, 20s, 40s, 80s, 160s, 240s, 300s, 300s, .... The default value of this field is 5.{% endverbatim %}</p>
+            <p>{% verbatim %}The time between retries will double `max_doublings` times. A job's retry interval starts at min_backoff_duration, then doubles `max_doublings` times, then increases linearly, and finally retries at intervals of max_backoff_duration up to retry_count times. For example, if min_backoff_duration is 10s, max_backoff_duration is 300s, and `max_doublings` is 3, then the a job will first be retried in 10s. The retry interval will double three times, and then increase linearly by 2^3 * 10s. Finally, the job will retry at intervals of max_backoff_duration until the job has been attempted retry_count times. Thus, the requests will retry at 10s, 20s, 40s, 80s, 160s, 240s, 300s, 300s, .... The default value of this field is 5.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -576,7 +576,7 @@ Allowed value: The Google Cloud resource name of a `PubSubTopic` resource (forma
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required, except when used with UpdateJob. Describes the schedule on which the job will be executed. The schedule can be either of the following types: * [Crontab](http://en.wikipedia.org/wiki/Cron#Overview) * English-like [schedule](https://cloud.google.com/scheduler/docs/configuring/cron-job-schedules) As a general rule, execution `n &#43; 1` of a job will not begin until execution `n` has finished. Cloud Scheduler will never allow two simultaneously outstanding executions. For example, this implies that if the `n&#43;1`th execution is scheduled to run at 16:00 but the `n`th execution takes until 16:15, the `n&#43;1`th execution will not start until `16:15`. A scheduled start time will be delayed if the previous execution has not ended when its scheduled time occurs. If retry_count &gt; 0 and a job attempt fails, the job will be tried a total of retry_count times, with exponential backoff, until the next scheduled start time.{% endverbatim %}</p>
+            <p>{% verbatim %}Required, except when used with UpdateJob. Describes the schedule on which the job will be executed. The schedule can be either of the following types: * [Crontab](http://en.wikipedia.org/wiki/Cron#Overview) * English-like [schedule](https://cloud.google.com/scheduler/docs/configuring/cron-job-schedules) As a general rule, execution `n + 1` of a job will not begin until execution `n` has finished. Cloud Scheduler will never allow two simultaneously outstanding executions. For example, this implies that if the `n+1`th execution is scheduled to run at 16:00 but the `n`th execution takes until 16:15, the `n+1`th execution will not start until `16:15`. A scheduled start time will be delayed if the previous execution has not ended when its scheduled time occurs. If retry_count > 0 and a job attempt fails, the job will be tried a total of retry_count times, with exponential backoff, until the next scheduled start time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -586,7 +586,7 @@ Allowed value: The Google Cloud resource name of a `PubSubTopic` resource (forma
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Specifies the time zone to be used in interpreting schedule. The value of this field must be a time zone name from the [tz database](http://en.wikipedia.org/wiki/Tz_database). Note that some time zones include a provision for daylight savings time. The rules for daylight saving time are determined by the chosen tz. For UTC use the string &#34;utc&#34;. If a time zone is not specified, the default will be in UTC (also known as GMT).{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies the time zone to be used in interpreting schedule. The value of this field must be a time zone name from the [tz database](http://en.wikipedia.org/wiki/Tz_database). Note that some time zones include a provision for daylight savings time. The rules for daylight saving time are determined by the chosen tz. For UTC use the string "utc". If a time zone is not specified, the default will be in UTC (also known as GMT).{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -646,14 +646,14 @@ userUpdateTime: string
         <td><code>appEngineHttpTarget.appEngineRouting.host</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The host that the job is sent to. For more information about how App Engine requests are routed, see [here](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed). The host is constructed as: * `host = [application_domain_name]` `| [service] &#43; &#39;.&#39; &#43; [application_domain_name]` `| [version] &#43; &#39;.&#39; &#43; [application_domain_name]` `| [version_dot_service]&#43; &#39;.&#39; &#43; [application_domain_name]` `| [instance] &#43; &#39;.&#39; &#43; [application_domain_name]` `| [instance_dot_service] &#43; &#39;.&#39; &#43; [application_domain_name]` `| [instance_dot_version] &#43; &#39;.&#39; &#43; [application_domain_name]` `| [instance_dot_version_dot_service] &#43; &#39;.&#39; &#43; [application_domain_name]` * `application_domain_name` = The domain name of the app, for example .appspot.com, which is associated with the job&#39;s project ID. * `service =` service * `version =` version * `version_dot_service =` version `&#43; &#39;.&#39; &#43;` service * `instance =` instance * `instance_dot_service =` instance `&#43; &#39;.&#39; &#43;` service * `instance_dot_version =` instance `&#43; &#39;.&#39; &#43;` version * `instance_dot_version_dot_service =` instance `&#43; &#39;.&#39; &#43;` version `&#43; &#39;.&#39; &#43;` service If service is empty, then the job will be sent to the service which is the default service when the job is attempted. If version is empty, then the job will be sent to the version which is the default version when the job is attempted. If instance is empty, then the job will be sent to an instance which is available when the job is attempted. If service, version, or instance is invalid, then the job will be sent to the default version of the default service when the job is attempted.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The host that the job is sent to. For more information about how App Engine requests are routed, see [here](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed). The host is constructed as: * `host = [application_domain_name]` `| [service] + '.' + [application_domain_name]` `| [version] + '.' + [application_domain_name]` `| [version_dot_service]+ '.' + [application_domain_name]` `| [instance] + '.' + [application_domain_name]` `| [instance_dot_service] + '.' + [application_domain_name]` `| [instance_dot_version] + '.' + [application_domain_name]` `| [instance_dot_version_dot_service] + '.' + [application_domain_name]` * `application_domain_name` = The domain name of the app, for example .appspot.com, which is associated with the job's project ID. * `service =` service * `version =` version * `version_dot_service =` version `+ '.' +` service * `instance =` instance * `instance_dot_service =` instance `+ '.' +` service * `instance_dot_version =` instance `+ '.' +` version * `instance_dot_version_dot_service =` instance `+ '.' +` version `+ '.' +` service If service is empty, then the job will be sent to the service which is the default service when the job is attempted. If version is empty, then the job will be sent to the version which is the default version when the job is attempted. If instance is empty, then the job will be sent to an instance which is available when the job is attempted. If service, version, or instance is invalid, then the job will be sent to the default version of the default service when the job is attempted.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -681,7 +681,7 @@ userUpdateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -758,7 +758,7 @@ userUpdateTime: string
         <td><code>status.details[].typeUrl</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A URL/resource name that uniquely identifies the type of the serialized protocol buffer message. This string must contain at least one &#34;/&#34; character. The last segment of the URL&#39;s path must represent the fully qualified name of the type (as in `path/google.protobuf.Duration`). The name should be in a canonical form (e.g., leading &#34;.&#34; is not accepted). In practice, teams usually precompile into the binary all types that they expect it to use in the context of Any. However, for URLs which use the scheme `http`, `https`, or no scheme, one can optionally set up a type server that maps type URLs to message definitions as follows: * If no scheme is provided, `https` is assumed. * An HTTP GET on the URL must yield a google.protobuf.Type value in binary format, or produce an error. * Applications are allowed to cache lookup results based on the URL, or have them precompiled into a binary to avoid any lookup. Therefore, binary compatibility needs to be preserved on changes to types. (Use versioned type names to manage breaking changes.) Note: this functionality is not currently available in the official protobuf release, and it is not used for type URLs beginning with type.googleapis.com. Schemes other than `http`, `https` (or the empty scheme) might be used with implementation specific semantics.{% endverbatim %}</p>
+            <p>{% verbatim %}A URL/resource name that uniquely identifies the type of the serialized protocol buffer message. This string must contain at least one "/" character. The last segment of the URL's path must represent the fully qualified name of the type (as in `path/google.protobuf.Duration`). The name should be in a canonical form (e.g., leading "." is not accepted). In practice, teams usually precompile into the binary all types that they expect it to use in the context of Any. However, for URLs which use the scheme `http`, `https`, or no scheme, one can optionally set up a type server that maps type URLs to message definitions as follows: * If no scheme is provided, `https` is assumed. * An HTTP GET on the URL must yield a google.protobuf.Type value in binary format, or produce an error. * Applications are allowed to cache lookup results based on the URL, or have them precompiled into a binary to avoid any lookup. Therefore, binary compatibility needs to be preserved on changes to types. (Use versioned type names to manage breaking changes.) Note: this functionality is not currently available in the official protobuf release, and it is not used for type URLs beginning with type.googleapis.com. Schemes other than `http`, `https` (or the empty scheme) might be used with implementation specific semantics.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -791,14 +791,14 @@ userUpdateTime: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -808,37 +808,37 @@ kind: CloudSchedulerJob
 metadata:
   name: cloudscheduler-sample-http
 spec:
-  description: &#34;scheduler-http-target-job&#34;
-  schedule: &#34;*/5 * * * *&#34;
-  location: &#34;us-west2&#34;
-  timeZone: &#34;EST&#34;
-  attemptDeadline: &#34;600s&#34;
+  description: "scheduler-http-target-job"
+  schedule: "*/5 * * * *"
+  location: "us-west2"
+  timeZone: "EST"
+  attemptDeadline: "600s"
   retryConfig:
     retryCount: 3
-    maxRetryDuration: &#34;60s&#34;
+    maxRetryDuration: "60s"
     maxDoublings: 2
   httpTarget:
     headers:
       app: test
       Content-Type: application/octet-stream
       User-Agent: Google-Cloud-Scheduler
-    httpMethod: &#34;POST&#34;
-    uri: &#34;https://example.com/ping&#34;
-    body: &#34;eyJmb28iOiJiYXIifQo=&#34; # base64 encoded {&#34;foo&#34;:&#34;bar&#34;}
+    httpMethod: "POST"
+    uri: "https://example.com/ping"
+    body: "eyJmb28iOiJiYXIifQo=" # base64 encoded {"foo":"bar"}
 ```
 
 ### Scheduler Job Oauth
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -848,18 +848,18 @@ kind: CloudSchedulerJob
 metadata:
   name: cloudscheduler-sample-oauth
 spec:
-  description: &#34;scheduler-http-target-job&#34;
-  schedule: &#34;*/5 * * * *&#34;
-  location: &#34;us-west2&#34;
-  timeZone: &#34;America/New_York&#34;
-  attemptDeadline: &#34;600s&#34;
+  description: "scheduler-http-target-job"
+  schedule: "*/5 * * * *"
+  location: "us-west2"
+  timeZone: "America/New_York"
+  attemptDeadline: "600s"
   retryConfig:
     retryCount: 3
-    maxRetryDuration: &#34;60s&#34;
+    maxRetryDuration: "60s"
     maxDoublings: 2
   httpTarget:
-    httpMethod: &#34;GET&#34;
-    uri: &#34;https://cloudscheduler.googleapis.com/v1/projects/my-project-name/locations/us-west1/jobs&#34;
+    httpMethod: "GET"
+    uri: "https://cloudscheduler.googleapis.com/v1/projects/my-project-name/locations/us-west1/jobs"
     oauthToken:
       serviceAccountRef:
         name: cloudscheduler-oauth-dep
@@ -876,14 +876,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -893,14 +893,14 @@ kind: CloudSchedulerJob
 metadata:
   name: cloudscheduler-sample-pubsub
 spec:
-  description: &#34;scheduler-pubsub-target-job&#34;
-  schedule: &#34;*/2 * * * *&#34;
-  location: &#34;us-west2&#34;
+  description: "scheduler-pubsub-target-job"
+  schedule: "*/2 * * * *"
+  location: "us-west2"
   pubsubTarget:
-    data: &#34;dGVzdCBtZXNzYWdlCg==&#34; # based64 encode &#34;test message&#34;
+    data: "dGVzdCBtZXNzYWdlCg==" # based64 encode "test message"
     topicRef:
       name: cloudscheduler-sample-pubsub-dep
-  timeZone: &#34;EST&#34;
+  timeZone: "EST"
 ---
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic

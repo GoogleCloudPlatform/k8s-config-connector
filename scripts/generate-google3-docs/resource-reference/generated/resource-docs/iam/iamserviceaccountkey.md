@@ -108,7 +108,7 @@ serviceAccountRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The algorithm used to generate the key, used only on create. KEY_ALG_RSA_2048 is the default algorithm. Valid values are: &#34;KEY_ALG_RSA_1024&#34;, &#34;KEY_ALG_RSA_2048&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The algorithm used to generate the key, used only on create. KEY_ALG_RSA_2048 is the default algorithm. Valid values are: "KEY_ALG_RSA_1024", "KEY_ALG_RSA_2048".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -214,7 +214,7 @@ validBefore: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -242,7 +242,7 @@ validBefore: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -291,14 +291,14 @@ validBefore: string
         <td><code>validAfter</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The key can be used after this timestamp. A timestamp in RFC3339 UTC &#34;Zulu&#34; format, accurate to nanoseconds. Example: &#34;2014-10-02T15:01:23.045123456Z&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}The key can be used after this timestamp. A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>validBefore</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The key can be used before this timestamp. A timestamp in RFC3339 UTC &#34;Zulu&#34; format, accurate to nanoseconds. Example: &#34;2014-10-02T15:01:23.045123456Z&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}The key can be used before this timestamp. A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z".{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -310,14 +310,14 @@ validBefore: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -327,7 +327,7 @@ kind: IAMServiceAccountKey
 metadata:
   name: iamserviceaccountkey-sample
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
 spec:
   publicKeyType: TYPE_X509_PEM_FILE
   keyAlgorithm: KEY_ALG_RSA_2048

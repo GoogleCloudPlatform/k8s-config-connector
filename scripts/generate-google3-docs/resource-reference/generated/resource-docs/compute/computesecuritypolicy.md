@@ -162,7 +162,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Rule visibility. Supported values include: &#34;STANDARD&#34;, &#34;PREMIUM&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Rule visibility. Supported values include: "STANDARD", "PREMIUM".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -182,7 +182,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}JSON body parsing. Supported values include: &#34;DISABLED&#34;, &#34;STANDARD&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}JSON body parsing. Supported values include: "DISABLED", "STANDARD".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -192,7 +192,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Logging level. Supported values include: &#34;NORMAL&#34;, &#34;VERBOSE&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Logging level. Supported values include: "NORMAL", "VERBOSE".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -222,7 +222,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The set of rules that belong to this policy. There must always be a default rule (rule with priority 2147483647 and match &#34;*&#34;). If no rules are provided when creating a security policy, a default rule with action &#34;allow&#34; will be added.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of rules that belong to this policy. There must always be a default rule (rule with priority 2147483647 and match "*"). If no rules are provided when creating a security policy, a default rule with action "allow" will be added.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -282,7 +282,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Set of IP addresses or ranges (IPV4 or IPV6) in CIDR notation to match against inbound traffic. There is a limit of 10 IP ranges per rule. A value of &#39;*&#39; matches all IPs (can be used to override the default behavior).{% endverbatim %}</p>
+            <p>{% verbatim %}Set of IP addresses or ranges (IPV4 or IPV6) in CIDR notation to match against inbound traffic. There is a limit of 10 IP ranges per rule. A value of '*' matches all IPs (can be used to override the default behavior).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -352,7 +352,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Rate limit threshold for this security policy. Must be specified if the action is &#34;rate_based_ban&#34; or &#34;throttle&#34;. Cannot be specified for any other actions.{% endverbatim %}</p>
+            <p>{% verbatim %}Rate limit threshold for this security policy. Must be specified if the action is "rate_based_ban" or "throttle". Cannot be specified for any other actions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -362,7 +362,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Can only be specified if the action for the rule is &#34;rate_based_ban&#34;. If specified, determines the time (in seconds) the traffic will continue to be banned by the rate limit after the rate falls below the threshold.{% endverbatim %}</p>
+            <p>{% verbatim %}Can only be specified if the action for the rule is "rate_based_ban". If specified, determines the time (in seconds) the traffic will continue to be banned by the rate limit after the rate falls below the threshold.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -372,7 +372,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Can only be specified if the action for the rule is &#34;rate_based_ban&#34;. If specified, the key will be banned for the configured &#39;banDurationSec&#39; when the number of requests that exceed the &#39;rateLimitThreshold&#39; also exceed this &#39;banThreshold&#39;.{% endverbatim %}</p>
+            <p>{% verbatim %}Can only be specified if the action for the rule is "rate_based_ban". If specified, the key will be banned for the configured 'banDurationSec' when the number of requests that exceed the 'rateLimitThreshold' also exceed this 'banThreshold'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -402,7 +402,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Action to take for requests that are under the configured rate limit threshold. Valid option is &#34;allow&#34; only.{% endverbatim %}</p>
+            <p>{% verbatim %}Action to take for requests that are under the configured rate limit threshold. Valid option is "allow" only.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -432,7 +432,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Action to take for requests that are above the configured rate limit threshold, to either deny with a specified HTTP response code, or redirect to a different endpoint. Valid options are &#34;deny()&#34; where valid values for status are 403, 404, 429, and 502, and &#34;redirect&#34; where the redirect parameters come from exceedRedirectOptions below.{% endverbatim %}</p>
+            <p>{% verbatim %}Action to take for requests that are above the configured rate limit threshold, to either deny with a specified HTTP response code, or redirect to a different endpoint. Valid options are "deny()" where valid values for status are 403, 404, 429, and 502, and "redirect" where the redirect parameters come from exceedRedirectOptions below.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -532,7 +532,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The type indicates the intended use of the security policy. CLOUD_ARMOR - Cloud Armor backend security policies can be configured to filter incoming HTTP requests targeting backend services. They filter requests before they hit the origin servers. CLOUD_ARMOR_EDGE - Cloud Armor edge security policies can be configured to filter incoming HTTP requests targeting backend services (including Cloud CDN-enabled) as well as backend buckets (Cloud Storage). They filter requests before the request is served from Google&#39;s cache.{% endverbatim %}</p>
+            <p>{% verbatim %}The type indicates the intended use of the security policy. CLOUD_ARMOR - Cloud Armor backend security policies can be configured to filter incoming HTTP requests targeting backend services. They filter requests before they hit the origin servers. CLOUD_ARMOR_EDGE - Cloud Armor edge security policies can be configured to filter incoming HTTP requests targeting backend services (including Cloud CDN-enabled) as well as backend buckets (Cloud Storage). They filter requests before the request is served from Google's cache.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -567,7 +567,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -595,7 +595,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -642,14 +642,14 @@ selfLink: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -667,7 +667,7 @@ spec:
       versionedExpr: SRC_IPS_V1
       config:
         srcIpRanges:
-        - &#34;*&#34;
+        - "*"
     description: Rule matching all IPs with priority 2147483647, set to deny.
   - action: allow
     preview: true
@@ -686,14 +686,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -711,7 +711,7 @@ spec:
       versionedExpr: SRC_IPS_V1
       config:
         srcIpRanges:
-        - &#34;*&#34;
+        - "*"
     description: This rule must be included in any rule array. Action can change.
   - action: deny(502)
     priority: 111111111
@@ -729,7 +729,7 @@ spec:
         srcIpRanges:
         - 63.0.0.0/8
         - 61.128.0.0/10
-    description: Even though they&#39;re in an untrusted block, these ranges are OK.
+    description: Even though they're in an untrusted block, these ranges are OK.
   - action: deny(403)
     priority: 0
     match:

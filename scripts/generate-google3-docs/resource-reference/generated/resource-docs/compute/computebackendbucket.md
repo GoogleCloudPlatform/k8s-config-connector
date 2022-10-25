@@ -251,7 +251,7 @@ cache key.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}Names of query string parameters to include in cache keys.
-Default parameters are always included. &#39;&amp;&#39; and &#39;=&#39; will
+Default parameters are always included. '&' and '=' will
 be percent encoded and not treated as delimiters.{% endverbatim %}</p>
         </td>
     </tr>
@@ -273,7 +273,7 @@ be percent encoded and not treated as delimiters.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Specifies the cache setting for all responses from this backend.
-The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC Possible values: [&#34;USE_ORIGIN_HEADERS&#34;, &#34;FORCE_CACHE_ALL&#34;, &#34;CACHE_ALL_STATIC&#34;].{% endverbatim %}</p>
+The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC Possible values: ["USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL", "CACHE_ALL_STATIC"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -325,7 +325,7 @@ that do not have an existing valid TTL (max-age or s-max-age).{% endverbatim %}<
         <td>
             <p><code class="apitype">list (object)</code></p>
             <p>{% verbatim %}Sets a cache TTL for the specified HTTP status code. negativeCaching must be enabled to configure negativeCachingPolicy.
-Omitting the policy and leaving negativeCaching enabled will use Cloud CDN&#39;s default cache TTLs.{% endverbatim %}</p>
+Omitting the policy and leaving negativeCaching enabled will use Cloud CDN's default cache TTLs.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -392,8 +392,8 @@ be considered fresh. After this time period,
 the response will be revalidated before being served.
 When serving responses to signed URL requests,
 Cloud CDN will internally behave as though
-all responses from this backend had a &#34;Cache-Control: public,
-max-age=[TTL]&#34; header, regardless of any existing Cache-Control
+all responses from this backend had a "Cache-Control: public,
+max-age=[TTL]" header, regardless of any existing Cache-Control
 header. The actual headers served in responses will not be altered.{% endverbatim %}</p>
         </td>
     </tr>
@@ -488,7 +488,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -516,7 +516,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -563,14 +563,14 @@ selfLink: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -580,7 +580,7 @@ kind: ComputeBackendBucket
 metadata:
   name: computebackendbucket-sample-basic
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
 spec:
   bucketRef:
     name: ${PROJECT_ID?}-backendbucket-dep-basic
@@ -597,14 +597,14 @@ metadata:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -614,7 +614,7 @@ kind: ComputeBackendBucket
 metadata:
   name: computebackendbucket-sample-cdnenabled
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
 spec:
   bucketRef:
     name: ${PROJECT_ID?}-backendbucket-dep-cdn

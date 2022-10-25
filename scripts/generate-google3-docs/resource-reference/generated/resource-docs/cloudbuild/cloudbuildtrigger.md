@@ -298,9 +298,9 @@ and will need to be explicitly approved to start.{% endverbatim %}</p>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}A list of images to be pushed upon the successful completion of all build steps.
 
-The images will be pushed using the builder service account&#39;s credentials.
+The images will be pushed using the builder service account's credentials.
 
-The digests of the pushed images will be stored in the Build resource&#39;s results field.
+The digests of the pushed images will be stored in the Build resource's results field.
 
 If any of the images fail to be pushed, the build is marked FAILURE.{% endverbatim %}</p>
         </td>
@@ -325,9 +325,9 @@ If any of the images fail to be pushed, the build is marked FAILURE.{% endverbat
             <p>{% verbatim %}A list of objects to be uploaded to Cloud Storage upon successful completion of all build steps.
 
 Files in the workspace matching specified paths globs will be uploaded to the
-Cloud Storage location using the builder service account&#39;s credentials.
+Cloud Storage location using the builder service account's credentials.
 
-The location and generation of the uploaded objects will be stored in the Build resource&#39;s results field.
+The location and generation of the uploaded objects will be stored in the Build resource's results field.
 
 If any objects fail to be pushed, the build is marked FAILURE.{% endverbatim %}</p>
         </td>
@@ -339,7 +339,7 @@ If any objects fail to be pushed, the build is marked FAILURE.{% endverbatim %}<
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Cloud Storage bucket and optional object path, in the form &#34;gs://bucket/path/to/somewhere/&#34;.
+            <p>{% verbatim %}Cloud Storage bucket and optional object path, in the form "gs://bucket/path/to/somewhere/".
 
 Files in the workspace matching any path pattern will be uploaded to Cloud Storage with
 this location as a prefix.{% endverbatim %}</p>
@@ -352,7 +352,7 @@ this location as a prefix.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Path globs used to match files in the build&#39;s workspace.{% endverbatim %}</p>
+            <p>{% verbatim %}Path globs used to match files in the build's workspace.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -394,8 +394,8 @@ this location as a prefix.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}End of time span.
 
-A timestamp in RFC3339 UTC &#34;Zulu&#34; format, with nanosecond resolution and up to
-nine fractional digits. Examples: &#34;2014-10-02T15:01:23Z&#34; and &#34;2014-10-02T15:01:23.045123456Z&#34;.{% endverbatim %}</p>
+A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to
+nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -407,8 +407,8 @@ nine fractional digits. Examples: &#34;2014-10-02T15:01:23Z&#34; and &#34;2014-1
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Start of time span.
 
-A timestamp in RFC3339 UTC &#34;Zulu&#34; format, with nanosecond resolution and up to
-nine fractional digits. Examples: &#34;2014-10-02T15:01:23Z&#34; and &#34;2014-10-02T15:01:23.045123456Z&#34;.{% endverbatim %}</p>
+A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to
+nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -449,7 +449,7 @@ nine fractional digits. Examples: &#34;2014-10-02T15:01:23Z&#34; and &#34;2014-1
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Environment variable name to associate with the secret. Secret environment
-variables must be unique across all of a build&#39;s secrets, and must be used
+variables must be unique across all of a build's secrets, and must be used
 by at least one build step.{% endverbatim %}</p>
         </td>
     </tr>
@@ -501,8 +501,8 @@ by at least one build step.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}A list of images to be pushed upon the successful completion of all build steps.
-The images are pushed using the builder service account&#39;s credentials.
-The digests of the pushed images will be stored in the Build resource&#39;s results field.
+The images are pushed using the builder service account's credentials.
+The digests of the pushed images will be stored in the Build resource's results field.
 If any of the images fail to be pushed, the build status is marked FAILURE.{% endverbatim %}</p>
         </td>
     </tr>
@@ -574,7 +574,7 @@ names will be of the format ${logsBucket}/log-${build_id}.txt.{% endverbatim %}<
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Requested disk size for the VM that runs the build. Note that this is NOT &#34;disk free&#34;;
+            <p>{% verbatim %}Requested disk size for the VM that runs the build. Note that this is NOT "disk free";
 some of the space will be used by the operating system and build utilities.
 Also note that this is the minimum disk size that will be allocated for the build --
 the build may run with a larger disk than requested. At present, the maximum disk size
@@ -604,7 +604,7 @@ NOTE this is always enabled for triggered builds and cannot be overridden in the
 in this build. If a variable is defined in both globally and in a build step,
 the variable will use the build step value.
 
-The elements are of the form &#34;KEY=VALUE&#34; for the environment variable &#34;KEY&#34; being given the value &#34;VALUE&#34;.{% endverbatim %}</p>
+The elements are of the form "KEY=VALUE" for the environment variable "KEY" being given the value "VALUE".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -624,7 +624,7 @@ The elements are of the form &#34;KEY=VALUE&#34; for the environment variable &#
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Option to define build log streaming behavior to Google Cloud Storage. Possible values: [&#34;STREAM_DEFAULT&#34;, &#34;STREAM_ON&#34;, &#34;STREAM_OFF&#34;].{% endverbatim %}</p>
+            <p>{% verbatim %}Option to define build log streaming behavior to Google Cloud Storage. Possible values: ["STREAM_DEFAULT", "STREAM_ON", "STREAM_OFF"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -634,7 +634,7 @@ The elements are of the form &#34;KEY=VALUE&#34; for the environment variable &#
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Option to specify the logging mode, which determines if and where build logs are stored. Possible values: [&#34;LOGGING_UNSPECIFIED&#34;, &#34;LEGACY&#34;, &#34;GCS_ONLY&#34;, &#34;STACKDRIVER_ONLY&#34;, &#34;CLOUD_LOGGING_ONLY&#34;, &#34;NONE&#34;].{% endverbatim %}</p>
+            <p>{% verbatim %}Option to specify the logging mode, which determines if and where build logs are stored. Possible values: ["LOGGING_UNSPECIFIED", "LEGACY", "GCS_ONLY", "STACKDRIVER_ONLY", "CLOUD_LOGGING_ONLY", "NONE"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -644,7 +644,7 @@ The elements are of the form &#34;KEY=VALUE&#34; for the environment variable &#
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Compute Engine machine type on which to run the build. Possible values: [&#34;UNSPECIFIED&#34;, &#34;N1_HIGHCPU_8&#34;, &#34;N1_HIGHCPU_32&#34;, &#34;E2_HIGHCPU_8&#34;, &#34;E2_HIGHCPU_32&#34;].{% endverbatim %}</p>
+            <p>{% verbatim %}Compute Engine machine type on which to run the build. Possible values: ["UNSPECIFIED", "N1_HIGHCPU_8", "N1_HIGHCPU_32", "E2_HIGHCPU_8", "E2_HIGHCPU_32"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -654,7 +654,7 @@ The elements are of the form &#34;KEY=VALUE&#34; for the environment variable &#
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Requested verifiability options. Possible values: [&#34;NOT_VERIFIED&#34;, &#34;VERIFIED&#34;].{% endverbatim %}</p>
+            <p>{% verbatim %}Requested verifiability options. Possible values: ["NOT_VERIFIED", "VERIFIED"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -665,7 +665,7 @@ The elements are of the form &#34;KEY=VALUE&#34; for the environment variable &#
         <td>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}A list of global environment variables, which are encrypted using a Cloud Key Management
-Service crypto key. These values must be specified in the build&#39;s Secret. These variables
+Service crypto key. These values must be specified in the build's Secret. These variables
 will be available to all build steps in this build.{% endverbatim %}</p>
         </td>
     </tr>
@@ -686,7 +686,7 @@ will be available to all build steps in this build.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Requested hash for SourceProvenance. Possible values: [&#34;NONE&#34;, &#34;SHA256&#34;, &#34;MD5&#34;].{% endverbatim %}</p>
+            <p>{% verbatim %}Requested hash for SourceProvenance. Possible values: ["NONE", "SHA256", "MD5"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -709,7 +709,7 @@ will be available to all build steps in this build.{% endverbatim %}</p>
             <p>{% verbatim %}Option to specify behavior when there is an error in the substitution checks.
 
 NOTE this is always set to ALLOW_LOOSE for triggered builds and cannot be overridden
-in the build configuration file. Possible values: [&#34;MUST_MATCH&#34;, &#34;ALLOW_LOOSE&#34;].{% endverbatim %}</p>
+in the build configuration file. Possible values: ["MUST_MATCH", "ALLOW_LOOSE"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -787,7 +787,7 @@ This field is experimental.{% endverbatim %}</p>
             <p>{% verbatim %}TTL in queue for this build. If provided and the build is enqueued longer than this value, 
 the build will expire and the build status will be EXPIRED.
 The TTL starts ticking from createTime.
-A duration in seconds with up to nine fractional digits, terminated by &#39;s&#39;. Example: &#34;3.5s&#34;.{% endverbatim %}</p>
+A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -858,9 +858,9 @@ A duration in seconds with up to nine fractional digits, terminated by &#39;s&#3
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
             <p>{% verbatim %}Map of environment variable name to its encrypted value.
-Secret environment variables must be unique across all of a build&#39;s secrets, 
+Secret environment variables must be unique across all of a build's secrets, 
 and must be used by at least one build step. Values can be at most 64 KB in size. 
-There can be at most 100 secret values across all of a build&#39;s secrets.{% endverbatim %}</p>
+There can be at most 100 secret values across all of a build's secrets.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -872,7 +872,7 @@ There can be at most 100 secret values across all of a build&#39;s secrets.{% en
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}The location of the source files to build.
 
-One of &#39;storageSource&#39; or &#39;repoSource&#39; must be provided.{% endverbatim %}</p>
+One of 'storageSource' or 'repoSource' must be provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -915,8 +915,8 @@ described at https://github.com/google/re2/wiki/Syntax.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Directory, relative to the source root, in which to run the build.
-This must be a relative path. If a step&#39;s dir is specified and is an absolute path, 
-this value is ignored for that step&#39;s execution.{% endverbatim %}</p>
+This must be a relative path. If a step's dir is specified and is an absolute path, 
+this value is ignored for that step's execution.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -947,7 +947,7 @@ If omitted, the project ID requesting the build is assumed.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The desired Cloud Source Repository. If omitted, &#34;default&#34; is
+            <p>{% verbatim %}The desired Cloud Source Repository. If omitted, "default" is
 assumed.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1104,7 +1104,7 @@ This object must be a gzipped archive file (.tar.gz) containing source to build.
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}A list of arguments that will be presented to the step when it is started.
 
-If the image used to run the step&#39;s container has an entrypoint, the args
+If the image used to run the step's container has an entrypoint, the args
 are used as arguments to that entrypoint. If the image does not define an
 entrypoint, the first element in args is used as the entrypoint, and the
 remainder will be used as arguments.{% endverbatim %}</p>
@@ -1127,17 +1127,17 @@ remainder will be used as arguments.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Working directory to use when running this step&#39;s container.
+            <p>{% verbatim %}Working directory to use when running this step's container.
 
-If this value is a relative path, it is relative to the build&#39;s working
-directory. If this value is absolute, it may be outside the build&#39;s working
+If this value is a relative path, it is relative to the build's working
+directory. If this value is absolute, it may be outside the build's working
 directory, in which case the contents of the path may not be persisted
-across build step executions, unless a &#39;volume&#39; for that path is specified.
+across build step executions, unless a 'volume' for that path is specified.
 
-If the build specifies a &#39;RepoSource&#39; with &#39;dir&#39; and a step with a
-&#39;dir&#39;,
-which specifies an absolute path, the &#39;RepoSource&#39; &#39;dir&#39; is ignored
-for the step&#39;s execution.{% endverbatim %}</p>
+If the build specifies a 'RepoSource' with 'dir' and a step with a
+'dir',
+which specifies an absolute path, the 'RepoSource' 'dir' is ignored
+for the step's execution.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1147,9 +1147,9 @@ for the step&#39;s execution.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Entrypoint to be used instead of the build step image&#39;s
+            <p>{% verbatim %}Entrypoint to be used instead of the build step image's
 default entrypoint.
-If unset, the image&#39;s default entrypoint is used.{% endverbatim %}</p>
+If unset, the image's default entrypoint is used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1162,8 +1162,8 @@ If unset, the image&#39;s default entrypoint is used.{% endverbatim %}</p>
             <p>{% verbatim %}A list of environment variable definitions to be used when
 running a step.
 
-The elements are of the form &#34;KEY=VALUE&#34; for the environment variable
-&#34;KEY&#34; being given the value &#34;VALUE&#34;.{% endverbatim %}</p>
+The elements are of the form "KEY=VALUE" for the environment variable
+"KEY" being given the value "VALUE".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1183,7 +1183,7 @@ The elements are of the form &#34;KEY=VALUE&#34; for the environment variable
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique identifier for this build step, used in &#39;wait_for&#39; to
+            <p>{% verbatim %}Unique identifier for this build step, used in 'wait_for' to
 reference this build step as a dependency.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1196,19 +1196,19 @@ reference this build step as a dependency.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The name of the container image that will run this particular build step.
 
-If the image is available in the host&#39;s Docker daemon&#39;s cache, it will be
+If the image is available in the host's Docker daemon's cache, it will be
 run directly. If not, the host will attempt to pull the image first, using
-the builder service account&#39;s credentials if necessary.
+the builder service account's credentials if necessary.
 
-The Docker daemon&#39;s cache will already have the latest versions of all of
+The Docker daemon's cache will already have the latest versions of all of
 the officially supported build steps (see https://github.com/GoogleCloudPlatform/cloud-builders 
 for images and examples).
 The Docker daemon will also have cached many of the layers for some popular
-images, like &#34;ubuntu&#34;, &#34;debian&#34;, but they will be refreshed at the time
+images, like "ubuntu", "debian", but they will be refreshed at the time
 you attempt to use them.
 
 If you built an image in a previous build step, it will be stored in the
-host&#39;s Docker daemon&#39;s cache and is available to use as the name for a
+host's Docker daemon's cache and is available to use as the name for a
 later build step.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1222,7 +1222,7 @@ later build step.{% endverbatim %}</p>
             <p>{% verbatim %}A list of environment variables which are encrypted using
 a Cloud Key
 Management Service crypto key. These values must be specified in
-the build&#39;s &#39;Secret&#39;.{% endverbatim %}</p>
+the build's 'Secret'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1321,9 +1321,9 @@ the same build step or with certain reserved volume paths.{% endverbatim %}</p>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}The ID(s) of the step(s) that this build step depends on.
 
-This build step will not start until all the build steps in &#39;wait_for&#39;
-have completed successfully. If &#39;wait_for&#39; is empty, this build step
-will start when all previous build steps in the &#39;Build.Steps&#39; list
+This build step will not start until all the build steps in 'wait_for'
+have completed successfully. If 'wait_for' is empty, this build step
+will start when all previous build steps in the 'Build.Steps' list
 have completed successfully.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1451,7 +1451,7 @@ When using Pub/Sub, Webhook or Manual set the file name using git_file_source in
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The type of the repo, since it may not be explicit from the repo field (e.g from a URL). 
-Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET Possible values: [&#34;UNKNOWN&#34;, &#34;CLOUD_SOURCE_REPOSITORIES&#34;, &#34;GITHUB&#34;, &#34;BITBUCKET&#34;].{% endverbatim %}</p>
+Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1486,7 +1486,7 @@ invocation originated is assumed to be the repo from which to read the specified
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Describes the configuration of a trigger that creates a build whenever a GitHub event is received.
 
-One of &#39;trigger_template&#39;, &#39;github&#39;, &#39;pubsub_config&#39; or &#39;webhook_config&#39; must be provided.{% endverbatim %}</p>
+One of 'trigger_template', 'github', 'pubsub_config' or 'webhook_config' must be provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1497,7 +1497,7 @@ One of &#39;trigger_template&#39;, &#39;github&#39;, &#39;pubsub_config&#39; or 
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Name of the repository. For example: The name for
-https://github.com/googlecloudplatform/cloud-builders is &#34;cloud-builders&#34;.{% endverbatim %}</p>
+https://github.com/googlecloudplatform/cloud-builders is "cloud-builders".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1508,7 +1508,7 @@ https://github.com/googlecloudplatform/cloud-builders is &#34;cloud-builders&#34
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Owner of the repository. For example: The owner for
-https://github.com/googlecloudplatform/cloud-builders is &#34;googlecloudplatform&#34;.{% endverbatim %}</p>
+https://github.com/googlecloudplatform/cloud-builders is "googlecloudplatform".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1518,7 +1518,7 @@ https://github.com/googlecloudplatform/cloud-builders is &#34;googlecloudplatfor
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}filter to match changes in pull requests. Specify only one of &#39;pull_request&#39; or &#39;push&#39;.{% endverbatim %}</p>
+            <p>{% verbatim %}filter to match changes in pull requests. Specify only one of 'pull_request' or 'push'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1538,7 +1538,7 @@ https://github.com/googlecloudplatform/cloud-builders is &#34;googlecloudplatfor
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Whether to block builds on a &#34;/gcbrun&#34; comment from a repository owner or collaborator. Possible values: [&#34;COMMENTS_DISABLED&#34;, &#34;COMMENTS_ENABLED&#34;, &#34;COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY&#34;].{% endverbatim %}</p>
+            <p>{% verbatim %}Whether to block builds on a "/gcbrun" comment from a repository owner or collaborator. Possible values: ["COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1558,7 +1558,7 @@ https://github.com/googlecloudplatform/cloud-builders is &#34;googlecloudplatfor
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}filter to match changes in refs, like branches or tags. Specify only one of &#39;pull_request&#39; or &#39;push&#39;.{% endverbatim %}</p>
+            <p>{% verbatim %}filter to match changes in refs, like branches or tags. Specify only one of 'pull_request' or 'push'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1599,7 +1599,7 @@ https://github.com/googlecloudplatform/cloud-builders is &#34;googlecloudplatfor
         <td>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}ignoredFiles and includedFiles are file glob matches using https://golang.org/pkg/path/filepath/#Match
-extended with support for &#39;**&#39;.
+extended with support for '**'.
 
 If ignoredFiles and changed files are both empty, then they are not
 used to determine whether or not to trigger a build.
@@ -1628,7 +1628,7 @@ of the ignoredFiles globs, then we do not trigger a build.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Build logs will be sent back to GitHub as part of the checkrun
 result.  Values can be INCLUDE_BUILD_LOGS_UNSPECIFIED or
-INCLUDE_BUILD_LOGS_WITH_STATUS Possible values: [&#34;INCLUDE_BUILD_LOGS_UNSPECIFIED&#34;, &#34;INCLUDE_BUILD_LOGS_WITH_STATUS&#34;].{% endverbatim %}</p>
+INCLUDE_BUILD_LOGS_WITH_STATUS Possible values: ["INCLUDE_BUILD_LOGS_UNSPECIFIED", "INCLUDE_BUILD_LOGS_WITH_STATUS"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1639,7 +1639,7 @@ INCLUDE_BUILD_LOGS_WITH_STATUS Possible values: [&#34;INCLUDE_BUILD_LOGS_UNSPECI
         <td>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}ignoredFiles and includedFiles are file glob matches using https://golang.org/pkg/path/filepath/#Match
-extended with support for &#39;**&#39;.
+extended with support for '**'.
 
 If any of the files altered in the commit pass the ignoredFiles filter
 and includedFiles is empty, then as far as this filter is concerned, we
@@ -1669,7 +1669,7 @@ a build.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The [Cloud Build location](https://cloud.google.com/build/docs/locations) for the trigger.
-If not specified, &#34;global&#34; is used.{% endverbatim %}</p>
+If not specified, "global" is used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1682,7 +1682,7 @@ If not specified, &#34;global&#34; is used.{% endverbatim %}</p>
             <p>{% verbatim %}PubsubConfig describes the configuration of a trigger that creates 
 a build whenever a Pub/Sub message is published.
 
-One of &#39;trigger_template&#39;, &#39;github&#39;, &#39;pubsub_config&#39; &#39;webhook_config&#39; or &#39;source_to_build&#39; must be provided.{% endverbatim %}</p>
+One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1846,7 +1846,7 @@ This field is used only for those triggers that do not respond to SCM events.
 Triggers that respond to such events build source at whatever commit caused the event. 
 This field is currently only used by Webhook, Pub/Sub, Manual, and Cron triggers.
 
-One of &#39;trigger_template&#39;, &#39;github&#39;, &#39;pubsub_config&#39; &#39;webhook_config&#39; or &#39;source_to_build&#39; must be provided.{% endverbatim %}</p>
+One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1856,7 +1856,7 @@ One of &#39;trigger_template&#39;, &#39;github&#39;, &#39;pubsub_config&#39; &#3
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The branch or tag to use. Must start with &#34;refs/&#34; (required).{% endverbatim %}</p>
+            <p>{% verbatim %}The branch or tag to use. Must start with "refs/" (required).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1867,7 +1867,7 @@ One of &#39;trigger_template&#39;, &#39;github&#39;, &#39;pubsub_config&#39; &#3
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The type of the repo, since it may not be explicit from the repo field (e.g from a URL).
-Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET Possible values: [&#34;UNKNOWN&#34;, &#34;CLOUD_SOURCE_REPOSITORIES&#34;, &#34;GITHUB&#34;, &#34;BITBUCKET&#34;].{% endverbatim %}</p>
+Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1923,7 +1923,7 @@ Branch and tag names in trigger templates are interpreted as regular
 expressions. Any branch or tag change that matches that regular
 expression will trigger a build.
 
-One of &#39;trigger_template&#39;, &#39;github&#39;, &#39;pubsub_config&#39;, &#39;webhook_config&#39; or &#39;source_to_build&#39; must be provided.{% endverbatim %}</p>
+One of 'trigger_template', 'github', 'pubsub_config', 'webhook_config' or 'source_to_build' must be provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1956,8 +1956,8 @@ This field is a regular expression.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Directory, relative to the source root, in which to run the build.
 
-This must be a relative path. If a step&#39;s dir is specified and
-is an absolute path, this value is ignored for that step&#39;s
+This must be a relative path. If a step's dir is specified and
+is an absolute path, this value is ignored for that step's
 execution.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1979,7 +1979,7 @@ execution.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}The Cloud Source Repository to build. If omitted, the repo with
-name &#34;default&#34; is assumed.{% endverbatim %}</p>
+name "default" is assumed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2031,9 +2031,9 @@ This field is a regular expression.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}WebhookConfig describes the configuration of a trigger that creates 
-a build whenever a webhook is sent to a trigger&#39;s webhook URL.
+a build whenever a webhook is sent to a trigger's webhook URL.
 
-One of &#39;trigger_template&#39;, &#39;github&#39;, &#39;pubsub_config&#39; &#39;webhook_config&#39; or &#39;source_to_build&#39; must be provided.{% endverbatim %}</p>
+One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2119,7 +2119,7 @@ triggerId: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2147,7 +2147,7 @@ triggerId: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2194,14 +2194,14 @@ triggerId: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -2216,39 +2216,39 @@ spec:
   triggerTemplate:
     repoRef:
       name: cloudbuildtrigger-dep-cloudsourcerepo
-    dir: &#34;team-a/service-b&#34;
+    dir: "team-a/service-b"
     branchName: master
   ignoredFiles:
-    - &#34;**/*.md&#34;
+    - "**/*.md"
   includedFiles:
-    - &#34;src/**&#34;
+    - "src/**"
   substitutions:
-    &#34;_SERVICE_NAME&#34;: &#34;service-name&#34;
+    "_SERVICE_NAME": "service-name"
   build:
     # Note: $PROJECT_ID and $COMMIT_SHA are variables that are expanded by the
     # Cloud Build API when the build is created. More info:
     # https://cloud.google.com/cloud-build/docs/configuring-builds/substitute-variable-values
-    images: [&#34;gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA&#34;]
-    tags: [&#34;team-a&#34;, &#34;service-b&#34;]
+    images: ["gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA"]
+    tags: ["team-a", "service-b"]
     timeout: 1800s
     step:
-      - id: &#34;download_zip&#34;
+      - id: "download_zip"
         name: gcr.io/cloud-builders/gsutil
-        args: [&#34;cp&#34;, &#34;gs://mybucket/remotefile.zip&#34;, &#34;localfile.zip&#34;]
+        args: ["cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
         timeout: 300s
-      - id: &#34;build_package&#34;
+      - id: "build_package"
         name: gcr.io/cloud-builders/go
-        args: [&#34;build&#34;, &#34;my_package&#34;]
+        args: ["build", "my_package"]
         dir: directory
         env:
-          - &#34;ENV1=one&#34;
-          - &#34;ENV2=two&#34;
+          - "ENV1=one"
+          - "ENV2=two"
         secretEnv:
-          - &#34;SECRET_ENV1&#34;
+          - "SECRET_ENV1"
         timeout: 300s
-      - id: &#34;build_docker_image&#34;
+      - id: "build_docker_image"
         name: gcr.io/cloud-builders/docker
-        args: [&#34;build&#34;, &#34;-t&#34;, &#34;gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA&#34;, &#34;-f&#34;, &#34;Dockerfile&#34;, &#34;.&#34;]
+        args: ["build", "-t", "gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA", "-f", "Dockerfile", "."]
         timeout: 300s
     availableSecrets:
       secretManager:
@@ -2285,14 +2285,14 @@ metadata:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -2313,36 +2313,36 @@ spec:
     push:
       branch: master
   ignoredFiles:
-    - &#34;**/*.md&#34;
+    - "**/*.md"
   includedFiles:
-    - &#34;src/**&#34;
+    - "src/**"
   substitutions:
-    &#34;_SERVICE_NAME&#34;: &#34;service-name&#34;
+    "_SERVICE_NAME": "service-name"
   build:
     # Note: $PROJECT_ID and $COMMIT_SHA are variables that are expanded by the
     # Cloud Build API when the build is created. More info:
     # https://cloud.google.com/cloud-build/docs/configuring-builds/substitute-variable-values
-    images: [&#34;gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA&#34;]
-    tags: [&#34;team-a&#34;, &#34;service-b&#34;]
+    images: ["gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA"]
+    tags: ["team-a", "service-b"]
     timeout: 1800s
     step:
-      - id: &#34;download_zip&#34;
+      - id: "download_zip"
         name: gcr.io/cloud-builders/gsutil
-        args: [&#34;cp&#34;, &#34;gs://mybucket/remotefile.zip&#34;, &#34;localfile.zip&#34;]
+        args: ["cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
         timeout: 300s
-      - id: &#34;build_package&#34;
+      - id: "build_package"
         name: gcr.io/cloud-builders/go
-        args: [&#34;build&#34;, &#34;my_package&#34;]
+        args: ["build", "my_package"]
         dir: directory
         env:
-          - &#34;ENV1=one&#34;
-          - &#34;ENV2=two&#34;
+          - "ENV1=one"
+          - "ENV2=two"
         secretEnv:
-          - &#34;SECRET_ENV1&#34;
+          - "SECRET_ENV1"
         timeout: 300s
-      - id: &#34;build_docker_image&#34;
+      - id: "build_docker_image"
         name: gcr.io/cloud-builders/docker
-        args: [&#34;build&#34;, &#34;-t&#34;, &#34;gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA&#34;, &#34;-f&#34;, &#34;Dockerfile&#34;, &#34;.&#34;]
+        args: ["build", "-t", "gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$COMMIT_SHA", "-f", "Dockerfile", "."]
         timeout: 300s
 ```
 
@@ -2350,14 +2350,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -2372,15 +2372,15 @@ spec:
   triggerTemplate:
     repoRef:
       name: cloudbuildtrigger-dep-withtemplatefile
-    dir: &#34;team-a/service-b&#34;
+    dir: "team-a/service-b"
     branchName: master
   ignoredFiles:
-    - &#34;**/*.md&#34;
+    - "**/*.md"
   includedFiles:
-    - &#34;src/**&#34;
+    - "src/**"
   substitutions:
-    &#34;_SERVICE_NAME&#34;: &#34;service-name&#34;
-  filename: &#34;cloudbuild.yaml&#34;
+    "_SERVICE_NAME": "service-name"
+  filename: "cloudbuild.yaml"
   serviceAccountRef:
     name: cbt-dep-withtemplatefile
 ---

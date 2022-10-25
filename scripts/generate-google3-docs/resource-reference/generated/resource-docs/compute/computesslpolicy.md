@@ -100,13 +100,13 @@ resourceID: string
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}Profile specifies the set of SSL features that can be used by the
 load balancer when negotiating SSL with clients. This can be one of
-&#39;COMPATIBLE&#39;, &#39;MODERN&#39;, &#39;RESTRICTED&#39;, or &#39;CUSTOM&#39;. If using &#39;CUSTOM&#39;,
+'COMPATIBLE', 'MODERN', 'RESTRICTED', or 'CUSTOM'. If using 'CUSTOM',
 the set of SSL features to enable must be specified in the
-&#39;customFeatures&#39; field.
+'customFeatures' field.
 
 See the [official documentation](https://cloud.google.com/compute/docs/load-balancing/ssl-policies#profilefeaturesupport)
 for which ciphers are available to use. **Note**: this argument
-*must* be present when using the &#39;CUSTOM&#39; profile. This argument
+*must* be present when using the 'CUSTOM' profile. This argument
 *must not* be present when using any other profile.{% endverbatim %}</p>
         </td>
     </tr>
@@ -138,7 +138,7 @@ for which ciphers are available to use. **Note**: this argument
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The minimum version of SSL protocol that can be used by the clients
-to establish a connection with the load balancer. Default value: &#34;TLS_1_0&#34; Possible values: [&#34;TLS_1_0&#34;, &#34;TLS_1_1&#34;, &#34;TLS_1_2&#34;].{% endverbatim %}</p>
+to establish a connection with the load balancer. Default value: "TLS_1_0" Possible values: ["TLS_1_0", "TLS_1_1", "TLS_1_2"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -149,13 +149,13 @@ to establish a connection with the load balancer. Default value: &#34;TLS_1_0&#3
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Profile specifies the set of SSL features that can be used by the
-load balancer when negotiating SSL with clients. If using &#39;CUSTOM&#39;,
+load balancer when negotiating SSL with clients. If using 'CUSTOM',
 the set of SSL features to enable must be specified in the
-&#39;customFeatures&#39; field.
+'customFeatures' field.
 
 See the [official documentation](https://cloud.google.com/compute/docs/load-balancing/ssl-policies#profilefeaturesupport)
 for information on what cipher suites each profile provides. If
-&#39;CUSTOM&#39; is used, the &#39;custom_features&#39; attribute **must be set**. Default value: &#34;COMPATIBLE&#34; Possible values: [&#34;COMPATIBLE&#34;, &#34;MODERN&#34;, &#34;RESTRICTED&#34;, &#34;CUSTOM&#34;].{% endverbatim %}</p>
+'CUSTOM' is used, the 'custom_features' attribute **must be set**. Default value: "COMPATIBLE" Possible values: ["COMPATIBLE", "MODERN", "RESTRICTED", "CUSTOM"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -201,7 +201,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -229,7 +229,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -298,14 +298,14 @@ object. This field is used in optimistic locking.{% endverbatim %}</p>
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -329,14 +329,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.

@@ -285,7 +285,7 @@ UTILIZATION. Valid values are UTILIZATION, RATE (for HTTP(S))
 and CONNECTION (for TCP/SSL).
 
 See the [Backend Services Overview](https://cloud.google.com/load-balancing/docs/backend-service#balancing-mode)
-for an explanation of load balancing modes. Default value: &#34;UTILIZATION&#34; Possible values: [&#34;UTILIZATION&#34;, &#34;RATE&#34;, &#34;CONNECTION&#34;].{% endverbatim %}</p>
+for an explanation of load balancing modes. Default value: "UTILIZATION" Possible values: ["UTILIZATION", "RATE", "CONNECTION"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -295,7 +295,7 @@ for an explanation of load balancing modes. Default value: &#34;UTILIZATION&#34;
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}A multiplier applied to the group&#39;s maximum servicing capacity
+            <p>{% verbatim %}A multiplier applied to the group's maximum servicing capacity
 (based on UTILIZATION, RATE or CONNECTION).
 
 Default value is 1, which means the group will serve up to 100%
@@ -347,7 +347,7 @@ located in the same zone as the Network Endpoint Group.
 Backend services cannot mix Instance Group and Network Endpoint
 Group backends.
 
-When the &#39;load_balancing_scheme&#39; is INTERNAL, only instance groups
+When the 'load_balancing_scheme' is INTERNAL, only instance groups
 are supported.{% endverbatim %}</p>
         </td>
     </tr>
@@ -617,7 +617,7 @@ key entirely.{% endverbatim %}</p>
 
 All other parameters will be included. Either specify
 query_string_whitelist or query_string_blacklist, not both.
-&#39;&amp;&#39; and &#39;=&#39; will be percent encoded and not treated as
+'&' and '=' will be percent encoded and not treated as
 delimiters.{% endverbatim %}</p>
         </td>
     </tr>
@@ -642,7 +642,7 @@ delimiters.{% endverbatim %}</p>
 
 All other parameters will be excluded. Either specify
 query_string_whitelist or query_string_blacklist, not both.
-&#39;&amp;&#39; and &#39;=&#39; will be percent encoded and not treated as
+'&' and '=' will be percent encoded and not treated as
 delimiters.{% endverbatim %}</p>
         </td>
     </tr>
@@ -664,7 +664,7 @@ delimiters.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Specifies the cache setting for all responses from this backend.
-The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC Possible values: [&#34;USE_ORIGIN_HEADERS&#34;, &#34;FORCE_CACHE_ALL&#34;, &#34;CACHE_ALL_STATIC&#34;].{% endverbatim %}</p>
+The possible values are: USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC Possible values: ["USE_ORIGIN_HEADERS", "FORCE_CACHE_ALL", "CACHE_ALL_STATIC"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -716,7 +716,7 @@ that do not have an existing valid TTL (max-age or s-max-age).{% endverbatim %}<
         <td>
             <p><code class="apitype">list (object)</code></p>
             <p>{% verbatim %}Sets a cache TTL for the specified HTTP status code. negativeCaching must be enabled to configure negativeCachingPolicy.
-Omitting the policy and leaving negativeCaching enabled will use Cloud CDN&#39;s default cache TTLs.{% endverbatim %}</p>
+Omitting the policy and leaving negativeCaching enabled will use Cloud CDN's default cache TTLs.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -775,7 +775,7 @@ being served.
 
 When serving responses to signed URL requests, Cloud CDN will
 internally behave as though all responses from this backend had a
-&#34;Cache-Control: public, max-age=[TTL]&#34; header, regardless of any
+"Cache-Control: public, max-age=[TTL]" header, regardless of any
 existing Cache-Control header. The actual headers served in
 responses will not be altered.{% endverbatim %}</p>
         </td>
@@ -808,7 +808,7 @@ is applicable only when the load_balancing_scheme is set to INTERNAL_SELF_MANAGE
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Span of time that&#39;s a fraction of a second at nanosecond
+            <p>{% verbatim %}Span of time that's a fraction of a second at nanosecond
 resolution. Durations less than one second are represented
 with a 0 seconds field and a positive nanos field. Must
 be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
@@ -914,20 +914,20 @@ Network Load Balancing.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Specifies connection persistence when backends are unhealthy.
 
-If set to &#39;DEFAULT_FOR_PROTOCOL&#39;, the existing connections persist on
+If set to 'DEFAULT_FOR_PROTOCOL', the existing connections persist on
 unhealthy backends only for connection-oriented protocols (TCP and SCTP)
 and only if the Tracking Mode is PER_CONNECTION (default tracking mode)
 or the Session Affinity is configured for 5-tuple. They do not persist
 for UDP.
 
-If set to &#39;NEVER_PERSIST&#39;, after a backend becomes unhealthy, the existing
+If set to 'NEVER_PERSIST', after a backend becomes unhealthy, the existing
 connections on the unhealthy backend are never persisted on the unhealthy
 backend. They are always diverted to newly selected healthy backends
 (unless all backends are unhealthy).
 
-If set to &#39;ALWAYS_PERSIST&#39;, existing connections always persist on
+If set to 'ALWAYS_PERSIST', existing connections always persist on
 unhealthy backends regardless of protocol and session affinity. It is
-generally not recommended to use this mode overriding the default. Default value: &#34;DEFAULT_FOR_PROTOCOL&#34; Possible values: [&#34;DEFAULT_FOR_PROTOCOL&#34;, &#34;NEVER_PERSIST&#34;, &#34;ALWAYS_PERSIST&#34;].{% endverbatim %}</p>
+generally not recommended to use this mode overriding the default. Default value: "DEFAULT_FOR_PROTOCOL" Possible values: ["DEFAULT_FOR_PROTOCOL", "NEVER_PERSIST", "ALWAYS_PERSIST"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -953,11 +953,11 @@ For NLB the minimum(default) is 60 seconds and the maximum is 16 hours.{% endver
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Specifies the key used for connection tracking. There are two options:
-&#39;PER_CONNECTION&#39;: The Connection Tracking is performed as per the
+'PER_CONNECTION': The Connection Tracking is performed as per the
 Connection Key (default Hash Method) for the specific protocol.
 
-&#39;PER_SESSION&#39;: The Connection Tracking is performed as per the
-configured Session Affinity. It matches the configured Session Affinity. Default value: &#34;PER_CONNECTION&#34; Possible values: [&#34;PER_CONNECTION&#34;, &#34;PER_SESSION&#34;].{% endverbatim %}</p>
+'PER_SESSION': The Connection Tracking is performed as per the
+configured Session Affinity. It matches the configured Session Affinity. Default value: "PER_CONNECTION" Possible values: ["PER_CONNECTION", "PER_SESSION"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1027,7 +1027,7 @@ This field is applicable if the sessionAffinity is set to HTTP_COOKIE.{% endverb
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Span of time that&#39;s a fraction of a second at nanosecond
+            <p>{% verbatim %}Span of time that's a fraction of a second at nanosecond
 resolution. Durations less than one second are represented
 with a 0 seconds field and a positive nanos field. Must
 be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
@@ -1182,9 +1182,9 @@ The default is false.{% endverbatim %}</p>
             <p>{% verbatim %}The value of the field must be in [0, 1]. If the ratio of the healthy
 VMs in the primary backend is at or below this number, traffic arriving
 at the load-balanced IP will be directed to the failover backend.
-In case where &#39;failoverRatio&#39; is not set or all the VMs in the backup
+In case where 'failoverRatio' is not set or all the VMs in the backup
 backend are unhealthy, the traffic will be directed back to the primary
-backend in the &#34;force&#34; mode, where traffic will be spread to the healthy
+backend in the "force" mode, where traffic will be spread to the healthy
 VMs with the best effort, or to all VMs when no VM is healthy.
 This field is only used with l4 load balancing.{% endverbatim %}</p>
         </td>
@@ -1370,7 +1370,7 @@ OAuth2 Client ID for IAP.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Value of the field. Cannot be used if &#39;valueFrom&#39; is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Value of the field. Cannot be used if 'valueFrom' is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1380,7 +1380,7 @@ OAuth2 Client ID for IAP.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Source for the field&#39;s value. Cannot be used if &#39;value&#39; is specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Source for the field's value. Cannot be used if 'value' is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1390,7 +1390,7 @@ OAuth2 Client ID for IAP.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource&#39;s namespace.{% endverbatim %}</p>
+            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource's namespace.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1433,7 +1433,7 @@ OAuth2 Client ID for IAP.{% endverbatim %}</p>
             <p>{% verbatim %}Immutable. Indicates whether the backend service will be used with internal or
 external load balancing. A backend service created for one type of
 load balancing cannot be used with the other. For more information, refer to
-[Choosing a load balancer](https://cloud.google.com/load-balancing/docs/backend-service). Default value: &#34;EXTERNAL&#34; Possible values: [&#34;EXTERNAL&#34;, &#34;INTERNAL_SELF_MANAGED&#34;, &#34;EXTERNAL_MANAGED&#34;].{% endverbatim %}</p>
+[Choosing a load balancer](https://cloud.google.com/load-balancing/docs/backend-service). Default value: "EXTERNAL" Possible values: ["EXTERNAL", "INTERNAL_SELF_MANAGED", "EXTERNAL_MANAGED"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1446,26 +1446,26 @@ load balancing cannot be used with the other. For more information, refer to
             <p>{% verbatim %}The load balancing algorithm used within the scope of the locality.
 The possible values are:
 
-* &#39;ROUND_ROBIN&#39;: This is a simple policy in which each healthy backend
+* 'ROUND_ROBIN': This is a simple policy in which each healthy backend
                  is selected in round robin order.
 
-* &#39;LEAST_REQUEST&#39;: An O(1) algorithm which selects two random healthy
+* 'LEAST_REQUEST': An O(1) algorithm which selects two random healthy
                    hosts and picks the host which has fewer active requests.
 
-* &#39;RING_HASH&#39;: The ring/modulo hash load balancer implements consistent
+* 'RING_HASH': The ring/modulo hash load balancer implements consistent
                hashing to backends. The algorithm has the property that the
                addition/removal of a host from a set of N hosts only affects
                1/N of the requests.
 
-* &#39;RANDOM&#39;: The load balancer selects a random healthy host.
+* 'RANDOM': The load balancer selects a random healthy host.
 
-* &#39;ORIGINAL_DESTINATION&#39;: Backend host is selected based on the client
+* 'ORIGINAL_DESTINATION': Backend host is selected based on the client
                           connection metadata, i.e., connections are opened
                           to the same address as the destination address of
                           the incoming connection before the connection
                           was redirected to the load balancer.
 
-* &#39;MAGLEV&#39;: used as a drop in replacement for the ring hash load balancer.
+* 'MAGLEV': used as a drop in replacement for the ring hash load balancer.
             Maglev is not as stable as ring hash but has faster table lookup
             build times and host selection times. For more information about
             Maglev, refer to https://ai.google/research/pubs/pub44824
@@ -1483,7 +1483,7 @@ session affinity settings will not take effect.
 
 Only ROUND_ROBIN and RING_HASH are supported when the backend service is referenced
 by a URL map that is bound to target gRPC proxy that has validate_for_proxyless
-field set to true. Possible values: [&#34;ROUND_ROBIN&#34;, &#34;LEAST_REQUEST&#34;, &#34;RING_HASH&#34;, &#34;RANDOM&#34;, &#34;ORIGINAL_DESTINATION&#34;, &#34;MAGLEV&#34;].{% endverbatim %}</p>
+field set to true. Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "ORIGINAL_DESTINATION", "MAGLEV"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1493,7 +1493,7 @@ field set to true. Possible values: [&#34;ROUND_ROBIN&#34;, &#34;LEAST_REQUEST&#
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Location represents the geographical location of the ComputeBackendService. Specify a region name or &#34;global&#34; for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/){% endverbatim %}</p>
+            <p>{% verbatim %}Location represents the geographical location of the ComputeBackendService. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/){% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1603,9 +1603,9 @@ time multiplied by the number of times the host has been ejected. Defaults to
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Span of time that&#39;s a fraction of a second at nanosecond resolution. Durations
-less than one second are represented with a 0 &#39;seconds&#39; field and a positive
-&#39;nanos&#39; field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
+            <p>{% verbatim %}Span of time that's a fraction of a second at nanosecond resolution. Durations
+less than one second are represented with a 0 'seconds' field and a positive
+'nanos' field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1697,9 +1697,9 @@ ejections as well as hosts being returned to service. Defaults to 10 seconds.{% 
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Span of time that&#39;s a fraction of a second at nanosecond resolution. Durations
-less than one second are represented with a 0 &#39;seconds&#39; field and a positive
-&#39;nanos&#39; field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
+            <p>{% verbatim %}Span of time that's a fraction of a second at nanosecond resolution. Durations
+less than one second are represented with a 0 'seconds' field and a positive
+'nanos' field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1787,7 +1787,7 @@ scheme is EXTERNAL.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The protocol this BackendService uses to communicate with backends.
 The default is HTTP. **NOTE**: HTTP2 is only valid for beta HTTP/2 load balancer
-types and may result in errors if used with the GA API. Possible values: [&#34;HTTP&#34;, &#34;HTTPS&#34;, &#34;HTTP2&#34;, &#34;TCP&#34;, &#34;SSL&#34;, &#34;GRPC&#34;].{% endverbatim %}</p>
+types and may result in errors if used with the GA API. Possible values: ["HTTP", "HTTPS", "HTTP2", "TCP", "SSL", "GRPC"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1905,7 +1905,7 @@ references for this field.*{% endverbatim %}</p>
         <td>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}A list of alternate names to verify the subject identity in the certificate.
-If specified, the client will verify that the server certificate&#39;s subject
+If specified, the client will verify that the server certificate's subject
 alt name matches one of the specified values.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1927,7 +1927,7 @@ alt name matches one of the specified values.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Type of session affinity to use. The default is NONE. Session affinity is
-not applicable if the protocol is UDP. Possible values: [&#34;NONE&#34;, &#34;CLIENT_IP&#34;, &#34;CLIENT_IP_PORT_PROTO&#34;, &#34;CLIENT_IP_PROTO&#34;, &#34;GENERATED_COOKIE&#34;, &#34;HEADER_FIELD&#34;, &#34;HTTP_COOKIE&#34;].{% endverbatim %}</p>
+not applicable if the protocol is UDP. Possible values: ["NONE", "CLIENT_IP", "CLIENT_IP_PORT_PROTO", "CLIENT_IP_PROTO", "GENERATED_COOKIE", "HEADER_FIELD", "HTTP_COOKIE"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1947,7 +1947,7 @@ not applicable if the protocol is UDP. Possible values: [&#34;NONE&#34;, &#34;CL
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The algorithm used for subsetting. Possible values: [&#34;CONSISTENT_HASH_SUBSETTING&#34;].{% endverbatim %}</p>
+            <p>{% verbatim %}The algorithm used for subsetting. Possible values: ["CONSISTENT_HASH_SUBSETTING"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1994,7 +1994,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2022,7 +2022,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2077,14 +2077,14 @@ object. This field is used in optimistic locking.{% endverbatim %}</p>
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -2109,7 +2109,7 @@ spec:
     name: computebackendservice-dep-externalloadbalancing
   sessionAffinity: GENERATED_COOKIE
   customRequestHeaders:
-  - &#34;Trailer: custom-trailer&#34;
+  - "Trailer: custom-trailer"
   logConfig:
     enable: true
     sampleRate: 0.5
@@ -2174,7 +2174,7 @@ spec:
       versionedExpr: SRC_IPS_V1
       config:
         srcIpRanges:
-        - &#34;*&#34;
+        - "*"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
@@ -2191,14 +2191,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -2212,7 +2212,7 @@ spec:
   localityLbPolicy: MAGLEV
   timeoutSec: 86400
   consistentHash:
-    httpHeaderName: &#34;Hash string&#34;
+    httpHeaderName: "Hash string"
   healthChecks:
   - healthCheckRef:
       name: computebackendservice-dep-internalmanagedloadbalancing
@@ -2288,14 +2288,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -2309,7 +2309,7 @@ spec:
   localityLbPolicy: MAGLEV
   timeoutSec: 86400
   consistentHash:
-    httpHeaderName: &#34;Hash string&#34;
+    httpHeaderName: "Hash string"
   healthChecks:
   - healthCheckRef:
       name: computebackendservice-dep-oauth2clientid
@@ -2357,7 +2357,7 @@ spec:
     oauth2ClientIdRef:
       external: computebackendservice-dep-oauth2clientid
     oauth2ClientSecret:
-      value: &#34;test-secret-value&#34;
+      value: "test-secret-value"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeHealthCheck
@@ -2390,15 +2390,15 @@ kind: IAPBrand
 metadata:
   name: computebackendservice-dep-oauth2clientid
 spec:
-  applicationTitle: &#34;test brand&#34;
-  supportEmail: &#34;support@example.com&#34;
+  applicationTitle: "test brand"
+  supportEmail: "support@example.com"
 ---
 apiVersion: iap.cnrm.cloud.google.com/v1beta1
 kind: IAPIdentityAwareProxyClient
 metadata:
   name: computebackendservice-dep-oauth2clientid
 spec:
-  displayName: &#34;Test Client&#34;
+  displayName: "Test Client"
   brandRef:
     name: computebackendservice-dep-oauth2clientid
 ```

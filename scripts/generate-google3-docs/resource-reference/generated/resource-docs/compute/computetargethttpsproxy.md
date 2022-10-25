@@ -167,7 +167,7 @@ can only be set for global target proxies.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Location represents the geographical location of the ComputeTargetHTTPSProxy. Specify a region name or &#34;global&#34; for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/){% endverbatim %}</p>
+            <p>{% verbatim %}Location represents the geographical location of the ComputeTargetHTTPSProxy. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/){% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -192,7 +192,7 @@ this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED.{% endv
 whether the load balancer will attempt to negotiate QUIC with clients
 or not. Can specify one of NONE, ENABLE, or DISABLE. If NONE is
 specified, uses the QUIC policy with no user overrides, which is
-equivalent to DISABLE. Default value: &#34;NONE&#34; Possible values: [&#34;NONE&#34;, &#34;ENABLE&#34;, &#34;DISABLE&#34;].{% endverbatim %}</p>
+equivalent to DISABLE. Default value: "NONE" Possible values: ["NONE", "ENABLE", "DISABLE"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -372,7 +372,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -400,7 +400,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -454,14 +454,14 @@ selfLink: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -471,7 +471,7 @@ kind: ComputeTargetHTTPSProxy
 metadata:
   name: computetargethttpsproxy-sample
 spec:
-  description: &#34;A sample proxy&#34;
+  description: "A sample proxy"
   urlMapRef:
     name: computetargethttpsproxy-dep
   sslCertificates:
@@ -546,44 +546,44 @@ stringData:
     DTIwMDkyODIyMjgyOVowTzELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAldBMSEwHwYD
     VQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQxEDAOBgNVBAMMB0V4YW1wbGUw
     ggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDWLvOZIail12i6NXIqOspV
-    corkuS1Nl0ayrl0VuKHCvheun/s7lLLgEfifzRueYlSUtdGg4atWIwEKsbIE&#43;AF9
-    uUTzkq/t6zHxFAAWgVZ6/hW696jqcZX3yU&#43;LCuHPLSN0ruqD6ZygnYDVciDmYwxe
+    corkuS1Nl0ayrl0VuKHCvheun/s7lLLgEfifzRueYlSUtdGg4atWIwEKsbIE+AF9
+    uUTzkq/t6zHxFAAWgVZ6/hW696jqcZX3yU+LCuHPLSN0ruqD6ZygnYDVciDmYwxe
     601xNfOOYRlm6dGRx6uTxGDZtfu8zsaNI0UxTugTp2x5cKB66SbgdlIJvc2Hb54a
-    7qOsb9CIf&#43;rrK2xUdJUj4ueUEIMxjnY2u/Dc71SgfBVn&#43;yFfN9MHNdcTWPXEUClE
-    Fxd/MB3dGn7hVavXyvy3NT4tWhBgYBphfEUudDFej5MmVq56JOEQ2UtaQ&#43;Imscud
+    7qOsb9CIf+rrK2xUdJUj4ueUEIMxjnY2u/Dc71SgfBVn+yFfN9MHNdcTWPXEUClE
+    Fxd/MB3dGn7hVavXyvy3NT4tWhBgYBphfEUudDFej5MmVq56JOEQ2UtaQ+Imscud
     AgMBAAEwDQYJKoZIhvcNAQELBQADggEBAMYTQyjVlo6TCYoyK6akjPX7vRiwCCAh
     jqsEu3bZqwUreOhZgRAyEXrq68dtXwTbwdisQmnhpBeBQuX4WWeas9TiycZ13TA1
-    Z&#43;h518D9OVXjrNs7oE3QNFeTom807IW16YydlrZMLKO8mQg6/BXfSHbLwuQHSIYS
-    JD&#43;uOfnkr08ORBbLGgBKKpy7ngflIkdSrQPmCYmYlvoy&#43;goMAEVi0K3Y1wVzAF4k
-    O4v8f7GXkNarsFT1QM82JboVV5uwX&#43;uDmi858WKDHYGv2Ypv6yy93vdV0Xt/IBj3
+    Z+h518D9OVXjrNs7oE3QNFeTom807IW16YydlrZMLKO8mQg6/BXfSHbLwuQHSIYS
+    JD+uOfnkr08ORBbLGgBKKpy7ngflIkdSrQPmCYmYlvoy+goMAEVi0K3Y1wVzAF4k
+    O4v8f7GXkNarsFT1QM82JboVV5uwX+uDmi858WKDHYGv2Ypv6yy93vdV0Xt/IBj3
     95/RDisBzcL7Ynpl34AAr5MLm7yCSsPrAmgevX4BOtcVc4rSXj5rcoE=
     -----END CERTIFICATE-----
   privateKey: |
     -----BEGIN RSA PRIVATE KEY-----
     MIIEpQIBAAKCAQEA1i7zmSGopddoujVyKjrKVXKK5LktTZdGsq5dFbihwr4Xrp/7
     O5Sy4BH4n80bnmJUlLXRoOGrViMBCrGyBPgBfblE85Kv7esx8RQAFoFWev4Vuveo
-    6nGV98lPiwrhzy0jdK7qg&#43;mcoJ2A1XIg5mMMXutNcTXzjmEZZunRkcerk8Rg2bX7
-    vM7GjSNFMU7oE6dseXCgeukm4HZSCb3Nh2&#43;eGu6jrG/QiH/q6ytsVHSVI&#43;LnlBCD
-    MY52Nrvw3O9UoHwVZ/shXzfTBzXXE1j1xFApRBcXfzAd3Rp&#43;4VWr18r8tzU&#43;LVoQ
-    YGAaYXxFLnQxXo&#43;TJlaueiThENlLWkPiJrHLnQIDAQABAoIBAQDMo/WZlQBG3Cay
-    64fV83AI7jTozkkLvoMNC&#43;3iaBMeN3P3I&#43;HuDmhOEL2lKVq/HKJFp&#43;bPuW50EWPY
-    bOlzN&#43;Zs0kygEMJJJxQDjCF9XzxarVPj3OcmgTpRkqWOaupPgYhD3zAws080YuiK
-    h84Jcg&#43;KzXWjunGn0vxrSPI0QDueJR2i03tEDBAtMZ0pvAsJ0gmXRdzGOc2uRzDm
+    6nGV98lPiwrhzy0jdK7qg+mcoJ2A1XIg5mMMXutNcTXzjmEZZunRkcerk8Rg2bX7
+    vM7GjSNFMU7oE6dseXCgeukm4HZSCb3Nh2+eGu6jrG/QiH/q6ytsVHSVI+LnlBCD
+    MY52Nrvw3O9UoHwVZ/shXzfTBzXXE1j1xFApRBcXfzAd3Rp+4VWr18r8tzU+LVoQ
+    YGAaYXxFLnQxXo+TJlaueiThENlLWkPiJrHLnQIDAQABAoIBAQDMo/WZlQBG3Cay
+    64fV83AI7jTozkkLvoMNC+3iaBMeN3P3I+HuDmhOEL2lKVq/HKJFp+bPuW50EWPY
+    bOlzN+Zs0kygEMJJJxQDjCF9XzxarVPj3OcmgTpRkqWOaupPgYhD3zAws080YuiK
+    h84Jcg+KzXWjunGn0vxrSPI0QDueJR2i03tEDBAtMZ0pvAsJ0gmXRdzGOc2uRzDm
     fbS3y/JIufClO28OzjJ5AJkbc9XgRDeCDOFY2D375bCg2boPYmP7Iw0HVU3RQhcr
-    t&#43;US27VQBRJF4cQ2CCyr0ZbdaPn41v&#43;/A/qxF6ZPguyy&#43;KoyQjCqK8iFArRQ48hJ
-    cR2pFx4hAoGBAP2uXIJAdAemrOunv2CWlUHI2iHj/kJ1AXRMpiT&#43;eF0US9E6tipE
-    mL63HkUhiAs2nJnPi3RDxP&#43;kAO2Z3anqjm1KCeGj&#43;IYYZMavnkC8EVybv9lDwORy
+    t+US27VQBRJF4cQ2CCyr0ZbdaPn41v+/A/qxF6ZPguyy+KoyQjCqK8iFArRQ48hJ
+    cR2pFx4hAoGBAP2uXIJAdAemrOunv2CWlUHI2iHj/kJ1AXRMpiT+eF0US9E6tipE
+    mL63HkUhiAs2nJnPi3RDxP+kAO2Z3anqjm1KCeGj+IYYZMavnkC8EVybv9lDwORy
     e2O1bfRc/tGa341KmvXLbp8oVMIYIvKz2cZmHGJ4V4DTq8dTvmqoE4/VAoGBANgk
     KWY5MJToZJJ5bV0mc2stmGt/IAZZPlKjVmKOjDyzqHRLAhsmbMyUhhgZtyj0dzSW
-    ILEeaEJknYRrOB48D6IqkB8VnFJyHUG8l&#43;Za41adqRQNid0S5n50/&#43;eYbjZpYCrA
+    ILEeaEJknYRrOB48D6IqkB8VnFJyHUG8l+Za41adqRQNid0S5n50/+eYbjZpYCrA
     SGmC2dhPZvRD6tOyEEJF5PZMvqxDcNRilc627HipAoGBAKzqrSQbyvtsIXKAZXLx
-    McwlnIp9XlLubo9Xr&#43;iHjIPl0chMvN8S4wscxwVYVeNO1nABiI03pJCcugU7XFz2
-    BR952EJ2AnFlL0w/aR&#43;3Eh6OC7eM927Amlrc0JZAzXESoE8vC3F/uWfDlgK3cRr&#43;
-    fPM/pxl37i1iGzVDYAhTiQIBAoGAPW25nmXumsOZoc&#43;E945wCywAP7z3mxZOEip9
-    6LDexnnBDJws0w6OqW4k1kCov6kLIBTy4aPkucniwrm&#43;T0l&#43;n/Y807jOntfz3LT&#43;
+    McwlnIp9XlLubo9Xr+iHjIPl0chMvN8S4wscxwVYVeNO1nABiI03pJCcugU7XFz2
+    BR952EJ2AnFlL0w/aR+3Eh6OC7eM927Amlrc0JZAzXESoE8vC3F/uWfDlgK3cRr+
+    fPM/pxl37i1iGzVDYAhTiQIBAoGAPW25nmXumsOZoc+E945wCywAP7z3mxZOEip9
+    6LDexnnBDJws0w6OqW4k1kCov6kLIBTy4aPkucniwrm+T0l+n/Y807jOntfz3LT+
     7ucx6XIRlbNrVTuD6rjR6j52RFyaikvvyJz50PJwLkgHO3dGC6/VrPKO1mKsdJA4
     R3HRr1ECgYEAobNQbQSLrSWZ1cozJbmNgRqqvxDNSEDi8LpXukOAw4pz1km7o3ob
-    hCy1ksfFzsp5glYqwZd/Bahk64u3mII&#43;rKoYwYLrH2l2aFDmMbdTfQUycpQZyi3&#43;
+    hCy1ksfFzsp5glYqwZd/Bahk64u3mII+rKoYwYLrH2l2aFDmMbdTfQUycpQZyi3+
     VtGS1PFoKx9fSFDNHhR5ZhfasQcuKHYfeFfO2/DoOxQkNCI1y4I2huo=
     -----END RSA PRIVATE KEY-----
 ```

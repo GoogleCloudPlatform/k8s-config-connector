@@ -169,7 +169,7 @@ serviceRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A calendar period, semantically &#34;since the start of the current ``&#34;. At this time, only `DAY`, `WEEK`, `FORTNIGHT`, and `MONTH` are supported. Possible values: CALENDAR_PERIOD_UNSPECIFIED, DAY, WEEK, FORTNIGHT, MONTH, QUARTER, HALF, YEAR{% endverbatim %}</p>
+            <p>{% verbatim %}A calendar period, semantically "since the start of the current ``". At this time, only `DAY`, `WEEK`, `FORTNIGHT`, and `MONTH` are supported. Possible values: CALENDAR_PERIOD_UNSPECIFIED, DAY, WEEK, FORTNIGHT, MONTH, QUARTER, HALF, YEAR{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -189,7 +189,7 @@ serviceRef:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}The fraction of service that must be good in order for this objective to be met. `0 &lt; goal &lt;= 0.999`.{% endverbatim %}</p>
+            <p>{% verbatim %}The fraction of service that must be good in order for this objective to be met. `0 < goal <= 0.999`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -251,7 +251,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A rolling time period, semantically &#34;in the past ``&#34;. Must be an integer multiple of 1 day no larger than 30 days.{% endverbatim %}</p>
+            <p>{% verbatim %}A rolling time period, semantically "in the past ``". Must be an integer multiple of 1 day no larger than 30 days.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -261,7 +261,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The definition of good service, used to measure and calculate the quality of the `Service`&#39;s performance with respect to a single aspect of service quality.{% endverbatim %}</p>
+            <p>{% verbatim %}The definition of good service, used to measure and calculate the quality of the `Service`'s performance with respect to a single aspect of service quality.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -321,7 +321,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}OPTIONAL: The set of locations to which this SLI is relevant. Telemetry from other locations will not be used to calculate performance for this SLI. If omitted, this SLI applies to all locations in which the Service has activity. For service types that don&#39;t support breaking down by location, setting this field will result in an error.{% endverbatim %}</p>
+            <p>{% verbatim %}OPTIONAL: The set of locations to which this SLI is relevant. Telemetry from other locations will not be used to calculate performance for this SLI. If omitted, this SLI applies to all locations in which the Service has activity. For service types that don't support breaking down by location, setting this field will result in an error.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -341,7 +341,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}OPTIONAL: The set of RPCs to which this SLI is relevant. Telemetry from other methods will not be used to calculate performance for this SLI. If omitted, this SLI applies to all the Service&#39;s methods. For service types that don&#39;t support breaking down by method, setting this field will result in an error.{% endverbatim %}</p>
+            <p>{% verbatim %}OPTIONAL: The set of RPCs to which this SLI is relevant. Telemetry from other methods will not be used to calculate performance for this SLI. If omitted, this SLI applies to all the Service's methods. For service types that don't support breaking down by method, setting this field will result in an error.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -401,7 +401,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}OPTIONAL: The set of API versions to which this SLI is relevant. Telemetry from other API versions will not be used to calculate performance for this SLI. If omitted, this SLI applies to all API versions. For service types that don&#39;t support breaking down by version, setting this field will result in an error.{% endverbatim %}</p>
+            <p>{% verbatim %}OPTIONAL: The set of API versions to which this SLI is relevant. Telemetry from other API versions will not be used to calculate performance for this SLI. If omitted, this SLI applies to all API versions. For service types that don't support breaking down by version, setting this field will result in an error.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -451,7 +451,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Range of values considered &#34;good.&#34; For a one-sided range, set one bound to an infinite value.{% endverbatim %}</p>
+            <p>{% verbatim %}Range of values considered "good." For a one-sided range, set one bound to an infinite value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -601,7 +601,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}OPTIONAL: The set of locations to which this SLI is relevant. Telemetry from other locations will not be used to calculate performance for this SLI. If omitted, this SLI applies to all locations in which the Service has activity. For service types that don&#39;t support breaking down by location, setting this field will result in an error.{% endverbatim %}</p>
+            <p>{% verbatim %}OPTIONAL: The set of locations to which this SLI is relevant. Telemetry from other locations will not be used to calculate performance for this SLI. If omitted, this SLI applies to all locations in which the Service has activity. For service types that don't support breaking down by location, setting this field will result in an error.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -621,7 +621,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}OPTIONAL: The set of RPCs to which this SLI is relevant. Telemetry from other methods will not be used to calculate performance for this SLI. If omitted, this SLI applies to all the Service&#39;s methods. For service types that don&#39;t support breaking down by method, setting this field will result in an error.{% endverbatim %}</p>
+            <p>{% verbatim %}OPTIONAL: The set of RPCs to which this SLI is relevant. Telemetry from other methods will not be used to calculate performance for this SLI. If omitted, this SLI applies to all the Service's methods. For service types that don't support breaking down by method, setting this field will result in an error.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -681,7 +681,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}OPTIONAL: The set of API versions to which this SLI is relevant. Telemetry from other API versions will not be used to calculate performance for this SLI. If omitted, this SLI applies to all API versions. For service types that don&#39;t support breaking down by version, setting this field will result in an error.{% endverbatim %}</p>
+            <p>{% verbatim %}OPTIONAL: The set of API versions to which this SLI is relevant. Telemetry from other API versions will not be used to calculate performance for this SLI. If omitted, this SLI applies to all API versions. For service types that don't support breaking down by version, setting this field will result in an error.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -731,7 +731,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Range of values considered &#34;good.&#34; For a one-sided range, set one bound to an infinite value.{% endverbatim %}</p>
+            <p>{% verbatim %}Range of values considered "good." For a one-sided range, set one bound to an infinite value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -801,7 +801,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}If window `performance &gt;= threshold`, the window is counted as good.{% endverbatim %}</p>
+            <p>{% verbatim %}If window `performance >= threshold`, the window is counted as good.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -811,7 +811,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A window is good if the metric&#39;s value is in a good range, averaged across returned streams.{% endverbatim %}</p>
+            <p>{% verbatim %}A window is good if the metric's value is in a good range, averaged across returned streams.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -821,7 +821,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Range of values considered &#34;good.&#34; For a one-sided range, set one bound to an infinite value.{% endverbatim %}</p>
+            <p>{% verbatim %}Range of values considered "good." For a one-sided range, set one bound to an infinite value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -861,7 +861,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A window is good if the metric&#39;s value is in a good range, summed across returned streams.{% endverbatim %}</p>
+            <p>{% verbatim %}A window is good if the metric's value is in a good range, summed across returned streams.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -871,7 +871,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Range of values considered &#34;good.&#34; For a one-sided range, set one bound to an infinite value.{% endverbatim %}</p>
+            <p>{% verbatim %}Range of values considered "good." For a one-sided range, set one bound to an infinite value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -987,7 +987,7 @@ serviceManagementOwned: boolean
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1015,7 +1015,7 @@ serviceManagementOwned: boolean
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1069,14 +1069,14 @@ serviceManagementOwned: boolean
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1086,20 +1086,20 @@ kind: MonitoringServiceLevelObjective
 metadata:
   name: monitoringservicelevelobjective-sample-requestbaseddistributioncut
   labels:
-    test1: &#34;value1&#34;
+    test1: "value1"
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: &#34;projects/${PROJECT_ID?}&#34;
+     external: "projects/${PROJECT_ID?}"
   serviceRef:
     external: monitoringservicelevelobjective-dep-requestbaseddistributioncut
-  displayName: &#34;A request based distribution cut filter&#34;
+  displayName: "A request based distribution cut filter"
   goal: 0.9
-  rollingPeriod: &#34;86400s&#34;
+  rollingPeriod: "86400s"
   serviceLevelIndicator:
     requestBased:
       distributionCut:
-        distributionFilter: &#34;metric.type=\&#34;serviceruntime.googleapis.com/api/request_latencies\&#34; \n resource.type=\&#34;api\&#34;  &#34;
+        distributionFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_latencies\" \n resource.type=\"api\"  "
         range:
           min: 50
           max: 100
@@ -1111,22 +1111,22 @@ metadata:
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: &#34;projects/${PROJECT_ID?}&#34;
-  displayName: &#34;A basic monitoring service.&#34;
+     external: "projects/${PROJECT_ID?}"
+  displayName: "A basic monitoring service."
 ```
 
 ### Request Based Good Total Ratio
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1136,21 +1136,21 @@ kind: MonitoringServiceLevelObjective
 metadata:
   name: monitoringservicelevelobjective-sample-requestbasedgoodtotalratio
   labels:
-    test1: &#34;value1&#34;
+    test1: "value1"
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: &#34;projects/${PROJECT_ID?}&#34;
+     external: "projects/${PROJECT_ID?}"
   serviceRef:
     external: monitoringservicelevelobjective-dep-requestbasedgoodtotalratio
-  displayName: &#34;A request based good total ratio filter&#34;
+  displayName: "A request based good total ratio filter"
   goal: 0.9
-  rollingPeriod: &#34;86400s&#34;
+  rollingPeriod: "86400s"
   serviceLevelIndicator:
     requestBased:
       goodTotalRatio:
-        goodServiceFilter: &#34;metric.type=\&#34;serviceruntime.googleapis.com/api/request_count\&#34; \n resource.type=\&#34;api\&#34; &#34;
-        badServiceFilter: &#34;metric.type=\&#34;serviceruntime.googleapis.com/api/request_count\&#34; \n resource.type=\&#34;api\&#34; &#34;
+        goodServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+        badServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
 ---
 apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
 kind: MonitoringService
@@ -1159,22 +1159,22 @@ metadata:
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: &#34;projects/${PROJECT_ID?}&#34;
-  displayName: &#34;A basic monitoring service.&#34;
+     external: "projects/${PROJECT_ID?}"
+  displayName: "A basic monitoring service."
 ```
 
 ### Request Based Gtr Total Service Filter
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1184,21 +1184,21 @@ kind: MonitoringServiceLevelObjective
 metadata:
   name: monitoringservicelevelobjective-sample-requestbasedgtrtotalservicefilter
   labels:
-    test1: &#34;value1&#34;
+    test1: "value1"
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: &#34;projects/${PROJECT_ID?}&#34;
+     external: "projects/${PROJECT_ID?}"
   serviceRef:
     external: monitoringservicelevelobjective-dep-requestbasedgtrtotalservicefilter
-  displayName: &#34;A request based good total ratio total service filter&#34;
+  displayName: "A request based good total ratio total service filter"
   goal: 0.9
-  rollingPeriod: &#34;86400s&#34;
+  rollingPeriod: "86400s"
   serviceLevelIndicator:
     requestBased:
       goodTotalRatio:
-        goodServiceFilter: &#34;metric.type=\&#34;serviceruntime.googleapis.com/api/request_count\&#34; \n resource.type=\&#34;api\&#34; &#34;
-        totalServiceFilter: &#34;metric.type=\&#34;serviceruntime.googleapis.com/api/request_count\&#34; \n resource.type=\&#34;api\&#34; &#34;
+        goodServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+        totalServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
 ---
 apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
 kind: MonitoringService
@@ -1207,22 +1207,22 @@ metadata:
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: &#34;projects/${PROJECT_ID?}&#34;
-  displayName: &#34;A basic monitoring service.&#34;
+     external: "projects/${PROJECT_ID?}"
+  displayName: "A basic monitoring service."
 ```
 
 ### Window Based Good Bad Metric Filter
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1232,20 +1232,20 @@ kind: MonitoringServiceLevelObjective
 metadata:
   name: monitoringservicelevelobjective-sample-windowgoodbadmetric
   labels:
-    test1: &#34;value1&#34;
+    test1: "value1"
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: &#34;projects/${PROJECT_ID?}&#34;
+     external: "projects/${PROJECT_ID?}"
   serviceRef:
     external: monitoringservicelevelobjective-dep-windowgoodbadmetric
-  displayName: &#34;A window based good bad metric slo&#34;
+  displayName: "A window based good bad metric slo"
   goal: 0.9
   calendarPeriod: DAY
   serviceLevelIndicator:
     windowsBased:
-      windowPeriod: &#34;60s&#34;
-      goodBadMetricFilter: &#34;metric.type=\&#34;monitoring.googleapis.com/uptime_check/check_passed\&#34; \n resource.type=\&#34;uptime_url\&#34;&#34;
+      windowPeriod: "60s"
+      goodBadMetricFilter: "metric.type=\"monitoring.googleapis.com/uptime_check/check_passed\" \n resource.type=\"uptime_url\""
 ---
 apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
 kind: MonitoringService
@@ -1254,22 +1254,22 @@ metadata:
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: &#34;projects/${PROJECT_ID?}&#34;
-  displayName: &#34;A basic monitoring service.&#34;
+     external: "projects/${PROJECT_ID?}"
+  displayName: "A basic monitoring service."
 ```
 
 ### Window Based Gtr Distribution Cut
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1279,24 +1279,24 @@ kind: MonitoringServiceLevelObjective
 metadata:
   name: monitoringservicelevelobjective-sample-windowbasedgtrdistributioncut
   labels:
-    test1: &#34;value1&#34;
+    test1: "value1"
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: &#34;projects/${PROJECT_ID?}&#34;
+     external: "projects/${PROJECT_ID?}"
   serviceRef:
     external: monitoringservicelevelobjective-dep-windowbasedgtrdistributioncut
-  displayName: &#34;A window based good total ratio distribution cut filter&#34;
+  displayName: "A window based good total ratio distribution cut filter"
   goal: 0.9
-  calendarPeriod: &#34;DAY&#34;
+  calendarPeriod: "DAY"
   serviceLevelIndicator:
     windowsBased:
-      windowPeriod: &#34;60s&#34;
+      windowPeriod: "60s"
       goodTotalRatioThreshold:
         threshold: 0.9
         performance:
           distributionCut:
-            distributionFilter: &#34;metric.type=\&#34;serviceruntime.googleapis.com/api/request_latencies\&#34; resource.type=\&#34;api\&#34;  &#34;
+            distributionFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_latencies\" resource.type=\"api\"  "
             range:
               min: 50
               max: 100
@@ -1308,22 +1308,22 @@ metadata:
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: &#34;projects/${PROJECT_ID?}&#34;
-  displayName: &#34;A basic monitoring service.&#34;
+     external: "projects/${PROJECT_ID?}"
+  displayName: "A basic monitoring service."
 ```
 
 ### Window Based Gtr Performance Gtr
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1333,25 +1333,25 @@ kind: MonitoringServiceLevelObjective
 metadata:
   name: monitoringservicelevelobjective-sample-windowbasedgtrperformancegtr
   labels:
-    test1: &#34;value1&#34;
+    test1: "value1"
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: &#34;projects/${PROJECT_ID?}&#34;
+     external: "projects/${PROJECT_ID?}"
   serviceRef:
     external: monitoringservicelevelobjective-dep-windowbasedgtrperformancegtr
-  displayName: &#34;A window based good total ratio performance filter&#34;
+  displayName: "A window based good total ratio performance filter"
   goal: 0.9
-  calendarPeriod: &#34;DAY&#34;
+  calendarPeriod: "DAY"
   serviceLevelIndicator:
     windowsBased:
-      windowPeriod: &#34;60s&#34;
+      windowPeriod: "60s"
       goodTotalRatioThreshold:
         threshold: 0.9
         performance:
           goodTotalRatio:
-            goodServiceFilter: &#34;metric.type=\&#34;serviceruntime.googleapis.com/api/request_count\&#34; \n resource.type=\&#34;api\&#34; &#34;
-            badServiceFilter: &#34;metric.type=\&#34;serviceruntime.googleapis.com/api/request_count\&#34; \n resource.type=\&#34;api\&#34; &#34;
+            goodServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+            badServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
 ---
 apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
 kind: MonitoringService
@@ -1360,22 +1360,22 @@ metadata:
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: &#34;projects/${PROJECT_ID?}&#34;
-  displayName: &#34;A basic monitoring service.&#34;
+     external: "projects/${PROJECT_ID?}"
+  displayName: "A basic monitoring service."
 ```
 
 ### Window Based Gtr Performance Gtr Total Service Filter
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1385,25 +1385,25 @@ kind: MonitoringServiceLevelObjective
 metadata:
   name: monitoringservicelevelobjective-sample-windowbasedgtrperformancegtrtotalservicefilter
   labels:
-    test1: &#34;value1&#34;
+    test1: "value1"
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: &#34;projects/${PROJECT_ID?}&#34;
+     external: "projects/${PROJECT_ID?}"
   serviceRef:
     external: monitoringservicelevelobjective-dep-windowbasedgtrperformancegtrtotalservicefilter
-  displayName: &#34;A window based good total ratio performance filter&#34;
+  displayName: "A window based good total ratio performance filter"
   goal: 0.9
-  calendarPeriod: &#34;DAY&#34;
+  calendarPeriod: "DAY"
   serviceLevelIndicator:
     windowsBased:
-      windowPeriod: &#34;60s&#34;
+      windowPeriod: "60s"
       goodTotalRatioThreshold:
         threshold: 0.9
         performance:
           goodTotalRatio:
-            goodServiceFilter: &#34;metric.type=\&#34;serviceruntime.googleapis.com/api/request_count\&#34; \n resource.type=\&#34;api\&#34; &#34;
-            totalServiceFilter: &#34;metric.type=\&#34;serviceruntime.googleapis.com/api/request_count\&#34; \n resource.type=\&#34;api\&#34; &#34;
+            goodServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+            totalServiceFilter: "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
 ---
 apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
 kind: MonitoringService
@@ -1412,22 +1412,22 @@ metadata:
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: &#34;projects/${PROJECT_ID?}&#34;
-  displayName: &#34;A basic monitoring service.&#34;
+     external: "projects/${PROJECT_ID?}"
+  displayName: "A basic monitoring service."
 ```
 
 ### Window Based Metric Mean Filter
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1437,21 +1437,21 @@ kind: MonitoringServiceLevelObjective
 metadata:
   name: monitoringservicelevelobjective-sample-windowbasedmetricmeanfilter
   labels:
-    test1: &#34;value1&#34;
+    test1: "value1"
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: &#34;projects/${PROJECT_ID?}&#34;
+     external: "projects/${PROJECT_ID?}"
   serviceRef:
     external: monitoringservicelevelobjective-dep-windowbasedmetricmeanfilter
-  displayName: &#34;A window based metric mean filter&#34;
+  displayName: "A window based metric mean filter"
   goal: 0.9
-  rollingPeriod: &#34;86400s&#34;
+  rollingPeriod: "86400s"
   serviceLevelIndicator:
     windowsBased:
-      windowPeriod: &#34;60s&#34;
+      windowPeriod: "60s"
       metricMeanInRange:
-        timeSeries: &#34;resource.type=\&#34;gce_instance\&#34; \nmetric.type=\&#34;compute.googleapis.com/instance/cpu/usage_time\&#34;&#34;
+        timeSeries: "resource.type=\"gce_instance\" \nmetric.type=\"compute.googleapis.com/instance/cpu/usage_time\""
         range:
           min: 50
           max: 100
@@ -1463,22 +1463,22 @@ metadata:
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: &#34;projects/${PROJECT_ID?}&#34;
-  displayName: &#34;A basic monitoring service.&#34;
+     external: "projects/${PROJECT_ID?}"
+  displayName: "A basic monitoring service."
 ```
 
 ### Window Based Metric Sum Filter
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1488,21 +1488,21 @@ kind: MonitoringServiceLevelObjective
 metadata:
   name: monitoringservicelevelobjective-sample-windowbasedmetricsum
   labels:
-    test1: &#34;value1&#34;
+    test1: "value1"
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: &#34;projects/${PROJECT_ID?}&#34;
+     external: "projects/${PROJECT_ID?}"
   serviceRef:
     external: monitoringservicelevelobjective-dep-windowbasedmetricsum
-  displayName: &#34;A window based metric sum filter&#34;
+  displayName: "A window based metric sum filter"
   goal: 0.9
-  rollingPeriod: &#34;86400s&#34;
+  rollingPeriod: "86400s"
   serviceLevelIndicator:
     windowsBased:
-      windowPeriod: &#34;60s&#34;
+      windowPeriod: "60s"
       metricSumInRange:
-        timeSeries: &#34;resource.type=\&#34;gce_instance\&#34; \nmetric.type=\&#34;compute.googleapis.com/instance/cpu/usage_time\&#34;&#34;
+        timeSeries: "resource.type=\"gce_instance\" \nmetric.type=\"compute.googleapis.com/instance/cpu/usage_time\""
         range:
           min: 50
           max: 100
@@ -1514,8 +1514,8 @@ metadata:
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: &#34;projects/${PROJECT_ID?}&#34;
-  displayName: &#34;A basic monitoring service.&#34;
+     external: "projects/${PROJECT_ID?}"
+  displayName: "A basic monitoring service."
 ```
 
 

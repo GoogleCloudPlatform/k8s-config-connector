@@ -141,7 +141,7 @@ zones:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. The time when the policy was created.
-A timestamp in RFC3339 UTC &#34;Zulu&#34; format, with nanosecond
+A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
 resolution and up to nine fractional digits.{% endverbatim %}</p>
         </td>
     </tr>
@@ -165,7 +165,7 @@ length is greater than 512.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. The time when the policy was updated.
-A timestamp in RFC3339 UTC &#34;Zulu&#34; format, with nanosecond
+A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
 resolution and up to nine fractional digits.{% endverbatim %}</p>
         </td>
     </tr>
@@ -206,7 +206,7 @@ is expected to be one.{% endverbatim %}</p>
 - THURSDAY: Thursday
 - FRIDAY: Friday
 - SATURDAY: Saturday
-- SUNDAY: Sunday Possible values: [&#34;DAY_OF_WEEK_UNSPECIFIED&#34;, &#34;MONDAY&#34;, &#34;TUESDAY&#34;, &#34;WEDNESDAY&#34;, &#34;THURSDAY&#34;, &#34;FRIDAY&#34;, &#34;SATURDAY&#34;, &#34;SUNDAY&#34;].{% endverbatim %}</p>
+- SUNDAY: Sunday Possible values: ["DAY_OF_WEEK_UNSPECIFIED", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -218,7 +218,7 @@ is expected to be one.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Required. The length of the maintenance window, ranging from 3 hours to 8 hours.
 A duration in seconds with up to nine fractional digits,
-terminated by &#39;s&#39;. Example: &#34;3.5s&#34;.{% endverbatim %}</p>
+terminated by 's'. Example: "3.5s".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -239,7 +239,7 @@ terminated by &#39;s&#39;. Example: &#34;3.5s&#34;.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23.
-An API may choose to allow the value &#34;24:00:00&#34; for scenarios like business closing time.{% endverbatim %}</p>
+An API may choose to allow the value "24:00:00" for scenarios like business closing time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -312,7 +312,7 @@ An API may allow the value 60 if it allows leap-seconds.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The major version of Memcached software. If not provided, latest supported version will be used.
 Currently the latest supported major version is MEMCACHE_1_5. The minor version will be automatically
-determined by our system based on the latest supported minor version. Default value: &#34;MEMCACHE_1_5&#34; Possible values: [&#34;MEMCACHE_1_5&#34;].{% endverbatim %}</p>
+determined by our system based on the latest supported minor version. Default value: "MEMCACHE_1_5" Possible values: ["MEMCACHE_1_5"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -479,7 +479,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -507,7 +507,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -557,7 +557,7 @@ observedGeneration: integer
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. The end time of any upcoming scheduled maintenance for this instance.
-A timestamp in RFC3339 UTC &#34;Zulu&#34; format, with nanosecond
+A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
 resolution and up to nine fractional digits.{% endverbatim %}</p>
         </td>
     </tr>
@@ -567,7 +567,7 @@ resolution and up to nine fractional digits.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. The deadline that the maintenance schedule start time
 can not go beyond, including reschedule.
-A timestamp in RFC3339 UTC &#34;Zulu&#34; format, with nanosecond
+A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
 resolution and up to nine fractional digits.{% endverbatim %}</p>
         </td>
     </tr>
@@ -576,7 +576,7 @@ resolution and up to nine fractional digits.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. The start time of any upcoming scheduled maintenance for this instance.
-A timestamp in RFC3339 UTC &#34;Zulu&#34; format, with nanosecond
+A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
 resolution and up to nine fractional digits.{% endverbatim %}</p>
         </td>
     </tr>
@@ -652,14 +652,14 @@ resolution and up to nine fractional digits.{% endverbatim %}</p>
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -685,9 +685,9 @@ spec:
   displayName: Sample Memcache Instance
   memcacheParameters:
     params:
-      listen-backlog: &#34;10000&#34;
-      max-item-size: &#34;524288&#34;
-      max-reqs-per-event: &#34;1&#34;
+      listen-backlog: "10000"
+      max-item-size: "524288"
+      max-reqs-per-event: "1"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
@@ -717,7 +717,7 @@ spec:
     name: memcacheinstance-dep
   reservedPeeringRanges:
     - name: memcacheinstance-dep
-  service: &#34;servicenetworking.googleapis.com&#34;
+  service: "servicenetworking.googleapis.com"
 ```
 
 

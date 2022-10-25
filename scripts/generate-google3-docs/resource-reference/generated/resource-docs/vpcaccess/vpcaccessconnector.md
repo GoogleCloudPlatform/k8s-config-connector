@@ -396,7 +396,7 @@ state: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -424,7 +424,7 @@ state: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -478,14 +478,14 @@ state: string
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -495,15 +495,15 @@ kind: VPCAccessConnector
 metadata:
   name: connector-sample-cidr
 spec:
-  location: &#34;us-central1&#34;
+  location: "us-central1"
   networkRef:
     name: connector-dep-cidr
-  ipCidrRange: &#34;10.132.0.0/28&#34;
+  ipCidrRange: "10.132.0.0/28"
   minThroughput: 300
   maxThroughput: 400
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID
-    external: &#34;projects/${PROJECT_ID?}&#34;
+    external: "projects/${PROJECT_ID?}"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
@@ -517,14 +517,14 @@ spec:
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -534,8 +534,8 @@ kind: VPCAccessConnector
 metadata:
   name: connector-sample-subnet
 spec:
-  location: &#34;us-central1&#34;
-  machineType: &#34;e2-micro&#34;
+  location: "us-central1"
+  machineType: "e2-micro"
   minInstances: 2
   maxInstances: 3
   subnet:
@@ -543,10 +543,10 @@ spec:
       name: connector-dep-subnet
     projectRef:
       # Replace ${PROJECT_ID?} with your project ID.
-      external: &#34;projects/${PROJECT_ID?}&#34;
+      external: "projects/${PROJECT_ID?}"
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID
-    external: &#34;projects/${PROJECT_ID?}&#34;
+    external: "projects/${PROJECT_ID?}"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
@@ -560,8 +560,8 @@ kind: ComputeSubnetwork
 metadata:
   name: connector-dep-subnet
 spec:
-  ipCidrRange: &#34;10.2.0.0/28&#34;
-  region: &#34;us-west2&#34;
+  ipCidrRange: "10.2.0.0/28"
+  region: "us-west2"
   networkRef:
     name: connector-dep-subnet
 ```

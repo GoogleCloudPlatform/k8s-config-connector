@@ -181,10 +181,10 @@ Only IPv4 is supported.{% endverbatim %}</p>
             <p>{% verbatim %}Immutable. URL to a gateway that should handle matching packets.
 Currently, you can only specify the internet gateway, using a full or
 partial valid URL:
-* &#39;https://www.googleapis.com/compute/v1/projects/project/global/gateways/default-internet-gateway&#39;
-* &#39;projects/project/global/gateways/default-internet-gateway&#39;
-* &#39;global/gateways/default-internet-gateway&#39;
-* The string &#39;default-internet-gateway&#39;.{% endverbatim %}</p>
+* 'https://www.googleapis.com/compute/v1/projects/project/global/gateways/default-internet-gateway'
+* 'projects/project/global/gateways/default-internet-gateway'
+* 'global/gateways/default-internet-gateway'
+* The string 'default-internet-gateway'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -395,7 +395,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -423,7 +423,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -470,14 +470,14 @@ selfLink: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -487,7 +487,7 @@ kind: ComputeRoute
 metadata:
   name: computeroute-sample
 spec:
-  description: &#34;A sample compute route&#34;
+  description: "A sample compute route"
   destRange: 0.0.0.0/0
   networkRef:
     name: computeroute-dep
@@ -499,7 +499,7 @@ kind: ComputeNetwork
 metadata:
   name: computeroute-dep
   annotations:
-    cnrm.cloud.google.com/deletion-policy: &#34;abandon&#34;
+    cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
   description: Default network for the project
 ```

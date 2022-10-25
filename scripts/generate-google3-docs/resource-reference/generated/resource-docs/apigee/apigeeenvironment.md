@@ -231,7 +231,7 @@ state: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -259,7 +259,7 @@ state: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -313,14 +313,14 @@ state: string
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -331,11 +331,11 @@ metadata:
   name: apigeeenvironment-sample
 spec:
   apigeeOrganizationRef:
-    name: &#34;apigeeenvironment-dep&#34;
-  description: &#34;A sample environment&#34;
+    name: "apigeeenvironment-dep"
+  description: "A sample environment"
   properties:
-    key: &#34;A sample value&#34;
-  displayName: &#34;sample-environment&#34;
+    key: "A sample value"
+  displayName: "sample-environment"
 ---
 apiVersion: apigee.cnrm.cloud.google.com/v1beta1
 kind: ApigeeOrganization
@@ -344,16 +344,16 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID
-    external: &#34;projects/${PROJECT_ID?}&#34;
-  displayName: &#34;basic-organization&#34;
-  description: &#34;A sample organization&#34;
+    external: "projects/${PROJECT_ID?}"
+  displayName: "basic-organization"
+  description: "A sample organization"
   properties:
-    features.mart.connect.enabled: &#34;false&#34;
-    features.hybrid.enabled: &#34;true&#34;
-  analyticsRegion: &#34;us-west1&#34;
+    features.mart.connect.enabled: "false"
+    features.hybrid.enabled: "true"
+  analyticsRegion: "us-west1"
   authorizedNetworkRef:
-    name: &#34;apigeeenvironment-dep&#34;
-  runtimeType: &#34;CLOUD&#34;
+    name: "apigeeenvironment-dep"
+  runtimeType: "CLOUD"
   addonsConfig:
     advancedApiOpsConfig:
       enabled: true
@@ -365,7 +365,7 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
-  name: &#34;apigeeenvironment-dep&#34;
+  name: "apigeeenvironment-dep"
 spec:
   autoCreateSubnetworks: false
   description: A sample authorized network for an apigee organization

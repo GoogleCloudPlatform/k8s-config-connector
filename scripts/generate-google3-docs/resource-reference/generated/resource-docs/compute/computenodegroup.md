@@ -146,7 +146,7 @@ than or equal to max-nodes. The default value is 0.{% endverbatim %}</p>
   - ON: Enables scaling in and scaling out.
   - ONLY_SCALE_OUT: Enables only scaling out.
   You must use this mode if your node groups are configured to
-  restart their hosted VMs on minimal servers. Possible values: [&#34;OFF&#34;, &#34;ON&#34;, &#34;ONLY_SCALE_OUT&#34;].{% endverbatim %}</p>
+  restart their hosted VMs on minimal servers. Possible values: ["OFF", "ON", "ONLY_SCALE_OUT"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -166,7 +166,7 @@ than or equal to max-nodes. The default value is 0.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. The initial number of nodes in the node group. One of &#39;initial_size&#39; or &#39;size&#39; must be specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The initial number of nodes in the node group. One of 'initial_size' or 'size' must be specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -256,7 +256,7 @@ than or equal to max-nodes. The default value is 0.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. The total number of nodes in the node group. One of &#39;initial_size&#39; or &#39;size&#39; must be specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The total number of nodes in the node group. One of 'initial_size' or 'size' must be specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -301,7 +301,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -329,7 +329,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -376,14 +376,14 @@ selfLink: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.

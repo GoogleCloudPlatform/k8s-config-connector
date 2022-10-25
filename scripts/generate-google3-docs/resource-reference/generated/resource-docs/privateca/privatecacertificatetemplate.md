@@ -160,7 +160,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Optional. Describes constraints on identities that may be appear in Certificates issued using this template. If this is omitted, then this template will not add restrictions on a certificate&#39;s identity.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Describes constraints on identities that may be appear in Certificates issued using this template. If this is omitted, then this template will not add restrictions on a certificate's identity.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -250,7 +250,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Optional. Describes the set of X.509 extensions that may appear in a Certificate issued using this CertificateTemplate. If a certificate request sets extensions that don&#39;t appear in the passthrough_extensions, those extensions will be dropped. If the issuing CaPool&#39;s IssuancePolicy defines baseline_values that don&#39;t appear here, the certificate issuance request will fail. If this is omitted, then this template will not add restrictions on a certificate&#39;s X.509 extensions. These constraints do not apply to X.509 extensions set in this CertificateTemplate&#39;s predefined_values.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Describes the set of X.509 extensions that may appear in a Certificate issued using this CertificateTemplate. If a certificate request sets extensions that don't appear in the passthrough_extensions, those extensions will be dropped. If the issuing CaPool's IssuancePolicy defines baseline_values that don't appear here, the certificate issuance request will fail. If this is omitted, then this template will not add restrictions on a certificate's X.509 extensions. These constraints do not apply to X.509 extensions set in this CertificateTemplate's predefined_values.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -320,7 +320,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Optional. A set of X.509 values that will be applied to all issued certificates that use this template. If the certificate request includes conflicting values for the same properties, they will be overwritten by the values defined here. If the issuing CaPool&#39;s IssuancePolicy defines conflicting baseline_values for the same properties, the certificate issuance request will fail.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A set of X.509 values that will be applied to all issued certificates that use this template. If the certificate request includes conflicting values for the same properties, they will be overwritten by the values defined here. If the issuing CaPool's IssuancePolicy defines conflicting baseline_values for the same properties, the certificate issuance request will fail.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -400,7 +400,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Optional. Describes Online Certificate Status Protocol (OCSP) endpoint addresses that appear in the &#34;Authority Information Access&#34; extension in the certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Describes Online Certificate Status Protocol (OCSP) endpoint addresses that appear in the "Authority Information Access" extension in the certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -430,7 +430,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. Refers to the &#34;CA&#34; X.509 extension, which is a boolean value. When this value is missing, the extension will be omitted from the CA certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Refers to the "CA" X.509 extension, which is a boolean value. When this value is missing, the extension will be omitted from the CA certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -480,7 +480,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}The key may be used for cryptographic commitments. Note that this may also be referred to as &#34;non-repudiation&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}The key may be used for cryptographic commitments. Note that this may also be referred to as "non-repudiation".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -570,7 +570,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as &#34;TLS WWW client authentication&#34;, though regularly used for non-WWW TLS.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as "TLS WWW client authentication", though regularly used for non-WWW TLS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -580,7 +580,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as &#34;Signing of downloadable executable code client authentication&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as "Signing of downloadable executable code client authentication".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -590,7 +590,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as &#34;Email protection&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as "Email protection".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -600,7 +600,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as &#34;Signing OCSP responses&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as "Signing OCSP responses".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -610,7 +610,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as &#34;TLS WWW server authentication&#34;, though regularly used for non-WWW TLS.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW server authentication", though regularly used for non-WWW TLS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -620,7 +620,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as &#34;Binding the hash of an object to a time&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as "Binding the hash of an object to a time".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -787,7 +787,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -815,7 +815,7 @@ updateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -862,14 +862,14 @@ updateTime: string
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -878,13 +878,13 @@ apiVersion: privateca.cnrm.cloud.google.com/v1beta1
 kind: PrivateCACertificateTemplate
 metadata:
   labels:
-    label-two: &#34;value-two&#34;
+    label-two: "value-two"
   name: privatecacertificatetemplate-sample
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
-     external: &#34;projects/${PROJECT_ID?}&#34;
-  location: &#34;us-central1&#34;
+     external: "projects/${PROJECT_ID?}"
+  location: "us-central1"
   predefinedValues:
     keyUsage:
       baseKeyUsage:
@@ -928,7 +928,7 @@ spec:
     celExpression:
       title: Sample expression
       description: Always true
-      expression: &#39;true&#39;
+      expression: 'true'
       location: any.file.anywhere
     allowSubjectPassthrough: true
     allowSubjectAltNamesPassthrough: true

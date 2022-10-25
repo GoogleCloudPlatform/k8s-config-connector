@@ -714,7 +714,7 @@ The value must be between 0.0 and 100.0 inclusive.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Span of time that&#39;s a fraction of a second at nanosecond resolution. Durations less than one second are
+            <p>{% verbatim %}Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are
 represented with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
         </td>
     </tr>
@@ -747,7 +747,7 @@ The value must be between 0.0 and 100.0 inclusive.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Specifies the policy on how requests intended for the route&#39;s backends are shadowed to a separate mirrored backend service.
+            <p>{% verbatim %}Specifies the policy on how requests intended for the route's backends are shadowed to a separate mirrored backend service.
 Loadbalancer does not wait for responses from the shadow service. Prior to sending traffic to the shadow service,
 the host / authority header is suffixed with -shadow.{% endverbatim %}</p>
         </td>
@@ -809,7 +809,7 @@ the host / authority header is suffixed with -shadow.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Specifies the allowed number retries. This number must be &gt; 0. If not specified, defaults to 1.{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies the allowed number retries. This number must be > 0. If not specified, defaults to 1.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -832,7 +832,7 @@ will use the largest timeout among all backend services associated with the rout
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Span of time that&#39;s a fraction of a second at nanosecond resolution. Durations less than one second are
+            <p>{% verbatim %}Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are
 represented with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
         </td>
     </tr>
@@ -902,7 +902,7 @@ If not specified, will use the largest timeout among all backend services associ
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Span of time that&#39;s a fraction of a second at nanosecond resolution. Durations less than one second are represented
+            <p>{% verbatim %}Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented
 with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
         </td>
     </tr>
@@ -934,7 +934,7 @@ Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.2
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Prior to forwarding the request to the selected service, the request&#39;s host header is replaced
+            <p>{% verbatim %}Prior to forwarding the request to the selected service, the request's host header is replaced
 with contents of hostRewrite.
 
 The value must be between 1 and 255 characters.{% endverbatim %}</p>
@@ -948,7 +948,7 @@ The value must be between 1 and 255 characters.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Prior to forwarding the request to the selected backend service, the matching portion of the
-request&#39;s path is replaced by pathPrefixRewrite.
+request's path is replaced by pathPrefixRewrite.
 
 The value must be between 1 and 1024 characters.{% endverbatim %}</p>
         </td>
@@ -1191,9 +1191,9 @@ response back to the client.{% endverbatim %}</p>
             <p>{% verbatim %}Specifies the fraction of traffic sent to backendService, computed as
 weight / (sum of all weightedBackendService weights in routeAction) .
 
-The selection of a backend service is determined only for new traffic. Once a user&#39;s request
+The selection of a backend service is determined only for new traffic. Once a user's request
 has been directed to a backendService, subsequent requests will be sent to the same backendService
-as determined by the BackendService&#39;s session affinity policy.
+as determined by the BackendService's session affinity policy.
 
 The value must be between 0 and 1000.{% endverbatim %}</p>
         </td>
@@ -1384,7 +1384,7 @@ the redirect. The value must be between 1 and 1024 characters.{% endverbatim %}<
 will be retained.
 
 * PERMANENT_REDIRECT, which corresponds to 308. In this case,
-the request method will be retained. Possible values: [&#34;FOUND&#34;, &#34;MOVED_PERMANENTLY_DEFAULT&#34;, &#34;PERMANENT_REDIRECT&#34;, &#34;SEE_OTHER&#34;, &#34;TEMPORARY_REDIRECT&#34;].{% endverbatim %}</p>
+the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENTLY_DEFAULT", "PERMANENT_REDIRECT", "SEE_OTHER", "TEMPORARY_REDIRECT"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1632,7 +1632,7 @@ the pattern by either - or ..{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The name of the PathMatcher to use to match the path portion of
-the URL if the hostRule matches the URL&#39;s host portion.{% endverbatim %}</p>
+the URL if the hostRule matches the URL's host portion.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1642,7 +1642,7 @@ the URL if the hostRule matches the URL&#39;s host portion.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Location represents the geographical location of the ComputeURLMap. Specify a region name or &#34;global&#34; for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/){% endverbatim %}</p>
+            <p>{% verbatim %}Location represents the geographical location of the ComputeURLMap. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/){% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1900,7 +1900,7 @@ The value must be between 0.0 and 100.0 inclusive.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Span of time that&#39;s a fraction of a second at nanosecond resolution. Durations less than one second are
+            <p>{% verbatim %}Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are
 represented with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
         </td>
     </tr>
@@ -1933,7 +1933,7 @@ The value must be between 0.0 and 100.0 inclusive.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Specifies the policy on how requests intended for the route&#39;s backends are shadowed to a separate mirrored backend service.
+            <p>{% verbatim %}Specifies the policy on how requests intended for the route's backends are shadowed to a separate mirrored backend service.
 Loadbalancer does not wait for responses from the shadow service. Prior to sending traffic to the shadow service,
 the host / authority header is suffixed with -shadow.{% endverbatim %}</p>
         </td>
@@ -1995,7 +1995,7 @@ the host / authority header is suffixed with -shadow.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Specifies the allowed number retries. This number must be &gt; 0. If not specified, defaults to 1.{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies the allowed number retries. This number must be > 0. If not specified, defaults to 1.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2018,7 +2018,7 @@ will use the largest timeout among all backend services associated with the rout
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Span of time that&#39;s a fraction of a second at nanosecond resolution. Durations less than one second are
+            <p>{% verbatim %}Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are
 represented with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
         </td>
     </tr>
@@ -2088,7 +2088,7 @@ If not specified, will use the largest timeout among all backend services associ
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Span of time that&#39;s a fraction of a second at nanosecond resolution. Durations less than one second are represented
+            <p>{% verbatim %}Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented
 with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
         </td>
     </tr>
@@ -2120,7 +2120,7 @@ Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.2
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Prior to forwarding the request to the selected service, the request&#39;s host header is replaced
+            <p>{% verbatim %}Prior to forwarding the request to the selected service, the request's host header is replaced
 with contents of hostRewrite.
 
 The value must be between 1 and 255 characters.{% endverbatim %}</p>
@@ -2134,7 +2134,7 @@ The value must be between 1 and 255 characters.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Prior to forwarding the request to the selected backend service, the matching portion of the
-request&#39;s path is replaced by pathPrefixRewrite.
+request's path is replaced by pathPrefixRewrite.
 
 The value must be between 1 and 1024 characters.{% endverbatim %}</p>
         </td>
@@ -2377,9 +2377,9 @@ response back to the client.{% endverbatim %}</p>
             <p>{% verbatim %}Specifies the fraction of traffic sent to backendService, computed as
 weight / (sum of all weightedBackendService weights in routeAction) .
 
-The selection of a backend service is determined only for new traffic. Once a user&#39;s request
+The selection of a backend service is determined only for new traffic. Once a user's request
 has been directed to a backendService, subsequent requests will be sent to the same backendService
-as determined by the BackendService&#39;s session affinity policy.
+as determined by the BackendService's session affinity policy.
 
 The value must be between 0 and 1000.{% endverbatim %}</p>
         </td>
@@ -2392,7 +2392,7 @@ The value must be between 0 and 1000.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}The default service to use if none of the pathRules defined by this
-PathMatcher is matched by the URL&#39;s path portion.
+PathMatcher is matched by the URL's path portion.
 For the Global URL Map, it should be a reference to the backend
 service or backend bucket.
 For the Regional URL Map, it should be a reference to the backend
@@ -2562,7 +2562,7 @@ the redirect. The value must be between 1 and 1024 characters.{% endverbatim %}<
 will be retained.
 
 * PERMANENT_REDIRECT, which corresponds to 308. In this case,
-the request method will be retained. Possible values: [&#34;FOUND&#34;, &#34;MOVED_PERMANENTLY_DEFAULT&#34;, &#34;PERMANENT_REDIRECT&#34;, &#34;SEE_OTHER&#34;, &#34;TEMPORARY_REDIRECT&#34;].{% endverbatim %}</p>
+the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENTLY_DEFAULT", "PERMANENT_REDIRECT", "SEE_OTHER", "TEMPORARY_REDIRECT"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2765,7 +2765,7 @@ prior to sending the response back to the client.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">list (object)</code></p>
             <p>{% verbatim %}The list of path rules. Use this list instead of routeRules when routing based
-on simple path matching is all that&#39;s required. The order by which path rules
+on simple path matching is all that's required. The order by which path rules
 are specified does not matter. Matches are always done on the longest-path-first
 basis. For example: a pathRule with a path /a/b/c/* will match before /a/b/*
 irrespective of the order in which those paths appear in this list. Within a
@@ -3045,9 +3045,9 @@ injection, before being sent to a backend service.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Span of time that&#39;s a fraction of a second at nanosecond resolution. Durations
-less than one second are represented with a 0 &#39;seconds&#39; field and a positive
-&#39;nanos&#39; field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
+            <p>{% verbatim %}Span of time that's a fraction of a second at nanosecond resolution. Durations
+less than one second are represented with a 0 'seconds' field and a positive
+'nanos' field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3080,7 +3080,7 @@ be introduced as part of fault injection. The value must be between 0.0 and
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Specifies the policy on how requests intended for the route&#39;s backends are
+            <p>{% verbatim %}Specifies the policy on how requests intended for the route's backends are
 shadowed to a separate mirrored backend service. Loadbalancer does not wait for
 responses from the shadow service. Prior to sending traffic to the shadow
 service, the host / authority header is suffixed with -shadow.{% endverbatim %}</p>
@@ -3143,7 +3143,7 @@ service, the host / authority header is suffixed with -shadow.{% endverbatim %}<
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Specifies the allowed number retries. This number must be &gt; 0.{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies the allowed number retries. This number must be > 0.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3163,9 +3163,9 @@ service, the host / authority header is suffixed with -shadow.{% endverbatim %}<
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Span of time that&#39;s a fraction of a second at nanosecond resolution. Durations
-less than one second are represented with a 0 &#39;seconds&#39; field and a positive
-&#39;nanos&#39; field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
+            <p>{% verbatim %}Span of time that's a fraction of a second at nanosecond resolution. Durations
+less than one second are represented with a 0 'seconds' field and a positive
+'nanos' field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3240,9 +3240,9 @@ specified, the default value is 15 seconds.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Span of time that&#39;s a fraction of a second at nanosecond resolution. Durations
-less than one second are represented with a 0 &#39;seconds&#39; field and a positive
-&#39;nanos&#39; field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
+            <p>{% verbatim %}Span of time that's a fraction of a second at nanosecond resolution. Durations
+less than one second are represented with a 0 'seconds' field and a positive
+'nanos' field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3274,7 +3274,7 @@ the matched service.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Prior to forwarding the request to the selected service, the request&#39;s host
+            <p>{% verbatim %}Prior to forwarding the request to the selected service, the request's host
 header is replaced with contents of hostRewrite. The value must be between 1 and
 255 characters.{% endverbatim %}</p>
         </td>
@@ -3287,7 +3287,7 @@ header is replaced with contents of hostRewrite. The value must be between 1 and
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Prior to forwarding the request to the selected backend service, the matching
-portion of the request&#39;s path is replaced by pathPrefixRewrite. The value must
+portion of the request's path is replaced by pathPrefixRewrite. The value must
 be between 1 and 1024 characters.{% endverbatim %}</p>
         </td>
     </tr>
@@ -3528,9 +3528,9 @@ prior to sending the response back to the client.{% endverbatim %}</p>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}Specifies the fraction of traffic sent to backendService, computed as weight /
 (sum of all weightedBackendService weights in routeAction) . The selection of a
-backend service is determined only for new traffic. Once a user&#39;s request has
+backend service is determined only for new traffic. Once a user's request has
 been directed to a backendService, subsequent requests will be sent to the same
-backendService as determined by the BackendService&#39;s session affinity policy.
+backendService as determined by the BackendService's session affinity policy.
 The value must be between 0 and 1000.{% endverbatim %}</p>
         </td>
     </tr>
@@ -3722,7 +3722,7 @@ must be between 1 and 1024 characters.{% endverbatim %}</p>
 will be retained.
 
 * PERMANENT_REDIRECT, which corresponds to 308. In this case,
-the request method will be retained. Possible values: [&#34;FOUND&#34;, &#34;MOVED_PERMANENTLY_DEFAULT&#34;, &#34;PERMANENT_REDIRECT&#34;, &#34;SEE_OTHER&#34;, &#34;TEMPORARY_REDIRECT&#34;].{% endverbatim %}</p>
+the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENTLY_DEFAULT", "PERMANENT_REDIRECT", "SEE_OTHER", "TEMPORARY_REDIRECT"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3996,9 +3996,9 @@ prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch must be set.{% 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of the HTTP header to match. For matching against the HTTP request&#39;s
-authority, use a headerMatch with the header name &#34;:authority&#34;. For matching a
-request&#39;s method, use the headerName &#34;:method&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of the HTTP header to match. For matching against the HTTP request's
+authority, use a headerMatch with the header name ":authority". For matching a
+request's method, use the headerName ":method".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4033,7 +4033,7 @@ must be set.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}A header with the contents of headerName must exist. The match takes place
-whether or not the request&#39;s header has a value or not. Only one of exactMatch,
+whether or not the request's header has a value or not. Only one of exactMatch,
 prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch must be set.{% endverbatim %}</p>
         </td>
     </tr>
@@ -4088,7 +4088,7 @@ rangeMatch must be set.{% endverbatim %}</p>
 regexMatch. For regular expression grammar, please see:
 en.cppreference.com/w/cpp/regex/ecmascript  For matching against a port
 specified in the HTTP request, use a headerMatch with headerName set to PORT and
-a regular expression that satisfies the RFC2616 Host header&#39;s port specifier.
+a regular expression that satisfies the RFC2616 Host header's port specifier.
 Only one of exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or
 rangeMatch must be set.{% endverbatim %}</p>
         </td>
@@ -4203,7 +4203,7 @@ contribute towards the overall metadataFilter match. Supported values are:
 * MATCH_ANY: At least one of the filterLabels must have a matching label in the
 provided metadata.
 * MATCH_ALL: All filterLabels must have matching labels in
-the provided metadata. Possible values: [&#34;MATCH_ALL&#34;, &#34;MATCH_ANY&#34;].{% endverbatim %}</p>
+the provided metadata. Possible values: ["MATCH_ALL", "MATCH_ANY"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4213,7 +4213,7 @@ the provided metadata. Possible values: [&#34;MATCH_ALL&#34;, &#34;MATCH_ANY&#34
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}For satisfying the matchRule condition, the request&#39;s path must begin with the
+            <p>{% verbatim %}For satisfying the matchRule condition, the request's path must begin with the
 specified prefixMatch. prefixMatch must begin with a /. The value must be
 between 1 and 1024 characters. Only one of prefixMatch, fullPathMatch or
 regexMatch must be specified.{% endverbatim %}</p>
@@ -4312,7 +4312,7 @@ fullPathMatch or regexMatch must be specified.{% endverbatim %}</p>
             <p>{% verbatim %}For routeRules within a given pathMatcher, priority determines the order
 in which load balancer will interpret routeRules. RouteRules are evaluated
 in order of priority, from the lowest to highest number. The priority of
-a rule decreases as its number increases (1, 2, 3, N&#43;1). The first rule
+a rule decreases as its number increases (1, 2, 3, N+1). The first rule
 that matches the request is applied.
 
 You cannot configure two or more routeRules with the same priority.
@@ -4567,9 +4567,9 @@ injection, before being sent to a backend service.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Span of time that&#39;s a fraction of a second at nanosecond resolution. Durations
-less than one second are represented with a 0 &#39;seconds&#39; field and a positive
-&#39;nanos&#39; field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
+            <p>{% verbatim %}Span of time that's a fraction of a second at nanosecond resolution. Durations
+less than one second are represented with a 0 'seconds' field and a positive
+'nanos' field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4602,7 +4602,7 @@ be introduced as part of fault injection. The value must be between 0.0 and
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Specifies the policy on how requests intended for the route&#39;s backends are
+            <p>{% verbatim %}Specifies the policy on how requests intended for the route's backends are
 shadowed to a separate mirrored backend service. Loadbalancer does not wait for
 responses from the shadow service. Prior to sending traffic to the shadow
 service, the host / authority header is suffixed with -shadow.{% endverbatim %}</p>
@@ -4665,7 +4665,7 @@ service, the host / authority header is suffixed with -shadow.{% endverbatim %}<
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Specifies the allowed number retries. This number must be &gt; 0.{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies the allowed number retries. This number must be > 0.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4685,9 +4685,9 @@ service, the host / authority header is suffixed with -shadow.{% endverbatim %}<
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Span of time that&#39;s a fraction of a second at nanosecond resolution. Durations
-less than one second are represented with a 0 &#39;seconds&#39; field and a positive
-&#39;nanos&#39; field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
+            <p>{% verbatim %}Span of time that's a fraction of a second at nanosecond resolution. Durations
+less than one second are represented with a 0 'seconds' field and a positive
+'nanos' field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4762,9 +4762,9 @@ specified, the default value is 15 seconds.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Span of time that&#39;s a fraction of a second at nanosecond resolution. Durations
-less than one second are represented with a 0 &#39;seconds&#39; field and a positive
-&#39;nanos&#39; field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
+            <p>{% verbatim %}Span of time that's a fraction of a second at nanosecond resolution. Durations
+less than one second are represented with a 0 'seconds' field and a positive
+'nanos' field. Must be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4796,7 +4796,7 @@ the matched service.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Prior to forwarding the request to the selected service, the request&#39;s host
+            <p>{% verbatim %}Prior to forwarding the request to the selected service, the request's host
 header is replaced with contents of hostRewrite. The value must be between 1 and
 255 characters.{% endverbatim %}</p>
         </td>
@@ -4809,7 +4809,7 @@ header is replaced with contents of hostRewrite. The value must be between 1 and
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Prior to forwarding the request to the selected backend service, the matching
-portion of the request&#39;s path is replaced by pathPrefixRewrite. The value must
+portion of the request's path is replaced by pathPrefixRewrite. The value must
 be between 1 and 1024 characters.{% endverbatim %}</p>
         </td>
     </tr>
@@ -5050,9 +5050,9 @@ prior to sending the response back to the client.{% endverbatim %}</p>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}Specifies the fraction of traffic sent to backendService, computed as weight /
 (sum of all weightedBackendService weights in routeAction) . The selection of a
-backend service is determined only for new traffic. Once a user&#39;s request has
+backend service is determined only for new traffic. Once a user's request has
 been directed to a backendService, subsequent requests will be sent to the same
-backendService as determined by the BackendService&#39;s session affinity policy.
+backendService as determined by the BackendService's session affinity policy.
 The value must be between 0 and 1000.{% endverbatim %}</p>
         </td>
     </tr>
@@ -5158,7 +5158,7 @@ must be between 1 and 1024 characters.{% endverbatim %}</p>
 will be retained.
 
 * PERMANENT_REDIRECT, which corresponds to 308. In this case,
-the request method will be retained. Possible values: [&#34;FOUND&#34;, &#34;MOVED_PERMANENTLY_DEFAULT&#34;, &#34;PERMANENT_REDIRECT&#34;, &#34;SEE_OTHER&#34;, &#34;TEMPORARY_REDIRECT&#34;].{% endverbatim %}</p>
+the request method will be retained. Possible values: ["FOUND", "MOVED_PERMANENTLY_DEFAULT", "PERMANENT_REDIRECT", "SEE_OTHER", "TEMPORARY_REDIRECT"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5362,7 +5362,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5390,7 +5390,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5452,14 +5452,14 @@ updates of this resource.{% endverbatim %}</p>
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -5479,16 +5479,16 @@ spec:
         backendServiceRef:
           name: computeurlmap-dep2
       pathRule:
-        - paths: [&#34;/home&#34;]
+        - paths: ["/home"]
           service:
             backendServiceRef:
               name: computeurlmap-dep3
-        - paths: [&#34;/foo&#34;]
+        - paths: ["/foo"]
           service:
             backendBucketRef:
               name: computeurlmap-dep
   hostRule:
-    - hosts: [&#34;example.com&#34;]
+    - hosts: ["example.com"]
       pathMatcher: allpaths
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
@@ -5550,14 +5550,14 @@ metadata:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -5567,34 +5567,34 @@ kind: ComputeURLMap
 metadata:
   name: computeurlmap-sample
 spec:
-  description: &#34;Regional ComputeURLMap L7 Ilb Path&#34;
+  description: "Regional ComputeURLMap L7 Ilb Path"
   location: us-central1
   defaultService:
     backendServiceRef:
       name: computeurlmap-dep
   hostRule:
     - hosts:
-        - &#34;mysite.com&#34;
-      pathMatcher: &#34;allpaths&#34;
+        - "mysite.com"
+      pathMatcher: "allpaths"
   pathMatcher:
-    - name: &#34;allpaths&#34;
+    - name: "allpaths"
       defaultService:
         backendServiceRef:
           name: computeurlmap-dep
       pathRule:
         - paths:
-            - &#34;/home&#34;
+            - "/home"
           routeAction:
             corsPolicy:
               allowCredentials: true
               allowHeaders:
-                - &#34;Allowed content&#34;
+                - "Allowed content"
               allowMethods:
-                - &#34;GET&#34;
+                - "GET"
               allowOrigins:
-                - &#34;Allowed origin&#34;
+                - "Allowed origin"
               exposeHeaders:
-                - &#34;Exposed header&#34;
+                - "Exposed header"
               maxAge: 30
               disabled: false
             faultInjectionPolicy:
@@ -5603,7 +5603,7 @@ spec:
                 percentage: 5.6
               delay:
                 fixedDelay:
-                  seconds: &#34;0&#34;
+                  seconds: "0"
                   nanos: 50000
                 percentage: 7.8
             requestMirrorPolicy:
@@ -5612,39 +5612,39 @@ spec:
             retryPolicy:
               numRetries: 4
               retryTimeout:
-                seconds: &#34;30&#34;
+                seconds: "30"
               retryConditions:
-                - &#34;5xx&#34;
-                - &#34;deadline-exceeded&#34;
+                - "5xx"
+                - "deadline-exceeded"
             timeout:
-              seconds: &#34;20&#34;
+              seconds: "20"
               nanos: 750000000
             urlRewrite:
-              hostRewrite: &#34;A replacement header&#34;
-              pathPrefixRewrite: &#34;A replacement path&#34;
+              hostRewrite: "A replacement header"
+              pathPrefixRewrite: "A replacement path"
             weightedBackendServices:
               - backendServiceRef:
                   name: computeurlmap-dep
                 weight: 400
                 headerAction:
                   requestHeadersToRemove:
-                    - &#34;RemoveMe&#34;
+                    - "RemoveMe"
                   requestHeadersToAdd:
-                    - headerName: &#34;AddMe&#34;
-                      headerValue: &#34;MyValue&#34;
+                    - headerName: "AddMe"
+                      headerValue: "MyValue"
                       replace: true
                   responseHeadersToRemove:
-                    - &#34;RemoveMe&#34;
+                    - "RemoveMe"
                   responseHeadersToAdd:
-                    - headerName: &#34;AddMe&#34;
-                      headerValue: &#34;MyValue&#34;
+                    - headerName: "AddMe"
+                      headerValue: "MyValue"
                       replace: false
   test:
     - service:
         backendServiceRef:
           name: computeurlmap-dep
-      host: &#34;hi.com&#34;
-      path: &#34;/home&#34;
+      host: "hi.com"
+      path: "/home"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
@@ -5655,9 +5655,9 @@ spec:
   healthChecks:
     - healthCheckRef:
         name: computeurlmap-dep
-  protocol: &#34;HTTP&#34;
+  protocol: "HTTP"
   timeoutSec: 10
-  loadBalancingScheme: &#34;INTERNAL_MANAGED&#34;
+  loadBalancingScheme: "INTERNAL_MANAGED"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeHealthCheck

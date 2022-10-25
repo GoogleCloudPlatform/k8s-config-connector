@@ -234,7 +234,7 @@ tags:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. The number of physical cores to expose to an instance. Multiply by the number of threads per core to compute the total number of virtual CPUs to expose to the instance. If unset, the number of cores is inferred from the instance\&#39;s nominal CPU count and the underlying platform\&#39;s SMT width.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The number of physical cores to expose to an instance. Multiply by the number of threads per core to compute the total number of virtual CPUs to expose to the instance. If unset, the number of cores is inferred from the instance\'s nominal CPU count and the underlying platform\'s SMT width.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -404,7 +404,7 @@ tags:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The Google Compute Engine disk type. Such as &#34;pd-ssd&#34;, &#34;local-ssd&#34;, &#34;pd-balanced&#34; or &#34;pd-standard&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The Google Compute Engine disk type. Such as "pd-ssd", "local-ssd", "pd-balanced" or "pd-standard".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -574,7 +574,7 @@ tags:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The type of Google Compute Engine disk, can be either &#34;SCRATCH&#34; or &#34;PERSISTENT&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The type of Google Compute Engine disk, can be either "SCRATCH" or "PERSISTENT".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1004,7 +1004,7 @@ tags:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. The networking queue count that&#39;s specified by users for the network interface. Both Rx and Tx queues will be set to this number. It will be empty if not specified.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The networking queue count that's specified by users for the network interface. Both Rx and Tx queues will be set to this number. It will be empty if not specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1430,7 +1430,7 @@ tagsFingerprint: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1458,7 +1458,7 @@ tagsFingerprint: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1512,14 +1512,14 @@ tagsFingerprint: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1529,7 +1529,7 @@ kind: ComputeInstanceTemplate
 metadata:
   name: instancetemplate-sample
   labels:
-    env: &#34;dev&#34;
+    env: "dev"
 spec:
   description: a sample instance template
   tags:
@@ -1558,16 +1558,16 @@ spec:
         name: instancetemplate-dep
       subnetworkRef:
         name: instancetemplate-dep
-      networkIp: &#34;10.2.0.1&#34;
+      networkIp: "10.2.0.1"
       aliasIpRange:
         - ipCidrRange: /16
           subnetworkRangeName: sub-range
   canIpForward: false
   scheduling:
     automaticRestart: true
-    onHostMaintenance: &#34;MIGRATE&#34;
+    onHostMaintenance: "MIGRATE"
     preemptible: false
-  metadataStartupScript: &#34;echo hi &gt; /test.txt&#34;
+  metadataStartupScript: "echo hi > /test.txt"
   serviceAccount:
     serviceAccountRef:
       name: instancetemplate-dep
@@ -1578,7 +1578,7 @@ spec:
   guestAccelerator:
     - type: nvidia-tesla-k80
       count: 1
-  minCpuPlatform: &#34;Intel Skylake&#34;
+  minCpuPlatform: "Intel Skylake"
   shieldedInstanceConfig:
     enableSecureBoot: false
     enableVtpm: true

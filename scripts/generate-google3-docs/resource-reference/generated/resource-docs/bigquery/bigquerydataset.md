@@ -257,16 +257,16 @@ are swapped by the API to their basic counterparts. See
             <p>{% verbatim %}A special group to grant access to. Possible values include:
 
 
-* &#39;projectOwners&#39;: Owners of the enclosing project.
+* 'projectOwners': Owners of the enclosing project.
 
 
-* &#39;projectReaders&#39;: Readers of the enclosing project.
+* 'projectReaders': Readers of the enclosing project.
 
 
-* &#39;projectWriters&#39;: Writers of the enclosing project.
+* 'projectWriters': Writers of the enclosing project.
 
 
-* &#39;allAuthenticatedUsers&#39;: All authenticated BigQuery users.{% endverbatim %}</p>
+* 'allAuthenticatedUsers': All authenticated BigQuery users.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -392,14 +392,14 @@ the dataset, in milliseconds.
 
 
 Once this property is set, all newly-created partitioned tables in
-the dataset will have an &#39;expirationMs&#39; property in the &#39;timePartitioning&#39;
+the dataset will have an 'expirationMs' property in the 'timePartitioning'
 settings set to this value, and changing the value will only
 affect new tables, not existing ones. The storage in a partition will
 have an expiration time of its partition time plus this value.
-Setting this property overrides the use of &#39;defaultTableExpirationMs&#39;
-for partitioned tables: only one of &#39;defaultTableExpirationMs&#39; and
-&#39;defaultPartitionExpirationMs&#39; will be used for any new partitioned
-table. If you provide an explicit &#39;timePartitioning.expirationMs&#39; when
+Setting this property overrides the use of 'defaultTableExpirationMs'
+for partitioned tables: only one of 'defaultTableExpirationMs' and
+'defaultPartitionExpirationMs' will be used for any new partitioned
+table. If you provide an explicit 'timePartitioning.expirationMs' when
 creating or updating a partitioned table, that value takes precedence
 over the default partition expiration time indicated by this property.{% endverbatim %}</p>
         </td>
@@ -416,12 +416,12 @@ The minimum value is 3600000 milliseconds (one hour).
 
 
 Once this property is set, all newly-created tables in the dataset
-will have an &#39;expirationTime&#39; property set to the creation time plus
+will have an 'expirationTime' property set to the creation time plus
 the value in this property, and changing the value will only affect
-new tables, not existing ones. When the &#39;expirationTime&#39; for a given
+new tables, not existing ones. When the 'expirationTime' for a given
 table is reached, that table will be deleted automatically.
-If a table&#39;s &#39;expirationTime&#39; is modified or removed before the
-table expires, or if you provide an explicit &#39;expirationTime&#39; when
+If a table's 'expirationTime' is modified or removed before the
+table expires, or if you provide an explicit 'expirationTime' when
 creating a table, that value takes precedence over the default
 expiration time indicated by this property.{% endverbatim %}</p>
         </td>
@@ -463,7 +463,7 @@ location is a large geographic area, such as the United States, that
 contains at least two geographic places.
 
 
-The default value is multi-regional location &#39;US&#39;.
+The default value is multi-regional location 'US'.
 Changing this forces a new resource to be created.{% endverbatim %}</p>
         </td>
     </tr>
@@ -551,7 +551,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -579,7 +579,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -642,14 +642,14 @@ milliseconds since the epoch.{% endverbatim %}</p>
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -658,11 +658,11 @@ apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
 metadata:
   annotations:
-    cnrm.cloud.google.com/delete-contents-on-destroy: &#34;false&#34;
+    cnrm.cloud.google.com/delete-contents-on-destroy: "false"
   name: bigquerydatasetsample
 spec:
   defaultTableExpirationMs: 3600000
-  description: &#34;BigQuery Dataset Sample&#34;
+  description: "BigQuery Dataset Sample"
   friendlyName: bigquerydataset-sample
   location: US
   access:
@@ -680,7 +680,7 @@ kind: IAMServiceAccount
 metadata:
   annotations:
     # Replace ${PROJECT_ID?} with your project ID.
-    cnrm.cloud.google.com/project-id: &#34;${PROJECT_ID?}&#34;
+    cnrm.cloud.google.com/project-id: "${PROJECT_ID?}"
   name: bigquerydataset-dep
 ```
 

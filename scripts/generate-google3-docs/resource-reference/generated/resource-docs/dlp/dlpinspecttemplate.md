@@ -740,7 +740,7 @@ Allowed value: The Google Cloud resource name of a `DLPStoredInfoType` resource 
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}InfoType list in ExclusionRule rule drops a finding when it overlaps or contained within with a finding of an infoType from this list. For example, for `InspectionRuleSet.info_types` containing &#34;PHONE_NUMBER&#34;` and `exclusion_rule` containing `exclude_info_types.info_types` with &#34;EMAIL_ADDRESS&#34; the phone number findings are dropped if they overlap with EMAIL_ADDRESS finding. That leads to &#34;555-222-2222@example.org&#34; to generate only a single finding, namely email address.{% endverbatim %}</p>
+            <p>{% verbatim %}InfoType list in ExclusionRule rule drops a finding when it overlaps or contained within with a finding of an infoType from this list. For example, for `InspectionRuleSet.info_types` containing "PHONE_NUMBER"` and `exclusion_rule` containing `exclude_info_types.info_types` with "EMAIL_ADDRESS" the phone number findings are dropped if they overlap with EMAIL_ADDRESS finding. That leads to "555-222-2222@example.org" to generate only a single finding, namely email address.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -900,7 +900,7 @@ Allowed value: The Google Cloud resource name of a `DLPStoredInfoType` resource 
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Proximity of the finding within which the entire hotword must reside. The total length of the window cannot exceed 1000 characters. Note that the finding itself will be included in the window, so that hotwords may be used to match substrings of the finding itself. For example, the certainty of a phone number regex &#34;(d{3}) d{3}-d{4}&#34; could be adjusted upwards if the area code is known to be the local area code of a company office using the hotword regex &#34;(xxx)&#34;, where &#34;xxx&#34; is the area code in question.{% endverbatim %}</p>
+            <p>{% verbatim %}Proximity of the finding within which the entire hotword must reside. The total length of the window cannot exceed 1000 characters. Note that the finding itself will be included in the window, so that hotwords may be used to match substrings of the finding itself. For example, the certainty of a phone number regex "(d{3}) d{3}-d{4}" could be adjusted upwards if the area code is known to be the local area code of a company office using the hotword regex "(xxx)", where "xxx" is the area code in question.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -960,7 +960,7 @@ Allowed value: The Google Cloud resource name of a `DLPStoredInfoType` resource 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[WARNING] Organization not yet supported in Config Connector, use &#39;external&#39; field to reference existing resources.
+            <p>{% verbatim %}[WARNING] Organization not yet supported in Config Connector, use 'external' field to reference existing resources.
 Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
         </td>
     </tr>
@@ -1055,7 +1055,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1083,7 +1083,7 @@ updateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1137,14 +1137,14 @@ updateTime: string
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1155,90 +1155,90 @@ metadata:
   name: dlpinspecttemplate-sample-custominspecttemplate
 spec:
   projectRef:
-    # Replace &#34;${PROJECT_ID?}&#34; with your project ID
-    external: &#34;projects/${PROJECT_ID?}&#34;
-  location: &#34;us-west2&#34;
-  displayName: &#34;sample-template&#34;
-  description: &#34;A sample dlp inspect template&#34;
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
+  location: "us-west2"
+  displayName: "sample-template"
+  description: "A sample dlp inspect template"
   inspectConfig:
     infoTypes:
-    - name: &#34;AGE&#34;
-    minLikelihood: &#34;POSSIBLE&#34;
+    - name: "AGE"
+    minLikelihood: "POSSIBLE"
     limits:
       maxFindingsPerItem: 7
       maxFindingsPerRequest: 7
       maxFindingsPerInfoType:
       - infoType:
-          name: &#34;AGE&#34;
+          name: "AGE"
         maxFindings: 7
     includeQuote: false
     excludeInfoTypes: false
     customInfoTypes:
     - infoType:
-        name: &#34;PHONE_NUMBER&#34;
-      likelihood: &#34;POSSIBLE&#34;
+        name: "PHONE_NUMBER"
+      likelihood: "POSSIBLE"
       dictionary:
         wordList:
           words:
-          - &#34;911&#34;
+          - "911"
     - infoType:
-        name: &#34;AGE&#34;
+        name: "AGE"
       dictionary:
         cloudStoragePath:
-          path: &#34;gs://aaa-dont-delete-dcl-dlp-testing/dictionary-1&#34;
+          path: "gs://aaa-dont-delete-dcl-dlp-testing/dictionary-1"
     - infoType:
-        name: &#34;HOME_ADDRESS&#34;
+        name: "HOME_ADDRESS"
       storedType:
         nameRef:
-          name: &#34;dlpinspecttemplate-dep-custominspecttemplate&#34;
+          name: "dlpinspecttemplate-dep-custominspecttemplate"
     - infoType:
-        name: &#34;SALARY&#34;
-      exclusionType: &#34;EXCLUSION_TYPE_EXCLUDE&#34;
+        name: "SALARY"
+      exclusionType: "EXCLUSION_TYPE_EXCLUDE"
       regex:
-        pattern: &#34;(\\$)(\\d*)&#34;
+        pattern: "(\\$)(\\d*)"
         groupIndexes:
         - 1
         - 2
     - infoType:
-        name: &#34;HEIGHT&#34;
+        name: "HEIGHT"
       regex:
-        pattern: &#34;\\d&#39;\\d{2}\&#34;&#34;
+        pattern: "\\d'\\d{2}\""
       surrogateType: {}
     contentOptions:
-    - &#34;CONTENT_TEXT&#34;
+    - "CONTENT_TEXT"
     ruleSet:
     - infoTypes:
-      - name: &#34;AGE&#34;
+      - name: "AGE"
       rules:
       - exclusionRule:
-          matchingType: &#34;MATCHING_TYPE_FULL_MATCH&#34;
+          matchingType: "MATCHING_TYPE_FULL_MATCH"
           dictionary:
             wordList:
               words:
-              - &#34;911&#34;
+              - "911"
       - exclusionRule:
-          matchingType: &#34;MATCHING_TYPE_FULL_MATCH&#34;
+          matchingType: "MATCHING_TYPE_FULL_MATCH"
           dictionary:
             cloudStoragePath:
-              path: &#34;gs://aaa-dont-delete-dcl-dlp-testing/dictionary-1&#34;
+              path: "gs://aaa-dont-delete-dcl-dlp-testing/dictionary-1"
       - exclusionRule:
-          matchingType: &#34;MATCHING_TYPE_FULL_MATCH&#34;
+          matchingType: "MATCHING_TYPE_FULL_MATCH"
           regex:
-            pattern: &#34;([12])(\\d{1,2})&#34;
+            pattern: "([12])(\\d{1,2})"
             groupIndexes:
             - 1
             - 2
       - exclusionRule:
-          matchingType: &#34;MATCHING_TYPE_FULL_MATCH&#34;
+          matchingType: "MATCHING_TYPE_FULL_MATCH"
           excludeInfoTypes:
             infoTypes:
-            - name: &#34;PHONE_NUMBER&#34;
+            - name: "PHONE_NUMBER"
     - infoTypes:
-      - name: &#34;PHONE_NUMBER&#34;
+      - name: "PHONE_NUMBER"
       rules:
       - hotwordRule:
           hotwordRegex:
-            pattern: &#34;\\(([0-9]{3})\\) ?[0-9]{3}-[0-9]{4}&#34;
+            pattern: "\\(([0-9]{3})\\) ?[0-9]{3}-[0-9]{4}"
             groupIndexes:
             - 0
             - 1
@@ -1246,10 +1246,10 @@ spec:
             windowBefore: 2
             windowAfter: 3
           likelihoodAdjustment:
-            fixedLikelihood: &#34;LIKELY&#34;
+            fixedLikelihood: "LIKELY"
       - hotwordRule:
           hotwordRegex:
-            pattern: &#34;\\&#43;?[0-9]*&#34;
+            pattern: "\\+?[0-9]*"
           proximity:
             windowBefore: 2
             windowAfter: 3
@@ -1262,13 +1262,13 @@ metadata:
   name: dlpinspecttemplate-dep-custominspecttemplate
 spec:
   projectRef:
-    # Replace &#34;${PROJECT_ID?}&#34; with your project ID
-    external: &#34;projects/${PROJECT_ID?}&#34;
-  location: &#34;us-west2&#34;
-  displayName: &#34;sample-type&#34;
-  description: &#34;A sample regex-based stored info type&#34;
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
+  location: "us-west2"
+  displayName: "sample-type"
+  description: "A sample regex-based stored info type"
   regex:
-    pattern: &#34;([a-z]*)(.&#43;)&#34;
+    pattern: "([a-z]*)(.+)"
     groupIndexes:
     - 0
     - 1
@@ -1278,14 +1278,14 @@ spec:
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1296,19 +1296,19 @@ metadata:
   name: dlpinspecttemplate-sample-inspectioninspecttemplate
 spec:
   projectRef:
-    # Replace &#34;${PROJECT_ID?}&#34; with your project ID
-    external: &#34;projects/${PROJECT_ID?}&#34;
-  location: &#34;global&#34;
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
+  location: "global"
   inspectConfig:
     infoTypes:
-    - name: &#34;AGE&#34;
+    - name: "AGE"
     ruleSet:
     - infoTypes:
-      - name: &#34;AGE&#34;
+      - name: "AGE"
       rules:
       - hotwordRule:
           hotwordRegex:
-            pattern: &#34;([12])(\\d{1,2})&#34;
+            pattern: "([12])(\\d{1,2})"
             groupIndexes:
             - 1
             - 2
@@ -1316,10 +1316,10 @@ spec:
             windowBefore: 2
             windowAfter: 3
           likelihoodAdjustment:
-            fixedLikelihood: &#34;LIKELY&#34;
+            fixedLikelihood: "LIKELY"
       - hotwordRule:
           hotwordRegex:
-            pattern: &#34;.*&#34;
+            pattern: ".*"
           proximity:
             windowBefore: 2
             windowAfter: 3

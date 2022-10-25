@@ -144,7 +144,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[WARNING] BillingAccount not yet supported in Config Connector, use &#39;external&#39; field to reference existing resources.
+            <p>{% verbatim %}[WARNING] BillingAccount not yet supported in Config Connector, use 'external' field to reference existing resources.
 Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
         </td>
     </tr>
@@ -217,7 +217,7 @@ Allowed value: The Google Cloud resource name of a `LoggingLogBucket` resource (
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Filter that restricts which log entries in a bucket are visible in this view. Filters are restricted to be a logical AND of ==/!= of any of the following: - originating project/folder/organization/billing account. - resource type - log id For example: SOURCE(&#34;projects/myproject&#34;) AND resource.type = &#34;gce_instance&#34; AND LOG_ID(&#34;stdout&#34;){% endverbatim %}</p>
+            <p>{% verbatim %}Filter that restricts which log entries in a bucket are visible in this view. Filters are restricted to be a logical AND of ==/!= of any of the following: - originating project/folder/organization/billing account. - resource type - log id For example: SOURCE("projects/myproject") AND resource.type = "gce_instance" AND LOG_ID("stdout"){% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -297,7 +297,7 @@ Allowed value: The Google Cloud resource name of a `LoggingLogBucket` resource (
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[WARNING] Organization not yet supported in Config Connector, use &#39;external&#39; field to reference existing resources.
+            <p>{% verbatim %}[WARNING] Organization not yet supported in Config Connector, use 'external' field to reference existing resources.
 Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
         </td>
     </tr>
@@ -391,7 +391,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -419,7 +419,7 @@ updateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -466,14 +466,14 @@ updateTime: string
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -484,25 +484,25 @@ metadata:
   name: logginglogview-sample-organizationlogview
 spec:
   bucketRef:
-    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
-    external: &#34;organizations/${ORG_ID?}/locations/global/buckets/_Default&#34;
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "organizations/${ORG_ID?}/locations/global/buckets/_Default"
   organizationRef:
-    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
-    external: &#34;organizations/${ORG_ID?}&#34;
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "organizations/${ORG_ID?}"
 ```
 
 ### Project Log View
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -513,10 +513,10 @@ metadata:
   name: logginglogview-sample-projectlogview
 spec:
   bucketRef:
-    name: &#34;logginglogview-dep-projectlogview&#34;
-  description: &#34;A project-level log view&#34;
-  filter: &#34;SOURCE(\&#34;projects/myproject\&#34;) AND resource.type = \&#34;gce_instance\&#34; AND\
-    \ LOG_ID(\&#34;stdout\&#34;)&#34;
+    name: "logginglogview-dep-projectlogview"
+  description: "A project-level log view"
+  filter: "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\" AND\
+    \ LOG_ID(\"stdout\")"
 ---
 apiVersion: logging.cnrm.cloud.google.com/v1beta1
 kind: LoggingLogBucket
@@ -525,9 +525,9 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID
-    external: &#34;projects/${PROJECT_ID?}&#34;
-  location: &#34;global&#34;
-  description: &#34;A sample log bucket&#34;
+    external: "projects/${PROJECT_ID?}"
+  location: "global"
+  description: "A sample log bucket"
   locked: false
   retentionDays: 30
 ```

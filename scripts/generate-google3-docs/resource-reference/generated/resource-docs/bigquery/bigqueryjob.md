@@ -211,8 +211,8 @@ resourceID: string
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Specifies whether the job is allowed to create new tables. The following values are supported:
 CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table.
-CREATE_NEVER: The table must already exist. If it does not, a &#39;notFound&#39; error is returned in the job result.
-Creation, truncation and append actions occur as one atomic update upon job completion Default value: &#34;CREATE_NEVER&#34; Possible values: [&#34;CREATE_IF_NEEDED&#34;, &#34;CREATE_NEVER&#34;].{% endverbatim %}</p>
+CREATE_NEVER: The table must already exist. If it does not, a 'notFound' error is returned in the job result.
+Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -397,9 +397,9 @@ with your project requires access to this encryption key.{% endverbatim %}</p>
             <p>{% verbatim %}Immutable. Specifies the action that occurs if the destination table already exists. The following values are supported:
 WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the table data and uses the schema from the query result.
 WRITE_APPEND: If the table already exists, BigQuery appends the data to the table.
-WRITE_EMPTY: If the table already exists and contains data, a &#39;duplicate&#39; error is returned in the job result.
+WRITE_EMPTY: If the table already exists and contains data, a 'duplicate' error is returned in the job result.
 Each action is atomic and only occurs if BigQuery is able to complete the job successfully.
-Creation, truncation and append actions occur as one atomic update upon job completion. Default value: &#34;WRITE_EMPTY&#34; Possible values: [&#34;WRITE_TRUNCATE&#34;, &#34;WRITE_APPEND&#34;, &#34;WRITE_EMPTY&#34;].{% endverbatim %}</p>
+Creation, truncation and append actions occur as one atomic update upon job completion. Default value: "WRITE_EMPTY" Possible values: ["WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -463,7 +463,7 @@ The default value for models is SAVED_MODEL.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. When extracting data in CSV format, this defines the delimiter to use between fields in the exported data.
-Default is &#39;,&#39;.{% endverbatim %}</p>
+Default is ','.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -598,8 +598,8 @@ The default value is false.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Specifies whether the job is allowed to create new tables. The following values are supported:
 CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table.
-CREATE_NEVER: The table must already exist. If it does not, a &#39;notFound&#39; error is returned in the job result.
-Creation, truncation and append actions occur as one atomic update upon job completion Default value: &#34;CREATE_NEVER&#34; Possible values: [&#34;CREATE_IF_NEEDED&#34;, &#34;CREATE_NEVER&#34;].{% endverbatim %}</p>
+CREATE_NEVER: The table must already exist. If it does not, a 'notFound' error is returned in the job result.
+Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -736,8 +736,8 @@ has been split using the values of the quote and fieldDelimiter properties.{% en
             <p>{% verbatim %}Immutable. The separator for fields in a CSV file. The separator can be any ISO-8859-1 single-byte character.
 To use a character in the range 128-255, you must encode the character as UTF8. BigQuery converts
 the string to ISO-8859-1 encoding, and then uses the first byte of the encoded string to split the
-data in its raw, binary state. BigQuery also supports the escape sequence &#34;\t&#34; to specify a tab separator.
-The default value is a comma (&#39;,&#39;).{% endverbatim %}</p>
+data in its raw, binary state. BigQuery also supports the escape sequence "\t" to specify a tab separator.
+The default value is a comma (',').{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -752,7 +752,7 @@ If true, the extra values are ignored. If false, records with extra columns are 
 and if there are too many bad records, an invalid error is returned in the job result.
 The default value is false. The sourceFormat property determines what BigQuery treats as an extra value:
 CSV: Trailing columns
-JSON: Named values that don&#39;t match any column names.{% endverbatim %}</p>
+JSON: Named values that don't match any column names.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -773,7 +773,7 @@ an invalid error is returned in the job result. The default value is 0, which re
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Specifies a string that represents a null value in a CSV file. For example, if you specify &#34;\N&#34;, BigQuery interprets &#34;\N&#34; as a null value
+            <p>{% verbatim %}Immutable. Specifies a string that represents a null value in a CSV file. For example, if you specify "\N", BigQuery interprets "\N" as a null value
 when loading a CSV file. The default value is the empty string. If you set this property to a custom value, BigQuery throws an error if an
 empty string is present for all data types except for STRING and BYTE. For STRING and BYTE columns, BigQuery interprets the empty string as
 an empty value.{% endverbatim %}</p>
@@ -786,9 +786,9 @@ an empty value.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. If sourceFormat is set to &#34;DATASTORE_BACKUP&#34;, indicates which entity properties to load into BigQuery from a Cloud Datastore backup.
+            <p>{% verbatim %}Immutable. If sourceFormat is set to "DATASTORE_BACKUP", indicates which entity properties to load into BigQuery from a Cloud Datastore backup.
 Property names are case sensitive and must be top-level properties. If no properties are specified, BigQuery loads all properties.
-If any named property isn&#39;t found in the Cloud Datastore backup, an invalid error is returned in the job result.{% endverbatim %}</p>
+If any named property isn't found in the Cloud Datastore backup, an invalid error is returned in the job result.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -810,7 +810,7 @@ If any named property isn&#39;t found in the Cloud Datastore backup, an invalid 
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The value that is used to quote data sections in a CSV file. BigQuery converts the string to ISO-8859-1 encoding,
 and then uses the first byte of the encoded string to split the data in its raw, binary state.
-The default value is a double-quote (&#39;&#34;&#39;). If your data does not contain quoted sections, set the property value to an empty string.
+The default value is a double-quote ('"'). If your data does not contain quoted sections, set the property value to an empty string.
 If your data contains quoted newline characters, you must also set the allowQuotedNewlines property to true.{% endverbatim %}</p>
         </td>
     </tr>
@@ -852,7 +852,7 @@ When autodetect is on, the behavior is the following:
 skipLeadingRows unspecified - Autodetect tries to detect headers in the first row. If they are not detected,
 the row is read as data. Otherwise data is read starting from the second row.
 skipLeadingRows is 0 - Instructs autodetect that there are no headers and data should be read starting from the first row.
-skipLeadingRows = N &gt; 0 - Autodetect skips N-1 rows and tries to detect headers in row N. If headers are not detected,
+skipLeadingRows = N > 0 - Autodetect skips N-1 rows and tries to detect headers in row N. If headers are not detected,
 row N is just skipped. Otherwise row N is used to extract column names for the detected schema.{% endverbatim %}</p>
         </td>
     </tr>
@@ -863,9 +863,9 @@ row N is just skipped. Otherwise row N is used to extract column names for the d
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The format of the data files. For CSV files, specify &#34;CSV&#34;. For datastore backups, specify &#34;DATASTORE_BACKUP&#34;.
-For newline-delimited JSON, specify &#34;NEWLINE_DELIMITED_JSON&#34;. For Avro, specify &#34;AVRO&#34;. For parquet, specify &#34;PARQUET&#34;.
-For orc, specify &#34;ORC&#34;. [Beta] For Bigtable, specify &#34;BIGTABLE&#34;.
+            <p>{% verbatim %}Immutable. The format of the data files. For CSV files, specify "CSV". For datastore backups, specify "DATASTORE_BACKUP".
+For newline-delimited JSON, specify "NEWLINE_DELIMITED_JSON". For Avro, specify "AVRO". For parquet, specify "PARQUET".
+For orc, specify "ORC". [Beta] For Bigtable, specify "BIGTABLE".
 The default value is CSV.{% endverbatim %}</p>
         </td>
     </tr>
@@ -877,11 +877,11 @@ The default value is CSV.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}Immutable. The fully-qualified URIs that point to your data in Google Cloud.
-For Google Cloud Storage URIs: Each URI can contain one &#39;\*&#39; wildcard character
-and it must come after the &#39;bucket&#39; name. Size limits related to load jobs apply
+For Google Cloud Storage URIs: Each URI can contain one '\*' wildcard character
+and it must come after the 'bucket' name. Size limits related to load jobs apply
 to external data sources. For Google Cloud Bigtable URIs: Exactly one URI can be
 specified and it has be a fully specified and valid HTTPS URL for a Google Cloud Bigtable table.
-For Google Cloud Datastore backups: Exactly one URI can be specified. Also, the &#39;\*&#39; wildcard character is not allowed.{% endverbatim %}</p>
+For Google Cloud Datastore backups: Exactly one URI can be specified. Also, the '\*' wildcard character is not allowed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -921,7 +921,7 @@ For Google Cloud Datastore backups: Exactly one URI can be specified. Also, the 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. If not set, the table is partitioned by pseudo column &#39;_PARTITIONTIME&#39;; if set, the table is partitioned by this field.
+            <p>{% verbatim %}Immutable. If not set, the table is partitioned by pseudo column '_PARTITIONTIME'; if set, the table is partitioned by this field.
 The field must be a top-level TIMESTAMP or DATE field. Its mode must be NULLABLE or REQUIRED.
 A wrapper is used here because an empty string is an invalid value.{% endverbatim %}</p>
         </td>
@@ -947,9 +947,9 @@ but in OnePlatform the field will be treated as unset.{% endverbatim %}</p>
             <p>{% verbatim %}Immutable. Specifies the action that occurs if the destination table already exists. The following values are supported:
 WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the table data and uses the schema from the query result.
 WRITE_APPEND: If the table already exists, BigQuery appends the data to the table.
-WRITE_EMPTY: If the table already exists and contains data, a &#39;duplicate&#39; error is returned in the job result.
+WRITE_EMPTY: If the table already exists and contains data, a 'duplicate' error is returned in the job result.
 Each action is atomic and only occurs if BigQuery is able to complete the job successfully.
-Creation, truncation and append actions occur as one atomic update upon job completion. Default value: &#34;WRITE_EMPTY&#34; Possible values: [&#34;WRITE_TRUNCATE&#34;, &#34;WRITE_APPEND&#34;, &#34;WRITE_EMPTY&#34;].{% endverbatim %}</p>
+Creation, truncation and append actions occur as one atomic update upon job completion. Default value: "WRITE_EMPTY" Possible values: ["WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -993,8 +993,8 @@ However, you must still set destinationTable when result size exceeds the allowe
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Specifies whether the job is allowed to create new tables. The following values are supported:
 CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table.
-CREATE_NEVER: The table must already exist. If it does not, a &#39;notFound&#39; error is returned in the job result.
-Creation, truncation and append actions occur as one atomic update upon job completion Default value: &#34;CREATE_NEVER&#34; Possible values: [&#34;CREATE_IF_NEEDED&#34;, &#34;CREATE_NEVER&#34;].{% endverbatim %}</p>
+CREATE_NEVER: The table must already exist. If it does not, a 'notFound' error is returned in the job result.
+Creation, truncation and append actions occur as one atomic update upon job completion Default value: "CREATE_NEVER" Possible values: ["CREATE_IF_NEEDED", "CREATE_NEVER"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1211,7 +1211,7 @@ If unspecified, this will be set to your project default.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Specifies a priority for the query. Default value: &#34;INTERACTIVE&#34; Possible values: [&#34;INTERACTIVE&#34;, &#34;BATCH&#34;].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Specifies a priority for the query. Default value: "INTERACTIVE" Possible values: ["INTERACTIVE", "BATCH"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1223,7 +1223,7 @@ If unspecified, this will be set to your project default.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. SQL query text to execute. The useLegacySql field can be used to indicate whether the query uses legacy SQL or standard SQL.
 *NOTE*: queries containing [DML language](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language)
-(&#39;DELETE&#39;, &#39;UPDATE&#39;, &#39;MERGE&#39;, &#39;INSERT&#39;) must specify &#39;create_disposition = &#34;&#34;&#39; and &#39;write_disposition = &#34;&#34;&#39;.{% endverbatim %}</p>
+('DELETE', 'UPDATE', 'MERGE', 'INSERT') must specify 'create_disposition = ""' and 'write_disposition = ""'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1269,8 +1269,8 @@ ALLOW_FIELD_RELAXATION: allow relaxing a required field in the original schema t
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Determines which statement in the script represents the &#34;key result&#34;,
-used to populate the schema and query results of the script job. Possible values: [&#34;LAST&#34;, &#34;FIRST_SELECT&#34;].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Determines which statement in the script represents the "key result",
+used to populate the schema and query results of the script job. Possible values: ["LAST", "FIRST_SELECT"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1300,8 +1300,8 @@ used to populate the schema and query results of the script job. Possible values
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Specifies whether to use BigQuery&#39;s legacy SQL dialect for this query. The default value is true.
-If set to false, the query will use BigQuery&#39;s standard SQL.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Specifies whether to use BigQuery's legacy SQL dialect for this query. The default value is true.
+If set to false, the query will use BigQuery's standard SQL.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1367,9 +1367,9 @@ Providing a inline code resource is equivalent to providing a URI for a file con
             <p>{% verbatim %}Immutable. Specifies the action that occurs if the destination table already exists. The following values are supported:
 WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the table data and uses the schema from the query result.
 WRITE_APPEND: If the table already exists, BigQuery appends the data to the table.
-WRITE_EMPTY: If the table already exists and contains data, a &#39;duplicate&#39; error is returned in the job result.
+WRITE_EMPTY: If the table already exists and contains data, a 'duplicate' error is returned in the job result.
 Each action is atomic and only occurs if BigQuery is able to complete the job successfully.
-Creation, truncation and append actions occur as one atomic update upon job completion. Default value: &#34;WRITE_EMPTY&#34; Possible values: [&#34;WRITE_TRUNCATE&#34;, &#34;WRITE_APPEND&#34;, &#34;WRITE_EMPTY&#34;].{% endverbatim %}</p>
+Creation, truncation and append actions occur as one atomic update upon job completion. Default value: "WRITE_EMPTY" Possible values: ["WRITE_TRUNCATE", "WRITE_APPEND", "WRITE_EMPTY"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1424,7 +1424,7 @@ userEmail: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1452,7 +1452,7 @@ userEmail: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1573,7 +1573,7 @@ not necessarily mean that the job has not completed or was unsuccessful.{% endve
         <td><code>status[].state</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Running state of the job. Valid states include &#39;PENDING&#39;, &#39;RUNNING&#39;, and &#39;DONE&#39;.{% endverbatim %}</p>
+            <p>{% verbatim %}Running state of the job. Valid states include 'PENDING', 'RUNNING', and 'DONE'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1592,14 +1592,14 @@ not necessarily mean that the job has not completed or was unsuccessful.{% endve
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1608,14 +1608,14 @@ apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryJob
 metadata:
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
   # BigQueryJobs cannot be deleted from GCP, so you must use a new unique name
   # if you want to create a new job, otherwise Config Connector will try to
   # acquire the job with the given name.
   name: bigqueryjob-sample-copy
 spec:
-  location: &#34;US&#34;
-  jobTimeoutMs: &#34;600000&#34;
+  location: "US"
+  jobTimeoutMs: "600000"
   copy:
     sourceTables:
       - tableRef:
@@ -1628,7 +1628,7 @@ spec:
     destinationEncryptionConfiguration:
       kmsKeyRef:
         name: bigqueryjob-dep-copy
-    writeDisposition: &#34;WRITE_APPEND&#34;
+    writeDisposition: "WRITE_APPEND"
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
@@ -1636,7 +1636,7 @@ metadata:
   name: bigqueryjobdep1copy
 spec:
   friendlyName: bigqueryjob-dep1-copy
-  description: &#34;Source BigQueryDataset 1&#34;
+  description: "Source BigQueryDataset 1"
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
@@ -1644,7 +1644,7 @@ metadata:
   name: bigqueryjobdep2copy
 spec:
   friendlyName: bigqueryjob-dep2-copy
-  description: &#34;Source BigQueryDataset 2&#34;
+  description: "Source BigQueryDataset 2"
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
@@ -1652,7 +1652,7 @@ metadata:
   name: bigqueryjobdep3copy
 spec:
   friendlyName: bigqueryjob-dep3-copy
-  description: &#34;Destination BigQueryDataset&#34;
+  description: "Destination BigQueryDataset"
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable
@@ -1660,25 +1660,25 @@ metadata:
   name: bigqueryjobdep1copy
 spec:
   friendlyName: bigqueryjob-dep1-copy
-  description: &#34;Source BigQueryTable 1&#34;
+  description: "Source BigQueryTable 1"
   datasetRef:
     name: bigqueryjobdep1copy
   schema: |
     [
       {
-        &#34;name&#34;: &#34;name&#34;,
-        &#34;type&#34;: &#34;STRING&#34;,
-        &#34;mode&#34;: &#34;NULLABLE&#34;
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
       },
       {
-        &#34;name&#34;: &#34;post_abbr&#34;,
-        &#34;type&#34;: &#34;STRING&#34;,
-        &#34;mode&#34;: &#34;NULLABLE&#34;
+        "name": "post_abbr",
+        "type": "STRING",
+        "mode": "NULLABLE"
       },
       {
-        &#34;name&#34;: &#34;date&#34;,
-        &#34;type&#34;: &#34;DATE&#34;,
-        &#34;mode&#34;: &#34;NULLABLE&#34;
+        "name": "date",
+        "type": "DATE",
+        "mode": "NULLABLE"
       }
     ]
 ---
@@ -1688,25 +1688,25 @@ metadata:
   name: bigqueryjobdep2copy
 spec:
   friendlyName: bigqueryjob-dep2-copy
-  description: &#34;Source BigQueryTable 2&#34;
+  description: "Source BigQueryTable 2"
   datasetRef:
     name: bigqueryjobdep2copy
   schema: |
     [
       {
-        &#34;name&#34;: &#34;name&#34;,
-        &#34;type&#34;: &#34;STRING&#34;,
-        &#34;mode&#34;: &#34;NULLABLE&#34;
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
       },
       {
-        &#34;name&#34;: &#34;post_abbr&#34;,
-        &#34;type&#34;: &#34;STRING&#34;,
-        &#34;mode&#34;: &#34;NULLABLE&#34;
+        "name": "post_abbr",
+        "type": "STRING",
+        "mode": "NULLABLE"
       },
       {
-        &#34;name&#34;: &#34;date&#34;,
-        &#34;type&#34;: &#34;DATE&#34;,
-        &#34;mode&#34;: &#34;NULLABLE&#34;
+        "name": "date",
+        "type": "DATE",
+        "mode": "NULLABLE"
       }
     ]
 ---
@@ -1716,25 +1716,25 @@ metadata:
   name: bigqueryjobdep3copy
 spec:
   friendlyName: bigqueryjob-dep3-copy
-  description: &#34;Destination BigQueryTable&#34;
+  description: "Destination BigQueryTable"
   datasetRef:
     name: bigqueryjobdep3copy
   schema: |
     [
       {
-        &#34;name&#34;: &#34;name&#34;,
-        &#34;type&#34;: &#34;STRING&#34;,
-        &#34;mode&#34;: &#34;NULLABLE&#34;
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
       },
       {
-        &#34;name&#34;: &#34;post_abbr&#34;,
-        &#34;type&#34;: &#34;STRING&#34;,
-        &#34;mode&#34;: &#34;NULLABLE&#34;
+        "name": "post_abbr",
+        "type": "STRING",
+        "mode": "NULLABLE"
       },
       {
-        &#34;name&#34;: &#34;date&#34;,
-        &#34;type&#34;: &#34;DATE&#34;,
-        &#34;mode&#34;: &#34;NULLABLE&#34;
+        "name": "date",
+        "type": "DATE",
+        "mode": "NULLABLE"
       }
     ]
   encryptionConfiguration:
@@ -1774,14 +1774,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1790,24 +1790,24 @@ apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryJob
 metadata:
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
   # BigQueryJobs cannot be deleted from GCP, so you must use a new unique name
   # if you want to create a new job, otherwise Config Connector will try to
   # acquire the job with the given name.
   name: bigqueryjob-sample-extract
 spec:
-  location: &#34;US&#34;
-  jobTimeoutMs: &#34;600000&#34;
+  location: "US"
+  jobTimeoutMs: "600000"
   extract:
     sourceTable:
       tableRef:
         name: bigqueryjobdepextract
     destinationUris:
-      - &#34;gs://${PROJECT_ID?}-bigqueryjob-dep-extract/extract&#34;
-    destinationFormat: &#34;CSV&#34;
-    compression: &#34;GZIP&#34;
+      - "gs://${PROJECT_ID?}-bigqueryjob-dep-extract/extract"
+    destinationFormat: "CSV"
+    compression: "GZIP"
     printHeader: true
-    fieldDelimiter: &#34;,&#34;
+    fieldDelimiter: ","
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
@@ -1827,19 +1827,19 @@ spec:
   schema: |
     [
       {
-        &#34;name&#34;: &#34;name&#34;,
-        &#34;type&#34;: &#34;STRING&#34;,
-        &#34;mode&#34;: &#34;NULLABLE&#34;
+        "name": "name",
+        "type": "STRING",
+        "mode": "NULLABLE"
       },
       {
-        &#34;name&#34;: &#34;post_abbr&#34;,
-        &#34;type&#34;: &#34;STRING&#34;,
-        &#34;mode&#34;: &#34;NULLABLE&#34;
+        "name": "post_abbr",
+        "type": "STRING",
+        "mode": "NULLABLE"
       },
       {
-        &#34;name&#34;: &#34;date&#34;,
-        &#34;type&#34;: &#34;DATE&#34;,
-        &#34;mode&#34;: &#34;NULLABLE&#34;
+        "name": "date",
+        "type": "DATE",
+        "mode": "NULLABLE"
       }
     ]
 ---
@@ -1847,7 +1847,7 @@ apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
 metadata:
   annotations:
-    cnrm.cloud.google.com/force-destroy: &#34;true&#34;
+    cnrm.cloud.google.com/force-destroy: "true"
   # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
   name: ${PROJECT_ID?}-bigqueryjob-dep-extract
 ```
@@ -1856,14 +1856,14 @@ metadata:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1872,34 +1872,34 @@ apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryJob
 metadata:
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
   # BigQueryJobs cannot be deleted from GCP, so you must use a new unique name
   # if you want to create a new job, otherwise Config Connector will try to
   # acquire the job with the given name.
   name: bigqueryjob-sample-load
 spec:
-  location: &#34;US&#34;
-  jobTimeoutMs: &#34;600000&#34;
+  location: "US"
+  jobTimeoutMs: "600000"
   load:
     sourceUris:
-      - &#34;gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv&#34;
+      - "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
     destinationTable:
       tableRef:
         name: bigqueryjobdepload
-    sourceFormat: &#34;CSV&#34;
-    encoding: &#34;UTF-8&#34;
-    fieldDelimiter: &#34;,&#34;
-    quote: &#39;&#34;&#39;
+    sourceFormat: "CSV"
+    encoding: "UTF-8"
+    fieldDelimiter: ","
+    quote: '"'
     allowQuotedNewlines: false
     maxBadRecords: 0
     allowJaggedRows: false
     ignoreUnknownValues: false
     skipLeadingRows: 1
     autodetect: true
-    writeDisposition: &#34;WRITE_APPEND&#34;
+    writeDisposition: "WRITE_APPEND"
     schemaUpdateOptions:
-      - &#34;ALLOW_FIELD_ADDITION&#34;
-      - &#34;ALLOW_FIELD_RELAXATION&#34;
+      - "ALLOW_FIELD_ADDITION"
+      - "ALLOW_FIELD_RELAXATION"
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
@@ -1922,14 +1922,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1938,16 +1938,16 @@ apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryJob
 metadata:
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
   # BigQueryJobs cannot be deleted from GCP, so you must use a new unique name
   # if you want to create a new job, otherwise Config Connector will try to
   # acquire the job with the given name.
   name: bigqueryjob-sample-query
 spec:
-  location: &#34;US&#34;
-  jobTimeoutMs: &#34;600000&#34;
+  location: "US"
+  jobTimeoutMs: "600000"
   query:
-    query: &#34;SELECT state FROM [lookerdata:cdc.project_tycho_reports]&#34;
+    query: "SELECT state FROM [lookerdata:cdc.project_tycho_reports]"
     useLegacySql: true
     defaultDataset:
       datasetRef:
@@ -1958,14 +1958,14 @@ spec:
     allowLargeResults: true
     flattenResults: true
     useQueryCache: true
-    priority: &#34;INTERACTIVE&#34;
-    writeDisposition: &#34;WRITE_APPEND&#34;
+    priority: "INTERACTIVE"
+    writeDisposition: "WRITE_APPEND"
     schemaUpdateOptions:
-      - &#34;ALLOW_FIELD_ADDITION&#34;
-      - &#34;ALLOW_FIELD_RELAXATION&#34;
+      - "ALLOW_FIELD_ADDITION"
+      - "ALLOW_FIELD_RELAXATION"
     scriptOptions:
-      statementTimeoutMs: &#34;300000&#34;
-      keyResultStatement: &#34;LAST&#34;
+      statementTimeoutMs: "300000"
+      keyResultStatement: "LAST"
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
@@ -1973,7 +1973,7 @@ metadata:
   name: bigqueryjobdep1query
 spec:
   friendlyName: bigqueryjob-dep1-query
-  description: &#34;Default Source BigQueryDataset&#34;
+  description: "Default Source BigQueryDataset"
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
@@ -1981,7 +1981,7 @@ metadata:
   name: bigqueryjobdep2query
 spec:
   friendlyName: bigqueryjob-dep2-query
-  description: &#34;Destination BigQueryDataset&#34;
+  description: "Destination BigQueryDataset"
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable
@@ -1989,7 +1989,7 @@ metadata:
   name: bigqueryjobdepquery
 spec:
   friendlyName: bigqueryjob-dep-query
-  description: &#34;Destination BigQueryTable&#34;
+  description: "Destination BigQueryTable"
   datasetRef:
     name: bigqueryjobdep2query
 ```

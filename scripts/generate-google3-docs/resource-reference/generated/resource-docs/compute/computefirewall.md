@@ -155,8 +155,8 @@ is only applicable for UDP or TCP protocol. Each entry must be
 either an integer or a range. If not specified, this rule
 applies to connections through any port.
 
-Example inputs include: [&#34;22&#34;], [&#34;80&#34;,&#34;443&#34;], and
-[&#34;12345-12349&#34;].{% endverbatim %}</p>
+Example inputs include: ["22"], ["80","443"], and
+["12345-12349"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -215,8 +215,8 @@ is only applicable for UDP or TCP protocol. Each entry must be
 either an integer or a range. If not specified, this rule
 applies to connections through any port.
 
-Example inputs include: [&#34;22&#34;], [&#34;80&#34;,&#34;443&#34;], and
-[&#34;12345-12349&#34;].{% endverbatim %}</p>
+Example inputs include: ["22"], ["80","443"], and
+["12345-12349"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -285,8 +285,8 @@ must be expressed in CIDR format. Only IPv4 is supported.{% endverbatim %}</p>
             <p>{% verbatim %}Immutable. Direction of traffic to which this firewall applies; default is
 INGRESS. Note: For INGRESS traffic, it is NOT supported to specify
 destinationRanges; For EGRESS traffic, it is NOT supported to specify
-&#39;source_ranges&#39; OR &#39;source_tags&#39;. For INGRESS traffic, one of &#39;source_ranges&#39;,
-&#39;source_tags&#39; or &#39;source_service_accounts&#39; is required. Possible values: [&#34;INGRESS&#34;, &#34;EGRESS&#34;].{% endverbatim %}</p>
+'source_ranges' OR 'source_tags'. For INGRESS traffic, one of 'source_ranges',
+'source_tags' or 'source_service_accounts' is required. Possible values: ["INGRESS", "EGRESS"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -330,7 +330,7 @@ If defined, logging is enabled, and logs will be exported to Cloud Logging.{% en
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}This field denotes whether to include or exclude metadata for firewall logs. Possible values: [&#34;EXCLUDE_ALL_METADATA&#34;, &#34;INCLUDE_ALL_METADATA&#34;].{% endverbatim %}</p>
+            <p>{% verbatim %}This field denotes whether to include or exclude metadata for firewall logs. Possible values: ["EXCLUDE_ALL_METADATA", "INCLUDE_ALL_METADATA"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -412,8 +412,8 @@ sourceTags may be set. If both properties are set, the firewall will
 apply to traffic that has source IP address within sourceRanges OR the
 source IP that belongs to a tag listed in the sourceTags property. The
 connection does not need to match both properties for the firewall to
-apply. Only IPv4 is supported. For INGRESS traffic, one of &#39;source_ranges&#39;,
-&#39;source_tags&#39; or &#39;source_service_accounts&#39; is required.{% endverbatim %}</p>
+apply. Only IPv4 is supported. For INGRESS traffic, one of 'source_ranges',
+'source_tags' or 'source_service_accounts' is required.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -446,7 +446,7 @@ apply. Only IPv4 is supported. For INGRESS traffic, one of &#39;source_ranges&#3
             <p>{% verbatim %}If source service accounts are specified, the firewall will apply only
 to traffic originating from an instance with a service account in this
 list. Source service accounts cannot be used to control traffic to an
-instance&#39;s external IP address because service accounts are associated
+instance's external IP address because service accounts are associated
 with an instance, not an IP address. sourceRanges can be set at the
 same time as sourceServiceAccounts. If both are set, the firewall will
 apply to traffic that has source IP address within sourceRanges OR the
@@ -495,14 +495,14 @@ used at the same time as sourceTags or targetTags.{% endverbatim %}</p>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}If source tags are specified, the firewall will apply only to traffic
 with source IP that belongs to a tag listed in source tags. Source
-tags cannot be used to control traffic to an instance&#39;s external IP
+tags cannot be used to control traffic to an instance's external IP
 address. Because tags are associated with an instance, not an IP
 address. One or both of sourceRanges and sourceTags may be set. If
 both properties are set, the firewall will apply to traffic that has
 source IP address within sourceRanges OR the source IP that belongs to
 a tag listed in the sourceTags property. The connection does not need
 to match both properties for the firewall to apply. For INGRESS traffic,
-one of &#39;source_ranges&#39;, &#39;source_tags&#39; or &#39;source_service_accounts&#39; is required.{% endverbatim %}</p>
+one of 'source_ranges', 'source_tags' or 'source_service_accounts' is required.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -625,7 +625,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -653,7 +653,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -700,14 +700,14 @@ selfLink: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -716,18 +716,18 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeFirewall
 metadata:
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
   name: computefirewall-sample-allow
 spec:
   allow:
     - protocol: tcp
       ports:
-       - &#34;80&#34;
-       - &#34;1000-2000&#34;
+       - "80"
+       - "1000-2000"
   networkRef:
     name: computefirewall-dep-allow
   sourceTags:
-    - &#34;web&#34;
+    - "web"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
@@ -742,14 +742,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -758,7 +758,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeFirewall
 metadata:
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
   name: computefirewall-sample-deny
 spec:
   deny:
@@ -766,7 +766,7 @@ spec:
   networkRef:
     name: computefirewall-dep-deny
   sourceTags:
-  - &#34;web&#34;
+  - "web"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork

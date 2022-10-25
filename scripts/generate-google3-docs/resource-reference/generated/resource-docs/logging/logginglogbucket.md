@@ -145,7 +145,7 @@ retentionDays: integer
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[WARNING] BillingAccount not yet supported in Config Connector, use &#39;external&#39; field to reference existing resources.
+            <p>{% verbatim %}[WARNING] BillingAccount not yet supported in Config Connector, use 'external' field to reference existing resources.
 Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
         </td>
     </tr>
@@ -256,7 +256,7 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[WARNING] Organization not yet supported in Config Connector, use &#39;external&#39; field to reference existing resources.
+            <p>{% verbatim %}[WARNING] Organization not yet supported in Config Connector, use 'external' field to reference existing resources.
 Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
         </td>
     </tr>
@@ -361,7 +361,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -389,7 +389,7 @@ updateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -443,14 +443,14 @@ updateTime: string
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -461,25 +461,25 @@ metadata:
   name: logginglogbucket-sample-billingaccountlogbucket
 spec:
   # At the organization, folder, or billing account level _Default and _Required are the only valid resource names
-  resourceID: &#34;_Default&#34;
+  resourceID: "_Default"
   billingAccountRef:
-    # Replace &#34;${BILLING_ACCOUNT_ID?}&#34; with the numeric ID for your billing account
-    external: &#34;${BILLING_ACCOUNT_ID?}&#34;
-  location: &#34;global&#34;
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
+  location: "global"
 ```
 
 ### Folder Log Bucket
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -490,17 +490,17 @@ metadata:
   name: logginglogbucket-sample-folderlogbucket
 spec:
   # At the organization, folder, or billing account level _Default and _Required are the only valid resource names
-  resourceID: &#34;_Required&#34;
+  resourceID: "_Required"
   folderRef:
-    name: &#34;logginglogbucket-dep-folderlogbucket&#34;
-  location: &#34;global&#34;
+    name: "logginglogbucket-dep-folderlogbucket"
+  location: "global"
 ---
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Folder
 metadata:
   annotations:
-    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
-    cnrm.cloud.google.com/organization-id: &#34;${ORG_ID?}&#34;
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
   name: logginglogbucket-dep-folderlogbucket
 spec:
   displayName: Folder Log Bucket Sample
@@ -510,14 +510,14 @@ spec:
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -528,25 +528,25 @@ metadata:
   name: logginglogbucket-sample-organizationlogbucket
 spec:
   # At the organization, folder, or billing account level _Default and _Required are the only valid resource names
-  resourceID: &#34;_Default&#34;
+  resourceID: "_Default"
   organizationRef:
-    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
-    external: &#34;organizations/${ORG_ID?}&#34;
-  location: &#34;global&#34;
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "organizations/${ORG_ID?}"
+  location: "global"
 ```
 
 ### Project Log Bucket
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -558,9 +558,9 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID
-    external: &#34;projects/${PROJECT_ID?}&#34;
-  location: &#34;global&#34;
-  description: &#34;A sample log bucket&#34;
+    external: "projects/${PROJECT_ID?}"
+  location: "global"
+  description: "A sample log bucket"
   locked: false
   retentionDays: 30
 ```

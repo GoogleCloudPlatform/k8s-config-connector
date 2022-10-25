@@ -103,7 +103,7 @@ serverBinding:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. CPU overcommit. Default value: &#34;NONE&#34; Possible values: [&#34;ENABLED&#34;, &#34;NONE&#34;].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. CPU overcommit. Default value: "NONE" Possible values: ["ENABLED", "NONE"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -209,18 +209,18 @@ where the nodes should restart following a maintenance event.{% endverbatim %}</
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Type of server binding policy. If &#39;RESTART_NODE_ON_ANY_SERVER&#39;,
+            <p>{% verbatim %}Immutable. Type of server binding policy. If 'RESTART_NODE_ON_ANY_SERVER',
 nodes using this template will restart on any physical server
 following a maintenance event.
 
-If &#39;RESTART_NODE_ON_MINIMAL_SERVER&#39;, nodes using this template
+If 'RESTART_NODE_ON_MINIMAL_SERVER', nodes using this template
 will restart on the same physical server following a maintenance
 event, instead of being live migrated to or restarted on a new
 physical server. This option may be useful if you are using
 software licenses tied to the underlying server characteristics
 such as physical sockets or cores, to avoid the need for
 additional licenses when maintenance occurs. However, VMs on such
-nodes will experience outages while maintenance is applied. Possible values: [&#34;RESTART_NODE_ON_ANY_SERVER&#34;, &#34;RESTART_NODE_ON_MINIMAL_SERVERS&#34;].{% endverbatim %}</p>
+nodes will experience outages while maintenance is applied. Possible values: ["RESTART_NODE_ON_ANY_SERVER", "RESTART_NODE_ON_MINIMAL_SERVERS"].{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -255,7 +255,7 @@ selfLink: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -283,7 +283,7 @@ selfLink: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -330,14 +330,14 @@ selfLink: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -347,13 +347,13 @@ kind: ComputeNodeTemplate
 metadata:
   name: computenodetemplate-sample-flexible
   labels:
-    memory_guarantee: &#34;false&#34;
-    desired_workload: &#34;high-cpu&#34;
+    memory_guarantee: "false"
+    desired_workload: "high-cpu"
 spec:
   description: Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.
   region: us-central1
   nodeTypeFlexibility:
-    cpus: &#34;96&#34;
+    cpus: "96"
     memory: any
 ```
 
@@ -361,14 +361,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -378,8 +378,8 @@ kind: ComputeNodeTemplate
 metadata:
   name: computenodetemplate-sample-template
   labels:
-    memory_guarantee: &#34;true&#34;
-    desired_workload: &#34;sustained&#34;
+    memory_guarantee: "true"
+    desired_workload: "sustained"
 spec:
   description: Node template for sole tenant nodes running in us-central1, with 96vCPUs and 624GB of memory, on n1 machines.
   region: us-central1

@@ -185,7 +185,7 @@ AccessContextManagerAccessLevel lives in.{% endverbatim %}</p>
 is granted this AccessLevel. If AND is used, each Condition in
 conditions must be satisfied for the AccessLevel to be applied. If
 OR is used, at least one Condition in conditions must be satisfied
-for the AccessLevel to be applied. Default value: &#34;AND&#34; Possible values: [&#34;AND&#34;, &#34;OR&#34;].{% endverbatim %}</p>
+for the AccessLevel to be applied. Default value: "AND" Possible values: ["AND", "OR"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -228,7 +228,7 @@ allowed.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}A list of allowed device management levels.
-An empty list allows all management levels. Possible values: [&#34;MANAGEMENT_UNSPECIFIED&#34;, &#34;NONE&#34;, &#34;BASIC&#34;, &#34;COMPLETE&#34;].{% endverbatim %}</p>
+An empty list allows all management levels. Possible values: ["MANAGEMENT_UNSPECIFIED", "NONE", "BASIC", "COMPLETE"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -249,7 +249,7 @@ An empty list allows all management levels. Possible values: [&#34;MANAGEMENT_UN
         <td>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}A list of allowed encryptions statuses.
-An empty list allows all statuses. Possible values: [&#34;ENCRYPTION_UNSPECIFIED&#34;, &#34;ENCRYPTION_UNSUPPORTED&#34;, &#34;UNENCRYPTED&#34;, &#34;ENCRYPTED&#34;].{% endverbatim %}</p>
+An empty list allows all statuses. Possible values: ["ENCRYPTION_UNSPECIFIED", "ENCRYPTION_UNSUPPORTED", "UNENCRYPTED", "ENCRYPTED"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -292,7 +292,7 @@ An empty list allows all types and all versions.{% endverbatim %}</p>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The minimum allowed OS version. If not set, any version
 of this OS satisfies the constraint.
-Format: &#34;major.minor.patch&#34; such as &#34;10.5.301&#34;, &#34;9.2.1&#34;.{% endverbatim %}</p>
+Format: "major.minor.patch" such as "10.5.301", "9.2.1".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -302,7 +302,7 @@ Format: &#34;major.minor.patch&#34; such as &#34;10.5.301&#34;, &#34;9.2.1&#34;.
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The operating system type of the device. Possible values: [&#34;OS_UNSPECIFIED&#34;, &#34;DESKTOP_MAC&#34;, &#34;DESKTOP_WINDOWS&#34;, &#34;DESKTOP_LINUX&#34;, &#34;DESKTOP_CHROME_OS&#34;, &#34;ANDROID&#34;, &#34;IOS&#34;].{% endverbatim %}</p>
+            <p>{% verbatim %}The operating system type of the device. Possible values: ["OS_UNSPECIFIED", "DESKTOP_MAC", "DESKTOP_WINDOWS", "DESKTOP_LINUX", "DESKTOP_CHROME_OS", "ANDROID", "IOS"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -358,8 +358,8 @@ or IPv6.
 Note that for a CIDR IP address block, the specified IP address
 portion must be properly truncated (i.e. all the host bits must
 be zero) or the input is considered malformed. For example,
-&#34;192.0.2.0/24&#34; is accepted but &#34;192.0.2.1/24&#34; is not. Similarly,
-for IPv6, &#34;2001:db8::/32&#34; is accepted whereas &#34;2001:db8::1/32&#34;
+"192.0.2.0/24" is accepted but "192.0.2.1/24" is not. Similarly,
+for IPv6, "2001:db8::/32" is accepted whereas "2001:db8::1/32"
 is not. The originating IP of a request must be in one of the
 listed subnets in order for this Condition to be true.
 If empty, all IP addresses are allowed.{% endverbatim %}</p>
@@ -661,7 +661,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -689,7 +689,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -722,14 +722,14 @@ observedGeneration: integer
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -738,8 +738,8 @@ apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
 kind: AccessContextManagerAccessLevel
 metadata:
   annotations:
-    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
-    cnrm.cloud.google.com/organization-id: &#34;${ORG_ID}&#34;
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: "${ORG_ID}"
   name: accesslevelsample
 spec:
   accessPolicyRef:
@@ -758,8 +758,8 @@ apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
 kind: AccessContextManagerAccessPolicy
 metadata:
   annotations:
-    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
-    cnrm.cloud.google.com/organization-id: &#34;${ORG_ID}&#34;
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: "${ORG_ID}"
   name: accessleveldep
 spec:
   title: Config Connector Access Level Dependency

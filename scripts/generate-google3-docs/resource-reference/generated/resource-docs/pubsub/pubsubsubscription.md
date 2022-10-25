@@ -187,7 +187,7 @@ If both are empty, then the subscriber will pull and ack messages using API meth
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}When true and useTopicSchema is true, any fields that are a part of the topic schema that are not part of the BigQuery table schema are dropped when writing to BigQuery.
-Otherwise, the schemas must be kept in sync and any messages with extra fields are not written and remain in the subscription&#39;s backlog.{% endverbatim %}</p>
+Otherwise, the schemas must be kept in sync and any messages with extra fields are not written and remain in the subscription's backlog.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -237,7 +237,7 @@ Otherwise, the schemas must be kept in sync and any messages with extra fields a
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}When true, use the topic&#39;s schema as the columns to write to in BigQuery, if it exists.{% endverbatim %}</p>
+            <p>{% verbatim %}When true, use the topic's schema as the columns to write to in BigQuery, if it exists.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -262,7 +262,7 @@ The subscription name, messageId, and publishTime fields are put in their own co
 this subscription. If dead_letter_policy is not set, dead lettering
 is disabled.
 
-The Cloud Pub/Sub service account associated with this subscription&#39;s
+The Cloud Pub/Sub service account associated with this subscription's
 parent project (i.e.,
 service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com) must have
 permission to Acknowledge() messages on this subscription.{% endverbatim %}</p>
@@ -318,7 +318,7 @@ permission to Acknowledge() messages on this subscription.{% endverbatim %}</p>
             <p>{% verbatim %}The maximum number of delivery attempts for any message. The value must be
 between 5 and 100.
 
-The number of delivery attempts is defined as 1 &#43; (the sum of number of 
+The number of delivery attempts is defined as 1 + (the sum of number of 
 NACKs and number of times the acknowledgement deadline has been exceeded for the message).
 
 A NACK is any call to ModifyAckDeadline with a 0 deadline. Note that
@@ -336,14 +336,14 @@ If this parameter is 0, a default value of 5 is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}If &#39;true&#39;, Pub/Sub provides the following guarantees for the delivery
-of a message with a given value of messageId on this Subscriptions&#39;:
+            <p>{% verbatim %}If 'true', Pub/Sub provides the following guarantees for the delivery
+of a message with a given value of messageId on this Subscriptions':
 
-- The message sent to a subscriber is guaranteed not to be resent before the message&#39;s acknowledgement deadline expires.
+- The message sent to a subscriber is guaranteed not to be resent before the message's acknowledgement deadline expires.
 
 - An acknowledged message will not be resent to a subscriber.
 
-Note that subscribers may still receive multiple copies of a message when &#39;enable_exactly_once_delivery&#39;
+Note that subscribers may still receive multiple copies of a message when 'enable_exactly_once_delivery'
 is true if the message was published multiple times by a publisher client. These copies are considered distinct by Pub/Sub and have distinct messageId values.{% endverbatim %}</p>
         </td>
     </tr>
@@ -354,7 +354,7 @@ is true if the message was published multiple times by a publisher client. These
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. If &#39;true&#39;, messages published with the same orderingKey in PubsubMessage will be delivered to
+            <p>{% verbatim %}Immutable. If 'true', messages published with the same orderingKey in PubsubMessage will be delivered to
 the subscribers in the order in which they are received by the Pub/Sub system. Otherwise, they
 may be delivered in any order.{% endverbatim %}</p>
         </td>
@@ -366,11 +366,11 @@ may be delivered in any order.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A policy that specifies the conditions for this subscription&#39;s expiration.
+            <p>{% verbatim %}A policy that specifies the conditions for this subscription's expiration.
 A subscription is considered active as long as any connected subscriber
 is successfully consuming messages from the subscription or is issuing
 operations on the subscription. If expirationPolicy is not set, a default
-policy with ttl of 31 days will be used.  If it is set but ttl is &#34;&#34;, the
+policy with ttl of 31 days will be used.  If it is set but ttl is "", the
 resource never expires.  The minimum allowed value for expirationPolicy.ttl
 is 1 day.{% endverbatim %}</p>
         </td>
@@ -382,11 +382,11 @@ is 1 day.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Specifies the &#34;time-to-live&#34; duration for an associated resource. The
+            <p>{% verbatim %}Specifies the "time-to-live" duration for an associated resource. The
 resource expires if it is not active for a period of ttl.
 If ttl is not set, the associated resource never expires.
-A duration in seconds with up to nine fractional digits, terminated by &#39;s&#39;.
-Example - &#34;3.5s&#34;.{% endverbatim %}</p>
+A duration in seconds with up to nine fractional digits, terminated by 's'.
+Example - "3.5s".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -397,9 +397,9 @@ Example - &#34;3.5s&#34;.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The subscription only delivers the messages that match the filter. 
-Pub/Sub automatically acknowledges the messages that don&#39;t match the filter. You can filter messages
+Pub/Sub automatically acknowledges the messages that don't match the filter. You can filter messages
 by their attributes. The maximum length of a filter is 256 bytes. After creating the subscription, 
-you can&#39;t modify the filter.{% endverbatim %}</p>
+you can't modify the filter.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -409,15 +409,15 @@ you can&#39;t modify the filter.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}How long to retain unacknowledged messages in the subscription&#39;s
+            <p>{% verbatim %}How long to retain unacknowledged messages in the subscription's
 backlog, from the moment a message is published. If
 retain_acked_messages is true, then this also configures the retention
 of acknowledged messages, and thus configures how far back in time a
 subscriptions.seek can be done. Defaults to 7 days. Cannot be more
-than 7 days (&#39;&#34;604800s&#34;&#39;) or less than 10 minutes (&#39;&#34;600s&#34;&#39;).
+than 7 days ('"604800s"') or less than 10 minutes ('"600s"').
 
 A duration in seconds with up to nine fractional digits, terminated
-by &#39;s&#39;. Example: &#39;&#34;600.5s&#34;&#39;.{% endverbatim %}</p>
+by 's'. Example: '"600.5s"'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -512,7 +512,7 @@ iam.serviceAccounts.actAs permission for the service account.{% endverbatim %}</
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}A URL locating the endpoint to which messages should be pushed.
 For example, a Webhook endpoint might use
-&#34;https://example.com/push&#34;.{% endverbatim %}</p>
+"https://example.com/push".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -532,8 +532,8 @@ For example, a Webhook endpoint might use
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Indicates whether to retain acknowledged messages. If &#39;true&#39;, then
-messages are not expunged from the subscription&#39;s backlog, even if
+            <p>{% verbatim %}Indicates whether to retain acknowledged messages. If 'true', then
+messages are not expunged from the subscription's backlog, even if
 they are acknowledged, until they fall out of the
 messageRetentionDuration window.{% endverbatim %}</p>
         </td>
@@ -559,7 +559,7 @@ RetryPolicy will be triggered on NACKs or acknowledgement deadline exceeded even
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The maximum delay between consecutive deliveries of a given message. Value should be between 0 and 600 seconds. Defaults to 600 seconds. 
-A duration in seconds with up to nine fractional digits, terminated by &#39;s&#39;. Example: &#34;3.5s&#34;.{% endverbatim %}</p>
+A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -570,7 +570,7 @@ A duration in seconds with up to nine fractional digits, terminated by &#39;s&#3
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The minimum delay between consecutive deliveries of a given message. Value should be between 0 and 600 seconds. Defaults to 10 seconds.
-A duration in seconds with up to nine fractional digits, terminated by &#39;s&#39;. Example: &#34;3.5s&#34;.{% endverbatim %}</p>
+A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -643,7 +643,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -671,7 +671,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -704,14 +704,14 @@ observedGeneration: integer
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -720,7 +720,7 @@ apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubSubscription
 metadata:
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
   name: pubsubsubscription-sample-basic
 spec:
   ackDeadlineSeconds: 15
@@ -747,14 +747,14 @@ metadata:
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -798,13 +798,13 @@ spec:
   friendlyName: pubsubsubscription-dep-bigquery
   datasetRef:
     name: pubsubsubscription-dep-bigquery
-  schema: &gt;
+  schema: >
     [
       {
-        &#34;name&#34;: &#34;data&#34;,
-        &#34;type&#34;: &#34;STRING&#34;,
-        &#34;mode&#34;: &#34;NULLABLE&#34;,
-        &#34;description&#34;: &#34;The data&#34;
+        "name": "data",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The data"
       }
     ]
 ---

@@ -204,7 +204,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Optional. If any AllowedKeyType is specified, then the certificate request&#39;s public key must match one of the key types listed here. Otherwise, any key may be used.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If any AllowedKeyType is specified, then the certificate request's public key must match one of the key types listed here. Otherwise, any key may be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -354,7 +354,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Optional. Describes Online Certificate Status Protocol (OCSP) endpoint addresses that appear in the &#34;Authority Information Access&#34; extension in the certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Describes Online Certificate Status Protocol (OCSP) endpoint addresses that appear in the "Authority Information Access" extension in the certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -384,7 +384,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. Refers to the &#34;CA&#34; X.509 extension, which is a boolean value. When this value is missing, the extension will be omitted from the CA certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Refers to the "CA" X.509 extension, which is a boolean value. When this value is missing, the extension will be omitted from the CA certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -434,7 +434,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}The key may be used for cryptographic commitments. Note that this may also be referred to as &#34;non-repudiation&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}The key may be used for cryptographic commitments. Note that this may also be referred to as "non-repudiation".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -524,7 +524,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as &#34;TLS WWW client authentication&#34;, though regularly used for non-WWW TLS.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as "TLS WWW client authentication", though regularly used for non-WWW TLS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -534,7 +534,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as &#34;Signing of downloadable executable code client authentication&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as "Signing of downloadable executable code client authentication".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -544,7 +544,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as &#34;Email protection&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as "Email protection".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -554,7 +554,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as &#34;Signing OCSP responses&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as "Signing OCSP responses".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -564,7 +564,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as &#34;TLS WWW server authentication&#34;, though regularly used for non-WWW TLS.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW server authentication", though regularly used for non-WWW TLS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -574,7 +574,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as &#34;Binding the hash of an object to a time&#34;.{% endverbatim %}</p>
+            <p>{% verbatim %}Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as "Binding the hash of an object to a time".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -664,7 +664,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Optional. Describes constraints on identities that may appear in Certificates issued through this CaPool. If this is omitted, then this CaPool will not add restrictions on a certificate&#39;s identity.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Describes constraints on identities that may appear in Certificates issued through this CaPool. If this is omitted, then this CaPool will not add restrictions on a certificate's identity.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -744,7 +744,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The maximum lifetime allowed for issued Certificates. Note that if the issuing CertificateAuthority expires before a Certificate&#39;s requested maximum_lifetime, the effective lifetime will be explicitly truncated to match it.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The maximum lifetime allowed for issued Certificates. Note that if the issuing CertificateAuthority expires before a Certificate's requested maximum_lifetime, the effective lifetime will be explicitly truncated to match it.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -754,7 +754,7 @@ tier: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Optional. Describes the set of X.509 extensions that may appear in a Certificate issued through this CaPool. If a certificate request sets extensions that don&#39;t appear in the passthrough_extensions, those extensions will be dropped. If a certificate request uses a CertificateTemplate with predefined_values that don&#39;t appear here, the certificate issuance request will fail. If this is omitted, then this CaPool will not add restrictions on a certificate&#39;s X.509 extensions. These constraints do not apply to X.509 extensions set in this CaPool&#39;s baseline_values.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Describes the set of X.509 extensions that may appear in a Certificate issued through this CaPool. If a certificate request sets extensions that don't appear in the passthrough_extensions, those extensions will be dropped. If a certificate request uses a CertificateTemplate with predefined_values that don't appear here, the certificate issuance request will fail. If this is omitted, then this CaPool will not add restrictions on a certificate's X.509 extensions. These constraints do not apply to X.509 extensions set in this CaPool's baseline_values.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -886,7 +886,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. When true, publishes each CertificateAuthority&#39;s CA certificate and includes its URL in the &#34;Authority Information Access&#34; X.509 extension in all issued Certificates. If this is false, the CA certificate will not be published and the corresponding X.509 extension will not be written in issued certificates.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. When true, publishes each CertificateAuthority's CA certificate and includes its URL in the "Authority Information Access" X.509 extension in all issued Certificates. If this is false, the CA certificate will not be published and the corresponding X.509 extension will not be written in issued certificates.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -896,7 +896,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. When true, publishes each CertificateAuthority&#39;s CRL and includes its URL in the &#34;CRL Distribution Points&#34; X.509 extension in all issued Certificates. If this is false, CRLs will not be published and the corresponding X.509 extension will not be written in issued certificates. CRLs will expire 7 days from their creation. However, we will rebuild daily. CRLs are also rebuilt shortly after a certificate is revoked.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. When true, publishes each CertificateAuthority's CRL and includes its URL in the "CRL Distribution Points" X.509 extension in all issued Certificates. If this is false, CRLs will not be published and the corresponding X.509 extension will not be written in issued certificates. CRLs will expire 7 days from their creation. However, we will rebuild daily. CRLs are also rebuilt shortly after a certificate is revoked.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -949,7 +949,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -977,7 +977,7 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1010,14 +1010,14 @@ observedGeneration: integer
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -1026,12 +1026,12 @@ apiVersion: privateca.cnrm.cloud.google.com/v1beta1
 kind: PrivateCACAPool
 metadata:
   labels:
-    label-two: &#34;value-two&#34;
+    label-two: "value-two"
   name: privatecacapool-sample
 spec:
   projectRef:
     external: projects/${PROJECT_ID?}
-  location: &#34;us-central1&#34;
+  location: "us-central1"
   tier: ENTERPRISE
   issuancePolicy:
     allowedKeyTypes:
@@ -1087,7 +1087,7 @@ spec:
       celExpression:
         title: Sample expression
         description: Always false
-        expression: &#39;false&#39;
+        expression: 'false'
         location: devops.ca_pool.json
       allowSubjectPassthrough: false
       allowSubjectAltNamesPassthrough: false

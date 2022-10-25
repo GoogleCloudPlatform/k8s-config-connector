@@ -134,7 +134,7 @@ Allowed values:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}[WARNING] Organization not yet supported in Config Connector, use &#39;external&#39; field to reference existing resources.
+            <p>{% verbatim %}[WARNING] Organization not yet supported in Config Connector, use 'external' field to reference existing resources.
 Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
         </td>
     </tr>
@@ -229,7 +229,7 @@ shortName: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -257,7 +257,7 @@ shortName: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -297,14 +297,14 @@ shortName: string
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -326,38 +326,38 @@ metadata:
   name: firewallpolicyassociation-dep-folder
 spec:
   organizationRef:
-    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
-    external: &#34;organizations/${ORG_ID?}&#34;
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "organizations/${ORG_ID?}"
   # ComputeFirewallPolicy shortNames must be unique in the organization in
   # which the firewall policy is created
   shortName: ${PROJECT_ID?}-firewallpolicyassociation-dep-folder
-  description: &#34;A basic organization firewall policy&#34;
+  description: "A basic organization firewall policy"
 ---
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Folder
 metadata:
   labels:
-    label-one: &#34;value-one&#34;
+    label-one: "value-one"
   name: firewallpolicyassociation-dep-folder
 spec:
   displayName: Config Connector Sample
   organizationRef:
-    # Replace &#34;${ORG_ID?}&#34; with the numeric ID of the parent organization
-    external: &#34;${ORG_ID?}&#34;
+    # Replace "${ORG_ID?}" with the numeric ID of the parent organization
+    external: "${ORG_ID?}"
 ```
 
 ### Association With Organization Attachment Target
 ```yaml
 # Copyright 2022 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -368,8 +368,8 @@ metadata:
   name: firewallpolicyassociation-sample-org
 spec:
   attachmentTargetRef:
-    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
-    external: &#34;organizations/${ORG_ID?}&#34;
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "organizations/${ORG_ID?}"
   firewallPolicyRef:
     name: firewallpolicyassociation-dep-org
 ---
@@ -379,12 +379,12 @@ metadata:
   name: firewallpolicyassociation-dep-org
 spec:
   organizationRef:
-    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
-    external: &#34;organizations/${ORG_ID?}&#34;
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "organizations/${ORG_ID?}"
   # ComputeFirewallPolicy shortNames must be unique in the organization in
   # which the firewall policy is created
   shortName: ${PROJECT_ID?}-firewallpolicyassociation-dep-org
-  description: &#34;A basic organization firewall policy&#34;
+  description: "A basic organization firewall policy"
 ```
 
 

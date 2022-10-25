@@ -154,7 +154,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Whether to use BigQuery&#39;s partition tables. By default, Logging creates dated tables based on the log entries&#39; timestamps, e.g. syslog_20170523. With partitioned tables the date suffix is no longer present and special query syntax has to be used instead. In both cases, tables are sharded based on UTC timezone.{% endverbatim %}</p>
+            <p>{% verbatim %}Whether to use BigQuery's partition tables. By default, Logging creates dated tables based on the log entries' timestamps, e.g. syslog_20170523. With partitioned tables the date suffix is no longer present and special query syntax has to be used instead. In both cases, tables are sharded based on UTC timezone.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -354,7 +354,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Log entries that match any of the exclusion filters will not be exported. If a log entry is matched by both filter and one of exclusion&#39;s filters, it will not be exported.{% endverbatim %}</p>
+            <p>{% verbatim %}Log entries that match any of the exclusion filters will not be exported. If a log entry is matched by both filter and one of exclusion's filters, it will not be exported.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -404,7 +404,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A client-assigned identifier, such as &#34;load-balancer-exclusion&#34;. Identifiers are limited to 100 characters and can include only letters, digits, underscores, hyphens, and periods. First character has to be alphanumeric.{% endverbatim %}</p>
+            <p>{% verbatim %}A client-assigned identifier, such as "load-balancer-exclusion". Identifiers are limited to 100 characters and can include only letters, digits, underscores, hyphens, and periods. First character has to be alphanumeric.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -601,7 +601,7 @@ writerIdentity: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -629,7 +629,7 @@ writerIdentity: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -669,14 +669,14 @@ writerIdentity: string
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -691,21 +691,21 @@ spec:
   destination:
     bigQueryDatasetRef:
       name: logginglogsinkdepfolder
-  filter: resource.type=&#34;bigquery_project&#34; AND logName:&#34;cloudaudit.googleapis.com&#34;
+  filter: resource.type="bigquery_project" AND logName:"cloudaudit.googleapis.com"
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
 metadata:
   annotations:
-    cnrm.cloud.google.com/delete-contents-on-destroy: &#34;true&#34;
+    cnrm.cloud.google.com/delete-contents-on-destroy: "true"
   name: logginglogsinkdepfolder
 ---
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Folder
 metadata:
   annotations:
-    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
-    cnrm.cloud.google.com/organization-id: &#34;${ORG_ID?}&#34;
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
   name: logginglogsink-dep-folder
 spec:
   displayName: Folder Log Sink Sample
@@ -715,14 +715,14 @@ spec:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -733,19 +733,19 @@ metadata:
   name: logginglogsink-sample-org
 spec:
   organizationRef:
-    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
-    external: &#34;${ORG_ID?}&#34;
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "${ORG_ID?}"
   destination:
     storageBucketRef:
       # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
       name: ${PROJECT_ID?}-logginglogsink-dep-org
-  filter: resource.type=&#34;bigquery_project&#34; AND logName:&#34;cloudaudit.googleapis.com&#34;
+  filter: resource.type="bigquery_project" AND logName:"cloudaudit.googleapis.com"
 ---
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket
 metadata:
   annotations:
-    cnrm.cloud.google.com/force-destroy: &#34;true&#34;
+    cnrm.cloud.google.com/force-destroy: "true"
   # StorageBucket names must be globally unique. Replace ${PROJECT_ID?} with your project ID.
   name: ${PROJECT_ID?}-logginglogsink-dep-org
 ```
@@ -754,14 +754,14 @@ metadata:
 ```yaml
 # Copyright 2020 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -777,7 +777,7 @@ spec:
   destination:
     pubSubTopicRef:
       name: logginglogsink-dep-project
-  filter: resource.type=&#34;bigquery_project&#34; AND logName:&#34;cloudaudit.googleapis.com&#34;
+  filter: resource.type="bigquery_project" AND logName:"cloudaudit.googleapis.com"
 ---
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubTopic
@@ -788,14 +788,14 @@ apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
 metadata:
   annotations:
-    # Replace &#34;${ORG_ID?}&#34; with the numeric ID for your organization
-    cnrm.cloud.google.com/organization-id: &#34;${ORG_ID?}&#34;
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    cnrm.cloud.google.com/organization-id: "${ORG_ID?}"
   name: logginglogsink-dep-project
 spec:
   name: Project Log Sink Sample
   billingAccountRef:
-    # Replace &#34;${BILLING_ACCOUNT_ID?}&#34; with the numeric ID for your billing account
-    external: &#34;${BILLING_ACCOUNT_ID?}&#34;
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
 ```
 
 

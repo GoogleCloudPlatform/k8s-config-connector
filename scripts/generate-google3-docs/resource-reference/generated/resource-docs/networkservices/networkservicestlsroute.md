@@ -397,7 +397,7 @@ Allowed value: The Google Cloud resource name of a `ComputeBackendService` resou
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Required. RouteMatch defines the predicate used to match requests to a given action. Multiple match types are &#34;OR&#34;ed for evaluation.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. RouteMatch defines the predicate used to match requests to a given action. Multiple match types are "OR"ed for evaluation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -417,7 +417,7 @@ Allowed value: The Google Cloud resource name of a `ComputeBackendService` resou
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Optional. ALPN (Application-Layer Protocol Negotiation) to match against. Examples: &#34;http/1.1&#34;, &#34;h2&#34;. At least one of sni_host and alpn is required. Up to 5 alpns across all matches can be set.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. ALPN (Application-Layer Protocol Negotiation) to match against. Examples: "http/1.1", "h2". At least one of sni_host and alpn is required. Up to 5 alpns across all matches can be set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -481,7 +481,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource&#39;s current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -509,7 +509,7 @@ updateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition&#39;s last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -563,14 +563,14 @@ updateTime: string
 ```yaml
 # Copyright 2021 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -584,7 +584,7 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
-    external: &#34;projects/${PROJECT_ID?}&#34;
+    external: "projects/${PROJECT_ID?}"
   location: global
   meshes:
     - name: networkservicestlsroute-dep
@@ -593,11 +593,11 @@ spec:
   rules:
   - matches:
     - sniHost:
-      - &#34;*.foo.example.com&#34;
-      - &#34;foo.example.com&#34;
+      - "*.foo.example.com"
+      - "foo.example.com"
       alpn:
-      - &#34;h2&#34;
-      - &#34;http/1.1&#34;
+      - "h2"
+      - "http/1.1"
     action:
       destinations:
       - serviceRef:
@@ -619,7 +619,7 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
-    external: &#34;projects/${PROJECT_ID?}&#34;
+    external: "projects/${PROJECT_ID?}"
   type: OPEN_MESH
   ports:
   - 80
@@ -634,7 +634,7 @@ metadata:
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
-    external: &#34;projects/${PROJECT_ID?}&#34;
+    external: "projects/${PROJECT_ID?}"
   location: global
 ```
 
