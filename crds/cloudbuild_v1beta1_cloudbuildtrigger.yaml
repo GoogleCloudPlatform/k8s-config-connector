@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.95.0
+    cnrm.cloud.google.com/version: 1.96.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -710,8 +710,8 @@ spec:
                   repoType:
                     description: "The type of the repo, since it may not be explicit
                       from the repo field (e.g from a URL). \nValues can be UNKNOWN,
-                      CLOUD_SOURCE_REPOSITORIES, GITHUB Possible values: [\"UNKNOWN\",
-                      \"CLOUD_SOURCE_REPOSITORIES\", \"GITHUB\"]."
+                      CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET Possible values:
+                      [\"UNKNOWN\", \"CLOUD_SOURCE_REPOSITORIES\", \"GITHUB\", \"BITBUCKET\"]."
                     type: string
                   revision:
                     description: "The branch, tag, arbitrary ref, or SHA version of
@@ -819,6 +819,11 @@ spec:
                 items:
                   type: string
                 type: array
+              location:
+                description: |-
+                  Immutable. The [Cloud Build location](https://cloud.google.com/build/docs/locations) for the trigger.
+                  If not specified, "global" is used.
+                type: string
               pubsubConfig:
                 description: "PubsubConfig describes the configuration of a trigger
                   that creates \na build whenever a Pub/Sub message is published.\n\nOne
@@ -947,7 +952,7 @@ spec:
                   repoType:
                     description: |-
                       The type of the repo, since it may not be explicit from the repo field (e.g from a URL).
-                      Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB"].
+                      Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET"].
                     type: string
                   uri:
                     description: The URI of the repo (required).

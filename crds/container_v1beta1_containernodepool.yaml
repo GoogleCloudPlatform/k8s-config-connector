@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.95.0
+    cnrm.cloud.google.com/version: 1.96.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -76,17 +76,31 @@ spec:
                   the size of the node pool to the current cluster usage. To disable
                   autoscaling, set minNodeCount and maxNodeCount to 0.
                 properties:
+                  locationPolicy:
+                    description: Location policy specifies the algorithm used when
+                      scaling-up the node pool. "BALANCED" - Is a best effort policy
+                      that aims to balance the sizes of available zones. "ANY" - Instructs
+                      the cluster autoscaler to prioritize utilization of unused reservations,
+                      and reduces preemption risk for Spot VMs.
+                    type: string
                   maxNodeCount:
-                    description: Maximum number of nodes in the NodePool. Must be
-                      >= min_node_count.
+                    description: Maximum number of nodes per zone in the node pool.
+                      Must be >= min_node_count. Cannot be used with total limits.
                     type: integer
                   minNodeCount:
-                    description: Minimum number of nodes in the NodePool. Must be
-                      >=0 and <= max_node_count.
+                    description: Minimum number of nodes per zone in the node pool.
+                      Must be >=0 and <= max_node_count. Cannot be used with total
+                      limits.
                     type: integer
-                required:
-                - maxNodeCount
-                - minNodeCount
+                  totalMaxNodeCount:
+                    description: Maximum number of all nodes in the node pool. Must
+                      be >= total_min_node_count. Cannot be used with per zone limits.
+                    type: integer
+                  totalMinNodeCount:
+                    description: Minimum number of all nodes in the node pool. Must
+                      be >=0 and <= total_max_node_count. Cannot be used with per
+                      zone limits.
+                    type: integer
                 type: object
               clusterRef:
                 oneOf:
