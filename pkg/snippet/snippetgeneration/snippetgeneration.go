@@ -34,7 +34,7 @@ import (
 var preferredSampleForResource = map[string]string{
 	"bigqueryjob":                       "query-bigquery-job",
 	"bigtableappprofile":                "multicluster-bigtable-app-profile",
-	"bigtableinstance":                  "replicated-intance",
+	"bigtableinstance":                  "replicated-instance",
 	"billingbudgetsbudget":              "calendar-budget",
 	"binaryauthorizationpolicy":         "cluster-policy",
 	"cloudbuildtrigger":                 "build-trigger-for-cloud-source-repo",

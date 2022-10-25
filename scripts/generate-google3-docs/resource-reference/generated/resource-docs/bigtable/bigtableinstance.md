@@ -433,7 +433,7 @@ spec:
       minNodes: 1
 ```
 
-### Replicated Intance
+### Replicated Instance
 ```yaml
 # Copyright 2020 Google LLC
 #
