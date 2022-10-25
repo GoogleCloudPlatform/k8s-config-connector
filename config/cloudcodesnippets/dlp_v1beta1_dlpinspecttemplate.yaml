@@ -1,0 +1,108 @@
+label: Config Connector DLPInspectTemplate
+markdownDescription: Creates yaml for a DLPInspectTemplate resource
+insertText: |
+  apiVersion: dlp.cnrm.cloud.google.com/v1beta1
+  kind: DLPInspectTemplate
+  metadata:
+    name: \${1:dlpinspecttemplate-name}
+  spec:
+    projectRef:
+      external: \${2:projects/[PROJECT_ID?]}
+    location: \${3:us-west2}
+    displayName: \${4:sample-template}
+    description: \${5:A sample dlp inspect template}
+    inspectConfig:
+      infoTypes:
+      - name: \${6:AGE}
+      minLikelihood: \${7:POSSIBLE}
+      limits:
+        maxFindingsPerItem: \${8:7}
+        maxFindingsPerRequest: \${9:7}
+        maxFindingsPerInfoType:
+        - infoType:
+            name: \${10:AGE}
+          maxFindings: \${11:7}
+      includeQuote: \${12:false}
+      excludeInfoTypes: \${13:false}
+      customInfoTypes:
+      - infoType:
+          name: \${14:PHONE_NUMBER}
+        likelihood: \${15:POSSIBLE}
+        dictionary:
+          wordList:
+            words:
+            - \${16:911}
+      - infoType:
+          name: \${17:AGE}
+        dictionary:
+          cloudStoragePath:
+            path: \${18:gs://aaa-dont-delete-dcl-dlp-testing/dictionary-1}
+      - infoType:
+          name: \${19:HOME_ADDRESS}
+        storedType:
+          nameRef:
+            name: \${20:dlpinspecttemplate-dep-custominspecttemplate}
+      - infoType:
+          name: \${21:SALARY}
+        exclusionType: \${22:EXCLUSION_TYPE_EXCLUDE}
+        regex:
+          pattern: \${23:(\)(\d*)}
+          groupIndexes:
+          - \${24:1}
+          - \${25:2}
+      - infoType:
+          name: \${26:HEIGHT}
+        regex:
+          pattern: \${27:\d'\d[2]"}
+        surrogateType: {}
+      contentOptions:
+      - \${28:CONTENT_TEXT}
+      ruleSet:
+      - infoTypes:
+        - name: \${29:AGE}
+        rules:
+        - exclusionRule:
+            matchingType: \${30:MATCHING_TYPE_FULL_MATCH}
+            dictionary:
+              wordList:
+                words:
+                - \${31:911}
+        - exclusionRule:
+            matchingType: \${32:MATCHING_TYPE_FULL_MATCH}
+            dictionary:
+              cloudStoragePath:
+                path: \${33:gs://aaa-dont-delete-dcl-dlp-testing/dictionary-1}
+        - exclusionRule:
+            matchingType: \${34:MATCHING_TYPE_FULL_MATCH}
+            regex:
+              pattern: \${35:([12])(\d[1,2])}
+              groupIndexes:
+              - \${36:1}
+              - \${37:2}
+        - exclusionRule:
+            matchingType: \${38:MATCHING_TYPE_FULL_MATCH}
+            excludeInfoTypes:
+              infoTypes:
+              - name: \${39:PHONE_NUMBER}
+      - infoTypes:
+        - name: \${40:PHONE_NUMBER}
+        rules:
+        - hotwordRule:
+            hotwordRegex:
+              pattern: \${41:\(([0-9][3])\) ?[0-9][3]-[0-9][4]}
+              groupIndexes:
+              - \${42:0}
+              - \${43:1}
+            proximity:
+              windowBefore: \${44:2}
+              windowAfter: \${45:3}
+            likelihoodAdjustment:
+              fixedLikelihood: \${46:LIKELY}
+        - hotwordRule:
+            hotwordRegex:
+              pattern: \${47:\+?[0-9]*}
+            proximity:
+              windowBefore: \${48:2}
+              windowAfter: \${49:3}
+            likelihoodAdjustment:
+              relativeLikelihood: \${50:1}
