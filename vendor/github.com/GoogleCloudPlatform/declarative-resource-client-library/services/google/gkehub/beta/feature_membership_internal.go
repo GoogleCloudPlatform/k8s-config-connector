@@ -1545,7 +1545,7 @@ func compareFeatureMembershipConfigmanagementNewStyle(d, a interface{}, fn dcl.F
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Version, actual.Version, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Version")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Version, actual.Version, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Version")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1588,7 +1588,7 @@ func compareFeatureMembershipConfigmanagementConfigSyncNewStyle(d, a interface{}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PreventDrift, actual.PreventDrift, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PreventDrift")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PreventDrift, actual.PreventDrift, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PreventDrift")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1730,7 +1730,7 @@ func compareFeatureMembershipConfigmanagementPolicyControllerNewStyle(d, a inter
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Monitoring, actual.Monitoring, dcl.DiffInfo{ObjectFunction: compareFeatureMembershipConfigmanagementPolicyControllerMonitoringNewStyle, EmptyObject: EmptyFeatureMembershipConfigmanagementPolicyControllerMonitoring, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Monitoring")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Monitoring, actual.Monitoring, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareFeatureMembershipConfigmanagementPolicyControllerMonitoringNewStyle, EmptyObject: EmptyFeatureMembershipConfigmanagementPolicyControllerMonitoring, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Monitoring")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1773,7 +1773,7 @@ func compareFeatureMembershipConfigmanagementPolicyControllerMonitoringNewStyle(
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.Backends, actual.Backends, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Backends")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Backends, actual.Backends, dcl.DiffInfo{ServerDefault: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Backends")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

@@ -1482,7 +1482,7 @@ func diffMembership(c *Client, desired, actual *Membership, opts ...dcl.ApplyOpt
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MemberKey, actual.MemberKey, dcl.DiffInfo{ObjectFunction: compareMembershipMemberKeyNewStyle, EmptyObject: EmptyMembershipMemberKey, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MemberKey")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MemberKey, actual.MemberKey, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareMembershipMemberKeyNewStyle, EmptyObject: EmptyMembershipMemberKey, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MemberKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

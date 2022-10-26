@@ -101,6 +101,11 @@ config:
       external: string
       name: string
       namespace: string
+  dataprocMetricConfig:
+    metrics:
+    - metricOverrides:
+      - string
+      metricSource: string
   encryptionConfig:
     gcePdKmsKeyRef:
       external: string
@@ -109,6 +114,8 @@ config:
   endpointConfig:
     enableHttpPortAccess: boolean
   gceClusterConfig:
+    confidentialInstanceConfig:
+      enableConfidentialCompute: boolean
     internalIPOnly: boolean
     metadata:
       string: string
@@ -133,6 +140,10 @@ config:
       namespace: string
     serviceAccountScopes:
     - string
+    shieldedInstanceConfig:
+      enableIntegrityMonitoring: boolean
+      enableSecureBoot: boolean
+      enableVtpm: boolean
     subnetworkRef:
       external: string
       name: string
@@ -154,6 +165,7 @@ config:
     diskConfig:
       bootDiskSizeGb: integer
       bootDiskType: string
+      localSsdInterface: string
       numLocalSsds: integer
     imageRef:
       external: string
@@ -163,6 +175,11 @@ config:
     minCpuPlatform: string
     numInstances: integer
     preemptibility: string
+  metastoreConfig:
+    dataprocMetastoreServiceRef:
+      external: string
+      name: string
+      namespace: string
   secondaryWorkerConfig:
     accelerators:
     - acceleratorCount: integer
@@ -170,6 +187,7 @@ config:
     diskConfig:
       bootDiskSizeGb: integer
       bootDiskType: string
+      localSsdInterface: string
       numLocalSsds: integer
     imageRef:
       external: string
@@ -180,6 +198,9 @@ config:
     numInstances: integer
     preemptibility: string
   securityConfig:
+    identityConfig:
+      userServiceAccountMapping:
+        string: string
     kerberosConfig:
       crossRealmTrustAdminServer: string
       crossRealmTrustKdc: string
@@ -220,6 +241,7 @@ config:
     diskConfig:
       bootDiskSizeGb: integer
       bootDiskType: string
+      localSsdInterface: string
       numLocalSsds: integer
     imageRef:
       external: string
@@ -235,6 +257,60 @@ projectRef:
   name: string
   namespace: string
 resourceID: string
+virtualClusterConfig:
+  auxiliaryServicesConfig:
+    metastoreConfig:
+      dataprocMetastoreServiceRef:
+        external: string
+        name: string
+        namespace: string
+    sparkHistoryServerConfig:
+      dataprocClusterRef:
+        external: string
+        name: string
+        namespace: string
+  kubernetesClusterConfig:
+    gkeClusterConfig:
+      gkeClusterTargetRef:
+        external: string
+        name: string
+        namespace: string
+      nodePoolTarget:
+      - nodePoolConfig:
+          autoscaling:
+            maxNodeCount: integer
+            minNodeCount: integer
+          config:
+            accelerators:
+            - acceleratorCount: integer
+              acceleratorType: string
+              gpuPartitionSize: string
+            bootDiskKmsKey: string
+            ephemeralStorageConfig:
+              localSsdCount: integer
+            localSsdCount: integer
+            machineType: string
+            minCpuPlatform: string
+            preemptible: boolean
+            spot: boolean
+          locations:
+          - string
+        nodePoolRef:
+          external: string
+          name: string
+          namespace: string
+        roles:
+        - string
+    kubernetesNamespace: string
+    kubernetesSoftwareConfig:
+      componentVersion:
+        string: string
+      properties:
+        string: string
+  stagingBucketRef:
+    external: string
+    name: string
+    namespace: string
 ```
 
 <table class="properties responsive">
@@ -251,7 +327,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Required. The cluster config. Note that Dataproc may set default values, and values may change when clusters are updated.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The cluster config. Note that Dataproc may set default values, and values may change when clusters are updated.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -304,6 +380,66 @@ Allowed value: The Google Cloud resource name of a `DataprocAutoscalingPolicy` r
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.dataprocMetricConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Optional. The config for Dataproc metrics.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.dataprocMetricConfig.metrics</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Immutable. Required. Metrics sources to enable.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.dataprocMetricConfig.metrics[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.dataprocMetricConfig.metrics[].metricOverrides</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Immutable. Optional. Specify one or more [available OSS metrics] (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics) to collect for the metric course (for the `SPARK` metric source, any [Spark metric] (https://spark.apache.org/docs/latest/monitoring.html#metrics) can be specified). Provide metrics in the following format: `METRIC_SOURCE:INSTANCE:GROUP:METRIC` Use camelcase as appropriate. Examples: ``` yarn:ResourceManager:QueueMetrics:AppsCompleted spark:driver:DAGScheduler:job.allJobs sparkHistoryServer:JVM:Memory:NonHeapMemoryUsage.committed hiveserver2:JVM:Memory:NonHeapMemoryUsage.used ``` Notes: * Only the specified overridden metrics will be collected for the metric source. For example, if one or more `spark:executive` metrics are listed as metric overrides, other `SPARK` metrics will not be collected. The collection of the default metrics for other OSS metric sources is unaffected. For example, if both `SPARK` andd `YARN` metric sources are enabled, and overrides are provided for Spark metrics only, all default YARN metrics will be collected.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.dataprocMetricConfig.metrics[].metricOverrides[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.dataprocMetricConfig.metrics[].metricSource</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Required. Default metrics are collected unless `metricOverrides` are specified for the metric source (see [Available OSS metrics] (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics) for more information). Possible values: METRIC_SOURCE_UNSPECIFIED, MONITORING_AGENT_DEFAULTS, HDFS, SPARK, YARN, SPARK_HISTORY_SERVER, HIVESERVER2{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -386,6 +522,26 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim 
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Immutable. Optional. The shared Compute Engine config settings for all instances in a cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.gceClusterConfig.confidentialInstanceConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Optional. Confidential Instance Config for clusters using [Confidential VMs](https://cloud.google.com/compute/confidential-vm/docs).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.gceClusterConfig.confidentialInstanceConfig.enableConfidentialCompute</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Optional. Defines whether the instance should have confidential compute enabled.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -626,6 +782,46 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
     </tr>
     <tr>
         <td>
+            <p><code>config.gceClusterConfig.shieldedInstanceConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Optional. Shielded Instance Config for clusters using [Compute Engine Shielded VMs](https://cloud.google.com/security/shielded-cloud/shielded-vm).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.gceClusterConfig.shieldedInstanceConfig.enableIntegrityMonitoring</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Optional. Defines whether instances have integrity monitoring enabled.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.gceClusterConfig.shieldedInstanceConfig.enableSecureBoot</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Optional. Defines whether instances have Secure Boot enabled.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.gceClusterConfig.shieldedInstanceConfig.enableVtpm</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Optional. Defines whether instances have the vTPM enabled.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>config.gceClusterConfig.subnetworkRef</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -858,6 +1054,16 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverb
     </tr>
     <tr>
         <td>
+            <p><code>config.masterConfig.diskConfig.localSsdInterface</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Optional. Interface type of local SSDs (default is "scsi"). Valid values: "scsi" (Small Computer System Interface), "nvme" (Non-Volatile Memory Express). See [local SSD performance](https://cloud.google.com/compute/docs/disks/local-ssd#performance).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>config.masterConfig.diskConfig.numLocalSsds</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -950,6 +1156,57 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
     </tr>
     <tr>
         <td>
+            <p><code>config.metastoreConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Optional. Metastore configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.metastoreConfig.dataprocMetastoreServiceRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.metastoreConfig.dataprocMetastoreServiceRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. Resource name of an existing Dataproc Metastore service. Example: * `projects/[project_id]/locations/[dataproc_region]/services/[service-name]`{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.metastoreConfig.dataprocMetastoreServiceRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}[WARNING] DataprocMetastoreService not yet supported in Config Connector, use 'external' field to reference existing resources.
+Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.metastoreConfig.dataprocMetastoreServiceRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>config.secondaryWorkerConfig</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1026,6 +1283,16 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive), "pd-ssd" (Persistent Disk Solid State Drive), or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.secondaryWorkerConfig.diskConfig.localSsdInterface</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Optional. Interface type of local SSDs (default is "scsi"). Valid values: "scsi" (Small Computer System Interface), "nvme" (Non-Volatile Memory Express). See [local SSD performance](https://cloud.google.com/compute/docs/disks/local-ssd#performance).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1128,6 +1395,26 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Immutable. Optional. Security settings for the cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.securityConfig.identityConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Optional. Identity related configuration, including service account based secure multi-tenancy user mappings.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.securityConfig.identityConfig.userServiceAccountMapping</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}Immutable. Required. Map of user to service account.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1538,6 +1825,16 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
     </tr>
     <tr>
         <td>
+            <p><code>config.workerConfig.diskConfig.localSsdInterface</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Optional. Interface type of local SSDs (default is "scsi"). Valid values: "scsi" (Small Computer System Interface), "nvme" (Non-Volatile Memory Express). See [local SSD performance](https://cloud.google.com/compute/docs/disks/local-ssd#performance).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>config.workerConfig.diskConfig.numLocalSsds</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1690,6 +1987,555 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
             <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
         </td>
     </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Optional. The virtual cluster config is used when creating a Dataproc cluster that does not directly control the underlying compute resources, for example, when creating a [Dataproc-on-GKE cluster](https://cloud.google.com/dataproc/docs/guides/dpgke/dataproc-gke). Dataproc may set default values, and values may change when clusters are updated. Exactly one of config or virtual_cluster_config must be specified.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.auxiliaryServicesConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Optional. Configuration of auxiliary services used by this cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.auxiliaryServicesConfig.metastoreConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Optional. The Hive Metastore configuration for this workload.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.auxiliaryServicesConfig.metastoreConfig.dataprocMetastoreServiceRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.auxiliaryServicesConfig.metastoreConfig.dataprocMetastoreServiceRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. Resource name of an existing Dataproc Metastore service. Example: * `projects/[project_id]/locations/[dataproc_region]/services/[service-name]`{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.auxiliaryServicesConfig.metastoreConfig.dataprocMetastoreServiceRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}[WARNING] DataprocMetastoreService not yet supported in Config Connector, use 'external' field to reference existing resources.
+Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.auxiliaryServicesConfig.metastoreConfig.dataprocMetastoreServiceRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.auxiliaryServicesConfig.sparkHistoryServerConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Optional. The Spark History Server configuration for the workload.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.auxiliaryServicesConfig.sparkHistoryServerConfig.dataprocClusterRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.auxiliaryServicesConfig.sparkHistoryServerConfig.dataprocClusterRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Resource name of an existing Dataproc Cluster to act as a Spark History Server for the workload. Example: * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
+
+Allowed value: The `selfLink` field of a `DataprocCluster` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.auxiliaryServicesConfig.sparkHistoryServerConfig.dataprocClusterRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.auxiliaryServicesConfig.sparkHistoryServerConfig.dataprocClusterRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Required. The configuration for running the Dataproc cluster on Kubernetes.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Required. The configuration for running the Dataproc cluster on GKE.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.gkeClusterTargetRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.gkeClusterTargetRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. A target GKE cluster to deploy to. It must be in the same project and region as the Dataproc cluster (the GKE cluster can be zonal or regional). Format: 'projects/{project}/locations/{location}/clusters/{cluster_id}'
+
+Allowed value: The `selfLink` field of a `ContainerCluster` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.gkeClusterTargetRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.gkeClusterTargetRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Immutable. Optional. GKE node pools where workloads will be scheduled. At least one node pool must be assigned the `DEFAULT` GkeNodePoolTarget.Role. If a `GkeNodePoolTarget` is not specified, Dataproc constructs a `DEFAULT` `GkeNodePoolTarget`. Each role can be given to only one `GkeNodePoolTarget`. All node pools must have the same location settings.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Input only. The configuration for the GKE node pool. If specified, Dataproc attempts to create a node pool with the specified shape. If one with the same name already exists, it is verified against all specified fields. If a field differs, the virtual cluster creation will fail. If omitted, any node pool with the specified name is used. If a node pool with the specified name does not exist, Dataproc create a node pool with default values. This is an input only field. It will not be returned by the API.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.autoscaling</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Optional. The autoscaler configuration for this node pool. The autoscaler is enabled only when a valid configuration is present.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.autoscaling.maxNodeCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. The maximum number of nodes in the node pool. Must be >= min_node_count, and must be > 0. **Note:** Quota must be sufficient to scale up the cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.autoscaling.minNodeCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. The minimum number of nodes in the node pool. Must be >= 0 and <= max_node_count.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Optional. The node pool configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.accelerators</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Immutable. Optional. A list of [hardware accelerators](https://cloud.google.com/compute/docs/gpus) to attach to each node.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.accelerators[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.accelerators[].acceleratorCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. The number of accelerator cards exposed to an instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.accelerators[].acceleratorType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. The accelerator type resource namename (see GPUs on Compute Engine).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.accelerators[].gpuPartitionSize</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Size of partitions to create on the GPU. Valid values are described in the NVIDIA [mig user guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.bootDiskKmsKey</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Optional. The [Customer Managed Encryption Key (CMEK)] (https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek) used to encrypt the boot disk attached to each node in the node pool. Specify the key using the following format: `projects/KEY_PROJECT_ID/locations/LOCATION/keyRings/RING_NAME/cryptoKeys/KEY_NAME`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.ephemeralStorageConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Optional. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.ephemeralStorageConfig.localSsdCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD is 375 GB in size. If zero, it means to disable using local SSDs as ephemeral storage.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.localSsdCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Optional. The number of local SSD disks to attach to the node, which is limited by the maximum number of disks allowable per zone (see [Adding Local SSDs](https://cloud.google.com/compute/docs/disks/local-ssd)).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.machineType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Optional. The name of a Compute Engine [machine type](https://cloud.google.com/compute/docs/machine-types).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.minCpuPlatform</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Optional. [Minimum CPU platform](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform) to be used by this instance. The instance may be scheduled on the specified or a newer CPU platform. Specify the friendly names of CPU platforms, such as "Intel Haswell"` or Intel Sandy Bridge".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.preemptible</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Optional. Whether the nodes are created as legacy [preemptible VM instances] (https://cloud.google.com/compute/docs/instances/preemptible). Also see Spot VMs, preemptible VM instances without a maximum lifetime. Legacy and Spot preemptible nodes cannot be used in a node pool with the `CONTROLLER` [role] (/dataproc/docs/reference/rest/v1/projects.regions.clusters#role) or in the DEFAULT node pool if the CONTROLLER role is not assigned (the DEFAULT node pool will assume the CONTROLLER role).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.config.spot</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Optional. Whether the nodes are created as [Spot VM instances] (https://cloud.google.com/compute/docs/instances/spot). Spot VMs are the latest update to legacy preemptible VMs. Spot VMs do not have a maximum lifetime. Legacy and Spot preemptible nodes cannot be used in a node pool with the `CONTROLLER` [role](/dataproc/docs/reference/rest/v1/projects.regions.clusters#role) or in the DEFAULT node pool if the CONTROLLER role is not assigned (the DEFAULT node pool will assume the CONTROLLER role).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.locations</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Immutable. Optional. The list of Compute Engine [zones](https://cloud.google.com/compute/docs/zones#available) where node pool nodes associated with a Dataproc on GKE virtual cluster will be located. **Note:** All node pools associated with a virtual cluster must be located in the same region as the virtual cluster, and they must be located in the same zone within that region. If a location is not specified during node pool creation, Dataproc on GKE will choose the zone.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolConfig.locations[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The target GKE node pool. Format: 'projects/{project}/locations/{location}/clusters/{cluster}/nodePools/{node_pool}'
+
+Allowed value: The `selfLink` field of a `ContainerNodePool` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].nodePoolRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].roles</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Immutable. Required. The roles associated with the GKE node pool.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.gkeClusterConfig.nodePoolTarget[].roles[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.kubernetesNamespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Optional. A namespace within the Kubernetes cluster to deploy into. If this namespace does not exist, it is created. If it exists, Dataproc verifies that another Dataproc VirtualCluster is not installed into it. If not specified, the name of the Dataproc Cluster is used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.kubernetesSoftwareConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Optional. The software configuration for this Dataproc cluster running on Kubernetes.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.kubernetesSoftwareConfig.componentVersion</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}Immutable. The components that should be installed in this Dataproc cluster. The key must be a string from the KubernetesComponent enumeration. The value is the version of the software to be installed. At least one entry must be specified.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.kubernetesClusterConfig.kubernetesSoftwareConfig.properties</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}Immutable. The properties to set on daemon config files. Property keys are specified in `prefix:property` format, for example `spark:spark.kubernetes.container.image`. The following are supported prefixes and their mappings: * spark: `spark-defaults.conf` For more information, see [Cluster properties](https://cloud.google.com/dataproc/docs/concepts/cluster-properties).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.stagingBucketRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.stagingBucketRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see [Dataproc staging and temp buckets](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). **This field requires a Cloud Storage bucket name, not a `gs://...` URI to a Cloud Storage bucket.**
+
+Allowed value: The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.stagingBucketRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>virtualClusterConfig.stagingBucketRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
 </tbody>
 </table>
 
@@ -1716,6 +2562,11 @@ config:
   masterConfig:
     instanceNames:
     - string
+    instanceReferences:
+    - instanceId: string
+      instanceName: string
+      publicEciesKey: string
+      publicKey: string
     isPreemptible: boolean
     managedGroupConfig:
       instanceGroupManagerName: string
@@ -1723,6 +2574,11 @@ config:
   secondaryWorkerConfig:
     instanceNames:
     - string
+    instanceReferences:
+    - instanceId: string
+      instanceName: string
+      publicEciesKey: string
+      publicKey: string
     isPreemptible: boolean
     managedGroupConfig:
       instanceGroupManagerName: string
@@ -1730,6 +2586,11 @@ config:
   workerConfig:
     instanceNames:
     - string
+    instanceReferences:
+    - instanceId: string
+      instanceName: string
+      publicEciesKey: string
+      publicKey: string
     isPreemptible: boolean
     managedGroupConfig:
       instanceGroupManagerName: string
@@ -1872,6 +2733,48 @@ statusHistory:
         </td>
     </tr>
     <tr>
+        <td><code>config.masterConfig.instanceReferences</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Output only. List of references to Compute Engine instances.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>config.masterConfig.instanceReferences[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>config.masterConfig.instanceReferences[].instanceId</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The unique identifier of the Compute Engine instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>config.masterConfig.instanceReferences[].instanceName</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The user-friendly name of the Compute Engine instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>config.masterConfig.instanceReferences[].publicEciesKey</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The public ECIES key used for sharing data with this instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>config.masterConfig.instanceReferences[].publicKey</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The public RSA key used for sharing data with this instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>config.masterConfig.isPreemptible</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
@@ -1921,6 +2824,48 @@ statusHistory:
         </td>
     </tr>
     <tr>
+        <td><code>config.secondaryWorkerConfig.instanceReferences</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Output only. List of references to Compute Engine instances.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>config.secondaryWorkerConfig.instanceReferences[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>config.secondaryWorkerConfig.instanceReferences[].instanceId</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The unique identifier of the Compute Engine instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>config.secondaryWorkerConfig.instanceReferences[].instanceName</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The user-friendly name of the Compute Engine instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>config.secondaryWorkerConfig.instanceReferences[].publicEciesKey</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The public ECIES key used for sharing data with this instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>config.secondaryWorkerConfig.instanceReferences[].publicKey</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The public RSA key used for sharing data with this instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>config.secondaryWorkerConfig.isPreemptible</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
@@ -1967,6 +2912,48 @@ statusHistory:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>config.workerConfig.instanceReferences</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Output only. List of references to Compute Engine instances.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>config.workerConfig.instanceReferences[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>config.workerConfig.instanceReferences[].instanceId</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The unique identifier of the Compute Engine instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>config.workerConfig.instanceReferences[].instanceName</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The user-friendly name of the Compute Engine instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>config.workerConfig.instanceReferences[].publicEciesKey</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The public ECIES key used for sharing data with this instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>config.workerConfig.instanceReferences[].publicKey</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The public RSA key used for sharing data with this instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

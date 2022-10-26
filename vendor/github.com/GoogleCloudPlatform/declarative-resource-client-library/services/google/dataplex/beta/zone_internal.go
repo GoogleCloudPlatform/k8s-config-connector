@@ -1481,21 +1481,21 @@ func compareZoneDiscoverySpecNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dc
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CsvOptions, actual.CsvOptions, dcl.DiffInfo{ObjectFunction: compareZoneDiscoverySpecCsvOptionsNewStyle, EmptyObject: EmptyZoneDiscoverySpecCsvOptions, OperationSelector: dcl.TriggersOperation("updateZoneUpdateZoneOperation")}, fn.AddNest("CsvOptions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CsvOptions, actual.CsvOptions, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareZoneDiscoverySpecCsvOptionsNewStyle, EmptyObject: EmptyZoneDiscoverySpecCsvOptions, OperationSelector: dcl.TriggersOperation("updateZoneUpdateZoneOperation")}, fn.AddNest("CsvOptions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.JsonOptions, actual.JsonOptions, dcl.DiffInfo{ObjectFunction: compareZoneDiscoverySpecJsonOptionsNewStyle, EmptyObject: EmptyZoneDiscoverySpecJsonOptions, OperationSelector: dcl.TriggersOperation("updateZoneUpdateZoneOperation")}, fn.AddNest("JsonOptions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.JsonOptions, actual.JsonOptions, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareZoneDiscoverySpecJsonOptionsNewStyle, EmptyObject: EmptyZoneDiscoverySpecJsonOptions, OperationSelector: dcl.TriggersOperation("updateZoneUpdateZoneOperation")}, fn.AddNest("JsonOptions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Schedule, actual.Schedule, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateZoneUpdateZoneOperation")}, fn.AddNest("Schedule")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Schedule, actual.Schedule, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateZoneUpdateZoneOperation")}, fn.AddNest("Schedule")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

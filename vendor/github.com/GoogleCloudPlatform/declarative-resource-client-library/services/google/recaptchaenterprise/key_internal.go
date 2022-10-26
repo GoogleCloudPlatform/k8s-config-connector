@@ -1227,7 +1227,7 @@ func compareKeyWebSettingsNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.F
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ChallengeSecurityPreference, actual.ChallengeSecurityPreference, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("ChallengeSecurityPreference")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ChallengeSecurityPreference, actual.ChallengeSecurityPreference, dcl.DiffInfo{ServerDefault: true, Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateKeyUpdateKeyOperation")}, fn.AddNest("ChallengeSecurityPreference")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1335,7 +1335,7 @@ func compareKeyTestingOptionsNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dc
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TestingChallenge, actual.TestingChallenge, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TestingChallenge")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TestingChallenge, actual.TestingChallenge, dcl.DiffInfo{ServerDefault: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TestingChallenge")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

@@ -36,13 +36,27 @@ import (
 )
 
 type ClusterAccelerators struct {
-	/* Immutable. The number of the accelerator cards of this type exposed to this instance. */
+	/* Immutable. The number of accelerator cards exposed to an instance. */
 	// +optional
 	AcceleratorCount *int `json:"acceleratorCount,omitempty"`
 
-	/* Immutable. Full URL, partial URI, or short name of the accelerator type resource to expose to this instance. See [Compute Engine AcceleratorTypes](https://cloud.google.com/compute/docs/reference/beta/acceleratorTypes). Examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `nvidia-tesla-k80` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the accelerator type resource, for example, `nvidia-tesla-k80`. */
+	/* Immutable. The accelerator type resource namename (see GPUs on Compute Engine). */
 	// +optional
 	AcceleratorType *string `json:"acceleratorType,omitempty"`
+
+	/* Immutable. Size of partitions to create on the GPU. Valid values are described in the NVIDIA [mig user guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning). */
+	// +optional
+	GpuPartitionSize *string `json:"gpuPartitionSize,omitempty"`
+}
+
+type ClusterAutoscaling struct {
+	/* Immutable. The maximum number of nodes in the node pool. Must be >= min_node_count, and must be > 0. **Note:** Quota must be sufficient to scale up the cluster. */
+	// +optional
+	MaxNodeCount *int `json:"maxNodeCount,omitempty"`
+
+	/* Immutable. The minimum number of nodes in the node pool. Must be >= 0 and <= max_node_count. */
+	// +optional
+	MinNodeCount *int `json:"minNodeCount,omitempty"`
 }
 
 type ClusterAutoscalingConfig struct {
@@ -51,58 +65,59 @@ type ClusterAutoscalingConfig struct {
 	PolicyRef *v1alpha1.ResourceRef `json:"policyRef,omitempty"`
 }
 
+type ClusterAuxiliaryServicesConfig struct {
+	/* Immutable. Optional. The Hive Metastore configuration for this workload. */
+	// +optional
+	MetastoreConfig *ClusterMetastoreConfig `json:"metastoreConfig,omitempty"`
+
+	/* Immutable. Optional. The Spark History Server configuration for the workload. */
+	// +optional
+	SparkHistoryServerConfig *ClusterSparkHistoryServerConfig `json:"sparkHistoryServerConfig,omitempty"`
+}
+
+type ClusterConfidentialInstanceConfig struct {
+	/* Immutable. Optional. Defines whether the instance should have confidential compute enabled. */
+	// +optional
+	EnableConfidentialCompute *bool `json:"enableConfidentialCompute,omitempty"`
+}
+
 type ClusterConfig struct {
-	/* Immutable. Optional. Autoscaling config for the policy associated with the cluster. Cluster does not autoscale if this field is unset. */
+	/* Immutable. Optional. A list of [hardware accelerators](https://cloud.google.com/compute/docs/gpus) to attach to each node. */
 	// +optional
-	AutoscalingConfig *ClusterAutoscalingConfig `json:"autoscalingConfig,omitempty"`
+	Accelerators []ClusterAccelerators `json:"accelerators,omitempty"`
 
-	/* Immutable. Optional. Encryption settings for the cluster. */
+	/* Immutable. Optional. The [Customer Managed Encryption Key (CMEK)] (https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek) used to encrypt the boot disk attached to each node in the node pool. Specify the key using the following format: `projects/KEY_PROJECT_ID/locations/LOCATION/keyRings/RING_NAME/cryptoKeys/KEY_NAME`. */
 	// +optional
-	EncryptionConfig *ClusterEncryptionConfig `json:"encryptionConfig,omitempty"`
+	BootDiskKmsKey *string `json:"bootDiskKmsKey,omitempty"`
 
-	/* Immutable. Optional. Port/endpoint configuration for this cluster */
+	/* Immutable. Optional. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk. */
 	// +optional
-	EndpointConfig *ClusterEndpointConfig `json:"endpointConfig,omitempty"`
+	EphemeralStorageConfig *ClusterEphemeralStorageConfig `json:"ephemeralStorageConfig,omitempty"`
 
-	/* Immutable. Optional. The shared Compute Engine config settings for all instances in a cluster. */
+	/* Immutable. Optional. The number of local SSD disks to attach to the node, which is limited by the maximum number of disks allowable per zone (see [Adding Local SSDs](https://cloud.google.com/compute/docs/disks/local-ssd)). */
 	// +optional
-	GceClusterConfig *ClusterGceClusterConfig `json:"gceClusterConfig,omitempty"`
+	LocalSsdCount *int `json:"localSsdCount,omitempty"`
 
-	/* Immutable. Optional. Commands to execute on each node after config is completed. By default, executables are run on master and all worker nodes. You can test a node's `role` metadata to run an executable on a master or worker node, as shown below using `curl` (you can also use `wget`): ROLE=$(curl -H Metadata-Flavor:Google http://metadata/computeMetadata/v1/instance/attributes/dataproc-role) if [[ "${ROLE}" == 'Master' ]]; then ... master specific actions ... else ... worker specific actions ... fi */
+	/* Immutable. Optional. The name of a Compute Engine [machine type](https://cloud.google.com/compute/docs/machine-types). */
 	// +optional
-	InitializationActions []ClusterInitializationActions `json:"initializationActions,omitempty"`
+	MachineType *string `json:"machineType,omitempty"`
 
-	/* Immutable. Optional. Lifecycle setting for the cluster. */
+	/* Immutable. Optional. [Minimum CPU platform](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform) to be used by this instance. The instance may be scheduled on the specified or a newer CPU platform. Specify the friendly names of CPU platforms, such as "Intel Haswell"` or Intel Sandy Bridge". */
 	// +optional
-	LifecycleConfig *ClusterLifecycleConfig `json:"lifecycleConfig,omitempty"`
+	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
 
-	/* Immutable. Optional. The Compute Engine config settings for the master instance in a cluster. */
+	/* Immutable. Optional. Whether the nodes are created as legacy [preemptible VM instances] (https://cloud.google.com/compute/docs/instances/preemptible). Also see Spot VMs, preemptible VM instances without a maximum lifetime. Legacy and Spot preemptible nodes cannot be used in a node pool with the `CONTROLLER` [role] (/dataproc/docs/reference/rest/v1/projects.regions.clusters#role) or in the DEFAULT node pool if the CONTROLLER role is not assigned (the DEFAULT node pool will assume the CONTROLLER role). */
 	// +optional
-	MasterConfig *ClusterMasterConfig `json:"masterConfig,omitempty"`
+	Preemptible *bool `json:"preemptible,omitempty"`
 
-	/* Immutable. Optional. The Compute Engine config settings for additional worker instances in a cluster. */
+	/* Immutable. Optional. Whether the nodes are created as [Spot VM instances] (https://cloud.google.com/compute/docs/instances/spot). Spot VMs are the latest update to legacy preemptible VMs. Spot VMs do not have a maximum lifetime. Legacy and Spot preemptible nodes cannot be used in a node pool with the `CONTROLLER` [role](/dataproc/docs/reference/rest/v1/projects.regions.clusters#role) or in the DEFAULT node pool if the CONTROLLER role is not assigned (the DEFAULT node pool will assume the CONTROLLER role). */
 	// +optional
-	SecondaryWorkerConfig *ClusterSecondaryWorkerConfig `json:"secondaryWorkerConfig,omitempty"`
+	Spot *bool `json:"spot,omitempty"`
+}
 
-	/* Immutable. Optional. Security settings for the cluster. */
-	// +optional
-	SecurityConfig *ClusterSecurityConfig `json:"securityConfig,omitempty"`
-
-	/* Immutable. Optional. The config settings for software inside the cluster. */
-	// +optional
-	SoftwareConfig *ClusterSoftwareConfig `json:"softwareConfig,omitempty"`
-
-	/* Immutable. */
-	// +optional
-	StagingBucketRef *v1alpha1.ResourceRef `json:"stagingBucketRef,omitempty"`
-
-	/* Immutable. */
-	// +optional
-	TempBucketRef *v1alpha1.ResourceRef `json:"tempBucketRef,omitempty"`
-
-	/* Immutable. Optional. The Compute Engine config settings for worker instances in a cluster. */
-	// +optional
-	WorkerConfig *ClusterWorkerConfig `json:"workerConfig,omitempty"`
+type ClusterDataprocMetricConfig struct {
+	/* Immutable. Required. Metrics sources to enable. */
+	Metrics []ClusterMetrics `json:"metrics"`
 }
 
 type ClusterDiskConfig struct {
@@ -113,6 +128,10 @@ type ClusterDiskConfig struct {
 	/* Immutable. Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive), "pd-ssd" (Persistent Disk Solid State Drive), or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types). */
 	// +optional
 	BootDiskType *string `json:"bootDiskType,omitempty"`
+
+	/* Immutable. Optional. Interface type of local SSDs (default is "scsi"). Valid values: "scsi" (Small Computer System Interface), "nvme" (Non-Volatile Memory Express). See [local SSD performance](https://cloud.google.com/compute/docs/disks/local-ssd#performance). */
+	// +optional
+	LocalSsdInterface *string `json:"localSsdInterface,omitempty"`
 
 	/* Immutable. Optional. Number of attached SSDs, from 0 to 4 (default is 0). If SSDs are not attached, the boot disk is used to store runtime logs and [HDFS](https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html) data. If one or more SSDs are attached, this runtime bulk data is spread across them, and the boot disk contains only basic config and installed binaries. */
 	// +optional
@@ -131,7 +150,17 @@ type ClusterEndpointConfig struct {
 	EnableHttpPortAccess *bool `json:"enableHttpPortAccess,omitempty"`
 }
 
+type ClusterEphemeralStorageConfig struct {
+	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD is 375 GB in size. If zero, it means to disable using local SSDs as ephemeral storage. */
+	// +optional
+	LocalSsdCount *int `json:"localSsdCount,omitempty"`
+}
+
 type ClusterGceClusterConfig struct {
+	/* Immutable. Optional. Confidential Instance Config for clusters using [Confidential VMs](https://cloud.google.com/compute/confidential-vm/docs). */
+	// +optional
+	ConfidentialInstanceConfig *ClusterConfidentialInstanceConfig `json:"confidentialInstanceConfig,omitempty"`
+
 	/* Immutable. Optional. If true, all instances in the cluster will only have internal IP addresses. By default, clusters are not restricted to internal IP addresses, and will have ephemeral external IP addresses assigned to each instance. This `internal_ip_only` restriction can only be enabled for subnetwork enabled networks, and all off-cluster dependencies must be configured to be accessible without external IP addresses. */
 	// +optional
 	InternalIPOnly *bool `json:"internalIPOnly,omitempty"`
@@ -164,6 +193,10 @@ type ClusterGceClusterConfig struct {
 	// +optional
 	ServiceAccountScopes []string `json:"serviceAccountScopes,omitempty"`
 
+	/* Immutable. Optional. Shielded Instance Config for clusters using [Compute Engine Shielded VMs](https://cloud.google.com/security/shielded-cloud/shielded-vm). */
+	// +optional
+	ShieldedInstanceConfig *ClusterShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
+
 	/* Immutable. */
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
@@ -175,6 +208,21 @@ type ClusterGceClusterConfig struct {
 	/* Immutable. Optional. The zone where the Compute Engine cluster will be located. On a create request, it is required in the "global" region. If omitted in a non-global Dataproc region, the service will pick a zone in the corresponding Compute Engine region. On a get request, zone will always be present. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]` * `projects/[project_id]/zones/[zone]` * `us-central1-f` */
 	// +optional
 	Zone *string `json:"zone,omitempty"`
+}
+
+type ClusterGkeClusterConfig struct {
+	/* Immutable. */
+	// +optional
+	GkeClusterTargetRef *v1alpha1.ResourceRef `json:"gkeClusterTargetRef,omitempty"`
+
+	/* Immutable. Optional. GKE node pools where workloads will be scheduled. At least one node pool must be assigned the `DEFAULT` GkeNodePoolTarget.Role. If a `GkeNodePoolTarget` is not specified, Dataproc constructs a `DEFAULT` `GkeNodePoolTarget`. Each role can be given to only one `GkeNodePoolTarget`. All node pools must have the same location settings. */
+	// +optional
+	NodePoolTarget []ClusterNodePoolTarget `json:"nodePoolTarget,omitempty"`
+}
+
+type ClusterIdentityConfig struct {
+	/* Immutable. Required. Map of user to service account. */
+	UserServiceAccountMapping map[string]string `json:"userServiceAccountMapping"`
 }
 
 type ClusterInitializationActions struct {
@@ -248,6 +296,29 @@ type ClusterKerberosConfig struct {
 	TruststorePassword *string `json:"truststorePassword,omitempty"`
 }
 
+type ClusterKubernetesClusterConfig struct {
+	/* Immutable. Required. The configuration for running the Dataproc cluster on GKE. */
+	GkeClusterConfig ClusterGkeClusterConfig `json:"gkeClusterConfig"`
+
+	/* Immutable. Optional. A namespace within the Kubernetes cluster to deploy into. If this namespace does not exist, it is created. If it exists, Dataproc verifies that another Dataproc VirtualCluster is not installed into it. If not specified, the name of the Dataproc Cluster is used. */
+	// +optional
+	KubernetesNamespace *string `json:"kubernetesNamespace,omitempty"`
+
+	/* Immutable. Optional. The software configuration for this Dataproc cluster running on Kubernetes. */
+	// +optional
+	KubernetesSoftwareConfig *ClusterKubernetesSoftwareConfig `json:"kubernetesSoftwareConfig,omitempty"`
+}
+
+type ClusterKubernetesSoftwareConfig struct {
+	/* Immutable. The components that should be installed in this Dataproc cluster. The key must be a string from the KubernetesComponent enumeration. The value is the version of the software to be installed. At least one entry must be specified. */
+	// +optional
+	ComponentVersion map[string]string `json:"componentVersion,omitempty"`
+
+	/* Immutable. The properties to set on daemon config files. Property keys are specified in `prefix:property` format, for example `spark:spark.kubernetes.container.image`. The following are supported prefixes and their mappings: * spark: `spark-defaults.conf` For more information, see [Cluster properties](https://cloud.google.com/dataproc/docs/concepts/cluster-properties). */
+	// +optional
+	Properties map[string]string `json:"properties,omitempty"`
+}
+
 type ClusterLifecycleConfig struct {
 	/* Immutable. Optional. The time when cluster will be auto-deleted (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
 	// +optional
@@ -292,9 +363,49 @@ type ClusterMasterConfig struct {
 	Preemptibility *string `json:"preemptibility,omitempty"`
 }
 
+type ClusterMetastoreConfig struct {
+	/* Immutable. */
+	DataprocMetastoreServiceRef v1alpha1.ResourceRef `json:"dataprocMetastoreServiceRef"`
+}
+
+type ClusterMetrics struct {
+	/* Immutable. Optional. Specify one or more [available OSS metrics] (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics) to collect for the metric course (for the `SPARK` metric source, any [Spark metric] (https://spark.apache.org/docs/latest/monitoring.html#metrics) can be specified). Provide metrics in the following format: `METRIC_SOURCE:INSTANCE:GROUP:METRIC` Use camelcase as appropriate. Examples: ``` yarn:ResourceManager:QueueMetrics:AppsCompleted spark:driver:DAGScheduler:job.allJobs sparkHistoryServer:JVM:Memory:NonHeapMemoryUsage.committed hiveserver2:JVM:Memory:NonHeapMemoryUsage.used ``` Notes: * Only the specified overridden metrics will be collected for the metric source. For example, if one or more `spark:executive` metrics are listed as metric overrides, other `SPARK` metrics will not be collected. The collection of the default metrics for other OSS metric sources is unaffected. For example, if both `SPARK` andd `YARN` metric sources are enabled, and overrides are provided for Spark metrics only, all default YARN metrics will be collected. */
+	// +optional
+	MetricOverrides []string `json:"metricOverrides,omitempty"`
+
+	/* Immutable. Required. Default metrics are collected unless `metricOverrides` are specified for the metric source (see [Available OSS metrics] (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics) for more information). Possible values: METRIC_SOURCE_UNSPECIFIED, MONITORING_AGENT_DEFAULTS, HDFS, SPARK, YARN, SPARK_HISTORY_SERVER, HIVESERVER2 */
+	MetricSource string `json:"metricSource"`
+}
+
 type ClusterNodeGroupAffinity struct {
 	/* Immutable. */
 	NodeGroupRef v1alpha1.ResourceRef `json:"nodeGroupRef"`
+}
+
+type ClusterNodePoolConfig struct {
+	/* Immutable. Optional. The autoscaler configuration for this node pool. The autoscaler is enabled only when a valid configuration is present. */
+	// +optional
+	Autoscaling *ClusterAutoscaling `json:"autoscaling,omitempty"`
+
+	/* Immutable. Optional. The node pool configuration. */
+	// +optional
+	Config *ClusterConfig `json:"config,omitempty"`
+
+	/* Immutable. Optional. The list of Compute Engine [zones](https://cloud.google.com/compute/docs/zones#available) where node pool nodes associated with a Dataproc on GKE virtual cluster will be located. **Note:** All node pools associated with a virtual cluster must be located in the same region as the virtual cluster, and they must be located in the same zone within that region. If a location is not specified during node pool creation, Dataproc on GKE will choose the zone. */
+	// +optional
+	Locations []string `json:"locations,omitempty"`
+}
+
+type ClusterNodePoolTarget struct {
+	/* Immutable. Input only. The configuration for the GKE node pool. If specified, Dataproc attempts to create a node pool with the specified shape. If one with the same name already exists, it is verified against all specified fields. If a field differs, the virtual cluster creation will fail. If omitted, any node pool with the specified name is used. If a node pool with the specified name does not exist, Dataproc create a node pool with default values. This is an input only field. It will not be returned by the API. */
+	// +optional
+	NodePoolConfig *ClusterNodePoolConfig `json:"nodePoolConfig,omitempty"`
+
+	/* Immutable. */
+	NodePoolRef v1alpha1.ResourceRef `json:"nodePoolRef"`
+
+	/* Immutable. Required. The roles associated with the GKE node pool. */
+	Roles []string `json:"roles"`
 }
 
 type ClusterReservationAffinity struct {
@@ -342,9 +453,27 @@ type ClusterSecondaryWorkerConfig struct {
 }
 
 type ClusterSecurityConfig struct {
+	/* Immutable. Optional. Identity related configuration, including service account based secure multi-tenancy user mappings. */
+	// +optional
+	IdentityConfig *ClusterIdentityConfig `json:"identityConfig,omitempty"`
+
 	/* Immutable. Optional. Kerberos related configuration. */
 	// +optional
 	KerberosConfig *ClusterKerberosConfig `json:"kerberosConfig,omitempty"`
+}
+
+type ClusterShieldedInstanceConfig struct {
+	/* Immutable. Optional. Defines whether instances have integrity monitoring enabled. */
+	// +optional
+	EnableIntegrityMonitoring *bool `json:"enableIntegrityMonitoring,omitempty"`
+
+	/* Immutable. Optional. Defines whether instances have Secure Boot enabled. */
+	// +optional
+	EnableSecureBoot *bool `json:"enableSecureBoot,omitempty"`
+
+	/* Immutable. Optional. Defines whether instances have the vTPM enabled. */
+	// +optional
+	EnableVtpm *bool `json:"enableVtpm,omitempty"`
 }
 
 type ClusterSoftwareConfig struct {
@@ -359,6 +488,25 @@ type ClusterSoftwareConfig struct {
 	/* Immutable. Optional. The properties to set on daemon config files. Property keys are specified in `prefix:property` format, for example `core:hadoop.tmp.dir`. The following are supported prefixes and their mappings: * capacity-scheduler: `capacity-scheduler.xml` * core: `core-site.xml` * distcp: `distcp-default.xml` * hdfs: `hdfs-site.xml` * hive: `hive-site.xml` * mapred: `mapred-site.xml` * pig: `pig.properties` * spark: `spark-defaults.conf` * yarn: `yarn-site.xml` For more information, see [Cluster properties](https://cloud.google.com/dataproc/docs/concepts/cluster-properties). */
 	// +optional
 	Properties map[string]string `json:"properties,omitempty"`
+}
+
+type ClusterSparkHistoryServerConfig struct {
+	/* Immutable. */
+	// +optional
+	DataprocClusterRef *v1alpha1.ResourceRef `json:"dataprocClusterRef,omitempty"`
+}
+
+type ClusterVirtualClusterConfig struct {
+	/* Immutable. Optional. Configuration of auxiliary services used by this cluster. */
+	// +optional
+	AuxiliaryServicesConfig *ClusterAuxiliaryServicesConfig `json:"auxiliaryServicesConfig,omitempty"`
+
+	/* Immutable. Required. The configuration for running the Dataproc cluster on Kubernetes. */
+	KubernetesClusterConfig ClusterKubernetesClusterConfig `json:"kubernetesClusterConfig"`
+
+	/* Immutable. */
+	// +optional
+	StagingBucketRef *v1alpha1.ResourceRef `json:"stagingBucketRef,omitempty"`
 }
 
 type ClusterWorkerConfig struct {
@@ -392,7 +540,7 @@ type ClusterWorkerConfig struct {
 }
 
 type DataprocClusterSpec struct {
-	/* Immutable. Required. The cluster config. Note that Dataproc may set default values, and values may change when clusters are updated. */
+	/* Immutable. The cluster config. Note that Dataproc may set default values, and values may change when clusters are updated. */
 	// +optional
 	Config *ClusterConfig `json:"config,omitempty"`
 
@@ -406,6 +554,10 @@ type DataprocClusterSpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Immutable. Optional. The virtual cluster config is used when creating a Dataproc cluster that does not directly control the underlying compute resources, for example, when creating a [Dataproc-on-GKE cluster](https://cloud.google.com/dataproc/docs/guides/dpgke/dataproc-gke). Dataproc may set default values, and values may change when clusters are updated. Exactly one of config or virtual_cluster_config must be specified. */
+	// +optional
+	VirtualClusterConfig *ClusterVirtualClusterConfig `json:"virtualClusterConfig,omitempty"`
 }
 
 type ClusterConfigStatus struct {
@@ -430,6 +582,20 @@ type ClusterEndpointConfigStatus struct {
 	HttpPorts map[string]string `json:"httpPorts,omitempty"`
 }
 
+type ClusterInstanceReferencesStatus struct {
+	/* The unique identifier of the Compute Engine instance. */
+	InstanceId string `json:"instanceId,omitempty"`
+
+	/* The user-friendly name of the Compute Engine instance. */
+	InstanceName string `json:"instanceName,omitempty"`
+
+	/* The public ECIES key used for sharing data with this instance. */
+	PublicEciesKey string `json:"publicEciesKey,omitempty"`
+
+	/* The public RSA key used for sharing data with this instance. */
+	PublicKey string `json:"publicKey,omitempty"`
+}
+
 type ClusterLifecycleConfigStatus struct {
 	/* Output only. The time when cluster became idle (most recent job finished) and became eligible for deletion due to idleness (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
 	IdleStartTime string `json:"idleStartTime,omitempty"`
@@ -446,6 +612,9 @@ type ClusterManagedGroupConfigStatus struct {
 type ClusterMasterConfigStatus struct {
 	/* Output only. The list of instance names. Dataproc derives the names from `cluster_name`, `num_instances`, and the instance group. */
 	InstanceNames []string `json:"instanceNames,omitempty"`
+
+	/* Output only. List of references to Compute Engine instances. */
+	InstanceReferences []ClusterInstanceReferencesStatus `json:"instanceReferences,omitempty"`
 
 	/* Output only. Specifies that this instance group contains preemptible instances. */
 	IsPreemptible bool `json:"isPreemptible,omitempty"`
@@ -465,6 +634,9 @@ type ClusterMetricsStatus struct {
 type ClusterSecondaryWorkerConfigStatus struct {
 	/* Output only. The list of instance names. Dataproc derives the names from `cluster_name`, `num_instances`, and the instance group. */
 	InstanceNames []string `json:"instanceNames,omitempty"`
+
+	/* Output only. List of references to Compute Engine instances. */
+	InstanceReferences []ClusterInstanceReferencesStatus `json:"instanceReferences,omitempty"`
 
 	/* Output only. Specifies that this instance group contains preemptible instances. */
 	IsPreemptible bool `json:"isPreemptible,omitempty"`
@@ -504,6 +676,9 @@ type ClusterStatusStatus struct {
 type ClusterWorkerConfigStatus struct {
 	/* Output only. The list of instance names. Dataproc derives the names from `cluster_name`, `num_instances`, and the instance group. */
 	InstanceNames []string `json:"instanceNames,omitempty"`
+
+	/* Output only. List of references to Compute Engine instances. */
+	InstanceReferences []ClusterInstanceReferencesStatus `json:"instanceReferences,omitempty"`
 
 	/* Output only. Specifies that this instance group contains preemptible instances. */
 	IsPreemptible bool `json:"isPreemptible,omitempty"`

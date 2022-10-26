@@ -1934,7 +1934,7 @@ func diffJob(c *Client, desired, actual *Job, opts ...dcl.ApplyOption) ([]*dcl.F
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TimeZone, actual.TimeZone, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("TimeZone")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TimeZone, actual.TimeZone, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("TimeZone")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

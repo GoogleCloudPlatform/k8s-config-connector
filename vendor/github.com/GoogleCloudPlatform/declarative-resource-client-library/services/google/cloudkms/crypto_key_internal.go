@@ -1244,7 +1244,7 @@ func diffCryptoKey(c *Client, desired, actual *CryptoKey, opts ...dcl.ApplyOptio
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.VersionTemplate, actual.VersionTemplate, dcl.DiffInfo{ObjectFunction: compareCryptoKeyVersionTemplateNewStyle, EmptyObject: EmptyCryptoKeyVersionTemplate, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("VersionTemplate")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.VersionTemplate, actual.VersionTemplate, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareCryptoKeyVersionTemplateNewStyle, EmptyObject: EmptyCryptoKeyVersionTemplate, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("VersionTemplate")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1265,7 +1265,7 @@ func diffCryptoKey(c *Client, desired, actual *CryptoKey, opts ...dcl.ApplyOptio
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DestroyScheduledDuration, actual.DestroyScheduledDuration, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DestroyScheduledDuration")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DestroyScheduledDuration, actual.DestroyScheduledDuration, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DestroyScheduledDuration")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1550,7 +1550,7 @@ func compareCryptoKeyVersionTemplateNewStyle(d, a interface{}, fn dcl.FieldName)
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.ProtectionLevel, actual.ProtectionLevel, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ProtectionLevel")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ProtectionLevel, actual.ProtectionLevel, dcl.DiffInfo{ServerDefault: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ProtectionLevel")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

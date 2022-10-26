@@ -163,6 +163,7 @@ func (r *InstanceBundlesConfigConfigControllerConfig) HashCode() string {
 type InstanceManagementConfig struct {
 	empty                    bool                                              `json:"-"`
 	StandardManagementConfig *InstanceManagementConfigStandardManagementConfig `json:"standardManagementConfig"`
+	FullManagementConfig     *InstanceManagementConfigFullManagementConfig     `json:"fullManagementConfig"`
 }
 
 type jsonInstanceManagementConfig InstanceManagementConfig
@@ -181,6 +182,8 @@ func (r *InstanceManagementConfig) UnmarshalJSON(data []byte) error {
 	} else {
 
 		r.StandardManagementConfig = res.StandardManagementConfig
+
+		r.FullManagementConfig = res.FullManagementConfig
 
 	}
 	return nil
@@ -264,6 +267,70 @@ func (r *InstanceManagementConfigStandardManagementConfig) String() string {
 }
 
 func (r *InstanceManagementConfigStandardManagementConfig) HashCode() string {
+	// Placeholder for a more complex hash method that handles ordering, etc
+	// Hash resource body for easy comparison later
+	hash := sha256.New().Sum([]byte(r.String()))
+	return fmt.Sprintf("%x", hash)
+}
+
+type InstanceManagementConfigFullManagementConfig struct {
+	empty               bool    `json:"-"`
+	Network             *string `json:"network"`
+	MasterIPv4CidrBlock *string `json:"masterIPv4CidrBlock"`
+	ManBlock            *string `json:"manBlock"`
+	ClusterCidrBlock    *string `json:"clusterCidrBlock"`
+	ServicesCidrBlock   *string `json:"servicesCidrBlock"`
+	ClusterNamedRange   *string `json:"clusterNamedRange"`
+	ServicesNamedRange  *string `json:"servicesNamedRange"`
+}
+
+type jsonInstanceManagementConfigFullManagementConfig InstanceManagementConfigFullManagementConfig
+
+func (r *InstanceManagementConfigFullManagementConfig) UnmarshalJSON(data []byte) error {
+	var res jsonInstanceManagementConfigFullManagementConfig
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+
+	var m map[string]interface{}
+	json.Unmarshal(data, &m)
+
+	if len(m) == 0 {
+		*r = *EmptyInstanceManagementConfigFullManagementConfig
+	} else {
+
+		r.Network = res.Network
+
+		r.MasterIPv4CidrBlock = res.MasterIPv4CidrBlock
+
+		r.ManBlock = res.ManBlock
+
+		r.ClusterCidrBlock = res.ClusterCidrBlock
+
+		r.ServicesCidrBlock = res.ServicesCidrBlock
+
+		r.ClusterNamedRange = res.ClusterNamedRange
+
+		r.ServicesNamedRange = res.ServicesNamedRange
+
+	}
+	return nil
+}
+
+// This object is used to assert a desired state where this InstanceManagementConfigFullManagementConfig is
+// empty. Go lacks global const objects, but this object should be treated
+// as one. Modifying this object will have undesirable results.
+var EmptyInstanceManagementConfigFullManagementConfig *InstanceManagementConfigFullManagementConfig = &InstanceManagementConfigFullManagementConfig{empty: true}
+
+func (r *InstanceManagementConfigFullManagementConfig) Empty() bool {
+	return r.empty
+}
+
+func (r *InstanceManagementConfigFullManagementConfig) String() string {
+	return dcl.SprintResource(r)
+}
+
+func (r *InstanceManagementConfigFullManagementConfig) HashCode() string {
 	// Placeholder for a more complex hash method that handles ordering, etc
 	// Hash resource body for easy comparison later
 	hash := sha256.New().Sum([]byte(r.String()))

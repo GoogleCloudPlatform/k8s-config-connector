@@ -1116,14 +1116,14 @@ func compareInstanceFileSharesNfsExportOptionsNewStyle(d, a interface{}, fn dcl.
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AccessMode, actual.AccessMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInstanceUpdateInstanceOperation")}, fn.AddNest("AccessMode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AccessMode, actual.AccessMode, dcl.DiffInfo{ServerDefault: true, Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInstanceUpdateInstanceOperation")}, fn.AddNest("AccessMode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SquashMode, actual.SquashMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInstanceUpdateInstanceOperation")}, fn.AddNest("SquashMode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SquashMode, actual.SquashMode, dcl.DiffInfo{ServerDefault: true, Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateInstanceUpdateInstanceOperation")}, fn.AddNest("SquashMode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1173,14 +1173,14 @@ func compareInstanceNetworksNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Modes, actual.Modes, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Modes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Modes, actual.Modes, dcl.DiffInfo{ServerDefault: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Modes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ReservedIPRange, actual.ReservedIPRange, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ReservedIpRange")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ReservedIPRange, actual.ReservedIPRange, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ReservedIpRange")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

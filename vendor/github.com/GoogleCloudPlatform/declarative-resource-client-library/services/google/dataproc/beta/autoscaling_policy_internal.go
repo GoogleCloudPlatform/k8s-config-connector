@@ -1126,7 +1126,7 @@ func compareAutoscalingPolicyBasicAlgorithmNewStyle(d, a interface{}, fn dcl.Fie
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CooldownPeriod, actual.CooldownPeriod, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAutoscalingPolicyUpdateAutoscalingPolicyOperation")}, fn.AddNest("CooldownPeriod")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CooldownPeriod, actual.CooldownPeriod, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateAutoscalingPolicyUpdateAutoscalingPolicyOperation")}, fn.AddNest("CooldownPeriod")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1212,7 +1212,7 @@ func compareAutoscalingPolicyWorkerConfigNewStyle(d, a interface{}, fn dcl.Field
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.MinInstances, actual.MinInstances, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAutoscalingPolicyUpdateAutoscalingPolicyOperation")}, fn.AddNest("MinInstances")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MinInstances, actual.MinInstances, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateAutoscalingPolicyUpdateAutoscalingPolicyOperation")}, fn.AddNest("MinInstances")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1226,7 +1226,7 @@ func compareAutoscalingPolicyWorkerConfigNewStyle(d, a interface{}, fn dcl.Field
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Weight, actual.Weight, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAutoscalingPolicyUpdateAutoscalingPolicyOperation")}, fn.AddNest("Weight")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Weight, actual.Weight, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateAutoscalingPolicyUpdateAutoscalingPolicyOperation")}, fn.AddNest("Weight")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1269,7 +1269,7 @@ func compareAutoscalingPolicySecondaryWorkerConfigNewStyle(d, a interface{}, fn 
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Weight, actual.Weight, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateAutoscalingPolicyUpdateAutoscalingPolicyOperation")}, fn.AddNest("Weight")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Weight, actual.Weight, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateAutoscalingPolicyUpdateAutoscalingPolicyOperation")}, fn.AddNest("Weight")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

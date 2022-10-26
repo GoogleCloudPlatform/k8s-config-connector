@@ -100,15 +100,84 @@ components:
           x-dcl-go-type: InstanceManagementConfig
           description: Configuration of the cluster management
           x-kubernetes-immutable: true
-          required:
-          - standardManagementConfig
           properties:
+            fullManagementConfig:
+              type: object
+              x-dcl-go-name: FullManagementConfig
+              x-dcl-go-type: InstanceManagementConfigFullManagementConfig
+              description: Configuration of the full (Autopilot) cluster management
+              x-kubernetes-immutable: true
+              x-dcl-conflicts:
+              - standardManagementConfig
+              x-dcl-server-default: true
+              x-dcl-send-empty: true
+              properties:
+                clusterCidrBlock:
+                  type: string
+                  x-dcl-go-name: ClusterCidrBlock
+                  description: The IP address range for the cluster pod IPs. Set to
+                    blank to have a range chosen with the default size. Set to /netmask
+                    (e.g. /14) to have a range chosen with a specific netmask. Set
+                    to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private
+                    networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick
+                    a specific range to use.
+                  x-kubernetes-immutable: true
+                  x-dcl-server-default: true
+                clusterNamedRange:
+                  type: string
+                  x-dcl-go-name: ClusterNamedRange
+                  description: The name of the existing secondary range in the cluster's
+                    subnetwork to use for pod IP addresses. Alternatively, cluster_cidr_block
+                    can be used to automatically create a GKE-managed one.
+                  x-kubernetes-immutable: true
+                manBlock:
+                  type: string
+                  x-dcl-go-name: ManBlock
+                  description: Master Authorized Network. Allows access to the k8s
+                    master from this block.
+                  x-kubernetes-immutable: true
+                  x-dcl-server-default: true
+                masterIPv4CidrBlock:
+                  type: string
+                  x-dcl-go-name: MasterIPv4CidrBlock
+                  description: The /28 network that the masters will use.
+                  x-kubernetes-immutable: true
+                network:
+                  type: string
+                  x-dcl-go-name: Network
+                  description: Existing VPC Network to put the GKE cluster and nodes
+                    in.
+                  x-kubernetes-immutable: true
+                  x-dcl-server-default: true
+                  x-dcl-references:
+                  - resource: Compute/Network
+                    field: name
+                servicesCidrBlock:
+                  type: string
+                  x-dcl-go-name: ServicesCidrBlock
+                  description: The IP address range for the cluster service IPs. Set
+                    to blank to have a range chosen with the default size. Set to
+                    /netmask (e.g. /14) to have a range chosen with a specific netmask.
+                    Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private
+                    networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick
+                    a specific range to use.
+                  x-kubernetes-immutable: true
+                  x-dcl-server-default: true
+                servicesNamedRange:
+                  type: string
+                  x-dcl-go-name: ServicesNamedRange
+                  description: The name of the existing secondary range in the cluster's
+                    subnetwork to use for service ClusterIPs. Alternatively, services_cidr_block
+                    can be used to automatically create a GKE-managed one.
+                  x-kubernetes-immutable: true
             standardManagementConfig:
               type: object
               x-dcl-go-name: StandardManagementConfig
               x-dcl-go-type: InstanceManagementConfigStandardManagementConfig
               description: Configuration of the standard (GKE) cluster management
               x-kubernetes-immutable: true
+              x-dcl-conflicts:
+              - fullManagementConfig
               required:
               - masterIPv4CidrBlock
               properties:

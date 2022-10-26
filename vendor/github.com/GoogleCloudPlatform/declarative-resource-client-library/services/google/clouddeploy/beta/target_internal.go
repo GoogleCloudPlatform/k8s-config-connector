@@ -1323,7 +1323,7 @@ func diffTarget(c *Client, desired, actual *Target, opts ...dcl.ApplyOption) ([]
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExecutionConfigs, actual.ExecutionConfigs, dcl.DiffInfo{ObjectFunction: compareTargetExecutionConfigsNewStyle, EmptyObject: EmptyTargetExecutionConfigs, OperationSelector: dcl.TriggersOperation("updateTargetUpdateTargetOperation")}, fn.AddNest("ExecutionConfigs")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExecutionConfigs, actual.ExecutionConfigs, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareTargetExecutionConfigsNewStyle, EmptyObject: EmptyTargetExecutionConfigs, OperationSelector: dcl.TriggersOperation("updateTargetUpdateTargetOperation")}, fn.AddNest("ExecutionConfigs")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1452,21 +1452,21 @@ func compareTargetExecutionConfigsNewStyle(d, a interface{}, fn dcl.FieldName) (
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ServiceAccount, actual.ServiceAccount, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateTargetUpdateTargetOperation")}, fn.AddNest("ServiceAccount")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServiceAccount, actual.ServiceAccount, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateTargetUpdateTargetOperation")}, fn.AddNest("ServiceAccount")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ArtifactStorage, actual.ArtifactStorage, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateTargetUpdateTargetOperation")}, fn.AddNest("ArtifactStorage")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ArtifactStorage, actual.ArtifactStorage, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateTargetUpdateTargetOperation")}, fn.AddNest("ArtifactStorage")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExecutionTimeout, actual.ExecutionTimeout, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateTargetUpdateTargetOperation")}, fn.AddNest("ExecutionTimeout")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExecutionTimeout, actual.ExecutionTimeout, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateTargetUpdateTargetOperation")}, fn.AddNest("ExecutionTimeout")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

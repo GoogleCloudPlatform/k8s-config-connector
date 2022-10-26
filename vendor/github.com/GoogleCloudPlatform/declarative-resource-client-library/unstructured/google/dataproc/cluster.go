@@ -46,6 +46,24 @@ func ClusterToUnstructured(r *dclService.Cluster) *unstructured.Resource {
 			}
 			rConfig["autoscalingConfig"] = rConfigAutoscalingConfig
 		}
+		if r.Config.DataprocMetricConfig != nil && r.Config.DataprocMetricConfig != dclService.EmptyClusterConfigDataprocMetricConfig {
+			rConfigDataprocMetricConfig := make(map[string]interface{})
+			var rConfigDataprocMetricConfigMetrics []interface{}
+			for _, rConfigDataprocMetricConfigMetricsVal := range r.Config.DataprocMetricConfig.Metrics {
+				rConfigDataprocMetricConfigMetricsObject := make(map[string]interface{})
+				var rConfigDataprocMetricConfigMetricsValMetricOverrides []interface{}
+				for _, rConfigDataprocMetricConfigMetricsValMetricOverridesVal := range rConfigDataprocMetricConfigMetricsVal.MetricOverrides {
+					rConfigDataprocMetricConfigMetricsValMetricOverrides = append(rConfigDataprocMetricConfigMetricsValMetricOverrides, rConfigDataprocMetricConfigMetricsValMetricOverridesVal)
+				}
+				rConfigDataprocMetricConfigMetricsObject["metricOverrides"] = rConfigDataprocMetricConfigMetricsValMetricOverrides
+				if rConfigDataprocMetricConfigMetricsVal.MetricSource != nil {
+					rConfigDataprocMetricConfigMetricsObject["metricSource"] = string(*rConfigDataprocMetricConfigMetricsVal.MetricSource)
+				}
+				rConfigDataprocMetricConfigMetrics = append(rConfigDataprocMetricConfigMetrics, rConfigDataprocMetricConfigMetricsObject)
+			}
+			rConfigDataprocMetricConfig["metrics"] = rConfigDataprocMetricConfigMetrics
+			rConfig["dataprocMetricConfig"] = rConfigDataprocMetricConfig
+		}
 		if r.Config.EncryptionConfig != nil && r.Config.EncryptionConfig != dclService.EmptyClusterConfigEncryptionConfig {
 			rConfigEncryptionConfig := make(map[string]interface{})
 			if r.Config.EncryptionConfig.GcePdKmsKeyName != nil {
@@ -69,6 +87,13 @@ func ClusterToUnstructured(r *dclService.Cluster) *unstructured.Resource {
 		}
 		if r.Config.GceClusterConfig != nil && r.Config.GceClusterConfig != dclService.EmptyClusterConfigGceClusterConfig {
 			rConfigGceClusterConfig := make(map[string]interface{})
+			if r.Config.GceClusterConfig.ConfidentialInstanceConfig != nil && r.Config.GceClusterConfig.ConfidentialInstanceConfig != dclService.EmptyClusterConfigGceClusterConfigConfidentialInstanceConfig {
+				rConfigGceClusterConfigConfidentialInstanceConfig := make(map[string]interface{})
+				if r.Config.GceClusterConfig.ConfidentialInstanceConfig.EnableConfidentialCompute != nil {
+					rConfigGceClusterConfigConfidentialInstanceConfig["enableConfidentialCompute"] = *r.Config.GceClusterConfig.ConfidentialInstanceConfig.EnableConfidentialCompute
+				}
+				rConfigGceClusterConfig["confidentialInstanceConfig"] = rConfigGceClusterConfigConfidentialInstanceConfig
+			}
 			if r.Config.GceClusterConfig.InternalIPOnly != nil {
 				rConfigGceClusterConfig["internalIPOnly"] = *r.Config.GceClusterConfig.InternalIPOnly
 			}
@@ -115,6 +140,19 @@ func ClusterToUnstructured(r *dclService.Cluster) *unstructured.Resource {
 				rConfigGceClusterConfigServiceAccountScopes = append(rConfigGceClusterConfigServiceAccountScopes, rConfigGceClusterConfigServiceAccountScopesVal)
 			}
 			rConfigGceClusterConfig["serviceAccountScopes"] = rConfigGceClusterConfigServiceAccountScopes
+			if r.Config.GceClusterConfig.ShieldedInstanceConfig != nil && r.Config.GceClusterConfig.ShieldedInstanceConfig != dclService.EmptyClusterConfigGceClusterConfigShieldedInstanceConfig {
+				rConfigGceClusterConfigShieldedInstanceConfig := make(map[string]interface{})
+				if r.Config.GceClusterConfig.ShieldedInstanceConfig.EnableIntegrityMonitoring != nil {
+					rConfigGceClusterConfigShieldedInstanceConfig["enableIntegrityMonitoring"] = *r.Config.GceClusterConfig.ShieldedInstanceConfig.EnableIntegrityMonitoring
+				}
+				if r.Config.GceClusterConfig.ShieldedInstanceConfig.EnableSecureBoot != nil {
+					rConfigGceClusterConfigShieldedInstanceConfig["enableSecureBoot"] = *r.Config.GceClusterConfig.ShieldedInstanceConfig.EnableSecureBoot
+				}
+				if r.Config.GceClusterConfig.ShieldedInstanceConfig.EnableVtpm != nil {
+					rConfigGceClusterConfigShieldedInstanceConfig["enableVtpm"] = *r.Config.GceClusterConfig.ShieldedInstanceConfig.EnableVtpm
+				}
+				rConfigGceClusterConfig["shieldedInstanceConfig"] = rConfigGceClusterConfigShieldedInstanceConfig
+			}
 			if r.Config.GceClusterConfig.Subnetwork != nil {
 				rConfigGceClusterConfig["subnetwork"] = *r.Config.GceClusterConfig.Subnetwork
 			}
@@ -178,6 +216,9 @@ func ClusterToUnstructured(r *dclService.Cluster) *unstructured.Resource {
 				if r.Config.MasterConfig.DiskConfig.BootDiskType != nil {
 					rConfigMasterConfigDiskConfig["bootDiskType"] = *r.Config.MasterConfig.DiskConfig.BootDiskType
 				}
+				if r.Config.MasterConfig.DiskConfig.LocalSsdInterface != nil {
+					rConfigMasterConfigDiskConfig["localSsdInterface"] = *r.Config.MasterConfig.DiskConfig.LocalSsdInterface
+				}
 				if r.Config.MasterConfig.DiskConfig.NumLocalSsds != nil {
 					rConfigMasterConfigDiskConfig["numLocalSsds"] = *r.Config.MasterConfig.DiskConfig.NumLocalSsds
 				}
@@ -191,6 +232,24 @@ func ClusterToUnstructured(r *dclService.Cluster) *unstructured.Resource {
 				rConfigMasterConfigInstanceNames = append(rConfigMasterConfigInstanceNames, rConfigMasterConfigInstanceNamesVal)
 			}
 			rConfigMasterConfig["instanceNames"] = rConfigMasterConfigInstanceNames
+			var rConfigMasterConfigInstanceReferences []interface{}
+			for _, rConfigMasterConfigInstanceReferencesVal := range r.Config.MasterConfig.InstanceReferences {
+				rConfigMasterConfigInstanceReferencesObject := make(map[string]interface{})
+				if rConfigMasterConfigInstanceReferencesVal.InstanceId != nil {
+					rConfigMasterConfigInstanceReferencesObject["instanceId"] = *rConfigMasterConfigInstanceReferencesVal.InstanceId
+				}
+				if rConfigMasterConfigInstanceReferencesVal.InstanceName != nil {
+					rConfigMasterConfigInstanceReferencesObject["instanceName"] = *rConfigMasterConfigInstanceReferencesVal.InstanceName
+				}
+				if rConfigMasterConfigInstanceReferencesVal.PublicEciesKey != nil {
+					rConfigMasterConfigInstanceReferencesObject["publicEciesKey"] = *rConfigMasterConfigInstanceReferencesVal.PublicEciesKey
+				}
+				if rConfigMasterConfigInstanceReferencesVal.PublicKey != nil {
+					rConfigMasterConfigInstanceReferencesObject["publicKey"] = *rConfigMasterConfigInstanceReferencesVal.PublicKey
+				}
+				rConfigMasterConfigInstanceReferences = append(rConfigMasterConfigInstanceReferences, rConfigMasterConfigInstanceReferencesObject)
+			}
+			rConfigMasterConfig["instanceReferences"] = rConfigMasterConfigInstanceReferences
 			if r.Config.MasterConfig.IsPreemptible != nil {
 				rConfigMasterConfig["isPreemptible"] = *r.Config.MasterConfig.IsPreemptible
 			}
@@ -218,6 +277,13 @@ func ClusterToUnstructured(r *dclService.Cluster) *unstructured.Resource {
 			}
 			rConfig["masterConfig"] = rConfigMasterConfig
 		}
+		if r.Config.MetastoreConfig != nil && r.Config.MetastoreConfig != dclService.EmptyClusterConfigMetastoreConfig {
+			rConfigMetastoreConfig := make(map[string]interface{})
+			if r.Config.MetastoreConfig.DataprocMetastoreService != nil {
+				rConfigMetastoreConfig["dataprocMetastoreService"] = *r.Config.MetastoreConfig.DataprocMetastoreService
+			}
+			rConfig["metastoreConfig"] = rConfigMetastoreConfig
+		}
 		if r.Config.SecondaryWorkerConfig != nil && r.Config.SecondaryWorkerConfig != dclService.EmptyClusterConfigSecondaryWorkerConfig {
 			rConfigSecondaryWorkerConfig := make(map[string]interface{})
 			var rConfigSecondaryWorkerConfigAccelerators []interface{}
@@ -240,6 +306,9 @@ func ClusterToUnstructured(r *dclService.Cluster) *unstructured.Resource {
 				if r.Config.SecondaryWorkerConfig.DiskConfig.BootDiskType != nil {
 					rConfigSecondaryWorkerConfigDiskConfig["bootDiskType"] = *r.Config.SecondaryWorkerConfig.DiskConfig.BootDiskType
 				}
+				if r.Config.SecondaryWorkerConfig.DiskConfig.LocalSsdInterface != nil {
+					rConfigSecondaryWorkerConfigDiskConfig["localSsdInterface"] = *r.Config.SecondaryWorkerConfig.DiskConfig.LocalSsdInterface
+				}
 				if r.Config.SecondaryWorkerConfig.DiskConfig.NumLocalSsds != nil {
 					rConfigSecondaryWorkerConfigDiskConfig["numLocalSsds"] = *r.Config.SecondaryWorkerConfig.DiskConfig.NumLocalSsds
 				}
@@ -253,6 +322,24 @@ func ClusterToUnstructured(r *dclService.Cluster) *unstructured.Resource {
 				rConfigSecondaryWorkerConfigInstanceNames = append(rConfigSecondaryWorkerConfigInstanceNames, rConfigSecondaryWorkerConfigInstanceNamesVal)
 			}
 			rConfigSecondaryWorkerConfig["instanceNames"] = rConfigSecondaryWorkerConfigInstanceNames
+			var rConfigSecondaryWorkerConfigInstanceReferences []interface{}
+			for _, rConfigSecondaryWorkerConfigInstanceReferencesVal := range r.Config.SecondaryWorkerConfig.InstanceReferences {
+				rConfigSecondaryWorkerConfigInstanceReferencesObject := make(map[string]interface{})
+				if rConfigSecondaryWorkerConfigInstanceReferencesVal.InstanceId != nil {
+					rConfigSecondaryWorkerConfigInstanceReferencesObject["instanceId"] = *rConfigSecondaryWorkerConfigInstanceReferencesVal.InstanceId
+				}
+				if rConfigSecondaryWorkerConfigInstanceReferencesVal.InstanceName != nil {
+					rConfigSecondaryWorkerConfigInstanceReferencesObject["instanceName"] = *rConfigSecondaryWorkerConfigInstanceReferencesVal.InstanceName
+				}
+				if rConfigSecondaryWorkerConfigInstanceReferencesVal.PublicEciesKey != nil {
+					rConfigSecondaryWorkerConfigInstanceReferencesObject["publicEciesKey"] = *rConfigSecondaryWorkerConfigInstanceReferencesVal.PublicEciesKey
+				}
+				if rConfigSecondaryWorkerConfigInstanceReferencesVal.PublicKey != nil {
+					rConfigSecondaryWorkerConfigInstanceReferencesObject["publicKey"] = *rConfigSecondaryWorkerConfigInstanceReferencesVal.PublicKey
+				}
+				rConfigSecondaryWorkerConfigInstanceReferences = append(rConfigSecondaryWorkerConfigInstanceReferences, rConfigSecondaryWorkerConfigInstanceReferencesObject)
+			}
+			rConfigSecondaryWorkerConfig["instanceReferences"] = rConfigSecondaryWorkerConfigInstanceReferences
 			if r.Config.SecondaryWorkerConfig.IsPreemptible != nil {
 				rConfigSecondaryWorkerConfig["isPreemptible"] = *r.Config.SecondaryWorkerConfig.IsPreemptible
 			}
@@ -282,6 +369,17 @@ func ClusterToUnstructured(r *dclService.Cluster) *unstructured.Resource {
 		}
 		if r.Config.SecurityConfig != nil && r.Config.SecurityConfig != dclService.EmptyClusterConfigSecurityConfig {
 			rConfigSecurityConfig := make(map[string]interface{})
+			if r.Config.SecurityConfig.IdentityConfig != nil && r.Config.SecurityConfig.IdentityConfig != dclService.EmptyClusterConfigSecurityConfigIdentityConfig {
+				rConfigSecurityConfigIdentityConfig := make(map[string]interface{})
+				if r.Config.SecurityConfig.IdentityConfig.UserServiceAccountMapping != nil {
+					rConfigSecurityConfigIdentityConfigUserServiceAccountMapping := make(map[string]interface{})
+					for k, v := range r.Config.SecurityConfig.IdentityConfig.UserServiceAccountMapping {
+						rConfigSecurityConfigIdentityConfigUserServiceAccountMapping[k] = v
+					}
+					rConfigSecurityConfigIdentityConfig["userServiceAccountMapping"] = rConfigSecurityConfigIdentityConfigUserServiceAccountMapping
+				}
+				rConfigSecurityConfig["identityConfig"] = rConfigSecurityConfigIdentityConfig
+			}
 			if r.Config.SecurityConfig.KerberosConfig != nil && r.Config.SecurityConfig.KerberosConfig != dclService.EmptyClusterConfigSecurityConfigKerberosConfig {
 				rConfigSecurityConfigKerberosConfig := make(map[string]interface{})
 				if r.Config.SecurityConfig.KerberosConfig.CrossRealmTrustAdminServer != nil {
@@ -380,6 +478,9 @@ func ClusterToUnstructured(r *dclService.Cluster) *unstructured.Resource {
 				if r.Config.WorkerConfig.DiskConfig.BootDiskType != nil {
 					rConfigWorkerConfigDiskConfig["bootDiskType"] = *r.Config.WorkerConfig.DiskConfig.BootDiskType
 				}
+				if r.Config.WorkerConfig.DiskConfig.LocalSsdInterface != nil {
+					rConfigWorkerConfigDiskConfig["localSsdInterface"] = *r.Config.WorkerConfig.DiskConfig.LocalSsdInterface
+				}
 				if r.Config.WorkerConfig.DiskConfig.NumLocalSsds != nil {
 					rConfigWorkerConfigDiskConfig["numLocalSsds"] = *r.Config.WorkerConfig.DiskConfig.NumLocalSsds
 				}
@@ -393,6 +494,24 @@ func ClusterToUnstructured(r *dclService.Cluster) *unstructured.Resource {
 				rConfigWorkerConfigInstanceNames = append(rConfigWorkerConfigInstanceNames, rConfigWorkerConfigInstanceNamesVal)
 			}
 			rConfigWorkerConfig["instanceNames"] = rConfigWorkerConfigInstanceNames
+			var rConfigWorkerConfigInstanceReferences []interface{}
+			for _, rConfigWorkerConfigInstanceReferencesVal := range r.Config.WorkerConfig.InstanceReferences {
+				rConfigWorkerConfigInstanceReferencesObject := make(map[string]interface{})
+				if rConfigWorkerConfigInstanceReferencesVal.InstanceId != nil {
+					rConfigWorkerConfigInstanceReferencesObject["instanceId"] = *rConfigWorkerConfigInstanceReferencesVal.InstanceId
+				}
+				if rConfigWorkerConfigInstanceReferencesVal.InstanceName != nil {
+					rConfigWorkerConfigInstanceReferencesObject["instanceName"] = *rConfigWorkerConfigInstanceReferencesVal.InstanceName
+				}
+				if rConfigWorkerConfigInstanceReferencesVal.PublicEciesKey != nil {
+					rConfigWorkerConfigInstanceReferencesObject["publicEciesKey"] = *rConfigWorkerConfigInstanceReferencesVal.PublicEciesKey
+				}
+				if rConfigWorkerConfigInstanceReferencesVal.PublicKey != nil {
+					rConfigWorkerConfigInstanceReferencesObject["publicKey"] = *rConfigWorkerConfigInstanceReferencesVal.PublicKey
+				}
+				rConfigWorkerConfigInstanceReferences = append(rConfigWorkerConfigInstanceReferences, rConfigWorkerConfigInstanceReferencesObject)
+			}
+			rConfigWorkerConfig["instanceReferences"] = rConfigWorkerConfigInstanceReferences
 			if r.Config.WorkerConfig.IsPreemptible != nil {
 				rConfigWorkerConfig["isPreemptible"] = *r.Config.WorkerConfig.IsPreemptible
 			}
@@ -490,6 +609,140 @@ func ClusterToUnstructured(r *dclService.Cluster) *unstructured.Resource {
 		rStatusHistory = append(rStatusHistory, rStatusHistoryObject)
 	}
 	u.Object["statusHistory"] = rStatusHistory
+	if r.VirtualClusterConfig != nil && r.VirtualClusterConfig != dclService.EmptyClusterVirtualClusterConfig {
+		rVirtualClusterConfig := make(map[string]interface{})
+		if r.VirtualClusterConfig.AuxiliaryServicesConfig != nil && r.VirtualClusterConfig.AuxiliaryServicesConfig != dclService.EmptyClusterVirtualClusterConfigAuxiliaryServicesConfig {
+			rVirtualClusterConfigAuxiliaryServicesConfig := make(map[string]interface{})
+			if r.VirtualClusterConfig.AuxiliaryServicesConfig.MetastoreConfig != nil && r.VirtualClusterConfig.AuxiliaryServicesConfig.MetastoreConfig != dclService.EmptyClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig {
+				rVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig := make(map[string]interface{})
+				if r.VirtualClusterConfig.AuxiliaryServicesConfig.MetastoreConfig.DataprocMetastoreService != nil {
+					rVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig["dataprocMetastoreService"] = *r.VirtualClusterConfig.AuxiliaryServicesConfig.MetastoreConfig.DataprocMetastoreService
+				}
+				rVirtualClusterConfigAuxiliaryServicesConfig["metastoreConfig"] = rVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig
+			}
+			if r.VirtualClusterConfig.AuxiliaryServicesConfig.SparkHistoryServerConfig != nil && r.VirtualClusterConfig.AuxiliaryServicesConfig.SparkHistoryServerConfig != dclService.EmptyClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig {
+				rVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig := make(map[string]interface{})
+				if r.VirtualClusterConfig.AuxiliaryServicesConfig.SparkHistoryServerConfig.DataprocCluster != nil {
+					rVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig["dataprocCluster"] = *r.VirtualClusterConfig.AuxiliaryServicesConfig.SparkHistoryServerConfig.DataprocCluster
+				}
+				rVirtualClusterConfigAuxiliaryServicesConfig["sparkHistoryServerConfig"] = rVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig
+			}
+			rVirtualClusterConfig["auxiliaryServicesConfig"] = rVirtualClusterConfigAuxiliaryServicesConfig
+		}
+		if r.VirtualClusterConfig.KubernetesClusterConfig != nil && r.VirtualClusterConfig.KubernetesClusterConfig != dclService.EmptyClusterVirtualClusterConfigKubernetesClusterConfig {
+			rVirtualClusterConfigKubernetesClusterConfig := make(map[string]interface{})
+			if r.VirtualClusterConfig.KubernetesClusterConfig.GkeClusterConfig != nil && r.VirtualClusterConfig.KubernetesClusterConfig.GkeClusterConfig != dclService.EmptyClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig {
+				rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig := make(map[string]interface{})
+				if r.VirtualClusterConfig.KubernetesClusterConfig.GkeClusterConfig.GkeClusterTarget != nil {
+					rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig["gkeClusterTarget"] = *r.VirtualClusterConfig.KubernetesClusterConfig.GkeClusterConfig.GkeClusterTarget
+				}
+				var rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget []interface{}
+				for _, rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal := range r.VirtualClusterConfig.KubernetesClusterConfig.GkeClusterConfig.NodePoolTarget {
+					rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetObject := make(map[string]interface{})
+					if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePool != nil {
+						rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetObject["nodePool"] = *rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePool
+					}
+					if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig != nil && rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig != dclService.EmptyClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig {
+						rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfig := make(map[string]interface{})
+						if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Autoscaling != nil && rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Autoscaling != dclService.EmptyClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling {
+							rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigAutoscaling := make(map[string]interface{})
+							if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Autoscaling.MaxNodeCount != nil {
+								rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigAutoscaling["maxNodeCount"] = *rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Autoscaling.MaxNodeCount
+							}
+							if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Autoscaling.MinNodeCount != nil {
+								rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigAutoscaling["minNodeCount"] = *rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Autoscaling.MinNodeCount
+							}
+							rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfig["autoscaling"] = rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigAutoscaling
+						}
+						if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Config != nil && rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Config != dclService.EmptyClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig {
+							rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfig := make(map[string]interface{})
+							var rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfigAccelerators []interface{}
+							for _, rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfigAcceleratorsVal := range rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Config.Accelerators {
+								rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfigAcceleratorsObject := make(map[string]interface{})
+								if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfigAcceleratorsVal.AcceleratorCount != nil {
+									rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfigAcceleratorsObject["acceleratorCount"] = *rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfigAcceleratorsVal.AcceleratorCount
+								}
+								if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfigAcceleratorsVal.AcceleratorType != nil {
+									rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfigAcceleratorsObject["acceleratorType"] = *rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfigAcceleratorsVal.AcceleratorType
+								}
+								if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfigAcceleratorsVal.GpuPartitionSize != nil {
+									rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfigAcceleratorsObject["gpuPartitionSize"] = *rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfigAcceleratorsVal.GpuPartitionSize
+								}
+								rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfigAccelerators = append(rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfigAccelerators, rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfigAcceleratorsObject)
+							}
+							rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfig["accelerators"] = rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfigAccelerators
+							if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Config.BootDiskKmsKey != nil {
+								rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfig["bootDiskKmsKey"] = *rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Config.BootDiskKmsKey
+							}
+							if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Config.EphemeralStorageConfig != nil && rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Config.EphemeralStorageConfig != dclService.EmptyClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig {
+								rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfigEphemeralStorageConfig := make(map[string]interface{})
+								if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Config.EphemeralStorageConfig.LocalSsdCount != nil {
+									rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfigEphemeralStorageConfig["localSsdCount"] = *rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Config.EphemeralStorageConfig.LocalSsdCount
+								}
+								rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfig["ephemeralStorageConfig"] = rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfigEphemeralStorageConfig
+							}
+							if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Config.LocalSsdCount != nil {
+								rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfig["localSsdCount"] = *rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Config.LocalSsdCount
+							}
+							if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Config.MachineType != nil {
+								rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfig["machineType"] = *rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Config.MachineType
+							}
+							if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Config.MinCpuPlatform != nil {
+								rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfig["minCpuPlatform"] = *rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Config.MinCpuPlatform
+							}
+							if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Config.Preemptible != nil {
+								rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfig["preemptible"] = *rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Config.Preemptible
+							}
+							if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Config.Spot != nil {
+								rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfig["spot"] = *rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Config.Spot
+							}
+							rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfig["config"] = rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigConfig
+						}
+						var rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigLocations []interface{}
+						for _, rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigLocationsVal := range rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.NodePoolConfig.Locations {
+							rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigLocations = append(rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigLocations, rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigLocationsVal)
+						}
+						rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfig["locations"] = rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfigLocations
+						rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetObject["nodePoolConfig"] = rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValNodePoolConfig
+					}
+					var rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValRoles []interface{}
+					for _, rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValRolesVal := range rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetVal.Roles {
+						rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValRoles = append(rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValRoles, string(rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValRolesVal))
+					}
+					rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetObject["roles"] = rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetValRoles
+					rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget = append(rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget, rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetObject)
+				}
+				rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig["nodePoolTarget"] = rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget
+				rVirtualClusterConfigKubernetesClusterConfig["gkeClusterConfig"] = rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig
+			}
+			if r.VirtualClusterConfig.KubernetesClusterConfig.KubernetesNamespace != nil {
+				rVirtualClusterConfigKubernetesClusterConfig["kubernetesNamespace"] = *r.VirtualClusterConfig.KubernetesClusterConfig.KubernetesNamespace
+			}
+			if r.VirtualClusterConfig.KubernetesClusterConfig.KubernetesSoftwareConfig != nil && r.VirtualClusterConfig.KubernetesClusterConfig.KubernetesSoftwareConfig != dclService.EmptyClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig {
+				rVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig := make(map[string]interface{})
+				if r.VirtualClusterConfig.KubernetesClusterConfig.KubernetesSoftwareConfig.ComponentVersion != nil {
+					rVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigComponentVersion := make(map[string]interface{})
+					for k, v := range r.VirtualClusterConfig.KubernetesClusterConfig.KubernetesSoftwareConfig.ComponentVersion {
+						rVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigComponentVersion[k] = v
+					}
+					rVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig["componentVersion"] = rVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigComponentVersion
+				}
+				if r.VirtualClusterConfig.KubernetesClusterConfig.KubernetesSoftwareConfig.Properties != nil {
+					rVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigProperties := make(map[string]interface{})
+					for k, v := range r.VirtualClusterConfig.KubernetesClusterConfig.KubernetesSoftwareConfig.Properties {
+						rVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigProperties[k] = v
+					}
+					rVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig["properties"] = rVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigProperties
+				}
+				rVirtualClusterConfigKubernetesClusterConfig["kubernetesSoftwareConfig"] = rVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig
+			}
+			rVirtualClusterConfig["kubernetesClusterConfig"] = rVirtualClusterConfigKubernetesClusterConfig
+		}
+		if r.VirtualClusterConfig.StagingBucket != nil {
+			rVirtualClusterConfig["stagingBucket"] = *r.VirtualClusterConfig.StagingBucket
+		}
+		u.Object["virtualClusterConfig"] = rVirtualClusterConfig
+	}
 	return u
 }
 
@@ -517,6 +770,43 @@ func UnstructuredToCluster(u *unstructured.Resource) (*dclService.Cluster, error
 					}
 				} else {
 					return nil, fmt.Errorf("r.Config.AutoscalingConfig: expected map[string]interface{}")
+				}
+			}
+			if _, ok := rConfig["dataprocMetricConfig"]; ok {
+				if rConfigDataprocMetricConfig, ok := rConfig["dataprocMetricConfig"].(map[string]interface{}); ok {
+					r.Config.DataprocMetricConfig = &dclService.ClusterConfigDataprocMetricConfig{}
+					if _, ok := rConfigDataprocMetricConfig["metrics"]; ok {
+						if s, ok := rConfigDataprocMetricConfig["metrics"].([]interface{}); ok {
+							for _, o := range s {
+								if objval, ok := o.(map[string]interface{}); ok {
+									var rConfigDataprocMetricConfigMetrics dclService.ClusterConfigDataprocMetricConfigMetrics
+									if _, ok := objval["metricOverrides"]; ok {
+										if s, ok := objval["metricOverrides"].([]interface{}); ok {
+											for _, ss := range s {
+												if strval, ok := ss.(string); ok {
+													rConfigDataprocMetricConfigMetrics.MetricOverrides = append(rConfigDataprocMetricConfigMetrics.MetricOverrides, strval)
+												}
+											}
+										} else {
+											return nil, fmt.Errorf("rConfigDataprocMetricConfigMetrics.MetricOverrides: expected []interface{}")
+										}
+									}
+									if _, ok := objval["metricSource"]; ok {
+										if s, ok := objval["metricSource"].(string); ok {
+											rConfigDataprocMetricConfigMetrics.MetricSource = dclService.ClusterConfigDataprocMetricConfigMetricsMetricSourceEnumRef(s)
+										} else {
+											return nil, fmt.Errorf("rConfigDataprocMetricConfigMetrics.MetricSource: expected string")
+										}
+									}
+									r.Config.DataprocMetricConfig.Metrics = append(r.Config.DataprocMetricConfig.Metrics, rConfigDataprocMetricConfigMetrics)
+								}
+							}
+						} else {
+							return nil, fmt.Errorf("r.Config.DataprocMetricConfig.Metrics: expected []interface{}")
+						}
+					}
+				} else {
+					return nil, fmt.Errorf("r.Config.DataprocMetricConfig: expected map[string]interface{}")
 				}
 			}
 			if _, ok := rConfig["encryptionConfig"]; ok {
@@ -563,6 +853,20 @@ func UnstructuredToCluster(u *unstructured.Resource) (*dclService.Cluster, error
 			if _, ok := rConfig["gceClusterConfig"]; ok {
 				if rConfigGceClusterConfig, ok := rConfig["gceClusterConfig"].(map[string]interface{}); ok {
 					r.Config.GceClusterConfig = &dclService.ClusterConfigGceClusterConfig{}
+					if _, ok := rConfigGceClusterConfig["confidentialInstanceConfig"]; ok {
+						if rConfigGceClusterConfigConfidentialInstanceConfig, ok := rConfigGceClusterConfig["confidentialInstanceConfig"].(map[string]interface{}); ok {
+							r.Config.GceClusterConfig.ConfidentialInstanceConfig = &dclService.ClusterConfigGceClusterConfigConfidentialInstanceConfig{}
+							if _, ok := rConfigGceClusterConfigConfidentialInstanceConfig["enableConfidentialCompute"]; ok {
+								if b, ok := rConfigGceClusterConfigConfidentialInstanceConfig["enableConfidentialCompute"].(bool); ok {
+									r.Config.GceClusterConfig.ConfidentialInstanceConfig.EnableConfidentialCompute = dcl.Bool(b)
+								} else {
+									return nil, fmt.Errorf("r.Config.GceClusterConfig.ConfidentialInstanceConfig.EnableConfidentialCompute: expected bool")
+								}
+							}
+						} else {
+							return nil, fmt.Errorf("r.Config.GceClusterConfig.ConfidentialInstanceConfig: expected map[string]interface{}")
+						}
+					}
 					if _, ok := rConfigGceClusterConfig["internalIPOnly"]; ok {
 						if b, ok := rConfigGceClusterConfig["internalIPOnly"].(bool); ok {
 							r.Config.GceClusterConfig.InternalIPOnly = dcl.Bool(b)
@@ -659,6 +963,34 @@ func UnstructuredToCluster(u *unstructured.Resource) (*dclService.Cluster, error
 							}
 						} else {
 							return nil, fmt.Errorf("r.Config.GceClusterConfig.ServiceAccountScopes: expected []interface{}")
+						}
+					}
+					if _, ok := rConfigGceClusterConfig["shieldedInstanceConfig"]; ok {
+						if rConfigGceClusterConfigShieldedInstanceConfig, ok := rConfigGceClusterConfig["shieldedInstanceConfig"].(map[string]interface{}); ok {
+							r.Config.GceClusterConfig.ShieldedInstanceConfig = &dclService.ClusterConfigGceClusterConfigShieldedInstanceConfig{}
+							if _, ok := rConfigGceClusterConfigShieldedInstanceConfig["enableIntegrityMonitoring"]; ok {
+								if b, ok := rConfigGceClusterConfigShieldedInstanceConfig["enableIntegrityMonitoring"].(bool); ok {
+									r.Config.GceClusterConfig.ShieldedInstanceConfig.EnableIntegrityMonitoring = dcl.Bool(b)
+								} else {
+									return nil, fmt.Errorf("r.Config.GceClusterConfig.ShieldedInstanceConfig.EnableIntegrityMonitoring: expected bool")
+								}
+							}
+							if _, ok := rConfigGceClusterConfigShieldedInstanceConfig["enableSecureBoot"]; ok {
+								if b, ok := rConfigGceClusterConfigShieldedInstanceConfig["enableSecureBoot"].(bool); ok {
+									r.Config.GceClusterConfig.ShieldedInstanceConfig.EnableSecureBoot = dcl.Bool(b)
+								} else {
+									return nil, fmt.Errorf("r.Config.GceClusterConfig.ShieldedInstanceConfig.EnableSecureBoot: expected bool")
+								}
+							}
+							if _, ok := rConfigGceClusterConfigShieldedInstanceConfig["enableVtpm"]; ok {
+								if b, ok := rConfigGceClusterConfigShieldedInstanceConfig["enableVtpm"].(bool); ok {
+									r.Config.GceClusterConfig.ShieldedInstanceConfig.EnableVtpm = dcl.Bool(b)
+								} else {
+									return nil, fmt.Errorf("r.Config.GceClusterConfig.ShieldedInstanceConfig.EnableVtpm: expected bool")
+								}
+							}
+						} else {
+							return nil, fmt.Errorf("r.Config.GceClusterConfig.ShieldedInstanceConfig: expected map[string]interface{}")
 						}
 					}
 					if _, ok := rConfigGceClusterConfig["subnetwork"]; ok {
@@ -797,6 +1129,13 @@ func UnstructuredToCluster(u *unstructured.Resource) (*dclService.Cluster, error
 									return nil, fmt.Errorf("r.Config.MasterConfig.DiskConfig.BootDiskType: expected string")
 								}
 							}
+							if _, ok := rConfigMasterConfigDiskConfig["localSsdInterface"]; ok {
+								if s, ok := rConfigMasterConfigDiskConfig["localSsdInterface"].(string); ok {
+									r.Config.MasterConfig.DiskConfig.LocalSsdInterface = dcl.String(s)
+								} else {
+									return nil, fmt.Errorf("r.Config.MasterConfig.DiskConfig.LocalSsdInterface: expected string")
+								}
+							}
 							if _, ok := rConfigMasterConfigDiskConfig["numLocalSsds"]; ok {
 								if i, ok := rConfigMasterConfigDiskConfig["numLocalSsds"].(int64); ok {
 									r.Config.MasterConfig.DiskConfig.NumLocalSsds = dcl.Int64(i)
@@ -824,6 +1163,46 @@ func UnstructuredToCluster(u *unstructured.Resource) (*dclService.Cluster, error
 							}
 						} else {
 							return nil, fmt.Errorf("r.Config.MasterConfig.InstanceNames: expected []interface{}")
+						}
+					}
+					if _, ok := rConfigMasterConfig["instanceReferences"]; ok {
+						if s, ok := rConfigMasterConfig["instanceReferences"].([]interface{}); ok {
+							for _, o := range s {
+								if objval, ok := o.(map[string]interface{}); ok {
+									var rConfigMasterConfigInstanceReferences dclService.ClusterConfigMasterConfigInstanceReferences
+									if _, ok := objval["instanceId"]; ok {
+										if s, ok := objval["instanceId"].(string); ok {
+											rConfigMasterConfigInstanceReferences.InstanceId = dcl.String(s)
+										} else {
+											return nil, fmt.Errorf("rConfigMasterConfigInstanceReferences.InstanceId: expected string")
+										}
+									}
+									if _, ok := objval["instanceName"]; ok {
+										if s, ok := objval["instanceName"].(string); ok {
+											rConfigMasterConfigInstanceReferences.InstanceName = dcl.String(s)
+										} else {
+											return nil, fmt.Errorf("rConfigMasterConfigInstanceReferences.InstanceName: expected string")
+										}
+									}
+									if _, ok := objval["publicEciesKey"]; ok {
+										if s, ok := objval["publicEciesKey"].(string); ok {
+											rConfigMasterConfigInstanceReferences.PublicEciesKey = dcl.String(s)
+										} else {
+											return nil, fmt.Errorf("rConfigMasterConfigInstanceReferences.PublicEciesKey: expected string")
+										}
+									}
+									if _, ok := objval["publicKey"]; ok {
+										if s, ok := objval["publicKey"].(string); ok {
+											rConfigMasterConfigInstanceReferences.PublicKey = dcl.String(s)
+										} else {
+											return nil, fmt.Errorf("rConfigMasterConfigInstanceReferences.PublicKey: expected string")
+										}
+									}
+									r.Config.MasterConfig.InstanceReferences = append(r.Config.MasterConfig.InstanceReferences, rConfigMasterConfigInstanceReferences)
+								}
+							}
+						} else {
+							return nil, fmt.Errorf("r.Config.MasterConfig.InstanceReferences: expected []interface{}")
 						}
 					}
 					if _, ok := rConfigMasterConfig["isPreemptible"]; ok {
@@ -886,6 +1265,20 @@ func UnstructuredToCluster(u *unstructured.Resource) (*dclService.Cluster, error
 					return nil, fmt.Errorf("r.Config.MasterConfig: expected map[string]interface{}")
 				}
 			}
+			if _, ok := rConfig["metastoreConfig"]; ok {
+				if rConfigMetastoreConfig, ok := rConfig["metastoreConfig"].(map[string]interface{}); ok {
+					r.Config.MetastoreConfig = &dclService.ClusterConfigMetastoreConfig{}
+					if _, ok := rConfigMetastoreConfig["dataprocMetastoreService"]; ok {
+						if s, ok := rConfigMetastoreConfig["dataprocMetastoreService"].(string); ok {
+							r.Config.MetastoreConfig.DataprocMetastoreService = dcl.String(s)
+						} else {
+							return nil, fmt.Errorf("r.Config.MetastoreConfig.DataprocMetastoreService: expected string")
+						}
+					}
+				} else {
+					return nil, fmt.Errorf("r.Config.MetastoreConfig: expected map[string]interface{}")
+				}
+			}
 			if _, ok := rConfig["secondaryWorkerConfig"]; ok {
 				if rConfigSecondaryWorkerConfig, ok := rConfig["secondaryWorkerConfig"].(map[string]interface{}); ok {
 					r.Config.SecondaryWorkerConfig = &dclService.ClusterConfigSecondaryWorkerConfig{}
@@ -932,6 +1325,13 @@ func UnstructuredToCluster(u *unstructured.Resource) (*dclService.Cluster, error
 									return nil, fmt.Errorf("r.Config.SecondaryWorkerConfig.DiskConfig.BootDiskType: expected string")
 								}
 							}
+							if _, ok := rConfigSecondaryWorkerConfigDiskConfig["localSsdInterface"]; ok {
+								if s, ok := rConfigSecondaryWorkerConfigDiskConfig["localSsdInterface"].(string); ok {
+									r.Config.SecondaryWorkerConfig.DiskConfig.LocalSsdInterface = dcl.String(s)
+								} else {
+									return nil, fmt.Errorf("r.Config.SecondaryWorkerConfig.DiskConfig.LocalSsdInterface: expected string")
+								}
+							}
 							if _, ok := rConfigSecondaryWorkerConfigDiskConfig["numLocalSsds"]; ok {
 								if i, ok := rConfigSecondaryWorkerConfigDiskConfig["numLocalSsds"].(int64); ok {
 									r.Config.SecondaryWorkerConfig.DiskConfig.NumLocalSsds = dcl.Int64(i)
@@ -959,6 +1359,46 @@ func UnstructuredToCluster(u *unstructured.Resource) (*dclService.Cluster, error
 							}
 						} else {
 							return nil, fmt.Errorf("r.Config.SecondaryWorkerConfig.InstanceNames: expected []interface{}")
+						}
+					}
+					if _, ok := rConfigSecondaryWorkerConfig["instanceReferences"]; ok {
+						if s, ok := rConfigSecondaryWorkerConfig["instanceReferences"].([]interface{}); ok {
+							for _, o := range s {
+								if objval, ok := o.(map[string]interface{}); ok {
+									var rConfigSecondaryWorkerConfigInstanceReferences dclService.ClusterConfigSecondaryWorkerConfigInstanceReferences
+									if _, ok := objval["instanceId"]; ok {
+										if s, ok := objval["instanceId"].(string); ok {
+											rConfigSecondaryWorkerConfigInstanceReferences.InstanceId = dcl.String(s)
+										} else {
+											return nil, fmt.Errorf("rConfigSecondaryWorkerConfigInstanceReferences.InstanceId: expected string")
+										}
+									}
+									if _, ok := objval["instanceName"]; ok {
+										if s, ok := objval["instanceName"].(string); ok {
+											rConfigSecondaryWorkerConfigInstanceReferences.InstanceName = dcl.String(s)
+										} else {
+											return nil, fmt.Errorf("rConfigSecondaryWorkerConfigInstanceReferences.InstanceName: expected string")
+										}
+									}
+									if _, ok := objval["publicEciesKey"]; ok {
+										if s, ok := objval["publicEciesKey"].(string); ok {
+											rConfigSecondaryWorkerConfigInstanceReferences.PublicEciesKey = dcl.String(s)
+										} else {
+											return nil, fmt.Errorf("rConfigSecondaryWorkerConfigInstanceReferences.PublicEciesKey: expected string")
+										}
+									}
+									if _, ok := objval["publicKey"]; ok {
+										if s, ok := objval["publicKey"].(string); ok {
+											rConfigSecondaryWorkerConfigInstanceReferences.PublicKey = dcl.String(s)
+										} else {
+											return nil, fmt.Errorf("rConfigSecondaryWorkerConfigInstanceReferences.PublicKey: expected string")
+										}
+									}
+									r.Config.SecondaryWorkerConfig.InstanceReferences = append(r.Config.SecondaryWorkerConfig.InstanceReferences, rConfigSecondaryWorkerConfigInstanceReferences)
+								}
+							}
+						} else {
+							return nil, fmt.Errorf("r.Config.SecondaryWorkerConfig.InstanceReferences: expected []interface{}")
 						}
 					}
 					if _, ok := rConfigSecondaryWorkerConfig["isPreemptible"]; ok {
@@ -1024,6 +1464,26 @@ func UnstructuredToCluster(u *unstructured.Resource) (*dclService.Cluster, error
 			if _, ok := rConfig["securityConfig"]; ok {
 				if rConfigSecurityConfig, ok := rConfig["securityConfig"].(map[string]interface{}); ok {
 					r.Config.SecurityConfig = &dclService.ClusterConfigSecurityConfig{}
+					if _, ok := rConfigSecurityConfig["identityConfig"]; ok {
+						if rConfigSecurityConfigIdentityConfig, ok := rConfigSecurityConfig["identityConfig"].(map[string]interface{}); ok {
+							r.Config.SecurityConfig.IdentityConfig = &dclService.ClusterConfigSecurityConfigIdentityConfig{}
+							if _, ok := rConfigSecurityConfigIdentityConfig["userServiceAccountMapping"]; ok {
+								if rConfigSecurityConfigIdentityConfigUserServiceAccountMapping, ok := rConfigSecurityConfigIdentityConfig["userServiceAccountMapping"].(map[string]interface{}); ok {
+									m := make(map[string]string)
+									for k, v := range rConfigSecurityConfigIdentityConfigUserServiceAccountMapping {
+										if s, ok := v.(string); ok {
+											m[k] = s
+										}
+									}
+									r.Config.SecurityConfig.IdentityConfig.UserServiceAccountMapping = m
+								} else {
+									return nil, fmt.Errorf("r.Config.SecurityConfig.IdentityConfig.UserServiceAccountMapping: expected map[string]interface{}")
+								}
+							}
+						} else {
+							return nil, fmt.Errorf("r.Config.SecurityConfig.IdentityConfig: expected map[string]interface{}")
+						}
+					}
 					if _, ok := rConfigSecurityConfig["kerberosConfig"]; ok {
 						if rConfigSecurityConfigKerberosConfig, ok := rConfigSecurityConfig["kerberosConfig"].(map[string]interface{}); ok {
 							r.Config.SecurityConfig.KerberosConfig = &dclService.ClusterConfigSecurityConfigKerberosConfig{}
@@ -1238,6 +1698,13 @@ func UnstructuredToCluster(u *unstructured.Resource) (*dclService.Cluster, error
 									return nil, fmt.Errorf("r.Config.WorkerConfig.DiskConfig.BootDiskType: expected string")
 								}
 							}
+							if _, ok := rConfigWorkerConfigDiskConfig["localSsdInterface"]; ok {
+								if s, ok := rConfigWorkerConfigDiskConfig["localSsdInterface"].(string); ok {
+									r.Config.WorkerConfig.DiskConfig.LocalSsdInterface = dcl.String(s)
+								} else {
+									return nil, fmt.Errorf("r.Config.WorkerConfig.DiskConfig.LocalSsdInterface: expected string")
+								}
+							}
 							if _, ok := rConfigWorkerConfigDiskConfig["numLocalSsds"]; ok {
 								if i, ok := rConfigWorkerConfigDiskConfig["numLocalSsds"].(int64); ok {
 									r.Config.WorkerConfig.DiskConfig.NumLocalSsds = dcl.Int64(i)
@@ -1265,6 +1732,46 @@ func UnstructuredToCluster(u *unstructured.Resource) (*dclService.Cluster, error
 							}
 						} else {
 							return nil, fmt.Errorf("r.Config.WorkerConfig.InstanceNames: expected []interface{}")
+						}
+					}
+					if _, ok := rConfigWorkerConfig["instanceReferences"]; ok {
+						if s, ok := rConfigWorkerConfig["instanceReferences"].([]interface{}); ok {
+							for _, o := range s {
+								if objval, ok := o.(map[string]interface{}); ok {
+									var rConfigWorkerConfigInstanceReferences dclService.ClusterConfigWorkerConfigInstanceReferences
+									if _, ok := objval["instanceId"]; ok {
+										if s, ok := objval["instanceId"].(string); ok {
+											rConfigWorkerConfigInstanceReferences.InstanceId = dcl.String(s)
+										} else {
+											return nil, fmt.Errorf("rConfigWorkerConfigInstanceReferences.InstanceId: expected string")
+										}
+									}
+									if _, ok := objval["instanceName"]; ok {
+										if s, ok := objval["instanceName"].(string); ok {
+											rConfigWorkerConfigInstanceReferences.InstanceName = dcl.String(s)
+										} else {
+											return nil, fmt.Errorf("rConfigWorkerConfigInstanceReferences.InstanceName: expected string")
+										}
+									}
+									if _, ok := objval["publicEciesKey"]; ok {
+										if s, ok := objval["publicEciesKey"].(string); ok {
+											rConfigWorkerConfigInstanceReferences.PublicEciesKey = dcl.String(s)
+										} else {
+											return nil, fmt.Errorf("rConfigWorkerConfigInstanceReferences.PublicEciesKey: expected string")
+										}
+									}
+									if _, ok := objval["publicKey"]; ok {
+										if s, ok := objval["publicKey"].(string); ok {
+											rConfigWorkerConfigInstanceReferences.PublicKey = dcl.String(s)
+										} else {
+											return nil, fmt.Errorf("rConfigWorkerConfigInstanceReferences.PublicKey: expected string")
+										}
+									}
+									r.Config.WorkerConfig.InstanceReferences = append(r.Config.WorkerConfig.InstanceReferences, rConfigWorkerConfigInstanceReferences)
+								}
+							}
+						} else {
+							return nil, fmt.Errorf("r.Config.WorkerConfig.InstanceReferences: expected []interface{}")
 						}
 					}
 					if _, ok := rConfigWorkerConfig["isPreemptible"]; ok {
@@ -1471,6 +1978,281 @@ func UnstructuredToCluster(u *unstructured.Resource) (*dclService.Cluster, error
 			}
 		} else {
 			return nil, fmt.Errorf("r.StatusHistory: expected []interface{}")
+		}
+	}
+	if _, ok := u.Object["virtualClusterConfig"]; ok {
+		if rVirtualClusterConfig, ok := u.Object["virtualClusterConfig"].(map[string]interface{}); ok {
+			r.VirtualClusterConfig = &dclService.ClusterVirtualClusterConfig{}
+			if _, ok := rVirtualClusterConfig["auxiliaryServicesConfig"]; ok {
+				if rVirtualClusterConfigAuxiliaryServicesConfig, ok := rVirtualClusterConfig["auxiliaryServicesConfig"].(map[string]interface{}); ok {
+					r.VirtualClusterConfig.AuxiliaryServicesConfig = &dclService.ClusterVirtualClusterConfigAuxiliaryServicesConfig{}
+					if _, ok := rVirtualClusterConfigAuxiliaryServicesConfig["metastoreConfig"]; ok {
+						if rVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig, ok := rVirtualClusterConfigAuxiliaryServicesConfig["metastoreConfig"].(map[string]interface{}); ok {
+							r.VirtualClusterConfig.AuxiliaryServicesConfig.MetastoreConfig = &dclService.ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig{}
+							if _, ok := rVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig["dataprocMetastoreService"]; ok {
+								if s, ok := rVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig["dataprocMetastoreService"].(string); ok {
+									r.VirtualClusterConfig.AuxiliaryServicesConfig.MetastoreConfig.DataprocMetastoreService = dcl.String(s)
+								} else {
+									return nil, fmt.Errorf("r.VirtualClusterConfig.AuxiliaryServicesConfig.MetastoreConfig.DataprocMetastoreService: expected string")
+								}
+							}
+						} else {
+							return nil, fmt.Errorf("r.VirtualClusterConfig.AuxiliaryServicesConfig.MetastoreConfig: expected map[string]interface{}")
+						}
+					}
+					if _, ok := rVirtualClusterConfigAuxiliaryServicesConfig["sparkHistoryServerConfig"]; ok {
+						if rVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig, ok := rVirtualClusterConfigAuxiliaryServicesConfig["sparkHistoryServerConfig"].(map[string]interface{}); ok {
+							r.VirtualClusterConfig.AuxiliaryServicesConfig.SparkHistoryServerConfig = &dclService.ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig{}
+							if _, ok := rVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig["dataprocCluster"]; ok {
+								if s, ok := rVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig["dataprocCluster"].(string); ok {
+									r.VirtualClusterConfig.AuxiliaryServicesConfig.SparkHistoryServerConfig.DataprocCluster = dcl.String(s)
+								} else {
+									return nil, fmt.Errorf("r.VirtualClusterConfig.AuxiliaryServicesConfig.SparkHistoryServerConfig.DataprocCluster: expected string")
+								}
+							}
+						} else {
+							return nil, fmt.Errorf("r.VirtualClusterConfig.AuxiliaryServicesConfig.SparkHistoryServerConfig: expected map[string]interface{}")
+						}
+					}
+				} else {
+					return nil, fmt.Errorf("r.VirtualClusterConfig.AuxiliaryServicesConfig: expected map[string]interface{}")
+				}
+			}
+			if _, ok := rVirtualClusterConfig["kubernetesClusterConfig"]; ok {
+				if rVirtualClusterConfigKubernetesClusterConfig, ok := rVirtualClusterConfig["kubernetesClusterConfig"].(map[string]interface{}); ok {
+					r.VirtualClusterConfig.KubernetesClusterConfig = &dclService.ClusterVirtualClusterConfigKubernetesClusterConfig{}
+					if _, ok := rVirtualClusterConfigKubernetesClusterConfig["gkeClusterConfig"]; ok {
+						if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig, ok := rVirtualClusterConfigKubernetesClusterConfig["gkeClusterConfig"].(map[string]interface{}); ok {
+							r.VirtualClusterConfig.KubernetesClusterConfig.GkeClusterConfig = &dclService.ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig{}
+							if _, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig["gkeClusterTarget"]; ok {
+								if s, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig["gkeClusterTarget"].(string); ok {
+									r.VirtualClusterConfig.KubernetesClusterConfig.GkeClusterConfig.GkeClusterTarget = dcl.String(s)
+								} else {
+									return nil, fmt.Errorf("r.VirtualClusterConfig.KubernetesClusterConfig.GkeClusterConfig.GkeClusterTarget: expected string")
+								}
+							}
+							if _, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig["nodePoolTarget"]; ok {
+								if s, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig["nodePoolTarget"].([]interface{}); ok {
+									for _, o := range s {
+										if objval, ok := o.(map[string]interface{}); ok {
+											var rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget dclService.ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget
+											if _, ok := objval["nodePool"]; ok {
+												if s, ok := objval["nodePool"].(string); ok {
+													rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePool = dcl.String(s)
+												} else {
+													return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePool: expected string")
+												}
+											}
+											if _, ok := objval["nodePoolConfig"]; ok {
+												if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig, ok := objval["nodePoolConfig"].(map[string]interface{}); ok {
+													rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig = &dclService.ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig{}
+													if _, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig["autoscaling"]; ok {
+														if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig["autoscaling"].(map[string]interface{}); ok {
+															rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Autoscaling = &dclService.ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling{}
+															if _, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling["maxNodeCount"]; ok {
+																if i, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling["maxNodeCount"].(int64); ok {
+																	rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Autoscaling.MaxNodeCount = dcl.Int64(i)
+																} else {
+																	return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Autoscaling.MaxNodeCount: expected int64")
+																}
+															}
+															if _, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling["minNodeCount"]; ok {
+																if i, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling["minNodeCount"].(int64); ok {
+																	rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Autoscaling.MinNodeCount = dcl.Int64(i)
+																} else {
+																	return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Autoscaling.MinNodeCount: expected int64")
+																}
+															}
+														} else {
+															return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Autoscaling: expected map[string]interface{}")
+														}
+													}
+													if _, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig["config"]; ok {
+														if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig["config"].(map[string]interface{}); ok {
+															rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config = &dclService.ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig{}
+															if _, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig["accelerators"]; ok {
+																if s, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig["accelerators"].([]interface{}); ok {
+																	for _, o := range s {
+																		if objval, ok := o.(map[string]interface{}); ok {
+																			var rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators dclService.ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators
+																			if _, ok := objval["acceleratorCount"]; ok {
+																				if i, ok := objval["acceleratorCount"].(int64); ok {
+																					rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators.AcceleratorCount = dcl.Int64(i)
+																				} else {
+																					return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators.AcceleratorCount: expected int64")
+																				}
+																			}
+																			if _, ok := objval["acceleratorType"]; ok {
+																				if s, ok := objval["acceleratorType"].(string); ok {
+																					rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators.AcceleratorType = dcl.String(s)
+																				} else {
+																					return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators.AcceleratorType: expected string")
+																				}
+																			}
+																			if _, ok := objval["gpuPartitionSize"]; ok {
+																				if s, ok := objval["gpuPartitionSize"].(string); ok {
+																					rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators.GpuPartitionSize = dcl.String(s)
+																				} else {
+																					return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators.GpuPartitionSize: expected string")
+																				}
+																			}
+																			rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config.Accelerators = append(rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config.Accelerators, rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators)
+																		}
+																	}
+																} else {
+																	return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config.Accelerators: expected []interface{}")
+																}
+															}
+															if _, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig["bootDiskKmsKey"]; ok {
+																if s, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig["bootDiskKmsKey"].(string); ok {
+																	rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config.BootDiskKmsKey = dcl.String(s)
+																} else {
+																	return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config.BootDiskKmsKey: expected string")
+																}
+															}
+															if _, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig["ephemeralStorageConfig"]; ok {
+																if rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig["ephemeralStorageConfig"].(map[string]interface{}); ok {
+																	rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config.EphemeralStorageConfig = &dclService.ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig{}
+																	if _, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig["localSsdCount"]; ok {
+																		if i, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig["localSsdCount"].(int64); ok {
+																			rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config.EphemeralStorageConfig.LocalSsdCount = dcl.Int64(i)
+																		} else {
+																			return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config.EphemeralStorageConfig.LocalSsdCount: expected int64")
+																		}
+																	}
+																} else {
+																	return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config.EphemeralStorageConfig: expected map[string]interface{}")
+																}
+															}
+															if _, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig["localSsdCount"]; ok {
+																if i, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig["localSsdCount"].(int64); ok {
+																	rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config.LocalSsdCount = dcl.Int64(i)
+																} else {
+																	return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config.LocalSsdCount: expected int64")
+																}
+															}
+															if _, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig["machineType"]; ok {
+																if s, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig["machineType"].(string); ok {
+																	rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config.MachineType = dcl.String(s)
+																} else {
+																	return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config.MachineType: expected string")
+																}
+															}
+															if _, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig["minCpuPlatform"]; ok {
+																if s, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig["minCpuPlatform"].(string); ok {
+																	rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config.MinCpuPlatform = dcl.String(s)
+																} else {
+																	return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config.MinCpuPlatform: expected string")
+																}
+															}
+															if _, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig["preemptible"]; ok {
+																if b, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig["preemptible"].(bool); ok {
+																	rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config.Preemptible = dcl.Bool(b)
+																} else {
+																	return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config.Preemptible: expected bool")
+																}
+															}
+															if _, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig["spot"]; ok {
+																if b, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig["spot"].(bool); ok {
+																	rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config.Spot = dcl.Bool(b)
+																} else {
+																	return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config.Spot: expected bool")
+																}
+															}
+														} else {
+															return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Config: expected map[string]interface{}")
+														}
+													}
+													if _, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig["locations"]; ok {
+														if s, ok := rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig["locations"].([]interface{}); ok {
+															for _, ss := range s {
+																if strval, ok := ss.(string); ok {
+																	rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Locations = append(rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Locations, strval)
+																}
+															}
+														} else {
+															return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig.Locations: expected []interface{}")
+														}
+													}
+												} else {
+													return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.NodePoolConfig: expected map[string]interface{}")
+												}
+											}
+											if _, ok := objval["roles"]; ok {
+												if s, ok := objval["roles"].([]interface{}); ok {
+													for _, ss := range s {
+														if strval, ok := ss.(string); ok {
+															rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.Roles = append(rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.Roles, dclService.ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum(strval))
+														}
+													}
+												} else {
+													return nil, fmt.Errorf("rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget.Roles: expected []interface{}")
+												}
+											}
+											r.VirtualClusterConfig.KubernetesClusterConfig.GkeClusterConfig.NodePoolTarget = append(r.VirtualClusterConfig.KubernetesClusterConfig.GkeClusterConfig.NodePoolTarget, rVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget)
+										}
+									}
+								} else {
+									return nil, fmt.Errorf("r.VirtualClusterConfig.KubernetesClusterConfig.GkeClusterConfig.NodePoolTarget: expected []interface{}")
+								}
+							}
+						} else {
+							return nil, fmt.Errorf("r.VirtualClusterConfig.KubernetesClusterConfig.GkeClusterConfig: expected map[string]interface{}")
+						}
+					}
+					if _, ok := rVirtualClusterConfigKubernetesClusterConfig["kubernetesNamespace"]; ok {
+						if s, ok := rVirtualClusterConfigKubernetesClusterConfig["kubernetesNamespace"].(string); ok {
+							r.VirtualClusterConfig.KubernetesClusterConfig.KubernetesNamespace = dcl.String(s)
+						} else {
+							return nil, fmt.Errorf("r.VirtualClusterConfig.KubernetesClusterConfig.KubernetesNamespace: expected string")
+						}
+					}
+					if _, ok := rVirtualClusterConfigKubernetesClusterConfig["kubernetesSoftwareConfig"]; ok {
+						if rVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig, ok := rVirtualClusterConfigKubernetesClusterConfig["kubernetesSoftwareConfig"].(map[string]interface{}); ok {
+							r.VirtualClusterConfig.KubernetesClusterConfig.KubernetesSoftwareConfig = &dclService.ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig{}
+							if _, ok := rVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig["componentVersion"]; ok {
+								if rVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigComponentVersion, ok := rVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig["componentVersion"].(map[string]interface{}); ok {
+									m := make(map[string]string)
+									for k, v := range rVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigComponentVersion {
+										if s, ok := v.(string); ok {
+											m[k] = s
+										}
+									}
+									r.VirtualClusterConfig.KubernetesClusterConfig.KubernetesSoftwareConfig.ComponentVersion = m
+								} else {
+									return nil, fmt.Errorf("r.VirtualClusterConfig.KubernetesClusterConfig.KubernetesSoftwareConfig.ComponentVersion: expected map[string]interface{}")
+								}
+							}
+							if _, ok := rVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig["properties"]; ok {
+								if rVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigProperties, ok := rVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig["properties"].(map[string]interface{}); ok {
+									m := make(map[string]string)
+									for k, v := range rVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigProperties {
+										if s, ok := v.(string); ok {
+											m[k] = s
+										}
+									}
+									r.VirtualClusterConfig.KubernetesClusterConfig.KubernetesSoftwareConfig.Properties = m
+								} else {
+									return nil, fmt.Errorf("r.VirtualClusterConfig.KubernetesClusterConfig.KubernetesSoftwareConfig.Properties: expected map[string]interface{}")
+								}
+							}
+						} else {
+							return nil, fmt.Errorf("r.VirtualClusterConfig.KubernetesClusterConfig.KubernetesSoftwareConfig: expected map[string]interface{}")
+						}
+					}
+				} else {
+					return nil, fmt.Errorf("r.VirtualClusterConfig.KubernetesClusterConfig: expected map[string]interface{}")
+				}
+			}
+			if _, ok := rVirtualClusterConfig["stagingBucket"]; ok {
+				if s, ok := rVirtualClusterConfig["stagingBucket"].(string); ok {
+					r.VirtualClusterConfig.StagingBucket = dcl.String(s)
+				} else {
+					return nil, fmt.Errorf("r.VirtualClusterConfig.StagingBucket: expected string")
+				}
+			}
+		} else {
+			return nil, fmt.Errorf("r.VirtualClusterConfig: expected map[string]interface{}")
 		}
 	}
 	return r, nil

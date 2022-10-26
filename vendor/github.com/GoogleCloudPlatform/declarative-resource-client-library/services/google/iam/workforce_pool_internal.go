@@ -609,7 +609,7 @@ func diffWorkforcePool(c *Client, desired, actual *WorkforcePool, opts ...dcl.Ap
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SessionDuration, actual.SessionDuration, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateWorkforcePoolUpdateWorkforcePoolOperation")}, fn.AddNest("SessionDuration")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SessionDuration, actual.SessionDuration, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateWorkforcePoolUpdateWorkforcePoolOperation")}, fn.AddNest("SessionDuration")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

@@ -60,11 +60,16 @@ func (r *InstanceBundlesConfigConfigControllerConfig) validate() error {
 	return nil
 }
 func (r *InstanceManagementConfig) validate() error {
-	if err := dcl.Required(r, "standardManagementConfig"); err != nil {
+	if err := dcl.ValidateAtMostOneOfFieldsSet([]string{"StandardManagementConfig", "FullManagementConfig"}, r.StandardManagementConfig, r.FullManagementConfig); err != nil {
 		return err
 	}
 	if !dcl.IsEmptyValueIndirect(r.StandardManagementConfig) {
 		if err := r.StandardManagementConfig.validate(); err != nil {
+			return err
+		}
+	}
+	if !dcl.IsEmptyValueIndirect(r.FullManagementConfig) {
+		if err := r.FullManagementConfig.validate(); err != nil {
 			return err
 		}
 	}
@@ -74,6 +79,9 @@ func (r *InstanceManagementConfigStandardManagementConfig) validate() error {
 	if err := dcl.Required(r, "masterIPv4CidrBlock"); err != nil {
 		return err
 	}
+	return nil
+}
+func (r *InstanceManagementConfigFullManagementConfig) validate() error {
 	return nil
 }
 func (r *Instance) basePath() string {
@@ -735,6 +743,26 @@ func canonicalizeInstanceManagementConfig(des, initial *InstanceManagementConfig
 		return des
 	}
 
+	if des.StandardManagementConfig != nil || (initial != nil && initial.StandardManagementConfig != nil) {
+		// Check if anything else is set.
+		if dcl.AnySet(des.FullManagementConfig) {
+			des.StandardManagementConfig = nil
+			if initial != nil {
+				initial.StandardManagementConfig = nil
+			}
+		}
+	}
+
+	if des.FullManagementConfig != nil || (initial != nil && initial.FullManagementConfig != nil) {
+		// Check if anything else is set.
+		if dcl.AnySet(des.StandardManagementConfig) {
+			des.FullManagementConfig = nil
+			if initial != nil {
+				initial.FullManagementConfig = nil
+			}
+		}
+	}
+
 	if initial == nil {
 		return des
 	}
@@ -742,6 +770,7 @@ func canonicalizeInstanceManagementConfig(des, initial *InstanceManagementConfig
 	cDes := &InstanceManagementConfig{}
 
 	cDes.StandardManagementConfig = canonicalizeInstanceManagementConfigStandardManagementConfig(des.StandardManagementConfig, initial.StandardManagementConfig, opts...)
+	cDes.FullManagementConfig = canonicalizeInstanceManagementConfigFullManagementConfig(des.FullManagementConfig, initial.FullManagementConfig, opts...)
 
 	return cDes
 }
@@ -789,6 +818,7 @@ func canonicalizeNewInstanceManagementConfig(c *Client, des, nw *InstanceManagem
 	}
 
 	nw.StandardManagementConfig = canonicalizeNewInstanceManagementConfigStandardManagementConfig(c, des.StandardManagementConfig, nw.StandardManagementConfig)
+	nw.FullManagementConfig = canonicalizeNewInstanceManagementConfigFullManagementConfig(c, des.FullManagementConfig, nw.FullManagementConfig)
 
 	return nw
 }
@@ -997,6 +1027,167 @@ func canonicalizeNewInstanceManagementConfigStandardManagementConfigSlice(c *Cli
 	return items
 }
 
+func canonicalizeInstanceManagementConfigFullManagementConfig(des, initial *InstanceManagementConfigFullManagementConfig, opts ...dcl.ApplyOption) *InstanceManagementConfigFullManagementConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &InstanceManagementConfigFullManagementConfig{}
+
+	if dcl.IsZeroValue(des.Network) || (dcl.IsEmptyValueIndirect(des.Network) && dcl.IsEmptyValueIndirect(initial.Network)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.Network = initial.Network
+	} else {
+		cDes.Network = des.Network
+	}
+	if dcl.StringCanonicalize(des.MasterIPv4CidrBlock, initial.MasterIPv4CidrBlock) || dcl.IsZeroValue(des.MasterIPv4CidrBlock) {
+		cDes.MasterIPv4CidrBlock = initial.MasterIPv4CidrBlock
+	} else {
+		cDes.MasterIPv4CidrBlock = des.MasterIPv4CidrBlock
+	}
+	if dcl.StringCanonicalize(des.ManBlock, initial.ManBlock) || dcl.IsZeroValue(des.ManBlock) {
+		cDes.ManBlock = initial.ManBlock
+	} else {
+		cDes.ManBlock = des.ManBlock
+	}
+	if dcl.StringCanonicalize(des.ClusterCidrBlock, initial.ClusterCidrBlock) || dcl.IsZeroValue(des.ClusterCidrBlock) {
+		cDes.ClusterCidrBlock = initial.ClusterCidrBlock
+	} else {
+		cDes.ClusterCidrBlock = des.ClusterCidrBlock
+	}
+	if dcl.StringCanonicalize(des.ServicesCidrBlock, initial.ServicesCidrBlock) || dcl.IsZeroValue(des.ServicesCidrBlock) {
+		cDes.ServicesCidrBlock = initial.ServicesCidrBlock
+	} else {
+		cDes.ServicesCidrBlock = des.ServicesCidrBlock
+	}
+	if dcl.StringCanonicalize(des.ClusterNamedRange, initial.ClusterNamedRange) || dcl.IsZeroValue(des.ClusterNamedRange) {
+		cDes.ClusterNamedRange = initial.ClusterNamedRange
+	} else {
+		cDes.ClusterNamedRange = des.ClusterNamedRange
+	}
+	if dcl.StringCanonicalize(des.ServicesNamedRange, initial.ServicesNamedRange) || dcl.IsZeroValue(des.ServicesNamedRange) {
+		cDes.ServicesNamedRange = initial.ServicesNamedRange
+	} else {
+		cDes.ServicesNamedRange = des.ServicesNamedRange
+	}
+
+	return cDes
+}
+
+func canonicalizeInstanceManagementConfigFullManagementConfigSlice(des, initial []InstanceManagementConfigFullManagementConfig, opts ...dcl.ApplyOption) []InstanceManagementConfigFullManagementConfig {
+	if des == nil {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]InstanceManagementConfigFullManagementConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeInstanceManagementConfigFullManagementConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]InstanceManagementConfigFullManagementConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeInstanceManagementConfigFullManagementConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewInstanceManagementConfigFullManagementConfig(c *Client, des, nw *InstanceManagementConfigFullManagementConfig) *InstanceManagementConfigFullManagementConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for InstanceManagementConfigFullManagementConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	if dcl.StringCanonicalize(des.MasterIPv4CidrBlock, nw.MasterIPv4CidrBlock) {
+		nw.MasterIPv4CidrBlock = des.MasterIPv4CidrBlock
+	}
+	if dcl.StringCanonicalize(des.ManBlock, nw.ManBlock) {
+		nw.ManBlock = des.ManBlock
+	}
+	if dcl.StringCanonicalize(des.ClusterCidrBlock, nw.ClusterCidrBlock) {
+		nw.ClusterCidrBlock = des.ClusterCidrBlock
+	}
+	if dcl.StringCanonicalize(des.ServicesCidrBlock, nw.ServicesCidrBlock) {
+		nw.ServicesCidrBlock = des.ServicesCidrBlock
+	}
+	if dcl.StringCanonicalize(des.ClusterNamedRange, nw.ClusterNamedRange) {
+		nw.ClusterNamedRange = des.ClusterNamedRange
+	}
+	if dcl.StringCanonicalize(des.ServicesNamedRange, nw.ServicesNamedRange) {
+		nw.ServicesNamedRange = des.ServicesNamedRange
+	}
+
+	return nw
+}
+
+func canonicalizeNewInstanceManagementConfigFullManagementConfigSet(c *Client, des, nw []InstanceManagementConfigFullManagementConfig) []InstanceManagementConfigFullManagementConfig {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []InstanceManagementConfigFullManagementConfig
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareInstanceManagementConfigFullManagementConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewInstanceManagementConfigFullManagementConfigSlice(c *Client, des, nw []InstanceManagementConfigFullManagementConfig) []InstanceManagementConfigFullManagementConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []InstanceManagementConfigFullManagementConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewInstanceManagementConfigFullManagementConfig(c, &d, &n))
+	}
+
+	return items
+}
+
 // The differ returns a list of diffs, along with a list of operations that should be taken
 // to remedy them. Right now, it does not attempt to consolidate operations - if several
 // fields can be fixed with a patch update, it will perform the patch several times.
@@ -1164,6 +1355,13 @@ func compareInstanceManagementConfigNewStyle(d, a interface{}, fn dcl.FieldName)
 		}
 		diffs = append(diffs, ds...)
 	}
+
+	if ds, err := dcl.Diff(desired.FullManagementConfig, actual.FullManagementConfig, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareInstanceManagementConfigFullManagementConfigNewStyle, EmptyObject: EmptyInstanceManagementConfigFullManagementConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("FullManagementConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
 	return diffs, nil
 }
 
@@ -1201,7 +1399,7 @@ func compareInstanceManagementConfigStandardManagementConfigNewStyle(d, a interf
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ManBlock, actual.ManBlock, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ManBlock")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ManBlock, actual.ManBlock, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ManBlock")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1216,6 +1414,77 @@ func compareInstanceManagementConfigStandardManagementConfigNewStyle(d, a interf
 	}
 
 	if ds, err := dcl.Diff(desired.ServicesCidrBlock, actual.ServicesCidrBlock, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ServicesCidrBlock")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.ClusterNamedRange, actual.ClusterNamedRange, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ClusterNamedRange")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.ServicesNamedRange, actual.ServicesNamedRange, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ServicesNamedRange")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareInstanceManagementConfigFullManagementConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*InstanceManagementConfigFullManagementConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(InstanceManagementConfigFullManagementConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a InstanceManagementConfigFullManagementConfig or *InstanceManagementConfigFullManagementConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*InstanceManagementConfigFullManagementConfig)
+	if !ok {
+		actualNotPointer, ok := a.(InstanceManagementConfigFullManagementConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a InstanceManagementConfigFullManagementConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.Network, actual.Network, dcl.DiffInfo{ServerDefault: true, Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Network")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.MasterIPv4CidrBlock, actual.MasterIPv4CidrBlock, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MasterIpv4CidrBlock")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.ManBlock, actual.ManBlock, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ManBlock")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.ClusterCidrBlock, actual.ClusterCidrBlock, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ClusterCidrBlock")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.ServicesCidrBlock, actual.ServicesCidrBlock, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ServicesCidrBlock")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1672,6 +1941,11 @@ func expandInstanceManagementConfig(c *Client, f *InstanceManagementConfig, res 
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["standardManagementConfig"] = v
 	}
+	if v, err := expandInstanceManagementConfigFullManagementConfig(c, f.FullManagementConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding FullManagementConfig into fullManagementConfig: %w", err)
+	} else if v != nil {
+		m["fullManagementConfig"] = v
+	}
 
 	return m, nil
 }
@@ -1690,6 +1964,7 @@ func flattenInstanceManagementConfig(c *Client, i interface{}, res *Instance) *I
 		return EmptyInstanceManagementConfig
 	}
 	r.StandardManagementConfig = flattenInstanceManagementConfigStandardManagementConfig(c, m["standardManagementConfig"], res)
+	r.FullManagementConfig = flattenInstanceManagementConfigFullManagementConfig(c, m["fullManagementConfig"], res)
 
 	return r
 }
@@ -1820,6 +2095,144 @@ func flattenInstanceManagementConfigStandardManagementConfig(c *Client, i interf
 
 	if dcl.IsEmptyValueIndirect(i) {
 		return EmptyInstanceManagementConfigStandardManagementConfig
+	}
+	r.Network = dcl.FlattenString(m["network"])
+	r.MasterIPv4CidrBlock = dcl.FlattenString(m["masterIpv4CidrBlock"])
+	r.ManBlock = dcl.FlattenString(m["manBlock"])
+	r.ClusterCidrBlock = dcl.FlattenString(m["clusterCidrBlock"])
+	r.ServicesCidrBlock = dcl.FlattenString(m["servicesCidrBlock"])
+	r.ClusterNamedRange = dcl.FlattenString(m["clusterNamedRange"])
+	r.ServicesNamedRange = dcl.FlattenString(m["servicesNamedRange"])
+
+	return r
+}
+
+// expandInstanceManagementConfigFullManagementConfigMap expands the contents of InstanceManagementConfigFullManagementConfig into a JSON
+// request object.
+func expandInstanceManagementConfigFullManagementConfigMap(c *Client, f map[string]InstanceManagementConfigFullManagementConfig, res *Instance) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandInstanceManagementConfigFullManagementConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandInstanceManagementConfigFullManagementConfigSlice expands the contents of InstanceManagementConfigFullManagementConfig into a JSON
+// request object.
+func expandInstanceManagementConfigFullManagementConfigSlice(c *Client, f []InstanceManagementConfigFullManagementConfig, res *Instance) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandInstanceManagementConfigFullManagementConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenInstanceManagementConfigFullManagementConfigMap flattens the contents of InstanceManagementConfigFullManagementConfig from a JSON
+// response object.
+func flattenInstanceManagementConfigFullManagementConfigMap(c *Client, i interface{}, res *Instance) map[string]InstanceManagementConfigFullManagementConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]InstanceManagementConfigFullManagementConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]InstanceManagementConfigFullManagementConfig{}
+	}
+
+	items := make(map[string]InstanceManagementConfigFullManagementConfig)
+	for k, item := range a {
+		items[k] = *flattenInstanceManagementConfigFullManagementConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenInstanceManagementConfigFullManagementConfigSlice flattens the contents of InstanceManagementConfigFullManagementConfig from a JSON
+// response object.
+func flattenInstanceManagementConfigFullManagementConfigSlice(c *Client, i interface{}, res *Instance) []InstanceManagementConfigFullManagementConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []InstanceManagementConfigFullManagementConfig{}
+	}
+
+	if len(a) == 0 {
+		return []InstanceManagementConfigFullManagementConfig{}
+	}
+
+	items := make([]InstanceManagementConfigFullManagementConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenInstanceManagementConfigFullManagementConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandInstanceManagementConfigFullManagementConfig expands an instance of InstanceManagementConfigFullManagementConfig into a JSON
+// request object.
+func expandInstanceManagementConfigFullManagementConfig(c *Client, f *InstanceManagementConfigFullManagementConfig, res *Instance) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.Network; !dcl.IsEmptyValueIndirect(v) {
+		m["network"] = v
+	}
+	if v := f.MasterIPv4CidrBlock; !dcl.IsEmptyValueIndirect(v) {
+		m["masterIpv4CidrBlock"] = v
+	}
+	if v := f.ManBlock; !dcl.IsEmptyValueIndirect(v) {
+		m["manBlock"] = v
+	}
+	if v := f.ClusterCidrBlock; !dcl.IsEmptyValueIndirect(v) {
+		m["clusterCidrBlock"] = v
+	}
+	if v := f.ServicesCidrBlock; !dcl.IsEmptyValueIndirect(v) {
+		m["servicesCidrBlock"] = v
+	}
+	if v := f.ClusterNamedRange; !dcl.IsEmptyValueIndirect(v) {
+		m["clusterNamedRange"] = v
+	}
+	if v := f.ServicesNamedRange; !dcl.IsEmptyValueIndirect(v) {
+		m["servicesNamedRange"] = v
+	}
+
+	return m, nil
+}
+
+// flattenInstanceManagementConfigFullManagementConfig flattens an instance of InstanceManagementConfigFullManagementConfig from a JSON
+// response object.
+func flattenInstanceManagementConfigFullManagementConfig(c *Client, i interface{}, res *Instance) *InstanceManagementConfigFullManagementConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &InstanceManagementConfigFullManagementConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyInstanceManagementConfigFullManagementConfig
 	}
 	r.Network = dcl.FlattenString(m["network"])
 	r.MasterIPv4CidrBlock = dcl.FlattenString(m["masterIpv4CidrBlock"])
@@ -2027,9 +2440,23 @@ func extractInstanceManagementConfigFields(r *Instance, o *InstanceManagementCon
 	if !dcl.IsEmptyValueIndirect(vStandardManagementConfig) {
 		o.StandardManagementConfig = vStandardManagementConfig
 	}
+	vFullManagementConfig := o.FullManagementConfig
+	if vFullManagementConfig == nil {
+		// note: explicitly not the empty object.
+		vFullManagementConfig = &InstanceManagementConfigFullManagementConfig{}
+	}
+	if err := extractInstanceManagementConfigFullManagementConfigFields(r, vFullManagementConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vFullManagementConfig) {
+		o.FullManagementConfig = vFullManagementConfig
+	}
 	return nil
 }
 func extractInstanceManagementConfigStandardManagementConfigFields(r *Instance, o *InstanceManagementConfigStandardManagementConfig) error {
+	return nil
+}
+func extractInstanceManagementConfigFullManagementConfigFields(r *Instance, o *InstanceManagementConfigFullManagementConfig) error {
 	return nil
 }
 
@@ -2087,8 +2514,22 @@ func postReadExtractInstanceManagementConfigFields(r *Instance, o *InstanceManag
 	if !dcl.IsEmptyValueIndirect(vStandardManagementConfig) {
 		o.StandardManagementConfig = vStandardManagementConfig
 	}
+	vFullManagementConfig := o.FullManagementConfig
+	if vFullManagementConfig == nil {
+		// note: explicitly not the empty object.
+		vFullManagementConfig = &InstanceManagementConfigFullManagementConfig{}
+	}
+	if err := extractInstanceManagementConfigFullManagementConfigFields(r, vFullManagementConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vFullManagementConfig) {
+		o.FullManagementConfig = vFullManagementConfig
+	}
 	return nil
 }
 func postReadExtractInstanceManagementConfigStandardManagementConfigFields(r *Instance, o *InstanceManagementConfigStandardManagementConfig) error {
+	return nil
+}
+func postReadExtractInstanceManagementConfigFullManagementConfigFields(r *Instance, o *InstanceManagementConfigFullManagementConfig) error {
 	return nil
 }

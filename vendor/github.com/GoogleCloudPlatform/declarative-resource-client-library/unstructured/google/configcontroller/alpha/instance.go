@@ -47,6 +47,31 @@ func InstanceToUnstructured(r *dclService.Instance) *unstructured.Resource {
 	}
 	if r.ManagementConfig != nil && r.ManagementConfig != dclService.EmptyInstanceManagementConfig {
 		rManagementConfig := make(map[string]interface{})
+		if r.ManagementConfig.FullManagementConfig != nil && r.ManagementConfig.FullManagementConfig != dclService.EmptyInstanceManagementConfigFullManagementConfig {
+			rManagementConfigFullManagementConfig := make(map[string]interface{})
+			if r.ManagementConfig.FullManagementConfig.ClusterCidrBlock != nil {
+				rManagementConfigFullManagementConfig["clusterCidrBlock"] = *r.ManagementConfig.FullManagementConfig.ClusterCidrBlock
+			}
+			if r.ManagementConfig.FullManagementConfig.ClusterNamedRange != nil {
+				rManagementConfigFullManagementConfig["clusterNamedRange"] = *r.ManagementConfig.FullManagementConfig.ClusterNamedRange
+			}
+			if r.ManagementConfig.FullManagementConfig.ManBlock != nil {
+				rManagementConfigFullManagementConfig["manBlock"] = *r.ManagementConfig.FullManagementConfig.ManBlock
+			}
+			if r.ManagementConfig.FullManagementConfig.MasterIPv4CidrBlock != nil {
+				rManagementConfigFullManagementConfig["masterIPv4CidrBlock"] = *r.ManagementConfig.FullManagementConfig.MasterIPv4CidrBlock
+			}
+			if r.ManagementConfig.FullManagementConfig.Network != nil {
+				rManagementConfigFullManagementConfig["network"] = *r.ManagementConfig.FullManagementConfig.Network
+			}
+			if r.ManagementConfig.FullManagementConfig.ServicesCidrBlock != nil {
+				rManagementConfigFullManagementConfig["servicesCidrBlock"] = *r.ManagementConfig.FullManagementConfig.ServicesCidrBlock
+			}
+			if r.ManagementConfig.FullManagementConfig.ServicesNamedRange != nil {
+				rManagementConfigFullManagementConfig["servicesNamedRange"] = *r.ManagementConfig.FullManagementConfig.ServicesNamedRange
+			}
+			rManagementConfig["fullManagementConfig"] = rManagementConfigFullManagementConfig
+		}
 		if r.ManagementConfig.StandardManagementConfig != nil && r.ManagementConfig.StandardManagementConfig != dclService.EmptyInstanceManagementConfigStandardManagementConfig {
 			rManagementConfigStandardManagementConfig := make(map[string]interface{})
 			if r.ManagementConfig.StandardManagementConfig.ClusterCidrBlock != nil {
@@ -121,6 +146,62 @@ func UnstructuredToInstance(u *unstructured.Resource) (*dclService.Instance, err
 	if _, ok := u.Object["managementConfig"]; ok {
 		if rManagementConfig, ok := u.Object["managementConfig"].(map[string]interface{}); ok {
 			r.ManagementConfig = &dclService.InstanceManagementConfig{}
+			if _, ok := rManagementConfig["fullManagementConfig"]; ok {
+				if rManagementConfigFullManagementConfig, ok := rManagementConfig["fullManagementConfig"].(map[string]interface{}); ok {
+					r.ManagementConfig.FullManagementConfig = &dclService.InstanceManagementConfigFullManagementConfig{}
+					if _, ok := rManagementConfigFullManagementConfig["clusterCidrBlock"]; ok {
+						if s, ok := rManagementConfigFullManagementConfig["clusterCidrBlock"].(string); ok {
+							r.ManagementConfig.FullManagementConfig.ClusterCidrBlock = dcl.String(s)
+						} else {
+							return nil, fmt.Errorf("r.ManagementConfig.FullManagementConfig.ClusterCidrBlock: expected string")
+						}
+					}
+					if _, ok := rManagementConfigFullManagementConfig["clusterNamedRange"]; ok {
+						if s, ok := rManagementConfigFullManagementConfig["clusterNamedRange"].(string); ok {
+							r.ManagementConfig.FullManagementConfig.ClusterNamedRange = dcl.String(s)
+						} else {
+							return nil, fmt.Errorf("r.ManagementConfig.FullManagementConfig.ClusterNamedRange: expected string")
+						}
+					}
+					if _, ok := rManagementConfigFullManagementConfig["manBlock"]; ok {
+						if s, ok := rManagementConfigFullManagementConfig["manBlock"].(string); ok {
+							r.ManagementConfig.FullManagementConfig.ManBlock = dcl.String(s)
+						} else {
+							return nil, fmt.Errorf("r.ManagementConfig.FullManagementConfig.ManBlock: expected string")
+						}
+					}
+					if _, ok := rManagementConfigFullManagementConfig["masterIPv4CidrBlock"]; ok {
+						if s, ok := rManagementConfigFullManagementConfig["masterIPv4CidrBlock"].(string); ok {
+							r.ManagementConfig.FullManagementConfig.MasterIPv4CidrBlock = dcl.String(s)
+						} else {
+							return nil, fmt.Errorf("r.ManagementConfig.FullManagementConfig.MasterIPv4CidrBlock: expected string")
+						}
+					}
+					if _, ok := rManagementConfigFullManagementConfig["network"]; ok {
+						if s, ok := rManagementConfigFullManagementConfig["network"].(string); ok {
+							r.ManagementConfig.FullManagementConfig.Network = dcl.String(s)
+						} else {
+							return nil, fmt.Errorf("r.ManagementConfig.FullManagementConfig.Network: expected string")
+						}
+					}
+					if _, ok := rManagementConfigFullManagementConfig["servicesCidrBlock"]; ok {
+						if s, ok := rManagementConfigFullManagementConfig["servicesCidrBlock"].(string); ok {
+							r.ManagementConfig.FullManagementConfig.ServicesCidrBlock = dcl.String(s)
+						} else {
+							return nil, fmt.Errorf("r.ManagementConfig.FullManagementConfig.ServicesCidrBlock: expected string")
+						}
+					}
+					if _, ok := rManagementConfigFullManagementConfig["servicesNamedRange"]; ok {
+						if s, ok := rManagementConfigFullManagementConfig["servicesNamedRange"].(string); ok {
+							r.ManagementConfig.FullManagementConfig.ServicesNamedRange = dcl.String(s)
+						} else {
+							return nil, fmt.Errorf("r.ManagementConfig.FullManagementConfig.ServicesNamedRange: expected string")
+						}
+					}
+				} else {
+					return nil, fmt.Errorf("r.ManagementConfig.FullManagementConfig: expected map[string]interface{}")
+				}
+			}
 			if _, ok := rManagementConfig["standardManagementConfig"]; ok {
 				if rManagementConfigStandardManagementConfig, ok := rManagementConfig["standardManagementConfig"].(map[string]interface{}); ok {
 					r.ManagementConfig.StandardManagementConfig = &dclService.InstanceManagementConfigStandardManagementConfig{}

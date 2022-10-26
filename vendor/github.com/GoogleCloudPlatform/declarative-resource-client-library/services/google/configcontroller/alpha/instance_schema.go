@@ -138,16 +138,82 @@ func DCLInstanceSchema() *dcl.Schema {
 								GoType:      "InstanceManagementConfig",
 								Description: "Configuration of the cluster management",
 								Immutable:   true,
-								Required: []string{
-									"standardManagementConfig",
-								},
 								Properties: map[string]*dcl.Property{
+									"fullManagementConfig": &dcl.Property{
+										Type:        "object",
+										GoName:      "FullManagementConfig",
+										GoType:      "InstanceManagementConfigFullManagementConfig",
+										Description: "Configuration of the full (Autopilot) cluster management",
+										Immutable:   true,
+										Conflicts: []string{
+											"standardManagementConfig",
+										},
+										ServerDefault: true,
+										SendEmpty:     true,
+										Properties: map[string]*dcl.Property{
+											"clusterCidrBlock": &dcl.Property{
+												Type:          "string",
+												GoName:        "ClusterCidrBlock",
+												Description:   "The IP address range for the cluster pod IPs. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use.",
+												Immutable:     true,
+												ServerDefault: true,
+											},
+											"clusterNamedRange": &dcl.Property{
+												Type:        "string",
+												GoName:      "ClusterNamedRange",
+												Description: "The name of the existing secondary range in the cluster's subnetwork to use for pod IP addresses. Alternatively, cluster_cidr_block can be used to automatically create a GKE-managed one.",
+												Immutable:   true,
+											},
+											"manBlock": &dcl.Property{
+												Type:          "string",
+												GoName:        "ManBlock",
+												Description:   "Master Authorized Network. Allows access to the k8s master from this block.",
+												Immutable:     true,
+												ServerDefault: true,
+											},
+											"masterIPv4CidrBlock": &dcl.Property{
+												Type:        "string",
+												GoName:      "MasterIPv4CidrBlock",
+												Description: "The /28 network that the masters will use.",
+												Immutable:   true,
+											},
+											"network": &dcl.Property{
+												Type:          "string",
+												GoName:        "Network",
+												Description:   "Existing VPC Network to put the GKE cluster and nodes in.",
+												Immutable:     true,
+												ServerDefault: true,
+												ResourceReferences: []*dcl.PropertyResourceReference{
+													&dcl.PropertyResourceReference{
+														Resource: "Compute/Network",
+														Field:    "name",
+													},
+												},
+											},
+											"servicesCidrBlock": &dcl.Property{
+												Type:          "string",
+												GoName:        "ServicesCidrBlock",
+												Description:   "The IP address range for the cluster service IPs. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use.",
+												Immutable:     true,
+												ServerDefault: true,
+											},
+											"servicesNamedRange": &dcl.Property{
+												Type:        "string",
+												GoName:      "ServicesNamedRange",
+												Description: "The name of the existing secondary range in the cluster's subnetwork to use for service ClusterIPs. Alternatively, services_cidr_block can be used to automatically create a GKE-managed one.",
+												Immutable:   true,
+											},
+										},
+									},
 									"standardManagementConfig": &dcl.Property{
 										Type:        "object",
 										GoName:      "StandardManagementConfig",
 										GoType:      "InstanceManagementConfigStandardManagementConfig",
 										Description: "Configuration of the standard (GKE) cluster management",
 										Immutable:   true,
+										Conflicts: []string{
+											"fullManagementConfig",
+										},
 										Required: []string{
 											"masterIPv4CidrBlock",
 										},

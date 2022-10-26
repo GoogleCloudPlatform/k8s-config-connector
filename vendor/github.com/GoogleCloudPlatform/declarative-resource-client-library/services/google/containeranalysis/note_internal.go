@@ -3787,7 +3787,7 @@ func compareNoteVulnerabilityDetailsAffectedVersionStartNewStyle(d, a interface{
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.FullName, actual.FullName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("FullName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.FullName, actual.FullName, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateNoteUpdateNoteOperation")}, fn.AddNest("FullName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

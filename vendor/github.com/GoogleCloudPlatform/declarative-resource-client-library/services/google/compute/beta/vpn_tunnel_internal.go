@@ -773,7 +773,7 @@ func diffVpnTunnel(c *Client, desired, actual *VpnTunnel, opts ...dcl.ApplyOptio
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.PeerIP, actual.PeerIP, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PeerIp")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.PeerIP, actual.PeerIP, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PeerIp")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -822,14 +822,14 @@ func diffVpnTunnel(c *Client, desired, actual *VpnTunnel, opts ...dcl.ApplyOptio
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.LocalTrafficSelector, actual.LocalTrafficSelector, dcl.DiffInfo{Type: "Set", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocalTrafficSelector")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.LocalTrafficSelector, actual.LocalTrafficSelector, dcl.DiffInfo{ServerDefault: true, Type: "Set", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocalTrafficSelector")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RemoteTrafficSelector, actual.RemoteTrafficSelector, dcl.DiffInfo{Type: "Set", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RemoteTrafficSelector")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RemoteTrafficSelector, actual.RemoteTrafficSelector, dcl.DiffInfo{ServerDefault: true, Type: "Set", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("RemoteTrafficSelector")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

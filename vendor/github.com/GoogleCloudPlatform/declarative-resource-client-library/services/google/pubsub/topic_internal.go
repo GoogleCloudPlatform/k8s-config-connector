@@ -653,7 +653,7 @@ func diffTopic(c *Client, desired, actual *Topic, opts ...dcl.ApplyOption) ([]*d
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MessageStoragePolicy, actual.MessageStoragePolicy, dcl.DiffInfo{ObjectFunction: compareTopicMessageStoragePolicyNewStyle, EmptyObject: EmptyTopicMessageStoragePolicy, OperationSelector: dcl.TriggersOperation("updateTopicUpdateOperation")}, fn.AddNest("MessageStoragePolicy")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MessageStoragePolicy, actual.MessageStoragePolicy, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareTopicMessageStoragePolicyNewStyle, EmptyObject: EmptyTopicMessageStoragePolicy, OperationSelector: dcl.TriggersOperation("updateTopicUpdateOperation")}, fn.AddNest("MessageStoragePolicy")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

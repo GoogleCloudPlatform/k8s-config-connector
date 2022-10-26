@@ -3688,14 +3688,14 @@ func compareJobTemplateNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Fiel
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Parallelism, actual.Parallelism, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Parallelism")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Parallelism, actual.Parallelism, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Parallelism")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TaskCount, actual.TaskCount, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("TaskCount")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TaskCount, actual.TaskCount, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("TaskCount")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3745,28 +3745,28 @@ func compareJobTemplateTemplateNewStyle(d, a interface{}, fn dcl.FieldName) ([]*
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MaxRetries, actual.MaxRetries, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("MaxRetries")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MaxRetries, actual.MaxRetries, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("MaxRetries")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Timeout, actual.Timeout, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Timeout")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Timeout, actual.Timeout, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Timeout")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ServiceAccount, actual.ServiceAccount, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("ServiceAccount")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServiceAccount, actual.ServiceAccount, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("ServiceAccount")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExecutionEnvironment, actual.ExecutionEnvironment, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("ExecutionEnvironment")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExecutionEnvironment, actual.ExecutionEnvironment, dcl.DiffInfo{ServerDefault: true, Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("ExecutionEnvironment")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3844,7 +3844,7 @@ func compareJobTemplateTemplateContainersNewStyle(d, a interface{}, fn dcl.Field
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Resources, actual.Resources, dcl.DiffInfo{ObjectFunction: compareJobTemplateTemplateContainersResourcesNewStyle, EmptyObject: EmptyJobTemplateTemplateContainersResources, OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Resources")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Resources, actual.Resources, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareJobTemplateTemplateContainersResourcesNewStyle, EmptyObject: EmptyJobTemplateTemplateContainersResources, OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("Resources")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4002,7 +4002,7 @@ func compareJobTemplateTemplateContainersResourcesNewStyle(d, a interface{}, fn 
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CpuIdle, actual.CpuIdle, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("CpuIdle")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CpuIdle, actual.CpuIdle, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateJobUpdateJobOperation")}, fn.AddNest("CpuIdle")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

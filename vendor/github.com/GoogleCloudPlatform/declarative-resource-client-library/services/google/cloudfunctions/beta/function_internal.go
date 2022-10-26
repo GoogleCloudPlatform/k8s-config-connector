@@ -1274,21 +1274,21 @@ func diffFunction(c *Client, desired, actual *Function, opts ...dcl.ApplyOption)
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Timeout, actual.Timeout, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateFunctionUpdateOperation")}, fn.AddNest("Timeout")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Timeout, actual.Timeout, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateFunctionUpdateOperation")}, fn.AddNest("Timeout")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AvailableMemoryMb, actual.AvailableMemoryMb, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateFunctionUpdateOperation")}, fn.AddNest("AvailableMemoryMb")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AvailableMemoryMb, actual.AvailableMemoryMb, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateFunctionUpdateOperation")}, fn.AddNest("AvailableMemoryMb")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ServiceAccountEmail, actual.ServiceAccountEmail, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ServiceAccountEmail")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServiceAccountEmail, actual.ServiceAccountEmail, dcl.DiffInfo{ServerDefault: true, Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ServiceAccountEmail")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1330,7 +1330,7 @@ func diffFunction(c *Client, desired, actual *Function, opts ...dcl.ApplyOption)
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.VPCConnector, actual.VPCConnector, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateFunctionUpdateOperation")}, fn.AddNest("VpcConnector")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.VPCConnector, actual.VPCConnector, dcl.DiffInfo{ServerDefault: true, Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateFunctionUpdateOperation")}, fn.AddNest("VpcConnector")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1344,7 +1344,7 @@ func diffFunction(c *Client, desired, actual *Function, opts ...dcl.ApplyOption)
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.IngressSettings, actual.IngressSettings, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateFunctionUpdateOperation")}, fn.AddNest("IngressSettings")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.IngressSettings, actual.IngressSettings, dcl.DiffInfo{ServerDefault: true, Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateFunctionUpdateOperation")}, fn.AddNest("IngressSettings")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

@@ -256,6 +256,11 @@ var serviceList = []ServiceMetadata{
 				// This resource is implemented through Terraform/KCC bridge, only load its DCL OpenAPI schema for resource references
 				Releasable: false,
 			},
+			{
+				Kind: "ContainerNodePool",
+				// This resource is implemented through Terraform/KCC bridge, only load its DCL OpenAPI schema for resource references
+				Releasable: false,
+			},
 		},
 	},
 	{
@@ -326,6 +331,18 @@ var serviceList = []ServiceMetadata{
 				Releasable:                     true,
 				SupportsHierarchicalReferences: true,
 				SupportsContainerAnnotations:   true,
+			},
+		},
+	},
+	{
+		Name:                 "DataprocMetastore",
+		ServiceNameUsedByDCL: "metastore",
+		APIVersion:           k8s.KCCAPIVersion,
+		Resources: []Resource{
+			{
+				Kind: "DataprocMetastoreService",
+				// This resource is not implemented yet, only define it to enable external-only references.
+				Releasable: false,
 			},
 		},
 	},

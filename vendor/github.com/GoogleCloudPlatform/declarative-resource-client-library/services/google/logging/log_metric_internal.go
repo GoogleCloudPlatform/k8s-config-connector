@@ -1660,7 +1660,7 @@ func compareLogMetricMetricDescriptorNewStyle(d, a interface{}, fn dcl.FieldName
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Unit, actual.Unit, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateLogMetricUpdateOperation")}, fn.AddNest("Unit")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Unit, actual.Unit, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateLogMetricUpdateOperation")}, fn.AddNest("Unit")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

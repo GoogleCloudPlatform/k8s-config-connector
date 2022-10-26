@@ -1841,7 +1841,7 @@ func diffBudget(c *Client, desired, actual *Budget, opts ...dcl.ApplyOption) ([]
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BudgetFilter, actual.BudgetFilter, dcl.DiffInfo{ObjectFunction: compareBudgetBudgetFilterNewStyle, EmptyObject: EmptyBudgetBudgetFilter, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("BudgetFilter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BudgetFilter, actual.BudgetFilter, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareBudgetBudgetFilterNewStyle, EmptyObject: EmptyBudgetBudgetFilter, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("BudgetFilter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1919,7 +1919,7 @@ func compareBudgetBudgetFilterNewStyle(d, a interface{}, fn dcl.FieldName) ([]*d
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CreditTypesTreatment, actual.CreditTypesTreatment, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("CreditTypesTreatment")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CreditTypesTreatment, actual.CreditTypesTreatment, dcl.DiffInfo{ServerDefault: true, Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("CreditTypesTreatment")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1947,7 +1947,7 @@ func compareBudgetBudgetFilterNewStyle(d, a interface{}, fn dcl.FieldName) ([]*d
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CalendarPeriod, actual.CalendarPeriod, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("CalendarPeriod")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CalendarPeriod, actual.CalendarPeriod, dcl.DiffInfo{ServerDefault: true, Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateBudgetUpdateBudgetOperation")}, fn.AddNest("CalendarPeriod")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

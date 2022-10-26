@@ -27,7 +27,7 @@ import (
 
 func (r *Cluster) validate() error {
 
-	if err := dcl.Required(r, "project"); err != nil {
+	if err := dcl.RequiredParameter(r.Project, "Project"); err != nil {
 		return err
 	}
 	if err := dcl.Required(r, "name"); err != nil {
@@ -48,6 +48,11 @@ func (r *Cluster) validate() error {
 	}
 	if !dcl.IsEmptyValueIndirect(r.Metrics) {
 		if err := r.Metrics.validate(); err != nil {
+			return err
+		}
+	}
+	if !dcl.IsEmptyValueIndirect(r.VirtualClusterConfig) {
+		if err := r.VirtualClusterConfig.validate(); err != nil {
 			return err
 		}
 	}
@@ -104,6 +109,16 @@ func (r *ClusterConfig) validate() error {
 			return err
 		}
 	}
+	if !dcl.IsEmptyValueIndirect(r.MetastoreConfig) {
+		if err := r.MetastoreConfig.validate(); err != nil {
+			return err
+		}
+	}
+	if !dcl.IsEmptyValueIndirect(r.DataprocMetricConfig) {
+		if err := r.DataprocMetricConfig.validate(); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 func (r *ClusterConfigGceClusterConfig) validate() error {
@@ -117,6 +132,16 @@ func (r *ClusterConfigGceClusterConfig) validate() error {
 			return err
 		}
 	}
+	if !dcl.IsEmptyValueIndirect(r.ShieldedInstanceConfig) {
+		if err := r.ShieldedInstanceConfig.validate(); err != nil {
+			return err
+		}
+	}
+	if !dcl.IsEmptyValueIndirect(r.ConfidentialInstanceConfig) {
+		if err := r.ConfidentialInstanceConfig.validate(); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 func (r *ClusterConfigGceClusterConfigReservationAffinity) validate() error {
@@ -126,6 +151,12 @@ func (r *ClusterConfigGceClusterConfigNodeGroupAffinity) validate() error {
 	if err := dcl.Required(r, "nodeGroup"); err != nil {
 		return err
 	}
+	return nil
+}
+func (r *ClusterConfigGceClusterConfigShieldedInstanceConfig) validate() error {
+	return nil
+}
+func (r *ClusterConfigGceClusterConfigConfidentialInstanceConfig) validate() error {
 	return nil
 }
 func (r *ClusterConfigMasterConfig) validate() error {
@@ -150,6 +181,9 @@ func (r *ClusterConfigMasterConfigManagedGroupConfig) validate() error {
 func (r *ClusterConfigMasterConfigAccelerators) validate() error {
 	return nil
 }
+func (r *ClusterConfigMasterConfigInstanceReferences) validate() error {
+	return nil
+}
 func (r *ClusterConfigWorkerConfig) validate() error {
 	if !dcl.IsEmptyValueIndirect(r.DiskConfig) {
 		if err := r.DiskConfig.validate(); err != nil {
@@ -170,6 +204,9 @@ func (r *ClusterConfigWorkerConfigManagedGroupConfig) validate() error {
 	return nil
 }
 func (r *ClusterConfigWorkerConfigAccelerators) validate() error {
+	return nil
+}
+func (r *ClusterConfigWorkerConfigInstanceReferences) validate() error {
 	return nil
 }
 func (r *ClusterConfigSecondaryWorkerConfig) validate() error {
@@ -194,6 +231,9 @@ func (r *ClusterConfigSecondaryWorkerConfigManagedGroupConfig) validate() error 
 func (r *ClusterConfigSecondaryWorkerConfigAccelerators) validate() error {
 	return nil
 }
+func (r *ClusterConfigSecondaryWorkerConfigInstanceReferences) validate() error {
+	return nil
+}
 func (r *ClusterConfigSoftwareConfig) validate() error {
 	return nil
 }
@@ -215,15 +255,44 @@ func (r *ClusterConfigSecurityConfig) validate() error {
 			return err
 		}
 	}
+	if !dcl.IsEmptyValueIndirect(r.IdentityConfig) {
+		if err := r.IdentityConfig.validate(); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 func (r *ClusterConfigSecurityConfigKerberosConfig) validate() error {
+	return nil
+}
+func (r *ClusterConfigSecurityConfigIdentityConfig) validate() error {
+	if err := dcl.Required(r, "userServiceAccountMapping"); err != nil {
+		return err
+	}
 	return nil
 }
 func (r *ClusterConfigLifecycleConfig) validate() error {
 	return nil
 }
 func (r *ClusterConfigEndpointConfig) validate() error {
+	return nil
+}
+func (r *ClusterConfigMetastoreConfig) validate() error {
+	if err := dcl.Required(r, "dataprocMetastoreService"); err != nil {
+		return err
+	}
+	return nil
+}
+func (r *ClusterConfigDataprocMetricConfig) validate() error {
+	if err := dcl.Required(r, "metrics"); err != nil {
+		return err
+	}
+	return nil
+}
+func (r *ClusterConfigDataprocMetricConfigMetrics) validate() error {
+	if err := dcl.Required(r, "metricSource"); err != nil {
+		return err
+	}
 	return nil
 }
 func (r *ClusterStatus) validate() error {
@@ -233,6 +302,110 @@ func (r *ClusterStatusHistory) validate() error {
 	return nil
 }
 func (r *ClusterMetrics) validate() error {
+	return nil
+}
+func (r *ClusterVirtualClusterConfig) validate() error {
+	if err := dcl.Required(r, "kubernetesClusterConfig"); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(r.KubernetesClusterConfig) {
+		if err := r.KubernetesClusterConfig.validate(); err != nil {
+			return err
+		}
+	}
+	if !dcl.IsEmptyValueIndirect(r.AuxiliaryServicesConfig) {
+		if err := r.AuxiliaryServicesConfig.validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (r *ClusterVirtualClusterConfigKubernetesClusterConfig) validate() error {
+	if err := dcl.Required(r, "gkeClusterConfig"); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(r.GkeClusterConfig) {
+		if err := r.GkeClusterConfig.validate(); err != nil {
+			return err
+		}
+	}
+	if !dcl.IsEmptyValueIndirect(r.KubernetesSoftwareConfig) {
+		if err := r.KubernetesSoftwareConfig.validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (r *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig) validate() error {
+	return nil
+}
+func (r *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget) validate() error {
+	if err := dcl.Required(r, "nodePool"); err != nil {
+		return err
+	}
+	if err := dcl.Required(r, "roles"); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(r.NodePoolConfig) {
+		if err := r.NodePoolConfig.validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (r *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig) validate() error {
+	if !dcl.IsEmptyValueIndirect(r.Config) {
+		if err := r.Config.validate(); err != nil {
+			return err
+		}
+	}
+	if !dcl.IsEmptyValueIndirect(r.Autoscaling) {
+		if err := r.Autoscaling.validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (r *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig) validate() error {
+	if !dcl.IsEmptyValueIndirect(r.EphemeralStorageConfig) {
+		if err := r.EphemeralStorageConfig.validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (r *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators) validate() error {
+	return nil
+}
+func (r *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig) validate() error {
+	return nil
+}
+func (r *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling) validate() error {
+	return nil
+}
+func (r *ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig) validate() error {
+	return nil
+}
+func (r *ClusterVirtualClusterConfigAuxiliaryServicesConfig) validate() error {
+	if !dcl.IsEmptyValueIndirect(r.MetastoreConfig) {
+		if err := r.MetastoreConfig.validate(); err != nil {
+			return err
+		}
+	}
+	if !dcl.IsEmptyValueIndirect(r.SparkHistoryServerConfig) {
+		if err := r.SparkHistoryServerConfig.validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (r *ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig) validate() error {
+	if err := dcl.Required(r, "dataprocMetastoreService"); err != nil {
+		return err
+	}
+	return nil
+}
+func (r *ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig) validate() error {
 	return nil
 }
 func (r *Cluster) basePath() string {
@@ -656,12 +829,12 @@ func canonicalizeClusterDesiredState(rawDesired, rawInitial *Cluster, opts ...dc
 		rawDesired.Config = canonicalizeClusterConfig(rawDesired.Config, nil, opts...)
 		rawDesired.Status = canonicalizeClusterStatus(rawDesired.Status, nil, opts...)
 		rawDesired.Metrics = canonicalizeClusterMetrics(rawDesired.Metrics, nil, opts...)
+		rawDesired.VirtualClusterConfig = canonicalizeClusterVirtualClusterConfig(rawDesired.VirtualClusterConfig, nil, opts...)
 
 		return rawDesired, nil
 	}
 	canonicalDesired := &Cluster{}
-	if dcl.IsZeroValue(rawDesired.Project) || (dcl.IsEmptyValueIndirect(rawDesired.Project) && dcl.IsEmptyValueIndirect(rawInitial.Project)) {
-		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+	if dcl.NameToSelfLink(rawDesired.Project, rawInitial.Project) {
 		canonicalDesired.Project = rawInitial.Project
 	} else {
 		canonicalDesired.Project = rawDesired.Project
@@ -683,16 +856,14 @@ func canonicalizeClusterDesiredState(rawDesired, rawInitial *Cluster, opts ...dc
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
+	canonicalDesired.VirtualClusterConfig = canonicalizeClusterVirtualClusterConfig(rawDesired.VirtualClusterConfig, rawInitial.VirtualClusterConfig, opts...)
 
 	return canonicalDesired, nil
 }
 
 func canonicalizeClusterNewState(c *Client, rawNew, rawDesired *Cluster) (*Cluster, error) {
 
-	if dcl.IsEmptyValueIndirect(rawNew.Project) && dcl.IsEmptyValueIndirect(rawDesired.Project) {
-		rawNew.Project = rawDesired.Project
-	} else {
-	}
+	rawNew.Project = rawDesired.Project
 
 	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
 		rawNew.Name = rawDesired.Name
@@ -741,6 +912,12 @@ func canonicalizeClusterNewState(c *Client, rawNew, rawDesired *Cluster) (*Clust
 
 	rawNew.Location = rawDesired.Location
 
+	if dcl.IsEmptyValueIndirect(rawNew.VirtualClusterConfig) && dcl.IsEmptyValueIndirect(rawDesired.VirtualClusterConfig) {
+		rawNew.VirtualClusterConfig = rawDesired.VirtualClusterConfig
+	} else {
+		rawNew.VirtualClusterConfig = canonicalizeNewClusterVirtualClusterConfig(c, rawDesired.VirtualClusterConfig, rawNew.VirtualClusterConfig)
+	}
+
 	return rawNew, nil
 }
 
@@ -781,6 +958,8 @@ func canonicalizeClusterConfig(des, initial *ClusterConfig, opts ...dcl.ApplyOpt
 	cDes.SecurityConfig = canonicalizeClusterConfigSecurityConfig(des.SecurityConfig, initial.SecurityConfig, opts...)
 	cDes.LifecycleConfig = canonicalizeClusterConfigLifecycleConfig(des.LifecycleConfig, initial.LifecycleConfig, opts...)
 	cDes.EndpointConfig = canonicalizeClusterConfigEndpointConfig(des.EndpointConfig, initial.EndpointConfig, opts...)
+	cDes.MetastoreConfig = canonicalizeClusterConfigMetastoreConfig(des.MetastoreConfig, initial.MetastoreConfig, opts...)
+	cDes.DataprocMetricConfig = canonicalizeClusterConfigDataprocMetricConfig(des.DataprocMetricConfig, initial.DataprocMetricConfig, opts...)
 
 	return cDes
 }
@@ -838,6 +1017,8 @@ func canonicalizeNewClusterConfig(c *Client, des, nw *ClusterConfig) *ClusterCon
 	nw.SecurityConfig = canonicalizeNewClusterConfigSecurityConfig(c, des.SecurityConfig, nw.SecurityConfig)
 	nw.LifecycleConfig = canonicalizeNewClusterConfigLifecycleConfig(c, des.LifecycleConfig, nw.LifecycleConfig)
 	nw.EndpointConfig = canonicalizeNewClusterConfigEndpointConfig(c, des.EndpointConfig, nw.EndpointConfig)
+	nw.MetastoreConfig = canonicalizeNewClusterConfigMetastoreConfig(c, des.MetastoreConfig, nw.MetastoreConfig)
+	nw.DataprocMetricConfig = canonicalizeNewClusterConfigDataprocMetricConfig(c, des.DataprocMetricConfig, nw.DataprocMetricConfig)
 
 	return nw
 }
@@ -951,6 +1132,8 @@ func canonicalizeClusterConfigGceClusterConfig(des, initial *ClusterConfigGceClu
 	}
 	cDes.ReservationAffinity = canonicalizeClusterConfigGceClusterConfigReservationAffinity(des.ReservationAffinity, initial.ReservationAffinity, opts...)
 	cDes.NodeGroupAffinity = canonicalizeClusterConfigGceClusterConfigNodeGroupAffinity(des.NodeGroupAffinity, initial.NodeGroupAffinity, opts...)
+	cDes.ShieldedInstanceConfig = canonicalizeClusterConfigGceClusterConfigShieldedInstanceConfig(des.ShieldedInstanceConfig, initial.ShieldedInstanceConfig, opts...)
+	cDes.ConfidentialInstanceConfig = canonicalizeClusterConfigGceClusterConfigConfidentialInstanceConfig(des.ConfidentialInstanceConfig, initial.ConfidentialInstanceConfig, opts...)
 
 	return cDes
 }
@@ -1011,6 +1194,8 @@ func canonicalizeNewClusterConfigGceClusterConfig(c *Client, des, nw *ClusterCon
 	}
 	nw.ReservationAffinity = canonicalizeNewClusterConfigGceClusterConfigReservationAffinity(c, des.ReservationAffinity, nw.ReservationAffinity)
 	nw.NodeGroupAffinity = canonicalizeNewClusterConfigGceClusterConfigNodeGroupAffinity(c, des.NodeGroupAffinity, nw.NodeGroupAffinity)
+	nw.ShieldedInstanceConfig = canonicalizeNewClusterConfigGceClusterConfigShieldedInstanceConfig(c, des.ShieldedInstanceConfig, nw.ShieldedInstanceConfig)
+	nw.ConfidentialInstanceConfig = canonicalizeNewClusterConfigGceClusterConfigConfidentialInstanceConfig(c, des.ConfidentialInstanceConfig, nw.ConfidentialInstanceConfig)
 
 	return nw
 }
@@ -1299,6 +1484,252 @@ func canonicalizeNewClusterConfigGceClusterConfigNodeGroupAffinitySlice(c *Clien
 	return items
 }
 
+func canonicalizeClusterConfigGceClusterConfigShieldedInstanceConfig(des, initial *ClusterConfigGceClusterConfigShieldedInstanceConfig, opts ...dcl.ApplyOption) *ClusterConfigGceClusterConfigShieldedInstanceConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterConfigGceClusterConfigShieldedInstanceConfig{}
+
+	if dcl.BoolCanonicalize(des.EnableSecureBoot, initial.EnableSecureBoot) || dcl.IsZeroValue(des.EnableSecureBoot) {
+		cDes.EnableSecureBoot = initial.EnableSecureBoot
+	} else {
+		cDes.EnableSecureBoot = des.EnableSecureBoot
+	}
+	if dcl.BoolCanonicalize(des.EnableVtpm, initial.EnableVtpm) || dcl.IsZeroValue(des.EnableVtpm) {
+		cDes.EnableVtpm = initial.EnableVtpm
+	} else {
+		cDes.EnableVtpm = des.EnableVtpm
+	}
+	if dcl.BoolCanonicalize(des.EnableIntegrityMonitoring, initial.EnableIntegrityMonitoring) || dcl.IsZeroValue(des.EnableIntegrityMonitoring) {
+		cDes.EnableIntegrityMonitoring = initial.EnableIntegrityMonitoring
+	} else {
+		cDes.EnableIntegrityMonitoring = des.EnableIntegrityMonitoring
+	}
+
+	return cDes
+}
+
+func canonicalizeClusterConfigGceClusterConfigShieldedInstanceConfigSlice(des, initial []ClusterConfigGceClusterConfigShieldedInstanceConfig, opts ...dcl.ApplyOption) []ClusterConfigGceClusterConfigShieldedInstanceConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterConfigGceClusterConfigShieldedInstanceConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterConfigGceClusterConfigShieldedInstanceConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterConfigGceClusterConfigShieldedInstanceConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterConfigGceClusterConfigShieldedInstanceConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterConfigGceClusterConfigShieldedInstanceConfig(c *Client, des, nw *ClusterConfigGceClusterConfigShieldedInstanceConfig) *ClusterConfigGceClusterConfigShieldedInstanceConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigGceClusterConfigShieldedInstanceConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	if dcl.BoolCanonicalize(des.EnableSecureBoot, nw.EnableSecureBoot) {
+		nw.EnableSecureBoot = des.EnableSecureBoot
+	}
+	if dcl.BoolCanonicalize(des.EnableVtpm, nw.EnableVtpm) {
+		nw.EnableVtpm = des.EnableVtpm
+	}
+	if dcl.BoolCanonicalize(des.EnableIntegrityMonitoring, nw.EnableIntegrityMonitoring) {
+		nw.EnableIntegrityMonitoring = des.EnableIntegrityMonitoring
+	}
+
+	return nw
+}
+
+func canonicalizeNewClusterConfigGceClusterConfigShieldedInstanceConfigSet(c *Client, des, nw []ClusterConfigGceClusterConfigShieldedInstanceConfig) []ClusterConfigGceClusterConfigShieldedInstanceConfig {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterConfigGceClusterConfigShieldedInstanceConfig
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterConfigGceClusterConfigShieldedInstanceConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterConfigGceClusterConfigShieldedInstanceConfigSlice(c *Client, des, nw []ClusterConfigGceClusterConfigShieldedInstanceConfig) []ClusterConfigGceClusterConfigShieldedInstanceConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterConfigGceClusterConfigShieldedInstanceConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterConfigGceClusterConfigShieldedInstanceConfig(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeClusterConfigGceClusterConfigConfidentialInstanceConfig(des, initial *ClusterConfigGceClusterConfigConfidentialInstanceConfig, opts ...dcl.ApplyOption) *ClusterConfigGceClusterConfigConfidentialInstanceConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterConfigGceClusterConfigConfidentialInstanceConfig{}
+
+	if dcl.BoolCanonicalize(des.EnableConfidentialCompute, initial.EnableConfidentialCompute) || dcl.IsZeroValue(des.EnableConfidentialCompute) {
+		cDes.EnableConfidentialCompute = initial.EnableConfidentialCompute
+	} else {
+		cDes.EnableConfidentialCompute = des.EnableConfidentialCompute
+	}
+
+	return cDes
+}
+
+func canonicalizeClusterConfigGceClusterConfigConfidentialInstanceConfigSlice(des, initial []ClusterConfigGceClusterConfigConfidentialInstanceConfig, opts ...dcl.ApplyOption) []ClusterConfigGceClusterConfigConfidentialInstanceConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterConfigGceClusterConfigConfidentialInstanceConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterConfigGceClusterConfigConfidentialInstanceConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterConfigGceClusterConfigConfidentialInstanceConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterConfigGceClusterConfigConfidentialInstanceConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterConfigGceClusterConfigConfidentialInstanceConfig(c *Client, des, nw *ClusterConfigGceClusterConfigConfidentialInstanceConfig) *ClusterConfigGceClusterConfigConfidentialInstanceConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigGceClusterConfigConfidentialInstanceConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	if dcl.BoolCanonicalize(des.EnableConfidentialCompute, nw.EnableConfidentialCompute) {
+		nw.EnableConfidentialCompute = des.EnableConfidentialCompute
+	}
+
+	return nw
+}
+
+func canonicalizeNewClusterConfigGceClusterConfigConfidentialInstanceConfigSet(c *Client, des, nw []ClusterConfigGceClusterConfigConfidentialInstanceConfig) []ClusterConfigGceClusterConfigConfidentialInstanceConfig {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterConfigGceClusterConfigConfidentialInstanceConfig
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterConfigGceClusterConfigConfidentialInstanceConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterConfigGceClusterConfigConfidentialInstanceConfigSlice(c *Client, des, nw []ClusterConfigGceClusterConfigConfidentialInstanceConfig) []ClusterConfigGceClusterConfigConfidentialInstanceConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterConfigGceClusterConfigConfidentialInstanceConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterConfigGceClusterConfigConfidentialInstanceConfig(c, &d, &n))
+	}
+
+	return items
+}
+
 func canonicalizeClusterConfigMasterConfig(des, initial *ClusterConfigMasterConfig, opts ...dcl.ApplyOption) *ClusterConfigMasterConfig {
 	if des == nil {
 		return initial
@@ -1404,6 +1835,7 @@ func canonicalizeNewClusterConfigMasterConfig(c *Client, des, nw *ClusterConfigM
 	if dcl.StringCanonicalize(des.MinCpuPlatform, nw.MinCpuPlatform) {
 		nw.MinCpuPlatform = des.MinCpuPlatform
 	}
+	nw.InstanceReferences = canonicalizeNewClusterConfigMasterConfigInstanceReferencesSlice(c, des.InstanceReferences, nw.InstanceReferences)
 
 	return nw
 }
@@ -1482,6 +1914,11 @@ func canonicalizeClusterConfigMasterConfigDiskConfig(des, initial *ClusterConfig
 	} else {
 		cDes.NumLocalSsds = des.NumLocalSsds
 	}
+	if dcl.StringCanonicalize(des.LocalSsdInterface, initial.LocalSsdInterface) || dcl.IsZeroValue(des.LocalSsdInterface) {
+		cDes.LocalSsdInterface = initial.LocalSsdInterface
+	} else {
+		cDes.LocalSsdInterface = des.LocalSsdInterface
+	}
 
 	return cDes
 }
@@ -1530,6 +1967,9 @@ func canonicalizeNewClusterConfigMasterConfigDiskConfig(c *Client, des, nw *Clus
 
 	if dcl.StringCanonicalize(des.BootDiskType, nw.BootDiskType) {
 		nw.BootDiskType = des.BootDiskType
+	}
+	if dcl.StringCanonicalize(des.LocalSsdInterface, nw.LocalSsdInterface) {
+		nw.LocalSsdInterface = des.LocalSsdInterface
 	}
 
 	return nw
@@ -1811,6 +2251,145 @@ func canonicalizeNewClusterConfigMasterConfigAcceleratorsSlice(c *Client, des, n
 	return items
 }
 
+func canonicalizeClusterConfigMasterConfigInstanceReferences(des, initial *ClusterConfigMasterConfigInstanceReferences, opts ...dcl.ApplyOption) *ClusterConfigMasterConfigInstanceReferences {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterConfigMasterConfigInstanceReferences{}
+
+	if dcl.StringCanonicalize(des.InstanceName, initial.InstanceName) || dcl.IsZeroValue(des.InstanceName) {
+		cDes.InstanceName = initial.InstanceName
+	} else {
+		cDes.InstanceName = des.InstanceName
+	}
+	if dcl.StringCanonicalize(des.InstanceId, initial.InstanceId) || dcl.IsZeroValue(des.InstanceId) {
+		cDes.InstanceId = initial.InstanceId
+	} else {
+		cDes.InstanceId = des.InstanceId
+	}
+	if dcl.StringCanonicalize(des.PublicKey, initial.PublicKey) || dcl.IsZeroValue(des.PublicKey) {
+		cDes.PublicKey = initial.PublicKey
+	} else {
+		cDes.PublicKey = des.PublicKey
+	}
+	if dcl.StringCanonicalize(des.PublicEciesKey, initial.PublicEciesKey) || dcl.IsZeroValue(des.PublicEciesKey) {
+		cDes.PublicEciesKey = initial.PublicEciesKey
+	} else {
+		cDes.PublicEciesKey = des.PublicEciesKey
+	}
+
+	return cDes
+}
+
+func canonicalizeClusterConfigMasterConfigInstanceReferencesSlice(des, initial []ClusterConfigMasterConfigInstanceReferences, opts ...dcl.ApplyOption) []ClusterConfigMasterConfigInstanceReferences {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterConfigMasterConfigInstanceReferences, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterConfigMasterConfigInstanceReferences(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterConfigMasterConfigInstanceReferences, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterConfigMasterConfigInstanceReferences(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterConfigMasterConfigInstanceReferences(c *Client, des, nw *ClusterConfigMasterConfigInstanceReferences) *ClusterConfigMasterConfigInstanceReferences {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigMasterConfigInstanceReferences while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	if dcl.StringCanonicalize(des.InstanceName, nw.InstanceName) {
+		nw.InstanceName = des.InstanceName
+	}
+	if dcl.StringCanonicalize(des.InstanceId, nw.InstanceId) {
+		nw.InstanceId = des.InstanceId
+	}
+	if dcl.StringCanonicalize(des.PublicKey, nw.PublicKey) {
+		nw.PublicKey = des.PublicKey
+	}
+	if dcl.StringCanonicalize(des.PublicEciesKey, nw.PublicEciesKey) {
+		nw.PublicEciesKey = des.PublicEciesKey
+	}
+
+	return nw
+}
+
+func canonicalizeNewClusterConfigMasterConfigInstanceReferencesSet(c *Client, des, nw []ClusterConfigMasterConfigInstanceReferences) []ClusterConfigMasterConfigInstanceReferences {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterConfigMasterConfigInstanceReferences
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterConfigMasterConfigInstanceReferencesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterConfigMasterConfigInstanceReferencesSlice(c *Client, des, nw []ClusterConfigMasterConfigInstanceReferences) []ClusterConfigMasterConfigInstanceReferences {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterConfigMasterConfigInstanceReferences
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterConfigMasterConfigInstanceReferences(c, &d, &n))
+	}
+
+	return items
+}
+
 func canonicalizeClusterConfigWorkerConfig(des, initial *ClusterConfigWorkerConfig, opts ...dcl.ApplyOption) *ClusterConfigWorkerConfig {
 	if des == nil {
 		return initial
@@ -1916,6 +2495,7 @@ func canonicalizeNewClusterConfigWorkerConfig(c *Client, des, nw *ClusterConfigW
 	if dcl.StringCanonicalize(des.MinCpuPlatform, nw.MinCpuPlatform) {
 		nw.MinCpuPlatform = des.MinCpuPlatform
 	}
+	nw.InstanceReferences = canonicalizeNewClusterConfigWorkerConfigInstanceReferencesSlice(c, des.InstanceReferences, nw.InstanceReferences)
 
 	return nw
 }
@@ -1994,6 +2574,11 @@ func canonicalizeClusterConfigWorkerConfigDiskConfig(des, initial *ClusterConfig
 	} else {
 		cDes.NumLocalSsds = des.NumLocalSsds
 	}
+	if dcl.StringCanonicalize(des.LocalSsdInterface, initial.LocalSsdInterface) || dcl.IsZeroValue(des.LocalSsdInterface) {
+		cDes.LocalSsdInterface = initial.LocalSsdInterface
+	} else {
+		cDes.LocalSsdInterface = des.LocalSsdInterface
+	}
 
 	return cDes
 }
@@ -2042,6 +2627,9 @@ func canonicalizeNewClusterConfigWorkerConfigDiskConfig(c *Client, des, nw *Clus
 
 	if dcl.StringCanonicalize(des.BootDiskType, nw.BootDiskType) {
 		nw.BootDiskType = des.BootDiskType
+	}
+	if dcl.StringCanonicalize(des.LocalSsdInterface, nw.LocalSsdInterface) {
+		nw.LocalSsdInterface = des.LocalSsdInterface
 	}
 
 	return nw
@@ -2323,6 +2911,145 @@ func canonicalizeNewClusterConfigWorkerConfigAcceleratorsSlice(c *Client, des, n
 	return items
 }
 
+func canonicalizeClusterConfigWorkerConfigInstanceReferences(des, initial *ClusterConfigWorkerConfigInstanceReferences, opts ...dcl.ApplyOption) *ClusterConfigWorkerConfigInstanceReferences {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterConfigWorkerConfigInstanceReferences{}
+
+	if dcl.StringCanonicalize(des.InstanceName, initial.InstanceName) || dcl.IsZeroValue(des.InstanceName) {
+		cDes.InstanceName = initial.InstanceName
+	} else {
+		cDes.InstanceName = des.InstanceName
+	}
+	if dcl.StringCanonicalize(des.InstanceId, initial.InstanceId) || dcl.IsZeroValue(des.InstanceId) {
+		cDes.InstanceId = initial.InstanceId
+	} else {
+		cDes.InstanceId = des.InstanceId
+	}
+	if dcl.StringCanonicalize(des.PublicKey, initial.PublicKey) || dcl.IsZeroValue(des.PublicKey) {
+		cDes.PublicKey = initial.PublicKey
+	} else {
+		cDes.PublicKey = des.PublicKey
+	}
+	if dcl.StringCanonicalize(des.PublicEciesKey, initial.PublicEciesKey) || dcl.IsZeroValue(des.PublicEciesKey) {
+		cDes.PublicEciesKey = initial.PublicEciesKey
+	} else {
+		cDes.PublicEciesKey = des.PublicEciesKey
+	}
+
+	return cDes
+}
+
+func canonicalizeClusterConfigWorkerConfigInstanceReferencesSlice(des, initial []ClusterConfigWorkerConfigInstanceReferences, opts ...dcl.ApplyOption) []ClusterConfigWorkerConfigInstanceReferences {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterConfigWorkerConfigInstanceReferences, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterConfigWorkerConfigInstanceReferences(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterConfigWorkerConfigInstanceReferences, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterConfigWorkerConfigInstanceReferences(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterConfigWorkerConfigInstanceReferences(c *Client, des, nw *ClusterConfigWorkerConfigInstanceReferences) *ClusterConfigWorkerConfigInstanceReferences {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigWorkerConfigInstanceReferences while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	if dcl.StringCanonicalize(des.InstanceName, nw.InstanceName) {
+		nw.InstanceName = des.InstanceName
+	}
+	if dcl.StringCanonicalize(des.InstanceId, nw.InstanceId) {
+		nw.InstanceId = des.InstanceId
+	}
+	if dcl.StringCanonicalize(des.PublicKey, nw.PublicKey) {
+		nw.PublicKey = des.PublicKey
+	}
+	if dcl.StringCanonicalize(des.PublicEciesKey, nw.PublicEciesKey) {
+		nw.PublicEciesKey = des.PublicEciesKey
+	}
+
+	return nw
+}
+
+func canonicalizeNewClusterConfigWorkerConfigInstanceReferencesSet(c *Client, des, nw []ClusterConfigWorkerConfigInstanceReferences) []ClusterConfigWorkerConfigInstanceReferences {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterConfigWorkerConfigInstanceReferences
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterConfigWorkerConfigInstanceReferencesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterConfigWorkerConfigInstanceReferencesSlice(c *Client, des, nw []ClusterConfigWorkerConfigInstanceReferences) []ClusterConfigWorkerConfigInstanceReferences {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterConfigWorkerConfigInstanceReferences
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterConfigWorkerConfigInstanceReferences(c, &d, &n))
+	}
+
+	return items
+}
+
 func canonicalizeClusterConfigSecondaryWorkerConfig(des, initial *ClusterConfigSecondaryWorkerConfig, opts ...dcl.ApplyOption) *ClusterConfigSecondaryWorkerConfig {
 	if des == nil {
 		return initial
@@ -2428,6 +3155,7 @@ func canonicalizeNewClusterConfigSecondaryWorkerConfig(c *Client, des, nw *Clust
 	if dcl.StringCanonicalize(des.MinCpuPlatform, nw.MinCpuPlatform) {
 		nw.MinCpuPlatform = des.MinCpuPlatform
 	}
+	nw.InstanceReferences = canonicalizeNewClusterConfigSecondaryWorkerConfigInstanceReferencesSlice(c, des.InstanceReferences, nw.InstanceReferences)
 
 	return nw
 }
@@ -2506,6 +3234,11 @@ func canonicalizeClusterConfigSecondaryWorkerConfigDiskConfig(des, initial *Clus
 	} else {
 		cDes.NumLocalSsds = des.NumLocalSsds
 	}
+	if dcl.StringCanonicalize(des.LocalSsdInterface, initial.LocalSsdInterface) || dcl.IsZeroValue(des.LocalSsdInterface) {
+		cDes.LocalSsdInterface = initial.LocalSsdInterface
+	} else {
+		cDes.LocalSsdInterface = des.LocalSsdInterface
+	}
 
 	return cDes
 }
@@ -2554,6 +3287,9 @@ func canonicalizeNewClusterConfigSecondaryWorkerConfigDiskConfig(c *Client, des,
 
 	if dcl.StringCanonicalize(des.BootDiskType, nw.BootDiskType) {
 		nw.BootDiskType = des.BootDiskType
+	}
+	if dcl.StringCanonicalize(des.LocalSsdInterface, nw.LocalSsdInterface) {
+		nw.LocalSsdInterface = des.LocalSsdInterface
 	}
 
 	return nw
@@ -2830,6 +3566,145 @@ func canonicalizeNewClusterConfigSecondaryWorkerConfigAcceleratorsSlice(c *Clien
 	for i, d := range des {
 		n := nw[i]
 		items = append(items, *canonicalizeNewClusterConfigSecondaryWorkerConfigAccelerators(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeClusterConfigSecondaryWorkerConfigInstanceReferences(des, initial *ClusterConfigSecondaryWorkerConfigInstanceReferences, opts ...dcl.ApplyOption) *ClusterConfigSecondaryWorkerConfigInstanceReferences {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterConfigSecondaryWorkerConfigInstanceReferences{}
+
+	if dcl.StringCanonicalize(des.InstanceName, initial.InstanceName) || dcl.IsZeroValue(des.InstanceName) {
+		cDes.InstanceName = initial.InstanceName
+	} else {
+		cDes.InstanceName = des.InstanceName
+	}
+	if dcl.StringCanonicalize(des.InstanceId, initial.InstanceId) || dcl.IsZeroValue(des.InstanceId) {
+		cDes.InstanceId = initial.InstanceId
+	} else {
+		cDes.InstanceId = des.InstanceId
+	}
+	if dcl.StringCanonicalize(des.PublicKey, initial.PublicKey) || dcl.IsZeroValue(des.PublicKey) {
+		cDes.PublicKey = initial.PublicKey
+	} else {
+		cDes.PublicKey = des.PublicKey
+	}
+	if dcl.StringCanonicalize(des.PublicEciesKey, initial.PublicEciesKey) || dcl.IsZeroValue(des.PublicEciesKey) {
+		cDes.PublicEciesKey = initial.PublicEciesKey
+	} else {
+		cDes.PublicEciesKey = des.PublicEciesKey
+	}
+
+	return cDes
+}
+
+func canonicalizeClusterConfigSecondaryWorkerConfigInstanceReferencesSlice(des, initial []ClusterConfigSecondaryWorkerConfigInstanceReferences, opts ...dcl.ApplyOption) []ClusterConfigSecondaryWorkerConfigInstanceReferences {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterConfigSecondaryWorkerConfigInstanceReferences, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterConfigSecondaryWorkerConfigInstanceReferences(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterConfigSecondaryWorkerConfigInstanceReferences, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterConfigSecondaryWorkerConfigInstanceReferences(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterConfigSecondaryWorkerConfigInstanceReferences(c *Client, des, nw *ClusterConfigSecondaryWorkerConfigInstanceReferences) *ClusterConfigSecondaryWorkerConfigInstanceReferences {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigSecondaryWorkerConfigInstanceReferences while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	if dcl.StringCanonicalize(des.InstanceName, nw.InstanceName) {
+		nw.InstanceName = des.InstanceName
+	}
+	if dcl.StringCanonicalize(des.InstanceId, nw.InstanceId) {
+		nw.InstanceId = des.InstanceId
+	}
+	if dcl.StringCanonicalize(des.PublicKey, nw.PublicKey) {
+		nw.PublicKey = des.PublicKey
+	}
+	if dcl.StringCanonicalize(des.PublicEciesKey, nw.PublicEciesKey) {
+		nw.PublicEciesKey = des.PublicEciesKey
+	}
+
+	return nw
+}
+
+func canonicalizeNewClusterConfigSecondaryWorkerConfigInstanceReferencesSet(c *Client, des, nw []ClusterConfigSecondaryWorkerConfigInstanceReferences) []ClusterConfigSecondaryWorkerConfigInstanceReferences {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterConfigSecondaryWorkerConfigInstanceReferences
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterConfigSecondaryWorkerConfigInstanceReferencesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterConfigSecondaryWorkerConfigInstanceReferencesSlice(c *Client, des, nw []ClusterConfigSecondaryWorkerConfigInstanceReferences) []ClusterConfigSecondaryWorkerConfigInstanceReferences {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterConfigSecondaryWorkerConfigInstanceReferences
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterConfigSecondaryWorkerConfigInstanceReferences(c, &d, &n))
 	}
 
 	return items
@@ -3326,6 +4201,7 @@ func canonicalizeClusterConfigSecurityConfig(des, initial *ClusterConfigSecurity
 	cDes := &ClusterConfigSecurityConfig{}
 
 	cDes.KerberosConfig = canonicalizeClusterConfigSecurityConfigKerberosConfig(des.KerberosConfig, initial.KerberosConfig, opts...)
+	cDes.IdentityConfig = canonicalizeClusterConfigSecurityConfigIdentityConfig(des.IdentityConfig, initial.IdentityConfig, opts...)
 
 	return cDes
 }
@@ -3373,6 +4249,7 @@ func canonicalizeNewClusterConfigSecurityConfig(c *Client, des, nw *ClusterConfi
 	}
 
 	nw.KerberosConfig = canonicalizeNewClusterConfigSecurityConfigKerberosConfig(c, des.KerberosConfig, nw.KerberosConfig)
+	nw.IdentityConfig = canonicalizeNewClusterConfigSecurityConfigIdentityConfig(c, des.IdentityConfig, nw.IdentityConfig)
 
 	return nw
 }
@@ -3643,6 +4520,118 @@ func canonicalizeNewClusterConfigSecurityConfigKerberosConfigSlice(c *Client, de
 	return items
 }
 
+func canonicalizeClusterConfigSecurityConfigIdentityConfig(des, initial *ClusterConfigSecurityConfigIdentityConfig, opts ...dcl.ApplyOption) *ClusterConfigSecurityConfigIdentityConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterConfigSecurityConfigIdentityConfig{}
+
+	if dcl.IsZeroValue(des.UserServiceAccountMapping) || (dcl.IsEmptyValueIndirect(des.UserServiceAccountMapping) && dcl.IsEmptyValueIndirect(initial.UserServiceAccountMapping)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.UserServiceAccountMapping = initial.UserServiceAccountMapping
+	} else {
+		cDes.UserServiceAccountMapping = des.UserServiceAccountMapping
+	}
+
+	return cDes
+}
+
+func canonicalizeClusterConfigSecurityConfigIdentityConfigSlice(des, initial []ClusterConfigSecurityConfigIdentityConfig, opts ...dcl.ApplyOption) []ClusterConfigSecurityConfigIdentityConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterConfigSecurityConfigIdentityConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterConfigSecurityConfigIdentityConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterConfigSecurityConfigIdentityConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterConfigSecurityConfigIdentityConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterConfigSecurityConfigIdentityConfig(c *Client, des, nw *ClusterConfigSecurityConfigIdentityConfig) *ClusterConfigSecurityConfigIdentityConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigSecurityConfigIdentityConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	return nw
+}
+
+func canonicalizeNewClusterConfigSecurityConfigIdentityConfigSet(c *Client, des, nw []ClusterConfigSecurityConfigIdentityConfig) []ClusterConfigSecurityConfigIdentityConfig {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterConfigSecurityConfigIdentityConfig
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterConfigSecurityConfigIdentityConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterConfigSecurityConfigIdentityConfigSlice(c *Client, des, nw []ClusterConfigSecurityConfigIdentityConfig) []ClusterConfigSecurityConfigIdentityConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterConfigSecurityConfigIdentityConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterConfigSecurityConfigIdentityConfig(c, &d, &n))
+	}
+
+	return items
+}
+
 func canonicalizeClusterConfigLifecycleConfig(des, initial *ClusterConfigLifecycleConfig, opts ...dcl.ApplyOption) *ClusterConfigLifecycleConfig {
 	if des == nil {
 		return initial
@@ -3882,6 +4871,348 @@ func canonicalizeNewClusterConfigEndpointConfigSlice(c *Client, des, nw []Cluste
 	for i, d := range des {
 		n := nw[i]
 		items = append(items, *canonicalizeNewClusterConfigEndpointConfig(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeClusterConfigMetastoreConfig(des, initial *ClusterConfigMetastoreConfig, opts ...dcl.ApplyOption) *ClusterConfigMetastoreConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterConfigMetastoreConfig{}
+
+	if dcl.IsZeroValue(des.DataprocMetastoreService) || (dcl.IsEmptyValueIndirect(des.DataprocMetastoreService) && dcl.IsEmptyValueIndirect(initial.DataprocMetastoreService)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.DataprocMetastoreService = initial.DataprocMetastoreService
+	} else {
+		cDes.DataprocMetastoreService = des.DataprocMetastoreService
+	}
+
+	return cDes
+}
+
+func canonicalizeClusterConfigMetastoreConfigSlice(des, initial []ClusterConfigMetastoreConfig, opts ...dcl.ApplyOption) []ClusterConfigMetastoreConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterConfigMetastoreConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterConfigMetastoreConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterConfigMetastoreConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterConfigMetastoreConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterConfigMetastoreConfig(c *Client, des, nw *ClusterConfigMetastoreConfig) *ClusterConfigMetastoreConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigMetastoreConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	return nw
+}
+
+func canonicalizeNewClusterConfigMetastoreConfigSet(c *Client, des, nw []ClusterConfigMetastoreConfig) []ClusterConfigMetastoreConfig {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterConfigMetastoreConfig
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterConfigMetastoreConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterConfigMetastoreConfigSlice(c *Client, des, nw []ClusterConfigMetastoreConfig) []ClusterConfigMetastoreConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterConfigMetastoreConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterConfigMetastoreConfig(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeClusterConfigDataprocMetricConfig(des, initial *ClusterConfigDataprocMetricConfig, opts ...dcl.ApplyOption) *ClusterConfigDataprocMetricConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterConfigDataprocMetricConfig{}
+
+	cDes.Metrics = canonicalizeClusterConfigDataprocMetricConfigMetricsSlice(des.Metrics, initial.Metrics, opts...)
+
+	return cDes
+}
+
+func canonicalizeClusterConfigDataprocMetricConfigSlice(des, initial []ClusterConfigDataprocMetricConfig, opts ...dcl.ApplyOption) []ClusterConfigDataprocMetricConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterConfigDataprocMetricConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterConfigDataprocMetricConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterConfigDataprocMetricConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterConfigDataprocMetricConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterConfigDataprocMetricConfig(c *Client, des, nw *ClusterConfigDataprocMetricConfig) *ClusterConfigDataprocMetricConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigDataprocMetricConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	nw.Metrics = canonicalizeNewClusterConfigDataprocMetricConfigMetricsSlice(c, des.Metrics, nw.Metrics)
+
+	return nw
+}
+
+func canonicalizeNewClusterConfigDataprocMetricConfigSet(c *Client, des, nw []ClusterConfigDataprocMetricConfig) []ClusterConfigDataprocMetricConfig {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterConfigDataprocMetricConfig
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterConfigDataprocMetricConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterConfigDataprocMetricConfigSlice(c *Client, des, nw []ClusterConfigDataprocMetricConfig) []ClusterConfigDataprocMetricConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterConfigDataprocMetricConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterConfigDataprocMetricConfig(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeClusterConfigDataprocMetricConfigMetrics(des, initial *ClusterConfigDataprocMetricConfigMetrics, opts ...dcl.ApplyOption) *ClusterConfigDataprocMetricConfigMetrics {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterConfigDataprocMetricConfigMetrics{}
+
+	if dcl.IsZeroValue(des.MetricSource) || (dcl.IsEmptyValueIndirect(des.MetricSource) && dcl.IsEmptyValueIndirect(initial.MetricSource)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.MetricSource = initial.MetricSource
+	} else {
+		cDes.MetricSource = des.MetricSource
+	}
+	if dcl.StringArrayCanonicalize(des.MetricOverrides, initial.MetricOverrides) {
+		cDes.MetricOverrides = initial.MetricOverrides
+	} else {
+		cDes.MetricOverrides = des.MetricOverrides
+	}
+
+	return cDes
+}
+
+func canonicalizeClusterConfigDataprocMetricConfigMetricsSlice(des, initial []ClusterConfigDataprocMetricConfigMetrics, opts ...dcl.ApplyOption) []ClusterConfigDataprocMetricConfigMetrics {
+	if des == nil {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterConfigDataprocMetricConfigMetrics, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterConfigDataprocMetricConfigMetrics(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterConfigDataprocMetricConfigMetrics, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterConfigDataprocMetricConfigMetrics(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterConfigDataprocMetricConfigMetrics(c *Client, des, nw *ClusterConfigDataprocMetricConfigMetrics) *ClusterConfigDataprocMetricConfigMetrics {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterConfigDataprocMetricConfigMetrics while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	if dcl.StringArrayCanonicalize(des.MetricOverrides, nw.MetricOverrides) {
+		nw.MetricOverrides = des.MetricOverrides
+	}
+
+	return nw
+}
+
+func canonicalizeNewClusterConfigDataprocMetricConfigMetricsSet(c *Client, des, nw []ClusterConfigDataprocMetricConfigMetrics) []ClusterConfigDataprocMetricConfigMetrics {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterConfigDataprocMetricConfigMetrics
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterConfigDataprocMetricConfigMetricsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterConfigDataprocMetricConfigMetricsSlice(c *Client, des, nw []ClusterConfigDataprocMetricConfigMetrics) []ClusterConfigDataprocMetricConfigMetrics {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterConfigDataprocMetricConfigMetrics
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterConfigDataprocMetricConfigMetrics(c, &d, &n))
 	}
 
 	return items
@@ -4223,6 +5554,1566 @@ func canonicalizeNewClusterMetricsSlice(c *Client, des, nw []ClusterMetrics) []C
 	return items
 }
 
+func canonicalizeClusterVirtualClusterConfig(des, initial *ClusterVirtualClusterConfig, opts ...dcl.ApplyOption) *ClusterVirtualClusterConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterVirtualClusterConfig{}
+
+	if dcl.IsZeroValue(des.StagingBucket) || (dcl.IsEmptyValueIndirect(des.StagingBucket) && dcl.IsEmptyValueIndirect(initial.StagingBucket)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.StagingBucket = initial.StagingBucket
+	} else {
+		cDes.StagingBucket = des.StagingBucket
+	}
+	cDes.KubernetesClusterConfig = canonicalizeClusterVirtualClusterConfigKubernetesClusterConfig(des.KubernetesClusterConfig, initial.KubernetesClusterConfig, opts...)
+	cDes.AuxiliaryServicesConfig = canonicalizeClusterVirtualClusterConfigAuxiliaryServicesConfig(des.AuxiliaryServicesConfig, initial.AuxiliaryServicesConfig, opts...)
+
+	return cDes
+}
+
+func canonicalizeClusterVirtualClusterConfigSlice(des, initial []ClusterVirtualClusterConfig, opts ...dcl.ApplyOption) []ClusterVirtualClusterConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterVirtualClusterConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterVirtualClusterConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterVirtualClusterConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterVirtualClusterConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterVirtualClusterConfig(c *Client, des, nw *ClusterVirtualClusterConfig) *ClusterVirtualClusterConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterVirtualClusterConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	nw.KubernetesClusterConfig = canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfig(c, des.KubernetesClusterConfig, nw.KubernetesClusterConfig)
+	nw.AuxiliaryServicesConfig = canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfig(c, des.AuxiliaryServicesConfig, nw.AuxiliaryServicesConfig)
+
+	return nw
+}
+
+func canonicalizeNewClusterVirtualClusterConfigSet(c *Client, des, nw []ClusterVirtualClusterConfig) []ClusterVirtualClusterConfig {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterVirtualClusterConfig
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterVirtualClusterConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterVirtualClusterConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfig) []ClusterVirtualClusterConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterVirtualClusterConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterVirtualClusterConfig(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeClusterVirtualClusterConfigKubernetesClusterConfig(des, initial *ClusterVirtualClusterConfigKubernetesClusterConfig, opts ...dcl.ApplyOption) *ClusterVirtualClusterConfigKubernetesClusterConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterVirtualClusterConfigKubernetesClusterConfig{}
+
+	if dcl.StringCanonicalize(des.KubernetesNamespace, initial.KubernetesNamespace) || dcl.IsZeroValue(des.KubernetesNamespace) {
+		cDes.KubernetesNamespace = initial.KubernetesNamespace
+	} else {
+		cDes.KubernetesNamespace = des.KubernetesNamespace
+	}
+	cDes.GkeClusterConfig = canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig(des.GkeClusterConfig, initial.GkeClusterConfig, opts...)
+	cDes.KubernetesSoftwareConfig = canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig(des.KubernetesSoftwareConfig, initial.KubernetesSoftwareConfig, opts...)
+
+	return cDes
+}
+
+func canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigSlice(des, initial []ClusterVirtualClusterConfigKubernetesClusterConfig, opts ...dcl.ApplyOption) []ClusterVirtualClusterConfigKubernetesClusterConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterVirtualClusterConfigKubernetesClusterConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterVirtualClusterConfigKubernetesClusterConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterVirtualClusterConfigKubernetesClusterConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterVirtualClusterConfigKubernetesClusterConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfig(c *Client, des, nw *ClusterVirtualClusterConfigKubernetesClusterConfig) *ClusterVirtualClusterConfigKubernetesClusterConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterVirtualClusterConfigKubernetesClusterConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	if dcl.StringCanonicalize(des.KubernetesNamespace, nw.KubernetesNamespace) {
+		nw.KubernetesNamespace = des.KubernetesNamespace
+	}
+	nw.GkeClusterConfig = canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig(c, des.GkeClusterConfig, nw.GkeClusterConfig)
+	nw.KubernetesSoftwareConfig = canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig(c, des.KubernetesSoftwareConfig, nw.KubernetesSoftwareConfig)
+
+	return nw
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigSet(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfig) []ClusterVirtualClusterConfigKubernetesClusterConfig {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterVirtualClusterConfigKubernetesClusterConfig
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterVirtualClusterConfigKubernetesClusterConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfig) []ClusterVirtualClusterConfigKubernetesClusterConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterVirtualClusterConfigKubernetesClusterConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfig(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig(des, initial *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig, opts ...dcl.ApplyOption) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig{}
+
+	if dcl.IsZeroValue(des.GkeClusterTarget) || (dcl.IsEmptyValueIndirect(des.GkeClusterTarget) && dcl.IsEmptyValueIndirect(initial.GkeClusterTarget)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.GkeClusterTarget = initial.GkeClusterTarget
+	} else {
+		cDes.GkeClusterTarget = des.GkeClusterTarget
+	}
+	cDes.NodePoolTarget = canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetSlice(des.NodePoolTarget, initial.NodePoolTarget, opts...)
+
+	return cDes
+}
+
+func canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigSlice(des, initial []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig, opts ...dcl.ApplyOption) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig(c *Client, des, nw *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	nw.NodePoolTarget = canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetSlice(c, des.NodePoolTarget, nw.NodePoolTarget)
+
+	return nw
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigSet(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget(des, initial *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget, opts ...dcl.ApplyOption) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget{}
+
+	if dcl.IsZeroValue(des.NodePool) || (dcl.IsEmptyValueIndirect(des.NodePool) && dcl.IsEmptyValueIndirect(initial.NodePool)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.NodePool = initial.NodePool
+	} else {
+		cDes.NodePool = des.NodePool
+	}
+	if dcl.IsZeroValue(des.Roles) || (dcl.IsEmptyValueIndirect(des.Roles) && dcl.IsEmptyValueIndirect(initial.Roles)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.Roles = initial.Roles
+	} else {
+		cDes.Roles = des.Roles
+	}
+	cDes.NodePoolConfig = canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig(des.NodePoolConfig, initial.NodePoolConfig, opts...)
+
+	return cDes
+}
+
+func canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetSlice(des, initial []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget, opts ...dcl.ApplyOption) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget {
+	if des == nil {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget(c *Client, des, nw *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	nw.NodePoolConfig = des.NodePoolConfig
+
+	return nw
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetSet(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetSlice(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig(des, initial *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig, opts ...dcl.ApplyOption) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig{}
+
+	cDes.Config = canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig(des.Config, initial.Config, opts...)
+	if dcl.StringArrayCanonicalize(des.Locations, initial.Locations) {
+		cDes.Locations = initial.Locations
+	} else {
+		cDes.Locations = des.Locations
+	}
+	cDes.Autoscaling = canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling(des.Autoscaling, initial.Autoscaling, opts...)
+
+	return cDes
+}
+
+func canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigSlice(des, initial []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig, opts ...dcl.ApplyOption) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig(c *Client, des, nw *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	nw.Config = canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig(c, des.Config, nw.Config)
+	if dcl.StringArrayCanonicalize(des.Locations, nw.Locations) {
+		nw.Locations = des.Locations
+	}
+	nw.Autoscaling = canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling(c, des.Autoscaling, nw.Autoscaling)
+
+	return nw
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigSet(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig(des, initial *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig, opts ...dcl.ApplyOption) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig{}
+
+	if dcl.StringCanonicalize(des.MachineType, initial.MachineType) || dcl.IsZeroValue(des.MachineType) {
+		cDes.MachineType = initial.MachineType
+	} else {
+		cDes.MachineType = des.MachineType
+	}
+	if dcl.IsZeroValue(des.LocalSsdCount) || (dcl.IsEmptyValueIndirect(des.LocalSsdCount) && dcl.IsEmptyValueIndirect(initial.LocalSsdCount)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.LocalSsdCount = initial.LocalSsdCount
+	} else {
+		cDes.LocalSsdCount = des.LocalSsdCount
+	}
+	if dcl.BoolCanonicalize(des.Preemptible, initial.Preemptible) || dcl.IsZeroValue(des.Preemptible) {
+		cDes.Preemptible = initial.Preemptible
+	} else {
+		cDes.Preemptible = des.Preemptible
+	}
+	cDes.Accelerators = canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsSlice(des.Accelerators, initial.Accelerators, opts...)
+	if dcl.StringCanonicalize(des.MinCpuPlatform, initial.MinCpuPlatform) || dcl.IsZeroValue(des.MinCpuPlatform) {
+		cDes.MinCpuPlatform = initial.MinCpuPlatform
+	} else {
+		cDes.MinCpuPlatform = des.MinCpuPlatform
+	}
+	if dcl.StringCanonicalize(des.BootDiskKmsKey, initial.BootDiskKmsKey) || dcl.IsZeroValue(des.BootDiskKmsKey) {
+		cDes.BootDiskKmsKey = initial.BootDiskKmsKey
+	} else {
+		cDes.BootDiskKmsKey = des.BootDiskKmsKey
+	}
+	cDes.EphemeralStorageConfig = canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig(des.EphemeralStorageConfig, initial.EphemeralStorageConfig, opts...)
+	if dcl.BoolCanonicalize(des.Spot, initial.Spot) || dcl.IsZeroValue(des.Spot) {
+		cDes.Spot = initial.Spot
+	} else {
+		cDes.Spot = des.Spot
+	}
+
+	return cDes
+}
+
+func canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigSlice(des, initial []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig, opts ...dcl.ApplyOption) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig(c *Client, des, nw *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	if dcl.StringCanonicalize(des.MachineType, nw.MachineType) {
+		nw.MachineType = des.MachineType
+	}
+	if dcl.BoolCanonicalize(des.Preemptible, nw.Preemptible) {
+		nw.Preemptible = des.Preemptible
+	}
+	nw.Accelerators = canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsSlice(c, des.Accelerators, nw.Accelerators)
+	if dcl.StringCanonicalize(des.MinCpuPlatform, nw.MinCpuPlatform) {
+		nw.MinCpuPlatform = des.MinCpuPlatform
+	}
+	if dcl.StringCanonicalize(des.BootDiskKmsKey, nw.BootDiskKmsKey) {
+		nw.BootDiskKmsKey = des.BootDiskKmsKey
+	}
+	nw.EphemeralStorageConfig = canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig(c, des.EphemeralStorageConfig, nw.EphemeralStorageConfig)
+	if dcl.BoolCanonicalize(des.Spot, nw.Spot) {
+		nw.Spot = des.Spot
+	}
+
+	return nw
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigSet(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators(des, initial *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators, opts ...dcl.ApplyOption) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators{}
+
+	if dcl.IsZeroValue(des.AcceleratorCount) || (dcl.IsEmptyValueIndirect(des.AcceleratorCount) && dcl.IsEmptyValueIndirect(initial.AcceleratorCount)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.AcceleratorCount = initial.AcceleratorCount
+	} else {
+		cDes.AcceleratorCount = des.AcceleratorCount
+	}
+	if dcl.StringCanonicalize(des.AcceleratorType, initial.AcceleratorType) || dcl.IsZeroValue(des.AcceleratorType) {
+		cDes.AcceleratorType = initial.AcceleratorType
+	} else {
+		cDes.AcceleratorType = des.AcceleratorType
+	}
+	if dcl.StringCanonicalize(des.GpuPartitionSize, initial.GpuPartitionSize) || dcl.IsZeroValue(des.GpuPartitionSize) {
+		cDes.GpuPartitionSize = initial.GpuPartitionSize
+	} else {
+		cDes.GpuPartitionSize = des.GpuPartitionSize
+	}
+
+	return cDes
+}
+
+func canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsSlice(des, initial []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators, opts ...dcl.ApplyOption) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators {
+	if des == nil {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators(c *Client, des, nw *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	if dcl.StringCanonicalize(des.AcceleratorType, nw.AcceleratorType) {
+		nw.AcceleratorType = des.AcceleratorType
+	}
+	if dcl.StringCanonicalize(des.GpuPartitionSize, nw.GpuPartitionSize) {
+		nw.GpuPartitionSize = des.GpuPartitionSize
+	}
+
+	return nw
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsSet(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsSlice(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig(des, initial *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig, opts ...dcl.ApplyOption) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig{}
+
+	if dcl.IsZeroValue(des.LocalSsdCount) || (dcl.IsEmptyValueIndirect(des.LocalSsdCount) && dcl.IsEmptyValueIndirect(initial.LocalSsdCount)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.LocalSsdCount = initial.LocalSsdCount
+	} else {
+		cDes.LocalSsdCount = des.LocalSsdCount
+	}
+
+	return cDes
+}
+
+func canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigSlice(des, initial []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig, opts ...dcl.ApplyOption) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig(c *Client, des, nw *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	return nw
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigSet(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling(des, initial *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling, opts ...dcl.ApplyOption) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling{}
+
+	if dcl.IsZeroValue(des.MinNodeCount) || (dcl.IsEmptyValueIndirect(des.MinNodeCount) && dcl.IsEmptyValueIndirect(initial.MinNodeCount)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.MinNodeCount = initial.MinNodeCount
+	} else {
+		cDes.MinNodeCount = des.MinNodeCount
+	}
+	if dcl.IsZeroValue(des.MaxNodeCount) || (dcl.IsEmptyValueIndirect(des.MaxNodeCount) && dcl.IsEmptyValueIndirect(initial.MaxNodeCount)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.MaxNodeCount = initial.MaxNodeCount
+	} else {
+		cDes.MaxNodeCount = des.MaxNodeCount
+	}
+
+	return cDes
+}
+
+func canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingSlice(des, initial []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling, opts ...dcl.ApplyOption) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling(c *Client, des, nw *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	return nw
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingSet(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingSlice(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig(des, initial *ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig, opts ...dcl.ApplyOption) *ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig{}
+
+	if dcl.IsZeroValue(des.ComponentVersion) || (dcl.IsEmptyValueIndirect(des.ComponentVersion) && dcl.IsEmptyValueIndirect(initial.ComponentVersion)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.ComponentVersion = initial.ComponentVersion
+	} else {
+		cDes.ComponentVersion = des.ComponentVersion
+	}
+	if dcl.IsZeroValue(des.Properties) || (dcl.IsEmptyValueIndirect(des.Properties) && dcl.IsEmptyValueIndirect(initial.Properties)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.Properties = initial.Properties
+	} else {
+		cDes.Properties = des.Properties
+	}
+
+	return cDes
+}
+
+func canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigSlice(des, initial []ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig, opts ...dcl.ApplyOption) []ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig(c *Client, des, nw *ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig) *ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	return nw
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigSet(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig) []ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig) []ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeClusterVirtualClusterConfigAuxiliaryServicesConfig(des, initial *ClusterVirtualClusterConfigAuxiliaryServicesConfig, opts ...dcl.ApplyOption) *ClusterVirtualClusterConfigAuxiliaryServicesConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterVirtualClusterConfigAuxiliaryServicesConfig{}
+
+	cDes.MetastoreConfig = canonicalizeClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig(des.MetastoreConfig, initial.MetastoreConfig, opts...)
+	cDes.SparkHistoryServerConfig = canonicalizeClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig(des.SparkHistoryServerConfig, initial.SparkHistoryServerConfig, opts...)
+
+	return cDes
+}
+
+func canonicalizeClusterVirtualClusterConfigAuxiliaryServicesConfigSlice(des, initial []ClusterVirtualClusterConfigAuxiliaryServicesConfig, opts ...dcl.ApplyOption) []ClusterVirtualClusterConfigAuxiliaryServicesConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterVirtualClusterConfigAuxiliaryServicesConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterVirtualClusterConfigAuxiliaryServicesConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterVirtualClusterConfigAuxiliaryServicesConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterVirtualClusterConfigAuxiliaryServicesConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfig(c *Client, des, nw *ClusterVirtualClusterConfigAuxiliaryServicesConfig) *ClusterVirtualClusterConfigAuxiliaryServicesConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterVirtualClusterConfigAuxiliaryServicesConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	nw.MetastoreConfig = canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig(c, des.MetastoreConfig, nw.MetastoreConfig)
+	nw.SparkHistoryServerConfig = canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig(c, des.SparkHistoryServerConfig, nw.SparkHistoryServerConfig)
+
+	return nw
+}
+
+func canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigSet(c *Client, des, nw []ClusterVirtualClusterConfigAuxiliaryServicesConfig) []ClusterVirtualClusterConfigAuxiliaryServicesConfig {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterVirtualClusterConfigAuxiliaryServicesConfig
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterVirtualClusterConfigAuxiliaryServicesConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfigAuxiliaryServicesConfig) []ClusterVirtualClusterConfigAuxiliaryServicesConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterVirtualClusterConfigAuxiliaryServicesConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfig(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig(des, initial *ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig, opts ...dcl.ApplyOption) *ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig{}
+
+	if dcl.IsZeroValue(des.DataprocMetastoreService) || (dcl.IsEmptyValueIndirect(des.DataprocMetastoreService) && dcl.IsEmptyValueIndirect(initial.DataprocMetastoreService)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.DataprocMetastoreService = initial.DataprocMetastoreService
+	} else {
+		cDes.DataprocMetastoreService = des.DataprocMetastoreService
+	}
+
+	return cDes
+}
+
+func canonicalizeClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigSlice(des, initial []ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig, opts ...dcl.ApplyOption) []ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig(c *Client, des, nw *ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig) *ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	return nw
+}
+
+func canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigSet(c *Client, des, nw []ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig) []ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig) []ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig(des, initial *ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig, opts ...dcl.ApplyOption) *ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig{}
+
+	if dcl.IsZeroValue(des.DataprocCluster) || (dcl.IsEmptyValueIndirect(des.DataprocCluster) && dcl.IsEmptyValueIndirect(initial.DataprocCluster)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.DataprocCluster = initial.DataprocCluster
+	} else {
+		cDes.DataprocCluster = des.DataprocCluster
+	}
+
+	return cDes
+}
+
+func canonicalizeClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigSlice(des, initial []ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig, opts ...dcl.ApplyOption) []ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig(c *Client, des, nw *ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig) *ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	return nw
+}
+
+func canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigSet(c *Client, des, nw []ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig) []ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig) []ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig(c, &d, &n))
+	}
+
+	return items
+}
+
 // The differ returns a list of diffs, along with a list of operations that should be taken
 // to remedy them. Right now, it does not attempt to consolidate operations - if several
 // fields can be fixed with a patch update, it will perform the patch several times.
@@ -4304,6 +7195,13 @@ func diffCluster(c *Client, desired, actual *Cluster, opts ...dcl.ApplyOption) (
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if ds, err := dcl.Diff(desired.VirtualClusterConfig, actual.VirtualClusterConfig, dcl.DiffInfo{ObjectFunction: compareClusterVirtualClusterConfigNewStyle, EmptyObject: EmptyClusterVirtualClusterConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("VirtualClusterConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		newDiffs = append(newDiffs, ds...)
+	}
+
 	return newDiffs, nil
 }
 func compareClusterConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
@@ -4326,49 +7224,49 @@ func compareClusterConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Fi
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.StagingBucket, actual.StagingBucket, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ConfigBucket")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.StagingBucket, actual.StagingBucket, dcl.DiffInfo{ServerDefault: true, Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ConfigBucket")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.TempBucket, actual.TempBucket, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TempBucket")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.TempBucket, actual.TempBucket, dcl.DiffInfo{ServerDefault: true, Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("TempBucket")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.GceClusterConfig, actual.GceClusterConfig, dcl.DiffInfo{ObjectFunction: compareClusterConfigGceClusterConfigNewStyle, EmptyObject: EmptyClusterConfigGceClusterConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GceClusterConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.GceClusterConfig, actual.GceClusterConfig, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareClusterConfigGceClusterConfigNewStyle, EmptyObject: EmptyClusterConfigGceClusterConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GceClusterConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MasterConfig, actual.MasterConfig, dcl.DiffInfo{ObjectFunction: compareClusterConfigMasterConfigNewStyle, EmptyObject: EmptyClusterConfigMasterConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MasterConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MasterConfig, actual.MasterConfig, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareClusterConfigMasterConfigNewStyle, EmptyObject: EmptyClusterConfigMasterConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MasterConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.WorkerConfig, actual.WorkerConfig, dcl.DiffInfo{ObjectFunction: compareClusterConfigWorkerConfigNewStyle, EmptyObject: EmptyClusterConfigWorkerConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("WorkerConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.WorkerConfig, actual.WorkerConfig, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareClusterConfigWorkerConfigNewStyle, EmptyObject: EmptyClusterConfigWorkerConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("WorkerConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SecondaryWorkerConfig, actual.SecondaryWorkerConfig, dcl.DiffInfo{ObjectFunction: compareClusterConfigSecondaryWorkerConfigNewStyle, EmptyObject: EmptyClusterConfigSecondaryWorkerConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SecondaryWorkerConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SecondaryWorkerConfig, actual.SecondaryWorkerConfig, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareClusterConfigSecondaryWorkerConfigNewStyle, EmptyObject: EmptyClusterConfigSecondaryWorkerConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SecondaryWorkerConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.SoftwareConfig, actual.SoftwareConfig, dcl.DiffInfo{ObjectFunction: compareClusterConfigSoftwareConfigNewStyle, EmptyObject: EmptyClusterConfigSoftwareConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SoftwareConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SoftwareConfig, actual.SoftwareConfig, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareClusterConfigSoftwareConfigNewStyle, EmptyObject: EmptyClusterConfigSoftwareConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SoftwareConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4410,7 +7308,21 @@ func compareClusterConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Fi
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.EndpointConfig, actual.EndpointConfig, dcl.DiffInfo{ObjectFunction: compareClusterConfigEndpointConfigNewStyle, EmptyObject: EmptyClusterConfigEndpointConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EndpointConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.EndpointConfig, actual.EndpointConfig, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareClusterConfigEndpointConfigNewStyle, EmptyObject: EmptyClusterConfigEndpointConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EndpointConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.MetastoreConfig, actual.MetastoreConfig, dcl.DiffInfo{ObjectFunction: compareClusterConfigMetastoreConfigNewStyle, EmptyObject: EmptyClusterConfigMetastoreConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MetastoreConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.DataprocMetricConfig, actual.DataprocMetricConfig, dcl.DiffInfo{ObjectFunction: compareClusterConfigDataprocMetricConfigNewStyle, EmptyObject: EmptyClusterConfigDataprocMetricConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DataprocMetricConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4446,7 +7358,7 @@ func compareClusterConfigGceClusterConfigNewStyle(d, a interface{}, fn dcl.Field
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Network, actual.Network, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NetworkUri")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Network, actual.Network, dcl.DiffInfo{ServerDefault: true, Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NetworkUri")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4460,7 +7372,7 @@ func compareClusterConfigGceClusterConfigNewStyle(d, a interface{}, fn dcl.Field
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InternalIPOnly, actual.InternalIPOnly, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InternalIpOnly")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InternalIPOnly, actual.InternalIPOnly, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InternalIpOnly")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4481,7 +7393,7 @@ func compareClusterConfigGceClusterConfigNewStyle(d, a interface{}, fn dcl.Field
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ServiceAccountScopes, actual.ServiceAccountScopes, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ServiceAccountScopes")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ServiceAccountScopes, actual.ServiceAccountScopes, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ServiceAccountScopes")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4510,6 +7422,20 @@ func compareClusterConfigGceClusterConfigNewStyle(d, a interface{}, fn dcl.Field
 	}
 
 	if ds, err := dcl.Diff(desired.NodeGroupAffinity, actual.NodeGroupAffinity, dcl.DiffInfo{ObjectFunction: compareClusterConfigGceClusterConfigNodeGroupAffinityNewStyle, EmptyObject: EmptyClusterConfigGceClusterConfigNodeGroupAffinity, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NodeGroupAffinity")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.ShieldedInstanceConfig, actual.ShieldedInstanceConfig, dcl.DiffInfo{ObjectFunction: compareClusterConfigGceClusterConfigShieldedInstanceConfigNewStyle, EmptyObject: EmptyClusterConfigGceClusterConfigShieldedInstanceConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ShieldedInstanceConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.ConfidentialInstanceConfig, actual.ConfidentialInstanceConfig, dcl.DiffInfo{ObjectFunction: compareClusterConfigGceClusterConfigConfidentialInstanceConfigNewStyle, EmptyObject: EmptyClusterConfigGceClusterConfigConfidentialInstanceConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ConfidentialInstanceConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4590,6 +7516,78 @@ func compareClusterConfigGceClusterConfigNodeGroupAffinityNewStyle(d, a interfac
 	return diffs, nil
 }
 
+func compareClusterConfigGceClusterConfigShieldedInstanceConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterConfigGceClusterConfigShieldedInstanceConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterConfigGceClusterConfigShieldedInstanceConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterConfigGceClusterConfigShieldedInstanceConfig or *ClusterConfigGceClusterConfigShieldedInstanceConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterConfigGceClusterConfigShieldedInstanceConfig)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterConfigGceClusterConfigShieldedInstanceConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterConfigGceClusterConfigShieldedInstanceConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.EnableSecureBoot, actual.EnableSecureBoot, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EnableSecureBoot")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.EnableVtpm, actual.EnableVtpm, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EnableVtpm")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.EnableIntegrityMonitoring, actual.EnableIntegrityMonitoring, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EnableIntegrityMonitoring")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareClusterConfigGceClusterConfigConfidentialInstanceConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterConfigGceClusterConfigConfidentialInstanceConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterConfigGceClusterConfigConfidentialInstanceConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterConfigGceClusterConfigConfidentialInstanceConfig or *ClusterConfigGceClusterConfigConfidentialInstanceConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterConfigGceClusterConfigConfidentialInstanceConfig)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterConfigGceClusterConfigConfidentialInstanceConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterConfigGceClusterConfigConfidentialInstanceConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.EnableConfidentialCompute, actual.EnableConfidentialCompute, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EnableConfidentialCompute")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
 func compareClusterConfigMasterConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
 	var diffs []*dcl.FieldDiff
 
@@ -4617,7 +7615,7 @@ func compareClusterConfigMasterConfigNewStyle(d, a interface{}, fn dcl.FieldName
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InstanceNames, actual.InstanceNames, dcl.DiffInfo{OutputOnly: true, Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InstanceNames")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InstanceNames, actual.InstanceNames, dcl.DiffInfo{OutputOnly: true, ServerDefault: true, Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InstanceNames")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4638,7 +7636,7 @@ func compareClusterConfigMasterConfigNewStyle(d, a interface{}, fn dcl.FieldName
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DiskConfig, actual.DiskConfig, dcl.DiffInfo{ObjectFunction: compareClusterConfigMasterConfigDiskConfigNewStyle, EmptyObject: EmptyClusterConfigMasterConfigDiskConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DiskConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DiskConfig, actual.DiskConfig, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareClusterConfigMasterConfigDiskConfigNewStyle, EmptyObject: EmptyClusterConfigMasterConfigDiskConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DiskConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4659,21 +7657,28 @@ func compareClusterConfigMasterConfigNewStyle(d, a interface{}, fn dcl.FieldName
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ManagedGroupConfig, actual.ManagedGroupConfig, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareClusterConfigMasterConfigManagedGroupConfigNewStyle, EmptyObject: EmptyClusterConfigMasterConfigManagedGroupConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ManagedGroupConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ManagedGroupConfig, actual.ManagedGroupConfig, dcl.DiffInfo{OutputOnly: true, ServerDefault: true, ObjectFunction: compareClusterConfigMasterConfigManagedGroupConfigNewStyle, EmptyObject: EmptyClusterConfigMasterConfigManagedGroupConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ManagedGroupConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Accelerators, actual.Accelerators, dcl.DiffInfo{ObjectFunction: compareClusterConfigMasterConfigAcceleratorsNewStyle, EmptyObject: EmptyClusterConfigMasterConfigAccelerators, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Accelerators")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Accelerators, actual.Accelerators, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareClusterConfigMasterConfigAcceleratorsNewStyle, EmptyObject: EmptyClusterConfigMasterConfigAccelerators, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Accelerators")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MinCpuPlatform, actual.MinCpuPlatform, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MinCpuPlatform")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MinCpuPlatform, actual.MinCpuPlatform, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MinCpuPlatform")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.InstanceReferences, actual.InstanceReferences, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareClusterConfigMasterConfigInstanceReferencesNewStyle, EmptyObject: EmptyClusterConfigMasterConfigInstanceReferences, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InstanceReferences")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4716,7 +7721,14 @@ func compareClusterConfigMasterConfigDiskConfigNewStyle(d, a interface{}, fn dcl
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NumLocalSsds, actual.NumLocalSsds, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NumLocalSsds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NumLocalSsds, actual.NumLocalSsds, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NumLocalSsds")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.LocalSsdInterface, actual.LocalSsdInterface, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocalSsdInterface")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4797,6 +7809,56 @@ func compareClusterConfigMasterConfigAcceleratorsNewStyle(d, a interface{}, fn d
 	return diffs, nil
 }
 
+func compareClusterConfigMasterConfigInstanceReferencesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterConfigMasterConfigInstanceReferences)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterConfigMasterConfigInstanceReferences)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterConfigMasterConfigInstanceReferences or *ClusterConfigMasterConfigInstanceReferences", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterConfigMasterConfigInstanceReferences)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterConfigMasterConfigInstanceReferences)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterConfigMasterConfigInstanceReferences", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.InstanceName, actual.InstanceName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InstanceName")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.InstanceId, actual.InstanceId, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InstanceId")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.PublicKey, actual.PublicKey, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PublicKey")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.PublicEciesKey, actual.PublicEciesKey, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PublicEciesKey")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
 func compareClusterConfigWorkerConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
 	var diffs []*dcl.FieldDiff
 
@@ -4824,7 +7886,7 @@ func compareClusterConfigWorkerConfigNewStyle(d, a interface{}, fn dcl.FieldName
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InstanceNames, actual.InstanceNames, dcl.DiffInfo{OutputOnly: true, Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InstanceNames")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InstanceNames, actual.InstanceNames, dcl.DiffInfo{OutputOnly: true, ServerDefault: true, Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InstanceNames")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4845,7 +7907,7 @@ func compareClusterConfigWorkerConfigNewStyle(d, a interface{}, fn dcl.FieldName
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DiskConfig, actual.DiskConfig, dcl.DiffInfo{ObjectFunction: compareClusterConfigWorkerConfigDiskConfigNewStyle, EmptyObject: EmptyClusterConfigWorkerConfigDiskConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DiskConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DiskConfig, actual.DiskConfig, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareClusterConfigWorkerConfigDiskConfigNewStyle, EmptyObject: EmptyClusterConfigWorkerConfigDiskConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DiskConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4866,21 +7928,28 @@ func compareClusterConfigWorkerConfigNewStyle(d, a interface{}, fn dcl.FieldName
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ManagedGroupConfig, actual.ManagedGroupConfig, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareClusterConfigWorkerConfigManagedGroupConfigNewStyle, EmptyObject: EmptyClusterConfigWorkerConfigManagedGroupConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ManagedGroupConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ManagedGroupConfig, actual.ManagedGroupConfig, dcl.DiffInfo{OutputOnly: true, ServerDefault: true, ObjectFunction: compareClusterConfigWorkerConfigManagedGroupConfigNewStyle, EmptyObject: EmptyClusterConfigWorkerConfigManagedGroupConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ManagedGroupConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Accelerators, actual.Accelerators, dcl.DiffInfo{ObjectFunction: compareClusterConfigWorkerConfigAcceleratorsNewStyle, EmptyObject: EmptyClusterConfigWorkerConfigAccelerators, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Accelerators")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Accelerators, actual.Accelerators, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareClusterConfigWorkerConfigAcceleratorsNewStyle, EmptyObject: EmptyClusterConfigWorkerConfigAccelerators, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Accelerators")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MinCpuPlatform, actual.MinCpuPlatform, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MinCpuPlatform")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MinCpuPlatform, actual.MinCpuPlatform, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MinCpuPlatform")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.InstanceReferences, actual.InstanceReferences, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareClusterConfigWorkerConfigInstanceReferencesNewStyle, EmptyObject: EmptyClusterConfigWorkerConfigInstanceReferences, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InstanceReferences")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -4923,7 +7992,14 @@ func compareClusterConfigWorkerConfigDiskConfigNewStyle(d, a interface{}, fn dcl
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NumLocalSsds, actual.NumLocalSsds, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NumLocalSsds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NumLocalSsds, actual.NumLocalSsds, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NumLocalSsds")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.LocalSsdInterface, actual.LocalSsdInterface, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocalSsdInterface")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5004,6 +8080,56 @@ func compareClusterConfigWorkerConfigAcceleratorsNewStyle(d, a interface{}, fn d
 	return diffs, nil
 }
 
+func compareClusterConfigWorkerConfigInstanceReferencesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterConfigWorkerConfigInstanceReferences)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterConfigWorkerConfigInstanceReferences)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterConfigWorkerConfigInstanceReferences or *ClusterConfigWorkerConfigInstanceReferences", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterConfigWorkerConfigInstanceReferences)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterConfigWorkerConfigInstanceReferences)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterConfigWorkerConfigInstanceReferences", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.InstanceName, actual.InstanceName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InstanceName")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.InstanceId, actual.InstanceId, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InstanceId")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.PublicKey, actual.PublicKey, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PublicKey")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.PublicEciesKey, actual.PublicEciesKey, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PublicEciesKey")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
 func compareClusterConfigSecondaryWorkerConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
 	var diffs []*dcl.FieldDiff
 
@@ -5031,7 +8157,7 @@ func compareClusterConfigSecondaryWorkerConfigNewStyle(d, a interface{}, fn dcl.
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InstanceNames, actual.InstanceNames, dcl.DiffInfo{OutputOnly: true, Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InstanceNames")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InstanceNames, actual.InstanceNames, dcl.DiffInfo{OutputOnly: true, ServerDefault: true, Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InstanceNames")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5052,7 +8178,7 @@ func compareClusterConfigSecondaryWorkerConfigNewStyle(d, a interface{}, fn dcl.
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.DiskConfig, actual.DiskConfig, dcl.DiffInfo{ObjectFunction: compareClusterConfigSecondaryWorkerConfigDiskConfigNewStyle, EmptyObject: EmptyClusterConfigSecondaryWorkerConfigDiskConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DiskConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.DiskConfig, actual.DiskConfig, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareClusterConfigSecondaryWorkerConfigDiskConfigNewStyle, EmptyObject: EmptyClusterConfigSecondaryWorkerConfigDiskConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DiskConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5073,21 +8199,28 @@ func compareClusterConfigSecondaryWorkerConfigNewStyle(d, a interface{}, fn dcl.
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ManagedGroupConfig, actual.ManagedGroupConfig, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareClusterConfigSecondaryWorkerConfigManagedGroupConfigNewStyle, EmptyObject: EmptyClusterConfigSecondaryWorkerConfigManagedGroupConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ManagedGroupConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ManagedGroupConfig, actual.ManagedGroupConfig, dcl.DiffInfo{OutputOnly: true, ServerDefault: true, ObjectFunction: compareClusterConfigSecondaryWorkerConfigManagedGroupConfigNewStyle, EmptyObject: EmptyClusterConfigSecondaryWorkerConfigManagedGroupConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ManagedGroupConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Accelerators, actual.Accelerators, dcl.DiffInfo{ObjectFunction: compareClusterConfigSecondaryWorkerConfigAcceleratorsNewStyle, EmptyObject: EmptyClusterConfigSecondaryWorkerConfigAccelerators, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Accelerators")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Accelerators, actual.Accelerators, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareClusterConfigSecondaryWorkerConfigAcceleratorsNewStyle, EmptyObject: EmptyClusterConfigSecondaryWorkerConfigAccelerators, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Accelerators")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MinCpuPlatform, actual.MinCpuPlatform, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MinCpuPlatform")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MinCpuPlatform, actual.MinCpuPlatform, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MinCpuPlatform")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.InstanceReferences, actual.InstanceReferences, dcl.DiffInfo{OutputOnly: true, ObjectFunction: compareClusterConfigSecondaryWorkerConfigInstanceReferencesNewStyle, EmptyObject: EmptyClusterConfigSecondaryWorkerConfigInstanceReferences, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InstanceReferences")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5130,7 +8263,14 @@ func compareClusterConfigSecondaryWorkerConfigDiskConfigNewStyle(d, a interface{
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.NumLocalSsds, actual.NumLocalSsds, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NumLocalSsds")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.NumLocalSsds, actual.NumLocalSsds, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NumLocalSsds")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.LocalSsdInterface, actual.LocalSsdInterface, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocalSsdInterface")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5203,6 +8343,56 @@ func compareClusterConfigSecondaryWorkerConfigAcceleratorsNewStyle(d, a interfac
 	}
 
 	if ds, err := dcl.Diff(desired.AcceleratorCount, actual.AcceleratorCount, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AcceleratorCount")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareClusterConfigSecondaryWorkerConfigInstanceReferencesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterConfigSecondaryWorkerConfigInstanceReferences)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterConfigSecondaryWorkerConfigInstanceReferences)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterConfigSecondaryWorkerConfigInstanceReferences or *ClusterConfigSecondaryWorkerConfigInstanceReferences", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterConfigSecondaryWorkerConfigInstanceReferences)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterConfigSecondaryWorkerConfigInstanceReferences)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterConfigSecondaryWorkerConfigInstanceReferences", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.InstanceName, actual.InstanceName, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InstanceName")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.InstanceId, actual.InstanceId, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("InstanceId")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.PublicKey, actual.PublicKey, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PublicKey")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.PublicEciesKey, actual.PublicEciesKey, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PublicEciesKey")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5374,6 +8564,13 @@ func compareClusterConfigSecurityConfigNewStyle(d, a interface{}, fn dcl.FieldNa
 		}
 		diffs = append(diffs, ds...)
 	}
+
+	if ds, err := dcl.Diff(desired.IdentityConfig, actual.IdentityConfig, dcl.DiffInfo{ObjectFunction: compareClusterConfigSecurityConfigIdentityConfigNewStyle, EmptyObject: EmptyClusterConfigSecurityConfigIdentityConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("IdentityConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
 	return diffs, nil
 }
 
@@ -5504,6 +8701,35 @@ func compareClusterConfigSecurityConfigKerberosConfigNewStyle(d, a interface{}, 
 	return diffs, nil
 }
 
+func compareClusterConfigSecurityConfigIdentityConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterConfigSecurityConfigIdentityConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterConfigSecurityConfigIdentityConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterConfigSecurityConfigIdentityConfig or *ClusterConfigSecurityConfigIdentityConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterConfigSecurityConfigIdentityConfig)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterConfigSecurityConfigIdentityConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterConfigSecurityConfigIdentityConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.UserServiceAccountMapping, actual.UserServiceAccountMapping, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("UserServiceAccountMapping")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
 func compareClusterConfigLifecycleConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
 	var diffs []*dcl.FieldDiff
 
@@ -5582,6 +8808,100 @@ func compareClusterConfigEndpointConfigNewStyle(d, a interface{}, fn dcl.FieldNa
 	}
 
 	if ds, err := dcl.Diff(desired.EnableHttpPortAccess, actual.EnableHttpPortAccess, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EnableHttpPortAccess")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareClusterConfigMetastoreConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterConfigMetastoreConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterConfigMetastoreConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterConfigMetastoreConfig or *ClusterConfigMetastoreConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterConfigMetastoreConfig)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterConfigMetastoreConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterConfigMetastoreConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.DataprocMetastoreService, actual.DataprocMetastoreService, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DataprocMetastoreService")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareClusterConfigDataprocMetricConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterConfigDataprocMetricConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterConfigDataprocMetricConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterConfigDataprocMetricConfig or *ClusterConfigDataprocMetricConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterConfigDataprocMetricConfig)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterConfigDataprocMetricConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterConfigDataprocMetricConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.Metrics, actual.Metrics, dcl.DiffInfo{ObjectFunction: compareClusterConfigDataprocMetricConfigMetricsNewStyle, EmptyObject: EmptyClusterConfigDataprocMetricConfigMetrics, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Metrics")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareClusterConfigDataprocMetricConfigMetricsNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterConfigDataprocMetricConfigMetrics)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterConfigDataprocMetricConfigMetrics)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterConfigDataprocMetricConfigMetrics or *ClusterConfigDataprocMetricConfigMetrics", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterConfigDataprocMetricConfigMetrics)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterConfigDataprocMetricConfigMetrics)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterConfigDataprocMetricConfigMetrics", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.MetricSource, actual.MetricSource, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MetricSource")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.MetricOverrides, actual.MetricOverrides, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MetricOverrides")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -5726,6 +9046,530 @@ func compareClusterMetricsNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.F
 	return diffs, nil
 }
 
+func compareClusterVirtualClusterConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterVirtualClusterConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterVirtualClusterConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfig or *ClusterVirtualClusterConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterVirtualClusterConfig)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterVirtualClusterConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.StagingBucket, actual.StagingBucket, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("StagingBucket")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.KubernetesClusterConfig, actual.KubernetesClusterConfig, dcl.DiffInfo{ObjectFunction: compareClusterVirtualClusterConfigKubernetesClusterConfigNewStyle, EmptyObject: EmptyClusterVirtualClusterConfigKubernetesClusterConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KubernetesClusterConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.AuxiliaryServicesConfig, actual.AuxiliaryServicesConfig, dcl.DiffInfo{ObjectFunction: compareClusterVirtualClusterConfigAuxiliaryServicesConfigNewStyle, EmptyObject: EmptyClusterVirtualClusterConfigAuxiliaryServicesConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AuxiliaryServicesConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareClusterVirtualClusterConfigKubernetesClusterConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterVirtualClusterConfigKubernetesClusterConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterVirtualClusterConfigKubernetesClusterConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigKubernetesClusterConfig or *ClusterVirtualClusterConfigKubernetesClusterConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterVirtualClusterConfigKubernetesClusterConfig)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterVirtualClusterConfigKubernetesClusterConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigKubernetesClusterConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.KubernetesNamespace, actual.KubernetesNamespace, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KubernetesNamespace")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.GkeClusterConfig, actual.GkeClusterConfig, dcl.DiffInfo{ObjectFunction: compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNewStyle, EmptyObject: EmptyClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GkeClusterConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.KubernetesSoftwareConfig, actual.KubernetesSoftwareConfig, dcl.DiffInfo{ObjectFunction: compareClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigNewStyle, EmptyObject: EmptyClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("KubernetesSoftwareConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig or *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.GkeClusterTarget, actual.GkeClusterTarget, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GkeClusterTarget")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.NodePoolTarget, actual.NodePoolTarget, dcl.DiffInfo{ObjectFunction: compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNewStyle, EmptyObject: EmptyClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NodePoolTarget")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget or *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.NodePool, actual.NodePool, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NodePool")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.Roles, actual.Roles, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Roles")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.NodePoolConfig, actual.NodePoolConfig, dcl.DiffInfo{ObjectFunction: compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigNewStyle, EmptyObject: EmptyClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("NodePoolConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig or *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.Config, actual.Config, dcl.DiffInfo{ObjectFunction: compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigNewStyle, EmptyObject: EmptyClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Config")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.Locations, actual.Locations, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Locations")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.Autoscaling, actual.Autoscaling, dcl.DiffInfo{ObjectFunction: compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingNewStyle, EmptyObject: EmptyClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Autoscaling")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig or *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.MachineType, actual.MachineType, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MachineType")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.LocalSsdCount, actual.LocalSsdCount, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocalSsdCount")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.Preemptible, actual.Preemptible, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Preemptible")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.Accelerators, actual.Accelerators, dcl.DiffInfo{ObjectFunction: compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsNewStyle, EmptyObject: EmptyClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Accelerators")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.MinCpuPlatform, actual.MinCpuPlatform, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MinCpuPlatform")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.BootDiskKmsKey, actual.BootDiskKmsKey, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("BootDiskKmsKey")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.EphemeralStorageConfig, actual.EphemeralStorageConfig, dcl.DiffInfo{ObjectFunction: compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigNewStyle, EmptyObject: EmptyClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("EphemeralStorageConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.Spot, actual.Spot, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Spot")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators or *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.AcceleratorCount, actual.AcceleratorCount, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AcceleratorCount")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.AcceleratorType, actual.AcceleratorType, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AcceleratorType")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.GpuPartitionSize, actual.GpuPartitionSize, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GpuPartitionSize")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig or *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.LocalSsdCount, actual.LocalSsdCount, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("LocalSsdCount")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling or *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.MinNodeCount, actual.MinNodeCount, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MinNodeCount")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.MaxNodeCount, actual.MaxNodeCount, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MaxNodeCount")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig or *ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.ComponentVersion, actual.ComponentVersion, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ComponentVersion")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.Properties, actual.Properties, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Properties")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareClusterVirtualClusterConfigAuxiliaryServicesConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterVirtualClusterConfigAuxiliaryServicesConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterVirtualClusterConfigAuxiliaryServicesConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigAuxiliaryServicesConfig or *ClusterVirtualClusterConfigAuxiliaryServicesConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterVirtualClusterConfigAuxiliaryServicesConfig)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterVirtualClusterConfigAuxiliaryServicesConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigAuxiliaryServicesConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.MetastoreConfig, actual.MetastoreConfig, dcl.DiffInfo{ObjectFunction: compareClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigNewStyle, EmptyObject: EmptyClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("MetastoreConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.SparkHistoryServerConfig, actual.SparkHistoryServerConfig, dcl.DiffInfo{ObjectFunction: compareClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigNewStyle, EmptyObject: EmptyClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SparkHistoryServerConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig or *ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.DataprocMetastoreService, actual.DataprocMetastoreService, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DataprocMetastoreService")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig or *ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.DataprocCluster, actual.DataprocCluster, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("DataprocCluster")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
 // urlNormalized returns a copy of the resource struct with values normalized
 // for URL substitutions. For instance, it converts long-form self-links to
 // short-form so they can be substituted in.
@@ -5788,7 +9632,7 @@ func expandCluster(c *Client, f *Cluster) (map[string]interface{}, error) {
 	m := make(map[string]interface{})
 	res := f
 	_ = res
-	if v, err := expandClusterProject(c, f.Project, res); err != nil {
+	if v, err := dcl.EmptyValue(); err != nil {
 		return nil, fmt.Errorf("error expanding Project into projectId: %w", err)
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["projectId"] = v
@@ -5808,6 +9652,11 @@ func expandCluster(c *Client, f *Cluster) (map[string]interface{}, error) {
 		return nil, fmt.Errorf("error expanding Location into location: %w", err)
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["location"] = v
+	}
+	if v, err := expandClusterVirtualClusterConfig(c, f.VirtualClusterConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding VirtualClusterConfig into virtualClusterConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["virtualClusterConfig"] = v
 	}
 
 	return m, nil
@@ -5834,6 +9683,7 @@ func flattenCluster(c *Client, i interface{}, res *Cluster) *Cluster {
 	resultRes.ClusterUuid = dcl.FlattenString(m["clusterUuid"])
 	resultRes.Metrics = flattenClusterMetrics(c, m["metrics"], res)
 	resultRes.Location = dcl.FlattenString(m["location"])
+	resultRes.VirtualClusterConfig = flattenClusterVirtualClusterConfig(c, m["virtualClusterConfig"], res)
 
 	return resultRes
 }
@@ -5988,6 +9838,16 @@ func expandClusterConfig(c *Client, f *ClusterConfig, res *Cluster) (map[string]
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["endpointConfig"] = v
 	}
+	if v, err := expandClusterConfigMetastoreConfig(c, f.MetastoreConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding MetastoreConfig into metastoreConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["metastoreConfig"] = v
+	}
+	if v, err := expandClusterConfigDataprocMetricConfig(c, f.DataprocMetricConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding DataprocMetricConfig into dataprocMetricConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["dataprocMetricConfig"] = v
+	}
 
 	return m, nil
 }
@@ -6018,6 +9878,8 @@ func flattenClusterConfig(c *Client, i interface{}, res *Cluster) *ClusterConfig
 	r.SecurityConfig = flattenClusterConfigSecurityConfig(c, m["securityConfig"], res)
 	r.LifecycleConfig = flattenClusterConfigLifecycleConfig(c, m["lifecycleConfig"], res)
 	r.EndpointConfig = flattenClusterConfigEndpointConfig(c, m["endpointConfig"], res)
+	r.MetastoreConfig = flattenClusterConfigMetastoreConfig(c, m["metastoreConfig"], res)
+	r.DataprocMetricConfig = flattenClusterConfigDataprocMetricConfig(c, m["dataprocMetricConfig"], res)
 
 	return r
 }
@@ -6148,6 +10010,16 @@ func expandClusterConfigGceClusterConfig(c *Client, f *ClusterConfigGceClusterCo
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["nodeGroupAffinity"] = v
 	}
+	if v, err := expandClusterConfigGceClusterConfigShieldedInstanceConfig(c, f.ShieldedInstanceConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding ShieldedInstanceConfig into shieldedInstanceConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["shieldedInstanceConfig"] = v
+	}
+	if v, err := expandClusterConfigGceClusterConfigConfidentialInstanceConfig(c, f.ConfidentialInstanceConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding ConfidentialInstanceConfig into confidentialInstanceConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["confidentialInstanceConfig"] = v
+	}
 
 	return m, nil
 }
@@ -6176,6 +10048,8 @@ func flattenClusterConfigGceClusterConfig(c *Client, i interface{}, res *Cluster
 	r.Metadata = dcl.FlattenKeyValuePairs(m["metadata"])
 	r.ReservationAffinity = flattenClusterConfigGceClusterConfigReservationAffinity(c, m["reservationAffinity"], res)
 	r.NodeGroupAffinity = flattenClusterConfigGceClusterConfigNodeGroupAffinity(c, m["nodeGroupAffinity"], res)
+	r.ShieldedInstanceConfig = flattenClusterConfigGceClusterConfigShieldedInstanceConfig(c, m["shieldedInstanceConfig"], res)
+	r.ConfidentialInstanceConfig = flattenClusterConfigGceClusterConfigConfidentialInstanceConfig(c, m["confidentialInstanceConfig"], res)
 
 	return r
 }
@@ -6416,6 +10290,242 @@ func flattenClusterConfigGceClusterConfigNodeGroupAffinity(c *Client, i interfac
 	return r
 }
 
+// expandClusterConfigGceClusterConfigShieldedInstanceConfigMap expands the contents of ClusterConfigGceClusterConfigShieldedInstanceConfig into a JSON
+// request object.
+func expandClusterConfigGceClusterConfigShieldedInstanceConfigMap(c *Client, f map[string]ClusterConfigGceClusterConfigShieldedInstanceConfig, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterConfigGceClusterConfigShieldedInstanceConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterConfigGceClusterConfigShieldedInstanceConfigSlice expands the contents of ClusterConfigGceClusterConfigShieldedInstanceConfig into a JSON
+// request object.
+func expandClusterConfigGceClusterConfigShieldedInstanceConfigSlice(c *Client, f []ClusterConfigGceClusterConfigShieldedInstanceConfig, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterConfigGceClusterConfigShieldedInstanceConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterConfigGceClusterConfigShieldedInstanceConfigMap flattens the contents of ClusterConfigGceClusterConfigShieldedInstanceConfig from a JSON
+// response object.
+func flattenClusterConfigGceClusterConfigShieldedInstanceConfigMap(c *Client, i interface{}, res *Cluster) map[string]ClusterConfigGceClusterConfigShieldedInstanceConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterConfigGceClusterConfigShieldedInstanceConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterConfigGceClusterConfigShieldedInstanceConfig{}
+	}
+
+	items := make(map[string]ClusterConfigGceClusterConfigShieldedInstanceConfig)
+	for k, item := range a {
+		items[k] = *flattenClusterConfigGceClusterConfigShieldedInstanceConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterConfigGceClusterConfigShieldedInstanceConfigSlice flattens the contents of ClusterConfigGceClusterConfigShieldedInstanceConfig from a JSON
+// response object.
+func flattenClusterConfigGceClusterConfigShieldedInstanceConfigSlice(c *Client, i interface{}, res *Cluster) []ClusterConfigGceClusterConfigShieldedInstanceConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterConfigGceClusterConfigShieldedInstanceConfig{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterConfigGceClusterConfigShieldedInstanceConfig{}
+	}
+
+	items := make([]ClusterConfigGceClusterConfigShieldedInstanceConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterConfigGceClusterConfigShieldedInstanceConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterConfigGceClusterConfigShieldedInstanceConfig expands an instance of ClusterConfigGceClusterConfigShieldedInstanceConfig into a JSON
+// request object.
+func expandClusterConfigGceClusterConfigShieldedInstanceConfig(c *Client, f *ClusterConfigGceClusterConfigShieldedInstanceConfig, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.EnableSecureBoot; !dcl.IsEmptyValueIndirect(v) {
+		m["enableSecureBoot"] = v
+	}
+	if v := f.EnableVtpm; !dcl.IsEmptyValueIndirect(v) {
+		m["enableVtpm"] = v
+	}
+	if v := f.EnableIntegrityMonitoring; !dcl.IsEmptyValueIndirect(v) {
+		m["enableIntegrityMonitoring"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterConfigGceClusterConfigShieldedInstanceConfig flattens an instance of ClusterConfigGceClusterConfigShieldedInstanceConfig from a JSON
+// response object.
+func flattenClusterConfigGceClusterConfigShieldedInstanceConfig(c *Client, i interface{}, res *Cluster) *ClusterConfigGceClusterConfigShieldedInstanceConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterConfigGceClusterConfigShieldedInstanceConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterConfigGceClusterConfigShieldedInstanceConfig
+	}
+	r.EnableSecureBoot = dcl.FlattenBool(m["enableSecureBoot"])
+	r.EnableVtpm = dcl.FlattenBool(m["enableVtpm"])
+	r.EnableIntegrityMonitoring = dcl.FlattenBool(m["enableIntegrityMonitoring"])
+
+	return r
+}
+
+// expandClusterConfigGceClusterConfigConfidentialInstanceConfigMap expands the contents of ClusterConfigGceClusterConfigConfidentialInstanceConfig into a JSON
+// request object.
+func expandClusterConfigGceClusterConfigConfidentialInstanceConfigMap(c *Client, f map[string]ClusterConfigGceClusterConfigConfidentialInstanceConfig, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterConfigGceClusterConfigConfidentialInstanceConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterConfigGceClusterConfigConfidentialInstanceConfigSlice expands the contents of ClusterConfigGceClusterConfigConfidentialInstanceConfig into a JSON
+// request object.
+func expandClusterConfigGceClusterConfigConfidentialInstanceConfigSlice(c *Client, f []ClusterConfigGceClusterConfigConfidentialInstanceConfig, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterConfigGceClusterConfigConfidentialInstanceConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterConfigGceClusterConfigConfidentialInstanceConfigMap flattens the contents of ClusterConfigGceClusterConfigConfidentialInstanceConfig from a JSON
+// response object.
+func flattenClusterConfigGceClusterConfigConfidentialInstanceConfigMap(c *Client, i interface{}, res *Cluster) map[string]ClusterConfigGceClusterConfigConfidentialInstanceConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterConfigGceClusterConfigConfidentialInstanceConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterConfigGceClusterConfigConfidentialInstanceConfig{}
+	}
+
+	items := make(map[string]ClusterConfigGceClusterConfigConfidentialInstanceConfig)
+	for k, item := range a {
+		items[k] = *flattenClusterConfigGceClusterConfigConfidentialInstanceConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterConfigGceClusterConfigConfidentialInstanceConfigSlice flattens the contents of ClusterConfigGceClusterConfigConfidentialInstanceConfig from a JSON
+// response object.
+func flattenClusterConfigGceClusterConfigConfidentialInstanceConfigSlice(c *Client, i interface{}, res *Cluster) []ClusterConfigGceClusterConfigConfidentialInstanceConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterConfigGceClusterConfigConfidentialInstanceConfig{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterConfigGceClusterConfigConfidentialInstanceConfig{}
+	}
+
+	items := make([]ClusterConfigGceClusterConfigConfidentialInstanceConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterConfigGceClusterConfigConfidentialInstanceConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterConfigGceClusterConfigConfidentialInstanceConfig expands an instance of ClusterConfigGceClusterConfigConfidentialInstanceConfig into a JSON
+// request object.
+func expandClusterConfigGceClusterConfigConfidentialInstanceConfig(c *Client, f *ClusterConfigGceClusterConfigConfidentialInstanceConfig, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.EnableConfidentialCompute; !dcl.IsEmptyValueIndirect(v) {
+		m["enableConfidentialCompute"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterConfigGceClusterConfigConfidentialInstanceConfig flattens an instance of ClusterConfigGceClusterConfigConfidentialInstanceConfig from a JSON
+// response object.
+func flattenClusterConfigGceClusterConfigConfidentialInstanceConfig(c *Client, i interface{}, res *Cluster) *ClusterConfigGceClusterConfigConfidentialInstanceConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterConfigGceClusterConfigConfidentialInstanceConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterConfigGceClusterConfigConfidentialInstanceConfig
+	}
+	r.EnableConfidentialCompute = dcl.FlattenBool(m["enableConfidentialCompute"])
+
+	return r
+}
+
 // expandClusterConfigMasterConfigMap expands the contents of ClusterConfigMasterConfig into a JSON
 // request object.
 func expandClusterConfigMasterConfigMap(c *Client, f map[string]ClusterConfigMasterConfig, res *Cluster) (map[string]interface{}, error) {
@@ -6557,6 +10667,7 @@ func flattenClusterConfigMasterConfig(c *Client, i interface{}, res *Cluster) *C
 	r.ManagedGroupConfig = flattenClusterConfigMasterConfigManagedGroupConfig(c, m["managedGroupConfig"], res)
 	r.Accelerators = flattenClusterConfigMasterConfigAcceleratorsSlice(c, m["accelerators"], res)
 	r.MinCpuPlatform = dcl.FlattenString(m["minCpuPlatform"])
+	r.InstanceReferences = flattenClusterConfigMasterConfigInstanceReferencesSlice(c, m["instanceReferences"], res)
 
 	return r
 }
@@ -6659,6 +10770,9 @@ func expandClusterConfigMasterConfigDiskConfig(c *Client, f *ClusterConfigMaster
 	if v := f.NumLocalSsds; !dcl.IsEmptyValueIndirect(v) {
 		m["numLocalSsds"] = v
 	}
+	if v := f.LocalSsdInterface; !dcl.IsEmptyValueIndirect(v) {
+		m["localSsdInterface"] = v
+	}
 
 	return m, nil
 }
@@ -6679,6 +10793,7 @@ func flattenClusterConfigMasterConfigDiskConfig(c *Client, i interface{}, res *C
 	r.BootDiskType = dcl.FlattenString(m["bootDiskType"])
 	r.BootDiskSizeGb = dcl.FlattenInteger(m["bootDiskSizeGb"])
 	r.NumLocalSsds = dcl.FlattenInteger(m["numLocalSsds"])
+	r.LocalSsdInterface = dcl.FlattenString(m["localSsdInterface"])
 
 	return r
 }
@@ -6913,6 +11028,132 @@ func flattenClusterConfigMasterConfigAccelerators(c *Client, i interface{}, res 
 	return r
 }
 
+// expandClusterConfigMasterConfigInstanceReferencesMap expands the contents of ClusterConfigMasterConfigInstanceReferences into a JSON
+// request object.
+func expandClusterConfigMasterConfigInstanceReferencesMap(c *Client, f map[string]ClusterConfigMasterConfigInstanceReferences, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterConfigMasterConfigInstanceReferences(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterConfigMasterConfigInstanceReferencesSlice expands the contents of ClusterConfigMasterConfigInstanceReferences into a JSON
+// request object.
+func expandClusterConfigMasterConfigInstanceReferencesSlice(c *Client, f []ClusterConfigMasterConfigInstanceReferences, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterConfigMasterConfigInstanceReferences(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterConfigMasterConfigInstanceReferencesMap flattens the contents of ClusterConfigMasterConfigInstanceReferences from a JSON
+// response object.
+func flattenClusterConfigMasterConfigInstanceReferencesMap(c *Client, i interface{}, res *Cluster) map[string]ClusterConfigMasterConfigInstanceReferences {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterConfigMasterConfigInstanceReferences{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterConfigMasterConfigInstanceReferences{}
+	}
+
+	items := make(map[string]ClusterConfigMasterConfigInstanceReferences)
+	for k, item := range a {
+		items[k] = *flattenClusterConfigMasterConfigInstanceReferences(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterConfigMasterConfigInstanceReferencesSlice flattens the contents of ClusterConfigMasterConfigInstanceReferences from a JSON
+// response object.
+func flattenClusterConfigMasterConfigInstanceReferencesSlice(c *Client, i interface{}, res *Cluster) []ClusterConfigMasterConfigInstanceReferences {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterConfigMasterConfigInstanceReferences{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterConfigMasterConfigInstanceReferences{}
+	}
+
+	items := make([]ClusterConfigMasterConfigInstanceReferences, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterConfigMasterConfigInstanceReferences(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterConfigMasterConfigInstanceReferences expands an instance of ClusterConfigMasterConfigInstanceReferences into a JSON
+// request object.
+func expandClusterConfigMasterConfigInstanceReferences(c *Client, f *ClusterConfigMasterConfigInstanceReferences, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.InstanceName; !dcl.IsEmptyValueIndirect(v) {
+		m["instanceName"] = v
+	}
+	if v := f.InstanceId; !dcl.IsEmptyValueIndirect(v) {
+		m["instanceId"] = v
+	}
+	if v := f.PublicKey; !dcl.IsEmptyValueIndirect(v) {
+		m["publicKey"] = v
+	}
+	if v := f.PublicEciesKey; !dcl.IsEmptyValueIndirect(v) {
+		m["publicEciesKey"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterConfigMasterConfigInstanceReferences flattens an instance of ClusterConfigMasterConfigInstanceReferences from a JSON
+// response object.
+func flattenClusterConfigMasterConfigInstanceReferences(c *Client, i interface{}, res *Cluster) *ClusterConfigMasterConfigInstanceReferences {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterConfigMasterConfigInstanceReferences{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterConfigMasterConfigInstanceReferences
+	}
+	r.InstanceName = dcl.FlattenString(m["instanceName"])
+	r.InstanceId = dcl.FlattenString(m["instanceId"])
+	r.PublicKey = dcl.FlattenString(m["publicKey"])
+	r.PublicEciesKey = dcl.FlattenString(m["publicEciesKey"])
+
+	return r
+}
+
 // expandClusterConfigWorkerConfigMap expands the contents of ClusterConfigWorkerConfig into a JSON
 // request object.
 func expandClusterConfigWorkerConfigMap(c *Client, f map[string]ClusterConfigWorkerConfig, res *Cluster) (map[string]interface{}, error) {
@@ -7054,6 +11295,7 @@ func flattenClusterConfigWorkerConfig(c *Client, i interface{}, res *Cluster) *C
 	r.ManagedGroupConfig = flattenClusterConfigWorkerConfigManagedGroupConfig(c, m["managedGroupConfig"], res)
 	r.Accelerators = flattenClusterConfigWorkerConfigAcceleratorsSlice(c, m["accelerators"], res)
 	r.MinCpuPlatform = dcl.FlattenString(m["minCpuPlatform"])
+	r.InstanceReferences = flattenClusterConfigWorkerConfigInstanceReferencesSlice(c, m["instanceReferences"], res)
 
 	return r
 }
@@ -7156,6 +11398,9 @@ func expandClusterConfigWorkerConfigDiskConfig(c *Client, f *ClusterConfigWorker
 	if v := f.NumLocalSsds; !dcl.IsEmptyValueIndirect(v) {
 		m["numLocalSsds"] = v
 	}
+	if v := f.LocalSsdInterface; !dcl.IsEmptyValueIndirect(v) {
+		m["localSsdInterface"] = v
+	}
 
 	return m, nil
 }
@@ -7176,6 +11421,7 @@ func flattenClusterConfigWorkerConfigDiskConfig(c *Client, i interface{}, res *C
 	r.BootDiskType = dcl.FlattenString(m["bootDiskType"])
 	r.BootDiskSizeGb = dcl.FlattenInteger(m["bootDiskSizeGb"])
 	r.NumLocalSsds = dcl.FlattenInteger(m["numLocalSsds"])
+	r.LocalSsdInterface = dcl.FlattenString(m["localSsdInterface"])
 
 	return r
 }
@@ -7410,6 +11656,132 @@ func flattenClusterConfigWorkerConfigAccelerators(c *Client, i interface{}, res 
 	return r
 }
 
+// expandClusterConfigWorkerConfigInstanceReferencesMap expands the contents of ClusterConfigWorkerConfigInstanceReferences into a JSON
+// request object.
+func expandClusterConfigWorkerConfigInstanceReferencesMap(c *Client, f map[string]ClusterConfigWorkerConfigInstanceReferences, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterConfigWorkerConfigInstanceReferences(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterConfigWorkerConfigInstanceReferencesSlice expands the contents of ClusterConfigWorkerConfigInstanceReferences into a JSON
+// request object.
+func expandClusterConfigWorkerConfigInstanceReferencesSlice(c *Client, f []ClusterConfigWorkerConfigInstanceReferences, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterConfigWorkerConfigInstanceReferences(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterConfigWorkerConfigInstanceReferencesMap flattens the contents of ClusterConfigWorkerConfigInstanceReferences from a JSON
+// response object.
+func flattenClusterConfigWorkerConfigInstanceReferencesMap(c *Client, i interface{}, res *Cluster) map[string]ClusterConfigWorkerConfigInstanceReferences {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterConfigWorkerConfigInstanceReferences{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterConfigWorkerConfigInstanceReferences{}
+	}
+
+	items := make(map[string]ClusterConfigWorkerConfigInstanceReferences)
+	for k, item := range a {
+		items[k] = *flattenClusterConfigWorkerConfigInstanceReferences(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterConfigWorkerConfigInstanceReferencesSlice flattens the contents of ClusterConfigWorkerConfigInstanceReferences from a JSON
+// response object.
+func flattenClusterConfigWorkerConfigInstanceReferencesSlice(c *Client, i interface{}, res *Cluster) []ClusterConfigWorkerConfigInstanceReferences {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterConfigWorkerConfigInstanceReferences{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterConfigWorkerConfigInstanceReferences{}
+	}
+
+	items := make([]ClusterConfigWorkerConfigInstanceReferences, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterConfigWorkerConfigInstanceReferences(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterConfigWorkerConfigInstanceReferences expands an instance of ClusterConfigWorkerConfigInstanceReferences into a JSON
+// request object.
+func expandClusterConfigWorkerConfigInstanceReferences(c *Client, f *ClusterConfigWorkerConfigInstanceReferences, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.InstanceName; !dcl.IsEmptyValueIndirect(v) {
+		m["instanceName"] = v
+	}
+	if v := f.InstanceId; !dcl.IsEmptyValueIndirect(v) {
+		m["instanceId"] = v
+	}
+	if v := f.PublicKey; !dcl.IsEmptyValueIndirect(v) {
+		m["publicKey"] = v
+	}
+	if v := f.PublicEciesKey; !dcl.IsEmptyValueIndirect(v) {
+		m["publicEciesKey"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterConfigWorkerConfigInstanceReferences flattens an instance of ClusterConfigWorkerConfigInstanceReferences from a JSON
+// response object.
+func flattenClusterConfigWorkerConfigInstanceReferences(c *Client, i interface{}, res *Cluster) *ClusterConfigWorkerConfigInstanceReferences {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterConfigWorkerConfigInstanceReferences{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterConfigWorkerConfigInstanceReferences
+	}
+	r.InstanceName = dcl.FlattenString(m["instanceName"])
+	r.InstanceId = dcl.FlattenString(m["instanceId"])
+	r.PublicKey = dcl.FlattenString(m["publicKey"])
+	r.PublicEciesKey = dcl.FlattenString(m["publicEciesKey"])
+
+	return r
+}
+
 // expandClusterConfigSecondaryWorkerConfigMap expands the contents of ClusterConfigSecondaryWorkerConfig into a JSON
 // request object.
 func expandClusterConfigSecondaryWorkerConfigMap(c *Client, f map[string]ClusterConfigSecondaryWorkerConfig, res *Cluster) (map[string]interface{}, error) {
@@ -7551,6 +11923,7 @@ func flattenClusterConfigSecondaryWorkerConfig(c *Client, i interface{}, res *Cl
 	r.ManagedGroupConfig = flattenClusterConfigSecondaryWorkerConfigManagedGroupConfig(c, m["managedGroupConfig"], res)
 	r.Accelerators = flattenClusterConfigSecondaryWorkerConfigAcceleratorsSlice(c, m["accelerators"], res)
 	r.MinCpuPlatform = dcl.FlattenString(m["minCpuPlatform"])
+	r.InstanceReferences = flattenClusterConfigSecondaryWorkerConfigInstanceReferencesSlice(c, m["instanceReferences"], res)
 
 	return r
 }
@@ -7653,6 +12026,9 @@ func expandClusterConfigSecondaryWorkerConfigDiskConfig(c *Client, f *ClusterCon
 	if v := f.NumLocalSsds; !dcl.IsEmptyValueIndirect(v) {
 		m["numLocalSsds"] = v
 	}
+	if v := f.LocalSsdInterface; !dcl.IsEmptyValueIndirect(v) {
+		m["localSsdInterface"] = v
+	}
 
 	return m, nil
 }
@@ -7673,6 +12049,7 @@ func flattenClusterConfigSecondaryWorkerConfigDiskConfig(c *Client, i interface{
 	r.BootDiskType = dcl.FlattenString(m["bootDiskType"])
 	r.BootDiskSizeGb = dcl.FlattenInteger(m["bootDiskSizeGb"])
 	r.NumLocalSsds = dcl.FlattenInteger(m["numLocalSsds"])
+	r.LocalSsdInterface = dcl.FlattenString(m["localSsdInterface"])
 
 	return r
 }
@@ -7903,6 +12280,132 @@ func flattenClusterConfigSecondaryWorkerConfigAccelerators(c *Client, i interfac
 	}
 	r.AcceleratorType = dcl.FlattenString(m["acceleratorTypeUri"])
 	r.AcceleratorCount = dcl.FlattenInteger(m["acceleratorCount"])
+
+	return r
+}
+
+// expandClusterConfigSecondaryWorkerConfigInstanceReferencesMap expands the contents of ClusterConfigSecondaryWorkerConfigInstanceReferences into a JSON
+// request object.
+func expandClusterConfigSecondaryWorkerConfigInstanceReferencesMap(c *Client, f map[string]ClusterConfigSecondaryWorkerConfigInstanceReferences, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterConfigSecondaryWorkerConfigInstanceReferences(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterConfigSecondaryWorkerConfigInstanceReferencesSlice expands the contents of ClusterConfigSecondaryWorkerConfigInstanceReferences into a JSON
+// request object.
+func expandClusterConfigSecondaryWorkerConfigInstanceReferencesSlice(c *Client, f []ClusterConfigSecondaryWorkerConfigInstanceReferences, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterConfigSecondaryWorkerConfigInstanceReferences(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterConfigSecondaryWorkerConfigInstanceReferencesMap flattens the contents of ClusterConfigSecondaryWorkerConfigInstanceReferences from a JSON
+// response object.
+func flattenClusterConfigSecondaryWorkerConfigInstanceReferencesMap(c *Client, i interface{}, res *Cluster) map[string]ClusterConfigSecondaryWorkerConfigInstanceReferences {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterConfigSecondaryWorkerConfigInstanceReferences{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterConfigSecondaryWorkerConfigInstanceReferences{}
+	}
+
+	items := make(map[string]ClusterConfigSecondaryWorkerConfigInstanceReferences)
+	for k, item := range a {
+		items[k] = *flattenClusterConfigSecondaryWorkerConfigInstanceReferences(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterConfigSecondaryWorkerConfigInstanceReferencesSlice flattens the contents of ClusterConfigSecondaryWorkerConfigInstanceReferences from a JSON
+// response object.
+func flattenClusterConfigSecondaryWorkerConfigInstanceReferencesSlice(c *Client, i interface{}, res *Cluster) []ClusterConfigSecondaryWorkerConfigInstanceReferences {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterConfigSecondaryWorkerConfigInstanceReferences{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterConfigSecondaryWorkerConfigInstanceReferences{}
+	}
+
+	items := make([]ClusterConfigSecondaryWorkerConfigInstanceReferences, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterConfigSecondaryWorkerConfigInstanceReferences(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterConfigSecondaryWorkerConfigInstanceReferences expands an instance of ClusterConfigSecondaryWorkerConfigInstanceReferences into a JSON
+// request object.
+func expandClusterConfigSecondaryWorkerConfigInstanceReferences(c *Client, f *ClusterConfigSecondaryWorkerConfigInstanceReferences, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.InstanceName; !dcl.IsEmptyValueIndirect(v) {
+		m["instanceName"] = v
+	}
+	if v := f.InstanceId; !dcl.IsEmptyValueIndirect(v) {
+		m["instanceId"] = v
+	}
+	if v := f.PublicKey; !dcl.IsEmptyValueIndirect(v) {
+		m["publicKey"] = v
+	}
+	if v := f.PublicEciesKey; !dcl.IsEmptyValueIndirect(v) {
+		m["publicEciesKey"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterConfigSecondaryWorkerConfigInstanceReferences flattens an instance of ClusterConfigSecondaryWorkerConfigInstanceReferences from a JSON
+// response object.
+func flattenClusterConfigSecondaryWorkerConfigInstanceReferences(c *Client, i interface{}, res *Cluster) *ClusterConfigSecondaryWorkerConfigInstanceReferences {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterConfigSecondaryWorkerConfigInstanceReferences{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterConfigSecondaryWorkerConfigInstanceReferences
+	}
+	r.InstanceName = dcl.FlattenString(m["instanceName"])
+	r.InstanceId = dcl.FlattenString(m["instanceId"])
+	r.PublicKey = dcl.FlattenString(m["publicKey"])
+	r.PublicEciesKey = dcl.FlattenString(m["publicEciesKey"])
 
 	return r
 }
@@ -8469,6 +12972,11 @@ func expandClusterConfigSecurityConfig(c *Client, f *ClusterConfigSecurityConfig
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["kerberosConfig"] = v
 	}
+	if v, err := expandClusterConfigSecurityConfigIdentityConfig(c, f.IdentityConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding IdentityConfig into identityConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["identityConfig"] = v
+	}
 
 	return m, nil
 }
@@ -8487,6 +12995,7 @@ func flattenClusterConfigSecurityConfig(c *Client, i interface{}, res *Cluster) 
 		return EmptyClusterConfigSecurityConfig
 	}
 	r.KerberosConfig = flattenClusterConfigSecurityConfigKerberosConfig(c, m["kerberosConfig"], res)
+	r.IdentityConfig = flattenClusterConfigSecurityConfigIdentityConfig(c, m["identityConfig"], res)
 
 	return r
 }
@@ -8657,6 +13166,120 @@ func flattenClusterConfigSecurityConfigKerberosConfig(c *Client, i interface{}, 
 	r.KdcDbKey = dcl.FlattenString(m["kdcDbKeyUri"])
 	r.TgtLifetimeHours = dcl.FlattenInteger(m["tgtLifetimeHours"])
 	r.Realm = dcl.FlattenString(m["realm"])
+
+	return r
+}
+
+// expandClusterConfigSecurityConfigIdentityConfigMap expands the contents of ClusterConfigSecurityConfigIdentityConfig into a JSON
+// request object.
+func expandClusterConfigSecurityConfigIdentityConfigMap(c *Client, f map[string]ClusterConfigSecurityConfigIdentityConfig, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterConfigSecurityConfigIdentityConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterConfigSecurityConfigIdentityConfigSlice expands the contents of ClusterConfigSecurityConfigIdentityConfig into a JSON
+// request object.
+func expandClusterConfigSecurityConfigIdentityConfigSlice(c *Client, f []ClusterConfigSecurityConfigIdentityConfig, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterConfigSecurityConfigIdentityConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterConfigSecurityConfigIdentityConfigMap flattens the contents of ClusterConfigSecurityConfigIdentityConfig from a JSON
+// response object.
+func flattenClusterConfigSecurityConfigIdentityConfigMap(c *Client, i interface{}, res *Cluster) map[string]ClusterConfigSecurityConfigIdentityConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterConfigSecurityConfigIdentityConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterConfigSecurityConfigIdentityConfig{}
+	}
+
+	items := make(map[string]ClusterConfigSecurityConfigIdentityConfig)
+	for k, item := range a {
+		items[k] = *flattenClusterConfigSecurityConfigIdentityConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterConfigSecurityConfigIdentityConfigSlice flattens the contents of ClusterConfigSecurityConfigIdentityConfig from a JSON
+// response object.
+func flattenClusterConfigSecurityConfigIdentityConfigSlice(c *Client, i interface{}, res *Cluster) []ClusterConfigSecurityConfigIdentityConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterConfigSecurityConfigIdentityConfig{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterConfigSecurityConfigIdentityConfig{}
+	}
+
+	items := make([]ClusterConfigSecurityConfigIdentityConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterConfigSecurityConfigIdentityConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterConfigSecurityConfigIdentityConfig expands an instance of ClusterConfigSecurityConfigIdentityConfig into a JSON
+// request object.
+func expandClusterConfigSecurityConfigIdentityConfig(c *Client, f *ClusterConfigSecurityConfigIdentityConfig, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.UserServiceAccountMapping; !dcl.IsEmptyValueIndirect(v) {
+		m["userServiceAccountMapping"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterConfigSecurityConfigIdentityConfig flattens an instance of ClusterConfigSecurityConfigIdentityConfig from a JSON
+// response object.
+func flattenClusterConfigSecurityConfigIdentityConfig(c *Client, i interface{}, res *Cluster) *ClusterConfigSecurityConfigIdentityConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterConfigSecurityConfigIdentityConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterConfigSecurityConfigIdentityConfig
+	}
+	r.UserServiceAccountMapping = dcl.FlattenKeyValuePairs(m["userServiceAccountMapping"])
 
 	return r
 }
@@ -8895,6 +13518,354 @@ func flattenClusterConfigEndpointConfig(c *Client, i interface{}, res *Cluster) 
 	}
 	r.HttpPorts = dcl.FlattenKeyValuePairs(m["httpPorts"])
 	r.EnableHttpPortAccess = dcl.FlattenBool(m["enableHttpPortAccess"])
+
+	return r
+}
+
+// expandClusterConfigMetastoreConfigMap expands the contents of ClusterConfigMetastoreConfig into a JSON
+// request object.
+func expandClusterConfigMetastoreConfigMap(c *Client, f map[string]ClusterConfigMetastoreConfig, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterConfigMetastoreConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterConfigMetastoreConfigSlice expands the contents of ClusterConfigMetastoreConfig into a JSON
+// request object.
+func expandClusterConfigMetastoreConfigSlice(c *Client, f []ClusterConfigMetastoreConfig, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterConfigMetastoreConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterConfigMetastoreConfigMap flattens the contents of ClusterConfigMetastoreConfig from a JSON
+// response object.
+func flattenClusterConfigMetastoreConfigMap(c *Client, i interface{}, res *Cluster) map[string]ClusterConfigMetastoreConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterConfigMetastoreConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterConfigMetastoreConfig{}
+	}
+
+	items := make(map[string]ClusterConfigMetastoreConfig)
+	for k, item := range a {
+		items[k] = *flattenClusterConfigMetastoreConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterConfigMetastoreConfigSlice flattens the contents of ClusterConfigMetastoreConfig from a JSON
+// response object.
+func flattenClusterConfigMetastoreConfigSlice(c *Client, i interface{}, res *Cluster) []ClusterConfigMetastoreConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterConfigMetastoreConfig{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterConfigMetastoreConfig{}
+	}
+
+	items := make([]ClusterConfigMetastoreConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterConfigMetastoreConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterConfigMetastoreConfig expands an instance of ClusterConfigMetastoreConfig into a JSON
+// request object.
+func expandClusterConfigMetastoreConfig(c *Client, f *ClusterConfigMetastoreConfig, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.DataprocMetastoreService; !dcl.IsEmptyValueIndirect(v) {
+		m["dataprocMetastoreService"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterConfigMetastoreConfig flattens an instance of ClusterConfigMetastoreConfig from a JSON
+// response object.
+func flattenClusterConfigMetastoreConfig(c *Client, i interface{}, res *Cluster) *ClusterConfigMetastoreConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterConfigMetastoreConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterConfigMetastoreConfig
+	}
+	r.DataprocMetastoreService = dcl.FlattenString(m["dataprocMetastoreService"])
+
+	return r
+}
+
+// expandClusterConfigDataprocMetricConfigMap expands the contents of ClusterConfigDataprocMetricConfig into a JSON
+// request object.
+func expandClusterConfigDataprocMetricConfigMap(c *Client, f map[string]ClusterConfigDataprocMetricConfig, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterConfigDataprocMetricConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterConfigDataprocMetricConfigSlice expands the contents of ClusterConfigDataprocMetricConfig into a JSON
+// request object.
+func expandClusterConfigDataprocMetricConfigSlice(c *Client, f []ClusterConfigDataprocMetricConfig, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterConfigDataprocMetricConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterConfigDataprocMetricConfigMap flattens the contents of ClusterConfigDataprocMetricConfig from a JSON
+// response object.
+func flattenClusterConfigDataprocMetricConfigMap(c *Client, i interface{}, res *Cluster) map[string]ClusterConfigDataprocMetricConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterConfigDataprocMetricConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterConfigDataprocMetricConfig{}
+	}
+
+	items := make(map[string]ClusterConfigDataprocMetricConfig)
+	for k, item := range a {
+		items[k] = *flattenClusterConfigDataprocMetricConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterConfigDataprocMetricConfigSlice flattens the contents of ClusterConfigDataprocMetricConfig from a JSON
+// response object.
+func flattenClusterConfigDataprocMetricConfigSlice(c *Client, i interface{}, res *Cluster) []ClusterConfigDataprocMetricConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterConfigDataprocMetricConfig{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterConfigDataprocMetricConfig{}
+	}
+
+	items := make([]ClusterConfigDataprocMetricConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterConfigDataprocMetricConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterConfigDataprocMetricConfig expands an instance of ClusterConfigDataprocMetricConfig into a JSON
+// request object.
+func expandClusterConfigDataprocMetricConfig(c *Client, f *ClusterConfigDataprocMetricConfig, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v, err := expandClusterConfigDataprocMetricConfigMetricsSlice(c, f.Metrics, res); err != nil {
+		return nil, fmt.Errorf("error expanding Metrics into metrics: %w", err)
+	} else if v != nil {
+		m["metrics"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterConfigDataprocMetricConfig flattens an instance of ClusterConfigDataprocMetricConfig from a JSON
+// response object.
+func flattenClusterConfigDataprocMetricConfig(c *Client, i interface{}, res *Cluster) *ClusterConfigDataprocMetricConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterConfigDataprocMetricConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterConfigDataprocMetricConfig
+	}
+	r.Metrics = flattenClusterConfigDataprocMetricConfigMetricsSlice(c, m["metrics"], res)
+
+	return r
+}
+
+// expandClusterConfigDataprocMetricConfigMetricsMap expands the contents of ClusterConfigDataprocMetricConfigMetrics into a JSON
+// request object.
+func expandClusterConfigDataprocMetricConfigMetricsMap(c *Client, f map[string]ClusterConfigDataprocMetricConfigMetrics, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterConfigDataprocMetricConfigMetrics(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterConfigDataprocMetricConfigMetricsSlice expands the contents of ClusterConfigDataprocMetricConfigMetrics into a JSON
+// request object.
+func expandClusterConfigDataprocMetricConfigMetricsSlice(c *Client, f []ClusterConfigDataprocMetricConfigMetrics, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterConfigDataprocMetricConfigMetrics(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterConfigDataprocMetricConfigMetricsMap flattens the contents of ClusterConfigDataprocMetricConfigMetrics from a JSON
+// response object.
+func flattenClusterConfigDataprocMetricConfigMetricsMap(c *Client, i interface{}, res *Cluster) map[string]ClusterConfigDataprocMetricConfigMetrics {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterConfigDataprocMetricConfigMetrics{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterConfigDataprocMetricConfigMetrics{}
+	}
+
+	items := make(map[string]ClusterConfigDataprocMetricConfigMetrics)
+	for k, item := range a {
+		items[k] = *flattenClusterConfigDataprocMetricConfigMetrics(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterConfigDataprocMetricConfigMetricsSlice flattens the contents of ClusterConfigDataprocMetricConfigMetrics from a JSON
+// response object.
+func flattenClusterConfigDataprocMetricConfigMetricsSlice(c *Client, i interface{}, res *Cluster) []ClusterConfigDataprocMetricConfigMetrics {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterConfigDataprocMetricConfigMetrics{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterConfigDataprocMetricConfigMetrics{}
+	}
+
+	items := make([]ClusterConfigDataprocMetricConfigMetrics, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterConfigDataprocMetricConfigMetrics(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterConfigDataprocMetricConfigMetrics expands an instance of ClusterConfigDataprocMetricConfigMetrics into a JSON
+// request object.
+func expandClusterConfigDataprocMetricConfigMetrics(c *Client, f *ClusterConfigDataprocMetricConfigMetrics, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.MetricSource; !dcl.IsEmptyValueIndirect(v) {
+		m["metricSource"] = v
+	}
+	if v := f.MetricOverrides; v != nil {
+		m["metricOverrides"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterConfigDataprocMetricConfigMetrics flattens an instance of ClusterConfigDataprocMetricConfigMetrics from a JSON
+// response object.
+func flattenClusterConfigDataprocMetricConfigMetrics(c *Client, i interface{}, res *Cluster) *ClusterConfigDataprocMetricConfigMetrics {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterConfigDataprocMetricConfigMetrics{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterConfigDataprocMetricConfigMetrics
+	}
+	r.MetricSource = flattenClusterConfigDataprocMetricConfigMetricsMetricSourceEnum(m["metricSource"])
+	r.MetricOverrides = dcl.FlattenStringSlice(m["metricOverrides"])
 
 	return r
 }
@@ -9245,6 +14216,1596 @@ func flattenClusterMetrics(c *Client, i interface{}, res *Cluster) *ClusterMetri
 	return r
 }
 
+// expandClusterVirtualClusterConfigMap expands the contents of ClusterVirtualClusterConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigMap(c *Client, f map[string]ClusterVirtualClusterConfig, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterVirtualClusterConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterVirtualClusterConfigSlice expands the contents of ClusterVirtualClusterConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigSlice(c *Client, f []ClusterVirtualClusterConfig, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterVirtualClusterConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterVirtualClusterConfigMap flattens the contents of ClusterVirtualClusterConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigMap(c *Client, i interface{}, res *Cluster) map[string]ClusterVirtualClusterConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterVirtualClusterConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterVirtualClusterConfig{}
+	}
+
+	items := make(map[string]ClusterVirtualClusterConfig)
+	for k, item := range a {
+		items[k] = *flattenClusterVirtualClusterConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterVirtualClusterConfigSlice flattens the contents of ClusterVirtualClusterConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigSlice(c *Client, i interface{}, res *Cluster) []ClusterVirtualClusterConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterVirtualClusterConfig{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterVirtualClusterConfig{}
+	}
+
+	items := make([]ClusterVirtualClusterConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterVirtualClusterConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterVirtualClusterConfig expands an instance of ClusterVirtualClusterConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfig(c *Client, f *ClusterVirtualClusterConfig, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.StagingBucket; !dcl.IsEmptyValueIndirect(v) {
+		m["stagingBucket"] = v
+	}
+	if v, err := expandClusterVirtualClusterConfigKubernetesClusterConfig(c, f.KubernetesClusterConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding KubernetesClusterConfig into kubernetesClusterConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["kubernetesClusterConfig"] = v
+	}
+	if v, err := expandClusterVirtualClusterConfigAuxiliaryServicesConfig(c, f.AuxiliaryServicesConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding AuxiliaryServicesConfig into auxiliaryServicesConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["auxiliaryServicesConfig"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterVirtualClusterConfig flattens an instance of ClusterVirtualClusterConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfig(c *Client, i interface{}, res *Cluster) *ClusterVirtualClusterConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterVirtualClusterConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterVirtualClusterConfig
+	}
+	r.StagingBucket = dcl.FlattenString(m["stagingBucket"])
+	r.KubernetesClusterConfig = flattenClusterVirtualClusterConfigKubernetesClusterConfig(c, m["kubernetesClusterConfig"], res)
+	r.AuxiliaryServicesConfig = flattenClusterVirtualClusterConfigAuxiliaryServicesConfig(c, m["auxiliaryServicesConfig"], res)
+
+	return r
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigMap expands the contents of ClusterVirtualClusterConfigKubernetesClusterConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigMap(c *Client, f map[string]ClusterVirtualClusterConfigKubernetesClusterConfig, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterVirtualClusterConfigKubernetesClusterConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigSlice expands the contents of ClusterVirtualClusterConfigKubernetesClusterConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigSlice(c *Client, f []ClusterVirtualClusterConfigKubernetesClusterConfig, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterVirtualClusterConfigKubernetesClusterConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigMap flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigMap(c *Client, i interface{}, res *Cluster) map[string]ClusterVirtualClusterConfigKubernetesClusterConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfig{}
+	}
+
+	items := make(map[string]ClusterVirtualClusterConfigKubernetesClusterConfig)
+	for k, item := range a {
+		items[k] = *flattenClusterVirtualClusterConfigKubernetesClusterConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigSlice flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigSlice(c *Client, i interface{}, res *Cluster) []ClusterVirtualClusterConfigKubernetesClusterConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfig{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfig{}
+	}
+
+	items := make([]ClusterVirtualClusterConfigKubernetesClusterConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterVirtualClusterConfigKubernetesClusterConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfig expands an instance of ClusterVirtualClusterConfigKubernetesClusterConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfig(c *Client, f *ClusterVirtualClusterConfigKubernetesClusterConfig, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.KubernetesNamespace; !dcl.IsEmptyValueIndirect(v) {
+		m["kubernetesNamespace"] = v
+	}
+	if v, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig(c, f.GkeClusterConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding GkeClusterConfig into gkeClusterConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["gkeClusterConfig"] = v
+	}
+	if v, err := expandClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig(c, f.KubernetesSoftwareConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding KubernetesSoftwareConfig into kubernetesSoftwareConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["kubernetesSoftwareConfig"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfig flattens an instance of ClusterVirtualClusterConfigKubernetesClusterConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfig(c *Client, i interface{}, res *Cluster) *ClusterVirtualClusterConfigKubernetesClusterConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterVirtualClusterConfigKubernetesClusterConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterVirtualClusterConfigKubernetesClusterConfig
+	}
+	r.KubernetesNamespace = dcl.FlattenString(m["kubernetesNamespace"])
+	r.GkeClusterConfig = flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig(c, m["gkeClusterConfig"], res)
+	r.KubernetesSoftwareConfig = flattenClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig(c, m["kubernetesSoftwareConfig"], res)
+
+	return r
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigMap expands the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigMap(c *Client, f map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigSlice expands the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigSlice(c *Client, f []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigMap flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigMap(c *Client, i interface{}, res *Cluster) map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig{}
+	}
+
+	items := make(map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig)
+	for k, item := range a {
+		items[k] = *flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigSlice flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigSlice(c *Client, i interface{}, res *Cluster) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig{}
+	}
+
+	items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig expands an instance of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig(c *Client, f *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.GkeClusterTarget; !dcl.IsEmptyValueIndirect(v) {
+		m["gkeClusterTarget"] = v
+	}
+	if v, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetSlice(c, f.NodePoolTarget, res); err != nil {
+		return nil, fmt.Errorf("error expanding NodePoolTarget into nodePoolTarget: %w", err)
+	} else if v != nil {
+		m["nodePoolTarget"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig flattens an instance of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig(c *Client, i interface{}, res *Cluster) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig
+	}
+	r.GkeClusterTarget = dcl.FlattenString(m["gkeClusterTarget"])
+	r.NodePoolTarget = flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetSlice(c, m["nodePoolTarget"], res)
+
+	return r
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetMap expands the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetMap(c *Client, f map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetSlice expands the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetSlice(c *Client, f []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetMap flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetMap(c *Client, i interface{}, res *Cluster) map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget{}
+	}
+
+	items := make(map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget)
+	for k, item := range a {
+		items[k] = *flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetSlice flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetSlice(c *Client, i interface{}, res *Cluster) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget{}
+	}
+
+	items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget expands an instance of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget(c *Client, f *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.NodePool; !dcl.IsEmptyValueIndirect(v) {
+		m["nodePool"] = v
+	}
+	if v := f.Roles; v != nil {
+		m["roles"] = v
+	}
+	if v, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig(c, f.NodePoolConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding NodePoolConfig into nodePoolConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["nodePoolConfig"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget flattens an instance of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget(c *Client, i interface{}, res *Cluster) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget
+	}
+	r.NodePool = dcl.FlattenString(m["nodePool"])
+	r.Roles = flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnumSlice(c, m["roles"], res)
+	r.NodePoolConfig = flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig(c, m["nodePoolConfig"], res)
+
+	return r
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigMap expands the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigMap(c *Client, f map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigSlice expands the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigSlice(c *Client, f []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigMap flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigMap(c *Client, i interface{}, res *Cluster) map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig{}
+	}
+
+	items := make(map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig)
+	for k, item := range a {
+		items[k] = *flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigSlice flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigSlice(c *Client, i interface{}, res *Cluster) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig{}
+	}
+
+	items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig expands an instance of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig(c *Client, f *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig(c, f.Config, res); err != nil {
+		return nil, fmt.Errorf("error expanding Config into config: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["config"] = v
+	}
+	if v := f.Locations; v != nil {
+		m["locations"] = v
+	}
+	if v, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling(c, f.Autoscaling, res); err != nil {
+		return nil, fmt.Errorf("error expanding Autoscaling into autoscaling: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["autoscaling"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig flattens an instance of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig(c *Client, i interface{}, res *Cluster) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig
+	}
+	r.Config = flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig(c, m["config"], res)
+	r.Locations = dcl.FlattenStringSlice(m["locations"])
+	r.Autoscaling = flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling(c, m["autoscaling"], res)
+
+	return r
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigMap expands the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigMap(c *Client, f map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigSlice expands the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigSlice(c *Client, f []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigMap flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigMap(c *Client, i interface{}, res *Cluster) map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig{}
+	}
+
+	items := make(map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig)
+	for k, item := range a {
+		items[k] = *flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigSlice flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigSlice(c *Client, i interface{}, res *Cluster) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig{}
+	}
+
+	items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig expands an instance of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig(c *Client, f *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.MachineType; !dcl.IsEmptyValueIndirect(v) {
+		m["machineType"] = v
+	}
+	if v := f.LocalSsdCount; !dcl.IsEmptyValueIndirect(v) {
+		m["localSsdCount"] = v
+	}
+	if v := f.Preemptible; !dcl.IsEmptyValueIndirect(v) {
+		m["preemptible"] = v
+	}
+	if v, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsSlice(c, f.Accelerators, res); err != nil {
+		return nil, fmt.Errorf("error expanding Accelerators into accelerators: %w", err)
+	} else if v != nil {
+		m["accelerators"] = v
+	}
+	if v := f.MinCpuPlatform; !dcl.IsEmptyValueIndirect(v) {
+		m["minCpuPlatform"] = v
+	}
+	if v := f.BootDiskKmsKey; !dcl.IsEmptyValueIndirect(v) {
+		m["bootDiskKmsKey"] = v
+	}
+	if v, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig(c, f.EphemeralStorageConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding EphemeralStorageConfig into ephemeralStorageConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["ephemeralStorageConfig"] = v
+	}
+	if v := f.Spot; !dcl.IsEmptyValueIndirect(v) {
+		m["spot"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig flattens an instance of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig(c *Client, i interface{}, res *Cluster) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig
+	}
+	r.MachineType = dcl.FlattenString(m["machineType"])
+	r.LocalSsdCount = dcl.FlattenInteger(m["localSsdCount"])
+	r.Preemptible = dcl.FlattenBool(m["preemptible"])
+	r.Accelerators = flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsSlice(c, m["accelerators"], res)
+	r.MinCpuPlatform = dcl.FlattenString(m["minCpuPlatform"])
+	r.BootDiskKmsKey = dcl.FlattenString(m["bootDiskKmsKey"])
+	r.EphemeralStorageConfig = flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig(c, m["ephemeralStorageConfig"], res)
+	r.Spot = dcl.FlattenBool(m["spot"])
+
+	return r
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsMap expands the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsMap(c *Client, f map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsSlice expands the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsSlice(c *Client, f []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsMap flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsMap(c *Client, i interface{}, res *Cluster) map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators{}
+	}
+
+	items := make(map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators)
+	for k, item := range a {
+		items[k] = *flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsSlice flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsSlice(c *Client, i interface{}, res *Cluster) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators{}
+	}
+
+	items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators expands an instance of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators(c *Client, f *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.AcceleratorCount; !dcl.IsEmptyValueIndirect(v) {
+		m["acceleratorCount"] = v
+	}
+	if v := f.AcceleratorType; !dcl.IsEmptyValueIndirect(v) {
+		m["acceleratorType"] = v
+	}
+	if v := f.GpuPartitionSize; !dcl.IsEmptyValueIndirect(v) {
+		m["gpuPartitionSize"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators flattens an instance of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators(c *Client, i interface{}, res *Cluster) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators
+	}
+	r.AcceleratorCount = dcl.FlattenInteger(m["acceleratorCount"])
+	r.AcceleratorType = dcl.FlattenString(m["acceleratorType"])
+	r.GpuPartitionSize = dcl.FlattenString(m["gpuPartitionSize"])
+
+	return r
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigMap expands the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigMap(c *Client, f map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigSlice expands the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigSlice(c *Client, f []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigMap flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigMap(c *Client, i interface{}, res *Cluster) map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig{}
+	}
+
+	items := make(map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig)
+	for k, item := range a {
+		items[k] = *flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigSlice flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigSlice(c *Client, i interface{}, res *Cluster) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig{}
+	}
+
+	items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig expands an instance of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig(c *Client, f *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.LocalSsdCount; !dcl.IsEmptyValueIndirect(v) {
+		m["localSsdCount"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig flattens an instance of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig(c *Client, i interface{}, res *Cluster) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig
+	}
+	r.LocalSsdCount = dcl.FlattenInteger(m["localSsdCount"])
+
+	return r
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingMap expands the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingMap(c *Client, f map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingSlice expands the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingSlice(c *Client, f []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingMap flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingMap(c *Client, i interface{}, res *Cluster) map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling{}
+	}
+
+	items := make(map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling)
+	for k, item := range a {
+		items[k] = *flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingSlice flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingSlice(c *Client, i interface{}, res *Cluster) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling{}
+	}
+
+	items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling expands an instance of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling(c *Client, f *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.MinNodeCount; !dcl.IsEmptyValueIndirect(v) {
+		m["minNodeCount"] = v
+	}
+	if v := f.MaxNodeCount; !dcl.IsEmptyValueIndirect(v) {
+		m["maxNodeCount"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling flattens an instance of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling(c *Client, i interface{}, res *Cluster) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling
+	}
+	r.MinNodeCount = dcl.FlattenInteger(m["minNodeCount"])
+	r.MaxNodeCount = dcl.FlattenInteger(m["maxNodeCount"])
+
+	return r
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigMap expands the contents of ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigMap(c *Client, f map[string]ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigSlice expands the contents of ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigSlice(c *Client, f []ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigMap flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigMap(c *Client, i interface{}, res *Cluster) map[string]ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig{}
+	}
+
+	items := make(map[string]ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig)
+	for k, item := range a {
+		items[k] = *flattenClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigSlice flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigSlice(c *Client, i interface{}, res *Cluster) []ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig{}
+	}
+
+	items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig expands an instance of ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig(c *Client, f *ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.ComponentVersion; !dcl.IsEmptyValueIndirect(v) {
+		m["componentVersion"] = v
+	}
+	if v := f.Properties; !dcl.IsEmptyValueIndirect(v) {
+		m["properties"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig flattens an instance of ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig(c *Client, i interface{}, res *Cluster) *ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig
+	}
+	r.ComponentVersion = dcl.FlattenKeyValuePairs(m["componentVersion"])
+	r.Properties = dcl.FlattenKeyValuePairs(m["properties"])
+
+	return r
+}
+
+// expandClusterVirtualClusterConfigAuxiliaryServicesConfigMap expands the contents of ClusterVirtualClusterConfigAuxiliaryServicesConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigAuxiliaryServicesConfigMap(c *Client, f map[string]ClusterVirtualClusterConfigAuxiliaryServicesConfig, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterVirtualClusterConfigAuxiliaryServicesConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterVirtualClusterConfigAuxiliaryServicesConfigSlice expands the contents of ClusterVirtualClusterConfigAuxiliaryServicesConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigAuxiliaryServicesConfigSlice(c *Client, f []ClusterVirtualClusterConfigAuxiliaryServicesConfig, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterVirtualClusterConfigAuxiliaryServicesConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterVirtualClusterConfigAuxiliaryServicesConfigMap flattens the contents of ClusterVirtualClusterConfigAuxiliaryServicesConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigAuxiliaryServicesConfigMap(c *Client, i interface{}, res *Cluster) map[string]ClusterVirtualClusterConfigAuxiliaryServicesConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterVirtualClusterConfigAuxiliaryServicesConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterVirtualClusterConfigAuxiliaryServicesConfig{}
+	}
+
+	items := make(map[string]ClusterVirtualClusterConfigAuxiliaryServicesConfig)
+	for k, item := range a {
+		items[k] = *flattenClusterVirtualClusterConfigAuxiliaryServicesConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterVirtualClusterConfigAuxiliaryServicesConfigSlice flattens the contents of ClusterVirtualClusterConfigAuxiliaryServicesConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigAuxiliaryServicesConfigSlice(c *Client, i interface{}, res *Cluster) []ClusterVirtualClusterConfigAuxiliaryServicesConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterVirtualClusterConfigAuxiliaryServicesConfig{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterVirtualClusterConfigAuxiliaryServicesConfig{}
+	}
+
+	items := make([]ClusterVirtualClusterConfigAuxiliaryServicesConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterVirtualClusterConfigAuxiliaryServicesConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterVirtualClusterConfigAuxiliaryServicesConfig expands an instance of ClusterVirtualClusterConfigAuxiliaryServicesConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigAuxiliaryServicesConfig(c *Client, f *ClusterVirtualClusterConfigAuxiliaryServicesConfig, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v, err := expandClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig(c, f.MetastoreConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding MetastoreConfig into metastoreConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["metastoreConfig"] = v
+	}
+	if v, err := expandClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig(c, f.SparkHistoryServerConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding SparkHistoryServerConfig into sparkHistoryServerConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["sparkHistoryServerConfig"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterVirtualClusterConfigAuxiliaryServicesConfig flattens an instance of ClusterVirtualClusterConfigAuxiliaryServicesConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigAuxiliaryServicesConfig(c *Client, i interface{}, res *Cluster) *ClusterVirtualClusterConfigAuxiliaryServicesConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterVirtualClusterConfigAuxiliaryServicesConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterVirtualClusterConfigAuxiliaryServicesConfig
+	}
+	r.MetastoreConfig = flattenClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig(c, m["metastoreConfig"], res)
+	r.SparkHistoryServerConfig = flattenClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig(c, m["sparkHistoryServerConfig"], res)
+
+	return r
+}
+
+// expandClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigMap expands the contents of ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigMap(c *Client, f map[string]ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigSlice expands the contents of ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigSlice(c *Client, f []ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigMap flattens the contents of ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigMap(c *Client, i interface{}, res *Cluster) map[string]ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig{}
+	}
+
+	items := make(map[string]ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig)
+	for k, item := range a {
+		items[k] = *flattenClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigSlice flattens the contents of ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigSlice(c *Client, i interface{}, res *Cluster) []ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig{}
+	}
+
+	items := make([]ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig expands an instance of ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig(c *Client, f *ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.DataprocMetastoreService; !dcl.IsEmptyValueIndirect(v) {
+		m["dataprocMetastoreService"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig flattens an instance of ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig(c *Client, i interface{}, res *Cluster) *ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig
+	}
+	r.DataprocMetastoreService = dcl.FlattenString(m["dataprocMetastoreService"])
+
+	return r
+}
+
+// expandClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigMap expands the contents of ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigMap(c *Client, f map[string]ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigSlice expands the contents of ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigSlice(c *Client, f []ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigMap flattens the contents of ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigMap(c *Client, i interface{}, res *Cluster) map[string]ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig{}
+	}
+
+	items := make(map[string]ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig)
+	for k, item := range a {
+		items[k] = *flattenClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigSlice flattens the contents of ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigSlice(c *Client, i interface{}, res *Cluster) []ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig{}
+	}
+
+	items := make([]ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig expands an instance of ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig into a JSON
+// request object.
+func expandClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig(c *Client, f *ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.DataprocCluster; !dcl.IsEmptyValueIndirect(v) {
+		m["dataprocCluster"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig flattens an instance of ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig(c *Client, i interface{}, res *Cluster) *ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig
+	}
+	r.DataprocCluster = dcl.FlattenString(m["dataprocCluster"])
+
+	return r
+}
+
 // flattenClusterConfigGceClusterConfigPrivateIPv6GoogleAccessEnumMap flattens the contents of ClusterConfigGceClusterConfigPrivateIPv6GoogleAccessEnum from a JSON
 // response object.
 func flattenClusterConfigGceClusterConfigPrivateIPv6GoogleAccessEnumMap(c *Client, i interface{}, res *Cluster) map[string]ClusterConfigGceClusterConfigPrivateIPv6GoogleAccessEnum {
@@ -9551,6 +16112,57 @@ func flattenClusterConfigSoftwareConfigOptionalComponentsEnum(i interface{}) *Cl
 	return ClusterConfigSoftwareConfigOptionalComponentsEnumRef(s)
 }
 
+// flattenClusterConfigDataprocMetricConfigMetricsMetricSourceEnumMap flattens the contents of ClusterConfigDataprocMetricConfigMetricsMetricSourceEnum from a JSON
+// response object.
+func flattenClusterConfigDataprocMetricConfigMetricsMetricSourceEnumMap(c *Client, i interface{}, res *Cluster) map[string]ClusterConfigDataprocMetricConfigMetricsMetricSourceEnum {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterConfigDataprocMetricConfigMetricsMetricSourceEnum{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterConfigDataprocMetricConfigMetricsMetricSourceEnum{}
+	}
+
+	items := make(map[string]ClusterConfigDataprocMetricConfigMetricsMetricSourceEnum)
+	for k, item := range a {
+		items[k] = *flattenClusterConfigDataprocMetricConfigMetricsMetricSourceEnum(item.(interface{}))
+	}
+
+	return items
+}
+
+// flattenClusterConfigDataprocMetricConfigMetricsMetricSourceEnumSlice flattens the contents of ClusterConfigDataprocMetricConfigMetricsMetricSourceEnum from a JSON
+// response object.
+func flattenClusterConfigDataprocMetricConfigMetricsMetricSourceEnumSlice(c *Client, i interface{}, res *Cluster) []ClusterConfigDataprocMetricConfigMetricsMetricSourceEnum {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterConfigDataprocMetricConfigMetricsMetricSourceEnum{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterConfigDataprocMetricConfigMetricsMetricSourceEnum{}
+	}
+
+	items := make([]ClusterConfigDataprocMetricConfigMetricsMetricSourceEnum, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterConfigDataprocMetricConfigMetricsMetricSourceEnum(item.(interface{})))
+	}
+
+	return items
+}
+
+// flattenClusterConfigDataprocMetricConfigMetricsMetricSourceEnum asserts that an interface is a string, and returns a
+// pointer to a *ClusterConfigDataprocMetricConfigMetricsMetricSourceEnum with the same value as that string.
+func flattenClusterConfigDataprocMetricConfigMetricsMetricSourceEnum(i interface{}) *ClusterConfigDataprocMetricConfigMetricsMetricSourceEnum {
+	s, ok := i.(string)
+	if !ok {
+		return nil
+	}
+
+	return ClusterConfigDataprocMetricConfigMetricsMetricSourceEnumRef(s)
+}
+
 // flattenClusterStatusStateEnumMap flattens the contents of ClusterStatusStateEnum from a JSON
 // response object.
 func flattenClusterStatusStateEnumMap(c *Client, i interface{}, res *Cluster) map[string]ClusterStatusStateEnum {
@@ -9755,6 +16367,57 @@ func flattenClusterStatusHistorySubstateEnum(i interface{}) *ClusterStatusHistor
 	return ClusterStatusHistorySubstateEnumRef(s)
 }
 
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnumMap flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnumMap(c *Client, i interface{}, res *Cluster) map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum{}
+	}
+
+	items := make(map[string]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum)
+	for k, item := range a {
+		items[k] = *flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum(item.(interface{}))
+	}
+
+	return items
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnumSlice flattens the contents of ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum from a JSON
+// response object.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnumSlice(c *Client, i interface{}, res *Cluster) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum{}
+	}
+
+	items := make([]ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum(item.(interface{})))
+	}
+
+	return items
+}
+
+// flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum asserts that an interface is a string, and returns a
+// pointer to a *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum with the same value as that string.
+func flattenClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum(i interface{}) *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum {
+	s, ok := i.(string)
+	if !ok {
+		return nil
+	}
+
+	return ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnumRef(s)
+}
+
 // This function returns a matcher that checks whether a serialized resource matches this resource
 // in its parameters (as defined by the fields in a Get, which definitionally define resource
 // identity).  This is useful in extracting the element from a List call.
@@ -9882,6 +16545,17 @@ func extractClusterFields(r *Cluster) error {
 	if !dcl.IsEmptyValueIndirect(vMetrics) {
 		r.Metrics = vMetrics
 	}
+	vVirtualClusterConfig := r.VirtualClusterConfig
+	if vVirtualClusterConfig == nil {
+		// note: explicitly not the empty object.
+		vVirtualClusterConfig = &ClusterVirtualClusterConfig{}
+	}
+	if err := extractClusterVirtualClusterConfigFields(r, vVirtualClusterConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vVirtualClusterConfig) {
+		r.VirtualClusterConfig = vVirtualClusterConfig
+	}
 	return nil
 }
 func extractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
@@ -9995,6 +16669,28 @@ func extractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if !dcl.IsEmptyValueIndirect(vEndpointConfig) {
 		o.EndpointConfig = vEndpointConfig
 	}
+	vMetastoreConfig := o.MetastoreConfig
+	if vMetastoreConfig == nil {
+		// note: explicitly not the empty object.
+		vMetastoreConfig = &ClusterConfigMetastoreConfig{}
+	}
+	if err := extractClusterConfigMetastoreConfigFields(r, vMetastoreConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vMetastoreConfig) {
+		o.MetastoreConfig = vMetastoreConfig
+	}
+	vDataprocMetricConfig := o.DataprocMetricConfig
+	if vDataprocMetricConfig == nil {
+		// note: explicitly not the empty object.
+		vDataprocMetricConfig = &ClusterConfigDataprocMetricConfig{}
+	}
+	if err := extractClusterConfigDataprocMetricConfigFields(r, vDataprocMetricConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vDataprocMetricConfig) {
+		o.DataprocMetricConfig = vDataprocMetricConfig
+	}
 	return nil
 }
 func extractClusterConfigGceClusterConfigFields(r *Cluster, o *ClusterConfigGceClusterConfig) error {
@@ -10020,12 +16716,40 @@ func extractClusterConfigGceClusterConfigFields(r *Cluster, o *ClusterConfigGceC
 	if !dcl.IsEmptyValueIndirect(vNodeGroupAffinity) {
 		o.NodeGroupAffinity = vNodeGroupAffinity
 	}
+	vShieldedInstanceConfig := o.ShieldedInstanceConfig
+	if vShieldedInstanceConfig == nil {
+		// note: explicitly not the empty object.
+		vShieldedInstanceConfig = &ClusterConfigGceClusterConfigShieldedInstanceConfig{}
+	}
+	if err := extractClusterConfigGceClusterConfigShieldedInstanceConfigFields(r, vShieldedInstanceConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vShieldedInstanceConfig) {
+		o.ShieldedInstanceConfig = vShieldedInstanceConfig
+	}
+	vConfidentialInstanceConfig := o.ConfidentialInstanceConfig
+	if vConfidentialInstanceConfig == nil {
+		// note: explicitly not the empty object.
+		vConfidentialInstanceConfig = &ClusterConfigGceClusterConfigConfidentialInstanceConfig{}
+	}
+	if err := extractClusterConfigGceClusterConfigConfidentialInstanceConfigFields(r, vConfidentialInstanceConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vConfidentialInstanceConfig) {
+		o.ConfidentialInstanceConfig = vConfidentialInstanceConfig
+	}
 	return nil
 }
 func extractClusterConfigGceClusterConfigReservationAffinityFields(r *Cluster, o *ClusterConfigGceClusterConfigReservationAffinity) error {
 	return nil
 }
 func extractClusterConfigGceClusterConfigNodeGroupAffinityFields(r *Cluster, o *ClusterConfigGceClusterConfigNodeGroupAffinity) error {
+	return nil
+}
+func extractClusterConfigGceClusterConfigShieldedInstanceConfigFields(r *Cluster, o *ClusterConfigGceClusterConfigShieldedInstanceConfig) error {
+	return nil
+}
+func extractClusterConfigGceClusterConfigConfidentialInstanceConfigFields(r *Cluster, o *ClusterConfigGceClusterConfigConfidentialInstanceConfig) error {
 	return nil
 }
 func extractClusterConfigMasterConfigFields(r *Cluster, o *ClusterConfigMasterConfig) error {
@@ -10062,6 +16786,9 @@ func extractClusterConfigMasterConfigManagedGroupConfigFields(r *Cluster, o *Clu
 func extractClusterConfigMasterConfigAcceleratorsFields(r *Cluster, o *ClusterConfigMasterConfigAccelerators) error {
 	return nil
 }
+func extractClusterConfigMasterConfigInstanceReferencesFields(r *Cluster, o *ClusterConfigMasterConfigInstanceReferences) error {
+	return nil
+}
 func extractClusterConfigWorkerConfigFields(r *Cluster, o *ClusterConfigWorkerConfig) error {
 	vDiskConfig := o.DiskConfig
 	if vDiskConfig == nil {
@@ -10094,6 +16821,9 @@ func extractClusterConfigWorkerConfigManagedGroupConfigFields(r *Cluster, o *Clu
 	return nil
 }
 func extractClusterConfigWorkerConfigAcceleratorsFields(r *Cluster, o *ClusterConfigWorkerConfigAccelerators) error {
+	return nil
+}
+func extractClusterConfigWorkerConfigInstanceReferencesFields(r *Cluster, o *ClusterConfigWorkerConfigInstanceReferences) error {
 	return nil
 }
 func extractClusterConfigSecondaryWorkerConfigFields(r *Cluster, o *ClusterConfigSecondaryWorkerConfig) error {
@@ -10130,6 +16860,9 @@ func extractClusterConfigSecondaryWorkerConfigManagedGroupConfigFields(r *Cluste
 func extractClusterConfigSecondaryWorkerConfigAcceleratorsFields(r *Cluster, o *ClusterConfigSecondaryWorkerConfigAccelerators) error {
 	return nil
 }
+func extractClusterConfigSecondaryWorkerConfigInstanceReferencesFields(r *Cluster, o *ClusterConfigSecondaryWorkerConfigInstanceReferences) error {
+	return nil
+}
 func extractClusterConfigSoftwareConfigFields(r *Cluster, o *ClusterConfigSoftwareConfig) error {
 	return nil
 }
@@ -10154,15 +16887,38 @@ func extractClusterConfigSecurityConfigFields(r *Cluster, o *ClusterConfigSecuri
 	if !dcl.IsEmptyValueIndirect(vKerberosConfig) {
 		o.KerberosConfig = vKerberosConfig
 	}
+	vIdentityConfig := o.IdentityConfig
+	if vIdentityConfig == nil {
+		// note: explicitly not the empty object.
+		vIdentityConfig = &ClusterConfigSecurityConfigIdentityConfig{}
+	}
+	if err := extractClusterConfigSecurityConfigIdentityConfigFields(r, vIdentityConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vIdentityConfig) {
+		o.IdentityConfig = vIdentityConfig
+	}
 	return nil
 }
 func extractClusterConfigSecurityConfigKerberosConfigFields(r *Cluster, o *ClusterConfigSecurityConfigKerberosConfig) error {
+	return nil
+}
+func extractClusterConfigSecurityConfigIdentityConfigFields(r *Cluster, o *ClusterConfigSecurityConfigIdentityConfig) error {
 	return nil
 }
 func extractClusterConfigLifecycleConfigFields(r *Cluster, o *ClusterConfigLifecycleConfig) error {
 	return nil
 }
 func extractClusterConfigEndpointConfigFields(r *Cluster, o *ClusterConfigEndpointConfig) error {
+	return nil
+}
+func extractClusterConfigMetastoreConfigFields(r *Cluster, o *ClusterConfigMetastoreConfig) error {
+	return nil
+}
+func extractClusterConfigDataprocMetricConfigFields(r *Cluster, o *ClusterConfigDataprocMetricConfig) error {
+	return nil
+}
+func extractClusterConfigDataprocMetricConfigMetricsFields(r *Cluster, o *ClusterConfigDataprocMetricConfigMetrics) error {
 	return nil
 }
 func extractClusterStatusFields(r *Cluster, o *ClusterStatus) error {
@@ -10172,6 +16928,155 @@ func extractClusterStatusHistoryFields(r *Cluster, o *ClusterStatusHistory) erro
 	return nil
 }
 func extractClusterMetricsFields(r *Cluster, o *ClusterMetrics) error {
+	return nil
+}
+func extractClusterVirtualClusterConfigFields(r *Cluster, o *ClusterVirtualClusterConfig) error {
+	vKubernetesClusterConfig := o.KubernetesClusterConfig
+	if vKubernetesClusterConfig == nil {
+		// note: explicitly not the empty object.
+		vKubernetesClusterConfig = &ClusterVirtualClusterConfigKubernetesClusterConfig{}
+	}
+	if err := extractClusterVirtualClusterConfigKubernetesClusterConfigFields(r, vKubernetesClusterConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vKubernetesClusterConfig) {
+		o.KubernetesClusterConfig = vKubernetesClusterConfig
+	}
+	vAuxiliaryServicesConfig := o.AuxiliaryServicesConfig
+	if vAuxiliaryServicesConfig == nil {
+		// note: explicitly not the empty object.
+		vAuxiliaryServicesConfig = &ClusterVirtualClusterConfigAuxiliaryServicesConfig{}
+	}
+	if err := extractClusterVirtualClusterConfigAuxiliaryServicesConfigFields(r, vAuxiliaryServicesConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vAuxiliaryServicesConfig) {
+		o.AuxiliaryServicesConfig = vAuxiliaryServicesConfig
+	}
+	return nil
+}
+func extractClusterVirtualClusterConfigKubernetesClusterConfigFields(r *Cluster, o *ClusterVirtualClusterConfigKubernetesClusterConfig) error {
+	vGkeClusterConfig := o.GkeClusterConfig
+	if vGkeClusterConfig == nil {
+		// note: explicitly not the empty object.
+		vGkeClusterConfig = &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig{}
+	}
+	if err := extractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigFields(r, vGkeClusterConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vGkeClusterConfig) {
+		o.GkeClusterConfig = vGkeClusterConfig
+	}
+	vKubernetesSoftwareConfig := o.KubernetesSoftwareConfig
+	if vKubernetesSoftwareConfig == nil {
+		// note: explicitly not the empty object.
+		vKubernetesSoftwareConfig = &ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig{}
+	}
+	if err := extractClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigFields(r, vKubernetesSoftwareConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vKubernetesSoftwareConfig) {
+		o.KubernetesSoftwareConfig = vKubernetesSoftwareConfig
+	}
+	return nil
+}
+func extractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigFields(r *Cluster, o *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig) error {
+	return nil
+}
+func extractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetFields(r *Cluster, o *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget) error {
+	vNodePoolConfig := o.NodePoolConfig
+	if vNodePoolConfig == nil {
+		// note: explicitly not the empty object.
+		vNodePoolConfig = &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig{}
+	}
+	if err := extractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigFields(r, vNodePoolConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vNodePoolConfig) {
+		o.NodePoolConfig = vNodePoolConfig
+	}
+	return nil
+}
+func extractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigFields(r *Cluster, o *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig) error {
+	vConfig := o.Config
+	if vConfig == nil {
+		// note: explicitly not the empty object.
+		vConfig = &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig{}
+	}
+	if err := extractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigFields(r, vConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vConfig) {
+		o.Config = vConfig
+	}
+	vAutoscaling := o.Autoscaling
+	if vAutoscaling == nil {
+		// note: explicitly not the empty object.
+		vAutoscaling = &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling{}
+	}
+	if err := extractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingFields(r, vAutoscaling); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vAutoscaling) {
+		o.Autoscaling = vAutoscaling
+	}
+	return nil
+}
+func extractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigFields(r *Cluster, o *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig) error {
+	vEphemeralStorageConfig := o.EphemeralStorageConfig
+	if vEphemeralStorageConfig == nil {
+		// note: explicitly not the empty object.
+		vEphemeralStorageConfig = &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig{}
+	}
+	if err := extractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigFields(r, vEphemeralStorageConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vEphemeralStorageConfig) {
+		o.EphemeralStorageConfig = vEphemeralStorageConfig
+	}
+	return nil
+}
+func extractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsFields(r *Cluster, o *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators) error {
+	return nil
+}
+func extractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigFields(r *Cluster, o *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig) error {
+	return nil
+}
+func extractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingFields(r *Cluster, o *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling) error {
+	return nil
+}
+func extractClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigFields(r *Cluster, o *ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig) error {
+	return nil
+}
+func extractClusterVirtualClusterConfigAuxiliaryServicesConfigFields(r *Cluster, o *ClusterVirtualClusterConfigAuxiliaryServicesConfig) error {
+	vMetastoreConfig := o.MetastoreConfig
+	if vMetastoreConfig == nil {
+		// note: explicitly not the empty object.
+		vMetastoreConfig = &ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig{}
+	}
+	if err := extractClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigFields(r, vMetastoreConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vMetastoreConfig) {
+		o.MetastoreConfig = vMetastoreConfig
+	}
+	vSparkHistoryServerConfig := o.SparkHistoryServerConfig
+	if vSparkHistoryServerConfig == nil {
+		// note: explicitly not the empty object.
+		vSparkHistoryServerConfig = &ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig{}
+	}
+	if err := extractClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigFields(r, vSparkHistoryServerConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vSparkHistoryServerConfig) {
+		o.SparkHistoryServerConfig = vSparkHistoryServerConfig
+	}
+	return nil
+}
+func extractClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigFields(r *Cluster, o *ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig) error {
+	return nil
+}
+func extractClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigFields(r *Cluster, o *ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig) error {
 	return nil
 }
 
@@ -10208,6 +17113,17 @@ func postReadExtractClusterFields(r *Cluster) error {
 	}
 	if !dcl.IsEmptyValueIndirect(vMetrics) {
 		r.Metrics = vMetrics
+	}
+	vVirtualClusterConfig := r.VirtualClusterConfig
+	if vVirtualClusterConfig == nil {
+		// note: explicitly not the empty object.
+		vVirtualClusterConfig = &ClusterVirtualClusterConfig{}
+	}
+	if err := postReadExtractClusterVirtualClusterConfigFields(r, vVirtualClusterConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vVirtualClusterConfig) {
+		r.VirtualClusterConfig = vVirtualClusterConfig
 	}
 	return nil
 }
@@ -10322,6 +17238,28 @@ func postReadExtractClusterConfigFields(r *Cluster, o *ClusterConfig) error {
 	if !dcl.IsEmptyValueIndirect(vEndpointConfig) {
 		o.EndpointConfig = vEndpointConfig
 	}
+	vMetastoreConfig := o.MetastoreConfig
+	if vMetastoreConfig == nil {
+		// note: explicitly not the empty object.
+		vMetastoreConfig = &ClusterConfigMetastoreConfig{}
+	}
+	if err := extractClusterConfigMetastoreConfigFields(r, vMetastoreConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vMetastoreConfig) {
+		o.MetastoreConfig = vMetastoreConfig
+	}
+	vDataprocMetricConfig := o.DataprocMetricConfig
+	if vDataprocMetricConfig == nil {
+		// note: explicitly not the empty object.
+		vDataprocMetricConfig = &ClusterConfigDataprocMetricConfig{}
+	}
+	if err := extractClusterConfigDataprocMetricConfigFields(r, vDataprocMetricConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vDataprocMetricConfig) {
+		o.DataprocMetricConfig = vDataprocMetricConfig
+	}
 	return nil
 }
 func postReadExtractClusterConfigGceClusterConfigFields(r *Cluster, o *ClusterConfigGceClusterConfig) error {
@@ -10347,12 +17285,40 @@ func postReadExtractClusterConfigGceClusterConfigFields(r *Cluster, o *ClusterCo
 	if !dcl.IsEmptyValueIndirect(vNodeGroupAffinity) {
 		o.NodeGroupAffinity = vNodeGroupAffinity
 	}
+	vShieldedInstanceConfig := o.ShieldedInstanceConfig
+	if vShieldedInstanceConfig == nil {
+		// note: explicitly not the empty object.
+		vShieldedInstanceConfig = &ClusterConfigGceClusterConfigShieldedInstanceConfig{}
+	}
+	if err := extractClusterConfigGceClusterConfigShieldedInstanceConfigFields(r, vShieldedInstanceConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vShieldedInstanceConfig) {
+		o.ShieldedInstanceConfig = vShieldedInstanceConfig
+	}
+	vConfidentialInstanceConfig := o.ConfidentialInstanceConfig
+	if vConfidentialInstanceConfig == nil {
+		// note: explicitly not the empty object.
+		vConfidentialInstanceConfig = &ClusterConfigGceClusterConfigConfidentialInstanceConfig{}
+	}
+	if err := extractClusterConfigGceClusterConfigConfidentialInstanceConfigFields(r, vConfidentialInstanceConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vConfidentialInstanceConfig) {
+		o.ConfidentialInstanceConfig = vConfidentialInstanceConfig
+	}
 	return nil
 }
 func postReadExtractClusterConfigGceClusterConfigReservationAffinityFields(r *Cluster, o *ClusterConfigGceClusterConfigReservationAffinity) error {
 	return nil
 }
 func postReadExtractClusterConfigGceClusterConfigNodeGroupAffinityFields(r *Cluster, o *ClusterConfigGceClusterConfigNodeGroupAffinity) error {
+	return nil
+}
+func postReadExtractClusterConfigGceClusterConfigShieldedInstanceConfigFields(r *Cluster, o *ClusterConfigGceClusterConfigShieldedInstanceConfig) error {
+	return nil
+}
+func postReadExtractClusterConfigGceClusterConfigConfidentialInstanceConfigFields(r *Cluster, o *ClusterConfigGceClusterConfigConfidentialInstanceConfig) error {
 	return nil
 }
 func postReadExtractClusterConfigMasterConfigFields(r *Cluster, o *ClusterConfigMasterConfig) error {
@@ -10389,6 +17355,9 @@ func postReadExtractClusterConfigMasterConfigManagedGroupConfigFields(r *Cluster
 func postReadExtractClusterConfigMasterConfigAcceleratorsFields(r *Cluster, o *ClusterConfigMasterConfigAccelerators) error {
 	return nil
 }
+func postReadExtractClusterConfigMasterConfigInstanceReferencesFields(r *Cluster, o *ClusterConfigMasterConfigInstanceReferences) error {
+	return nil
+}
 func postReadExtractClusterConfigWorkerConfigFields(r *Cluster, o *ClusterConfigWorkerConfig) error {
 	vDiskConfig := o.DiskConfig
 	if vDiskConfig == nil {
@@ -10421,6 +17390,9 @@ func postReadExtractClusterConfigWorkerConfigManagedGroupConfigFields(r *Cluster
 	return nil
 }
 func postReadExtractClusterConfigWorkerConfigAcceleratorsFields(r *Cluster, o *ClusterConfigWorkerConfigAccelerators) error {
+	return nil
+}
+func postReadExtractClusterConfigWorkerConfigInstanceReferencesFields(r *Cluster, o *ClusterConfigWorkerConfigInstanceReferences) error {
 	return nil
 }
 func postReadExtractClusterConfigSecondaryWorkerConfigFields(r *Cluster, o *ClusterConfigSecondaryWorkerConfig) error {
@@ -10457,6 +17429,9 @@ func postReadExtractClusterConfigSecondaryWorkerConfigManagedGroupConfigFields(r
 func postReadExtractClusterConfigSecondaryWorkerConfigAcceleratorsFields(r *Cluster, o *ClusterConfigSecondaryWorkerConfigAccelerators) error {
 	return nil
 }
+func postReadExtractClusterConfigSecondaryWorkerConfigInstanceReferencesFields(r *Cluster, o *ClusterConfigSecondaryWorkerConfigInstanceReferences) error {
+	return nil
+}
 func postReadExtractClusterConfigSoftwareConfigFields(r *Cluster, o *ClusterConfigSoftwareConfig) error {
 	return nil
 }
@@ -10481,15 +17456,38 @@ func postReadExtractClusterConfigSecurityConfigFields(r *Cluster, o *ClusterConf
 	if !dcl.IsEmptyValueIndirect(vKerberosConfig) {
 		o.KerberosConfig = vKerberosConfig
 	}
+	vIdentityConfig := o.IdentityConfig
+	if vIdentityConfig == nil {
+		// note: explicitly not the empty object.
+		vIdentityConfig = &ClusterConfigSecurityConfigIdentityConfig{}
+	}
+	if err := extractClusterConfigSecurityConfigIdentityConfigFields(r, vIdentityConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vIdentityConfig) {
+		o.IdentityConfig = vIdentityConfig
+	}
 	return nil
 }
 func postReadExtractClusterConfigSecurityConfigKerberosConfigFields(r *Cluster, o *ClusterConfigSecurityConfigKerberosConfig) error {
+	return nil
+}
+func postReadExtractClusterConfigSecurityConfigIdentityConfigFields(r *Cluster, o *ClusterConfigSecurityConfigIdentityConfig) error {
 	return nil
 }
 func postReadExtractClusterConfigLifecycleConfigFields(r *Cluster, o *ClusterConfigLifecycleConfig) error {
 	return nil
 }
 func postReadExtractClusterConfigEndpointConfigFields(r *Cluster, o *ClusterConfigEndpointConfig) error {
+	return nil
+}
+func postReadExtractClusterConfigMetastoreConfigFields(r *Cluster, o *ClusterConfigMetastoreConfig) error {
+	return nil
+}
+func postReadExtractClusterConfigDataprocMetricConfigFields(r *Cluster, o *ClusterConfigDataprocMetricConfig) error {
+	return nil
+}
+func postReadExtractClusterConfigDataprocMetricConfigMetricsFields(r *Cluster, o *ClusterConfigDataprocMetricConfigMetrics) error {
 	return nil
 }
 func postReadExtractClusterStatusFields(r *Cluster, o *ClusterStatus) error {
@@ -10499,5 +17497,154 @@ func postReadExtractClusterStatusHistoryFields(r *Cluster, o *ClusterStatusHisto
 	return nil
 }
 func postReadExtractClusterMetricsFields(r *Cluster, o *ClusterMetrics) error {
+	return nil
+}
+func postReadExtractClusterVirtualClusterConfigFields(r *Cluster, o *ClusterVirtualClusterConfig) error {
+	vKubernetesClusterConfig := o.KubernetesClusterConfig
+	if vKubernetesClusterConfig == nil {
+		// note: explicitly not the empty object.
+		vKubernetesClusterConfig = &ClusterVirtualClusterConfigKubernetesClusterConfig{}
+	}
+	if err := extractClusterVirtualClusterConfigKubernetesClusterConfigFields(r, vKubernetesClusterConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vKubernetesClusterConfig) {
+		o.KubernetesClusterConfig = vKubernetesClusterConfig
+	}
+	vAuxiliaryServicesConfig := o.AuxiliaryServicesConfig
+	if vAuxiliaryServicesConfig == nil {
+		// note: explicitly not the empty object.
+		vAuxiliaryServicesConfig = &ClusterVirtualClusterConfigAuxiliaryServicesConfig{}
+	}
+	if err := extractClusterVirtualClusterConfigAuxiliaryServicesConfigFields(r, vAuxiliaryServicesConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vAuxiliaryServicesConfig) {
+		o.AuxiliaryServicesConfig = vAuxiliaryServicesConfig
+	}
+	return nil
+}
+func postReadExtractClusterVirtualClusterConfigKubernetesClusterConfigFields(r *Cluster, o *ClusterVirtualClusterConfigKubernetesClusterConfig) error {
+	vGkeClusterConfig := o.GkeClusterConfig
+	if vGkeClusterConfig == nil {
+		// note: explicitly not the empty object.
+		vGkeClusterConfig = &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig{}
+	}
+	if err := extractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigFields(r, vGkeClusterConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vGkeClusterConfig) {
+		o.GkeClusterConfig = vGkeClusterConfig
+	}
+	vKubernetesSoftwareConfig := o.KubernetesSoftwareConfig
+	if vKubernetesSoftwareConfig == nil {
+		// note: explicitly not the empty object.
+		vKubernetesSoftwareConfig = &ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig{}
+	}
+	if err := extractClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigFields(r, vKubernetesSoftwareConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vKubernetesSoftwareConfig) {
+		o.KubernetesSoftwareConfig = vKubernetesSoftwareConfig
+	}
+	return nil
+}
+func postReadExtractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigFields(r *Cluster, o *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig) error {
+	return nil
+}
+func postReadExtractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetFields(r *Cluster, o *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget) error {
+	vNodePoolConfig := o.NodePoolConfig
+	if vNodePoolConfig == nil {
+		// note: explicitly not the empty object.
+		vNodePoolConfig = &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig{}
+	}
+	if err := extractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigFields(r, vNodePoolConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vNodePoolConfig) {
+		o.NodePoolConfig = vNodePoolConfig
+	}
+	return nil
+}
+func postReadExtractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigFields(r *Cluster, o *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig) error {
+	vConfig := o.Config
+	if vConfig == nil {
+		// note: explicitly not the empty object.
+		vConfig = &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig{}
+	}
+	if err := extractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigFields(r, vConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vConfig) {
+		o.Config = vConfig
+	}
+	vAutoscaling := o.Autoscaling
+	if vAutoscaling == nil {
+		// note: explicitly not the empty object.
+		vAutoscaling = &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling{}
+	}
+	if err := extractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingFields(r, vAutoscaling); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vAutoscaling) {
+		o.Autoscaling = vAutoscaling
+	}
+	return nil
+}
+func postReadExtractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigFields(r *Cluster, o *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig) error {
+	vEphemeralStorageConfig := o.EphemeralStorageConfig
+	if vEphemeralStorageConfig == nil {
+		// note: explicitly not the empty object.
+		vEphemeralStorageConfig = &ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig{}
+	}
+	if err := extractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigFields(r, vEphemeralStorageConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vEphemeralStorageConfig) {
+		o.EphemeralStorageConfig = vEphemeralStorageConfig
+	}
+	return nil
+}
+func postReadExtractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsFields(r *Cluster, o *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators) error {
+	return nil
+}
+func postReadExtractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigFields(r *Cluster, o *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig) error {
+	return nil
+}
+func postReadExtractClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingFields(r *Cluster, o *ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling) error {
+	return nil
+}
+func postReadExtractClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigFields(r *Cluster, o *ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig) error {
+	return nil
+}
+func postReadExtractClusterVirtualClusterConfigAuxiliaryServicesConfigFields(r *Cluster, o *ClusterVirtualClusterConfigAuxiliaryServicesConfig) error {
+	vMetastoreConfig := o.MetastoreConfig
+	if vMetastoreConfig == nil {
+		// note: explicitly not the empty object.
+		vMetastoreConfig = &ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig{}
+	}
+	if err := extractClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigFields(r, vMetastoreConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vMetastoreConfig) {
+		o.MetastoreConfig = vMetastoreConfig
+	}
+	vSparkHistoryServerConfig := o.SparkHistoryServerConfig
+	if vSparkHistoryServerConfig == nil {
+		// note: explicitly not the empty object.
+		vSparkHistoryServerConfig = &ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig{}
+	}
+	if err := extractClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigFields(r, vSparkHistoryServerConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vSparkHistoryServerConfig) {
+		o.SparkHistoryServerConfig = vSparkHistoryServerConfig
+	}
+	return nil
+}
+func postReadExtractClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigFields(r *Cluster, o *ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig) error {
+	return nil
+}
+func postReadExtractClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigFields(r *Cluster, o *ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig) error {
 	return nil
 }

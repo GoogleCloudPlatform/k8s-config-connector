@@ -2078,14 +2078,14 @@ func compareAssetDiscoverySpecNewStyle(d, a interface{}, fn dcl.FieldName) ([]*d
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.CsvOptions, actual.CsvOptions, dcl.DiffInfo{ObjectFunction: compareAssetDiscoverySpecCsvOptionsNewStyle, EmptyObject: EmptyAssetDiscoverySpecCsvOptions, OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("CsvOptions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.CsvOptions, actual.CsvOptions, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareAssetDiscoverySpecCsvOptionsNewStyle, EmptyObject: EmptyAssetDiscoverySpecCsvOptions, OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("CsvOptions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.JsonOptions, actual.JsonOptions, dcl.DiffInfo{ObjectFunction: compareAssetDiscoverySpecJsonOptionsNewStyle, EmptyObject: EmptyAssetDiscoverySpecJsonOptions, OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("JsonOptions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.JsonOptions, actual.JsonOptions, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareAssetDiscoverySpecJsonOptionsNewStyle, EmptyObject: EmptyAssetDiscoverySpecJsonOptions, OperationSelector: dcl.TriggersOperation("updateAssetUpdateAssetOperation")}, fn.AddNest("JsonOptions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

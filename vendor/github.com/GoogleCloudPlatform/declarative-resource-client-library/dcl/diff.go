@@ -24,6 +24,7 @@ type DiffInfo struct {
 	// Ignore + OutputOnly cause the diff checker to always return no-diff.
 	Ignore           bool
 	OutputOnly       bool
+	ServerDefault    bool
 	MergeNestedDiffs bool
 	IgnoredPrefixes  []string
 	Type             string
@@ -267,6 +268,10 @@ func Diff(desired, actual interface{}, info DiffInfo, fn FieldName) ([]*FieldDif
 		// a non-explicitly empty struct with a struct containing only computed fields.
 		// See compute's `validate_test.go` for example.
 		if hasEmptyStructField(desired) && !IsEmptyValueIndirect(actual) {
+			if info.ServerDefault {
+				// The API can return values where none are in the desired state.
+				return nil, nil
+			}
 			diffs = append(diffs, &FieldDiff{FieldName: fn.FieldName, Desired: desired, Actual: actual})
 			addOperationToDiffs(diffs, info)
 			return diffs, nil

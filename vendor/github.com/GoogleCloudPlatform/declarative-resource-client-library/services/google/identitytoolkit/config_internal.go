@@ -3814,42 +3814,42 @@ func diffConfig(c *Client, desired, actual *Config, opts ...dcl.ApplyOption) ([]
 	var fn dcl.FieldName
 	var newDiffs []*dcl.FieldDiff
 	// New style diffs.
-	if ds, err := dcl.Diff(desired.SignIn, actual.SignIn, dcl.DiffInfo{ObjectFunction: compareConfigSignInNewStyle, EmptyObject: EmptyConfigSignIn, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SignIn")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.SignIn, actual.SignIn, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareConfigSignInNewStyle, EmptyObject: EmptyConfigSignIn, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("SignIn")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Notification, actual.Notification, dcl.DiffInfo{ObjectFunction: compareConfigNotificationNewStyle, EmptyObject: EmptyConfigNotification, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Notification")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Notification, actual.Notification, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareConfigNotificationNewStyle, EmptyObject: EmptyConfigNotification, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Notification")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Quota, actual.Quota, dcl.DiffInfo{ObjectFunction: compareConfigQuotaNewStyle, EmptyObject: EmptyConfigQuota, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Quota")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Quota, actual.Quota, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareConfigQuotaNewStyle, EmptyObject: EmptyConfigQuota, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Quota")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Monitoring, actual.Monitoring, dcl.DiffInfo{ObjectFunction: compareConfigMonitoringNewStyle, EmptyObject: EmptyConfigMonitoring, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Monitoring")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Monitoring, actual.Monitoring, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareConfigMonitoringNewStyle, EmptyObject: EmptyConfigMonitoring, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Monitoring")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.MultiTenant, actual.MultiTenant, dcl.DiffInfo{ObjectFunction: compareConfigMultiTenantNewStyle, EmptyObject: EmptyConfigMultiTenant, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("MultiTenant")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.MultiTenant, actual.MultiTenant, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareConfigMultiTenantNewStyle, EmptyObject: EmptyConfigMultiTenant, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("MultiTenant")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AuthorizedDomains, actual.AuthorizedDomains, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("AuthorizedDomains")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AuthorizedDomains, actual.AuthorizedDomains, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("AuthorizedDomains")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -3863,21 +3863,21 @@ func diffConfig(c *Client, desired, actual *Config, opts ...dcl.ApplyOption) ([]
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Client, actual.Client, dcl.DiffInfo{ObjectFunction: compareConfigClientNewStyle, EmptyObject: EmptyConfigClient, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Client")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Client, actual.Client, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareConfigClientNewStyle, EmptyObject: EmptyConfigClient, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Client")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Mfa, actual.Mfa, dcl.DiffInfo{ObjectFunction: compareConfigMfaNewStyle, EmptyObject: EmptyConfigMfa, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Mfa")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Mfa, actual.Mfa, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareConfigMfaNewStyle, EmptyObject: EmptyConfigMfa, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("Mfa")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.BlockingFunctions, actual.BlockingFunctions, dcl.DiffInfo{ObjectFunction: compareConfigBlockingFunctionsNewStyle, EmptyObject: EmptyConfigBlockingFunctions, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("BlockingFunctions")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.BlockingFunctions, actual.BlockingFunctions, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareConfigBlockingFunctionsNewStyle, EmptyObject: EmptyConfigBlockingFunctions, OperationSelector: dcl.TriggersOperation("updateConfigUpdateProjectConfigOperation")}, fn.AddNest("BlockingFunctions")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

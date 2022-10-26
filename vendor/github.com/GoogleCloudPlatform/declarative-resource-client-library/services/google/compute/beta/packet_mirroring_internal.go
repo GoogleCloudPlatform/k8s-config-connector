@@ -1397,7 +1397,7 @@ func diffPacketMirroring(c *Client, desired, actual *PacketMirroring, opts ...dc
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Priority, actual.Priority, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Priority")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Priority, actual.Priority, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Priority")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1418,14 +1418,14 @@ func diffPacketMirroring(c *Client, desired, actual *PacketMirroring, opts ...dc
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Filter, actual.Filter, dcl.DiffInfo{ObjectFunction: comparePacketMirroringFilterNewStyle, EmptyObject: EmptyPacketMirroringFilter, OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Filter")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Filter, actual.Filter, dcl.DiffInfo{ServerDefault: true, ObjectFunction: comparePacketMirroringFilterNewStyle, EmptyObject: EmptyPacketMirroringFilter, OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Filter")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Enable, actual.Enable, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Enable")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Enable, actual.Enable, dcl.DiffInfo{ServerDefault: true, Type: "EnumType", OperationSelector: dcl.TriggersOperation("updatePacketMirroringPatchOperation")}, fn.AddNest("Enable")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

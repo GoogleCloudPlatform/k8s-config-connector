@@ -649,14 +649,14 @@ func diffNetwork(c *Client, desired, actual *Network, opts ...dcl.ApplyOption) (
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AutoCreateSubnetworks, actual.AutoCreateSubnetworks, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AutoCreateSubnetworks")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.AutoCreateSubnetworks, actual.AutoCreateSubnetworks, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("AutoCreateSubnetworks")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.RoutingConfig, actual.RoutingConfig, dcl.DiffInfo{ObjectFunction: compareNetworkRoutingConfigNewStyle, EmptyObject: EmptyNetworkRoutingConfig, OperationSelector: dcl.TriggersOperation("updateNetworkUpdateOperation")}, fn.AddNest("RoutingConfig")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RoutingConfig, actual.RoutingConfig, dcl.DiffInfo{ServerDefault: true, ObjectFunction: compareNetworkRoutingConfigNewStyle, EmptyObject: EmptyNetworkRoutingConfig, OperationSelector: dcl.TriggersOperation("updateNetworkUpdateOperation")}, fn.AddNest("RoutingConfig")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -713,7 +713,7 @@ func compareNetworkRoutingConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]
 		actual = &actualNotPointer
 	}
 
-	if ds, err := dcl.Diff(desired.RoutingMode, actual.RoutingMode, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateNetworkUpdateOperation")}, fn.AddNest("RoutingMode")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RoutingMode, actual.RoutingMode, dcl.DiffInfo{ServerDefault: true, Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateNetworkUpdateOperation")}, fn.AddNest("RoutingMode")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

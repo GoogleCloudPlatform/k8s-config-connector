@@ -1791,7 +1791,7 @@ func diffMembership(c *Client, desired, actual *Membership, opts ...dcl.ApplyOpt
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.ExternalId, actual.ExternalId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("ExternalId")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.ExternalId, actual.ExternalId, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("ExternalId")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1819,7 +1819,7 @@ func diffMembership(c *Client, desired, actual *Membership, opts ...dcl.ApplyOpt
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.InfrastructureType, actual.InfrastructureType, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("InfrastructureType")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.InfrastructureType, actual.InfrastructureType, dcl.DiffInfo{ServerDefault: true, Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateMembershipUpdateMembershipOperation")}, fn.AddNest("InfrastructureType")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

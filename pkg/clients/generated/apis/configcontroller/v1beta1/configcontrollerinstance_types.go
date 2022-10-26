@@ -35,9 +35,44 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type InstanceFullManagementConfig struct {
+	/* Immutable. The IP address range for the cluster pod IPs. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use. */
+	// +optional
+	ClusterCidrBlock *string `json:"clusterCidrBlock,omitempty"`
+
+	/* Immutable. The name of the existing secondary range in the cluster's subnetwork to use for pod IP addresses. Alternatively, cluster_cidr_block can be used to automatically create a GKE-managed one. */
+	// +optional
+	ClusterNamedRange *string `json:"clusterNamedRange,omitempty"`
+
+	/* Immutable. Master Authorized Network. Allows access to the k8s master from this block. */
+	// +optional
+	ManBlock *string `json:"manBlock,omitempty"`
+
+	/* Immutable. The /28 network that the masters will use. */
+	// +optional
+	MasterIPv4CidrBlock *string `json:"masterIPv4CidrBlock,omitempty"`
+
+	/* Immutable. */
+	// +optional
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+
+	/* Immutable. The IP address range for the cluster service IPs. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use. */
+	// +optional
+	ServicesCidrBlock *string `json:"servicesCidrBlock,omitempty"`
+
+	/* Immutable. The name of the existing secondary range in the cluster's subnetwork to use for service ClusterIPs. Alternatively, services_cidr_block can be used to automatically create a GKE-managed one. */
+	// +optional
+	ServicesNamedRange *string `json:"servicesNamedRange,omitempty"`
+}
+
 type InstanceManagementConfig struct {
+	/* Immutable. Configuration of the full (Autopilot) cluster management */
+	// +optional
+	FullManagementConfig *InstanceFullManagementConfig `json:"fullManagementConfig,omitempty"`
+
 	/* Immutable. Configuration of the standard (GKE) cluster management */
-	StandardManagementConfig InstanceStandardManagementConfig `json:"standardManagementConfig"`
+	// +optional
+	StandardManagementConfig *InstanceStandardManagementConfig `json:"standardManagementConfig,omitempty"`
 }
 
 type InstanceStandardManagementConfig struct {

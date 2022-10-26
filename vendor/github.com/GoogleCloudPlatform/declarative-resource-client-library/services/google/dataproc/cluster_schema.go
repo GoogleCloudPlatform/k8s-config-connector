@@ -100,6 +100,7 @@ func DCLClusterSchema() *dcl.Schema {
 				"Cluster": &dcl.Component{
 					Title:           "Cluster",
 					ID:              "projects/{{project}}/regions/{{location}}/clusters/{{name}}",
+					UsesStateHint:   true,
 					ParentContainer: "project",
 					LabelsField:     "labels",
 					HasCreate:       true,
@@ -123,7 +124,7 @@ func DCLClusterSchema() *dcl.Schema {
 								Type:        "object",
 								GoName:      "Config",
 								GoType:      "ClusterConfig",
-								Description: "Required. The cluster config. Note that Dataproc may set default values, and values may change when clusters are updated.",
+								Description: "The cluster config. Note that Dataproc may set default values, and values may change when clusters are updated.",
 								Immutable:   true,
 								Properties: map[string]*dcl.Property{
 									"autoscalingConfig": &dcl.Property{
@@ -142,6 +143,63 @@ func DCLClusterSchema() *dcl.Schema {
 													&dcl.PropertyResourceReference{
 														Resource: "Dataproc/AutoscalingPolicy",
 														Field:    "name",
+													},
+												},
+											},
+										},
+									},
+									"dataprocMetricConfig": &dcl.Property{
+										Type:        "object",
+										GoName:      "DataprocMetricConfig",
+										GoType:      "ClusterConfigDataprocMetricConfig",
+										Description: "Optional. The config for Dataproc metrics.",
+										Immutable:   true,
+										Required: []string{
+											"metrics",
+										},
+										Properties: map[string]*dcl.Property{
+											"metrics": &dcl.Property{
+												Type:        "array",
+												GoName:      "Metrics",
+												Description: "Required. Metrics sources to enable.",
+												Immutable:   true,
+												SendEmpty:   true,
+												ListType:    "list",
+												Items: &dcl.Property{
+													Type:   "object",
+													GoType: "ClusterConfigDataprocMetricConfigMetrics",
+													Required: []string{
+														"metricSource",
+													},
+													Properties: map[string]*dcl.Property{
+														"metricOverrides": &dcl.Property{
+															Type:        "array",
+															GoName:      "MetricOverrides",
+															Description: "Optional. Specify one or more [available OSS metrics] (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics) to collect for the metric course (for the `SPARK` metric source, any [Spark metric] (https://spark.apache.org/docs/latest/monitoring.html#metrics) can be specified). Provide metrics in the following format: `METRIC_SOURCE:INSTANCE:GROUP:METRIC` Use camelcase as appropriate. Examples: ``` yarn:ResourceManager:QueueMetrics:AppsCompleted spark:driver:DAGScheduler:job.allJobs sparkHistoryServer:JVM:Memory:NonHeapMemoryUsage.committed hiveserver2:JVM:Memory:NonHeapMemoryUsage.used ``` Notes: * Only the specified overridden metrics will be collected for the metric source. For example, if one or more `spark:executive` metrics are listed as metric overrides, other `SPARK` metrics will not be collected. The collection of the default metrics for other OSS metric sources is unaffected. For example, if both `SPARK` andd `YARN` metric sources are enabled, and overrides are provided for Spark metrics only, all default YARN metrics will be collected.",
+															Immutable:   true,
+															SendEmpty:   true,
+															ListType:    "list",
+															Items: &dcl.Property{
+																Type:   "string",
+																GoType: "string",
+															},
+														},
+														"metricSource": &dcl.Property{
+															Type:        "string",
+															GoName:      "MetricSource",
+															GoType:      "ClusterConfigDataprocMetricConfigMetricsMetricSourceEnum",
+															Description: "Required. Default metrics are collected unless `metricOverrides` are specified for the metric source (see [Available OSS metrics] (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics) for more information). Possible values: METRIC_SOURCE_UNSPECIFIED, MONITORING_AGENT_DEFAULTS, HDFS, SPARK, YARN, SPARK_HISTORY_SERVER, HIVESERVER2",
+															Immutable:   true,
+															Enum: []string{
+																"METRIC_SOURCE_UNSPECIFIED",
+																"MONITORING_AGENT_DEFAULTS",
+																"HDFS",
+																"SPARK",
+																"YARN",
+																"SPARK_HISTORY_SERVER",
+																"HIVESERVER2",
+															},
+														},
 													},
 												},
 											},
@@ -202,6 +260,21 @@ func DCLClusterSchema() *dcl.Schema {
 										Immutable:     true,
 										ServerDefault: true,
 										Properties: map[string]*dcl.Property{
+											"confidentialInstanceConfig": &dcl.Property{
+												Type:        "object",
+												GoName:      "ConfidentialInstanceConfig",
+												GoType:      "ClusterConfigGceClusterConfigConfidentialInstanceConfig",
+												Description: "Optional. Confidential Instance Config for clusters using [Confidential VMs](https://cloud.google.com/compute/confidential-vm/docs).",
+												Immutable:   true,
+												Properties: map[string]*dcl.Property{
+													"enableConfidentialCompute": &dcl.Property{
+														Type:        "boolean",
+														GoName:      "EnableConfidentialCompute",
+														Description: "Optional. Defines whether the instance should have confidential compute enabled.",
+														Immutable:   true,
+													},
+												},
+											},
 											"internalIPOnly": &dcl.Property{
 												Type:          "boolean",
 												GoName:        "InternalIPOnly",
@@ -331,6 +404,33 @@ func DCLClusterSchema() *dcl.Schema {
 												Items: &dcl.Property{
 													Type:   "string",
 													GoType: "string",
+												},
+											},
+											"shieldedInstanceConfig": &dcl.Property{
+												Type:        "object",
+												GoName:      "ShieldedInstanceConfig",
+												GoType:      "ClusterConfigGceClusterConfigShieldedInstanceConfig",
+												Description: "Optional. Shielded Instance Config for clusters using [Compute Engine Shielded VMs](https://cloud.google.com/security/shielded-cloud/shielded-vm).",
+												Immutable:   true,
+												Properties: map[string]*dcl.Property{
+													"enableIntegrityMonitoring": &dcl.Property{
+														Type:        "boolean",
+														GoName:      "EnableIntegrityMonitoring",
+														Description: "Optional. Defines whether instances have integrity monitoring enabled.",
+														Immutable:   true,
+													},
+													"enableSecureBoot": &dcl.Property{
+														Type:        "boolean",
+														GoName:      "EnableSecureBoot",
+														Description: "Optional. Defines whether instances have Secure Boot enabled.",
+														Immutable:   true,
+													},
+													"enableVtpm": &dcl.Property{
+														Type:        "boolean",
+														GoName:      "EnableVtpm",
+														Description: "Optional. Defines whether instances have the vTPM enabled.",
+														Immutable:   true,
+													},
 												},
 											},
 											"subnetwork": &dcl.Property{
@@ -487,6 +587,12 @@ func DCLClusterSchema() *dcl.Schema {
 														Description: "Optional. Type of the boot disk (default is \"pd-standard\"). Valid values: \"pd-balanced\" (Persistent Disk Balanced Solid State Drive), \"pd-ssd\" (Persistent Disk Solid State Drive), or \"pd-standard\" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).",
 														Immutable:   true,
 													},
+													"localSsdInterface": &dcl.Property{
+														Type:        "string",
+														GoName:      "LocalSsdInterface",
+														Description: "Optional. Interface type of local SSDs (default is \"scsi\"). Valid values: \"scsi\" (Small Computer System Interface), \"nvme\" (Non-Volatile Memory Express). See [local SSD performance](https://cloud.google.com/compute/docs/disks/local-ssd#performance).",
+														Immutable:   true,
+													},
 													"numLocalSsds": &dcl.Property{
 														Type:          "integer",
 														Format:        "int64",
@@ -524,6 +630,44 @@ func DCLClusterSchema() *dcl.Schema {
 														&dcl.PropertyResourceReference{
 															Resource: "Compute/Instance",
 															Field:    "selfLink",
+														},
+													},
+												},
+											},
+											"instanceReferences": &dcl.Property{
+												Type:        "array",
+												GoName:      "InstanceReferences",
+												ReadOnly:    true,
+												Description: "Output only. List of references to Compute Engine instances.",
+												Immutable:   true,
+												ListType:    "list",
+												Items: &dcl.Property{
+													Type:   "object",
+													GoType: "ClusterConfigMasterConfigInstanceReferences",
+													Properties: map[string]*dcl.Property{
+														"instanceId": &dcl.Property{
+															Type:        "string",
+															GoName:      "InstanceId",
+															Description: "The unique identifier of the Compute Engine instance.",
+															Immutable:   true,
+														},
+														"instanceName": &dcl.Property{
+															Type:        "string",
+															GoName:      "InstanceName",
+															Description: "The user-friendly name of the Compute Engine instance.",
+															Immutable:   true,
+														},
+														"publicEciesKey": &dcl.Property{
+															Type:        "string",
+															GoName:      "PublicEciesKey",
+															Description: "The public ECIES key used for sharing data with this instance.",
+															Immutable:   true,
+														},
+														"publicKey": &dcl.Property{
+															Type:        "string",
+															GoName:      "PublicKey",
+															Description: "The public RSA key used for sharing data with this instance.",
+															Immutable:   true,
 														},
 													},
 												},
@@ -594,6 +738,30 @@ func DCLClusterSchema() *dcl.Schema {
 											},
 										},
 									},
+									"metastoreConfig": &dcl.Property{
+										Type:        "object",
+										GoName:      "MetastoreConfig",
+										GoType:      "ClusterConfigMetastoreConfig",
+										Description: "Optional. Metastore configuration.",
+										Immutable:   true,
+										Required: []string{
+											"dataprocMetastoreService",
+										},
+										Properties: map[string]*dcl.Property{
+											"dataprocMetastoreService": &dcl.Property{
+												Type:        "string",
+												GoName:      "DataprocMetastoreService",
+												Description: "Required. Resource name of an existing Dataproc Metastore service. Example: * `projects/[project_id]/locations/[dataproc_region]/services/[service-name]`",
+												Immutable:   true,
+												ResourceReferences: []*dcl.PropertyResourceReference{
+													&dcl.PropertyResourceReference{
+														Resource: "Metastore/Service",
+														Field:    "selfLink",
+													},
+												},
+											},
+										},
+									},
 									"secondaryWorkerConfig": &dcl.Property{
 										Type:          "object",
 										GoName:        "SecondaryWorkerConfig",
@@ -651,6 +819,12 @@ func DCLClusterSchema() *dcl.Schema {
 														Description: "Optional. Type of the boot disk (default is \"pd-standard\"). Valid values: \"pd-balanced\" (Persistent Disk Balanced Solid State Drive), \"pd-ssd\" (Persistent Disk Solid State Drive), or \"pd-standard\" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).",
 														Immutable:   true,
 													},
+													"localSsdInterface": &dcl.Property{
+														Type:        "string",
+														GoName:      "LocalSsdInterface",
+														Description: "Optional. Interface type of local SSDs (default is \"scsi\"). Valid values: \"scsi\" (Small Computer System Interface), \"nvme\" (Non-Volatile Memory Express). See [local SSD performance](https://cloud.google.com/compute/docs/disks/local-ssd#performance).",
+														Immutable:   true,
+													},
 													"numLocalSsds": &dcl.Property{
 														Type:          "integer",
 														Format:        "int64",
@@ -688,6 +862,44 @@ func DCLClusterSchema() *dcl.Schema {
 														&dcl.PropertyResourceReference{
 															Resource: "Compute/Instance",
 															Field:    "selfLink",
+														},
+													},
+												},
+											},
+											"instanceReferences": &dcl.Property{
+												Type:        "array",
+												GoName:      "InstanceReferences",
+												ReadOnly:    true,
+												Description: "Output only. List of references to Compute Engine instances.",
+												Immutable:   true,
+												ListType:    "list",
+												Items: &dcl.Property{
+													Type:   "object",
+													GoType: "ClusterConfigSecondaryWorkerConfigInstanceReferences",
+													Properties: map[string]*dcl.Property{
+														"instanceId": &dcl.Property{
+															Type:        "string",
+															GoName:      "InstanceId",
+															Description: "The unique identifier of the Compute Engine instance.",
+															Immutable:   true,
+														},
+														"instanceName": &dcl.Property{
+															Type:        "string",
+															GoName:      "InstanceName",
+															Description: "The user-friendly name of the Compute Engine instance.",
+															Immutable:   true,
+														},
+														"publicEciesKey": &dcl.Property{
+															Type:        "string",
+															GoName:      "PublicEciesKey",
+															Description: "The public ECIES key used for sharing data with this instance.",
+															Immutable:   true,
+														},
+														"publicKey": &dcl.Property{
+															Type:        "string",
+															GoName:      "PublicKey",
+															Description: "The public RSA key used for sharing data with this instance.",
+															Immutable:   true,
 														},
 													},
 												},
@@ -765,6 +977,27 @@ func DCLClusterSchema() *dcl.Schema {
 										Description: "Optional. Security settings for the cluster.",
 										Immutable:   true,
 										Properties: map[string]*dcl.Property{
+											"identityConfig": &dcl.Property{
+												Type:        "object",
+												GoName:      "IdentityConfig",
+												GoType:      "ClusterConfigSecurityConfigIdentityConfig",
+												Description: "Optional. Identity related configuration, including service account based secure multi-tenancy user mappings.",
+												Immutable:   true,
+												Required: []string{
+													"userServiceAccountMapping",
+												},
+												Properties: map[string]*dcl.Property{
+													"userServiceAccountMapping": &dcl.Property{
+														Type: "object",
+														AdditionalProperties: &dcl.Property{
+															Type: "string",
+														},
+														GoName:      "UserServiceAccountMapping",
+														Description: "Required. Map of user to service account.",
+														Immutable:   true,
+													},
+												},
+											},
 											"kerberosConfig": &dcl.Property{
 												Type:        "object",
 												GoName:      "KerberosConfig",
@@ -1009,6 +1242,12 @@ func DCLClusterSchema() *dcl.Schema {
 														Description: "Optional. Type of the boot disk (default is \"pd-standard\"). Valid values: \"pd-balanced\" (Persistent Disk Balanced Solid State Drive), \"pd-ssd\" (Persistent Disk Solid State Drive), or \"pd-standard\" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).",
 														Immutable:   true,
 													},
+													"localSsdInterface": &dcl.Property{
+														Type:        "string",
+														GoName:      "LocalSsdInterface",
+														Description: "Optional. Interface type of local SSDs (default is \"scsi\"). Valid values: \"scsi\" (Small Computer System Interface), \"nvme\" (Non-Volatile Memory Express). See [local SSD performance](https://cloud.google.com/compute/docs/disks/local-ssd#performance).",
+														Immutable:   true,
+													},
 													"numLocalSsds": &dcl.Property{
 														Type:          "integer",
 														Format:        "int64",
@@ -1046,6 +1285,44 @@ func DCLClusterSchema() *dcl.Schema {
 														&dcl.PropertyResourceReference{
 															Resource: "Compute/Instance",
 															Field:    "selfLink",
+														},
+													},
+												},
+											},
+											"instanceReferences": &dcl.Property{
+												Type:        "array",
+												GoName:      "InstanceReferences",
+												ReadOnly:    true,
+												Description: "Output only. List of references to Compute Engine instances.",
+												Immutable:   true,
+												ListType:    "list",
+												Items: &dcl.Property{
+													Type:   "object",
+													GoType: "ClusterConfigWorkerConfigInstanceReferences",
+													Properties: map[string]*dcl.Property{
+														"instanceId": &dcl.Property{
+															Type:        "string",
+															GoName:      "InstanceId",
+															Description: "The unique identifier of the Compute Engine instance.",
+															Immutable:   true,
+														},
+														"instanceName": &dcl.Property{
+															Type:        "string",
+															GoName:      "InstanceName",
+															Description: "The user-friendly name of the Compute Engine instance.",
+															Immutable:   true,
+														},
+														"publicEciesKey": &dcl.Property{
+															Type:        "string",
+															GoName:      "PublicEciesKey",
+															Description: "The public ECIES key used for sharing data with this instance.",
+															Immutable:   true,
+														},
+														"publicKey": &dcl.Property{
+															Type:        "string",
+															GoName:      "PublicKey",
+															Description: "The public RSA key used for sharing data with this instance.",
+															Immutable:   true,
 														},
 													},
 												},
@@ -1292,6 +1569,339 @@ func DCLClusterSchema() *dcl.Schema {
 												"UNSPECIFIED",
 												"UNHEALTHY",
 												"STALE_STATUS",
+											},
+										},
+									},
+								},
+							},
+							"virtualClusterConfig": &dcl.Property{
+								Type:        "object",
+								GoName:      "VirtualClusterConfig",
+								GoType:      "ClusterVirtualClusterConfig",
+								Description: "Optional. The virtual cluster config is used when creating a Dataproc cluster that does not directly control the underlying compute resources, for example, when creating a [Dataproc-on-GKE cluster](https://cloud.google.com/dataproc/docs/guides/dpgke/dataproc-gke). Dataproc may set default values, and values may change when clusters are updated. Exactly one of config or virtual_cluster_config must be specified.",
+								Immutable:   true,
+								Required: []string{
+									"kubernetesClusterConfig",
+								},
+								Properties: map[string]*dcl.Property{
+									"auxiliaryServicesConfig": &dcl.Property{
+										Type:        "object",
+										GoName:      "AuxiliaryServicesConfig",
+										GoType:      "ClusterVirtualClusterConfigAuxiliaryServicesConfig",
+										Description: "Optional. Configuration of auxiliary services used by this cluster.",
+										Immutable:   true,
+										Properties: map[string]*dcl.Property{
+											"metastoreConfig": &dcl.Property{
+												Type:        "object",
+												GoName:      "MetastoreConfig",
+												GoType:      "ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig",
+												Description: "Optional. The Hive Metastore configuration for this workload.",
+												Immutable:   true,
+												Required: []string{
+													"dataprocMetastoreService",
+												},
+												Properties: map[string]*dcl.Property{
+													"dataprocMetastoreService": &dcl.Property{
+														Type:        "string",
+														GoName:      "DataprocMetastoreService",
+														Description: "Required. Resource name of an existing Dataproc Metastore service. Example: * `projects/[project_id]/locations/[dataproc_region]/services/[service-name]`",
+														Immutable:   true,
+														ResourceReferences: []*dcl.PropertyResourceReference{
+															&dcl.PropertyResourceReference{
+																Resource: "Metastore/Service",
+																Field:    "selfLink",
+															},
+														},
+													},
+												},
+											},
+											"sparkHistoryServerConfig": &dcl.Property{
+												Type:        "object",
+												GoName:      "SparkHistoryServerConfig",
+												GoType:      "ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig",
+												Description: "Optional. The Spark History Server configuration for the workload.",
+												Immutable:   true,
+												Properties: map[string]*dcl.Property{
+													"dataprocCluster": &dcl.Property{
+														Type:        "string",
+														GoName:      "DataprocCluster",
+														Description: "Optional. Resource name of an existing Dataproc Cluster to act as a Spark History Server for the workload. Example: * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`",
+														Immutable:   true,
+														ResourceReferences: []*dcl.PropertyResourceReference{
+															&dcl.PropertyResourceReference{
+																Resource: "Dataproc/Cluster",
+																Field:    "selfLink",
+															},
+														},
+													},
+												},
+											},
+										},
+									},
+									"kubernetesClusterConfig": &dcl.Property{
+										Type:        "object",
+										GoName:      "KubernetesClusterConfig",
+										GoType:      "ClusterVirtualClusterConfigKubernetesClusterConfig",
+										Description: "Required. The configuration for running the Dataproc cluster on Kubernetes.",
+										Immutable:   true,
+										Required: []string{
+											"gkeClusterConfig",
+										},
+										Properties: map[string]*dcl.Property{
+											"gkeClusterConfig": &dcl.Property{
+												Type:        "object",
+												GoName:      "GkeClusterConfig",
+												GoType:      "ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig",
+												Description: "Required. The configuration for running the Dataproc cluster on GKE.",
+												Immutable:   true,
+												Properties: map[string]*dcl.Property{
+													"gkeClusterTarget": &dcl.Property{
+														Type:        "string",
+														GoName:      "GkeClusterTarget",
+														Description: "Optional. A target GKE cluster to deploy to. It must be in the same project and region as the Dataproc cluster (the GKE cluster can be zonal or regional). Format: 'projects/{project}/locations/{location}/clusters/{cluster_id}'",
+														Immutable:   true,
+														ResourceReferences: []*dcl.PropertyResourceReference{
+															&dcl.PropertyResourceReference{
+																Resource: "Container/Cluster",
+																Field:    "selfLink",
+															},
+														},
+													},
+													"nodePoolTarget": &dcl.Property{
+														Type:        "array",
+														GoName:      "NodePoolTarget",
+														Description: "Optional. GKE node pools where workloads will be scheduled. At least one node pool must be assigned the `DEFAULT` GkeNodePoolTarget.Role. If a `GkeNodePoolTarget` is not specified, Dataproc constructs a `DEFAULT` `GkeNodePoolTarget`. Each role can be given to only one `GkeNodePoolTarget`. All node pools must have the same location settings.",
+														Immutable:   true,
+														SendEmpty:   true,
+														ListType:    "list",
+														Items: &dcl.Property{
+															Type:   "object",
+															GoType: "ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget",
+															Required: []string{
+																"nodePool",
+																"roles",
+															},
+															Properties: map[string]*dcl.Property{
+																"nodePool": &dcl.Property{
+																	Type:        "string",
+																	GoName:      "NodePool",
+																	Description: "Required. The target GKE node pool. Format: 'projects/{project}/locations/{location}/clusters/{cluster}/nodePools/{node_pool}'",
+																	Immutable:   true,
+																	ResourceReferences: []*dcl.PropertyResourceReference{
+																		&dcl.PropertyResourceReference{
+																			Resource: "Container/NodePool",
+																			Field:    "selfLink",
+																		},
+																	},
+																},
+																"nodePoolConfig": &dcl.Property{
+																	Type:        "object",
+																	GoName:      "NodePoolConfig",
+																	GoType:      "ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig",
+																	Description: "Input only. The configuration for the GKE node pool. If specified, Dataproc attempts to create a node pool with the specified shape. If one with the same name already exists, it is verified against all specified fields. If a field differs, the virtual cluster creation will fail. If omitted, any node pool with the specified name is used. If a node pool with the specified name does not exist, Dataproc create a node pool with default values. This is an input only field. It will not be returned by the API.",
+																	Immutable:   true,
+																	Unreadable:  true,
+																	Properties: map[string]*dcl.Property{
+																		"autoscaling": &dcl.Property{
+																			Type:        "object",
+																			GoName:      "Autoscaling",
+																			GoType:      "ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling",
+																			Description: "Optional. The autoscaler configuration for this node pool. The autoscaler is enabled only when a valid configuration is present.",
+																			Immutable:   true,
+																			Properties: map[string]*dcl.Property{
+																				"maxNodeCount": &dcl.Property{
+																					Type:        "integer",
+																					Format:      "int64",
+																					GoName:      "MaxNodeCount",
+																					Description: "The maximum number of nodes in the node pool. Must be >= min_node_count, and must be > 0. **Note:** Quota must be sufficient to scale up the cluster.",
+																					Immutable:   true,
+																				},
+																				"minNodeCount": &dcl.Property{
+																					Type:        "integer",
+																					Format:      "int64",
+																					GoName:      "MinNodeCount",
+																					Description: "The minimum number of nodes in the node pool. Must be >= 0 and <= max_node_count.",
+																					Immutable:   true,
+																				},
+																			},
+																		},
+																		"config": &dcl.Property{
+																			Type:        "object",
+																			GoName:      "Config",
+																			GoType:      "ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig",
+																			Description: "Optional. The node pool configuration.",
+																			Immutable:   true,
+																			Properties: map[string]*dcl.Property{
+																				"accelerators": &dcl.Property{
+																					Type:        "array",
+																					GoName:      "Accelerators",
+																					Description: "Optional. A list of [hardware accelerators](https://cloud.google.com/compute/docs/gpus) to attach to each node.",
+																					Immutable:   true,
+																					SendEmpty:   true,
+																					ListType:    "list",
+																					Items: &dcl.Property{
+																						Type:   "object",
+																						GoType: "ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators",
+																						Properties: map[string]*dcl.Property{
+																							"acceleratorCount": &dcl.Property{
+																								Type:        "integer",
+																								Format:      "int64",
+																								GoName:      "AcceleratorCount",
+																								Description: "The number of accelerator cards exposed to an instance.",
+																								Immutable:   true,
+																							},
+																							"acceleratorType": &dcl.Property{
+																								Type:        "string",
+																								GoName:      "AcceleratorType",
+																								Description: "The accelerator type resource namename (see GPUs on Compute Engine).",
+																								Immutable:   true,
+																							},
+																							"gpuPartitionSize": &dcl.Property{
+																								Type:        "string",
+																								GoName:      "GpuPartitionSize",
+																								Description: "Size of partitions to create on the GPU. Valid values are described in the NVIDIA [mig user guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).",
+																								Immutable:   true,
+																							},
+																						},
+																					},
+																				},
+																				"bootDiskKmsKey": &dcl.Property{
+																					Type:        "string",
+																					GoName:      "BootDiskKmsKey",
+																					Description: "Optional. The [Customer Managed Encryption Key (CMEK)] (https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek) used to encrypt the boot disk attached to each node in the node pool. Specify the key using the following format: `projects/KEY_PROJECT_ID/locations/LOCATION/keyRings/RING_NAME/cryptoKeys/KEY_NAME`.",
+																					Immutable:   true,
+																				},
+																				"ephemeralStorageConfig": &dcl.Property{
+																					Type:        "object",
+																					GoName:      "EphemeralStorageConfig",
+																					GoType:      "ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig",
+																					Description: "Optional. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk.",
+																					Immutable:   true,
+																					Properties: map[string]*dcl.Property{
+																						"localSsdCount": &dcl.Property{
+																							Type:        "integer",
+																							Format:      "int64",
+																							GoName:      "LocalSsdCount",
+																							Description: "Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD is 375 GB in size. If zero, it means to disable using local SSDs as ephemeral storage.",
+																							Immutable:   true,
+																						},
+																					},
+																				},
+																				"localSsdCount": &dcl.Property{
+																					Type:        "integer",
+																					Format:      "int64",
+																					GoName:      "LocalSsdCount",
+																					Description: "Optional. The number of local SSD disks to attach to the node, which is limited by the maximum number of disks allowable per zone (see [Adding Local SSDs](https://cloud.google.com/compute/docs/disks/local-ssd)).",
+																					Immutable:   true,
+																				},
+																				"machineType": &dcl.Property{
+																					Type:        "string",
+																					GoName:      "MachineType",
+																					Description: "Optional. The name of a Compute Engine [machine type](https://cloud.google.com/compute/docs/machine-types).",
+																					Immutable:   true,
+																				},
+																				"minCpuPlatform": &dcl.Property{
+																					Type:        "string",
+																					GoName:      "MinCpuPlatform",
+																					Description: "Optional. [Minimum CPU platform](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform) to be used by this instance. The instance may be scheduled on the specified or a newer CPU platform. Specify the friendly names of CPU platforms, such as \"Intel Haswell\"` or Intel Sandy Bridge\".",
+																					Immutable:   true,
+																				},
+																				"preemptible": &dcl.Property{
+																					Type:        "boolean",
+																					GoName:      "Preemptible",
+																					Description: "Optional. Whether the nodes are created as legacy [preemptible VM instances] (https://cloud.google.com/compute/docs/instances/preemptible). Also see Spot VMs, preemptible VM instances without a maximum lifetime. Legacy and Spot preemptible nodes cannot be used in a node pool with the `CONTROLLER` [role] (/dataproc/docs/reference/rest/v1/projects.regions.clusters#role) or in the DEFAULT node pool if the CONTROLLER role is not assigned (the DEFAULT node pool will assume the CONTROLLER role).",
+																					Immutable:   true,
+																				},
+																				"spot": &dcl.Property{
+																					Type:        "boolean",
+																					GoName:      "Spot",
+																					Description: "Optional. Whether the nodes are created as [Spot VM instances] (https://cloud.google.com/compute/docs/instances/spot). Spot VMs are the latest update to legacy preemptible VMs. Spot VMs do not have a maximum lifetime. Legacy and Spot preemptible nodes cannot be used in a node pool with the `CONTROLLER` [role](/dataproc/docs/reference/rest/v1/projects.regions.clusters#role) or in the DEFAULT node pool if the CONTROLLER role is not assigned (the DEFAULT node pool will assume the CONTROLLER role).",
+																					Immutable:   true,
+																				},
+																			},
+																		},
+																		"locations": &dcl.Property{
+																			Type:        "array",
+																			GoName:      "Locations",
+																			Description: "Optional. The list of Compute Engine [zones](https://cloud.google.com/compute/docs/zones#available) where node pool nodes associated with a Dataproc on GKE virtual cluster will be located. **Note:** All node pools associated with a virtual cluster must be located in the same region as the virtual cluster, and they must be located in the same zone within that region. If a location is not specified during node pool creation, Dataproc on GKE will choose the zone.",
+																			Immutable:   true,
+																			SendEmpty:   true,
+																			ListType:    "list",
+																			Items: &dcl.Property{
+																				Type:   "string",
+																				GoType: "string",
+																			},
+																		},
+																	},
+																},
+																"roles": &dcl.Property{
+																	Type:        "array",
+																	GoName:      "Roles",
+																	Description: "Required. The roles associated with the GKE node pool.",
+																	Immutable:   true,
+																	SendEmpty:   true,
+																	ListType:    "list",
+																	Items: &dcl.Property{
+																		Type:   "string",
+																		GoType: "ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum",
+																		Enum: []string{
+																			"ROLE_UNSPECIFIED",
+																			"DEFAULT",
+																			"CONTROLLER",
+																			"SPARK_DRIVER",
+																			"SPARK_EXECUTOR",
+																		},
+																	},
+																},
+															},
+														},
+													},
+												},
+											},
+											"kubernetesNamespace": &dcl.Property{
+												Type:        "string",
+												GoName:      "KubernetesNamespace",
+												Description: "Optional. A namespace within the Kubernetes cluster to deploy into. If this namespace does not exist, it is created. If it exists, Dataproc verifies that another Dataproc VirtualCluster is not installed into it. If not specified, the name of the Dataproc Cluster is used.",
+												Immutable:   true,
+											},
+											"kubernetesSoftwareConfig": &dcl.Property{
+												Type:        "object",
+												GoName:      "KubernetesSoftwareConfig",
+												GoType:      "ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig",
+												Description: "Optional. The software configuration for this Dataproc cluster running on Kubernetes.",
+												Immutable:   true,
+												Properties: map[string]*dcl.Property{
+													"componentVersion": &dcl.Property{
+														Type: "object",
+														AdditionalProperties: &dcl.Property{
+															Type: "string",
+														},
+														GoName:      "ComponentVersion",
+														Description: "The components that should be installed in this Dataproc cluster. The key must be a string from the KubernetesComponent enumeration. The value is the version of the software to be installed. At least one entry must be specified.",
+														Immutable:   true,
+													},
+													"properties": &dcl.Property{
+														Type: "object",
+														AdditionalProperties: &dcl.Property{
+															Type: "string",
+														},
+														GoName:      "Properties",
+														Description: "The properties to set on daemon config files. Property keys are specified in `prefix:property` format, for example `spark:spark.kubernetes.container.image`. The following are supported prefixes and their mappings: * spark: `spark-defaults.conf` For more information, see [Cluster properties](https://cloud.google.com/dataproc/docs/concepts/cluster-properties).",
+														Immutable:   true,
+													},
+												},
+											},
+										},
+									},
+									"stagingBucket": &dcl.Property{
+										Type:        "string",
+										GoName:      "StagingBucket",
+										Description: "Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see [Dataproc staging and temp buckets](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). **This field requires a Cloud Storage bucket name, not a `gs://...` URI to a Cloud Storage bucket.**",
+										Immutable:   true,
+										ResourceReferences: []*dcl.PropertyResourceReference{
+											&dcl.PropertyResourceReference{
+												Resource: "Storage/Bucket",
+												Field:    "name",
 											},
 										},
 									},

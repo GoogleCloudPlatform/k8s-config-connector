@@ -62,6 +62,7 @@ components:
     Cluster:
       title: Cluster
       x-dcl-id: projects/{{project}}/regions/{{location}}/clusters/{{name}}
+      x-dcl-uses-state-hint: true
       x-dcl-parent-container: project
       x-dcl-labels: labels
       x-dcl-has-create: true
@@ -86,8 +87,8 @@ components:
           type: object
           x-dcl-go-name: Config
           x-dcl-go-type: ClusterConfig
-          description: Required. The cluster config. Note that Dataproc may set default
-            values, and values may change when clusters are updated.
+          description: The cluster config. Note that Dataproc may set default values,
+            and values may change when clusters are updated.
           x-kubernetes-immutable: true
           properties:
             autoscalingConfig:
@@ -111,6 +112,73 @@ components:
                   x-dcl-references:
                   - resource: Dataproc/AutoscalingPolicy
                     field: name
+            dataprocMetricConfig:
+              type: object
+              x-dcl-go-name: DataprocMetricConfig
+              x-dcl-go-type: ClusterConfigDataprocMetricConfig
+              description: Optional. The config for Dataproc metrics.
+              x-kubernetes-immutable: true
+              required:
+              - metrics
+              properties:
+                metrics:
+                  type: array
+                  x-dcl-go-name: Metrics
+                  description: Required. Metrics sources to enable.
+                  x-kubernetes-immutable: true
+                  x-dcl-send-empty: true
+                  x-dcl-list-type: list
+                  items:
+                    type: object
+                    x-dcl-go-type: ClusterConfigDataprocMetricConfigMetrics
+                    required:
+                    - metricSource
+                    properties:
+                      metricOverrides:
+                        type: array
+                        x-dcl-go-name: MetricOverrides
+                        description: 'Optional. Specify one or more [available OSS
+                          metrics] (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics)
+                          to collect for the metric course (for the `SPARK` metric
+                          source, any [Spark metric] (https://spark.apache.org/docs/latest/monitoring.html#metrics)
+                          can be specified). Provide metrics in the following format:
+                          `METRIC_SOURCE:INSTANCE:GROUP:METRIC` Use camelcase as appropriate.
+                          Examples: ``` yarn:ResourceManager:QueueMetrics:AppsCompleted
+                          spark:driver:DAGScheduler:job.allJobs sparkHistoryServer:JVM:Memory:NonHeapMemoryUsage.committed
+                          hiveserver2:JVM:Memory:NonHeapMemoryUsage.used ``` Notes:
+                          * Only the specified overridden metrics will be collected
+                          for the metric source. For example, if one or more `spark:executive`
+                          metrics are listed as metric overrides, other `SPARK` metrics
+                          will not be collected. The collection of the default metrics
+                          for other OSS metric sources is unaffected. For example,
+                          if both `SPARK` andd `YARN` metric sources are enabled,
+                          and overrides are provided for Spark metrics only, all default
+                          YARN metrics will be collected.'
+                        x-kubernetes-immutable: true
+                        x-dcl-send-empty: true
+                        x-dcl-list-type: list
+                        items:
+                          type: string
+                          x-dcl-go-type: string
+                      metricSource:
+                        type: string
+                        x-dcl-go-name: MetricSource
+                        x-dcl-go-type: ClusterConfigDataprocMetricConfigMetricsMetricSourceEnum
+                        description: 'Required. Default metrics are collected unless
+                          `metricOverrides` are specified for the metric source (see
+                          [Available OSS metrics] (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics)
+                          for more information). Possible values: METRIC_SOURCE_UNSPECIFIED,
+                          MONITORING_AGENT_DEFAULTS, HDFS, SPARK, YARN, SPARK_HISTORY_SERVER,
+                          HIVESERVER2'
+                        x-kubernetes-immutable: true
+                        enum:
+                        - METRIC_SOURCE_UNSPECIFIED
+                        - MONITORING_AGENT_DEFAULTS
+                        - HDFS
+                        - SPARK
+                        - YARN
+                        - SPARK_HISTORY_SERVER
+                        - HIVESERVER2
             encryptionConfig:
               type: object
               x-dcl-go-name: EncryptionConfig
@@ -159,6 +227,20 @@ components:
               x-kubernetes-immutable: true
               x-dcl-server-default: true
               properties:
+                confidentialInstanceConfig:
+                  type: object
+                  x-dcl-go-name: ConfidentialInstanceConfig
+                  x-dcl-go-type: ClusterConfigGceClusterConfigConfidentialInstanceConfig
+                  description: Optional. Confidential Instance Config for clusters
+                    using [Confidential VMs](https://cloud.google.com/compute/confidential-vm/docs).
+                  x-kubernetes-immutable: true
+                  properties:
+                    enableConfidentialCompute:
+                      type: boolean
+                      x-dcl-go-name: EnableConfidentialCompute
+                      description: Optional. Defines whether the instance should have
+                        confidential compute enabled.
+                      x-kubernetes-immutable: true
                 internalIPOnly:
                   type: boolean
                   x-dcl-go-name: InternalIPOnly
@@ -298,6 +380,32 @@ components:
                   items:
                     type: string
                     x-dcl-go-type: string
+                shieldedInstanceConfig:
+                  type: object
+                  x-dcl-go-name: ShieldedInstanceConfig
+                  x-dcl-go-type: ClusterConfigGceClusterConfigShieldedInstanceConfig
+                  description: Optional. Shielded Instance Config for clusters using
+                    [Compute Engine Shielded VMs](https://cloud.google.com/security/shielded-cloud/shielded-vm).
+                  x-kubernetes-immutable: true
+                  properties:
+                    enableIntegrityMonitoring:
+                      type: boolean
+                      x-dcl-go-name: EnableIntegrityMonitoring
+                      description: Optional. Defines whether instances have integrity
+                        monitoring enabled.
+                      x-kubernetes-immutable: true
+                    enableSecureBoot:
+                      type: boolean
+                      x-dcl-go-name: EnableSecureBoot
+                      description: Optional. Defines whether instances have Secure
+                        Boot enabled.
+                      x-kubernetes-immutable: true
+                    enableVtpm:
+                      type: boolean
+                      x-dcl-go-name: EnableVtpm
+                      description: Optional. Defines whether instances have the vTPM
+                        enabled.
+                      x-kubernetes-immutable: true
                 subnetwork:
                   type: string
                   x-dcl-go-name: Subnetwork
@@ -472,6 +580,13 @@ components:
                         or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk
                         types](https://cloud.google.com/compute/docs/disks#disk-types).'
                       x-kubernetes-immutable: true
+                    localSsdInterface:
+                      type: string
+                      x-dcl-go-name: LocalSsdInterface
+                      description: 'Optional. Interface type of local SSDs (default
+                        is "scsi"). Valid values: "scsi" (Small Computer System Interface),
+                        "nvme" (Non-Volatile Memory Express). See [local SSD performance](https://cloud.google.com/compute/docs/disks/local-ssd#performance).'
+                      x-kubernetes-immutable: true
                     numLocalSsds:
                       type: integer
                       format: int64
@@ -516,6 +631,40 @@ components:
                     x-dcl-references:
                     - resource: Compute/Instance
                       field: selfLink
+                instanceReferences:
+                  type: array
+                  x-dcl-go-name: InstanceReferences
+                  readOnly: true
+                  description: Output only. List of references to Compute Engine instances.
+                  x-kubernetes-immutable: true
+                  x-dcl-list-type: list
+                  items:
+                    type: object
+                    x-dcl-go-type: ClusterConfigMasterConfigInstanceReferences
+                    properties:
+                      instanceId:
+                        type: string
+                        x-dcl-go-name: InstanceId
+                        description: The unique identifier of the Compute Engine instance.
+                        x-kubernetes-immutable: true
+                      instanceName:
+                        type: string
+                        x-dcl-go-name: InstanceName
+                        description: The user-friendly name of the Compute Engine
+                          instance.
+                        x-kubernetes-immutable: true
+                      publicEciesKey:
+                        type: string
+                        x-dcl-go-name: PublicEciesKey
+                        description: The public ECIES key used for sharing data with
+                          this instance.
+                        x-kubernetes-immutable: true
+                      publicKey:
+                        type: string
+                        x-dcl-go-name: PublicKey
+                        description: The public RSA key used for sharing data with
+                          this instance.
+                        x-kubernetes-immutable: true
                 isPreemptible:
                   type: boolean
                   x-dcl-go-name: IsPreemptible
@@ -591,6 +740,24 @@ components:
                   - PREEMPTIBILITY_UNSPECIFIED
                   - NON_PREEMPTIBLE
                   - PREEMPTIBLE
+            metastoreConfig:
+              type: object
+              x-dcl-go-name: MetastoreConfig
+              x-dcl-go-type: ClusterConfigMetastoreConfig
+              description: Optional. Metastore configuration.
+              x-kubernetes-immutable: true
+              required:
+              - dataprocMetastoreService
+              properties:
+                dataprocMetastoreService:
+                  type: string
+                  x-dcl-go-name: DataprocMetastoreService
+                  description: 'Required. Resource name of an existing Dataproc Metastore
+                    service. Example: * `projects/[project_id]/locations/[dataproc_region]/services/[service-name]`'
+                  x-kubernetes-immutable: true
+                  x-dcl-references:
+                  - resource: Metastore/Service
+                    field: selfLink
             secondaryWorkerConfig:
               type: object
               x-dcl-go-name: SecondaryWorkerConfig
@@ -657,6 +824,13 @@ components:
                         or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk
                         types](https://cloud.google.com/compute/docs/disks#disk-types).'
                       x-kubernetes-immutable: true
+                    localSsdInterface:
+                      type: string
+                      x-dcl-go-name: LocalSsdInterface
+                      description: 'Optional. Interface type of local SSDs (default
+                        is "scsi"). Valid values: "scsi" (Small Computer System Interface),
+                        "nvme" (Non-Volatile Memory Express). See [local SSD performance](https://cloud.google.com/compute/docs/disks/local-ssd#performance).'
+                      x-kubernetes-immutable: true
                     numLocalSsds:
                       type: integer
                       format: int64
@@ -701,6 +875,40 @@ components:
                     x-dcl-references:
                     - resource: Compute/Instance
                       field: selfLink
+                instanceReferences:
+                  type: array
+                  x-dcl-go-name: InstanceReferences
+                  readOnly: true
+                  description: Output only. List of references to Compute Engine instances.
+                  x-kubernetes-immutable: true
+                  x-dcl-list-type: list
+                  items:
+                    type: object
+                    x-dcl-go-type: ClusterConfigSecondaryWorkerConfigInstanceReferences
+                    properties:
+                      instanceId:
+                        type: string
+                        x-dcl-go-name: InstanceId
+                        description: The unique identifier of the Compute Engine instance.
+                        x-kubernetes-immutable: true
+                      instanceName:
+                        type: string
+                        x-dcl-go-name: InstanceName
+                        description: The user-friendly name of the Compute Engine
+                          instance.
+                        x-kubernetes-immutable: true
+                      publicEciesKey:
+                        type: string
+                        x-dcl-go-name: PublicEciesKey
+                        description: The public ECIES key used for sharing data with
+                          this instance.
+                        x-kubernetes-immutable: true
+                      publicKey:
+                        type: string
+                        x-dcl-go-name: PublicKey
+                        description: The public RSA key used for sharing data with
+                          this instance.
+                        x-kubernetes-immutable: true
                 isPreemptible:
                   type: boolean
                   x-dcl-go-name: IsPreemptible
@@ -783,6 +991,23 @@ components:
               description: Optional. Security settings for the cluster.
               x-kubernetes-immutable: true
               properties:
+                identityConfig:
+                  type: object
+                  x-dcl-go-name: IdentityConfig
+                  x-dcl-go-type: ClusterConfigSecurityConfigIdentityConfig
+                  description: Optional. Identity related configuration, including
+                    service account based secure multi-tenancy user mappings.
+                  x-kubernetes-immutable: true
+                  required:
+                  - userServiceAccountMapping
+                  properties:
+                    userServiceAccountMapping:
+                      type: object
+                      additionalProperties:
+                        type: string
+                      x-dcl-go-name: UserServiceAccountMapping
+                      description: Required. Map of user to service account.
+                      x-kubernetes-immutable: true
                 kerberosConfig:
                   type: object
                   x-dcl-go-name: KerberosConfig
@@ -1054,6 +1279,13 @@ components:
                         or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk
                         types](https://cloud.google.com/compute/docs/disks#disk-types).'
                       x-kubernetes-immutable: true
+                    localSsdInterface:
+                      type: string
+                      x-dcl-go-name: LocalSsdInterface
+                      description: 'Optional. Interface type of local SSDs (default
+                        is "scsi"). Valid values: "scsi" (Small Computer System Interface),
+                        "nvme" (Non-Volatile Memory Express). See [local SSD performance](https://cloud.google.com/compute/docs/disks/local-ssd#performance).'
+                      x-kubernetes-immutable: true
                     numLocalSsds:
                       type: integer
                       format: int64
@@ -1098,6 +1330,40 @@ components:
                     x-dcl-references:
                     - resource: Compute/Instance
                       field: selfLink
+                instanceReferences:
+                  type: array
+                  x-dcl-go-name: InstanceReferences
+                  readOnly: true
+                  description: Output only. List of references to Compute Engine instances.
+                  x-kubernetes-immutable: true
+                  x-dcl-list-type: list
+                  items:
+                    type: object
+                    x-dcl-go-type: ClusterConfigWorkerConfigInstanceReferences
+                    properties:
+                      instanceId:
+                        type: string
+                        x-dcl-go-name: InstanceId
+                        description: The unique identifier of the Compute Engine instance.
+                        x-kubernetes-immutable: true
+                      instanceName:
+                        type: string
+                        x-dcl-go-name: InstanceName
+                        description: The user-friendly name of the Compute Engine
+                          instance.
+                        x-kubernetes-immutable: true
+                      publicEciesKey:
+                        type: string
+                        x-dcl-go-name: PublicEciesKey
+                        description: The public ECIES key used for sharing data with
+                          this instance.
+                        x-kubernetes-immutable: true
+                      publicKey:
+                        type: string
+                        x-dcl-go-name: PublicKey
+                        description: The public RSA key used for sharing data with
+                          this instance.
+                        x-kubernetes-immutable: true
                 isPreemptible:
                   type: boolean
                   x-dcl-go-name: IsPreemptible
@@ -1338,3 +1604,367 @@ components:
                 - UNSPECIFIED
                 - UNHEALTHY
                 - STALE_STATUS
+        virtualClusterConfig:
+          type: object
+          x-dcl-go-name: VirtualClusterConfig
+          x-dcl-go-type: ClusterVirtualClusterConfig
+          description: Optional. The virtual cluster config is used when creating
+            a Dataproc cluster that does not directly control the underlying compute
+            resources, for example, when creating a [Dataproc-on-GKE cluster](https://cloud.google.com/dataproc/docs/guides/dpgke/dataproc-gke).
+            Dataproc may set default values, and values may change when clusters are
+            updated. Exactly one of config or virtual_cluster_config must be specified.
+          x-kubernetes-immutable: true
+          required:
+          - kubernetesClusterConfig
+          properties:
+            auxiliaryServicesConfig:
+              type: object
+              x-dcl-go-name: AuxiliaryServicesConfig
+              x-dcl-go-type: ClusterVirtualClusterConfigAuxiliaryServicesConfig
+              description: Optional. Configuration of auxiliary services used by this
+                cluster.
+              x-kubernetes-immutable: true
+              properties:
+                metastoreConfig:
+                  type: object
+                  x-dcl-go-name: MetastoreConfig
+                  x-dcl-go-type: ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig
+                  description: Optional. The Hive Metastore configuration for this
+                    workload.
+                  x-kubernetes-immutable: true
+                  required:
+                  - dataprocMetastoreService
+                  properties:
+                    dataprocMetastoreService:
+                      type: string
+                      x-dcl-go-name: DataprocMetastoreService
+                      description: 'Required. Resource name of an existing Dataproc
+                        Metastore service. Example: * `projects/[project_id]/locations/[dataproc_region]/services/[service-name]`'
+                      x-kubernetes-immutable: true
+                      x-dcl-references:
+                      - resource: Metastore/Service
+                        field: selfLink
+                sparkHistoryServerConfig:
+                  type: object
+                  x-dcl-go-name: SparkHistoryServerConfig
+                  x-dcl-go-type: ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig
+                  description: Optional. The Spark History Server configuration for
+                    the workload.
+                  x-kubernetes-immutable: true
+                  properties:
+                    dataprocCluster:
+                      type: string
+                      x-dcl-go-name: DataprocCluster
+                      description: 'Optional. Resource name of an existing Dataproc
+                        Cluster to act as a Spark History Server for the workload.
+                        Example: * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`'
+                      x-kubernetes-immutable: true
+                      x-dcl-references:
+                      - resource: Dataproc/Cluster
+                        field: selfLink
+            kubernetesClusterConfig:
+              type: object
+              x-dcl-go-name: KubernetesClusterConfig
+              x-dcl-go-type: ClusterVirtualClusterConfigKubernetesClusterConfig
+              description: Required. The configuration for running the Dataproc cluster
+                on Kubernetes.
+              x-kubernetes-immutable: true
+              required:
+              - gkeClusterConfig
+              properties:
+                gkeClusterConfig:
+                  type: object
+                  x-dcl-go-name: GkeClusterConfig
+                  x-dcl-go-type: ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig
+                  description: Required. The configuration for running the Dataproc
+                    cluster on GKE.
+                  x-kubernetes-immutable: true
+                  properties:
+                    gkeClusterTarget:
+                      type: string
+                      x-dcl-go-name: GkeClusterTarget
+                      description: 'Optional. A target GKE cluster to deploy to. It
+                        must be in the same project and region as the Dataproc cluster
+                        (the GKE cluster can be zonal or regional). Format: ''projects/{project}/locations/{location}/clusters/{cluster_id}'''
+                      x-kubernetes-immutable: true
+                      x-dcl-references:
+                      - resource: Container/Cluster
+                        field: selfLink
+                    nodePoolTarget:
+                      type: array
+                      x-dcl-go-name: NodePoolTarget
+                      description: Optional. GKE node pools where workloads will be
+                        scheduled. At least one node pool must be assigned the `DEFAULT`
+                        GkeNodePoolTarget.Role. If a `GkeNodePoolTarget` is not specified,
+                        Dataproc constructs a `DEFAULT` `GkeNodePoolTarget`. Each
+                        role can be given to only one `GkeNodePoolTarget`. All node
+                        pools must have the same location settings.
+                      x-kubernetes-immutable: true
+                      x-dcl-send-empty: true
+                      x-dcl-list-type: list
+                      items:
+                        type: object
+                        x-dcl-go-type: ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget
+                        required:
+                        - nodePool
+                        - roles
+                        properties:
+                          nodePool:
+                            type: string
+                            x-dcl-go-name: NodePool
+                            description: 'Required. The target GKE node pool. Format:
+                              ''projects/{project}/locations/{location}/clusters/{cluster}/nodePools/{node_pool}'''
+                            x-kubernetes-immutable: true
+                            x-dcl-references:
+                            - resource: Container/NodePool
+                              field: selfLink
+                          nodePoolConfig:
+                            type: object
+                            x-dcl-go-name: NodePoolConfig
+                            x-dcl-go-type: ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig
+                            description: Input only. The configuration for the GKE
+                              node pool. If specified, Dataproc attempts to create
+                              a node pool with the specified shape. If one with the
+                              same name already exists, it is verified against all
+                              specified fields. If a field differs, the virtual cluster
+                              creation will fail. If omitted, any node pool with the
+                              specified name is used. If a node pool with the specified
+                              name does not exist, Dataproc create a node pool with
+                              default values. This is an input only field. It will
+                              not be returned by the API.
+                            x-kubernetes-immutable: true
+                            x-dcl-mutable-unreadable: true
+                            properties:
+                              autoscaling:
+                                type: object
+                                x-dcl-go-name: Autoscaling
+                                x-dcl-go-type: ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling
+                                description: Optional. The autoscaler configuration
+                                  for this node pool. The autoscaler is enabled only
+                                  when a valid configuration is present.
+                                x-kubernetes-immutable: true
+                                properties:
+                                  maxNodeCount:
+                                    type: integer
+                                    format: int64
+                                    x-dcl-go-name: MaxNodeCount
+                                    description: The maximum number of nodes in the
+                                      node pool. Must be >= min_node_count, and must
+                                      be > 0. **Note:** Quota must be sufficient to
+                                      scale up the cluster.
+                                    x-kubernetes-immutable: true
+                                  minNodeCount:
+                                    type: integer
+                                    format: int64
+                                    x-dcl-go-name: MinNodeCount
+                                    description: The minimum number of nodes in the
+                                      node pool. Must be >= 0 and <= max_node_count.
+                                    x-kubernetes-immutable: true
+                              config:
+                                type: object
+                                x-dcl-go-name: Config
+                                x-dcl-go-type: ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig
+                                description: Optional. The node pool configuration.
+                                x-kubernetes-immutable: true
+                                properties:
+                                  accelerators:
+                                    type: array
+                                    x-dcl-go-name: Accelerators
+                                    description: Optional. A list of [hardware accelerators](https://cloud.google.com/compute/docs/gpus)
+                                      to attach to each node.
+                                    x-kubernetes-immutable: true
+                                    x-dcl-send-empty: true
+                                    x-dcl-list-type: list
+                                    items:
+                                      type: object
+                                      x-dcl-go-type: ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators
+                                      properties:
+                                        acceleratorCount:
+                                          type: integer
+                                          format: int64
+                                          x-dcl-go-name: AcceleratorCount
+                                          description: The number of accelerator cards
+                                            exposed to an instance.
+                                          x-kubernetes-immutable: true
+                                        acceleratorType:
+                                          type: string
+                                          x-dcl-go-name: AcceleratorType
+                                          description: The accelerator type resource
+                                            namename (see GPUs on Compute Engine).
+                                          x-kubernetes-immutable: true
+                                        gpuPartitionSize:
+                                          type: string
+                                          x-dcl-go-name: GpuPartitionSize
+                                          description: Size of partitions to create
+                                            on the GPU. Valid values are described
+                                            in the NVIDIA [mig user guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).
+                                          x-kubernetes-immutable: true
+                                  bootDiskKmsKey:
+                                    type: string
+                                    x-dcl-go-name: BootDiskKmsKey
+                                    description: 'Optional. The [Customer Managed
+                                      Encryption Key (CMEK)] (https://cloud.google.com/kubernetes-engine/docs/how-to/using-cmek)
+                                      used to encrypt the boot disk attached to each
+                                      node in the node pool. Specify the key using
+                                      the following format: `projects/KEY_PROJECT_ID/locations/LOCATION/keyRings/RING_NAME/cryptoKeys/KEY_NAME`.'
+                                    x-kubernetes-immutable: true
+                                  ephemeralStorageConfig:
+                                    type: object
+                                    x-dcl-go-name: EphemeralStorageConfig
+                                    x-dcl-go-type: ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig
+                                    description: Optional. Parameters for the ephemeral
+                                      storage filesystem. If unspecified, ephemeral
+                                      storage is backed by the boot disk.
+                                    x-kubernetes-immutable: true
+                                    properties:
+                                      localSsdCount:
+                                        type: integer
+                                        format: int64
+                                        x-dcl-go-name: LocalSsdCount
+                                        description: Number of local SSDs to use to
+                                          back ephemeral storage. Uses NVMe interfaces.
+                                          Each local SSD is 375 GB in size. If zero,
+                                          it means to disable using local SSDs as
+                                          ephemeral storage.
+                                        x-kubernetes-immutable: true
+                                  localSsdCount:
+                                    type: integer
+                                    format: int64
+                                    x-dcl-go-name: LocalSsdCount
+                                    description: Optional. The number of local SSD
+                                      disks to attach to the node, which is limited
+                                      by the maximum number of disks allowable per
+                                      zone (see [Adding Local SSDs](https://cloud.google.com/compute/docs/disks/local-ssd)).
+                                    x-kubernetes-immutable: true
+                                  machineType:
+                                    type: string
+                                    x-dcl-go-name: MachineType
+                                    description: Optional. The name of a Compute Engine
+                                      [machine type](https://cloud.google.com/compute/docs/machine-types).
+                                    x-kubernetes-immutable: true
+                                  minCpuPlatform:
+                                    type: string
+                                    x-dcl-go-name: MinCpuPlatform
+                                    description: Optional. [Minimum CPU platform](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform)
+                                      to be used by this instance. The instance may
+                                      be scheduled on the specified or a newer CPU
+                                      platform. Specify the friendly names of CPU
+                                      platforms, such as "Intel Haswell"` or Intel
+                                      Sandy Bridge".
+                                    x-kubernetes-immutable: true
+                                  preemptible:
+                                    type: boolean
+                                    x-dcl-go-name: Preemptible
+                                    description: Optional. Whether the nodes are created
+                                      as legacy [preemptible VM instances] (https://cloud.google.com/compute/docs/instances/preemptible).
+                                      Also see Spot VMs, preemptible VM instances
+                                      without a maximum lifetime. Legacy and Spot
+                                      preemptible nodes cannot be used in a node pool
+                                      with the `CONTROLLER` [role] (/dataproc/docs/reference/rest/v1/projects.regions.clusters#role)
+                                      or in the DEFAULT node pool if the CONTROLLER
+                                      role is not assigned (the DEFAULT node pool
+                                      will assume the CONTROLLER role).
+                                    x-kubernetes-immutable: true
+                                  spot:
+                                    type: boolean
+                                    x-dcl-go-name: Spot
+                                    description: Optional. Whether the nodes are created
+                                      as [Spot VM instances] (https://cloud.google.com/compute/docs/instances/spot).
+                                      Spot VMs are the latest update to legacy preemptible
+                                      VMs. Spot VMs do not have a maximum lifetime.
+                                      Legacy and Spot preemptible nodes cannot be
+                                      used in a node pool with the `CONTROLLER` [role](/dataproc/docs/reference/rest/v1/projects.regions.clusters#role)
+                                      or in the DEFAULT node pool if the CONTROLLER
+                                      role is not assigned (the DEFAULT node pool
+                                      will assume the CONTROLLER role).
+                                    x-kubernetes-immutable: true
+                              locations:
+                                type: array
+                                x-dcl-go-name: Locations
+                                description: Optional. The list of Compute Engine
+                                  [zones](https://cloud.google.com/compute/docs/zones#available)
+                                  where node pool nodes associated with a Dataproc
+                                  on GKE virtual cluster will be located. **Note:**
+                                  All node pools associated with a virtual cluster
+                                  must be located in the same region as the virtual
+                                  cluster, and they must be located in the same zone
+                                  within that region. If a location is not specified
+                                  during node pool creation, Dataproc on GKE will
+                                  choose the zone.
+                                x-kubernetes-immutable: true
+                                x-dcl-send-empty: true
+                                x-dcl-list-type: list
+                                items:
+                                  type: string
+                                  x-dcl-go-type: string
+                          roles:
+                            type: array
+                            x-dcl-go-name: Roles
+                            description: Required. The roles associated with the GKE
+                              node pool.
+                            x-kubernetes-immutable: true
+                            x-dcl-send-empty: true
+                            x-dcl-list-type: list
+                            items:
+                              type: string
+                              x-dcl-go-type: ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetRolesEnum
+                              enum:
+                              - ROLE_UNSPECIFIED
+                              - DEFAULT
+                              - CONTROLLER
+                              - SPARK_DRIVER
+                              - SPARK_EXECUTOR
+                kubernetesNamespace:
+                  type: string
+                  x-dcl-go-name: KubernetesNamespace
+                  description: Optional. A namespace within the Kubernetes cluster
+                    to deploy into. If this namespace does not exist, it is created.
+                    If it exists, Dataproc verifies that another Dataproc VirtualCluster
+                    is not installed into it. If not specified, the name of the Dataproc
+                    Cluster is used.
+                  x-kubernetes-immutable: true
+                kubernetesSoftwareConfig:
+                  type: object
+                  x-dcl-go-name: KubernetesSoftwareConfig
+                  x-dcl-go-type: ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig
+                  description: Optional. The software configuration for this Dataproc
+                    cluster running on Kubernetes.
+                  x-kubernetes-immutable: true
+                  properties:
+                    componentVersion:
+                      type: object
+                      additionalProperties:
+                        type: string
+                      x-dcl-go-name: ComponentVersion
+                      description: The components that should be installed in this
+                        Dataproc cluster. The key must be a string from the KubernetesComponent
+                        enumeration. The value is the version of the software to be
+                        installed. At least one entry must be specified.
+                      x-kubernetes-immutable: true
+                    properties:
+                      type: object
+                      additionalProperties:
+                        type: string
+                      x-dcl-go-name: Properties
+                      description: 'The properties to set on daemon config files.
+                        Property keys are specified in `prefix:property` format, for
+                        example `spark:spark.kubernetes.container.image`. The following
+                        are supported prefixes and their mappings: * spark: `spark-defaults.conf`
+                        For more information, see [Cluster properties](https://cloud.google.com/dataproc/docs/concepts/cluster-properties).'
+                      x-kubernetes-immutable: true
+            stagingBucket:
+              type: string
+              x-dcl-go-name: StagingBucket
+              description: Optional. A Cloud Storage bucket used to stage job dependencies,
+                config files, and job driver console output. If you do not specify
+                a staging bucket, Cloud Dataproc will determine a Cloud Storage location
+                (US, ASIA, or EU) for your cluster's staging bucket according to the
+                Compute Engine zone where your cluster is deployed, and then create
+                and manage this project-level, per-location bucket (see [Dataproc
+                staging and temp buckets](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)).
+                **This field requires a Cloud Storage bucket name, not a `gs://...`
+                URI to a Cloud Storage bucket.**
+              x-kubernetes-immutable: true
+              x-dcl-references:
+              - resource: Storage/Bucket
+                field: name
