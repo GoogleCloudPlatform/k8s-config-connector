@@ -22,8 +22,23 @@ spec:
   columnFamily: family1
   instanceRef:
     name: bigtablegcpolicy-dep
-  mode: INTERSECTION
-  maxAge:
-  - duration: "24h"
-  maxVersion:
-  - number: 10
+  gcRules: >
+    {
+      "mode": "union",
+      "rules": [
+        {
+          "max_age": "15h"
+        },
+        {
+          "mode": "intersection",
+          "rules": [
+            {
+              "max_age": "2h"
+            },
+            {
+              "max_version": 2
+            }
+          ]
+        }
+      ]
+    }

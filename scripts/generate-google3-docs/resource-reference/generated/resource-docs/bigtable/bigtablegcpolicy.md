@@ -9,8 +9,8 @@
 
 This resource defines a Bigtable Garbage Collection (GC) policy.
 
-Warning: There is a known bug where <code>BigtableGCPolicy</code> is not able to detect
-and correct drift.
+Warning: We don't recommend using `maxAge`, `maxVersion` or `mode` for defining a
+<code>BigtableGCPolicy</code> as these fields have known drift detection issues.
 
 Warning: We don't recommend having multiple <code>BigtableGCPolicy</code>s for the same
 column family as it may result in unexpected behavior.
@@ -89,6 +89,7 @@ Instead, you must first un-replicate the instance by updating the instance to ha
 #### Schema
 ```yaml
 columnFamily: string
+gcRules: string
 instanceRef:
   external: string
   name: string
@@ -120,6 +121,16 @@ tableRef:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The name of the column family.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gcRules</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Serialized JSON string for garbage collection policy. Conflicts with "mode", "max_age" and "max_version".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -395,11 +406,26 @@ spec:
   columnFamily: family1
   instanceRef:
     name: bigtablegcpolicy-dep
-  mode: INTERSECTION
-  maxAge:
-  - duration: "24h"
-  maxVersion:
-  - number: 10
+  gcRules: >
+    {
+      "mode": "union",
+      "rules": [
+        {
+          "max_age": "15h"
+        },
+        {
+          "mode": "intersection",
+          "rules": [
+            {
+              "max_age": "2h"
+            },
+            {
+              "max_version": 2
+            }
+          ]
+        }
+      ]
+    }
 ---
 apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
 kind: BigtableInstance

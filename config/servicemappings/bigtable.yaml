@@ -70,11 +70,6 @@ spec:
           kind: BigtableInstance
           version: v1beta1
           group: bigtable.cnrm.cloud.google.com
-    ignoredFields:
-      # TODO(b/230626815): TF read does not return current value of field, so
-      # cannot be properly diff'd and drift corrected. Ignore for now until it
-      # supports proper reads.
-      - gc_rules
     containers:
       - type: project
         tfField: project

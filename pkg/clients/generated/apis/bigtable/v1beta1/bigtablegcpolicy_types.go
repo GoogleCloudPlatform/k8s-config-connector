@@ -54,6 +54,10 @@ type BigtableGCPolicySpec struct {
 	/* Immutable. The name of the column family. */
 	ColumnFamily string `json:"columnFamily"`
 
+	/* Serialized JSON string for garbage collection policy. Conflicts with "mode", "max_age" and "max_version". */
+	// +optional
+	GcRules *string `json:"gcRules,omitempty"`
+
 	/* The name of the Bigtable instance. */
 	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
 

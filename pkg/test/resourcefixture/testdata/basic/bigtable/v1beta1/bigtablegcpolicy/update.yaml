@@ -30,7 +30,15 @@ spec:
           "max_age": "15h"
         },
         {
-          "max_version": 2
+          "mode": "intersection",
+          "rules": [
+            {
+              "max_age": "2h"
+            },
+            {
+              "max_version": 2
+            }
+          ]
         }
       ]
     }

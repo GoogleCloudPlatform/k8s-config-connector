@@ -61,6 +61,10 @@ spec:
               columnFamily:
                 description: Immutable. The name of the column family.
                 type: string
+              gcRules:
+                description: Serialized JSON string for garbage collection policy.
+                  Conflicts with "mode", "max_age" and "max_version".
+                type: string
               instanceRef:
                 description: The name of the Bigtable instance.
                 oneOf:
