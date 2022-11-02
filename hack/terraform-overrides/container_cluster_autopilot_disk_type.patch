@@ -1,0 +1,12 @@
+diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
+index fdf6d84e4..b3afaa48f 100644
+--- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
++++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
+@@ -497,7 +497,6 @@ func resourceContainerCluster() *schema.Resource {
+ 									"disk_type": {
+ 										Type:         schema.TypeString,
+ 										Optional:     true,
+-										Default:      "pd-standard",
+ 										Description:  `Type of the disk attached to each node.`,
+ 										ValidateFunc: validation.StringInSlice([]string{"pd-standard", "pd-ssd", "pd-balanced"}, false),
+ 									},

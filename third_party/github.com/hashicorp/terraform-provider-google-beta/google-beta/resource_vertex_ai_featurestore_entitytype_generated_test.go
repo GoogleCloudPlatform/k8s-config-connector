@@ -35,7 +35,7 @@ func TestAccVertexAIFeaturestoreEntitytype_vertexAiFeaturestoreEntitytypeExample
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckVertexAIFeaturestoreEntitytypeDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -54,7 +54,6 @@ func TestAccVertexAIFeaturestoreEntitytype_vertexAiFeaturestoreEntitytypeExample
 func testAccVertexAIFeaturestoreEntitytype_vertexAiFeaturestoreEntitytypeExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_vertex_ai_featurestore" "featurestore" {
-  provider = google-beta
   name     = "terraform%{random_suffix}"
   labels = {
     foo = "bar"
@@ -69,8 +68,63 @@ resource "google_vertex_ai_featurestore" "featurestore" {
 }
 
 resource "google_vertex_ai_featurestore_entitytype" "entity" {
-  provider = google-beta
   name     = "terraform%{random_suffix}"
+  labels = {
+    foo = "bar"
+  }
+  featurestore = google_vertex_ai_featurestore.featurestore.id
+}
+`, context)
+}
+
+func TestAccVertexAIFeaturestoreEntitytype_vertexAiFeaturestoreEntitytypeWithBetaFieldsExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"org_id":          getTestOrgFromEnv(t),
+		"billing_account": getTestBillingAccountFromEnv(t),
+		"kms_key_name":    BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
+		"random_suffix":   randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProvidersOiCS,
+		CheckDestroy: testAccCheckVertexAIFeaturestoreEntitytypeDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccVertexAIFeaturestoreEntitytype_vertexAiFeaturestoreEntitytypeWithBetaFieldsExample(context),
+			},
+			{
+				ResourceName:            "google_vertex_ai_featurestore_entitytype.entity",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"name", "etag", "featurestore"},
+			},
+		},
+	})
+}
+
+func testAccVertexAIFeaturestoreEntitytype_vertexAiFeaturestoreEntitytypeWithBetaFieldsExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_vertex_ai_featurestore" "featurestore" {
+  provider = google-beta
+  name     = "terraform2%{random_suffix}"
+  labels = {
+    foo = "bar"
+  }
+  region   = "us-central1"
+  online_serving_config {
+    fixed_node_count = 2
+  }
+  encryption_spec {
+    kms_key_name = "%{kms_key_name}"
+  }
+}
+
+resource "google_vertex_ai_featurestore_entitytype" "entity" {
+  provider = google-beta
+  name     = "terraform2%{random_suffix}"
   labels = {
     foo = "bar"
   }

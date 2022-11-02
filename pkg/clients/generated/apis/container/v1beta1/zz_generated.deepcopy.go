@@ -124,6 +124,11 @@ func (in *ClusterAutoProvisioningDefaults) DeepCopyInto(out *ClusterAutoProvisio
 		*out = new(v1alpha1.ResourceRef)
 		**out = **in
 	}
+	if in.DiskSize != nil {
+		in, out := &in.DiskSize, &out.DiskSize
+		*out = new(int)
+		**out = **in
+	}
 	if in.ImageType != nil {
 		in, out := &in.ImageType, &out.ImageType
 		*out = new(string)

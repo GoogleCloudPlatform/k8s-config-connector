@@ -1,5 +1,5 @@
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
-index 71c274130..1176ea0eb 100755
+index 71c274130..1176ea0eb 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
 @@ -554,43 +554,11 @@ func resourceContainerCluster() *schema.Resource {
@@ -82,7 +82,7 @@ index 71c274130..1176ea0eb 100755
  	l := configured.([]interface{})
  	if len(l) == 0 || l[0] == nil {
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go
-index 148e24765..f12d1822e 100755
+index 148e24765..f12d1822e 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go
 @@ -2830,30 +2830,6 @@ func TestAccContainerCluster_withDNSConfig(t *testing.T) {

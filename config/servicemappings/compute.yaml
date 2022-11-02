@@ -312,6 +312,15 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: source_disk
+          key: sourceDiskRef
+          description: |-
+            The source disk used to create this disk.
+          gvk:
+            kind: ComputeDisk
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
       containers:
         - type: project
           tfField: project
@@ -1349,6 +1358,15 @@ spec:
             kind: KMSCryptoKey
             version: v1beta1
             group: kms.cnrm.cloud.google.com
+        - tfField: source_disk
+          key: sourceDiskRef
+          description: |-
+            The source disk used to create this disk.
+          gvk:
+            kind: ComputeDisk
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
       containers:
         - type: project
           tfField: project
@@ -1836,6 +1854,29 @@ spec:
           description: |-
             A list of IP resources to be drained. These IPs must be valid
             static external IPs that have been assigned to the NAT.
+          gvk:
+            kind: ComputeAddress
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: rules.action.source_nat_active_ips
+          key: sourceNatActiveIpsRefs
+          description: |-
+            A list of URLs of the IP resources used for this NAT rule. These IP
+            addresses must be valid static external IP addresses assigned to the
+            project. This field is used for public NAT.
+          gvk:
+            kind: ComputeAddress
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: rules.action.source_nat_drain_ips
+          key: sourceNatDrainIpsRefs
+          description: |-
+            A list of URLs of the IP resources to be drained. These IPs must be
+            valid static external IPs that have been assigned to the NAT. These
+            IPs should be used for updating/patching a NAT rule only. This field
+            is used for public NAT.
           gvk:
             kind: ComputeAddress
             version: v1beta1

@@ -27,14 +27,12 @@ func TestAccVertexAIFeaturestoreEntitytypeFeature_vertexAiFeaturestoreEntitytype
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":          getTestOrgFromEnv(t),
-		"billing_account": getTestBillingAccountFromEnv(t),
-		"random_suffix":   randString(t, 10),
+		"random_suffix": randString(t, 10),
 	}
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckVertexAIFeaturestoreEntitytypeFeatureDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -53,7 +51,6 @@ func TestAccVertexAIFeaturestoreEntitytypeFeature_vertexAiFeaturestoreEntitytype
 func testAccVertexAIFeaturestoreEntitytypeFeature_vertexAiFeaturestoreEntitytypeFeatureExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_vertex_ai_featurestore" "featurestore" {
-  provider = google-beta
   name     = "terraform%{random_suffix}"
   labels = {
     foo = "bar"
@@ -65,8 +62,67 @@ resource "google_vertex_ai_featurestore" "featurestore" {
 }
 
 resource "google_vertex_ai_featurestore_entitytype" "entity" {
-  provider = google-beta
   name     = "terraform%{random_suffix}"
+  labels = {
+    foo = "bar"
+  }
+  featurestore = google_vertex_ai_featurestore.featurestore.id
+}
+
+resource "google_vertex_ai_featurestore_entitytype_feature" "feature" {
+  name     = "terraform%{random_suffix}"
+  labels = {
+    foo = "bar"
+  }
+  entitytype = google_vertex_ai_featurestore_entitytype.entity.id
+
+  value_type = "INT64_ARRAY"
+}
+`, context)
+}
+
+func TestAccVertexAIFeaturestoreEntitytypeFeature_vertexAiFeaturestoreEntitytypeFeatureWithBetaFieldsExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProvidersOiCS,
+		CheckDestroy: testAccCheckVertexAIFeaturestoreEntitytypeFeatureDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccVertexAIFeaturestoreEntitytypeFeature_vertexAiFeaturestoreEntitytypeFeatureWithBetaFieldsExample(context),
+			},
+			{
+				ResourceName:            "google_vertex_ai_featurestore_entitytype_feature.feature",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"name", "etag", "entitytype"},
+			},
+		},
+	})
+}
+
+func testAccVertexAIFeaturestoreEntitytypeFeature_vertexAiFeaturestoreEntitytypeFeatureWithBetaFieldsExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_vertex_ai_featurestore" "featurestore" {
+  provider = google-beta
+  name     = "terraform2%{random_suffix}"
+  labels = {
+    foo = "bar"
+  }
+  region   = "us-central1"
+  online_serving_config {
+    fixed_node_count = 2
+  }
+}
+
+resource "google_vertex_ai_featurestore_entitytype" "entity" {
+  provider = google-beta
+  name     = "terraform2%{random_suffix}"
   labels = {
     foo = "bar"
   }
@@ -81,7 +137,7 @@ resource "google_vertex_ai_featurestore_entitytype" "entity" {
 
 resource "google_vertex_ai_featurestore_entitytype_feature" "feature" {
   provider = google-beta
-  name     = "terraform%{random_suffix}"
+  name     = "terraform2%{random_suffix}"
   labels = {
     foo = "bar"
   }

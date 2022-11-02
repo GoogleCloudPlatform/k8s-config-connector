@@ -22,10 +22,19 @@ spec:
     name: computerouter-${uniqueId}
   natIpAllocateOption: MANUAL_ONLY
   natIps:
-  - name: computeaddress-${uniqueId}
+  - name: computeaddress-1-${uniqueId}
   sourceSubnetworkIpRangesToNat: LIST_OF_SUBNETWORKS
   subnetwork:
   - subnetworkRef:
       name: computesubnetwork-${uniqueId}
     sourceIpRangesToNat:
     - ALL_IP_RANGES
+  rules:
+    - ruleNumber: 100
+      description: nat rule examples
+      match: "inIpRange(destination.ip, '1.1.0.0/16') || inIpRange(destination.ip, '2.2.0.0/16')"
+      action:
+        sourceNatActiveIpsRefs:
+          - name: computeaddress-2-${uniqueId}
+          - name: computeaddress-3-${uniqueId}
+  enableEndpointIndependentMapping: false

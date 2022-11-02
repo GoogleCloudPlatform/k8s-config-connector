@@ -799,6 +799,11 @@ func (in *TriggerStep) DeepCopyInto(out *TriggerStep) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.Script != nil {
+		in, out := &in.Script, &out.Script
+		*out = new(string)
+		**out = **in
+	}
 	if in.SecretEnv != nil {
 		in, out := &in.SecretEnv, &out.SecretEnv
 		*out = make([]string, len(*in))

@@ -47,7 +47,7 @@ type bb struct{}
 func (bb) Build(cc balancer.ClientConn, bOpts balancer.BuildOptions) balancer.Balancer {
 	b := &ringhashBalancer{
 		cc:       cc,
-		subConns: make(map[resolver.Address]*subConn),
+		subConns: resolver.NewAddressMap(),
 		scStates: make(map[balancer.SubConn]*subConn),
 		csEvltr:  &connectivityStateEvaluator{},
 	}
@@ -65,8 +65,10 @@ func (bb) ParseConfig(c json.RawMessage) (serviceconfig.LoadBalancingConfig, err
 }
 
 type subConn struct {
-	addr string
-	sc   balancer.SubConn
+	addr   string
+	weight uint32
+	sc     balancer.SubConn
+	logger *grpclog.PrefixLogger
 
 	mu sync.RWMutex
 	// This is the actual state of this SubConn (as updated by the ClientConn).
@@ -116,6 +118,7 @@ func (sc *subConn) setState(s connectivity.State) {
 		// Trigger Connect() if new state is Idle, and there is a queued connect.
 		if sc.connectQueued {
 			sc.connectQueued = false
+			sc.logger.Infof("Executing a queued connect for subConn moving to state: %v", sc.state)
 			sc.sc.Connect()
 		} else {
 			sc.attemptingToConnect = false
@@ -160,11 +163,13 @@ func (sc *subConn) queueConnect() {
 	defer sc.mu.Unlock()
 	sc.attemptingToConnect = true
 	if sc.state == connectivity.Idle {
+		sc.logger.Infof("Executing a queued connect for subConn in state: %v", sc.state)
 		sc.sc.Connect()
 		return
 	}
 	// Queue this connect, and when this SubConn switches back to Idle (happens
 	// after backoff in TransientFailure), it will Connect().
+	sc.logger.Infof("Queueing a connect for subConn in state: %v", sc.state)
 	sc.connectQueued = true
 }
 
@@ -178,9 +183,8 @@ type ringhashBalancer struct {
 	cc     balancer.ClientConn
 	logger *grpclog.PrefixLogger
 
-	config *LBConfig
-
-	subConns map[resolver.Address]*subConn // `attributes` is stripped from the keys of this map (the addresses)
+	config   *LBConfig
+	subConns *resolver.AddressMap // Map from resolver.Address to `*subConn`.
 	scStates map[balancer.SubConn]*subConn
 
 	// ring is always in sync with subConns. When subConns change, a new ring is
@@ -208,55 +212,48 @@ type ringhashBalancer struct {
 // SubConn states are Idle.
 func (b *ringhashBalancer) updateAddresses(addrs []resolver.Address) bool {
 	var addrsUpdated bool
-	// addrsSet is the set converted from addrs, it's used for quick lookup of
-	// an address.
-	//
-	// Addresses in this map all have attributes stripped, but metadata set to
-	// the weight. So that weight change can be detected.
-	//
-	// TODO: this won't be necessary if there are ways to compare address
-	// attributes.
-	addrsSet := make(map[resolver.Address]struct{})
-	for _, a := range addrs {
-		aNoAttrs := a
-		// Strip attributes but set Metadata to the weight.
-		aNoAttrs.Attributes = nil
-		w := weightedroundrobin.GetAddrInfo(a).Weight
-		if w == 0 {
-			// If weight is not set, use 1.
-			w = 1
-		}
-		aNoAttrs.Metadata = w
-		addrsSet[aNoAttrs] = struct{}{}
-		if scInfo, ok := b.subConns[aNoAttrs]; !ok {
-			// When creating SubConn, the original address with attributes is
-			// passed through. So that connection configurations in attributes
-			// (like creds) will be used.
-			sc, err := b.cc.NewSubConn([]resolver.Address{a}, balancer.NewSubConnOptions{HealthCheckEnabled: true})
+	// addrsSet is the set converted from addrs, used for quick lookup.
+	addrsSet := resolver.NewAddressMap()
+	for _, addr := range addrs {
+		addrsSet.Set(addr, true)
+		newWeight := getWeightAttribute(addr)
+		if val, ok := b.subConns.Get(addr); !ok {
+			sc, err := b.cc.NewSubConn([]resolver.Address{addr}, balancer.NewSubConnOptions{HealthCheckEnabled: true})
 			if err != nil {
-				logger.Warningf("base.baseBalancer: failed to create new SubConn: %v", err)
+				b.logger.Warningf("Failed to create new SubConn: %v", err)
 				continue
 			}
-			scs := &subConn{addr: a.Addr, sc: sc}
+			scs := &subConn{addr: addr.Addr, weight: newWeight, sc: sc}
+			scs.logger = subConnPrefixLogger(b, scs)
 			scs.setState(connectivity.Idle)
 			b.state = b.csEvltr.recordTransition(connectivity.Shutdown, connectivity.Idle)
-			b.subConns[aNoAttrs] = scs
+			b.subConns.Set(addr, scs)
 			b.scStates[sc] = scs
 			addrsUpdated = true
 		} else {
-			// Always update the subconn's address in case the attributes
-			// changed. The SubConn does a reflect.DeepEqual of the new and old
-			// addresses. So this is a noop if the current address is the same
-			// as the old one (including attributes).
-			b.subConns[aNoAttrs] = scInfo
-			b.cc.UpdateAddresses(scInfo.sc, []resolver.Address{a})
+			// We have seen this address before and created a subConn for it. If the
+			// weight associated with the address has changed, update the subConns map
+			// with the new weight. This will be used when a new ring is created.
+			//
+			// There is no need to call UpdateAddresses on the subConn at this point
+			// since *only* the weight attribute has changed, and that does not affect
+			// subConn uniqueness.
+			scInfo := val.(*subConn)
+			if oldWeight := scInfo.weight; oldWeight != newWeight {
+				scInfo.weight = newWeight
+				b.subConns.Set(addr, scInfo)
+				// Return true to force recreation of the ring.
+				addrsUpdated = true
+			}
 		}
 	}
-	for a, scInfo := range b.subConns {
-		// a was removed by resolver.
-		if _, ok := addrsSet[a]; !ok {
+	for _, addr := range b.subConns.Keys() {
+		// addr was removed by resolver.
+		if _, ok := addrsSet.Get(addr); !ok {
+			v, _ := b.subConns.Get(addr)
+			scInfo := v.(*subConn)
 			b.cc.RemoveSubConn(scInfo.sc)
-			delete(b.subConns, a)
+			b.subConns.Delete(addr)
 			addrsUpdated = true
 			// Keep the state of this sc in b.scStates until sc's state becomes Shutdown.
 			// The entry will be deleted in UpdateSubConnState.
@@ -267,29 +264,22 @@ func (b *ringhashBalancer) updateAddresses(addrs []resolver.Address) bool {
 
 func (b *ringhashBalancer) UpdateClientConnState(s balancer.ClientConnState) error {
 	b.logger.Infof("Received update from resolver, balancer config: %+v", pretty.ToJSON(s.BalancerConfig))
-	if b.config == nil {
-		newConfig, ok := s.BalancerConfig.(*LBConfig)
-		if !ok {
-			return fmt.Errorf("unexpected balancer config with type: %T", s.BalancerConfig)
-		}
-		b.config = newConfig
+	newConfig, ok := s.BalancerConfig.(*LBConfig)
+	if !ok {
+		return fmt.Errorf("unexpected balancer config with type: %T", s.BalancerConfig)
 	}
 
-	// Successful resolution; clear resolver error and ensure we return nil.
-	b.resolverErr = nil
-	if b.updateAddresses(s.ResolverState.Addresses) {
-		// If addresses were updated, no matter whether it resulted in SubConn
-		// creation/deletion, or just weight update, we will need to regenerate
-		// the ring.
-		var err error
-		b.ring, err = newRing(b.subConns, b.config.MinRingSize, b.config.MaxRingSize)
-		if err != nil {
-			b.ResolverError(fmt.Errorf("ringhash failed to make a new ring: %v", err))
-			return balancer.ErrBadResolverState
-		}
-		b.regeneratePicker()
-		b.cc.UpdateState(balancer.State{ConnectivityState: b.state, Picker: b.picker})
+	// If addresses were updated, whether it resulted in SubConn
+	// creation/deletion, or just weight update, we need to regenerate the ring
+	// and send a new picker.
+	regenerateRing := b.updateAddresses(s.ResolverState.Addresses)
+
+	// If the ring configuration has changed, we need to regenerate the ring and
+	// send a new picker.
+	if b.config == nil || b.config.MinRingSize != newConfig.MinRingSize || b.config.MaxRingSize != newConfig.MaxRingSize {
+		regenerateRing = true
 	}
+	b.config = newConfig
 
 	// If resolver state contains no addresses, return an error so ClientConn
 	// will trigger re-resolve. Also records this as an resolver error, so when
@@ -299,12 +289,23 @@ func (b *ringhashBalancer) UpdateClientConnState(s balancer.ClientConnState) err
 		b.ResolverError(errors.New("produced zero addresses"))
 		return balancer.ErrBadResolverState
 	}
+
+	if regenerateRing {
+		// Ring creation is guaranteed to not fail because we call newRing()
+		// with a non-empty subConns map.
+		b.ring = newRing(b.subConns, b.config.MinRingSize, b.config.MaxRingSize)
+		b.regeneratePicker()
+		b.cc.UpdateState(balancer.State{ConnectivityState: b.state, Picker: b.picker})
+	}
+
+	// Successful resolution; clear resolver error and return nil.
+	b.resolverErr = nil
 	return nil
 }
 
 func (b *ringhashBalancer) ResolverError(err error) {
 	b.resolverErr = err
-	if len(b.subConns) == 0 {
+	if b.subConns.Len() == 0 {
 		b.state = connectivity.TransientFailure
 	}
 
@@ -332,15 +333,18 @@ func (b *ringhashBalancer) ResolverError(err error) {
 //   for some RPCs.
 func (b *ringhashBalancer) UpdateSubConnState(sc balancer.SubConn, state balancer.SubConnState) {
 	s := state.ConnectivityState
-	b.logger.Infof("handle SubConn state change: %p, %v", sc, s)
+	if logger.V(2) {
+		b.logger.Infof("Handle SubConn state change: %p, %v", sc, s)
+	}
 	scs, ok := b.scStates[sc]
 	if !ok {
-		b.logger.Infof("got state changes for an unknown SubConn: %p, %v", sc, s)
+		b.logger.Infof("Received state change for an unknown SubConn: %p, %v", sc, s)
 		return
 	}
 	oldSCState := scs.effectiveState()
 	scs.setState(s)
 	newSCState := scs.effectiveState()
+	b.logger.Infof("SubConn's effective old state was: %v, new state is %v", oldSCState, newSCState)
 
 	var sendUpdate bool
 	oldBalancerState := b.state
@@ -357,15 +361,15 @@ func (b *ringhashBalancer) UpdateSubConnState(sc balancer.SubConn, state balance
 		// No need to send an update. No queued RPC can be unblocked. If the
 		// overall state changed because of this, sendUpdate is already true.
 	case connectivity.Ready:
-		// Resend the picker, there's no need to regenerate the picker because
-		// the ring didn't change.
+		// We need to regenerate the picker even if the ring has not changed
+		// because we could be moving from TRANSIENT_FAILURE to READY, in which
+		// case, we need to update the error picker returned earlier.
+		b.regeneratePicker()
 		sendUpdate = true
 	case connectivity.TransientFailure:
 		// Save error to be reported via picker.
 		b.connErr = state.ConnectionError
-		// Regenerate picker to update error message.
 		b.regeneratePicker()
-		sendUpdate = true
 	case connectivity.Shutdown:
 		// When an address was removed by resolver, b called RemoveSubConn but
 		// kept the sc's state in scStates. Remove state for this sc here.
@@ -373,6 +377,7 @@ func (b *ringhashBalancer) UpdateSubConnState(sc balancer.SubConn, state balance
 	}
 
 	if sendUpdate {
+		b.logger.Infof("Pushing new state %v and picker %p", b.state, b.picker)
 		b.cc.UpdateState(balancer.State{ConnectivityState: b.state, Picker: b.picker})
 	}
 
@@ -392,7 +397,8 @@ func (b *ringhashBalancer) UpdateSubConnState(sc balancer.SubConn, state balance
 		// attempting to connect, we need to trigger one. But since the deleted
 		// SubConn will eventually send a shutdown update, this code will run
 		// and trigger the next SubConn to connect.
-		for _, sc := range b.subConns {
+		for _, v := range b.subConns.Values() {
+			sc := v.(*subConn)
 			if sc.isAttemptingToConnect() {
 				return
 			}
@@ -402,7 +408,14 @@ func (b *ringhashBalancer) UpdateSubConnState(sc balancer.SubConn, state balance
 		sc := nextSkippingDuplicatesSubConn(b.ring, scs)
 		if sc != nil {
 			sc.queueConnect()
+			return
 		}
+		// This handles the edge case where we have a single subConn in the
+		// ring. nextSkippingDuplicatesSubCon() would have returned nil. We
+		// still need to ensure that some subConn is attempting to connect, in
+		// order to give the LB policy a chance to move out of
+		// TRANSIENT_FAILURE. Hence, we try connecting on the current subConn.
+		scs.queueConnect()
 	}
 }
 
@@ -429,6 +442,11 @@ func (b *ringhashBalancer) regeneratePicker() {
 }
 
 func (b *ringhashBalancer) Close() {}
+
+func (b *ringhashBalancer) ExitIdle() {
+	// ExitIdle implementation is a no-op because connections are either
+	// triggers from picks or from subConn state changes.
+}
 
 // connectivityStateEvaluator takes the connectivity states of multiple SubConns
 // and returns one aggregated connectivity state.
@@ -484,4 +502,19 @@ func (cse *connectivityStateEvaluator) recordTransition(oldState, newState conne
 		return connectivity.Idle
 	}
 	return connectivity.TransientFailure
+}
+
+// getWeightAttribute is a convenience function which returns the value of the
+// weight attribute stored in the BalancerAttributes field of addr, using the
+// weightedroundrobin package.
+//
+// When used in the xDS context, the weight attribute is guaranteed to be
+// non-zero. But, when used in a non-xDS context, the weight attribute could be
+// unset. A Default of 1 is used in the latter case.
+func getWeightAttribute(addr resolver.Address) uint32 {
+	w := weightedroundrobin.GetAddrInfo(addr).Weight
+	if w == 0 {
+		return 1
+	}
+	return w
 }

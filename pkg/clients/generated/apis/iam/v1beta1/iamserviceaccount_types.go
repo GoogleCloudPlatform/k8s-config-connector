@@ -59,6 +59,8 @@ type IAMServiceAccountStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The e-mail address of the service account. This value should be referenced from any google_iam_policy data sources that would grant the service account privileges. */
 	Email string `json:"email,omitempty"`
+	/* The Identity of the service account in the form 'serviceAccount:{email}'. This value is often used to refer to the service account in order to grant IAM permissions. */
+	Member string `json:"member,omitempty"`
 	/* The fully-qualified name of the service account. */
 	Name string `json:"name,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */

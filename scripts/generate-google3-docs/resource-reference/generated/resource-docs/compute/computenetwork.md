@@ -115,7 +115,8 @@ the user can explicitly connect subnetwork resources.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}If set to 'true', default routes ('0.0.0.0/0') will be deleted
+immediately after network creation. Defaults to 'false'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

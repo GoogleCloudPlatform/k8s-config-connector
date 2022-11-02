@@ -555,6 +555,15 @@ fractional digits, terminated by 's'. Example: "3.5s".`,
 				Optional:    true,
 				Description: `The signed CA certificate issued from the subordinated CA's CSR. This is needed when activating the subordiante CA with a third party issuer.`,
 			},
+			"skip_grace_period": {
+				Type:     schema.TypeBool,
+				Optional: true,
+				Description: `If this flag is set, the Certificate Authority will be deleted as soon as
+possible without a 30-day grace period where undeletion would have been
+allowed. If you proceed, there will be no way to recover this CA.
+Use with care. Defaults to 'false'.`,
+				Default: false,
+			},
 			"subordinate_config": {
 				Type:     schema.TypeList,
 				Optional: true,
@@ -673,10 +682,13 @@ fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045
 				Type:     schema.TypeBool,
 				Optional: true,
 				Default:  true,
+				Description: `Whether or not to allow Terraform to destroy the CertificateAuthority. Unless this field is set to false
+in Terraform state, a 'terraform destroy' or 'terraform apply' that would delete the instance will fail.`,
 			},
 			"desired_state": {
-				Type:     schema.TypeString,
-				Optional: true,
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: `Desired state of the CertificateAuthority. Set this field to 'STAGED' to create a 'STAGED' root CA.`,
 			},
 			"project": {
 				Type:     schema.TypeString,
@@ -1063,7 +1075,7 @@ func resourcePrivatecaCertificateAuthorityDelete(d *schema.ResourceData, meta in
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{PrivatecaBasePath}}projects/{{project}}/locations/{{location}}/caPools/{{pool}}/certificateAuthorities/{{certificate_authority_id}}?ignoreActiveCertificates={{ignore_active_certificates_on_deletion}}")
+	url, err := replaceVars(d, config, "{{PrivatecaBasePath}}projects/{{project}}/locations/{{location}}/caPools/{{pool}}/certificateAuthorities/{{certificate_authority_id}}?ignoreActiveCertificates={{ignore_active_certificates_on_deletion}}&skipGracePeriod={{skip_grace_period}}")
 	if err != nil {
 		return err
 	}

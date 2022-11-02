@@ -875,19 +875,24 @@ type Binding struct {
 	// `allUsers`: A special identifier that represents anyone who is on the
 	// internet; with or without a Google account. *
 	// `allAuthenticatedUsers`: A special identifier that represents anyone
-	// who is authenticated with a Google account or a service account. *
-	// `user:{emailid}`: An email address that represents a specific Google
-	// account. For example, `alice@example.com` . *
-	// `serviceAccount:{emailid}`: An email address that represents a
-	// service account. For example,
-	// `my-other-app@appspot.gserviceaccount.com`. * `group:{emailid}`: An
-	// email address that represents a Google group. For example,
-	// `admins@example.com`. * `deleted:user:{emailid}?uid={uniqueid}`: An
-	// email address (plus unique identifier) representing a user that has
-	// been recently deleted. For example,
-	// `alice@example.com?uid=123456789012345678901`. If the user is
-	// recovered, this value reverts to `user:{emailid}` and the recovered
-	// user retains the role in the binding. *
+	// who is authenticated with a Google account or a service account. Does
+	// not include identities that come from external identity providers
+	// (IdPs) through identity federation. * `user:{emailid}`: An email
+	// address that represents a specific Google account. For example,
+	// `alice@example.com` . * `serviceAccount:{emailid}`: An email address
+	// that represents a Google service account. For example,
+	// `my-other-app@appspot.gserviceaccount.com`. *
+	// `serviceAccount:{projectid}.svc.id.goog[{namespace}/{kubernetes-sa}]`:
+	//  An identifier for a Kubernetes service account
+	// (https://cloud.google.com/kubernetes-engine/docs/how-to/kubernetes-service-accounts).
+	// For example, `my-project.svc.id.goog[my-namespace/my-kubernetes-sa]`.
+	// * `group:{emailid}`: An email address that represents a Google group.
+	// For example, `admins@example.com`. *
+	// `deleted:user:{emailid}?uid={uniqueid}`: An email address (plus
+	// unique identifier) representing a user that has been recently
+	// deleted. For example, `alice@example.com?uid=123456789012345678901`.
+	// If the user is recovered, this value reverts to `user:{emailid}` and
+	// the recovered user retains the role in the binding. *
 	// `deleted:serviceAccount:{emailid}?uid={uniqueid}`: An email address
 	// (plus unique identifier) representing a service account that has been
 	// recently deleted. For example,
@@ -3722,11 +3727,11 @@ func (s *Policy) MarshalJSON() ([]byte, error) {
 // be used for quota checks at runtime. An example quota configuration
 // in yaml format: quota: limits: - name: apiWriteQpsPerProject metric:
 // library.googleapis.com/write_calls unit: "1/min/{project}" # rate
-// limit for consumer projects values: STANDARD: 10000 # The metric
-// rules bind all methods to the read_calls metric, # except for the
-// UpdateBook and DeleteBook methods. These two methods # are mapped to
-// the write_calls metric, with the UpdateBook method # consuming at
-// twice rate as the DeleteBook method. metric_rules: - selector: "*"
+// limit for consumer projects values: STANDARD: 10000 (The metric rules
+// bind all methods to the read_calls metric, except for the UpdateBook
+// and DeleteBook methods. These two methods are mapped to the
+// write_calls metric, with the UpdateBook method consuming at twice
+// rate as the DeleteBook method.) metric_rules: - selector: "*"
 // metric_costs: library.googleapis.com/read_calls: 1 - selector:
 // google.example.library.v1.LibraryService.UpdateBook metric_costs:
 // library.googleapis.com/write_calls: 2 - selector:
@@ -3737,10 +3742,10 @@ func (s *Policy) MarshalJSON() ([]byte, error) {
 // name: library.googleapis.com/write_calls display_name: Write requests
 // metric_kind: DELTA value_type: INT64
 type Quota struct {
-	// Limits: List of `QuotaLimit` definitions for the service.
+	// Limits: List of QuotaLimit definitions for the service.
 	Limits []*QuotaLimit `json:"limits,omitempty"`
 
-	// MetricRules: List of `MetricRule` definitions, each one mapping a
+	// MetricRules: List of MetricRule definitions, each one mapping a
 	// selected method to one or more metrics.
 	MetricRules []*MetricRule `json:"metricRules,omitempty"`
 

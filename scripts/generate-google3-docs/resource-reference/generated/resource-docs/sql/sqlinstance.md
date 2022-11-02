@@ -185,6 +185,7 @@ settings:
     retentionInterval: string
     uploadInterval: string
   tier: string
+  timeZone: string
 ```
 
 <table class="properties responsive">
@@ -1250,6 +1251,16 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The machine type to use. See tiers for more details and supported versions. Postgres supports only shared-core machine types, and custom machine types such as db-custom-2-13312. See the Custom Machine Type Documentation to learn about specifying custom machine types.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.timeZone</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. The timezone to be used by the database engine (supported only for SQL Server), in SQL Server timezone format.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

@@ -225,6 +225,11 @@ func init() {
 		SkipUpdate:   true,
 	}
 
+	resourceContextMap["computediskfromsourcedisk"] = ResourceContext{
+		ResourceKind: "ComputeDisk",
+		SkipUpdate:   true,
+	}
+
 	resourceContextMap["computesnapshot"] = ResourceContext{
 		ResourceKind: "ComputeSnapshot",
 		SkipUpdate:   true,

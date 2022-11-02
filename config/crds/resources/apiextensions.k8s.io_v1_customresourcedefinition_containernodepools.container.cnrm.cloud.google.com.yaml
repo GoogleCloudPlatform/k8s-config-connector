@@ -449,8 +449,7 @@ spec:
                       VM instances.
                     type: boolean
                   tags:
-                    description: Immutable. The list of instance tags applied to all
-                      nodes.
+                    description: The list of instance tags applied to all nodes.
                     items:
                       type: string
                     type: array

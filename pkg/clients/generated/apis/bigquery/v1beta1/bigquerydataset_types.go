@@ -183,6 +183,10 @@ type BigQueryDatasetSpec struct {
 	// +optional
 	Location *string `json:"location,omitempty"`
 
+	/* Defines the time travel window in hours. The value can be from 48 to 168 hours (2 to 7 days). */
+	// +optional
+	MaxTimeTravelHours *string `json:"maxTimeTravelHours,omitempty"`
+
 	/* The project that this resource belongs to. */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`

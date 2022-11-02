@@ -99,6 +99,19 @@ routerRef:
   external: string
   name: string
   namespace: string
+rules:
+- action:
+    sourceNatActiveIpsRefs:
+    - external: string
+      name: string
+      namespace: string
+    sourceNatDrainIpsRefs:
+    - external: string
+      name: string
+      namespace: string
+  description: string
+  match: string
+  ruleNumber: integer
 sourceSubnetworkIpRangesToNat: string
 subnetwork:
 - secondaryIpRangeNames:
@@ -380,6 +393,183 @@ Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible va
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}A list of rules associated with this NAT.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The action to be enforced for traffic that matches this rule.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatActiveIpsRefs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatActiveIpsRefs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A list of URLs of the IP resources used for this NAT rule. These IP
+addresses must be valid static external IP addresses assigned to the
+project. This field is used for public NAT.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatActiveIpsRefs[].external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeAddress` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatActiveIpsRefs[].name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatActiveIpsRefs[].namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatDrainIpsRefs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatDrainIpsRefs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A list of URLs of the IP resources to be drained. These IPs must be
+valid static external IPs that have been assigned to the NAT. These
+IPs should be used for updating/patching a NAT rule only. This field
+is used for public NAT.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatDrainIpsRefs[].external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeAddress` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatDrainIpsRefs[].name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].action.sourceNatDrainIpsRefs[].namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].description</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An optional description of this rule.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].match</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}CEL expression that specifies the match condition that egress traffic from a VM is evaluated against.
+If it evaluates to true, the corresponding action is enforced.
+
+The following examples are valid match expressions for public NAT:
+
+"inIpRange(destination.ip, '1.1.0.0/16') || inIpRange(destination.ip, '2.2.0.0/16')"
+
+"destination.ip == '1.1.0.1' || destination.ip == '8.8.8.8'"
+
+The following example is a valid match expression for private NAT:
+
+"nexthop.hub == 'https://networkconnectivity.googleapis.com/v1alpha1/projects/my-project/global/hub/hub-1'".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rules[].ruleNumber</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}An integer uniquely identifying a rule in the list.
+The rule number must be a positive value between 0 and 65000, and must be unique among rules within a NAT.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -796,6 +986,84 @@ spec:
   region: us-west1
   networkRef:
     name: computerouternat-dep-withmanualnatips
+```
+
+### Router Nat With Rules
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouterNAT
+metadata:
+  name: computerouternat-sample-withrules
+spec:
+  region: us-west1
+  routerRef:
+    name: computerouternat-dep-withrules
+  natIpAllocateOption: MANUAL_ONLY
+  natIps:
+  - name: computerouternat-dep1-withrules
+  sourceSubnetworkIpRangesToNat: ALL_SUBNETWORKS_ALL_IP_RANGES
+  rules:
+    - ruleNumber: 100
+      description: nat rule examples
+      match: "inIpRange(destination.ip, '1.1.0.0/16') || inIpRange(destination.ip, '2.2.0.0/16')"
+      action:
+        sourceNatActiveIpsRefs:
+          - name: computerouternat-dep2-withrules
+          - name: computerouternat-dep3-withrules
+  enableEndpointIndependentMapping: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computerouternat-dep1-withrules
+spec:
+  location: us-west1
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computerouternat-dep2-withrules
+spec:
+  location: us-west1
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computerouternat-dep3-withrules
+spec:
+  location: us-west1
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computerouternat-dep-withrules
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouter
+metadata:
+  name: computerouternat-dep-withrules
+spec:
+  description: example router
+  region: us-west1
+  networkRef:
+    name: computerouternat-dep-withrules
 ```
 
 

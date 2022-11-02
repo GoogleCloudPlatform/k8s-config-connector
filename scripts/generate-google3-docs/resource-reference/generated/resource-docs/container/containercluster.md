@@ -121,6 +121,7 @@ clusterAutoscaling:
       external: string
       name: string
       namespace: string
+    diskSize: integer
     imageType: string
     minCpuPlatform: string
     oauthScopes:
@@ -713,6 +714,16 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.diskSize</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>clusterAutoscaling.autoProvisioningDefaults.imageType</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -968,7 +979,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The desired datapath provider for this cluster. By default, uses the IPTables-based kube-proxy implementation.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The desired datapath provider for this cluster. By default, uses the IPTables-based kube-proxy implementation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2320,7 +2331,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. The list of instance tags applied to all nodes.{% endverbatim %}</p>
+            <p>{% verbatim %}The list of instance tags applied to all nodes.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

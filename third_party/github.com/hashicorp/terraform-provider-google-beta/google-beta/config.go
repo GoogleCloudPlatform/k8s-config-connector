@@ -175,6 +175,7 @@ type Config struct {
 	AccessApprovalBasePath       string
 	AccessContextManagerBasePath string
 	ActiveDirectoryBasePath      string
+	AlloydbBasePath              string
 	ApiGatewayBasePath           string
 	ApigeeBasePath               string
 	AppEngineBasePath            string
@@ -202,6 +203,7 @@ type Config struct {
 	ComputeBasePath              string
 	ContainerAnalysisBasePath    string
 	DataCatalogBasePath          string
+	DataformBasePath             string
 	DataFusionBasePath           string
 	DataLossPreventionBasePath   string
 	DataprocBasePath             string
@@ -222,6 +224,7 @@ type Config struct {
 	HealthcareBasePath           string
 	IAM2BasePath                 string
 	IAMBetaBasePath              string
+	IAMWorkforcePoolBasePath     string
 	IapBasePath                  string
 	IdentityPlatformBasePath     string
 	KMSBasePath                  string
@@ -280,6 +283,7 @@ type Config struct {
 const AccessApprovalBasePathKey = "AccessApproval"
 const AccessContextManagerBasePathKey = "AccessContextManager"
 const ActiveDirectoryBasePathKey = "ActiveDirectory"
+const AlloydbBasePathKey = "Alloydb"
 const ApiGatewayBasePathKey = "ApiGateway"
 const ApigeeBasePathKey = "Apigee"
 const AppEngineBasePathKey = "AppEngine"
@@ -307,6 +311,7 @@ const CloudTasksBasePathKey = "CloudTasks"
 const ComputeBasePathKey = "Compute"
 const ContainerAnalysisBasePathKey = "ContainerAnalysis"
 const DataCatalogBasePathKey = "DataCatalog"
+const DataformBasePathKey = "Dataform"
 const DataFusionBasePathKey = "DataFusion"
 const DataLossPreventionBasePathKey = "DataLossPrevention"
 const DataprocBasePathKey = "Dataproc"
@@ -327,6 +332,7 @@ const GKEHubBasePathKey = "GKEHub"
 const HealthcareBasePathKey = "Healthcare"
 const IAM2BasePathKey = "IAM2"
 const IAMBetaBasePathKey = "IAMBeta"
+const IAMWorkforcePoolBasePathKey = "IAMWorkforcePool"
 const IapBasePathKey = "Iap"
 const IdentityPlatformBasePathKey = "IdentityPlatform"
 const KMSBasePathKey = "KMS"
@@ -379,6 +385,7 @@ var DefaultBasePaths = map[string]string{
 	AccessApprovalBasePathKey:       "https://accessapproval.googleapis.com/v1/",
 	AccessContextManagerBasePathKey: "https://accesscontextmanager.googleapis.com/v1/",
 	ActiveDirectoryBasePathKey:      "https://managedidentities.googleapis.com/v1beta1/",
+	AlloydbBasePathKey:              "https://alloydb.googleapis.com/v1beta/",
 	ApiGatewayBasePathKey:           "https://apigateway.googleapis.com/v1beta/",
 	ApigeeBasePathKey:               "https://apigee.googleapis.com/v1/",
 	AppEngineBasePathKey:            "https://appengine.googleapis.com/v1/",
@@ -406,6 +413,7 @@ var DefaultBasePaths = map[string]string{
 	ComputeBasePathKey:              "https://compute.googleapis.com/compute/beta/",
 	ContainerAnalysisBasePathKey:    "https://containeranalysis.googleapis.com/v1beta1/",
 	DataCatalogBasePathKey:          "https://datacatalog.googleapis.com/v1beta1/",
+	DataformBasePathKey:             "https://dataform.googleapis.com/v1beta1/",
 	DataFusionBasePathKey:           "https://datafusion.googleapis.com/v1beta1/",
 	DataLossPreventionBasePathKey:   "https://dlp.googleapis.com/v2/",
 	DataprocBasePathKey:             "https://dataproc.googleapis.com/v1beta2/",
@@ -426,6 +434,7 @@ var DefaultBasePaths = map[string]string{
 	HealthcareBasePathKey:           "https://healthcare.googleapis.com/v1beta1/",
 	IAM2BasePathKey:                 "https://iam.googleapis.com/v2beta/",
 	IAMBetaBasePathKey:              "https://iam.googleapis.com/v1beta/",
+	IAMWorkforcePoolBasePathKey:     "https://iam.googleapis.com/v1/",
 	IapBasePathKey:                  "https://iap.googleapis.com/v1/",
 	IdentityPlatformBasePathKey:     "https://identitytoolkit.googleapis.com/v2/",
 	KMSBasePathKey:                  "https://cloudkms.googleapis.com/v1/",
@@ -1269,6 +1278,7 @@ func ConfigureBasePaths(c *Config) {
 	c.AccessApprovalBasePath = DefaultBasePaths[AccessApprovalBasePathKey]
 	c.AccessContextManagerBasePath = DefaultBasePaths[AccessContextManagerBasePathKey]
 	c.ActiveDirectoryBasePath = DefaultBasePaths[ActiveDirectoryBasePathKey]
+	c.AlloydbBasePath = DefaultBasePaths[AlloydbBasePathKey]
 	c.ApiGatewayBasePath = DefaultBasePaths[ApiGatewayBasePathKey]
 	c.ApigeeBasePath = DefaultBasePaths[ApigeeBasePathKey]
 	c.AppEngineBasePath = DefaultBasePaths[AppEngineBasePathKey]
@@ -1296,6 +1306,7 @@ func ConfigureBasePaths(c *Config) {
 	c.ComputeBasePath = DefaultBasePaths[ComputeBasePathKey]
 	c.ContainerAnalysisBasePath = DefaultBasePaths[ContainerAnalysisBasePathKey]
 	c.DataCatalogBasePath = DefaultBasePaths[DataCatalogBasePathKey]
+	c.DataformBasePath = DefaultBasePaths[DataformBasePathKey]
 	c.DataFusionBasePath = DefaultBasePaths[DataFusionBasePathKey]
 	c.DataLossPreventionBasePath = DefaultBasePaths[DataLossPreventionBasePathKey]
 	c.DataprocBasePath = DefaultBasePaths[DataprocBasePathKey]
@@ -1316,6 +1327,7 @@ func ConfigureBasePaths(c *Config) {
 	c.HealthcareBasePath = DefaultBasePaths[HealthcareBasePathKey]
 	c.IAM2BasePath = DefaultBasePaths[IAM2BasePathKey]
 	c.IAMBetaBasePath = DefaultBasePaths[IAMBetaBasePathKey]
+	c.IAMWorkforcePoolBasePath = DefaultBasePaths[IAMWorkforcePoolBasePathKey]
 	c.IapBasePath = DefaultBasePaths[IapBasePathKey]
 	c.IdentityPlatformBasePath = DefaultBasePaths[IdentityPlatformBasePathKey]
 	c.KMSBasePath = DefaultBasePaths[KMSBasePathKey]

@@ -15,6 +15,7 @@
 package google
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -30,14 +31,26 @@ func TestAccBigqueryAnalyticsHubListingIamBindingGenerated(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBigqueryAnalyticsHubListingIamBinding_basicGenerated(context),
 			},
 			{
+				ResourceName:      "google_bigquery_analytics_hub_listing_iam_binding.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s/listings/%s roles/viewer", getTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"]), fmt.Sprintf("tf_test_my_listing%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
 				// Test Iam Binding update
 				Config: testAccBigqueryAnalyticsHubListingIamBinding_updateGenerated(context),
+			},
+			{
+				ResourceName:      "google_bigquery_analytics_hub_listing_iam_binding.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s/listings/%s roles/viewer", getTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"]), fmt.Sprintf("tf_test_my_listing%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})
@@ -53,11 +66,17 @@ func TestAccBigqueryAnalyticsHubListingIamMemberGenerated(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
 				Config: testAccBigqueryAnalyticsHubListingIamMember_basicGenerated(context),
+			},
+			{
+				ResourceName:      "google_bigquery_analytics_hub_listing_iam_member.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s/listings/%s roles/viewer user:admin@hashicorptest.com", getTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"]), fmt.Sprintf("tf_test_my_listing%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})
@@ -73,13 +92,25 @@ func TestAccBigqueryAnalyticsHubListingIamPolicyGenerated(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBigqueryAnalyticsHubListingIamPolicy_basicGenerated(context),
 			},
 			{
+				ResourceName:      "google_bigquery_analytics_hub_listing_iam_policy.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s/listings/%s", getTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"]), fmt.Sprintf("tf_test_my_listing%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
 				Config: testAccBigqueryAnalyticsHubListingIamPolicy_emptyBinding(context),
+			},
+			{
+				ResourceName:      "google_bigquery_analytics_hub_listing_iam_policy.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s/listings/%s", getTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"]), fmt.Sprintf("tf_test_my_listing%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})
@@ -88,7 +119,6 @@ func TestAccBigqueryAnalyticsHubListingIamPolicyGenerated(t *testing.T) {
 func testAccBigqueryAnalyticsHubListingIamMember_basicGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_bigquery_analytics_hub_data_exchange" "listing" {
-  provider = google-beta
   location         = "US"
   data_exchange_id = "tf_test_my_data_exchange%{random_suffix}"
   display_name     = "tf_test_my_data_exchange%{random_suffix}"
@@ -96,7 +126,6 @@ resource "google_bigquery_analytics_hub_data_exchange" "listing" {
 }
 
 resource "google_bigquery_analytics_hub_listing" "listing" {
-  provider = google-beta
   location         = "US"
   data_exchange_id = google_bigquery_analytics_hub_data_exchange.listing.data_exchange_id
   listing_id       = "tf_test_my_listing%{random_suffix}"
@@ -109,7 +138,6 @@ resource "google_bigquery_analytics_hub_listing" "listing" {
 }
 
 resource "google_bigquery_dataset" "listing" {
-  provider = google-beta
   dataset_id                  = "tf_test_my_listing%{random_suffix}"
   friendly_name               = "tf_test_my_listing%{random_suffix}"
   description                 = "example data exchange%{random_suffix}"
@@ -117,7 +145,6 @@ resource "google_bigquery_dataset" "listing" {
 }
 
 resource "google_bigquery_analytics_hub_listing_iam_member" "foo" {
-  provider = google-beta
   project = google_bigquery_analytics_hub_listing.listing.project
   location = google_bigquery_analytics_hub_listing.listing.location
   data_exchange_id = google_bigquery_analytics_hub_listing.listing.data_exchange_id
@@ -131,7 +158,6 @@ resource "google_bigquery_analytics_hub_listing_iam_member" "foo" {
 func testAccBigqueryAnalyticsHubListingIamPolicy_basicGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_bigquery_analytics_hub_data_exchange" "listing" {
-  provider = google-beta
   location         = "US"
   data_exchange_id = "tf_test_my_data_exchange%{random_suffix}"
   display_name     = "tf_test_my_data_exchange%{random_suffix}"
@@ -139,7 +165,6 @@ resource "google_bigquery_analytics_hub_data_exchange" "listing" {
 }
 
 resource "google_bigquery_analytics_hub_listing" "listing" {
-  provider = google-beta
   location         = "US"
   data_exchange_id = google_bigquery_analytics_hub_data_exchange.listing.data_exchange_id
   listing_id       = "tf_test_my_listing%{random_suffix}"
@@ -152,7 +177,6 @@ resource "google_bigquery_analytics_hub_listing" "listing" {
 }
 
 resource "google_bigquery_dataset" "listing" {
-  provider = google-beta
   dataset_id                  = "tf_test_my_listing%{random_suffix}"
   friendly_name               = "tf_test_my_listing%{random_suffix}"
   description                 = "example data exchange%{random_suffix}"
@@ -160,7 +184,6 @@ resource "google_bigquery_dataset" "listing" {
 }
 
 data "google_iam_policy" "foo" {
-  provider = google-beta
   binding {
     role = "%{role}"
     members = ["user:admin@hashicorptest.com"]
@@ -168,7 +191,6 @@ data "google_iam_policy" "foo" {
 }
 
 resource "google_bigquery_analytics_hub_listing_iam_policy" "foo" {
-  provider = google-beta
   project = google_bigquery_analytics_hub_listing.listing.project
   location = google_bigquery_analytics_hub_listing.listing.location
   data_exchange_id = google_bigquery_analytics_hub_listing.listing.data_exchange_id
@@ -181,7 +203,6 @@ resource "google_bigquery_analytics_hub_listing_iam_policy" "foo" {
 func testAccBigqueryAnalyticsHubListingIamPolicy_emptyBinding(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_bigquery_analytics_hub_data_exchange" "listing" {
-  provider = google-beta
   location         = "US"
   data_exchange_id = "tf_test_my_data_exchange%{random_suffix}"
   display_name     = "tf_test_my_data_exchange%{random_suffix}"
@@ -189,7 +210,6 @@ resource "google_bigquery_analytics_hub_data_exchange" "listing" {
 }
 
 resource "google_bigquery_analytics_hub_listing" "listing" {
-  provider = google-beta
   location         = "US"
   data_exchange_id = google_bigquery_analytics_hub_data_exchange.listing.data_exchange_id
   listing_id       = "tf_test_my_listing%{random_suffix}"
@@ -202,7 +222,6 @@ resource "google_bigquery_analytics_hub_listing" "listing" {
 }
 
 resource "google_bigquery_dataset" "listing" {
-  provider = google-beta
   dataset_id                  = "tf_test_my_listing%{random_suffix}"
   friendly_name               = "tf_test_my_listing%{random_suffix}"
   description                 = "example data exchange%{random_suffix}"
@@ -210,11 +229,9 @@ resource "google_bigquery_dataset" "listing" {
 }
 
 data "google_iam_policy" "foo" {
-  provider = google-beta
 }
 
 resource "google_bigquery_analytics_hub_listing_iam_policy" "foo" {
-  provider = google-beta
   project = google_bigquery_analytics_hub_listing.listing.project
   location = google_bigquery_analytics_hub_listing.listing.location
   data_exchange_id = google_bigquery_analytics_hub_listing.listing.data_exchange_id
@@ -227,7 +244,6 @@ resource "google_bigquery_analytics_hub_listing_iam_policy" "foo" {
 func testAccBigqueryAnalyticsHubListingIamBinding_basicGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_bigquery_analytics_hub_data_exchange" "listing" {
-  provider = google-beta
   location         = "US"
   data_exchange_id = "tf_test_my_data_exchange%{random_suffix}"
   display_name     = "tf_test_my_data_exchange%{random_suffix}"
@@ -235,7 +251,6 @@ resource "google_bigquery_analytics_hub_data_exchange" "listing" {
 }
 
 resource "google_bigquery_analytics_hub_listing" "listing" {
-  provider = google-beta
   location         = "US"
   data_exchange_id = google_bigquery_analytics_hub_data_exchange.listing.data_exchange_id
   listing_id       = "tf_test_my_listing%{random_suffix}"
@@ -248,7 +263,6 @@ resource "google_bigquery_analytics_hub_listing" "listing" {
 }
 
 resource "google_bigquery_dataset" "listing" {
-  provider = google-beta
   dataset_id                  = "tf_test_my_listing%{random_suffix}"
   friendly_name               = "tf_test_my_listing%{random_suffix}"
   description                 = "example data exchange%{random_suffix}"
@@ -256,7 +270,6 @@ resource "google_bigquery_dataset" "listing" {
 }
 
 resource "google_bigquery_analytics_hub_listing_iam_binding" "foo" {
-  provider = google-beta
   project = google_bigquery_analytics_hub_listing.listing.project
   location = google_bigquery_analytics_hub_listing.listing.location
   data_exchange_id = google_bigquery_analytics_hub_listing.listing.data_exchange_id
@@ -270,7 +283,6 @@ resource "google_bigquery_analytics_hub_listing_iam_binding" "foo" {
 func testAccBigqueryAnalyticsHubListingIamBinding_updateGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_bigquery_analytics_hub_data_exchange" "listing" {
-  provider = google-beta
   location         = "US"
   data_exchange_id = "tf_test_my_data_exchange%{random_suffix}"
   display_name     = "tf_test_my_data_exchange%{random_suffix}"
@@ -278,7 +290,6 @@ resource "google_bigquery_analytics_hub_data_exchange" "listing" {
 }
 
 resource "google_bigquery_analytics_hub_listing" "listing" {
-  provider = google-beta
   location         = "US"
   data_exchange_id = google_bigquery_analytics_hub_data_exchange.listing.data_exchange_id
   listing_id       = "tf_test_my_listing%{random_suffix}"
@@ -291,7 +302,6 @@ resource "google_bigquery_analytics_hub_listing" "listing" {
 }
 
 resource "google_bigquery_dataset" "listing" {
-  provider = google-beta
   dataset_id                  = "tf_test_my_listing%{random_suffix}"
   friendly_name               = "tf_test_my_listing%{random_suffix}"
   description                 = "example data exchange%{random_suffix}"
@@ -299,7 +309,6 @@ resource "google_bigquery_dataset" "listing" {
 }
 
 resource "google_bigquery_analytics_hub_listing_iam_binding" "foo" {
-  provider = google-beta
   project = google_bigquery_analytics_hub_listing.listing.project
   location = google_bigquery_analytics_hub_listing.listing.location
   data_exchange_id = google_bigquery_analytics_hub_listing.listing.data_exchange_id

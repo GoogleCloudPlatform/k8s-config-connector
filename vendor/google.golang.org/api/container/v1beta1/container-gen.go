@@ -578,11 +578,11 @@ type AutoprovisioningNodePoolDefaults struct {
 	// platforms, such as minCpuPlatform: Intel Haswell or minCpuPlatform:
 	// Intel Sandy Bridge. For more information, read how to specify min CPU
 	// platform
-	// (https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform)
+	// (https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform).
 	// This field is deprecated, min_cpu_platform should be specified using
-	// cloud.google.com/requested-min-cpu-platform label selector on the
-	// pod. To unset the min cpu platform field pass "automatic" as field
-	// value.
+	// https://cloud.google.com/requested-min-cpu-platform label selector on
+	// the pod. To unset the min cpu platform field pass "automatic" as
+	// field value.
 	MinCpuPlatform string `json:"minCpuPlatform,omitempty"`
 
 	// OauthScopes: The set of Google API scopes to be made available on all
@@ -696,8 +696,10 @@ func (s *BigQueryDestination) MarshalJSON() ([]byte, error) {
 
 // BinaryAuthorization: Configuration for Binary Authorization.
 type BinaryAuthorization struct {
-	// Enabled: Enable Binary Authorization for this cluster. If enabled,
-	// all container images will be validated by Binary Authorization.
+	// Enabled: This field is deprecated. Leave this unset and instead
+	// configure BinaryAuthorization using evaluation_mode. If
+	// evaluation_mode is set to anything other than
+	// EVALUATION_MODE_UNSPECIFIED, this field is ignored.
 	Enabled bool `json:"enabled,omitempty"`
 
 	// EvaluationMode: Mode of operation for binauthz policy evaluation.
@@ -1613,6 +1615,10 @@ type ClusterUpdate struct {
 	// "desired_workload_metadata_config" is specified and there is more
 	// than one node pool on the cluster.
 	DesiredNodePoolId string `json:"desiredNodePoolId,omitempty"`
+
+	// DesiredNodePoolLoggingConfig: The desired node pool logging
+	// configuration defaults for the cluster.
+	DesiredNodePoolLoggingConfig *NodePoolLoggingConfig `json:"desiredNodePoolLoggingConfig,omitempty"`
 
 	// DesiredNodeVersion: The Kubernetes version to change the nodes to
 	// (typically an upgrade). Users may specify either explicit versions
@@ -3309,7 +3315,7 @@ type Location struct {
 	// format `projects/*/locations/*`.
 	Name string `json:"name,omitempty"`
 
-	// Recommended: Whether the location is recomended for GKE cluster
+	// Recommended: Whether the location is recommended for GKE cluster
 	// scheduling.
 	Recommended bool `json:"recommended,omitempty"`
 
@@ -3407,6 +3413,40 @@ type LoggingConfig struct {
 
 func (s *LoggingConfig) MarshalJSON() ([]byte, error) {
 	type NoMethod LoggingConfig
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// LoggingVariantConfig: LoggingVariantConfig specifies the behaviour of
+// the logging component.
+type LoggingVariantConfig struct {
+	// Variant: Logging variant deployed on nodes.
+	//
+	// Possible values:
+	//   "VARIANT_UNSPECIFIED" - Default value. This shouldn't be used.
+	//   "DEFAULT" - default logging variant.
+	//   "MAX_THROUGHPUT" - maximum logging throughput variant.
+	Variant string `json:"variant,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "Variant") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "Variant") to include in
+	// API requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *LoggingVariantConfig) MarshalJSON() ([]byte, error) {
+	type NoMethod LoggingVariantConfig
 	raw := NoMethod(*s)
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
@@ -4156,6 +4196,9 @@ type NodeConfig struct {
 	// information.
 	LocalSsdCount int64 `json:"localSsdCount,omitempty"`
 
+	// LoggingConfig: Logging configuration.
+	LoggingConfig *NodePoolLoggingConfig `json:"loggingConfig,omitempty"`
+
 	// MachineType: The name of a Google Compute Engine machine type
 	// (https://cloud.google.com/compute/docs/machine-types). If
 	// unspecified, the default machine type is `e2-medium`.
@@ -4184,7 +4227,7 @@ type NodeConfig struct {
 	// Applicable values are the friendly names of CPU platforms, such as
 	// `minCpuPlatform: "Intel Haswell" or `minCpuPlatform: "Intel Sandy
 	// Bridge". For more information, read how to specify min CPU platform
-	// (https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform)
+	// (https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform).
 	MinCpuPlatform string `json:"minCpuPlatform,omitempty"`
 
 	// NodeGroup: Setting this field will assign instances of this pool to
@@ -4273,9 +4316,12 @@ func (s *NodeConfig) MarshalJSON() ([]byte, error) {
 
 // NodeConfigDefaults: Subset of NodeConfig message that has defaults.
 type NodeConfigDefaults struct {
-	// GcfsConfig: GCFS (Google Container File System, a.k.a. Riptide)
-	// options.
+	// GcfsConfig: GCFS (Google Container File System, also known as
+	// Riptide) options.
 	GcfsConfig *GcfsConfig `json:"gcfsConfig,omitempty"`
+
+	// LoggingConfig: Logging configuration for node pools.
+	LoggingConfig *NodePoolLoggingConfig `json:"loggingConfig,omitempty"`
 
 	// ForceSendFields is a list of field names (e.g. "GcfsConfig") to
 	// unconditionally include in API requests. By default, fields with
@@ -4748,6 +4794,35 @@ func (s *NodePoolDefaults) MarshalJSON() ([]byte, error) {
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
 
+// NodePoolLoggingConfig: NodePoolLoggingConfig specifies logging
+// configuration for nodepools.
+type NodePoolLoggingConfig struct {
+	// VariantConfig: Logging variant configuration.
+	VariantConfig *LoggingVariantConfig `json:"variantConfig,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "VariantConfig") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "VariantConfig") to include
+	// in API requests with the JSON null value. By default, fields with
+	// empty values are omitted from API requests. However, any field with
+	// an empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *NodePoolLoggingConfig) MarshalJSON() ([]byte, error) {
+	type NoMethod NodePoolLoggingConfig
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
 // NodeTaint: Kubernetes taint is comprised of three fields: key, value,
 // and effect. Effect can only be one of three types: NoSchedule,
 // PreferNoSchedule or NoExecute. See here
@@ -5175,6 +5250,18 @@ type ProtectConfig struct {
 	// a cluster's workload configurations.
 	WorkloadConfig *WorkloadConfig `json:"workloadConfig,omitempty"`
 
+	// WorkloadVulnerabilityMode: Sets which mode to use for Protect
+	// workload vulnerability scanning feature.
+	//
+	// Possible values:
+	//   "WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED" - Default value not
+	// specified.
+	//   "DISABLED" - Disables Workload Vulnerability Scanning feature on
+	// the cluster.
+	//   "BASIC" - Applies basic vulnerability scanning settings for cluster
+	// workloads.
+	WorkloadVulnerabilityMode string `json:"workloadVulnerabilityMode,omitempty"`
+
 	// ForceSendFields is a list of field names (e.g. "WorkloadConfig") to
 	// unconditionally include in API requests. By default, fields with
 	// empty or default values are omitted from API requests. However, any
@@ -5402,8 +5489,8 @@ type ReservationAffinity struct {
 
 	// Key: Corresponds to the label key of a reservation resource. To
 	// target a SPECIFIC_RESERVATION by name, specify
-	// "googleapis.com/reservation-name" as the key and specify the name of
-	// your reservation as its value.
+	// "compute.googleapis.com/reservation-name" as the key and specify the
+	// name of your reservation as its value.
 	Key string `json:"key,omitempty"`
 
 	// Values: Corresponds to the label value(s) of reservation resource(s).
@@ -6636,7 +6723,7 @@ type StatusCondition struct {
 	// CanonicalCode: Canonical code of the condition.
 	//
 	// Possible values:
-	//   "OK" - Not an error; returned on success HTTP Mapping: 200 OK
+	//   "OK" - Not an error; returned on success. HTTP Mapping: 200 OK
 	//   "CANCELLED" - The operation was cancelled, typically by the caller.
 	// HTTP Mapping: 499 Client Closed Request
 	//   "UNKNOWN" - Unknown error. For example, this error may be returned
@@ -7013,6 +7100,9 @@ type UpdateNodePoolRequest struct {
 	// the node pool, depending on whether locations are being added or
 	// removed.
 	Locations []string `json:"locations,omitempty"`
+
+	// LoggingConfig: Logging configuration.
+	LoggingConfig *NodePoolLoggingConfig `json:"loggingConfig,omitempty"`
 
 	// Name: The name (project, location, cluster, node pool) of the node
 	// pool to update. Specified in the format
@@ -10970,7 +11060,7 @@ type ProjectsLocationsClustersNodePoolsCompleteUpgradeCall struct {
 //
 //   - name: The name (project, location, cluster, node pool id) of the
 //     node pool to complete upgrade. Specified in the format
-//     'projects/*/locations/*/clusters/*/nodePools/*'.
+//     `projects/*/locations/*/clusters/*/nodePools/*`.
 func (r *ProjectsLocationsClustersNodePoolsService) CompleteUpgrade(name string, completenodepoolupgraderequest *CompleteNodePoolUpgradeRequest) *ProjectsLocationsClustersNodePoolsCompleteUpgradeCall {
 	c := &ProjectsLocationsClustersNodePoolsCompleteUpgradeCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.name = name
@@ -11078,7 +11168,7 @@ func (c *ProjectsLocationsClustersNodePoolsCompleteUpgradeCall) Do(opts ...googl
 	//   ],
 	//   "parameters": {
 	//     "name": {
-	//       "description": "The name (project, location, cluster, node pool id) of the node pool to complete upgrade. Specified in the format 'projects/*/locations/*/clusters/*/nodePools/*'.",
+	//       "description": "The name (project, location, cluster, node pool id) of the node pool to complete upgrade. Specified in the format `projects/*/locations/*/clusters/*/nodePools/*`.",
 	//       "location": "path",
 	//       "pattern": "^projects/[^/]+/locations/[^/]+/clusters/[^/]+/nodePools/[^/]+$",
 	//       "required": true,

@@ -78,8 +78,9 @@ If this is populated with [FeaturestoreMonitoringConfig.monitoring_interval] spe
 										Default:     false,
 									},
 									"monitoring_interval": {
-										Type:     schema.TypeString,
-										Optional: true,
+										Type:       schema.TypeString,
+										Optional:   true,
+										Deprecated: "This field is unavailable in the GA provider and will be removed from the beta provider in a future release.",
 										Description: `Configuration of the snapshot analysis based monitoring pipeline running interval. The value is rolled up to full day.
 
 A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".`,
@@ -238,7 +239,6 @@ func resourceVertexAIFeaturestoreEntitytypeRead(d *schema.ResourceData, meta int
 }
 
 func resourceVertexAIFeaturestoreEntitytypeUpdate(d *schema.ResourceData, meta interface{}) error {
-	var project string
 	config := meta.(*Config)
 	userAgent, err := generateUserAgentString(d, config.userAgent)
 	if err != nil {
@@ -282,15 +282,6 @@ func resourceVertexAIFeaturestoreEntitytypeUpdate(d *schema.ResourceData, meta i
 	if err != nil {
 		return err
 	}
-	if v, ok := d.GetOk("featurestore"); ok {
-		re := regexp.MustCompile("projects/([a-zA-Z0-9-]*)/(?:locations|regions)/([a-zA-Z0-9-]*)")
-		switch {
-		case re.MatchString(v.(string)):
-			if res := re.FindStringSubmatch(v.(string)); len(res) == 3 && res[1] != "" {
-				project = res[1]
-			}
-		}
-	}
 
 	// err == nil indicates that the billing_project value was found
 	if bp, err := getBillingProject(d, config); err == nil {
@@ -303,14 +294,6 @@ func resourceVertexAIFeaturestoreEntitytypeUpdate(d *schema.ResourceData, meta i
 		return fmt.Errorf("Error updating FeaturestoreEntitytype %q: %s", d.Id(), err)
 	} else {
 		log.Printf("[DEBUG] Finished updating FeaturestoreEntitytype %q: %#v", d.Id(), res)
-	}
-
-	err = vertexAIOperationWaitTime(
-		config, res, project, "Updating FeaturestoreEntitytype", userAgent,
-		d.Timeout(schema.TimeoutUpdate))
-
-	if err != nil {
-		return err
 	}
 
 	return resourceVertexAIFeaturestoreEntitytypeRead(d, meta)

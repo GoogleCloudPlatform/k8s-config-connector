@@ -821,11 +821,12 @@ type Binding struct {
 	// `allUsers`: A special identifier that represents anyone who is on the
 	// internet; with or without a Google account. *
 	// `allAuthenticatedUsers`: A special identifier that represents anyone
-	// who is authenticated with a Google account or a service account. *
-	// `user:{emailid}`: An email address that represents a specific Google
-	// account. For example, `alice@example.com` . *
-	// `serviceAccount:{emailid}`: An email address that represents a Google
-	// service account. For example,
+	// who is authenticated with a Google account or a service account. Does
+	// not include identities that come from external identity providers
+	// (IdPs) through identity federation. * `user:{emailid}`: An email
+	// address that represents a specific Google account. For example,
+	// `alice@example.com` . * `serviceAccount:{emailid}`: An email address
+	// that represents a Google service account. For example,
 	// `my-other-app@appspot.gserviceaccount.com`. *
 	// `serviceAccount:{projectid}.svc.id.goog[{namespace}/{kubernetes-sa}]`:
 	//  An identifier for a Kubernetes service account
@@ -3509,7 +3510,7 @@ type IamPolicyAnalysisState struct {
 	// entity hasn't been started in time;
 	//
 	// Possible values:
-	//   "OK" - Not an error; returned on success HTTP Mapping: 200 OK
+	//   "OK" - Not an error; returned on success. HTTP Mapping: 200 OK
 	//   "CANCELLED" - The operation was cancelled, typically by the caller.
 	// HTTP Mapping: 499 Client Closed Request
 	//   "UNKNOWN" - Unknown error. For example, this error may be returned
@@ -4846,7 +4847,7 @@ func (s *Resource) MarshalJSON() ([]byte, error) {
 }
 
 // ResourceSearchResult: A result of Resource Search, containing
-// information of a cloud resource. Next ID: 29
+// information of a cloud resource. Next ID: 31
 type ResourceSearchResult struct {
 	// AdditionalAttributes: The additional searchable attributes of this
 	// resource. The attributes may vary from one resource type to another.
@@ -4860,14 +4861,14 @@ type ResourceSearchResult struct {
 	// fields through free text search. However, you should not consume the
 	// field programically as the field names and values may change as the
 	// GCP service updates to a new incompatible API version. To search
-	// against the `additional_attributes`: * use a free text query to match
+	// against the `additional_attributes`: * Use a free text query to match
 	// the attributes values. Example: to search `additional_attributes = {
 	// dnsName: "foobar" }`, you can issue a query `foobar`.
 	AdditionalAttributes googleapi.RawMessage `json:"additionalAttributes,omitempty"`
 
 	// AssetType: The type of this resource. Example:
 	// `compute.googleapis.com/Disk`. To search against the `asset_type`: *
-	// specify the `asset_type` field in your search request.
+	// Specify the `asset_type` field in your search request.
 	AssetType string `json:"assetType,omitempty"`
 
 	// AttachedResources: Attached resources of this resource. For example,
@@ -4882,7 +4883,7 @@ type ResourceSearchResult struct {
 	// CreateTime: The create timestamp of this resource, at which the
 	// resource was created. The granularity is in seconds. Timestamp.nanos
 	// will always be 0. This field is available only when the resource's
-	// Protobuf contains it. To search against `create_time`: * use a field
+	// Protobuf contains it. To search against `create_time`: * Use a field
 	// query. - value in seconds since unix epoch. Example: `createTime >
 	// 1609459200` - value in date string. Example: `createTime >
 	// 2021-01-01` - value in date-time string (must be quoted). Example:
@@ -4892,50 +4893,60 @@ type ResourceSearchResult struct {
 	// Description: One or more paragraphs of text description of this
 	// resource. Maximum length could be up to 1M bytes. This field is
 	// available only when the resource's Protobuf contains it. To search
-	// against the `description`: * use a field query. Example:
-	// `description:"important instance" * use a free text query. Example:
+	// against the `description`: * Use a field query. Example:
+	// `description:"important instance" * Use a free text query. Example:
 	// "important instance"
 	Description string `json:"description,omitempty"`
 
 	// DisplayName: The display name of this resource. This field is
 	// available only when the resource's Protobuf contains it. To search
-	// against the `display_name`: * use a field query. Example:
-	// `displayName:"My Instance" * use a free text query. Example: "My
+	// against the `display_name`: * Use a field query. Example:
+	// `displayName:"My Instance" * Use a free text query. Example: "My
 	// Instance"
 	DisplayName string `json:"displayName,omitempty"`
 
 	// Folders: The folder(s) that this resource belongs to, in the form of
 	// folders/{FOLDER_NUMBER}. This field is available when the resource
-	// belongs to one or more folders. To search against `folders`: * use a
-	// field query. Example: `folders:(123 OR 456)` * use a free text query.
-	// Example: `123` * specify the `scope` field as this folder in your
+	// belongs to one or more folders. To search against `folders`: * Use a
+	// field query. Example: `folders:(123 OR 456)` * Use a free text query.
+	// Example: `123` * Specify the `scope` field as this folder in your
 	// search request.
 	Folders []string `json:"folders,omitempty"`
 
-	// KmsKey: The Cloud KMS CryptoKey
-	// (https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys)
-	// name or CryptoKeyVersion
-	// (https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys.cryptoKeyVersions)
-	// name. This field is available only when the resource's Protobuf
-	// contains it. To search against the `kms_key`: * use a field query.
-	// Example: `kmsKey:key` * use a free text query. Example: `key`
+	// KmsKey: This field only presents for the purpose of
+	// backward-compatibility. Please use `kms_keys` field to retrieve KMS
+	// key information. This field will only be populated for the resource
+	// types included in this list
+	// (https://cloud.google.com/asset-inventory/docs/legacy-fields#resource_types_with_the_to_be_deprecated_kmskey_field)
+	// for backward compatible purpose. To search against the `kms_key`: *
+	// Use a field query. Example: `kmsKey:key` * Use a free text query.
+	// Example: `key`
 	KmsKey string `json:"kmsKey,omitempty"`
+
+	// KmsKeys: The Cloud KMS CryptoKey
+	// (https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys)
+	// names or CryptoKeyVersion
+	// (https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys.cryptoKeyVersions)
+	// names. This field is available only when the resource's Protobuf
+	// contains it. To search against the `kms_keys`: * Use a field query.
+	// Example: `kmsKeys:key` * Use a free text query. Example: `key`
+	KmsKeys []string `json:"kmsKeys,omitempty"`
 
 	// Labels: Labels associated with this resource. See Labelling and
 	// grouping GCP resources
 	// (https://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources)
 	// for more information. This field is available only when the
 	// resource's Protobuf contains it. To search against the `labels`: *
-	// use a field query: - query on any label's key or value. Example:
+	// Use a field query: - query on any label's key or value. Example:
 	// `labels:prod` - query by a given label. Example: `labels.env:prod` -
-	// query by a given label's existence. Example: `labels.env:*` * use a
+	// query by a given label's existence. Example: `labels.env:*` * Use a
 	// free text query. Example: `prod`
 	Labels map[string]string `json:"labels,omitempty"`
 
 	// Location: Location can be `global`, regional like `us-east1`, or
 	// zonal like `us-west1-b`. This field is available only when the
 	// resource's Protobuf contains it. To search against the `location`: *
-	// use a field query. Example: `location:us-west*` * use a free text
+	// Use a field query. Example: `location:us-west*` * Use a free text
 	// query. Example: `us-west*`
 	Location string `json:"location,omitempty"`
 
@@ -4943,8 +4954,8 @@ type ResourceSearchResult struct {
 	// `//compute.googleapis.com/projects/my_project_123/zones/zone1/instance
 	// s/instance1`. See Cloud Asset Inventory Resource Name Format
 	// (https://cloud.google.com/asset-inventory/docs/resource-name-format)
-	// for more information. To search against the `name`: * use a field
-	// query. Example: `name:instance1` * use a free text query. Example:
+	// for more information. To search against the `name`: * Use a field
+	// query. Example: `name:instance1` * Use a free text query. Example:
 	// `instance1`
 	Name string `json:"name,omitempty"`
 
@@ -4954,38 +4965,38 @@ type ResourceSearchResult struct {
 	// (https://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources)
 	// for more information. This field is available only when the
 	// resource's Protobuf contains it. To search against the
-	// `network_tags`: * use a field query. Example: `networkTags:internal`
-	// * use a free text query. Example: `internal`
+	// `network_tags`: * Use a field query. Example: `networkTags:internal`
+	// * Use a free text query. Example: `internal`
 	NetworkTags []string `json:"networkTags,omitempty"`
 
 	// Organization: The organization that this resource belongs to, in the
 	// form of organizations/{ORGANIZATION_NUMBER}. This field is available
 	// when the resource belongs to an organization. To search against
-	// `organization`: * use a field query. Example: `organization:123` *
-	// use a free text query. Example: `123` * specify the `scope` field as
+	// `organization`: * Use a field query. Example: `organization:123` *
+	// Use a free text query. Example: `123` * Specify the `scope` field as
 	// this organization in your search request.
 	Organization string `json:"organization,omitempty"`
 
 	// ParentAssetType: The type of this resource's immediate parent, if
-	// there is one. To search against the `parent_asset_type`: * use a
+	// there is one. To search against the `parent_asset_type`: * Use a
 	// field query. Example:
-	// `parentAssetType:"cloudresourcemanager.googleapis.com/Project" * use
+	// `parentAssetType:"cloudresourcemanager.googleapis.com/Project" * Use
 	// a free text query. Example:
 	// `cloudresourcemanager.googleapis.com/Project`
 	ParentAssetType string `json:"parentAssetType,omitempty"`
 
 	// ParentFullResourceName: The full resource name of this resource's
 	// parent, if it has one. To search against the
-	// `parent_full_resource_name`: * use a field query. Example:
-	// `parentFullResourceName:"project-name" * use a free text query.
+	// `parent_full_resource_name`: * Use a field query. Example:
+	// `parentFullResourceName:"project-name" * Use a free text query.
 	// Example: `project-name`
 	ParentFullResourceName string `json:"parentFullResourceName,omitempty"`
 
 	// Project: The project that this resource belongs to, in the form of
 	// projects/{PROJECT_NUMBER}. This field is available when the resource
-	// belongs to a project. To search against `project`: * use a field
-	// query. Example: `project:12345` * use a free text query. Example:
-	// `12345` * specify the `scope` field as this project in your search
+	// belongs to a project. To search against `project`: * Use a field
+	// query. Example: `project:12345` * Use a free text query. Example:
+	// `12345` * Specify the `scope` field as this project in your search
 	// request.
 	Project string `json:"project,omitempty"`
 
@@ -5010,36 +5021,36 @@ type ResourceSearchResult struct {
 	// DELETE_REQUESTED and DELETE_IN_PROGRESS. See `lifecycleState`
 	// definition in API Reference
 	// (https://cloud.google.com/resource-manager/reference/rest/v1/projects).
-	// To search against the `state`: * use a field query. Example:
-	// `state:RUNNING` * use a free text query. Example: `RUNNING`
+	// To search against the `state`: * Use a field query. Example:
+	// `state:RUNNING` * Use a free text query. Example: `RUNNING`
 	State string `json:"state,omitempty"`
 
 	// TagKeys: TagKey namespaced names, in the format of
-	// {ORG_ID}/{TAG_KEY_SHORT_NAME}. To search against the `tagKeys`: * use
+	// {ORG_ID}/{TAG_KEY_SHORT_NAME}. To search against the `tagKeys`: * Use
 	// a field query. Example: - `tagKeys:"123456789/env*" -
-	// `tagKeys="123456789/env" - `tagKeys:"env" * use a free text query.
+	// `tagKeys="123456789/env" - `tagKeys:"env" * Use a free text query.
 	// Example: - `env`
 	TagKeys []string `json:"tagKeys,omitempty"`
 
 	// TagValueIds: TagValue IDs, in the format of tagValues/{TAG_VALUE_ID}.
-	// To search against the `tagValueIds`: * use a field query. Example: -
-	// `tagValueIds:"456" - `tagValueIds="tagValues/456" * use a free text
+	// To search against the `tagValueIds`: * Use a field query. Example: -
+	// `tagValueIds:"456" - `tagValueIds="tagValues/456" * Use a free text
 	// query. Example: - `456`
 	TagValueIds []string `json:"tagValueIds,omitempty"`
 
 	// TagValues: TagValue namespaced names, in the format of
 	// {ORG_ID}/{TAG_KEY_SHORT_NAME}/{TAG_VALUE_SHORT_NAME}. To search
-	// against the `tagValues`: * use a field query. Example: -
+	// against the `tagValues`: * Use a field query. Example: -
 	// `tagValues:"env" - `tagValues:"env/prod" -
 	// `tagValues:"123456789/env/prod*" - `tagValues="123456789/env/prod"
-	// * use a free text query. Example: - `prod`
+	// * Use a free text query. Example: - `prod`
 	TagValues []string `json:"tagValues,omitempty"`
 
 	// UpdateTime: The last update timestamp of this resource, at which the
 	// resource was last modified or deleted. The granularity is in seconds.
 	// Timestamp.nanos will always be 0. This field is available only when
 	// the resource's Protobuf contains it. To search against `update_time`:
-	// * use a field query. - value in seconds since unix epoch. Example:
+	// * Use a field query. - value in seconds since unix epoch. Example:
 	// `updateTime < 1609459200` - value in date string. Example:
 	// `updateTime < 2021-01-01` - value in date-time string (must be
 	// quoted). Example: `updateTime < "2021-01-01T00:00:00"
@@ -9516,10 +9527,11 @@ func (c *V1SearchAllResourcesCall) AssetTypes(assetTypes ...string) *V1SearchAll
 // descending order. Redundant space characters are ignored. Example:
 // "location DESC, name". Only singular primitive fields in the response
 // are sortable: * name * assetType * project * displayName *
-// description * location * kmsKey * createTime * updateTime * state *
+// description * location * createTime * updateTime * state *
 // parentFullResourceName * parentAssetType All the other fields such as
-// repeated fields (e.g., `networkTags`), map fields (e.g., `labels`)
-// and struct fields (e.g., `additionalAttributes`) are not supported.
+// repeated fields (e.g., `networkTags`, 'kmsKeys'), map fields (e.g.,
+// `labels`) and struct fields (e.g., `additionalAttributes`) are not
+// supported.
 func (c *V1SearchAllResourcesCall) OrderBy(orderBy string) *V1SearchAllResourcesCall {
 	c.urlParams_.Set("orderBy", orderBy)
 	return c
@@ -9562,9 +9574,12 @@ func (c *V1SearchAllResourcesCall) PageToken(pageToken string) *V1SearchAllResou
 // a label "env" and its value is "prod". * `labels.env:*` to find Cloud
 // resources that have a label "env". * `kmsKey:key` to find Cloud
 // resources encrypted with a customer-managed encryption key whose name
-// contains the word "key". * `relationships:instance-group-1` to find
-// Cloud resources that have relationships with "instance-group-1" in
-// the related resource name. *
+// contains "key" as a word. This field is deprecated. Please use the
+// "kmsKeys" field to retrieve KMS key information. * `kmsKeys:key` to
+// find Cloud resources encrypted with customer-managed encryption keys
+// whose name contains the word "key". *
+// `relationships:instance-group-1` to find Cloud resources that have
+// relationships with "instance-group-1" in the related resource name. *
 // `relationships:INSTANCE_TO_INSTANCEGROUP` to find compute instances
 // that have relationships of type "INSTANCE_TO_INSTANCEGROUP". *
 // `relationships.INSTANCE_TO_INSTANCEGROUP:instance-group-1` to find
@@ -9599,7 +9614,7 @@ func (c *V1SearchAllResourcesCall) Query(query string) *V1SearchAllResourcesCall
 // paths listed but not limited to (both snake_case and camelCase are
 // supported): * name * assetType * project * displayName * description
 // * location * tagKeys * tagValues * tagValueIds * labels * networkTags
-// * kmsKey * createTime * updateTime * state * additionalAttributes *
+// * kmsKeys * createTime * updateTime * state * additionalAttributes *
 // versionedResources If read_mask is not specified, all fields except
 // versionedResources will be returned. If only '*' is specified, all
 // fields including versionedResources will be returned. Any invalid
@@ -9723,7 +9738,7 @@ func (c *V1SearchAllResourcesCall) Do(opts ...googleapi.CallOption) (*SearchAllR
 	//       "type": "string"
 	//     },
 	//     "orderBy": {
-	//       "description": "Optional. A comma-separated list of fields specifying the sorting order of the results. The default order is ascending. Add \" DESC\" after the field name to indicate descending order. Redundant space characters are ignored. Example: \"location DESC, name\". Only singular primitive fields in the response are sortable: * name * assetType * project * displayName * description * location * kmsKey * createTime * updateTime * state * parentFullResourceName * parentAssetType All the other fields such as repeated fields (e.g., `networkTags`), map fields (e.g., `labels`) and struct fields (e.g., `additionalAttributes`) are not supported.",
+	//       "description": "Optional. A comma-separated list of fields specifying the sorting order of the results. The default order is ascending. Add \" DESC\" after the field name to indicate descending order. Redundant space characters are ignored. Example: \"location DESC, name\". Only singular primitive fields in the response are sortable: * name * assetType * project * displayName * description * location * createTime * updateTime * state * parentFullResourceName * parentAssetType All the other fields such as repeated fields (e.g., `networkTags`, 'kmsKeys'), map fields (e.g., `labels`) and struct fields (e.g., `additionalAttributes`) are not supported.",
 	//       "location": "query",
 	//       "type": "string"
 	//     },
@@ -9739,12 +9754,12 @@ func (c *V1SearchAllResourcesCall) Do(opts ...googleapi.CallOption) (*SearchAllR
 	//       "type": "string"
 	//     },
 	//     "query": {
-	//       "description": "Optional. The query statement. See [how to construct a query](https://cloud.google.com/asset-inventory/docs/searching-resources#how_to_construct_a_query) for more information. If not specified or empty, it will search all the resources within the specified `scope`. Examples: * `name:Important` to find Cloud resources whose name contains \"Important\" as a word. * `name=Important` to find the Cloud resource whose name is exactly \"Important\". * `displayName:Impor*` to find Cloud resources whose display name contains \"Impor\" as a prefix of any word in the field. * `location:us-west*` to find Cloud resources whose location contains both \"us\" and \"west\" as prefixes. * `labels:prod` to find Cloud resources whose labels contain \"prod\" as a key or value. * `labels.env:prod` to find Cloud resources that have a label \"env\" and its value is \"prod\". * `labels.env:*` to find Cloud resources that have a label \"env\". * `kmsKey:key` to find Cloud resources encrypted with a customer-managed encryption key whose name contains the word \"key\". * `relationships:instance-group-1` to find Cloud resources that have relationships with \"instance-group-1\" in the related resource name. * `relationships:INSTANCE_TO_INSTANCEGROUP` to find compute instances that have relationships of type \"INSTANCE_TO_INSTANCEGROUP\". * `relationships.INSTANCE_TO_INSTANCEGROUP:instance-group-1` to find compute instances that have relationships with \"instance-group-1\" in the compute instance group resource name, for relationship type \"INSTANCE_TO_INSTANCEGROUP\". * `state:ACTIVE` to find Cloud resources whose state contains \"ACTIVE\" as a word. * `NOT state:ACTIVE` to find Cloud resources whose state doesn't contain \"ACTIVE\" as a word. * `createTime\u003c1609459200` to find Cloud resources that were created before \"2021-01-01 00:00:00 UTC\". 1609459200 is the epoch timestamp of \"2021-01-01 00:00:00 UTC\" in seconds. * `updateTime\u003e1609459200` to find Cloud resources that were updated after \"2021-01-01 00:00:00 UTC\". 1609459200 is the epoch timestamp of \"2021-01-01 00:00:00 UTC\" in seconds. * `Important` to find Cloud resources that contain \"Important\" as a word in any of the searchable fields. * `Impor*` to find Cloud resources that contain \"Impor\" as a prefix of any word in any of the searchable fields. * `Important location:(us-west1 OR global)` to find Cloud resources that contain \"Important\" as a word in any of the searchable fields and are also located in the \"us-west1\" region or the \"global\" location.",
+	//       "description": "Optional. The query statement. See [how to construct a query](https://cloud.google.com/asset-inventory/docs/searching-resources#how_to_construct_a_query) for more information. If not specified or empty, it will search all the resources within the specified `scope`. Examples: * `name:Important` to find Cloud resources whose name contains \"Important\" as a word. * `name=Important` to find the Cloud resource whose name is exactly \"Important\". * `displayName:Impor*` to find Cloud resources whose display name contains \"Impor\" as a prefix of any word in the field. * `location:us-west*` to find Cloud resources whose location contains both \"us\" and \"west\" as prefixes. * `labels:prod` to find Cloud resources whose labels contain \"prod\" as a key or value. * `labels.env:prod` to find Cloud resources that have a label \"env\" and its value is \"prod\". * `labels.env:*` to find Cloud resources that have a label \"env\". * `kmsKey:key` to find Cloud resources encrypted with a customer-managed encryption key whose name contains \"key\" as a word. This field is deprecated. Please use the `\"kmsKeys\"` field to retrieve KMS key information. * `kmsKeys:key` to find Cloud resources encrypted with customer-managed encryption keys whose name contains the word \"key\". * `relationships:instance-group-1` to find Cloud resources that have relationships with \"instance-group-1\" in the related resource name. * `relationships:INSTANCE_TO_INSTANCEGROUP` to find compute instances that have relationships of type \"INSTANCE_TO_INSTANCEGROUP\". * `relationships.INSTANCE_TO_INSTANCEGROUP:instance-group-1` to find compute instances that have relationships with \"instance-group-1\" in the compute instance group resource name, for relationship type \"INSTANCE_TO_INSTANCEGROUP\". * `state:ACTIVE` to find Cloud resources whose state contains \"ACTIVE\" as a word. * `NOT state:ACTIVE` to find Cloud resources whose state doesn't contain \"ACTIVE\" as a word. * `createTime\u003c1609459200` to find Cloud resources that were created before \"2021-01-01 00:00:00 UTC\". 1609459200 is the epoch timestamp of \"2021-01-01 00:00:00 UTC\" in seconds. * `updateTime\u003e1609459200` to find Cloud resources that were updated after \"2021-01-01 00:00:00 UTC\". 1609459200 is the epoch timestamp of \"2021-01-01 00:00:00 UTC\" in seconds. * `Important` to find Cloud resources that contain \"Important\" as a word in any of the searchable fields. * `Impor*` to find Cloud resources that contain \"Impor\" as a prefix of any word in any of the searchable fields. * `Important location:(us-west1 OR global)` to find Cloud resources that contain \"Important\" as a word in any of the searchable fields and are also located in the \"us-west1\" region or the \"global\" location.",
 	//       "location": "query",
 	//       "type": "string"
 	//     },
 	//     "readMask": {
-	//       "description": "Optional. A comma-separated list of fields specifying which fields to be returned in ResourceSearchResult. Only '*' or combination of top level fields can be specified. Field names of both snake_case and camelCase are supported. Examples: `\"*\"`, `\"name,location\"`, `\"name,versionedResources\"`. The read_mask paths must be valid field paths listed but not limited to (both snake_case and camelCase are supported): * name * assetType * project * displayName * description * location * tagKeys * tagValues * tagValueIds * labels * networkTags * kmsKey * createTime * updateTime * state * additionalAttributes * versionedResources If read_mask is not specified, all fields except versionedResources will be returned. If only '*' is specified, all fields including versionedResources will be returned. Any invalid field path will trigger INVALID_ARGUMENT error.",
+	//       "description": "Optional. A comma-separated list of fields specifying which fields to be returned in ResourceSearchResult. Only '*' or combination of top level fields can be specified. Field names of both snake_case and camelCase are supported. Examples: `\"*\"`, `\"name,location\"`, `\"name,versionedResources\"`. The read_mask paths must be valid field paths listed but not limited to (both snake_case and camelCase are supported): * name * assetType * project * displayName * description * location * tagKeys * tagValues * tagValueIds * labels * networkTags * kmsKeys * createTime * updateTime * state * additionalAttributes * versionedResources If read_mask is not specified, all fields except versionedResources will be returned. If only '*' is specified, all fields including versionedResources will be returned. Any invalid field path will trigger INVALID_ARGUMENT error.",
 	//       "format": "google-fieldmask",
 	//       "location": "query",
 	//       "type": "string"

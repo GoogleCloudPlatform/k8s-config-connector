@@ -162,6 +162,7 @@ conditions:
   status: string
   type: string
 email: string
+member: string
 name: string
 observedGeneration: integer
 uniqueId: string
@@ -228,6 +229,13 @@ uniqueId: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The e-mail address of the service account. This value should be referenced from any google_iam_policy data sources that would grant the service account privileges.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>member</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The Identity of the service account in the form 'serviceAccount:{email}'. This value is often used to refer to the service account in order to grant IAM permissions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

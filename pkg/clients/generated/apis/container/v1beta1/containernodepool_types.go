@@ -232,7 +232,7 @@ type NodepoolNodeConfig struct {
 	// +optional
 	Spot *bool `json:"spot,omitempty"`
 
-	/* Immutable. The list of instance tags applied to all nodes. */
+	/* The list of instance tags applied to all nodes. */
 	// +optional
 	Tags []string `json:"tags,omitempty"`
 

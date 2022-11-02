@@ -15,6 +15,7 @@
 package google
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -30,14 +31,26 @@ func TestAccBigqueryAnalyticsHubDataExchangeIamBindingGenerated(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBigqueryAnalyticsHubDataExchangeIamBinding_basicGenerated(context),
 			},
 			{
+				ResourceName:      "google_bigquery_analytics_hub_data_exchange_iam_binding.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s roles/viewer", getTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
 				// Test Iam Binding update
 				Config: testAccBigqueryAnalyticsHubDataExchangeIamBinding_updateGenerated(context),
+			},
+			{
+				ResourceName:      "google_bigquery_analytics_hub_data_exchange_iam_binding.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s roles/viewer", getTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})
@@ -53,11 +66,17 @@ func TestAccBigqueryAnalyticsHubDataExchangeIamMemberGenerated(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
 				Config: testAccBigqueryAnalyticsHubDataExchangeIamMember_basicGenerated(context),
+			},
+			{
+				ResourceName:      "google_bigquery_analytics_hub_data_exchange_iam_member.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s roles/viewer user:admin@hashicorptest.com", getTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})
@@ -73,13 +92,25 @@ func TestAccBigqueryAnalyticsHubDataExchangeIamPolicyGenerated(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBigqueryAnalyticsHubDataExchangeIamPolicy_basicGenerated(context),
 			},
 			{
+				ResourceName:      "google_bigquery_analytics_hub_data_exchange_iam_policy.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s", getTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
 				Config: testAccBigqueryAnalyticsHubDataExchangeIamPolicy_emptyBinding(context),
+			},
+			{
+				ResourceName:      "google_bigquery_analytics_hub_data_exchange_iam_policy.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataExchanges/%s", getTestProjectFromEnv(), "US", fmt.Sprintf("tf_test_my_data_exchange%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})
@@ -88,7 +119,6 @@ func TestAccBigqueryAnalyticsHubDataExchangeIamPolicyGenerated(t *testing.T) {
 func testAccBigqueryAnalyticsHubDataExchangeIamMember_basicGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_bigquery_analytics_hub_data_exchange" "data_exchange" {
-  provider = google-beta
   location         = "US"
   data_exchange_id = "tf_test_my_data_exchange%{random_suffix}"
   display_name     = "tf_test_my_data_exchange%{random_suffix}"
@@ -96,7 +126,6 @@ resource "google_bigquery_analytics_hub_data_exchange" "data_exchange" {
 }
 
 resource "google_bigquery_analytics_hub_data_exchange_iam_member" "foo" {
-  provider = google-beta
   project = google_bigquery_analytics_hub_data_exchange.data_exchange.project
   location = google_bigquery_analytics_hub_data_exchange.data_exchange.location
   data_exchange_id = google_bigquery_analytics_hub_data_exchange.data_exchange.data_exchange_id
@@ -109,7 +138,6 @@ resource "google_bigquery_analytics_hub_data_exchange_iam_member" "foo" {
 func testAccBigqueryAnalyticsHubDataExchangeIamPolicy_basicGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_bigquery_analytics_hub_data_exchange" "data_exchange" {
-  provider = google-beta
   location         = "US"
   data_exchange_id = "tf_test_my_data_exchange%{random_suffix}"
   display_name     = "tf_test_my_data_exchange%{random_suffix}"
@@ -117,7 +145,6 @@ resource "google_bigquery_analytics_hub_data_exchange" "data_exchange" {
 }
 
 data "google_iam_policy" "foo" {
-  provider = google-beta
   binding {
     role = "%{role}"
     members = ["user:admin@hashicorptest.com"]
@@ -125,7 +152,6 @@ data "google_iam_policy" "foo" {
 }
 
 resource "google_bigquery_analytics_hub_data_exchange_iam_policy" "foo" {
-  provider = google-beta
   project = google_bigquery_analytics_hub_data_exchange.data_exchange.project
   location = google_bigquery_analytics_hub_data_exchange.data_exchange.location
   data_exchange_id = google_bigquery_analytics_hub_data_exchange.data_exchange.data_exchange_id
@@ -137,7 +163,6 @@ resource "google_bigquery_analytics_hub_data_exchange_iam_policy" "foo" {
 func testAccBigqueryAnalyticsHubDataExchangeIamPolicy_emptyBinding(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_bigquery_analytics_hub_data_exchange" "data_exchange" {
-  provider = google-beta
   location         = "US"
   data_exchange_id = "tf_test_my_data_exchange%{random_suffix}"
   display_name     = "tf_test_my_data_exchange%{random_suffix}"
@@ -145,11 +170,9 @@ resource "google_bigquery_analytics_hub_data_exchange" "data_exchange" {
 }
 
 data "google_iam_policy" "foo" {
-  provider = google-beta
 }
 
 resource "google_bigquery_analytics_hub_data_exchange_iam_policy" "foo" {
-  provider = google-beta
   project = google_bigquery_analytics_hub_data_exchange.data_exchange.project
   location = google_bigquery_analytics_hub_data_exchange.data_exchange.location
   data_exchange_id = google_bigquery_analytics_hub_data_exchange.data_exchange.data_exchange_id
@@ -161,7 +184,6 @@ resource "google_bigquery_analytics_hub_data_exchange_iam_policy" "foo" {
 func testAccBigqueryAnalyticsHubDataExchangeIamBinding_basicGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_bigquery_analytics_hub_data_exchange" "data_exchange" {
-  provider = google-beta
   location         = "US"
   data_exchange_id = "tf_test_my_data_exchange%{random_suffix}"
   display_name     = "tf_test_my_data_exchange%{random_suffix}"
@@ -169,7 +191,6 @@ resource "google_bigquery_analytics_hub_data_exchange" "data_exchange" {
 }
 
 resource "google_bigquery_analytics_hub_data_exchange_iam_binding" "foo" {
-  provider = google-beta
   project = google_bigquery_analytics_hub_data_exchange.data_exchange.project
   location = google_bigquery_analytics_hub_data_exchange.data_exchange.location
   data_exchange_id = google_bigquery_analytics_hub_data_exchange.data_exchange.data_exchange_id
@@ -182,7 +203,6 @@ resource "google_bigquery_analytics_hub_data_exchange_iam_binding" "foo" {
 func testAccBigqueryAnalyticsHubDataExchangeIamBinding_updateGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_bigquery_analytics_hub_data_exchange" "data_exchange" {
-  provider = google-beta
   location         = "US"
   data_exchange_id = "tf_test_my_data_exchange%{random_suffix}"
   display_name     = "tf_test_my_data_exchange%{random_suffix}"
@@ -190,7 +210,6 @@ resource "google_bigquery_analytics_hub_data_exchange" "data_exchange" {
 }
 
 resource "google_bigquery_analytics_hub_data_exchange_iam_binding" "foo" {
-  provider = google-beta
   project = google_bigquery_analytics_hub_data_exchange.data_exchange.project
   location = google_bigquery_analytics_hub_data_exchange.data_exchange.location
   data_exchange_id = google_bigquery_analytics_hub_data_exchange.data_exchange.data_exchange_id

@@ -15,7 +15,7 @@ func TestAccBigqueryAnalyticsHubListing_bigqueryAnalyticshubListingUpdate(t *tes
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckBigqueryAnalyticsHubListingDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -36,7 +36,6 @@ func TestAccBigqueryAnalyticsHubListing_bigqueryAnalyticshubListingUpdate(t *tes
 func testAccBigqueryAnalyticsHubListing_bigqueryAnalyticshubListingUpdate(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_bigquery_analytics_hub_data_exchange" "listing" {
-  provider = google-beta
   location         = "US"
   data_exchange_id = "tf_test_my_data_exchange%{random_suffix}"
   display_name     = "tf_test_my_data_exchange%{random_suffix}"
@@ -44,7 +43,6 @@ resource "google_bigquery_analytics_hub_data_exchange" "listing" {
 }
 
 resource "google_bigquery_analytics_hub_listing" "listing" {
-  provider = google-beta
   location         = "US"
   data_exchange_id = google_bigquery_analytics_hub_data_exchange.listing.data_exchange_id
   listing_id       = "tf_test_my_listing%{random_suffix}"
@@ -57,7 +55,6 @@ resource "google_bigquery_analytics_hub_listing" "listing" {
 }
 
 resource "google_bigquery_dataset" "listing" {
-  provider = google-beta
   dataset_id                  = "tf_test_my_listing%{random_suffix}"
   friendly_name               = "tf_test_my_listing%{random_suffix}"
   description                 = "example data exchange%{random_suffix}"

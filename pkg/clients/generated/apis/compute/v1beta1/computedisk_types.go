@@ -211,6 +211,10 @@ type ComputeDiskSpec struct {
 	// +optional
 	SnapshotRef *v1alpha1.ResourceRef `json:"snapshotRef,omitempty"`
 
+	/* The source disk used to create this disk. */
+	// +optional
+	SourceDiskRef *v1alpha1.ResourceRef `json:"sourceDiskRef,omitempty"`
+
 	/* Immutable. The customer-supplied encryption key of the source image. Required if
 	the source image is protected by a customer-supplied encryption key. */
 	// +optional
@@ -245,6 +249,10 @@ type ComputeDiskStatus struct {
 	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */
 	SelfLink string `json:"selfLink,omitempty"`
+	/* The ID value of the disk used to create this image. This value may
+	be used to determine whether the image was taken from the current
+	or a previous instance of a given disk name. */
+	SourceDiskId string `json:"sourceDiskId,omitempty"`
 	/* The ID value of the image used to create this disk. This value
 	identifies the exact image that was used to create this persistent
 	disk. For example, if you created the persistent disk from an image

@@ -555,6 +555,11 @@ spec:
                       the Custom Machine Type Documentation to learn about specifying
                       custom machine types.
                     type: string
+                  timeZone:
+                    description: Immutable. The timezone to be used by the database
+                      engine (supported only for SQL Server), in SQL Server timezone
+                      format.
+                    type: string
                 required:
                 - tier
                 type: object

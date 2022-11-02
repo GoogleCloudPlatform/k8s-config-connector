@@ -242,7 +242,7 @@ and is not a valid configuration.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The encoding of messages validated against schema. Default value: "ENCODING_UNSPECIFIED" Possible values: ["ENCODING_UNSPECIFIED", "JSON", "BINARY"].{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The encoding of messages validated against schema. Default value: "ENCODING_UNSPECIFIED" Possible values: ["ENCODING_UNSPECIFIED", "JSON", "BINARY"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -29,6 +29,8 @@ spec:
       resourceAvailableInAssetInventory: true
       ignoredFields:
         - node_pool
+        # TODO(b/258864199): Remove disk_type field from ignoredFields.
+        - cluster_autoscaling.auto_provisioning_defaults.disk_type
       metadataMapping:
         name: name
         labels: resource_labels

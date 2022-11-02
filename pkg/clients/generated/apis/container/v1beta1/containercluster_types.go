@@ -92,6 +92,10 @@ type ClusterAutoProvisioningDefaults struct {
 	// +optional
 	BootDiskKMSKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSKeyRef,omitempty"`
 
+	/* Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB. */
+	// +optional
+	DiskSize *int `json:"diskSize,omitempty"`
+
 	/* The default image type used by NAP once a new node pool is being created. */
 	// +optional
 	ImageType *string `json:"imageType,omitempty"`
@@ -562,7 +566,7 @@ type ClusterNodeConfig struct {
 	// +optional
 	Spot *bool `json:"spot,omitempty"`
 
-	/* Immutable. The list of instance tags applied to all nodes. */
+	/* The list of instance tags applied to all nodes. */
 	// +optional
 	Tags []string `json:"tags,omitempty"`
 
@@ -814,7 +818,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	DatabaseEncryption *ClusterDatabaseEncryption `json:"databaseEncryption,omitempty"`
 
-	/* The desired datapath provider for this cluster. By default, uses the IPTables-based kube-proxy implementation. */
+	/* Immutable. The desired datapath provider for this cluster. By default, uses the IPTables-based kube-proxy implementation. */
 	// +optional
 	DatapathProvider *string `json:"datapathProvider,omitempty"`
 

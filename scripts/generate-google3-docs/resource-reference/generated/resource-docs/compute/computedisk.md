@@ -144,6 +144,10 @@ snapshotRef:
   external: string
   name: string
   namespace: string
+sourceDiskRef:
+  external: string
+  name: string
+  namespace: string
 sourceImageEncryptionKey:
   kmsKeyRef:
     external: string
@@ -642,6 +646,46 @@ requires re-creating the resource.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>sourceDiskRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The source disk used to create this disk.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceDiskRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeDisk` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceDiskRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceDiskRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>sourceImageEncryptionKey</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -912,6 +956,7 @@ lastAttachTimestamp: string
 lastDetachTimestamp: string
 observedGeneration: integer
 selfLink: string
+sourceDiskId: string
 sourceImageId: string
 sourceSnapshotId: string
 users:
@@ -1018,6 +1063,15 @@ internally during updates.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
+        <td><code>sourceDiskId</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The ID value of the disk used to create this image. This value may
+be used to determine whether the image was taken from the current
+or a previous instance of a given disk name.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>sourceImageId</code></td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -1059,6 +1113,44 @@ project/zones/zone/instances/instance.{% endverbatim %}</p>
 </table>
 
 ## Sample YAML(s)
+
+### Compute Disk From Source Disk
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeDisk
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+  name: computedisk-dep-fromsourcedisk
+spec:
+  location: us-west1-c
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeDisk
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
+  name: computedisk-sample-fromsourcedisk
+spec:
+  description: A regional disk created from the source disk.
+  location: us-west1-c
+  sourceDiskRef:
+    name: computedisk-dep-fromsourcedisk
+```
 
 ### Regional Compute Disk
 ```yaml

@@ -15,9 +15,12 @@
 package google
 
 import (
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
 func TestAccFirebaseWebApp_firebaseWebAppBasicExample(t *testing.T) {
@@ -29,8 +32,9 @@ func TestAccFirebaseWebApp_firebaseWebAppBasicExample(t *testing.T) {
 	}
 
 	vcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProvidersOiCS,
+		CheckDestroy: testAccCheckFirebaseWebAppDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFirebaseWebApp_firebaseWebAppBasicExample(context),
@@ -39,7 +43,7 @@ func TestAccFirebaseWebApp_firebaseWebAppBasicExample(t *testing.T) {
 				ResourceName:            "google_firebase_web_app.basic",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"project"},
+				ImportStateVerifyIgnore: []string{"project", "deletion_policy"},
 			},
 		},
 	})
@@ -64,6 +68,7 @@ resource "google_firebase_web_app" "basic" {
 	provider = google-beta
 	project = google_project.default.project_id
 	display_name = "Display Name Basic%{random_suffix}"
+	deletion_policy = "DELETE"
 
 	depends_on = [google_firebase_project.default]
 }
@@ -95,4 +100,37 @@ resource "google_storage_bucket_object" "default" {
     })
 }
 `, context)
+}
+
+func testAccCheckFirebaseWebAppDestroyProducer(t *testing.T) func(s *terraform.State) error {
+	return func(s *terraform.State) error {
+		for name, rs := range s.RootModule().Resources {
+			if rs.Type != "google_firebase_web_app" {
+				continue
+			}
+			if strings.HasPrefix(name, "data.") {
+				continue
+			}
+
+			config := googleProviderConfig(t)
+
+			url, err := replaceVarsForTest(config, rs, "{{FirebaseBasePath}}{{name}}")
+			if err != nil {
+				return err
+			}
+
+			billingProject := ""
+
+			if config.BillingProject != "" {
+				billingProject = config.BillingProject
+			}
+
+			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil)
+			if err == nil {
+				return fmt.Errorf("FirebaseWebApp still exists at %s", url)
+			}
+		}
+
+		return nil
+	}
 }

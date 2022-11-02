@@ -873,7 +873,7 @@ func TestAccStorageBucket_publicAccessPrevention(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccStorageBucket_publicAccessPrevention(bucketName, "enforced"),
@@ -1810,7 +1810,6 @@ resource "google_storage_bucket" "bucket" {
 func testAccStorageBucket_publicAccessPrevention(bucketName string, prevention string) string {
 	return fmt.Sprintf(`
 resource "google_storage_bucket" "bucket" {
-  provider                  = google-beta
   name                      = "%s"
   location                  = "US"
   public_access_prevention  = "%s"

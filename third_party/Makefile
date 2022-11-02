@@ -24,7 +24,7 @@ clone-terraform-google-provider-beta:
 	rm -rf github.com/hashicorp/terraform-provider-google-beta
 	mkdir -p github.com/hashicorp
 	cd github.com/hashicorp && git clone https://github.com/hashicorp/terraform-provider-google-beta
-	git -C github.com/hashicorp/terraform-provider-google-beta checkout v4.41.0
+	git -C github.com/hashicorp/terraform-provider-google-beta checkout v4.42.1
 	rm -rf github.com/hashicorp/terraform-provider-google-beta/.git
 
 .PHONY: apply-patches
@@ -275,9 +275,9 @@ apply-patches:
 	# status.destroyTime when the resource is DESTROYED.
 	# TODO(b/254533796): Re-evaluate if this patch is worth keeping.
 	git apply ../hack/terraform-overrides/secret_manager_secret_version_destroyed.patch
-	# Make persistence_config.rdb_snapshot_period optional. The field was
-	# marked required incorrectly which prevents KCC from updating the
-	# resource on the K8s API server if any of the other subfields of
-	# persistence_config are defaulted by GCP.
-	# TODO(b/254717047): Remove this patch once TF fixes the field.
-	git apply ../hack/terraform-overrides/redis_instance_rdb_snapshot_period.patch
+	# The default value of `cluster_autoscaling.auto_provisioning_defaults.disk_type`
+	# causes an unexpected diff because when the cluster enables autopilot, the
+	# computed result of `cluster_autoscaling.auto_provisioning_defaults` has
+	# `disk_type` field unset.
+	# TODO(b/258864199): Remove this patch if disk_type field no longer causes unexpected diffs.
+	git apply ../hack/terraform-overrides/container_cluster_autopilot_disk_type.patch

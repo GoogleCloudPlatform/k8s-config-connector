@@ -596,7 +596,7 @@ type ErrorSummary struct {
 	// ErrorCode: Required.
 	//
 	// Possible values:
-	//   "OK" - Not an error; returned on success HTTP Mapping: 200 OK
+	//   "OK" - Not an error; returned on success. HTTP Mapping: 200 OK
 	//   "CANCELLED" - The operation was cancelled, typically by the caller.
 	// HTTP Mapping: 499 Client Closed Request
 	//   "UNKNOWN" - Unknown error. For example, this error may be returned
@@ -2174,7 +2174,7 @@ type UpdateTransferJobRequest struct {
 	// notification_config, logging_config, and status. An
 	// `UpdateTransferJobRequest` that specifies other fields are rejected
 	// with the error INVALID_ARGUMENT. Updating a job status to DELETED
-	// requires `storagetransfer.jobs.delete` permissions.
+	// requires `storagetransfer.jobs.delete` permission.
 	TransferJob *TransferJob `json:"transferJob,omitempty"`
 
 	// UpdateTransferJobFieldMask: The field mask of the fields in
@@ -3293,6 +3293,148 @@ func (c *TransferJobsCreateCall) Do(opts ...googleapi.CallOption) (*TransferJob,
 
 }
 
+// method id "storagetransfer.transferJobs.delete":
+
+type TransferJobsDeleteCall struct {
+	s          *Service
+	jobName    string
+	urlParams_ gensupport.URLParams
+	ctx_       context.Context
+	header_    http.Header
+}
+
+// Delete: Deletes a transfer job. Deleting a transfer job sets its
+// status to DELETED.
+//
+// - jobName: The job to delete.
+// - projectId: The ID of the Google Cloud project that owns the job.
+func (r *TransferJobsService) Delete(jobName string, projectId string) *TransferJobsDeleteCall {
+	c := &TransferJobsDeleteCall{s: r.s, urlParams_: make(gensupport.URLParams)}
+	c.jobName = jobName
+	c.urlParams_.Set("projectId", projectId)
+	return c
+}
+
+// Fields allows partial responses to be retrieved. See
+// https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *TransferJobsDeleteCall) Fields(s ...googleapi.Field) *TransferJobsDeleteCall {
+	c.urlParams_.Set("fields", googleapi.CombineFields(s))
+	return c
+}
+
+// Context sets the context to be used in this call's Do method. Any
+// pending HTTP request will be aborted if the provided context is
+// canceled.
+func (c *TransferJobsDeleteCall) Context(ctx context.Context) *TransferJobsDeleteCall {
+	c.ctx_ = ctx
+	return c
+}
+
+// Header returns an http.Header that can be modified by the caller to
+// add HTTP headers to the request.
+func (c *TransferJobsDeleteCall) Header() http.Header {
+	if c.header_ == nil {
+		c.header_ = make(http.Header)
+	}
+	return c.header_
+}
+
+func (c *TransferJobsDeleteCall) doRequest(alt string) (*http.Response, error) {
+	reqHeaders := make(http.Header)
+	reqHeaders.Set("x-goog-api-client", "gl-go/"+gensupport.GoVersion()+" gdcl/"+internal.Version)
+	for k, v := range c.header_ {
+		reqHeaders[k] = v
+	}
+	reqHeaders.Set("User-Agent", c.s.userAgent())
+	var body io.Reader = nil
+	c.urlParams_.Set("alt", alt)
+	c.urlParams_.Set("prettyPrint", "false")
+	urls := googleapi.ResolveRelative(c.s.BasePath, "v1/{+jobName}")
+	urls += "?" + c.urlParams_.Encode()
+	req, err := http.NewRequest("DELETE", urls, body)
+	if err != nil {
+		return nil, err
+	}
+	req.Header = reqHeaders
+	googleapi.Expand(req.URL, map[string]string{
+		"jobName": c.jobName,
+	})
+	return gensupport.SendRequest(c.ctx_, c.s.client, req)
+}
+
+// Do executes the "storagetransfer.transferJobs.delete" call.
+// Exactly one of *Empty or error will be non-nil. Any non-2xx status
+// code is an error. Response headers are in either
+// *Empty.ServerResponse.Header or (if a response was returned at all)
+// in error.(*googleapi.Error).Header. Use googleapi.IsNotModified to
+// check whether the returned error was because http.StatusNotModified
+// was returned.
+func (c *TransferJobsDeleteCall) Do(opts ...googleapi.CallOption) (*Empty, error) {
+	gensupport.SetOptions(c.urlParams_, opts...)
+	res, err := c.doRequest("json")
+	if res != nil && res.StatusCode == http.StatusNotModified {
+		if res.Body != nil {
+			res.Body.Close()
+		}
+		return nil, &googleapi.Error{
+			Code:   res.StatusCode,
+			Header: res.Header,
+		}
+	}
+	if err != nil {
+		return nil, err
+	}
+	defer googleapi.CloseBody(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, err
+	}
+	ret := &Empty{
+		ServerResponse: googleapi.ServerResponse{
+			Header:         res.Header,
+			HTTPStatusCode: res.StatusCode,
+		},
+	}
+	target := &ret
+	if err := gensupport.DecodeResponse(target, res); err != nil {
+		return nil, err
+	}
+	return ret, nil
+	// {
+	//   "description": "Deletes a transfer job. Deleting a transfer job sets its status to DELETED.",
+	//   "flatPath": "v1/transferJobs/{transferJobsId}",
+	//   "httpMethod": "DELETE",
+	//   "id": "storagetransfer.transferJobs.delete",
+	//   "parameterOrder": [
+	//     "jobName",
+	//     "projectId"
+	//   ],
+	//   "parameters": {
+	//     "jobName": {
+	//       "description": "Required. The job to delete.",
+	//       "location": "path",
+	//       "pattern": "^transferJobs/.*$",
+	//       "required": true,
+	//       "type": "string"
+	//     },
+	//     "projectId": {
+	//       "description": "Required. The ID of the Google Cloud project that owns the job.",
+	//       "location": "query",
+	//       "required": true,
+	//       "type": "string"
+	//     }
+	//   },
+	//   "path": "v1/{+jobName}",
+	//   "response": {
+	//     "$ref": "Empty"
+	//   },
+	//   "scopes": [
+	//     "https://www.googleapis.com/auth/cloud-platform"
+	//   ]
+	// }
+
+}
+
 // method id "storagetransfer.transferJobs.get":
 
 type TransferJobsGetCall struct {
@@ -3798,10 +3940,10 @@ type TransferJobsRunCall struct {
 	header_               http.Header
 }
 
-// Run: Attempts to start a new TransferOperation for the current
-// TransferJob. A TransferJob has a maximum of one active
-// TransferOperation. If this method is called while a TransferOperation
-// is active, an error will be returned.
+// Run: Starts a new operation for the specified transfer job. A
+// `TransferJob` has a maximum of one active `TransferOperation`. If
+// this method is called while a `TransferOperation` is active, an error
+// is returned.
 //
 // - jobName: The name of the transfer job.
 func (r *TransferJobsService) Run(jobName string, runtransferjobrequest *RunTransferJobRequest) *TransferJobsRunCall {
@@ -3902,7 +4044,7 @@ func (c *TransferJobsRunCall) Do(opts ...googleapi.CallOption) (*Operation, erro
 	}
 	return ret, nil
 	// {
-	//   "description": "Attempts to start a new TransferOperation for the current TransferJob. A TransferJob has a maximum of one active TransferOperation. If this method is called while a TransferOperation is active, an error will be returned.",
+	//   "description": "Starts a new operation for the specified transfer job. A `TransferJob` has a maximum of one active `TransferOperation`. If this method is called while a `TransferOperation` is active, an error is returned.",
 	//   "flatPath": "v1/transferJobs/{transferJobsId}:run",
 	//   "httpMethod": "POST",
 	//   "id": "storagetransfer.transferJobs.run",

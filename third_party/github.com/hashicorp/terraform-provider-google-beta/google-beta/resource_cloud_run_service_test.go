@@ -370,7 +370,7 @@ func TestAccCloudRunService_probes(t *testing.T) {
 		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccCloudRunService_cloudRunServiceWithEmptyTCPStartupProbe(name, project),
+				Config: testAccCloudRunService_cloudRunServiceWithEmptyTCPStartupProbeAndHTTPLivenessProbe(name, project),
 			},
 			{
 				ResourceName:            "google_cloud_run_service.default",
@@ -379,7 +379,7 @@ func TestAccCloudRunService_probes(t *testing.T) {
 				ImportStateVerifyIgnore: []string{"metadata.0.resource_version", "status.0.conditions"},
 			},
 			{
-				Config: testAccCloudRunService_cloudRunServiceUpdateWithTCPStartupProbe(name, project, "2", "1", "5", "2"),
+				Config: testAccCloudRunService_cloudRunServiceUpdateWithTCPStartupProbeAndHTTPLivenessProbe(name, project, "2", "1", "5", "2"),
 			},
 			{
 				ResourceName:            "google_cloud_run_service.default",
@@ -409,7 +409,7 @@ func TestAccCloudRunService_probes(t *testing.T) {
 	})
 }
 
-func testAccCloudRunService_cloudRunServiceWithEmptyTCPStartupProbe(name, project string) string {
+func testAccCloudRunService_cloudRunServiceWithEmptyTCPStartupProbeAndHTTPLivenessProbe(name, project string) string {
 	return fmt.Sprintf(`
 resource "google_cloud_run_service" "default" {
   name     = "%s"
@@ -433,6 +433,9 @@ resource "google_cloud_run_service" "default" {
         startup_probe {
           tcp_socket {}
         }
+        liveness_probe {
+          http_get {}
+        }
       }
     }
   }
@@ -446,7 +449,7 @@ resource "google_cloud_run_service" "default" {
 `, name, project)
 }
 
-func testAccCloudRunService_cloudRunServiceUpdateWithTCPStartupProbe(name, project, delay, timeout, peroid, failure_threshold string) string {
+func testAccCloudRunService_cloudRunServiceUpdateWithTCPStartupProbeAndHTTPLivenessProbe(name, project, delay, timeout, peroid, failure_threshold string) string {
 	return fmt.Sprintf(`
 resource "google_cloud_run_service" "default" {
   name     = "%s"
@@ -476,6 +479,22 @@ resource "google_cloud_run_service" "default" {
             port = 8080
           }
         }
+        liveness_probe {
+          initial_delay_seconds = %s
+          period_seconds = %s
+          timeout_seconds = %s
+          failure_threshold = %s
+          http_get {
+            path = "/some-path"
+            http_headers {
+              name = "User-Agent"
+              value = "magic-modules"
+            }
+            http_headers {
+              name = "Some-Name"
+            }
+          }
+        }
       }
     }
   }
@@ -486,7 +505,7 @@ resource "google_cloud_run_service" "default" {
     ]
   }
 }
-`, name, project, delay, peroid, timeout, failure_threshold)
+`, name, project, delay, peroid, timeout, failure_threshold, delay, peroid, timeout, failure_threshold)
 }
 
 func testAccCloudRunService_cloudRunServiceUpdateWithEmptyHTTPStartupProbe(name, project string) string {

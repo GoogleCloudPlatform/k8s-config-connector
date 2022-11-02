@@ -951,7 +951,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. The list of instance tags applied to all nodes.{% endverbatim %}</p>
+            <p>{% verbatim %}The list of instance tags applied to all nodes.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

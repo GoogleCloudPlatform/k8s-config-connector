@@ -1,19 +1,5 @@
-# Copyright 2022 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_spanner_database.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_spanner_database.go
-index 5c922bdc1..16ba0467e 100644
+index 828f785dc..b10a3a69e 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_spanner_database.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_spanner_database.go
 @@ -188,7 +188,7 @@ update the database's version_retention_period.`,
@@ -22,10 +8,10 @@ index 5c922bdc1..16ba0467e 100644
  				Optional: true,
 -				Default:  true,
 +				Default:  false,
+ 				Description: `Whether or not to allow Terraform to destroy the instance. Unless this field is set to false
+ in Terraform state, a 'terraform destroy' or 'terraform apply' that would delete the instance will fail.`,
  			},
- 			"project": {
- 				Type:     schema.TypeString,
-@@ -591,7 +591,7 @@ func resourceSpannerDatabaseImport(d *schema.ResourceData, meta interface{}) ([]
+@@ -593,7 +593,7 @@ func resourceSpannerDatabaseImport(d *schema.ResourceData, meta interface{}) ([]
  	d.SetId(id)
  
  	// Explicitly set virtual fields to default values on import
@@ -35,7 +21,7 @@ index 5c922bdc1..16ba0467e 100644
  	}
  
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_sql_database_instance.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_sql_database_instance.go
-index 29fd30fb4..de340ed56 100644
+index 8a4a785b3..170e1e1a8 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_sql_database_instance.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_sql_database_instance.go
 @@ -116,7 +116,7 @@ func resourceSqlDatabaseInstance() *schema.Resource {
@@ -47,7 +33,7 @@ index 29fd30fb4..de340ed56 100644
  				Optional:    true,
  				Description: `Used to block Terraform from deleting a SQL Instance. Defaults to true.`,
  			},
-@@ -1539,7 +1539,7 @@ func resourceSqlDatabaseInstanceImport(d *schema.ResourceData, meta interface{})
+@@ -1546,7 +1546,7 @@ func resourceSqlDatabaseInstanceImport(d *schema.ResourceData, meta interface{})
  		return nil, err
  	}
  

@@ -35,7 +35,7 @@ func TestAccVertexAIFeaturestore_vertexAiFeaturestoreExample(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckVertexAIFeaturestoreDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -54,7 +54,6 @@ func TestAccVertexAIFeaturestore_vertexAiFeaturestoreExample(t *testing.T) {
 func testAccVertexAIFeaturestore_vertexAiFeaturestoreExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_vertex_ai_featurestore" "featurestore" {
-  provider = google-beta
   name     = "terraform%{random_suffix}"
   labels = {
     foo = "bar"

@@ -487,6 +487,19 @@ func resourceContainerCluster() *schema.Resource {
 										Default:     "default",
 										Description: `The Google Cloud Platform Service Account to be used by the node VMs.`,
 									},
+									"disk_size": {
+										Type:         schema.TypeInt,
+										Optional:     true,
+										Default:      100,
+										Description:  `Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB.`,
+										ValidateFunc: validation.IntAtLeast(10),
+									},
+									"disk_type": {
+										Type:         schema.TypeString,
+										Optional:     true,
+										Description:  `Type of the disk attached to each node.`,
+										ValidateFunc: validation.StringInSlice([]string{"pd-standard", "pd-ssd", "pd-balanced"}, false),
+									},
 									"image_type": {
 										Type:         schema.TypeString,
 										Optional:     true,
@@ -1446,6 +1459,7 @@ func resourceContainerCluster() *schema.Resource {
 			"datapath_provider": {
 				Type:             schema.TypeString,
 				Optional:         true,
+				ForceNew:         true,
 				Computed:         true,
 				Description:      `The desired datapath provider for this cluster. By default, uses the IPTables-based kube-proxy implementation.`,
 				ValidateFunc:     validation.StringInSlice([]string{"DATAPATH_PROVIDER_UNSPECIFIED", "LEGACY_DATAPATH", "ADVANCED_DATAPATH"}, false),
@@ -2060,7 +2074,6 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 	if err := d.Set("enable_l4_ilb_subsetting", cluster.NetworkConfig.EnableL4ilbSubsetting); err != nil {
 		return fmt.Errorf("Error setting enable_l4_ilb_subsetting: %s", err)
 	}
-
 	if err := d.Set("cost_management_config", flattenManagementConfig(cluster.CostManagementConfig)); err != nil {
 		return fmt.Errorf("Error setting cost_management_config: %s", err)
 	}
@@ -3691,6 +3704,8 @@ func expandAutoProvisioningDefaults(configured interface{}, d *schema.ResourceDa
 	npd := &container.AutoprovisioningNodePoolDefaults{
 		OauthScopes:    convertStringArr(config["oauth_scopes"].([]interface{})),
 		ServiceAccount: config["service_account"].(string),
+		DiskSizeGb:     int64(config["disk_size"].(int)),
+		DiskType:       config["disk_type"].(string),
 		ImageType:      config["image_type"].(string),
 		BootDiskKmsKey: config["boot_disk_kms_key"].(string),
 	}
@@ -4613,6 +4628,8 @@ func flattenAutoProvisioningDefaults(a *container.AutoprovisioningNodePoolDefaul
 	r := make(map[string]interface{})
 	r["oauth_scopes"] = a.OauthScopes
 	r["service_account"] = a.ServiceAccount
+	r["disk_size"] = a.DiskSizeGb
+	r["disk_type"] = a.DiskType
 	r["image_type"] = a.ImageType
 	r["min_cpu_platform"] = a.MinCpuPlatform
 	r["boot_disk_kms_key"] = a.BootDiskKmsKey

@@ -350,6 +350,10 @@ type InstanceSettings struct {
 
 	/* The machine type to use. See tiers for more details and supported versions. Postgres supports only shared-core machine types, and custom machine types such as db-custom-2-13312. See the Custom Machine Type Documentation to learn about specifying custom machine types. */
 	Tier string `json:"tier"`
+
+	/* Immutable. The timezone to be used by the database engine (supported only for SQL Server), in SQL Server timezone format. */
+	// +optional
+	TimeZone *string `json:"timeZone,omitempty"`
 }
 
 type InstanceSqlServerAuditConfig struct {

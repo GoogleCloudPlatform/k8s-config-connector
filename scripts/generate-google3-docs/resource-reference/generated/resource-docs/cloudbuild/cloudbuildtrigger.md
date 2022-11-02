@@ -158,6 +158,7 @@ build:
     - string
     id: string
     name: string
+    script: string
     secretEnv:
     - string
     timeout: string
@@ -1210,6 +1211,17 @@ you attempt to use them.
 If you built an image in a previous build step, it will be stored in the
 host's Docker daemon's cache and is available to use as the name for a
 later build step.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>build.step[].script</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A shell script to be executed in the step. 
+When script is provided, the user cannot specify the entrypoint or args.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

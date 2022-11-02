@@ -54,12 +54,27 @@ func resourceFirebaseWebApp() *schema.Resource {
 
 This identifier should be treated as an opaque token, as the data format is not specified.`,
 			},
+			"app_urls": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Description: `The URLs where the 'WebApp' is hosted.`,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+			},
 			"name": {
 				Type:     schema.TypeString,
 				Computed: true,
 				Description: `The fully qualified resource name of the App, for example:
-
 projects/projectId/webApps/appId`,
+			},
+			"deletion_policy": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Default:  "ABANDON",
+				Description: `Set to 'ABANDON' to allow the WebApp to be untracked from terraform state
+rather than deleted upon 'terraform destroy'. This is useful becaue the WebApp may be
+serving traffic. Set to 'DELETE' to delete the WebApp. Default to 'ABANDON'`,
 			},
 			"project": {
 				Type:     schema.TypeString,
@@ -177,6 +192,12 @@ func resourceFirebaseWebAppRead(d *schema.ResourceData, meta interface{}) error 
 		return handleNotFoundError(err, d, fmt.Sprintf("FirebaseWebApp %q", d.Id()))
 	}
 
+	// Explicitly set virtual fields to default values if unset
+	if _, ok := d.GetOkExists("deletion_policy"); !ok {
+		if err := d.Set("deletion_policy", "ABANDON"); err != nil {
+			return fmt.Errorf("Error setting deletion_policy: %s", err)
+		}
+	}
 	if err := d.Set("project", project); err != nil {
 		return fmt.Errorf("Error reading WebApp: %s", err)
 	}
@@ -188,6 +209,9 @@ func resourceFirebaseWebAppRead(d *schema.ResourceData, meta interface{}) error 
 		return fmt.Errorf("Error reading WebApp: %s", err)
 	}
 	if err := d.Set("app_id", flattenFirebaseWebAppAppId(res["appId"], d, config)); err != nil {
+		return fmt.Errorf("Error reading WebApp: %s", err)
+	}
+	if err := d.Set("app_urls", flattenFirebaseWebAppAppUrls(res["appUrls"], d, config)); err != nil {
 		return fmt.Errorf("Error reading WebApp: %s", err)
 	}
 
@@ -252,10 +276,59 @@ func resourceFirebaseWebAppUpdate(d *schema.ResourceData, meta interface{}) erro
 }
 
 func resourceFirebaseWebAppDelete(d *schema.ResourceData, meta interface{}) error {
-	log.Printf("[WARNING] Firebase WebApp resources"+
-		" cannot be deleted from Google Cloud. The resource %s will be removed from Terraform"+
-		" state, but will still be present on Google Cloud.", d.Id())
-	d.SetId("")
+	config := meta.(*Config)
+	userAgent, err := generateUserAgentString(d, config.userAgent)
+	if err != nil {
+		return err
+	}
+
+	// Handwritten
+	obj := make(map[string]interface{})
+	if d.Get("deletion_policy") == "DELETE" {
+		obj["immediate"] = true
+	} else {
+		fmt.Printf("Skip deleting App %q due to deletion_policy: %q\n", d.Id(), d.Get("deletion_policy"))
+		return nil
+	}
+	// End of Handwritten
+	billingProject := ""
+
+	project, err := getProject(d, config)
+	if err != nil {
+		return fmt.Errorf("Error fetching project for App: %s", err)
+	}
+	billingProject = project
+
+	url, err := replaceVars(d, config, "{{FirebaseBasePath}}{{name}}:remove")
+	if err != nil {
+		return err
+	}
+
+	log.Printf("[DEBUG] Deleting App %q", d.Id())
+
+	// err == nil indicates that the billing_project value was found
+	if bp, err := getBillingProject(d, config); err == nil {
+		billingProject = bp
+	}
+
+	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	if err != nil {
+		return handleNotFoundError(err, d, "App")
+	}
+
+	err = firebaseOperationWaitTime(
+		config, res, project, "Deleting App", userAgent,
+		d.Timeout(schema.TimeoutDelete))
+
+	if err != nil {
+		return err
+	}
+
+	log.Printf("[DEBUG] Finished deleting App %q: %#v", d.Id(), res)
+
+	// This is useful if the Delete operation returns before the Get operation
+	// during post-test destroy shows the completed state of the resource.
+	time.Sleep(5 * time.Second)
 
 	return nil
 }
@@ -281,6 +354,10 @@ func flattenFirebaseWebAppDisplayName(v interface{}, d *schema.ResourceData, con
 }
 
 func flattenFirebaseWebAppAppId(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenFirebaseWebAppAppUrls(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	return v
 }
 

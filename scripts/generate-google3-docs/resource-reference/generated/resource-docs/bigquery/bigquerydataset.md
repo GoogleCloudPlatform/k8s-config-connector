@@ -117,6 +117,7 @@ defaultTableExpirationMs: integer
 description: string
 friendlyName: string
 location: string
+maxTimeTravelHours: string
 projectRef:
   external: string
   name: string
@@ -465,6 +466,16 @@ contains at least two geographic places.
 
 The default value is multi-regional location 'US'.
 Changing this forces a new resource to be created.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maxTimeTravelHours</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Defines the time travel window in hours. The value can be from 48 to 168 hours (2 to 7 days).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

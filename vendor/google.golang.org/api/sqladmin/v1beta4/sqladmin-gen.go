@@ -563,6 +563,10 @@ type BackupRun struct {
 	//   "DELETED" - The backup has been deleted.
 	Status string `json:"status,omitempty"`
 
+	// TimeZone: Backup time zone to prevent restores to an instance with a
+	// different time zone. Now relevant only for SQL Server.
+	TimeZone string `json:"timeZone,omitempty"`
+
 	// Type: The type of this run; can be either "AUTOMATED" or "ON_DEMAND"
 	// or "FINAL". This field defaults to "ON_DEMAND" and is ignored, when
 	// specified for insert requests.
@@ -686,12 +690,12 @@ func (s *BinLogCoordinates) MarshalJSON() ([]byte, error) {
 // CloneContext: Database instance clone context.
 type CloneContext struct {
 	// AllocatedIpRange: The name of the allocated ip range for the private
-	// ip CloudSQL instance. For example: "google-managed-services-default".
-	// If set, the cloned instance ip will be created in the allocated
-	// range. The range name must comply with RFC 1035
-	// (https://tools.ietf.org/html/rfc1035). Specifically, the name must be
-	// 1-63 characters long and match the regular expression a-z
-	// ([-a-z0-9]*[a-z0-9])?. Reserved for future use.
+	// ip Cloud SQL instance. For example:
+	// "google-managed-services-default". If set, the cloned instance ip
+	// will be created in the allocated range. The range name must comply
+	// with RFC 1035 (https://tools.ietf.org/html/rfc1035). Specifically,
+	// the name must be 1-63 characters long and match the regular
+	// expression a-z ([-a-z0-9]*[a-z0-9])?. Reserved for future use.
 	AllocatedIpRange string `json:"allocatedIpRange,omitempty"`
 
 	// BinLogCoordinates: Binary log coordinates, if specified, identify the
@@ -699,6 +703,10 @@ type CloneContext struct {
 	// the source instance is cloned up to the most recent binary log
 	// coordinates.
 	BinLogCoordinates *BinLogCoordinates `json:"binLogCoordinates,omitempty"`
+
+	// DatabaseNames: (SQL Server only) Clone only the specified databases
+	// from the source instance. Clone all databases if empty.
+	DatabaseNames []string `json:"databaseNames,omitempty"`
 
 	// DestinationInstanceName: Name of the Cloud SQL instance to be created
 	// as a clone.
@@ -771,8 +779,6 @@ type ConnectSettings struct {
 	//   "MYSQL_5_5" - The database version is MySQL 5.5.
 	//   "MYSQL_5_6" - The database version is MySQL 5.6.
 	//   "MYSQL_5_7" - The database version is MySQL 5.7.
-	//   "POSTGRES_9_6" - The database version is PostgreSQL 9.6.
-	//   "POSTGRES_11" - The database version is PostgreSQL 11.
 	//   "SQLSERVER_2017_STANDARD" - The database version is SQL Server 2017
 	// Standard.
 	//   "SQLSERVER_2017_ENTERPRISE" - The database version is SQL Server
@@ -780,8 +786,12 @@ type ConnectSettings struct {
 	//   "SQLSERVER_2017_EXPRESS" - The database version is SQL Server 2017
 	// Express.
 	//   "SQLSERVER_2017_WEB" - The database version is SQL Server 2017 Web.
+	//   "POSTGRES_9_6" - The database version is PostgreSQL 9.6.
 	//   "POSTGRES_10" - The database version is PostgreSQL 10.
+	//   "POSTGRES_11" - The database version is PostgreSQL 11.
 	//   "POSTGRES_12" - The database version is PostgreSQL 12.
+	//   "POSTGRES_13" - The database version is PostgreSQL 13.
+	//   "POSTGRES_14" - The database version is PostgreSQL 14.
 	//   "MYSQL_8_0" - The database version is MySQL 8.
 	//   "MYSQL_8_0_18" - The database major version is MySQL 8.0 and the
 	// minor version is 18.
@@ -793,8 +803,8 @@ type ConnectSettings struct {
 	// minor version is 28.
 	//   "MYSQL_8_0_29" - The database major version is MySQL 8.0 and the
 	// minor version is 29.
-	//   "POSTGRES_13" - The database version is PostgreSQL 13.
-	//   "POSTGRES_14" - The database version is PostgreSQL 14.
+	//   "MYSQL_8_0_30" - The database major version is MySQL 8.0 and the
+	// minor version is 30.
 	//   "SQLSERVER_2019_STANDARD" - The database version is SQL Server 2019
 	// Standard.
 	//   "SQLSERVER_2019_ENTERPRISE" - The database version is SQL Server
@@ -992,8 +1002,6 @@ type DatabaseInstance struct {
 	//   "MYSQL_5_5" - The database version is MySQL 5.5.
 	//   "MYSQL_5_6" - The database version is MySQL 5.6.
 	//   "MYSQL_5_7" - The database version is MySQL 5.7.
-	//   "POSTGRES_9_6" - The database version is PostgreSQL 9.6.
-	//   "POSTGRES_11" - The database version is PostgreSQL 11.
 	//   "SQLSERVER_2017_STANDARD" - The database version is SQL Server 2017
 	// Standard.
 	//   "SQLSERVER_2017_ENTERPRISE" - The database version is SQL Server
@@ -1001,8 +1009,12 @@ type DatabaseInstance struct {
 	//   "SQLSERVER_2017_EXPRESS" - The database version is SQL Server 2017
 	// Express.
 	//   "SQLSERVER_2017_WEB" - The database version is SQL Server 2017 Web.
+	//   "POSTGRES_9_6" - The database version is PostgreSQL 9.6.
 	//   "POSTGRES_10" - The database version is PostgreSQL 10.
+	//   "POSTGRES_11" - The database version is PostgreSQL 11.
 	//   "POSTGRES_12" - The database version is PostgreSQL 12.
+	//   "POSTGRES_13" - The database version is PostgreSQL 13.
+	//   "POSTGRES_14" - The database version is PostgreSQL 14.
 	//   "MYSQL_8_0" - The database version is MySQL 8.
 	//   "MYSQL_8_0_18" - The database major version is MySQL 8.0 and the
 	// minor version is 18.
@@ -1014,8 +1026,8 @@ type DatabaseInstance struct {
 	// minor version is 28.
 	//   "MYSQL_8_0_29" - The database major version is MySQL 8.0 and the
 	// minor version is 29.
-	//   "POSTGRES_13" - The database version is PostgreSQL 13.
-	//   "POSTGRES_14" - The database version is PostgreSQL 14.
+	//   "MYSQL_8_0_30" - The database major version is MySQL 8.0 and the
+	// minor version is 30.
 	//   "SQLSERVER_2019_STANDARD" - The database version is SQL Server 2019
 	// Standard.
 	//   "SQLSERVER_2019_ENTERPRISE" - The database version is SQL Server
@@ -1767,8 +1779,6 @@ type Flag struct {
 	//   "MYSQL_5_5" - The database version is MySQL 5.5.
 	//   "MYSQL_5_6" - The database version is MySQL 5.6.
 	//   "MYSQL_5_7" - The database version is MySQL 5.7.
-	//   "POSTGRES_9_6" - The database version is PostgreSQL 9.6.
-	//   "POSTGRES_11" - The database version is PostgreSQL 11.
 	//   "SQLSERVER_2017_STANDARD" - The database version is SQL Server 2017
 	// Standard.
 	//   "SQLSERVER_2017_ENTERPRISE" - The database version is SQL Server
@@ -1776,8 +1786,12 @@ type Flag struct {
 	//   "SQLSERVER_2017_EXPRESS" - The database version is SQL Server 2017
 	// Express.
 	//   "SQLSERVER_2017_WEB" - The database version is SQL Server 2017 Web.
+	//   "POSTGRES_9_6" - The database version is PostgreSQL 9.6.
 	//   "POSTGRES_10" - The database version is PostgreSQL 10.
+	//   "POSTGRES_11" - The database version is PostgreSQL 11.
 	//   "POSTGRES_12" - The database version is PostgreSQL 12.
+	//   "POSTGRES_13" - The database version is PostgreSQL 13.
+	//   "POSTGRES_14" - The database version is PostgreSQL 14.
 	//   "MYSQL_8_0" - The database version is MySQL 8.
 	//   "MYSQL_8_0_18" - The database major version is MySQL 8.0 and the
 	// minor version is 18.
@@ -1789,8 +1803,8 @@ type Flag struct {
 	// minor version is 28.
 	//   "MYSQL_8_0_29" - The database major version is MySQL 8.0 and the
 	// minor version is 29.
-	//   "POSTGRES_13" - The database version is PostgreSQL 13.
-	//   "POSTGRES_14" - The database version is PostgreSQL 14.
+	//   "MYSQL_8_0_30" - The database major version is MySQL 8.0 and the
+	// minor version is 30.
 	//   "SQLSERVER_2019_STANDARD" - The database version is SQL Server 2019
 	// Standard.
 	//   "SQLSERVER_2019_ENTERPRISE" - The database version is SQL Server
@@ -2554,11 +2568,11 @@ func (s *InstancesTruncateLogRequest) MarshalJSON() ([]byte, error) {
 // IpConfiguration: IP Management configuration.
 type IpConfiguration struct {
 	// AllocatedIpRange: The name of the allocated ip range for the private
-	// ip CloudSQL instance. For example: "google-managed-services-default".
-	// If set, the instance ip will be created in the allocated range. The
-	// range name must comply with RFC 1035
-	// (https://tools.ietf.org/html/rfc1035). Specifically, the name must be
-	// 1-63 characters long and match the regular expression
+	// ip Cloud SQL instance. For example:
+	// "google-managed-services-default". If set, the instance ip will be
+	// created in the allocated range. The range name must comply with RFC
+	// 1035 (https://tools.ietf.org/html/rfc1035). Specifically, the name
+	// must be 1-63 characters long and match the regular expression
 	// `[a-z]([-a-z0-9]*[a-z0-9])?.`
 	AllocatedIpRange string `json:"allocatedIpRange,omitempty"`
 
@@ -3456,6 +3470,24 @@ type Settings struct {
 	// Collation: The name of server Instance collation.
 	Collation string `json:"collation,omitempty"`
 
+	// ConnectorEnforcement: Specifies if connections must use Cloud SQL
+	// connectors. Option values include the following: `NOT_REQUIRED`
+	// (Cloud SQL instances can be connected without Cloud SQL Connectors)
+	// and `REQUIRED` (Only allow connections that use Cloud SQL Connectors)
+	// Note that using REQUIRED disables all existing authorized networks.
+	// If this field is not specified when creating a new instance,
+	// NOT_REQUIRED is used. If this field is not specified when patching or
+	// updating an existing instance, it is left unchanged in the instance.
+	//
+	// Possible values:
+	//   "CONNECTOR_ENFORCEMENT_UNSPECIFIED" - The requirement for Cloud SQL
+	// connectors is unknown.
+	//   "NOT_REQUIRED" - Do not require Cloud SQL connectors.
+	//   "REQUIRED" - Require all connections to use Cloud SQL connectors,
+	// including the Cloud SQL Auth Proxy and Cloud SQL Java, Python, and Go
+	// connectors. Note: This disables all existing authorized networks.
+	ConnectorEnforcement string `json:"connectorEnforcement,omitempty"`
+
 	// CrashSafeReplicationEnabled: Configuration specific to read replica
 	// instances. Indicates whether database flags for crash-safe
 	// replication are enabled. This property was only applicable to First
@@ -3568,6 +3600,10 @@ type Settings struct {
 	// Tier: The tier (or machine type) for this instance, for example
 	// `db-custom-1-3840`. WARNING: Changing this restarts the instance.
 	Tier string `json:"tier,omitempty"`
+
+	// TimeZone: Server timezone, relevant only for Cloud SQL for SQL
+	// Server.
+	TimeZone string `json:"timeZone,omitempty"`
 
 	// UserLabels: User-provided labels, represented as a dictionary where
 	// each label is a single key value pair.
@@ -8503,7 +8539,8 @@ type InstancesPatchCall struct {
 	header_          http.Header
 }
 
-// Patch: Updates settings of a Cloud SQL instance. This method supports
+// Patch: Partially updates settings of a Cloud SQL instance by merging
+// the request with the current configuration. This method supports
 // patch semantics.
 //
 //   - instance: Cloud SQL instance ID. This does not include the project
@@ -8609,7 +8646,7 @@ func (c *InstancesPatchCall) Do(opts ...googleapi.CallOption) (*Operation, error
 	}
 	return ret, nil
 	// {
-	//   "description": "Updates settings of a Cloud SQL instance. This method supports patch semantics.",
+	//   "description": "Partially updates settings of a Cloud SQL instance by merging the request with the current configuration. This method supports patch semantics.",
 	//   "flatPath": "sql/v1beta4/projects/{project}/instances/{instance}",
 	//   "httpMethod": "PATCH",
 	//   "id": "sql.instances.patch",

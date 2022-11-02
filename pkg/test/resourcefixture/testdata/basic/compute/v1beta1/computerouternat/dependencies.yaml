@@ -33,7 +33,7 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
-  name: computeaddress-${uniqueId}
+  name: computeaddress-1-${uniqueId}
 spec:
   location: us-central1
 ---
@@ -46,3 +46,17 @@ spec:
   region: us-central1
   networkRef:
     name: computenetwork-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computeaddress-2-${uniqueId}
+spec:
+  location: us-central1
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computeaddress-3-${uniqueId}
+spec:
+  location: us-central1

@@ -455,6 +455,11 @@ type TriggerStep struct {
 	later build step. */
 	Name string `json:"name"`
 
+	/* A shell script to be executed in the step.
+	When script is provided, the user cannot specify the entrypoint or args. */
+	// +optional
+	Script *string `json:"script,omitempty"`
+
 	/* A list of environment variables which are encrypted using
 	a Cloud Key
 	Management Service crypto key. These values must be specified in

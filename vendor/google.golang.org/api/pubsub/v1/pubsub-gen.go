@@ -338,19 +338,24 @@ type Binding struct {
 	// `allUsers`: A special identifier that represents anyone who is on the
 	// internet; with or without a Google account. *
 	// `allAuthenticatedUsers`: A special identifier that represents anyone
-	// who is authenticated with a Google account or a service account. *
-	// `user:{emailid}`: An email address that represents a specific Google
-	// account. For example, `alice@example.com` . *
-	// `serviceAccount:{emailid}`: An email address that represents a
-	// service account. For example,
-	// `my-other-app@appspot.gserviceaccount.com`. * `group:{emailid}`: An
-	// email address that represents a Google group. For example,
-	// `admins@example.com`. * `deleted:user:{emailid}?uid={uniqueid}`: An
-	// email address (plus unique identifier) representing a user that has
-	// been recently deleted. For example,
-	// `alice@example.com?uid=123456789012345678901`. If the user is
-	// recovered, this value reverts to `user:{emailid}` and the recovered
-	// user retains the role in the binding. *
+	// who is authenticated with a Google account or a service account. Does
+	// not include identities that come from external identity providers
+	// (IdPs) through identity federation. * `user:{emailid}`: An email
+	// address that represents a specific Google account. For example,
+	// `alice@example.com` . * `serviceAccount:{emailid}`: An email address
+	// that represents a Google service account. For example,
+	// `my-other-app@appspot.gserviceaccount.com`. *
+	// `serviceAccount:{projectid}.svc.id.goog[{namespace}/{kubernetes-sa}]`:
+	//  An identifier for a Kubernetes service account
+	// (https://cloud.google.com/kubernetes-engine/docs/how-to/kubernetes-service-accounts).
+	// For example, `my-project.svc.id.goog[my-namespace/my-kubernetes-sa]`.
+	// * `group:{emailid}`: An email address that represents a Google group.
+	// For example, `admins@example.com`. *
+	// `deleted:user:{emailid}?uid={uniqueid}`: An email address (plus
+	// unique identifier) representing a user that has been recently
+	// deleted. For example, `alice@example.com?uid=123456789012345678901`.
+	// If the user is recovered, this value reverts to `user:{emailid}` and
+	// the recovered user retains the role in the binding. *
 	// `deleted:serviceAccount:{emailid}?uid={uniqueid}`: An email address
 	// (plus unique identifier) representing a service account that has been
 	// recently deleted. For example,
@@ -396,7 +401,8 @@ func (s *Binding) MarshalJSON() ([]byte, error) {
 
 // CreateSnapshotRequest: Request for the `CreateSnapshot` method.
 type CreateSnapshotRequest struct {
-	// Labels: See Creating and managing labels.
+	// Labels: See Creating and managing labels
+	// (https://cloud.google.com/pubsub/docs/labels).
 	Labels map[string]string `json:"labels,omitempty"`
 
 	// Subscription: Required. The subscription whose backlog the snapshot
@@ -1296,7 +1302,7 @@ type PushConfig struct {
 	// supported values for the `x-goog-version` attribute are: * `v1beta1`:
 	// uses the push format defined in the v1beta1 Pub/Sub API. * `v1` or
 	// `v1beta2`: uses the push format defined in the v1 Pub/Sub API. For
-	// example: attributes { "x-goog-version": "v1" }
+	// example: `attributes { "x-goog-version": "v1" }`
 	Attributes map[string]string `json:"attributes,omitempty"`
 
 	// OidcToken: If specified, Pub/Sub will generate and attach an OIDC JWT
@@ -1670,7 +1676,7 @@ type Subscription struct {
 	// AckDeadlineSeconds: The approximate amount of time (on a best-effort
 	// basis) Pub/Sub waits for the subscriber to acknowledge receipt before
 	// resending the message. In the interval after the message is delivered
-	// and before it is acknowledged, it is considered to be *outstanding*.
+	// and before it is acknowledged, it is considered to be _outstanding_.
 	// During that time period, the message will not be redelivered (on a
 	// best-effort basis). For pull subscriptions, this value is used as the
 	// initial value for the ack deadline. To override this value for a
@@ -1739,7 +1745,8 @@ type Subscription struct {
 	// filtered out.
 	Filter string `json:"filter,omitempty"`
 
-	// Labels: See Creating and managing labels.
+	// Labels: See Creating and managing labels
+	// (https://cloud.google.com/pubsub/docs/labels).
 	Labels map[string]string `json:"labels,omitempty"`
 
 	// MessageRetentionDuration: How long to retain unacknowledged messages
@@ -3662,7 +3669,9 @@ type ProjectsSnapshotsCreateCall struct {
 //     provided in the request, the server will assign a random name for
 //     this snapshot on the same project as the subscription. Note that
 //     for REST API requests, you must specify a name. See the resource
-//     name rules. Format is `projects/{project}/snapshots/{snap}`.
+//     name rules
+//     (https://cloud.google.com/pubsub/docs/admin#resource_names). Format
+//     is `projects/{project}/snapshots/{snap}`.
 func (r *ProjectsSnapshotsService) Create(name string, createsnapshotrequest *CreateSnapshotRequest) *ProjectsSnapshotsCreateCall {
 	c := &ProjectsSnapshotsCreateCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.name = name
@@ -3770,7 +3779,7 @@ func (c *ProjectsSnapshotsCreateCall) Do(opts ...googleapi.CallOption) (*Snapsho
 	//   ],
 	//   "parameters": {
 	//     "name": {
-	//       "description": "Required. User-provided name for this snapshot. If the name is not provided in the request, the server will assign a random name for this snapshot on the same project as the subscription. Note that for REST API requests, you must specify a name. See the resource name rules. Format is `projects/{project}/snapshots/{snap}`.",
+	//       "description": "Required. User-provided name for this snapshot. If the name is not provided in the request, the server will assign a random name for this snapshot on the same project as the subscription. Note that for REST API requests, you must specify a name. See the [resource name rules](https://cloud.google.com/pubsub/docs/admin#resource_names). Format is `projects/{project}/snapshots/{snap}`.",
 	//       "location": "path",
 	//       "pattern": "^projects/[^/]+/snapshots/[^/]+$",
 	//       "required": true,

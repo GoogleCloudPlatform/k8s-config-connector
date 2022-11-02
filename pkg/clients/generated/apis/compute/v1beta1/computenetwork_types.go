@@ -45,7 +45,8 @@ type ComputeNetworkSpec struct {
 	// +optional
 	AutoCreateSubnetworks *bool `json:"autoCreateSubnetworks,omitempty"`
 
-	/*  */
+	/* If set to 'true', default routes ('0.0.0.0/0') will be deleted
+	immediately after network creation. Defaults to 'false'. */
 	// +optional
 	DeleteDefaultRoutesOnCreate *bool `json:"deleteDefaultRoutesOnCreate,omitempty"`
 

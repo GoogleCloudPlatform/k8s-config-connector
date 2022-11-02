@@ -2117,6 +2117,10 @@ type FlexTemplateRuntimeEnvironment struct {
 	// user is given the opportunity to download the heap file.
 	DumpHeapOnOom bool `json:"dumpHeapOnOom,omitempty"`
 
+	// EnableLauncherVmSerialPortLogging: If true serial port logging will
+	// be enabled for the launcher VM.
+	EnableLauncherVmSerialPortLogging bool `json:"enableLauncherVmSerialPortLogging,omitempty"`
+
 	// EnableStreamingEngine: Whether to enable Streaming Engine for the
 	// job.
 	EnableStreamingEngine bool `json:"enableStreamingEngine,omitempty"`
@@ -2478,6 +2482,37 @@ func (s *Histogram) MarshalJSON() ([]byte, error) {
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
 
+// HotKeyDebuggingInfo: Information useful for debugging a hot key
+// detection.
+type HotKeyDebuggingInfo struct {
+	// DetectedHotKeys: Debugging information for each detected hot key.
+	// Keyed by a hash of the key.
+	DetectedHotKeys map[string]HotKeyInfo `json:"detectedHotKeys,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "DetectedHotKeys") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "DetectedHotKeys") to
+	// include in API requests with the JSON null value. By default, fields
+	// with empty values are omitted from API requests. However, any field
+	// with an empty value appearing in NullFields will be sent to the
+	// server as null. It is an error if a field in this list has a
+	// non-empty value. This may be used to include null fields in Patch
+	// requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *HotKeyDebuggingInfo) MarshalJSON() ([]byte, error) {
+	type NoMethod HotKeyDebuggingInfo
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
 // HotKeyDetection: Proto describing a hot key detected on a given
 // WorkItem.
 type HotKeyDetection struct {
@@ -2512,6 +2547,45 @@ type HotKeyDetection struct {
 
 func (s *HotKeyDetection) MarshalJSON() ([]byte, error) {
 	type NoMethod HotKeyDetection
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// HotKeyInfo: Information about a hot key.
+type HotKeyInfo struct {
+	// HotKeyAge: The age of the hot key measured from when it was first
+	// detected.
+	HotKeyAge string `json:"hotKeyAge,omitempty"`
+
+	// Key: A detected hot key that is causing limited parallelism. This
+	// field will be populated only if the following flag is set to true:
+	// "--enable_hot_key_logging".
+	Key string `json:"key,omitempty"`
+
+	// KeyTruncated: If true, then the above key is truncated and cannot be
+	// deserialized. This occurs if the key above is populated and the key
+	// size is >5MB.
+	KeyTruncated bool `json:"keyTruncated,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "HotKeyAge") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "HotKeyAge") to include in
+	// API requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *HotKeyInfo) MarshalJSON() ([]byte, error) {
+	type NoMethod HotKeyInfo
 	raw := NoMethod(*s)
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
@@ -4385,6 +4459,10 @@ type PipelineDescription struct {
 	// pipeline and collections between them.
 	OriginalPipelineTransform []*TransformSummary `json:"originalPipelineTransform,omitempty"`
 
+	// StepNamesHash: A hash value of the submitted pipeline portable graph
+	// step names if exists.
+	StepNamesHash string `json:"stepNamesHash,omitempty"`
+
 	// ForceSendFields is a list of field names (e.g. "DisplayData") to
 	// unconditionally include in API requests. By default, fields with
 	// empty or default values are omitted from API requests. However, any
@@ -6237,6 +6315,9 @@ type StageSummary struct {
 	// cancelled.
 	State string `json:"state,omitempty"`
 
+	// StragglerSummary: Straggler summary for this stage.
+	StragglerSummary *StragglerSummary `json:"stragglerSummary,omitempty"`
+
 	// ForceSendFields is a list of field names (e.g. "EndTime") to
 	// unconditionally include in API requests. By default, fields with
 	// empty or default values are omitted from API requests. However, any
@@ -6380,6 +6461,104 @@ type Step struct {
 
 func (s *Step) MarshalJSON() ([]byte, error) {
 	type NoMethod Step
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// StragglerDebuggingInfo: Information useful for debugging a straggler.
+// Each type will provide specialized debugging information relevant for
+// a particular cause. The StragglerDebuggingInfo will be 1:1 mapping to
+// the StragglerCause enum.
+type StragglerDebuggingInfo struct {
+	// HotKey: Hot key debugging details.
+	HotKey *HotKeyDebuggingInfo `json:"hotKey,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "HotKey") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "HotKey") to include in API
+	// requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *StragglerDebuggingInfo) MarshalJSON() ([]byte, error) {
+	type NoMethod StragglerDebuggingInfo
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// StragglerInfo: Information useful for straggler identification and
+// debugging.
+type StragglerInfo struct {
+	// Causes: The straggler causes, keyed by the string representation of
+	// the StragglerCause enum and contains specialized debugging
+	// information for each straggler cause.
+	Causes map[string]StragglerDebuggingInfo `json:"causes,omitempty"`
+
+	// StartTime: The time when the work item attempt became a straggler.
+	StartTime string `json:"startTime,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "Causes") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "Causes") to include in API
+	// requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *StragglerInfo) MarshalJSON() ([]byte, error) {
+	type NoMethod StragglerInfo
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// StragglerSummary: Summarized straggler identification details.
+type StragglerSummary struct {
+	// StragglerCauseCount: Aggregated counts of straggler causes, keyed by
+	// the string representation of the StragglerCause enum.
+	StragglerCauseCount map[string]string `json:"stragglerCauseCount,omitempty"`
+
+	// TotalStragglerCount: The total count of stragglers.
+	TotalStragglerCount int64 `json:"totalStragglerCount,omitempty,string"`
+
+	// ForceSendFields is a list of field names (e.g. "StragglerCauseCount")
+	// to unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "StragglerCauseCount") to
+	// include in API requests with the JSON null value. By default, fields
+	// with empty values are omitted from API requests. However, any field
+	// with an empty value appearing in NullFields will be sent to the
+	// server as null. It is an error if a field in this list has a
+	// non-empty value. This may be used to include null fields in Patch
+	// requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *StragglerSummary) MarshalJSON() ([]byte, error) {
+	type NoMethod StragglerSummary
 	raw := NoMethod(*s)
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
@@ -7194,6 +7373,10 @@ type WorkItemDetails struct {
 	//   "EXECUTION_STATE_CANCELLED" - Execution of the component was
 	// cancelled.
 	State string `json:"state,omitempty"`
+
+	// StragglerInfo: Information about straggler detections for this work
+	// item.
+	StragglerInfo *StragglerInfo `json:"stragglerInfo,omitempty"`
 
 	// TaskId: Name of this work item.
 	TaskId string `json:"taskId,omitempty"`
@@ -8378,6 +8561,12 @@ func (c *ProjectsJobsAggregatedCall) Location(location string) *ProjectsJobsAggr
 	return c
 }
 
+// Name sets the optional parameter "name": The job name. Optional.
+func (c *ProjectsJobsAggregatedCall) Name(name string) *ProjectsJobsAggregatedCall {
+	c.urlParams_.Set("name", name)
+	return c
+}
+
 // PageSize sets the optional parameter "pageSize": If there are many
 // jobs, limit response to at most this many. The actual number of jobs
 // returned will be the lesser of max_responses and an unspecified
@@ -8545,6 +8734,11 @@ func (c *ProjectsJobsAggregatedCall) Do(opts ...googleapi.CallOption) (*ListJobs
 	//     },
 	//     "location": {
 	//       "description": "The [regional endpoint] (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that contains this job.",
+	//       "location": "query",
+	//       "type": "string"
+	//     },
+	//     "name": {
+	//       "description": "Optional. The job name. Optional.",
 	//       "location": "query",
 	//       "type": "string"
 	//     },
@@ -9310,6 +9504,12 @@ func (c *ProjectsJobsListCall) Location(location string) *ProjectsJobsListCall {
 	return c
 }
 
+// Name sets the optional parameter "name": The job name. Optional.
+func (c *ProjectsJobsListCall) Name(name string) *ProjectsJobsListCall {
+	c.urlParams_.Set("name", name)
+	return c
+}
+
 // PageSize sets the optional parameter "pageSize": If there are many
 // jobs, limit response to at most this many. The actual number of jobs
 // returned will be the lesser of max_responses and an unspecified
@@ -9477,6 +9677,11 @@ func (c *ProjectsJobsListCall) Do(opts ...googleapi.CallOption) (*ListJobsRespon
 	//     },
 	//     "location": {
 	//       "description": "The [regional endpoint] (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that contains this job.",
+	//       "location": "query",
+	//       "type": "string"
+	//     },
+	//     "name": {
+	//       "description": "Optional. The job name. Optional.",
 	//       "location": "query",
 	//       "type": "string"
 	//     },
@@ -12048,6 +12253,12 @@ func (c *ProjectsLocationsJobsListCall) Filter(filter string) *ProjectsLocations
 	return c
 }
 
+// Name sets the optional parameter "name": The job name. Optional.
+func (c *ProjectsLocationsJobsListCall) Name(name string) *ProjectsLocationsJobsListCall {
+	c.urlParams_.Set("name", name)
+	return c
+}
+
 // PageSize sets the optional parameter "pageSize": If there are many
 // jobs, limit response to at most this many. The actual number of jobs
 // returned will be the lesser of max_responses and an unspecified
@@ -12219,6 +12430,11 @@ func (c *ProjectsLocationsJobsListCall) Do(opts ...googleapi.CallOption) (*ListJ
 	//       "description": "The [regional endpoint] (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that contains this job.",
 	//       "location": "path",
 	//       "required": true,
+	//       "type": "string"
+	//     },
+	//     "name": {
+	//       "description": "Optional. The job name. Optional.",
+	//       "location": "query",
 	//       "type": "string"
 	//     },
 	//     "pageSize": {

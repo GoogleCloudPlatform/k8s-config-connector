@@ -599,6 +599,11 @@ func (in *InstanceSettings) DeepCopyInto(out *InstanceSettings) {
 		*out = new(InstanceSqlServerAuditConfig)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.TimeZone != nil {
+		in, out := &in.TimeZone, &out.TimeZone
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
