@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.96.0
+    cnrm.cloud.google.com/version: 1.97.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -268,15 +268,48 @@ spec:
               memorySizeGb:
                 description: Redis memory size in GiB.
                 type: integer
+              persistenceConfig:
+                description: Maintenance policy for an instance.
+                properties:
+                  persistenceMode:
+                    description: "Optional. Controls whether Persistence features
+                      are enabled. If not provided, the existing value will be used.\n\n-
+                      DISABLED: \tPersistence is disabled for the instance, and any
+                      existing snapshots are deleted.\n- RDB: RDB based Persistence
+                      is enabled. Possible values: [\"DISABLED\", \"RDB\"]."
+                    type: string
+                  rdbNextSnapshotTime:
+                    description: |-
+                      Output only. The next time that a snapshot attempt is scheduled to occur.
+                      A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up
+                      to nine fractional digits.
+                      Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".
+                    type: string
+                  rdbSnapshotPeriod:
+                    description: "Optional. Available snapshot periods for scheduling.\n\n-
+                      ONE_HOUR:\tSnapshot every 1 hour.\n- SIX_HOURS:\tSnapshot every
+                      6 hours.\n- TWELVE_HOURS:\tSnapshot every 12 hours.\n- TWENTY_FOUR_HOURS:\tSnapshot
+                      every 24 horus. Possible values: [\"ONE_HOUR\", \"SIX_HOURS\",
+                      \"TWELVE_HOURS\", \"TWENTY_FOUR_HOURS\"]."
+                    type: string
+                  rdbSnapshotStartTime:
+                    description: |-
+                      Optional. Date and time that the first snapshot was/will be attempted,
+                      and to which future snapshots will be aligned. If not provided,
+                      the current time will be used.
+                      A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution
+                      and up to nine fractional digits.
+                      Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".
+                    type: string
+                type: object
               readReplicasMode:
-                description: "Optional. Read replica mode. Can only be specified when
-                  trying to create the instance.\nIf not set, Memorystore Redis backend
-                  will default to READ_REPLICAS_DISABLED.\n- READ_REPLICAS_DISABLED:
-                  If disabled, read endpoint will not be provided and the \ninstance
-                  cannot scale up or down the number of replicas.\n- READ_REPLICAS_ENABLED:
-                  If enabled, read endpoint will be provided and the instance \ncan
-                  scale up and down the number of replicas. Possible values: [\"READ_REPLICAS_DISABLED\",
-                  \"READ_REPLICAS_ENABLED\"]."
+                description: |-
+                  Optional. Read replica mode. Can only be specified when trying to create the instance.
+                  If not set, Memorystore Redis backend will default to READ_REPLICAS_DISABLED.
+                  - READ_REPLICAS_DISABLED: If disabled, read endpoint will not be provided and the
+                  instance cannot scale up or down the number of replicas.
+                  - READ_REPLICAS_ENABLED: If enabled, read endpoint will be provided and the instance
+                  can scale up and down the number of replicas. Possible values: ["READ_REPLICAS_DISABLED", "READ_REPLICAS_ENABLED"].
                 type: string
               redisConfigs:
                 additionalProperties:
@@ -287,19 +320,20 @@ spec:
                   https://cloud.google.com/memorystore/docs/redis/reference/rest/v1/projects.locations.instances#Instance.FIELDS.redis_configs.
                 type: object
               redisVersion:
-                description: "The version of Redis software. If not provided, latest
-                  supported\nversion will be used. Please check the API documentation
-                  linked \nat the top for the latest valid values."
+                description: |-
+                  The version of Redis software. If not provided, latest supported
+                  version will be used. Please check the API documentation linked
+                  at the top for the latest valid values.
                 type: string
               region:
                 description: Immutable. The name of the Redis region of the instance.
                 type: string
               replicaCount:
-                description: "Optional. The number of replica nodes. The valid range
-                  for the Standard Tier with \nread replicas enabled is [1-5] and
-                  defaults to 2. If read replicas are not enabled\nfor a Standard
-                  Tier instance, the only valid value is 1 and the default is 1. \nThe
-                  valid value for basic tier is 0 and the default is also 0."
+                description: |-
+                  Optional. The number of replica nodes. The valid range for the Standard Tier with
+                  read replicas enabled is [1-5] and defaults to 2. If read replicas are not enabled
+                  for a Standard Tier instance, the only valid value is 1 and the default is 1.
+                  The valid value for basic tier is 0 and the default is also 0.
                 type: integer
               reservedIpRange:
                 description: |-
@@ -315,11 +349,11 @@ spec:
                   is used as the default.
                 type: string
               secondaryIpRange:
-                description: "Optional. Additional IP range for node placement. Required
-                  when enabling read replicas on\nan existing instance. For DIRECT_PEERING
-                  mode value must be a CIDR range of size /28, or\n\"auto\". For PRIVATE_SERVICE_ACCESS
-                  mode value must be the name of an allocated address \nrange associated
-                  with the private service access connection, or \"auto\"."
+                description: |-
+                  Optional. Additional IP range for node placement. Required when enabling read replicas on
+                  an existing instance. For DIRECT_PEERING mode value must be a CIDR range of size /28, or
+                  "auto". For PRIVATE_SERVICE_ACCESS mode value must be the name of an allocated address
+                  range associated with the private service access connection, or "auto".
                 type: string
               tier:
                 description: |-
@@ -420,9 +454,9 @@ spec:
                   will exhibit some lag behind the primary. Write requests must target 'host'.
                 type: string
               readEndpointPort:
-                description: "Output only. The port number of the exposed readonly
-                  redis endpoint. Standard tier only. \nWrite requests should target
-                  'port'."
+                description: |-
+                  Output only. The port number of the exposed readonly redis endpoint. Standard tier only.
+                  Write requests should target 'port'.
                 type: integer
               serverCaCerts:
                 description: List of server CA certificates for the instance.

@@ -23,4 +23,5 @@ spec:
   location: "us-west2"
   dictionary:
     cloudStoragePath:
-      path: "gs://aaa-dont-delete-kcc-dlp-testing/dictionary-1"
+      # Replace "${DLP_TEST_BUCKET?}" with your storage bucket name
+      path: "gs://${DLP_TEST_BUCKET?}/dictionary-1"

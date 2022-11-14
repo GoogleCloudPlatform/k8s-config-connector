@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.96.0
+    cnrm.cloud.google.com/version: 1.97.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -144,22 +144,43 @@ spec:
                         type: object
                     type: object
                 type: object
+              passwordPolicy:
+                properties:
+                  allowedFailedAttempts:
+                    description: Number of failed attempts allowed before the user
+                      get locked.
+                    type: integer
+                  enableFailedAttemptsCheck:
+                    description: If true, the check that will lock user after too
+                      many failed login attempts will be enabled.
+                    type: boolean
+                  enablePasswordVerification:
+                    description: If true, the user must specify the current password
+                      before changing the password. This flag is supported only for
+                      MySQL.
+                    type: boolean
+                  passwordExpirationDuration:
+                    description: Password expiration duration with one week grace
+                      period.
+                    type: string
+                  status:
+                    items:
+                      properties:
+                        locked:
+                          description: If true, user does not have login privileges.
+                          type: boolean
+                        passwordExpirationTime:
+                          description: Password expiration duration with one week
+                            grace period.
+                          type: string
+                      type: object
+                    type: array
+                type: object
               resourceID:
                 description: Immutable. Optional. The name of the resource. Used for
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
-              sqlServerUserDetails:
-                properties:
-                  disabled:
-                    description: If the user has been disabled.
-                    type: boolean
-                  serverRoles:
-                    description: The server roles for this user in the database.
-                    items:
-                      type: string
-                    type: array
-                type: object
               type:
                 description: |-
                   Immutable. The user type. It determines the method to authenticate the user during login.
@@ -203,6 +224,19 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              sqlServerUserDetails:
+                items:
+                  properties:
+                    disabled:
+                      description: If the user has been disabled.
+                      type: boolean
+                    serverRoles:
+                      description: The server roles for this user in the database.
+                      items:
+                        type: string
+                      type: array
+                  type: object
+                type: array
             type: object
         required:
         - spec
