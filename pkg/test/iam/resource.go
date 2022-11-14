@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
+	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -87,9 +88,14 @@ func FixtureSupportsIAMAuditConfigs(t *testing.T, smLoader *servicemappingloader
 	if dclmetadata.IsDCLBasedResourceKind(fixture.GVK, serviceMetadataLoader) {
 		return false
 	}
+	project := testgcp.GCPProject{
+		ProjectID:     "project-name",
+		ProjectNumber: 1234,
+	}
+	ns := project.ProjectID
 	unstruct := test.ToUnstructWithNamespace(t,
-		testcontroller.ReplaceTestVars(t, fixture.Create, "testid", "project-name"),
-		"project-name")
+		testcontroller.ReplaceTestVars(t, fixture.Create, "testid", project),
+		ns)
 	rc, err := smLoader.GetResourceConfig(unstruct)
 	if err != nil {
 		t.Fatalf("error getting service mapping: %v", err)
@@ -114,9 +120,14 @@ func FixtureSupportsIAMPolicy(t *testing.T, smLoader *servicemappingloader.Servi
 		}
 		return supportsIAM
 	}
+	project := testgcp.GCPProject{
+		ProjectID:     "project-name",
+		ProjectNumber: 1234,
+	}
+	ns := project.ProjectID
 	unstruct := test.ToUnstructWithNamespace(t,
-		testcontroller.ReplaceTestVars(t, fixture.Create, "testid", "project-name"),
-		"project-name")
+		testcontroller.ReplaceTestVars(t, fixture.Create, "testid", project),
+		ns)
 	rc, err := smLoader.GetResourceConfig(unstruct)
 	if err != nil {
 		t.Fatalf("error getting service mapping: %v", err)

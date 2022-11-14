@@ -21,6 +21,7 @@ import (
 	"path"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"sync"
 	"testing"
@@ -210,9 +211,11 @@ func LoadSamples(t *testing.T) []Sample {
 
 func loadSamplesOntoUnstructs(t *testing.T, regex *regexp.Regexp) []Sample {
 	t.Helper()
+	project := testgcp.GetDefaultProject(t)
+
 	samples := make([]Sample, 0)
 	sampleNamesToFiles := mapSampleNamesToFilePaths(t, regex)
-	subVars := newSubstitutionVariables(t)
+	subVars := newSubstitutionVariables(t, project)
 	for sample, files := range sampleNamesToFiles {
 		resources := make([]*unstructured.Unstructured, 0)
 		for _, f := range files {
@@ -262,11 +265,11 @@ func mapSampleNamesToFilePaths(t *testing.T, regex *regexp.Regexp) map[string][]
 	return samples
 }
 
-func newSubstitutionVariables(t *testing.T) map[string]string {
+func newSubstitutionVariables(t *testing.T, project testgcp.GCPProject) map[string]string {
 	subs := make(map[string]string)
-	subs["${HOST_PROJECT_ID?}"] = testgcp.GetDefaultProjectID(t)
-	subs["${PROJECT_ID?}"] = testgcp.GetDefaultProjectID(t)
-	subs["${PROJECT_NUMBER?}"] = testgcp.GetDefaultProjectNumber(t)
+	subs["${HOST_PROJECT_ID?}"] = project.ProjectID
+	subs["${PROJECT_ID?}"] = project.ProjectID
+	subs["${PROJECT_NUMBER?}"] = strconv.FormatInt(project.ProjectNumber, 10)
 	subs["${FOLDER_ID?}"] = testgcp.GetFolderID(t)
 	subs["${ORG_ID?}"] = testgcp.GetOrgID(t)
 	subs["${BILLING_ACCOUNT_ID?}"] = testgcp.GetBillingAccountID(t)

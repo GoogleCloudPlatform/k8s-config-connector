@@ -80,9 +80,9 @@ func TestClusterModeManager(t *testing.T) {
 	stop := testcontroller.StartMgr(t, mgr)
 	defer stop()
 	basicPubSubFixture := getBasicPubSubSchemaFixture(t)
-	projectId := testgcp.GetDefaultProjectID(t)
+	project := testgcp.GetDefaultProject(t)
 	for i := 0; i < 2; i++ {
-		tstContext := testrunner.NewTestContext(t, basicPubSubFixture, projectId)
+		tstContext := testrunner.NewTestContext(t, basicPubSubFixture, project)
 		testcontroller.EnsureNamespaceExistsT(t, mgr.GetClient(), tstContext.CreateUnstruct.GetNamespace())
 		if err := mgr.GetClient().Create(context.TODO(), tstContext.CreateUnstruct); err != nil {
 			t.Fatalf("error creating '%v': %v", tstContext.CreateUnstruct.GetKind(), err)
@@ -96,9 +96,9 @@ func TestClusterModeManager(t *testing.T) {
 // the second is reconciled.
 func TestNamespacedModeManager(t *testing.T) {
 	basicPubSubFixture := getBasicPubSubSchemaFixture(t)
-	projectId := testgcp.GetDefaultProjectID(t)
-	tstContext1 := testrunner.NewTestContext(t, basicPubSubFixture, projectId)
-	tstContext2 := testrunner.NewTestContext(t, basicPubSubFixture, projectId)
+	project := testgcp.GetDefaultProject(t)
+	tstContext1 := testrunner.NewTestContext(t, basicPubSubFixture, project)
+	tstContext2 := testrunner.NewTestContext(t, basicPubSubFixture, project)
 	controllersCfg1 := kccmanager.Config{
 		ManagerOptions: manager.Options{
 			// disable prometheus metrics as by default, the metrics server binds to the same port in all instances

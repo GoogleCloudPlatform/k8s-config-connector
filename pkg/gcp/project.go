@@ -18,7 +18,6 @@ import (
 	"context"
 	"fmt"
 	"os/exec"
-	"strconv"
 	"strings"
 
 	"golang.org/x/oauth2/google"
@@ -50,20 +49,4 @@ func getGCloudDefaultProjectID() (string, error) {
 		return "", fmt.Errorf("error getting default project: gcloud config value for 'project' is empty")
 	}
 	return strings.TrimSpace(string(bytes)), nil
-}
-
-func GetDefaultProjectNumber() (string, error) {
-	projectID, err := getGCloudDefaultProjectID()
-	if err != nil {
-		return "", err
-	}
-	client, err := NewCloudResourceManagerClient(context.TODO())
-	if err != nil {
-		return "", fmt.Errorf("error creating resource manager client: %v", err)
-	}
-	project, err := client.Projects.Get(projectID).Do()
-	if err != nil {
-		return "", fmt.Errorf("error getting project with id '%v': %v", projectID, err)
-	}
-	return strconv.FormatInt(project.ProjectNumber, 10), nil
 }

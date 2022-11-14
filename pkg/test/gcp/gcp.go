@@ -79,14 +79,38 @@ func GetDefaultProjectID(t *testing.T) string {
 	return projectID
 }
 
-// GetDefaultProjectNumber returns the project number of user's configured default GCP project.
-func GetDefaultProjectNumber(t *testing.T) string {
+type GCPProject struct {
+	ProjectID     string
+	ProjectNumber int64
+}
+
+// GetDefaultProject returns the ID of user's configured default GCP project.
+func GetDefaultProject(t *testing.T) GCPProject {
 	t.Helper()
-	projectNumber, err := gcp.GetDefaultProjectNumber()
+	ctx := context.TODO()
+
+	projectID, err := gcp.GetDefaultProjectID()
 	if err != nil {
-		t.Fatalf("error retrieving gcloud sdk credentials: %v", err)
+		t.Fatalf("error getting default project: %v", err)
 	}
-	return projectNumber
+	projectNumber, err := GetProjectNumber(ctx, projectID)
+	if err != nil {
+		t.Fatalf("error getting project number for %q: %v", projectID, err)
+	}
+	return GCPProject{ProjectID: projectID, ProjectNumber: projectNumber}
+}
+
+func GetProjectNumber(ctx context.Context, projectID string) (int64, error) {
+	client, err := gcp.NewCloudResourceManagerClient(ctx)
+	if err != nil {
+		return 0, fmt.Errorf("error creating resource manager client: %w", err)
+	}
+	project, err := client.Projects.Get(projectID).Do()
+	if err != nil {
+		return 0, fmt.Errorf("error getting project with id %q: %w", projectID, err)
+	}
+
+	return project.ProjectNumber, nil
 }
 
 // GetDefaultServiceAccount returns the service account used to access the user's configured default GCP project.

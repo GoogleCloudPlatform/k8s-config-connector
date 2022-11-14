@@ -86,13 +86,13 @@ func RunAllWithDependenciesCreatedButNotObject(t *testing.T, mgr manager.Manager
 }
 
 func RunAll(t *testing.T, mgr manager.Manager, shouldRunFunc ShouldRunFunc, testCaseFunc TestCaseFunc) {
-	projectId := testgcp.GetDefaultProjectID(t)
+	project := testgcp.GetDefaultProject(t)
 	shouldRun := func(resourceFixture resourcefixture.ResourceFixture) bool {
 		return shouldRunFunc(resourceFixture, mgr)
 	}
 	testFunc := func(t *testing.T, fixture resourcefixture.ResourceFixture) {
 		systemContext := newSystemContext(t, mgr)
-		testContext := NewTestContext(t, fixture, projectId)
+		testContext := NewTestContext(t, fixture, project)
 		setupNamespaces(t, testContext, systemContext)
 		testCaseFunc(t, testContext, systemContext)
 	}
@@ -100,9 +100,9 @@ func RunAll(t *testing.T, mgr manager.Manager, shouldRunFunc ShouldRunFunc, test
 }
 
 func RunSpecific(t *testing.T, fixture []resourcefixture.ResourceFixture, testCaseFunc func(t *testing.T, testContext TestContext)) {
-	projectId := testgcp.GetDefaultProjectID(t)
+	project := testgcp.GetDefaultProject(t)
 	testFunc := func(t *testing.T, fixture resourcefixture.ResourceFixture) {
-		testContext := NewTestContext(t, fixture, projectId)
+		testContext := NewTestContext(t, fixture, project)
 		testCaseFunc(t, testContext)
 	}
 	resourcefixture.RunSpecificTests(t, fixture, testFunc)
@@ -111,20 +111,20 @@ func RunSpecific(t *testing.T, fixture []resourcefixture.ResourceFixture, testCa
 // NewTestContext takes a resource fixture and returns a filled out TestContext
 // The resources in the fixture are converted to unstructured.Unstructured and their namespaces are set equal to a
 // unique generated id.
-func NewTestContext(t *testing.T, fixture resourcefixture.ResourceFixture, projectId string) TestContext {
+func NewTestContext(t *testing.T, fixture resourcefixture.ResourceFixture, project testgcp.GCPProject) TestContext {
 	testId := testvariable.NewUniqueId()
-	initialUnstruct := bytesToUnstructured(t, fixture.Create, testId, projectId)
+	initialUnstruct := bytesToUnstructured(t, fixture.Create, testId, project)
 	name := k8s.GetNamespacedName(initialUnstruct)
 	var updateUnstruct *unstructured.Unstructured
 	if fixture.Update != nil {
-		updateUnstruct = bytesToUnstructured(t, fixture.Update, testId, projectId)
+		updateUnstruct = bytesToUnstructured(t, fixture.Update, testId, project)
 	}
 	var dependencyUnstructs []*unstructured.Unstructured
 	if fixture.Dependencies != nil {
 		dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
 		dependencyUnstructs = make([]*unstructured.Unstructured, 0, len(dependencyYamls))
 		for _, dependBytes := range dependencyYamls {
-			depUnstruct := bytesToUnstructured(t, dependBytes, testId, projectId)
+			depUnstruct := bytesToUnstructured(t, dependBytes, testId, project)
 			dependencyUnstructs = append(dependencyUnstructs, depUnstruct)
 		}
 	}
@@ -138,9 +138,9 @@ func NewTestContext(t *testing.T, fixture resourcefixture.ResourceFixture, proje
 	}
 }
 
-func bytesToUnstructured(t *testing.T, bytes []byte, testId string, projectId string) *unstructured.Unstructured {
+func bytesToUnstructured(t *testing.T, bytes []byte, testId string, project testgcp.GCPProject) *unstructured.Unstructured {
 	t.Helper()
-	updatedBytes := testcontroller.ReplaceTestVars(t, bytes, testId, projectId)
+	updatedBytes := testcontroller.ReplaceTestVars(t, bytes, testId, project)
 	return test.ToUnstructWithNamespace(t, updatedBytes, testId)
 }
 

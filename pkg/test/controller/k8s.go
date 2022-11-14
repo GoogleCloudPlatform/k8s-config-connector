@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -141,12 +142,12 @@ func WaitForUnstructDeleteToFinish(t *testing.T, kubeClient client.Client, origU
 }
 
 // ReplaceTestVars replaces all occurrences of placeholder strings e.g. ${uniqueId} in a given byte slice.
-func ReplaceTestVars(t *testing.T, b []byte, uniqueId, projectId string) []byte {
+func ReplaceTestVars(t *testing.T, b []byte, uniqueId string, project testgcp.GCPProject) []byte {
 	s := string(b)
 	s = strings.Replace(s, "${uniqueId}", uniqueId, -1)
-	s = strings.Replace(s, "${projectId}", projectId, -1)
+	s = strings.Replace(s, "${projectId}", project.ProjectID, -1)
 	if strings.Contains(s, "${projectNumber}") {
-		projectNumber := testgcp.GetDefaultProjectNumber(t)
+		projectNumber := strconv.FormatInt(project.ProjectNumber, 10)
 		s = strings.Replace(s, "${projectNumber}", projectNumber, -1)
 	}
 	// Handle placeholder strings for folder id and org id specially because they are pure numbers while yaml marshalling expects strings.

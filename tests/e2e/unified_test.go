@@ -49,7 +49,7 @@ func TestAllInSeries(t *testing.T) {
 		t.Skip("RUN_E2E not set; skipping")
 	}
 
-	projectId := testgcp.GetDefaultProjectID(t)
+	project := testgcp.GetDefaultProject(t)
 
 	ctx := signals.SetupSignalHandler()
 	ctx, cancel := context.WithCancel(ctx)
@@ -100,13 +100,13 @@ func TestAllInSeries(t *testing.T) {
 				Name: fixture.Name,
 			}
 
-			initialUnstruct := bytesToUnstructured(t, fixture.Create, testID, projectId)
+			initialUnstruct := bytesToUnstructured(t, fixture.Create, testID, project)
 			s.Resources = append(s.Resources, initialUnstruct)
 
 			if fixture.Dependencies != nil {
 				dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
 				for _, dependBytes := range dependencyYamls {
-					depUnstruct := bytesToUnstructured(t, dependBytes, testID, projectId)
+					depUnstruct := bytesToUnstructured(t, dependBytes, testID, project)
 					s.Resources = append(s.Resources, depUnstruct)
 				}
 			}
@@ -131,8 +131,8 @@ func TestAllInSeries(t *testing.T) {
 	}
 }
 
-func bytesToUnstructured(t *testing.T, bytes []byte, testID string, projectId string) *unstructured.Unstructured {
+func bytesToUnstructured(t *testing.T, bytes []byte, testID string, project testgcp.GCPProject) *unstructured.Unstructured {
 	t.Helper()
-	updatedBytes := testcontroller.ReplaceTestVars(t, bytes, testID, projectId)
+	updatedBytes := testcontroller.ReplaceTestVars(t, bytes, testID, project)
 	return test.ToUnstructWithNamespace(t, updatedBytes, testID)
 }
