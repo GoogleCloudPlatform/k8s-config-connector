@@ -11,8 +11,23 @@ insertText: |
     columnFamily: \${3:family1}
     instanceRef:
       name: \${4:bigtablegcpolicy-dep}
-    mode: \${5:INTERSECTION}
-    maxAge:
-    - duration: \${6:24h}
-    maxVersion:
-    - number: \${7:10}
+    gcRules: |-
+      \${5:[
+        "mode": "union",
+        "rules": [
+          [
+            "max_age": "15h"
+          ],
+          [
+            "mode": "intersection",
+            "rules": [
+              [
+                "max_age": "2h"
+              ],
+              [
+                "max_version": 2
+              ]
+            ]
+          ]
+        ]
+      ]}

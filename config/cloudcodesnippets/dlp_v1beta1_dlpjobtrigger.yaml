@@ -1,0 +1,44 @@
+label: Config Connector DLPJobTrigger
+markdownDescription: Creates yaml for a DLPJobTrigger resource
+insertText: |
+  apiVersion: dlp.cnrm.cloud.google.com/v1beta1
+  kind: DLPJobTrigger
+  metadata:
+    name: \${1:dlpjobtrigger-name}
+  spec:
+    projectRef:
+      external: \${2:projects/[PROJECT_ID?]}
+    triggers:
+    - schedule:
+        recurrencePeriodDuration: \${3:86400s}
+    status: \${4:HEALTHY}
+    inspectJob:
+      storageConfig:
+        bigQueryOptions:
+          tableReference:
+            projectRef:
+              external: \${5:projects/[PROJECT_ID?]}
+            datasetRef:
+              name: \${6:dlpjobtriggerdepbigqueryjobtrigger}
+            tableRef:
+              name: \${7:dlpjobtriggerdepbigqueryjobtrigger}
+          identifyingFields:
+          - name: \${8:sample-field}
+          rowsLimit: \${9:1}
+          sampleMethod: \${10:TOP}
+          excludedFields:
+          - name: \${11:excluded-field}
+      actions:
+      - saveFindings:
+          outputConfig:
+            outputSchema: \${12:BASIC_COLUMNS}
+            table:
+              projectRef:
+                external: \${13:projects/[PROJECT_ID?]}
+              datasetRef:
+                name: \${14:dlpjobtriggerdepbigqueryjobtrigger}
+              tableRef:
+                name: \${15:dlpjobtriggerdepbigqueryjobtrigger}
+      - pubSub:
+          topicRef:
+            name: \${16:dlpjobtrigger-dep-bigqueryjobtrigger}

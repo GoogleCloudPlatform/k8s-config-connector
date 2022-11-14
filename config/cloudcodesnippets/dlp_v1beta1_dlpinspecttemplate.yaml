@@ -36,7 +36,7 @@ insertText: |
           name: \${17:AGE}
         dictionary:
           cloudStoragePath:
-            path: \${18:gs://aaa-dont-delete-dcl-dlp-testing/dictionary-1}
+            path: \${18:gs://[DLP_TEST_BUCKET?]/dictionary-1}
       - infoType:
           name: \${19:HOME_ADDRESS}
         storedType:
@@ -71,7 +71,7 @@ insertText: |
             matchingType: \${32:MATCHING_TYPE_FULL_MATCH}
             dictionary:
               cloudStoragePath:
-                path: \${33:gs://aaa-dont-delete-dcl-dlp-testing/dictionary-1}
+                path: \${33:gs://[DLP_TEST_BUCKET?]/dictionary-1}
         - exclusionRule:
             matchingType: \${34:MATCHING_TYPE_FULL_MATCH}
             regex:

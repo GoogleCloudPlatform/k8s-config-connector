@@ -11,7 +11,7 @@ insertText: |
     location: \${3:us-west2}
     largeCustomDictionary:
       outputPath:
-        path: \${4:gs://aaa-dont-delete-kcc-dlp-testing/large-custom-dictionary-2}
+        path: \${4:gs://[DLP_TEST_BUCKET?]/large-custom-dictionary-2}
       bigQueryField:
         table:
           projectRef:
