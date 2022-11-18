@@ -37,6 +37,7 @@ import (
 	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/configcontroller/v1beta1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/container/v1beta1"
 	containeranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/containeranalysis/v1beta1"
+	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datacatalog/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataflow/v1beta1"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/datafusion/v1beta1"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/dataproc/v1beta1"
@@ -101,6 +102,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	configcontrollerv1beta1.AddToScheme,
 	containerv1beta1.AddToScheme,
 	containeranalysisv1beta1.AddToScheme,
+	datacatalogv1beta1.AddToScheme,
 	dataflowv1beta1.AddToScheme,
 	datafusionv1beta1.AddToScheme,
 	dataprocv1beta1.AddToScheme,

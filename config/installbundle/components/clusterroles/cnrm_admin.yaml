@@ -188,6 +188,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - datacatalog.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - dataflow.cnrm.cloud.google.com
   resources:
   - '*'

@@ -24,6 +24,7 @@ COPY pkg/    pkg/
 COPY cmd/    cmd/
 COPY vendor/ vendor/
 COPY scripts/generate-third-party-licenses scripts/generate-third-party-licenses
+COPY scripts/resource-autogen scripts/resource-autogen
 COPY go.mod go.mod
 COPY go.sum go.sum
 

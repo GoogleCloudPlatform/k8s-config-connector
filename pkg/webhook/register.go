@@ -80,7 +80,7 @@ func GetCommonWebhookConfigs() ([]WebhookConfig, error) {
 	serviceMetadataLoader := metadata.New()
 	allGVKs := supportedgvks.All(smLoader, serviceMetadataLoader)
 	allResourcesRules := getRulesFromResources(allGVKs)
-	dynamicResourcesRules := getRulesFromResources(supportedgvks.DynamicTypes(smLoader, serviceMetadataLoader))
+	dynamicResourcesRules := getRulesFromResources(supportedgvks.AllDynamicTypes(smLoader, serviceMetadataLoader))
 	handwrittenIamResourcesRules := getRulesFromResources(supportedgvks.BasedOnHandwrittenIAMTypes())
 	resourcesWithOverridesRules := getRulesForResourcesWithCustomValidation(allGVKs)
 	whCfgs := []WebhookConfig{

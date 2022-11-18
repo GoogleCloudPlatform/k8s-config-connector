@@ -67,6 +67,15 @@ func snakeCaseToUpperCamelCase(s string) string {
 	return ret
 }
 
+func SnakeCaseToLowerCase(s string) string {
+	split := strings.Split(s, "_")
+	ret := ""
+	for _, v := range split {
+		ret += v
+	}
+	return ret
+}
+
 // AsSnakeCase returns the given string converted to lowercase snake_case. If the input is already snake_case, no
 // change is made. Any transitions in the input from lowercase to uppercase are interpreted as camelCase-style word
 // transitions, and are replaced with an underscore.
@@ -134,4 +143,9 @@ func AppendStrAsNewParagraph(base, str string) string {
 		return str
 	}
 	return base + "\n\n" + str
+}
+
+func IsPascalCase(s string) bool {
+	sampleRegex := regexp.MustCompile("^[A-Z][a-z]*([A-Z][a-z]*)*$")
+	return sampleRegex.Match([]byte(s))
 }

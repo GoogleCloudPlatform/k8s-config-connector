@@ -43,3 +43,67 @@ func TestAsSnakeCase(t *testing.T) {
 		})
 	}
 }
+
+func TestSnakeCaseToLowerCase(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected string
+	}{
+		{
+			input:    "snake_case_input",
+			expected: "snakecaseinput",
+		},
+		{
+			input:    "input",
+			expected: "input",
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.input, func(t *testing.T) {
+			output := SnakeCaseToLowerCase(tc.input)
+			if tc.expected != output {
+				t.Errorf("error parsing snake case to lower case: got %v, want %v", output, tc.expected)
+			}
+		})
+	}
+}
+
+func TestIsPascalCase(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected bool
+	}{
+		{
+			input:    "PrivateCA",
+			expected: true,
+		},
+		{
+			input:    "CAPool",
+			expected: true,
+		},
+		{
+			input:    "IAM",
+			expected: true,
+		},
+		{
+			input:    "Bigtable",
+			expected: true,
+		},
+		{
+			input:    "bigquery",
+			expected: false,
+		},
+		{
+			input:    "MD5",
+			expected: false,
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.input, func(t *testing.T) {
+			output := IsPascalCase(tc.input)
+			if tc.expected != output {
+				t.Errorf("error checking if the input is pascal case: got %v, want %v", output, tc.expected)
+			}
+		})
+	}
+}

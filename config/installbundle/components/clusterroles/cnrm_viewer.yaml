@@ -127,6 +127,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - datacatalog.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - dataflow.cnrm.cloud.google.com
   resources:
   - '*'

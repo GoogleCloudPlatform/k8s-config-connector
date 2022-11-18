@@ -151,7 +151,7 @@ func main() {
 		log.Fatalf("error creating a DCL schema loader: %v", err)
 	}
 	serviceMetadataLoader = dclmetadata.New()
-	for _, gvk := range supportedgvks.All(smLoader, serviceMetadataLoader) {
+	for _, gvk := range supportedgvks.ManualResources(smLoader, serviceMetadataLoader) {
 		if err := generateDocForGVK(gvk, smLoader); err != nil {
 			log.Fatalf("error generating doc for GVK %v: %v", gvk, err)
 		}
@@ -600,7 +600,7 @@ func atLeastOneFieldHasRequiredWhenParentPresentRequirementLevel(desc fielddesc.
 
 func referencesSupportedByIAMPolicy(smLoader *servicemappingloader.ServiceMappingLoader) ([]iamPolicyReference, error) {
 	refs := make([]iamPolicyReference, 0)
-	for _, gvk := range supportedgvks.BasedOnServiceMappings(smLoader) {
+	for _, gvk := range supportedgvks.BasedOnManualServiceMappings(smLoader) {
 		rcs, err := smLoader.GetResourceConfigs(gvk)
 		if err != nil {
 			return nil, fmt.Errorf("error getting resource configs for GVK %v: %v", gvk, err)
@@ -654,7 +654,7 @@ func referencesSupportedByIAMPolicy(smLoader *servicemappingloader.ServiceMappin
 
 func referencesSupportedByIAMPolicyMember(smLoader *servicemappingloader.ServiceMappingLoader) ([]iamPolicyMemberReference, error) {
 	refs := make([]iamPolicyMemberReference, 0)
-	for _, gvk := range supportedgvks.BasedOnServiceMappings(smLoader) {
+	for _, gvk := range supportedgvks.BasedOnManualServiceMappings(smLoader) {
 		rcs, err := smLoader.GetResourceConfigs(gvk)
 		if err != nil {
 			return nil, fmt.Errorf("error getting resource configs for GVK %v: %v", gvk, err)
@@ -702,7 +702,7 @@ func referencesSupportedByIAMPolicyMember(smLoader *servicemappingloader.Service
 
 func referencesSupportedByIAMAuditConfig(smLoader *servicemappingloader.ServiceMappingLoader) ([]iamAuditConfigReference, error) {
 	refs := make([]iamAuditConfigReference, 0)
-	for _, gvk := range supportedgvks.BasedOnServiceMappings(smLoader) {
+	for _, gvk := range supportedgvks.BasedOnManualServiceMappings(smLoader) {
 		rcs, err := smLoader.GetResourceConfigs(gvk)
 		if err != nil {
 			return nil, fmt.Errorf("error getting resource configs for GVK %v: %v", gvk, err)

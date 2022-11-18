@@ -95,7 +95,7 @@ vet:
 generate:
 	# Don't run go generate on `pkg/clients/generated` in the normal development flow due to high latency.
 	# This path will be covered by `generate-go-client` target specifically.
-	go generate $$(go list ./pkg/... ./cmd/... | grep -v ./pkg/clients/generated)
+	go generate $$(go list ./pkg/... ./cmd/... ./scripts/resource-autogen/... | grep -v ./pkg/clients/generated)
 	make fmt
 
 # Build the docker images

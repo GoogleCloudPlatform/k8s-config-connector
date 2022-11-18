@@ -52,7 +52,7 @@ func TestNoResourceIsDoubleDeclared(t *testing.T) {
 		t.Fatalf("error creating new service mapping loader: %v", err)
 	}
 	serviceMetadataLoader := dclmetadata.New()
-	tfBasedResources := supportedgvks.BasedOnServiceMappings(smLoader)
+	tfBasedResources := supportedgvks.BasedOnAllServiceMappings(smLoader)
 	dclBasedResources := supportedgvks.BasedOnDCL(serviceMetadataLoader)
 	var u []string
 	resourceMap := make(map[string]bool)

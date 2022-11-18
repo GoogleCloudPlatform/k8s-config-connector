@@ -40,6 +40,7 @@ import (
 	configcontrollerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/configcontroller/v1beta1"
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/container/v1beta1"
 	containeranalysisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/containeranalysis/v1beta1"
+	datacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datacatalog/v1beta1"
 	dataflowv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataflow/v1beta1"
 	datafusionv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/datafusion/v1beta1"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/dataproc/v1beta1"
@@ -100,6 +101,7 @@ type Interface interface {
 	ConfigcontrollerV1beta1() configcontrollerv1beta1.ConfigcontrollerV1beta1Interface
 	ContainerV1beta1() containerv1beta1.ContainerV1beta1Interface
 	ContaineranalysisV1beta1() containeranalysisv1beta1.ContaineranalysisV1beta1Interface
+	DatacatalogV1beta1() datacatalogv1beta1.DatacatalogV1beta1Interface
 	DataflowV1beta1() dataflowv1beta1.DataflowV1beta1Interface
 	DatafusionV1beta1() datafusionv1beta1.DatafusionV1beta1Interface
 	DataprocV1beta1() dataprocv1beta1.DataprocV1beta1Interface
@@ -159,6 +161,7 @@ type Clientset struct {
 	configcontrollerV1beta1     *configcontrollerv1beta1.ConfigcontrollerV1beta1Client
 	containerV1beta1            *containerv1beta1.ContainerV1beta1Client
 	containeranalysisV1beta1    *containeranalysisv1beta1.ContaineranalysisV1beta1Client
+	datacatalogV1beta1          *datacatalogv1beta1.DatacatalogV1beta1Client
 	dataflowV1beta1             *dataflowv1beta1.DataflowV1beta1Client
 	datafusionV1beta1           *datafusionv1beta1.DatafusionV1beta1Client
 	dataprocV1beta1             *dataprocv1beta1.DataprocV1beta1Client
@@ -272,6 +275,11 @@ func (c *Clientset) ContainerV1beta1() containerv1beta1.ContainerV1beta1Interfac
 // ContaineranalysisV1beta1 retrieves the ContaineranalysisV1beta1Client
 func (c *Clientset) ContaineranalysisV1beta1() containeranalysisv1beta1.ContaineranalysisV1beta1Interface {
 	return c.containeranalysisV1beta1
+}
+
+// DatacatalogV1beta1 retrieves the DatacatalogV1beta1Client
+func (c *Clientset) DatacatalogV1beta1() datacatalogv1beta1.DatacatalogV1beta1Interface {
+	return c.datacatalogV1beta1
 }
 
 // DataflowV1beta1 retrieves the DataflowV1beta1Client
@@ -568,6 +576,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.datacatalogV1beta1, err = datacatalogv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.dataflowV1beta1, err = dataflowv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -756,6 +768,7 @@ func New(c rest.Interface) *Clientset {
 	cs.configcontrollerV1beta1 = configcontrollerv1beta1.New(c)
 	cs.containerV1beta1 = containerv1beta1.New(c)
 	cs.containeranalysisV1beta1 = containeranalysisv1beta1.New(c)
+	cs.datacatalogV1beta1 = datacatalogv1beta1.New(c)
 	cs.dataflowV1beta1 = dataflowv1beta1.New(c)
 	cs.datafusionV1beta1 = datafusionv1beta1.New(c)
 	cs.dataprocV1beta1 = dataprocv1beta1.New(c)
