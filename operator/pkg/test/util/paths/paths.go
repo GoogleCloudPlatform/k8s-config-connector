@@ -18,25 +18,41 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"github.com/golang/glog"
 )
 
-const (
-	operatorSrcRoot = "github.com/GoogleCloudPlatform/k8s-config-connector/operator"
-)
-
-func GetOperatorSrcRoot() (string, error) {
+func getGitRoot() (string, error) {
 	dir, err := os.Getwd()
 	if err != nil {
-		return "", fmt.Errorf("error getting working directory: %v", err)
+		return "", fmt.Errorf("error getting working directory: %w", err)
 	}
-	if idx := strings.Index(dir, operatorSrcRoot); idx != -1 {
-		return dir[0 : idx+len(operatorSrcRoot)], nil
+
+	for {
+		p := filepath.Join(dir, ".git")
+		_, err := os.Stat(p)
+		if err != nil {
+			if !os.IsNotExist(err) {
+				return "", fmt.Errorf("error getting stat of %q: %w", p, err)
+			}
+		}
+		if err == nil {
+			return dir, nil
+		}
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			return "", fmt.Errorf("unable to locate repo root in working directory %q", dir)
+		}
+		dir = parent
 	}
-	return "", fmt.Errorf("unable to locate operator source root '%v' in working directory '%v'",
-		operatorSrcRoot, dir)
+}
+
+func GetOperatorSrcRoot() (string, error) {
+	gitRoot, err := getGitRoot()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(gitRoot, "operator"), nil
 }
 
 func GetOperatorCRDsPath() string {

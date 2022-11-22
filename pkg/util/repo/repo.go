@@ -20,26 +20,38 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
-	"strings"
 	"testing"
 
 	"github.com/golang/glog"
 )
 
-const (
-	repoName = "github.com/GoogleCloudPlatform/k8s-config-connector"
-)
-
-func GetRoot() (string, error) {
+func getGitRoot() (string, error) {
 	dir, err := os.Getwd()
 	if err != nil {
-		return "", fmt.Errorf("error getting working directory: %v", err)
+		return "", fmt.Errorf("error getting working directory: %w", err)
 	}
-	if idx := strings.Index(dir, repoName); idx != -1 {
-		return dir[0 : idx+len(repoName)], nil
+
+	for {
+		p := filepath.Join(dir, ".git")
+		_, err := os.Stat(p)
+		if err != nil {
+			if !os.IsNotExist(err) {
+				return "", fmt.Errorf("error getting stat of %q: %w", p, err)
+			}
+		}
+		if err == nil {
+			return dir, nil
+		}
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			return "", fmt.Errorf("unable to locate repo root in working directory %q", dir)
+		}
+		dir = parent
 	}
-	return "", fmt.Errorf("unable to locate repo root '%v' in working directory '%v'",
-		repoName, dir)
+}
+
+func GetRoot() (string, error) {
+	return getGitRoot()
 }
 
 func GetRootOrLogFatal() string {
