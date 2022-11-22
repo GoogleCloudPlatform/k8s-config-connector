@@ -22,6 +22,7 @@ ENV GOFLAGS "-mod=vendor"
 WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
 COPY pkg/    pkg/
 COPY cmd/    cmd/
+COPY config/ config/
 COPY vendor/ vendor/
 COPY scripts/generate-third-party-licenses scripts/generate-third-party-licenses
 COPY scripts/resource-autogen scripts/resource-autogen

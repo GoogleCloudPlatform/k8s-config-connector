@@ -16,13 +16,10 @@ package servicemappingloader
 
 import (
 	"fmt"
-	"io"
-	"io/ioutil"
-	"path"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/config/servicemappings"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/embed"
 	autogenloader "github.com/GoogleCloudPlatform/k8s-config-connector/scripts/resource-autogen/servicemapping/servicemappingloader"
 
 	"github.com/ghodss/yaml"
@@ -177,15 +174,9 @@ func getLocationalityOfResource(u *unstructured.Unstructured) (string, error) {
 }
 
 func GetServiceMappings() ([]v1alpha1.ServiceMapping, error) {
-	baseDirName := "/"
-	smDir, err := embed.Assets.Open(baseDirName)
+	keys, err := servicemappings.AllKeys()
 	if err != nil {
-		return nil, fmt.Errorf("error reading files in ServiceMapping directory: %v", err)
-	}
-	defer smDir.Close()
-	files, err := smDir.Readdir(0)
-	if err != nil {
-		return nil, fmt.Errorf("error reading files in ServiceMapping directory: %v", err)
+		return nil, fmt.Errorf("error listing servicemappings: %w", err)
 	}
 
 	autoGenSMMap, err := autogenloader.GetServiceMappingMap()
@@ -194,9 +185,8 @@ func GetServiceMappings() ([]v1alpha1.ServiceMapping, error) {
 	}
 
 	serviceMappings := make([]v1alpha1.ServiceMapping, 0)
-	for _, file := range files {
-		smPath := path.Join(baseDirName, file.Name())
-		sm, err := fileToServiceMapping(smPath)
+	for _, key := range keys {
+		sm, err := fileToServiceMapping(key)
 		if err != nil {
 			return nil, err
 		}
@@ -228,27 +218,22 @@ func GetServiceMappings() ([]v1alpha1.ServiceMapping, error) {
 	return serviceMappings, nil
 }
 
-func fileToServiceMapping(filePath string) (*v1alpha1.ServiceMapping, error) {
-	file, err := embed.Assets.Open(filePath)
+func fileToServiceMapping(key string) (*v1alpha1.ServiceMapping, error) {
+	b, err := servicemappings.ServiceMapping(key)
 	if err != nil {
-		return nil, fmt.Errorf("error opening file '%v': %v", filePath, err)
+		return nil, fmt.Errorf("error reading servicemapping %q: %w", key, err)
 	}
-	defer file.Close()
-	sm, err := readerToServiceMapping(file)
+	sm, err := parseServiceMapping(b)
 	if err != nil {
-		return nil, fmt.Errorf("error reading file '%v' to service mapping: %v", filePath, err)
+		return nil, fmt.Errorf("error parsing %q to service mapping: %w", key, err)
 	}
 	return sm, nil
 }
 
-func readerToServiceMapping(r io.Reader) (*v1alpha1.ServiceMapping, error) {
-	bytes, err := ioutil.ReadAll(r)
-	if err != nil {
-		return nil, fmt.Errorf("error reading file: %v", err)
-	}
+func parseServiceMapping(b []byte) (*v1alpha1.ServiceMapping, error) {
 	var sm v1alpha1.ServiceMapping
-	if err := yaml.Unmarshal(bytes, &sm); err != nil {
-		return nil, fmt.Errorf("error unmarshaling byte to service mapping: %v", err)
+	if err := yaml.Unmarshal(b, &sm); err != nil {
+		return nil, fmt.Errorf("error unmarshaling byte to service mapping: %w", err)
 	}
 	return &sm, nil
 }

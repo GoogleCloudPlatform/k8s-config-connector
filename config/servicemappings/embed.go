@@ -12,27 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//go:build integration
-// +build integration
-
-package main
+package servicemappings
 
 import (
+	"embed"
 	"fmt"
-	"log"
-	"net/http"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/embed"
-	cnrmvfsgen "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/vfsgen"
-	"github.com/shurcooL/vfsgen"
 )
 
-func main() {
-	var inputFS http.FileSystem = cnrmvfsgen.ConsistentModTimeFileSystem{
-		HttpFS: embed.AssetsDir,
-	}
-	err := vfsgen.Generate(inputFS, embed.VfsgenOptions)
+//go:embed *.yaml
+var servicemappings embed.FS
+
+func ServiceMapping(key string) ([]byte, error) {
+	b, err := servicemappings.ReadFile(key)
 	if err != nil {
-		log.Fatalln(fmt.Sprintf("error generating embedded service mappings: %v", err))
+		return nil, fmt.Errorf("error reading embedded file %q: %w", key, err)
 	}
+	return b, nil
+}
+
+func AllKeys() ([]string, error) {
+	p := "."
+	entries, err := servicemappings.ReadDir(p)
+	if err != nil {
+		return nil, fmt.Errorf("error reading embedded directory %q: %w", p, err)
+	}
+	var keys []string
+	for _, entry := range entries {
+		keys = append(keys, entry.Name())
+	}
+	return keys, nil
 }
