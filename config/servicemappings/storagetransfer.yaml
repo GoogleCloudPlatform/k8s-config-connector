@@ -27,7 +27,7 @@ spec:
     serverGeneratedIDField: "name"
     resourceID:
       targetField: name
-      valuteTemplate: "transferJobs/{{value}}"
+      valueTemplate: "transferJobs/{{value}}"
     skipImport: true
     # NOTE: this resource's import ID is inconsistent, as the underlying API does not support the
     # traditional "projects/{{project}}/{{collection}}/{{id}} relative resource name format. The

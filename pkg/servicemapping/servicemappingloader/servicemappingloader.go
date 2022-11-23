@@ -23,9 +23,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	autogenloader "github.com/GoogleCloudPlatform/k8s-config-connector/scripts/resource-autogen/servicemapping/servicemappingloader"
 
-	"github.com/ghodss/yaml"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"sigs.k8s.io/yaml"
 )
 
 type ServiceMappingLoader struct {
@@ -237,7 +237,7 @@ func fileToServiceMapping(key string) (*v1alpha1.ServiceMapping, error) {
 
 func parseServiceMapping(b []byte) (*v1alpha1.ServiceMapping, error) {
 	var sm v1alpha1.ServiceMapping
-	if err := yaml.Unmarshal(b, &sm); err != nil {
+	if err := yaml.UnmarshalStrict(b, &sm); err != nil {
 		return nil, fmt.Errorf("error unmarshaling byte to service mapping: %w", err)
 	}
 	return &sm, nil

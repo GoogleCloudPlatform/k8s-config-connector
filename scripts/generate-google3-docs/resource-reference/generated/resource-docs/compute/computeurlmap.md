@@ -769,7 +769,7 @@ the host / authority header is suffixed with -shadow.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `ComputeBackendService` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeBackendService` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1000,7 +1000,7 @@ backendServiceWeight.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `ComputeBackendService` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeBackendService` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1955,7 +1955,7 @@ the host / authority header is suffixed with -shadow.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `ComputeBackendService` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeBackendService` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2186,7 +2186,7 @@ backendServiceWeight.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `ComputeBackendService` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeBackendService` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

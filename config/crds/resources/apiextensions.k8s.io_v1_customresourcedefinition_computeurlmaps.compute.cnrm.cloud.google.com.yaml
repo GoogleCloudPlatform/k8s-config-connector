@@ -196,8 +196,8 @@ spec:
                           - external
                         properties:
                           external:
-                            description: 'Allowed value: The `name` field of a `ComputeBackendService`
-                              resource.'
+                            description: 'Allowed value: The `selfLink` field of a
+                              `ComputeBackendService` resource.'
                             type: string
                           name:
                             description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -327,8 +327,8 @@ spec:
                             - external
                           properties:
                             external:
-                              description: 'Allowed value: The `name` field of a `ComputeBackendService`
-                                resource.'
+                              description: 'Allowed value: The `selfLink` field of
+                                a `ComputeBackendService` resource.'
                               type: string
                             name:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -797,8 +797,8 @@ spec:
                                 - external
                               properties:
                                 external:
-                                  description: 'Allowed value: The `name` field of
-                                    a `ComputeBackendService` resource.'
+                                  description: 'Allowed value: The `selfLink` field
+                                    of a `ComputeBackendService` resource.'
                                   type: string
                                 name:
                                   description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -931,7 +931,7 @@ spec:
                                   - external
                                 properties:
                                   external:
-                                    description: 'Allowed value: The `name` field
+                                    description: 'Allowed value: The `selfLink` field
                                       of a `ComputeBackendService` resource.'
                                     type: string
                                   name:

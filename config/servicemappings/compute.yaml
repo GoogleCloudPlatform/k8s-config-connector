@@ -2383,7 +2383,7 @@ spec:
             group: compute.cnrm.cloud.google.com
             version: v1beta1
             kind: ComputeBackendService
-          target_field: self_link
+          targetField: self_link
         - tfField: default_route_action.weighted_backend_services.backend_service
           key: backendServiceRef
           description: |-
@@ -2395,7 +2395,7 @@ spec:
             group: compute.cnrm.cloud.google.com
             version: v1beta1
             kind: ComputeBackendService
-          target_field: self_link
+          targetField: self_link
         - tfField: path_matcher.default_service
           description: |-
             The default service to use if none of the pathRules defined by this
@@ -2425,7 +2425,7 @@ spec:
             group: compute.cnrm.cloud.google.com
             version: v1beta1
             kind: ComputeBackendService
-          target_field: self_link
+          targetField: self_link
         - tfField: path_matcher.default_route_action.weighted_backend_services.backend_service
           key: backendServiceRef
           description: |-
@@ -2437,7 +2437,7 @@ spec:
             group: compute.cnrm.cloud.google.com
             version: v1beta1
             kind: ComputeBackendService
-          target_field: self_link
+          targetField: self_link
         - tfField: path_matcher.path_rule.service
           description: |-
             The backend service to which traffic is directed if this rule is
@@ -2474,7 +2474,7 @@ spec:
             group: compute.cnrm.cloud.google.com
             version: v1beta1
             kind: ComputeBackendService
-          target_field: self_link
+          targetField: self_link
         - tfField: path_matcher.path_rule.route_action.weighted_backend_services.backend_service
           description: |-
             Required. The default backend service resource. Before forwarding
@@ -2494,7 +2494,7 @@ spec:
             group: compute.cnrm.cloud.google.com
             version: v1beta1
             kind: ComputeBackendService
-          target_field: self_link
+          targetField: self_link
         - tfField: path_matcher.route_rules.route_action.weighted_backend_services.backend_service
           description: |-
             Required. The default backend service resource. Before forwarding

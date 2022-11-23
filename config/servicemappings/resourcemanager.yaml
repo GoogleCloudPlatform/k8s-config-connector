@@ -189,8 +189,6 @@ spec:
         - tfField: parent
           types:
             - key: projectRef
-              description: |-
-                A project on which the lien is placed.
               parent: true
               valueTemplate: projects/{{value}}
               targetField: "number"
