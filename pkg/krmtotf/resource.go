@@ -110,7 +110,7 @@ func (r *Resource) ValidateResourceIDIfSupported() error {
 	return nil
 }
 
-func (r *Resource) ConstructServerGeneratedIDInStatusFromResourceID() (string, error) {
+func (r *Resource) ConstructServerGeneratedIDInStatusFromResourceID(c client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (string, error) {
 	resourceID, foundInSpec, err := unstructured.NestedString(r.Spec, k8s.ResourceIDFieldName)
 	if err != nil {
 		return "", fmt.Errorf("error getting '%s': %w",
@@ -127,7 +127,7 @@ func (r *Resource) ConstructServerGeneratedIDInStatusFromResourceID() (string, e
 	}
 
 	resourceID, err = ResolveValueTemplate(
-		r.ResourceConfig.ResourceID.ValueTemplate, resourceID, r, nil, nil)
+		r.ResourceConfig.ResourceID.ValueTemplate, resourceID, r, c, smLoader)
 	if err != nil {
 		return "", fmt.Errorf("error expanding resource ID: %w", err)
 	}
@@ -241,7 +241,7 @@ func (r *Resource) GetServerGeneratedID() (string, error) {
 	}
 
 	if SupportsResourceIDField(&r.ResourceConfig) && IsResourceIDFieldServerGenerated(&r.ResourceConfig) {
-		id, err := extractValueSegmentFromResolvedTemplate(idInStatus,
+		id, err := extractValueSegmentFromIDInStatus(idInStatus,
 			r.ResourceConfig.ResourceID.ValueTemplate)
 		if err != nil {
 			return "", fmt.Errorf("error getting server-generated "+

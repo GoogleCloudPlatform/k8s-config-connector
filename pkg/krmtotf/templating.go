@@ -231,24 +231,41 @@ func getValueFromReference(refConfig *corekccv1alpha1.ReferenceConfig, r *Resour
 	return ret, true, nil
 }
 
-func extractValueSegmentFromResolvedTemplate(resolved, template string) (string, error) {
+func extractValueSegmentFromIDInStatus(idInStatus, template string) (string, error) {
 	if template == "" {
-		return resolved, nil
+		return idInStatus, nil
 	}
 
 	// Convert the template to be a compilable regular expression.
 	template = strings.ReplaceAll(template, "{{value}}", "([^/]+)")
+
+	// Template starting with the parent field value may contain additional
+	// slashes that are not in the template.
+	// E.g. DataCatalogPolicyTag has resource ID template:
+	// "{{taxonomy}}/policyTags/{{value}}", however the value of the parent
+	// field, 'spec.taxonomy', is "projects/test-project/locations/us/taxonomies/tid",
+	// which contains additional slashes that are not captured in the template.
+	if strings.HasPrefix(template, "{{") {
+		re := regexp.MustCompile(`^({{[a-z]([a-z_]*[a-z])*}})/.*$`)
+		matched := re.FindStringSubmatch(template)
+		if len(matched) == 0 {
+			return "", fmt.Errorf("error extracting the parent field name from resource ID template %v", template)
+		}
+		parentField := matched[1]
+		template = strings.ReplaceAll(template, parentField, "[^/](.*[^/])*")
+	}
+
 	template = fieldRegex.ReplaceAllString(template, "[^/]+")
 	template = fmt.Sprintf("%s%s%s", "^", template, "$")
 
 	// Extract out the resourceID from the value.
 	templateRegex := regexp.MustCompile(template)
-	subMatches := templateRegex.FindStringSubmatch(resolved)
+	subMatches := templateRegex.FindStringSubmatch(idInStatus)
 	if len(subMatches) < 2 {
 		return "", fmt.Errorf("error extracting out the value segment "+
-			"from the resolved template '%s' using template '%s'", resolved,
+			"from the idInStatus template '%s' using template '%s'", idInStatus,
 			template)
 	}
 
-	return subMatches[1], nil
+	return subMatches[len(subMatches)-1], nil
 }

@@ -21,4 +21,6 @@
 
 package v1beta1
 
+type DataCatalogPolicyTagExpansion interface{}
+
 type DataCatalogTaxonomyExpansion interface{}

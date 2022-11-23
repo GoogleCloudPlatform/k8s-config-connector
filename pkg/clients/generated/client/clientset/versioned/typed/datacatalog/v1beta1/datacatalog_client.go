@@ -31,12 +31,17 @@ import (
 
 type DatacatalogV1beta1Interface interface {
 	RESTClient() rest.Interface
+	DataCatalogPolicyTagsGetter
 	DataCatalogTaxonomiesGetter
 }
 
 // DatacatalogV1beta1Client is used to interact with features provided by the datacatalog.cnrm.cloud.google.com group.
 type DatacatalogV1beta1Client struct {
 	restClient rest.Interface
+}
+
+func (c *DatacatalogV1beta1Client) DataCatalogPolicyTags(namespace string) DataCatalogPolicyTagInterface {
+	return newDataCatalogPolicyTags(c, namespace)
 }
 
 func (c *DatacatalogV1beta1Client) DataCatalogTaxonomies(namespace string) DataCatalogTaxonomyInterface {

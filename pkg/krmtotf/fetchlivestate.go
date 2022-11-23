@@ -127,7 +127,7 @@ func WithFieldsPresetForRead(imported map[string]interface{}, r *Resource, kubeC
 		return nil, fmt.Errorf("error presetting mutable but unreadable fields for read: %v", err)
 	}
 	ret = withDirectives(ret, r)
-	ret, err = withStatusFields(ret, r)
+	ret, err = withStatusFields(ret, r, kubeClient, smLoader)
 	if err != nil {
 		return nil, fmt.Errorf("error presetting status fields for read: %v", err)
 	}
@@ -318,7 +318,7 @@ func withDirectives(imported map[string]interface{}, r *Resource) map[string]int
 	return ret
 }
 
-func withStatusFields(imported map[string]interface{}, r *Resource) (map[string]interface{}, error) {
+func withStatusFields(imported map[string]interface{}, r *Resource, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (map[string]interface{}, error) {
 	ret := deepcopy.MapStringInterface(imported)
 	tfStatus, err := KRMObjectToTFObject(r.Status, r.TFResource)
 	if err != nil {
@@ -329,7 +329,7 @@ func withStatusFields(imported map[string]interface{}, r *Resource) (map[string]
 	}
 
 	if SupportsResourceIDField(&r.ResourceConfig) && IsResourceIDFieldServerGenerated(&r.ResourceConfig) {
-		idInStatus, err := r.ConstructServerGeneratedIDInStatusFromResourceID()
+		idInStatus, err := r.ConstructServerGeneratedIDInStatusFromResourceID(kubeClient, smLoader)
 		if err != nil {
 			return nil, fmt.Errorf("error syncing the server-generated ID: %v", err)
 		}

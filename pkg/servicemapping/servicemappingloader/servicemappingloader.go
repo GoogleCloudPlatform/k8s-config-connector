@@ -16,6 +16,7 @@ package servicemappingloader
 
 import (
 	"fmt"
+	"sort"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/servicemappings"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -204,6 +205,10 @@ func GetServiceMappings() ([]v1alpha1.ServiceMapping, error) {
 					sm.Spec.Resources = append(sm.Spec.Resources, rc)
 				}
 			}
+
+			sort.Slice(sm.Spec.Resources, func(i, j int) bool {
+				return sm.Spec.Resources[i].Name < sm.Spec.Resources[j].Name
+			})
 
 			delete(autoGenSMMap, sm.Name)
 		}

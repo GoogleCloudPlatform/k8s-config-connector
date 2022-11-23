@@ -191,7 +191,7 @@ func getResourceIDIfSupported(resource *Resource, status map[string]interface{})
 				resource.Kind, resource.Name, resource.Namespace))
 		}
 
-		resourceID, err := extractValueSegmentFromResolvedTemplate(
+		resourceID, err := extractValueSegmentFromIDInStatus(
 			serverGeneratedIDFromStatus,
 			resource.ResourceConfig.ResourceID.ValueTemplate)
 		if err != nil {

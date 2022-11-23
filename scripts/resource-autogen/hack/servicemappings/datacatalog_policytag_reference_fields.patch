@@ -1,0 +1,24 @@
+diff --git a/scripts/resource-autogen/generated/servicemappings/datacatalog.yaml b/scripts/resource-autogen/generated/servicemappings/datacatalog.yaml
+index eed2a018b..8e7e1fa36 100644
+--- a/scripts/resource-autogen/generated/servicemappings/datacatalog.yaml
++++ b/scripts/resource-autogen/generated/servicemappings/datacatalog.yaml
+@@ -146,3 +146,19 @@ spec:
+       resourceID:
+         targetField: name
+         valueTemplate: "{{taxonomy}}/policyTags/{{value}}"
++      resourceReferences:
++        - key: parentPolicyTagRef
++          tfField: parent_policy_tag
++          gvk:
++            kind: DataCatalogPolicyTag
++            version: v1beta1
++            group: datacatalog.cnrm.cloud.google.com
++          targetField: name
++        - key: taxonomyRef
++          tfField: taxonomy
++          gvk:
++            kind: DataCatalogTaxonomy
++            version: v1beta1
++            group: datacatalog.cnrm.cloud.google.com
++          targetField: name
++          parent: true

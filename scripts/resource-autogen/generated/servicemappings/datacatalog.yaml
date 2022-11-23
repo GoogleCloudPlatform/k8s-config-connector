@@ -161,3 +161,4 @@ spec:
             version: v1beta1
             group: datacatalog.cnrm.cloud.google.com
           targetField: name
+          parent: true

@@ -23,6 +23,7 @@ import (
 
 var (
 	allowlist = []string{
+		"DataCatalog/PolicyTag",
 		"DataCatalog/Taxonomy",
 	}
 	legacyServiceNames = map[string]string{}

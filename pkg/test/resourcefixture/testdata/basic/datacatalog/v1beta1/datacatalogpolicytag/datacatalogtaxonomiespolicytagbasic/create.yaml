@@ -1,0 +1,9 @@
+apiVersion: datacatalog.cnrm.cloud.google.com/v1beta1
+kind: DataCatalogPolicyTag
+metadata:
+  name: datacatalogpolicytag-${uniqueId}
+spec:
+  description: A policy tag normally associated with low security items
+  displayName: Low security
+  taxonomyRef:
+    name: datacatalogtaxonomy-${uniqueId}

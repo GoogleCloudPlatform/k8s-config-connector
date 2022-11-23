@@ -31,6 +31,10 @@ type FakeDatacatalogV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakeDatacatalogV1beta1) DataCatalogPolicyTags(namespace string) v1beta1.DataCatalogPolicyTagInterface {
+	return &FakeDataCatalogPolicyTags{c, namespace}
+}
+
 func (c *FakeDatacatalogV1beta1) DataCatalogTaxonomies(namespace string) v1beta1.DataCatalogTaxonomyInterface {
 	return &FakeDataCatalogTaxonomies{c, namespace}
 }

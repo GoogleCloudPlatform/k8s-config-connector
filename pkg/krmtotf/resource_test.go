@@ -962,7 +962,51 @@ func TestResource_ConstructServerGeneratedIDInStatusFromResourceID(t *testing.T)
 			},
 			expectedResult: "projects/my-project-1/groups/test-group/values/resource-id",
 		},
-
+		{
+			name: "with a value template containing parent field, the resourceID " +
+				"field has a non-empty value and server-generated ID field is empty",
+			rc: &v1alpha1.ResourceConfig{
+				ServerGeneratedIDField: "server_generated_id",
+				ResourceID: v1alpha1.ResourceID{
+					TargetField:   "server_generated_id",
+					ValueTemplate: "{{parent}}/values/{{value}}",
+				},
+				ResourceReferences: []v1alpha1.ReferenceConfig{
+					{
+						TFField: "parent",
+						TypeConfig: v1alpha1.TypeConfig{
+							Key: "parentRef",
+							GVK: k8sschema.GroupVersionKind{
+								Group:   "datacatalog.cnrm.cloud.google.com",
+								Version: "v1beta1",
+								Kind:    "DataCatalogTaxonomy",
+							},
+							TargetField: "name",
+							Parent:      true,
+						},
+					},
+				},
+			},
+			spec: map[string]interface{}{
+				"resourceID": "resource-id",
+				"parentRef": map[string]interface{}{
+					"external": "projects/project/locations/us/taxonomies/tid",
+				},
+			},
+			status: map[string]interface{}{
+				"serverGeneratedId": "",
+			},
+			expectedSpec: map[string]interface{}{
+				"resourceID": "resource-id",
+				"parentRef": map[string]interface{}{
+					"external": "projects/project/locations/us/taxonomies/tid",
+				},
+			},
+			expectedStatus: map[string]interface{}{
+				"serverGeneratedId": "",
+			},
+			expectedResult: "projects/project/locations/us/taxonomies/tid/values/resource-id",
+		},
 		{
 			name: "resourceID field has a non-empty value and status is nil",
 			rc: &v1alpha1.ResourceConfig{
@@ -982,10 +1026,13 @@ func TestResource_ConstructServerGeneratedIDInStatusFromResourceID(t *testing.T)
 			expectedResult: "non-empty-resource-id",
 		},
 	}
+
+	smLoader := testservicemappingloader.NewForUnitTest(t)
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
+			c := mgr.GetClient()
 			r := resourceSkeleton()
 			r.ResourceConfig = *tc.rc
 			r.SetName("test-resource")
@@ -994,7 +1041,7 @@ func TestResource_ConstructServerGeneratedIDInStatusFromResourceID(t *testing.T)
 			r.Spec = tc.spec
 			r.Status = tc.status
 
-			result, err := r.ConstructServerGeneratedIDInStatusFromResourceID()
+			result, err := r.ConstructServerGeneratedIDInStatusFromResourceID(c, smLoader)
 			if tc.hasError {
 				if err == nil {
 					t.Fatalf("got nil, want an error")

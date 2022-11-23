@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"io"
 	"path"
+	"sort"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
@@ -81,6 +82,9 @@ func getAllowlistedSMMap(generatedSMMap map[string]v1alpha1.ServiceMapping) (map
 			allowlistedRC := deepcopy.DeepCopy(rc).(v1alpha1.ResourceConfig)
 			rcList = append(rcList, allowlistedRC)
 		}
+		sort.Slice(rcList, func(i, j int) bool {
+			return rcList[i].Name < rcList[j].Name
+		})
 		allowlistedSM.Spec.Resources = rcList
 		allowlistedSMMap[sm.Name] = allowlistedSM
 	}
