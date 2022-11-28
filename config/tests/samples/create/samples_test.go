@@ -219,6 +219,10 @@ var testDisabledList = map[string]bool{
 	// Disable the test for now and re-enable it once the issue has been
 	// resolved.
 	"apigeeenvironment": true,
+	// This sample test is failing because of parallel deletion failure from the API.
+	// Disable the test for now while we are figuring out the long term fix with the
+	// service team (b/260214463).
+	"private-service-connection-region-network-endpoint-group": true,
 }
 
 type Sample struct {
