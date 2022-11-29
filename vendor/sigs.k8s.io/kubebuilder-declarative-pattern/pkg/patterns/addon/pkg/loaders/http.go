@@ -46,11 +46,11 @@ func (r *HTTPRepository) LoadChannel(ctx context.Context, name string) (*Channel
 		return nil, fmt.Errorf("invalid channel name: %q", name)
 	}
 
-	log := log.Log
+	log := log.FromContext(ctx)
 	log.WithValues("channel", name).WithValues("baseURL", r.baseURL).Info("loading channel")
 
 	p := r.makeURL(name)
-	b, err := r.readURL(p)
+	b, err := r.readURL(ctx, p)
 	if err != nil {
 		log.WithValues("path", p).Error(err, "error reading channel")
 		return nil, fmt.Errorf("error reading channel %s: %v", p, err)
@@ -73,11 +73,11 @@ func (r *HTTPRepository) LoadManifest(ctx context.Context, packageName string, i
 		return nil, fmt.Errorf("invalid manifest id: %q", id)
 	}
 
-	log := log.Log
+	log := log.FromContext(ctx)
 	log.WithValues("package", packageName).Info("loading package")
 
 	p := r.makeURL("packages", packageName, id, "manifest.yaml")
-	b, err := r.readURL(p)
+	b, err := r.readURL(ctx, p)
 	if err != nil {
 		return nil, fmt.Errorf("error reading package %s: %v", p, err)
 	}
@@ -100,8 +100,9 @@ func (r *HTTPRepository) makeURL(paths ...string) string {
 }
 
 // readURL tries to fetch the specified url
-func (r *HTTPRepository) readURL(url string) ([]byte, error) {
-	log.Log.WithValues("url", url).Info("doing HTTP request")
+func (r *HTTPRepository) readURL(ctx context.Context, url string) ([]byte, error) {
+	log := log.FromContext(ctx)
+	log.WithValues("url", url).Info("doing HTTP request")
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err

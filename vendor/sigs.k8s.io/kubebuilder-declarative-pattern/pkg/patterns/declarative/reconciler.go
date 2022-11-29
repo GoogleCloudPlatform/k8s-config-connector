@@ -52,7 +52,6 @@ type Reconciler struct {
 	prototype DeclarativeObject
 	client    client.Client
 	config    *rest.Config
-	kubectl   kubectlClient
 
 	metrics reconcileMetrics
 	mgr     manager.Manager
@@ -63,10 +62,6 @@ type Reconciler struct {
 
 	restMapper meta.RESTMapper
 	options    reconcilerParams
-}
-
-type kubectlClient interface {
-	applier.Applier
 }
 
 type DeclarativeObject interface {
@@ -99,11 +94,10 @@ func (e *ErrorResult) Error() string {
 }
 
 // For mocking
-var kubectl = applier.NewDirectApplier()
+var defaultApplier = applier.NewDirectApplier()
 
-func (r *Reconciler) Init(mgr manager.Manager, prototype DeclarativeObject, opts ...reconcilerOption) error {
+func (r *Reconciler) Init(mgr manager.Manager, prototype DeclarativeObject, opts ...ReconcilerOption) error {
 	r.prototype = prototype
-	r.kubectl = kubectl
 
 	// TODO: Can we derive the name from prototype?
 	controllerName := "addon-controller"
@@ -144,7 +138,7 @@ func (r *Reconciler) Init(mgr manager.Manager, prototype DeclarativeObject, opts
 // +rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
 func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (result reconcile.Result, err error) {
 	var objects *manifest.Objects
-	log := log.Log
+	log := log.FromContext(ctx)
 	defer r.collectMetrics(request, result, err)
 
 	// Fetch the object
@@ -185,11 +179,15 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 
 	objects, err = r.reconcileExists(ctx, request.NamespacedName, instance)
 
+	if err != nil {
+		r.recorder.Eventf(instance, "Warning", "InternalError", "internal error: %v", err)
+	}
+
 	return result, err
 }
 
 func (r *Reconciler) reconcileExists(ctx context.Context, name types.NamespacedName, instance DeclarativeObject) (*manifest.Objects, error) {
-	log := log.Log
+	log := log.FromContext(ctx)
 	log.WithValues("object", name.String()).Info("reconciling")
 
 	var fs filesys.FileSystem
@@ -266,7 +264,7 @@ func (r *Reconciler) reconcileExists(ctx context.Context, name types.NamespacedN
 	}
 	manifestStr = m
 
-	extraArgs := []string{"--force"}
+	extraArgs := []string{}
 
 	// allow user disable prune in CR
 	if p, ok := instance.(Pruner); (!ok && r.options.prune) || (ok && r.options.prune && p.Prune()) {
@@ -304,16 +302,20 @@ func (r *Reconciler) reconcileExists(ctx context.Context, name types.NamespacedN
 		}
 	}
 
-	applyOpt := applier.ApplierOptions{
+	applierOpt := applier.ApplierOptions{
 		RESTConfig: r.config,
 		RESTMapper: r.restMapper,
 		Namespace:  ns,
 		Manifest:   manifestStr,
 		Validate:   r.options.validate,
 		ExtraArgs:  extraArgs,
+		Force:      true,
+		// TODO Make this configurable
+		CascadingStrategy: "Foreground",
 	}
 
-	if err := r.kubectl.Apply(ctx, applyOpt); err != nil {
+	applier := r.options.applier
+	if err := applier.Apply(ctx, applierOpt); err != nil {
 		log.Error(err, "applying manifest")
 		return objects, fmt.Errorf("error applying manifest: %v", err)
 	}
@@ -335,7 +337,7 @@ func (r *Reconciler) BuildDeploymentObjects(ctx context.Context, name types.Name
 // BuildDeploymentObjectsWithFs is the implementation of BuildDeploymentObjects, supporting saving to a filesystem for kustomize
 // If fs is provided, the transformed manifests will be saved to that filesystem
 func (r *Reconciler) BuildDeploymentObjectsWithFs(ctx context.Context, name types.NamespacedName, instance DeclarativeObject, fs filesys.FileSystem) (*manifest.Objects, error) {
-	log := log.Log
+	log := log.FromContext(ctx)
 
 	// 1. Load the manifest
 	manifestFiles, err := r.loadRawManifest(ctx, instance)
@@ -433,7 +435,7 @@ func (r *Reconciler) BuildDeploymentObjectsWithFs(ctx context.Context, name type
 
 // parseManifest parses the manifest into objects
 func (r *Reconciler) parseManifest(ctx context.Context, instance DeclarativeObject, manifestStr string) (*manifest.Objects, error) {
-	log := log.Log
+	log := log.FromContext(ctx)
 
 	objects, err := manifest.ParseObjects(ctx, manifestStr)
 	if err != nil {
@@ -470,8 +472,10 @@ func (r *Reconciler) loadRawManifest(ctx context.Context, o DeclarativeObject) (
 	return s, nil
 }
 
-func (r *Reconciler) applyOptions(opts ...reconcilerOption) error {
+func (r *Reconciler) applyOptions(opts ...ReconcilerOption) error {
 	params := reconcilerParams{}
+
+	params.applier = defaultApplier
 
 	opts = append(Options.Begin, opts...)
 	opts = append(opts, Options.End...)
@@ -524,7 +528,7 @@ func (r *Reconciler) setNamespaces(ctx context.Context, instance DeclarativeObje
 		return nil
 	}
 
-	log := log.Log
+	log := log.FromContext(ctx)
 	log.WithValues("namespace", ns).Info("setting namespace")
 
 	for _, o := range objects.Items {
@@ -550,7 +554,7 @@ func (r *Reconciler) injectOwnerRef(ctx context.Context, instance DeclarativeObj
 		return nil
 	}
 
-	log := log.Log
+	log := log.FromContext(ctx)
 	log.WithValues("object", fmt.Sprintf("%s/%s", instance.GetName(), instance.GetNamespace())).Info("injecting owner references")
 
 	for _, o := range objects.Items {
@@ -573,6 +577,10 @@ func (r *Reconciler) injectOwnerRef(ctx context.Context, instance DeclarativeObj
 		}
 
 		gvk, err := apiutil.GVKForObject(owner, r.mgr.GetScheme())
+		if err != nil {
+			log.WithValues("object", o).Error(err, "unable to get GVK for object")
+			continue
+		}
 		if gvk.Group == "" || gvk.Version == "" {
 			log.WithValues("object", o).WithValues("GroupVersionKind", gvk).Info("is not valid")
 			continue

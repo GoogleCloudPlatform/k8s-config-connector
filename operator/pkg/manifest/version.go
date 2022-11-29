@@ -25,7 +25,7 @@ func ResolveVersion(ctx context.Context, repo Repository, componentName string, 
 		return "", err
 	}
 
-	version, err := channel.Latest(componentName)
+	version, err := channel.Latest(ctx, componentName)
 	if err != nil {
 		return "", err
 	}

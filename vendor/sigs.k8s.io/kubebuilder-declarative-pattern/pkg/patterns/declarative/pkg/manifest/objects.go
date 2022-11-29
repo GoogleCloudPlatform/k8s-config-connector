@@ -38,6 +38,14 @@ type Objects struct {
 	Path  string
 }
 
+// GetItems is a nil-safe wrapper around
+func (o *Objects) GetItems() []*Object {
+	if o == nil {
+		return nil
+	}
+	return o.Items
+}
+
 type Object struct {
 	object *unstructured.Unstructured
 
@@ -83,6 +91,21 @@ func (o *Object) AddLabels(labels map[string]string) {
 	}
 
 	o.object.SetLabels(merged)
+	// Invalidate cached json
+	o.json = nil
+}
+
+func (o *Object) AddAnnotations(annotations map[string]string) {
+	merged := make(map[string]string)
+	for k, v := range o.object.GetAnnotations() {
+		merged[k] = v
+	}
+
+	for k, v := range annotations {
+		merged[k] = v
+	}
+
+	o.object.SetAnnotations(merged)
 	// Invalidate cached json
 	o.json = nil
 }
@@ -336,7 +359,7 @@ func (o *Objects) Sort(score func(o *Object) int) {
 }
 
 func ParseObjects(ctx context.Context, manifest string) (*Objects, error) {
-	log := log.Log
+	log := log.FromContext(ctx)
 
 	objects := &Objects{}
 	reader := k8syaml.NewYAMLReader(bufio.NewReader(strings.NewReader(manifest)))

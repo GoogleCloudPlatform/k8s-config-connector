@@ -43,7 +43,7 @@ func PrivateRegistryTransform(registry, imagePullSecret string, imageFunc ImageF
 }
 
 func applyImageRegistry(ctx context.Context, operatorObject DeclarativeObject, manifest *manifest.Objects, registry, secret string, imageFunc ImageFunc) error {
-	log := log.Log
+	log := log.FromContext(ctx)
 	if registry == "" && secret == "" {
 		return nil
 	}

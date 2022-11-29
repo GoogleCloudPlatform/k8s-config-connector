@@ -106,7 +106,7 @@ func loadManifests() ([]*manifest.Object, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error loading %v channel: %v", k8s.StableChannel, err)
 	}
-	version, err := channel.Latest(cc.ComponentName())
+	version, err := channel.Latest(ctx, cc.ComponentName())
 	if err != nil {
 		return nil, fmt.Errorf("error resolving the version to deploy: %v", err)
 	}

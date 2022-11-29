@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math/rand"
 	"regexp"
 	"sync"
 	"testing"
@@ -30,12 +31,13 @@ import (
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
 
-	"github.com/golang/glog"
 	corev1 "k8s.io/api/core/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
@@ -174,23 +176,33 @@ func EnsureNamespaceHasProjectIDAnnotation(t *testing.T, c client.Client, namesp
 }
 
 func createNamespaceProjectIdAnnotation(ctx context.Context, c client.Client, namespaceName, projectId string) error {
+tryAgain:
+	attempt := 0
 	var ns corev1.Namespace
 	if err := c.Get(ctx, types.NamespacedName{Name: namespaceName}, &ns); err != nil {
-		return fmt.Errorf("error getting namespace '%v': %v", namespaceName, err)
+		return fmt.Errorf("error getting namespace %q: %w", namespaceName, err)
 	}
 	if val, ok := k8s.GetAnnotation(k8s.ProjectIDAnnotation, &ns); ok {
 		if val == projectId {
-			glog.Warningf("Skipping overwrite of project id annotation on namespace '%v' with value '%v'", namespaceName, projectId)
+			klog.Infof("namespace %q already has project id annotation value %q", namespaceName, projectId)
 			return nil
 		} else {
-			return fmt.Errorf("cannot set project id annotatation value to '%v': the annotation already contained a value of '%v'",
+			return fmt.Errorf("cannot set project id annotatation value to %q: the annotation already contained a value of %q",
 				projectId, val)
 		}
 	}
 	k8s.SetAnnotation(k8s.ProjectIDAnnotation, projectId, &ns)
 	err := c.Update(ctx, &ns)
 	if err != nil {
-		return fmt.Errorf("error setting project id on namespace '%v': %v", namespaceName, err)
+		if apierrors.IsConflict(err) {
+			attempt++
+			if attempt < 10 {
+				klog.Warningf("detected concurrent modification error updating namespace %q, will retry", namespaceName)
+				time.Sleep(time.Millisecond * time.Duration(rand.Intn(1000)))
+				goto tryAgain
+			}
+		}
+		return fmt.Errorf("error setting project id on namespace %q: %w", namespaceName, err)
 	}
 	return nil
 }

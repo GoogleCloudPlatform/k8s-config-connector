@@ -146,7 +146,7 @@ type watchAll struct {
 
 // Notify is called by the controller when the object changes.  We establish any new watches.
 func (w *watchAll) Notify(ctx context.Context, dest DeclarativeObject, objs *manifest.Objects) error {
-	log := log.Log
+	log := log.FromContext(ctx)
 
 	labelSelector, err := labels.ValidatedSelectorFromSet(w.options.LabelMaker(ctx, dest))
 	if err != nil {

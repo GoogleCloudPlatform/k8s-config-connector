@@ -70,7 +70,7 @@ func (u *UpgradeChecker) Preflight(ctx context.Context, o declarative.Declarativ
 	if err != nil {
 		return fmt.Errorf("preflight check failed loading the channel %v: %v", k8s.StableChannel, err)
 	}
-	version, err := channel.Latest(k8s.ConfigConnectorComponentName)
+	version, err := channel.Latest(ctx, k8s.ConfigConnectorComponentName)
 	if err != nil {
 		return fmt.Errorf("preflight check failed resolving the version to deploy: %v", err)
 	}

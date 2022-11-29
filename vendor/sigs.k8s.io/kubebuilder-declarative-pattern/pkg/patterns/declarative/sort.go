@@ -27,7 +27,7 @@ import (
 // For now, we implement a simple kind-based heuristic for the sort.
 
 func DefaultObjectOrder(ctx context.Context) func(o *manifest.Object) int {
-	log := log.Log
+	log := log.FromContext(ctx)
 
 	return func(o *manifest.Object) int {
 		gk := o.Group + "/" + o.Kind

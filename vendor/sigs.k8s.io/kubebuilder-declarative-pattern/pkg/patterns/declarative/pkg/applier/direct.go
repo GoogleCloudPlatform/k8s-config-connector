@@ -6,6 +6,8 @@ import (
 	"os"
 	"strings"
 
+	"k8s.io/kubectl/pkg/util/prune"
+
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	utilerrors "k8s.io/apimachinery/pkg/util/errors"
@@ -49,6 +51,8 @@ func (d *directApplier) NewBuilder(opt ApplierOptions) *resource.Builder {
 
 func (d *directApplier) NewFactory(opt ApplierOptions) cmdutil.Factory {
 	var configFlags genericclioptions.ConfigFlags
+	// We need to ensure the rest.Config is used here, otherwise fetching the OpenAPI uses a different config
+	// (We generally want to avoid fetching the OpenAPI, but if we do fetch we want to do so correctly)
 	if opt.RESTConfig != nil {
 		configFlags.WrapConfigFn = func(inner *rest.Config) *rest.Config {
 			return opt.RESTConfig
@@ -74,8 +78,15 @@ func (d *DirectApplier) Apply(ctx context.Context, opt ApplierOptions) error {
 	b := d.inner.NewBuilder(opt)
 	f := d.inner.NewFactory(opt)
 
+	// TODO can we just reuse this
+	dynamicClient, err := f.DynamicClient()
+	if err != nil {
+		return err
+	}
+
 	if opt.Validate {
-		// This potentially causes redundant work, but validation isn't the common path
+		// validation likely makes redundant apiserver requests and is less optimized than the non-validation case,
+		// but validation isn't the common path
 
 		dynamicClient, err := f.DynamicClient()
 		if err != nil {
@@ -121,21 +132,45 @@ func (d *DirectApplier) Apply(ctx context.Context, opt ApplierOptions) error {
 		IOStreams:           ioStreams,
 		FieldManager:        "kubectl-client-side-apply",
 		ValidationDirective: metav1.FieldValidationStrict,
-	}
+		Mapper:              opt.RESTMapper,
+		DynamicClient:       dynamicClient,
 
+		// Automatically resolve conflicts between the modified and live configuration by using values from the modified configuration
+		Overwrite: true,
+	}
+	// TODO this will add the print part at all times.
+	applyOpts.PostProcessorFn = applyOpts.PrintAndPrunePostProcessor()
+
+	whiteListResources := []string{}
 	for i, arg := range opt.ExtraArgs {
 		switch arg {
 		case "--force":
-			applyOpts.ForceConflicts = true
+			// TODO Does this do anything? It seems like opt (aka ApplierOptions) is not used anymore
+			opt.Force = true
 		case "--prune":
 			applyOpts.Prune = true
 		case "--selector":
 			applyOpts.Selector = opt.ExtraArgs[i+1]
+		case "--prune-whitelist":
+			whiteListResources = append(whiteListResources, opt.ExtraArgs[i+1])
 		default:
 			continue
 		}
 	}
 
+	if len(whiteListResources) > 0 {
+		rm, err := f.ToRESTMapper()
+		if err != nil {
+			return err
+		}
+		r, err := prune.ParseResources(rm, whiteListResources)
+		if err != nil {
+			return err
+		}
+		applyOpts.PruneResources = append(applyOpts.PruneResources, r...)
+	}
+
+	applyOpts.ForceConflicts = opt.Force
 	applyOpts.Namespace = opt.Namespace
 	applyOpts.SetObjects(infos)
 	applyOpts.ToPrinter = func(operation string) (printers.ResourcePrinter, error) {
@@ -144,7 +179,8 @@ func (d *DirectApplier) Apply(ctx context.Context, opt ApplierOptions) error {
 		return applyOpts.PrintFlags.ToPrinter()
 	}
 	applyOpts.DeleteOptions = &cmdDelete.DeleteOptions{
-		IOStreams: ioStreams,
+		IOStreams:         ioStreams,
+		CascadingStrategy: opt.CascadingStrategy,
 	}
 
 	if err := d.inner.Run(applyOpts); err != nil {

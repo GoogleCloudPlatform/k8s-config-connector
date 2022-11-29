@@ -17,6 +17,7 @@ limitations under the License.
 package manifest
 
 import (
+	"context"
 	"fmt"
 
 	jsonpatch "github.com/evanphx/json-patch/v5"
@@ -27,12 +28,12 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
-func (objects *Objects) Patch(patches []*unstructured.Unstructured) error {
+func (objects *Objects) Patch(ctx context.Context, patches []*unstructured.Unstructured) error {
 	if len(patches) == 0 {
 		return nil
 	}
 
-	log := log.Log
+	log := log.FromContext(ctx)
 	for i, o := range objects.Items {
 		log.WithValues("object", o).Info("applying patches")
 

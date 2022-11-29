@@ -57,7 +57,7 @@ func NewManifestLoader(channel string) (*ManifestLoader, error) {
 }
 
 func (c *ManifestLoader) ResolveManifest(ctx context.Context, object runtime.Object) (map[string]string, error) {
-	log := log.Log
+	log := log.FromContext(ctx)
 
 	var (
 		channelName   string
@@ -91,7 +91,7 @@ func (c *ManifestLoader) ResolveManifest(ctx context.Context, object runtime.Obj
 			return nil, err
 		}
 
-		version, err := channel.Latest(componentName)
+		version, err := channel.Latest(ctx, componentName)
 		if err != nil {
 			return nil, err
 		}

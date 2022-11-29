@@ -32,7 +32,12 @@ func NewMockKubeAPIServer(addr string) (*MockKubeAPIServer, error) {
 
 	s.httpServer = &http.Server{Addr: addr, Handler: s}
 
-	s.storage = NewMemoryStorage()
+	var err error
+
+	s.storage, err = NewMemoryStorage(NewTestClock(), NewTestUIDGenerator())
+	if err != nil {
+		return nil, err
+	}
 
 	return s, nil
 }
@@ -42,6 +47,12 @@ type MockKubeAPIServer struct {
 	listener   net.Listener
 
 	storage *MemoryStorage
+
+	hooks []Hook
+}
+
+func (s *MockKubeAPIServer) AddHook(hook Hook) {
+	s.hooks = append(s.hooks, hook)
 }
 
 func (s *MockKubeAPIServer) StartServing() (net.Addr, error) {
@@ -67,6 +78,16 @@ func (s *MockKubeAPIServer) Stop() error {
 
 func (s *MockKubeAPIServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
+
+	for _, hook := range s.hooks {
+		op := &HTTPOperation{
+			Request: r,
+		}
+
+		if beforeCall, ok := hook.(BeforeHTTPOperation); ok {
+			beforeCall.BeforeHTTPOperation(op)
+		}
+	}
 
 	klog.Infof("kubeapiserver request: %s %s", r.Method, r.URL)
 

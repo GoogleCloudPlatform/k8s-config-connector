@@ -24,11 +24,10 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
-	"k8s.io/apimachinery/pkg/util/uuid"
+	"k8s.io/klog/v2"
 )
 
 type MemoryStorage struct {
@@ -37,18 +36,24 @@ type MemoryStorage struct {
 	resourceStorages map[schema.GroupResource]*resourceStorage
 
 	resourceVersionClock int64
+
+	clock        Clock
+	uidGenerator UIDGenerator
 }
 
-func NewMemoryStorage() *MemoryStorage {
+func NewMemoryStorage(clock Clock, uidGenerator UIDGenerator) (*MemoryStorage, error) {
 	s := &MemoryStorage{
 		resourceStorages:     make(map[schema.GroupResource]*resourceStorage),
 		resourceVersionClock: 1,
+		clock:                clock,
+		uidGenerator:         uidGenerator,
 	}
-	return s
-}
 
-type mockSchema struct {
-	resources []*ResourceInfo
+	if err := s.schema.Init(); err != nil {
+		return nil, err
+	}
+
+	return s, nil
 }
 
 type ResourceInfo struct {
@@ -56,6 +61,8 @@ type ResourceInfo struct {
 	GVR     schema.GroupVersionResource
 	GVK     schema.GroupVersionKind
 	ListGVK schema.GroupVersionKind
+
+	TypeInfo *typeInfo
 
 	storage *resourceStorage
 }
@@ -131,9 +138,9 @@ func (s *MemoryStorage) CreateObject(ctx context.Context, resource *ResourceInfo
 		return apierrors.NewAlreadyExists(resource.GVR.GroupResource(), id.Name)
 	}
 
-	u.SetCreationTimestamp(v1.Now())
+	u.SetCreationTimestamp(s.clock.Now())
 
-	uid := uuid.NewUUID()
+	uid := s.uidGenerator.NewUID()
 	u.SetUID(uid)
 
 	rv := strconv.FormatInt(s.resourceVersionClock, 10)
@@ -214,6 +221,16 @@ func (s *MemoryStorage) RegisterType(gvk schema.GroupVersionKind, resource strin
 		storage: storage,
 	}
 	r.ListGVK = gvk.GroupVersion().WithKind(gvk.Kind + "List")
+
+	if gvk.Group == "" {
+		parserType := s.schema.builtin.Parser.Type("io.k8s.api.core." + gvk.Version + "." + gvk.Kind)
+		r.TypeInfo = &typeInfo{
+			ParserType: parserType,
+		}
+	}
+	if r.TypeInfo == nil {
+		klog.Warningf("type info not known for %v", gvk)
+	}
 
 	if scope.Name() == meta.RESTScopeNameNamespace {
 		r.API.Namespaced = true

@@ -31,7 +31,7 @@ import (
 // AddLabels returns an ObjectTransform that adds labels to all the objects
 func AddLabels(labels map[string]string) ObjectTransform {
 	return func(ctx context.Context, o DeclarativeObject, manifest *manifest.Objects) error {
-		log := log.Log
+		log := log.FromContext(ctx)
 		// TODO: Add to selectors and labels in templates?
 		for _, o := range manifest.Items {
 			log.WithValues("object", o).WithValues("labels", labels).V(1).Info("add labels to object")
@@ -45,7 +45,7 @@ func AddLabels(labels map[string]string) ObjectTransform {
 // SourceLabel returns a fixed label based on the type and name of the DeclarativeObject
 func SourceLabel(scheme *runtime.Scheme) LabelMaker {
 	return func(ctx context.Context, o DeclarativeObject) map[string]string {
-		log := log.Log
+		log := log.FromContext(ctx)
 
 		gvk := o.GetObjectKind().GroupVersionKind()
 		gvk, err := apiutil.GVKForObject(o, scheme)

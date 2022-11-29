@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"reflect"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -63,6 +64,8 @@ func (req *putResource) Run(ctx context.Context, s *MockKubeAPIServer) error {
 		return fmt.Errorf("failed to parse payload: %w", err)
 	}
 
+	original := existingObj.DeepCopy()
+
 	var updated *unstructured.Unstructured
 
 	if req.SubResource == "" {
@@ -78,6 +81,12 @@ func (req *putResource) Run(ctx context.Context, s *MockKubeAPIServer) error {
 	} else {
 		// TODO: We need to implement put properly
 		return fmt.Errorf("unknown subresource %q", req.SubResource)
+	}
+
+	// We don't want to change the resourceVersion (and trigger watches) when the change is a no-op
+	if reflect.DeepEqual(original, updated) {
+		klog.Infof("update did not change object")
+		return req.writeResponse(original)
 	}
 
 	if err := s.storage.UpdateObject(ctx, resource, id, updated); err != nil {

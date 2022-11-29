@@ -60,7 +60,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("error loading %v channel: %v", k8s.StableChannel, err)
 	}
-	version, err := channel.Latest(cc.ComponentName())
+	version, err := channel.Latest(ctx, cc.ComponentName())
 	if err != nil {
 		log.Fatalf("error resolving the version to deploy: %v", err)
 	}

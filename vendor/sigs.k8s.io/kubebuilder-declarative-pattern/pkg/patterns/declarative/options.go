@@ -21,6 +21,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/metrics"
+	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/applier"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
 )
 
@@ -29,18 +30,23 @@ type ManifestLoaderFunc func() (ManifestController, error)
 // DefaultManifestLoader is the manifest loader we use when a manifest loader is not otherwise configured
 var DefaultManifestLoader ManifestLoaderFunc
 
+// ReconcilerOption implements the options pattern for reconcilers
+type ReconcilerOption func(params reconcilerParams) reconcilerParams
+
 // Options are a set of reconcilerOptions applied to all controllers
 var Options struct {
 	// Begin options are applied before evaluating controller specific options
-	Begin []reconcilerOption
+	Begin []ReconcilerOption
 	// End options are applied after evaluating controller specific options
-	End []reconcilerOption
+	End []ReconcilerOption
 }
 
 type reconcilerParams struct {
 	rawManifestOperations []ManifestOperation
 	objectTransformations []ObjectTransform
 	manifestController    ManifestController
+
+	applier applier.Applier
 
 	prune             bool
 	preserveNamespace bool
@@ -77,7 +83,7 @@ type OwnerSelector = func(context.Context, DeclarativeObject, manifest.Object, m
 type LabelMaker = func(context.Context, DeclarativeObject) map[string]string
 
 // WithRawManifestOperation adds the specific ManifestOperations to the chain of manifest changes
-func WithRawManifestOperation(operations ...ManifestOperation) reconcilerOption {
+func WithRawManifestOperation(operations ...ManifestOperation) ReconcilerOption {
 	return func(p reconcilerParams) reconcilerParams {
 		p.rawManifestOperations = append(p.rawManifestOperations, operations...)
 		return p
@@ -85,7 +91,7 @@ func WithRawManifestOperation(operations ...ManifestOperation) reconcilerOption 
 }
 
 // WithObjectTransform adds the specified ObjectTransforms to the chain of manifest changes
-func WithObjectTransform(operations ...ObjectTransform) reconcilerOption {
+func WithObjectTransform(operations ...ObjectTransform) ReconcilerOption {
 	return func(p reconcilerParams) reconcilerParams {
 		p.objectTransformations = append(p.objectTransformations, operations...)
 		return p
@@ -93,7 +99,7 @@ func WithObjectTransform(operations ...ObjectTransform) reconcilerOption {
 }
 
 // WithManifestController overrides the default source for loading manifests
-func WithManifestController(mc ManifestController) reconcilerOption {
+func WithManifestController(mc ManifestController) ReconcilerOption {
 	return func(p reconcilerParams) reconcilerParams {
 		p.manifestController = mc
 		return p
@@ -105,7 +111,7 @@ func WithManifestController(mc ManifestController) reconcilerOption {
 // which match a label specific to the addon instance.
 //
 // This option requires WithLabels to be used
-func WithApplyPrune() reconcilerOption {
+func WithApplyPrune() ReconcilerOption {
 	return func(p reconcilerParams) reconcilerParams {
 		p.prune = true
 		return p
@@ -113,7 +119,7 @@ func WithApplyPrune() reconcilerOption {
 }
 
 // WithOwner sets an owner ref on each deployed object by the OwnerSelector
-func WithOwner(ownerFn OwnerSelector) reconcilerOption {
+func WithOwner(ownerFn OwnerSelector) ReconcilerOption {
 	return func(p reconcilerParams) reconcilerParams {
 		p.ownerFn = ownerFn
 		return p
@@ -122,7 +128,7 @@ func WithOwner(ownerFn OwnerSelector) reconcilerOption {
 
 // WithLabels sets a fixed set of labels configured provided by a LabelMaker
 // to all deployment objecs for a given DeclarativeObject
-func WithLabels(labelMaker LabelMaker) reconcilerOption {
+func WithLabels(labelMaker LabelMaker) ReconcilerOption {
 	return func(p reconcilerParams) reconcilerParams {
 		p.labelMaker = labelMaker
 		return p
@@ -130,7 +136,7 @@ func WithLabels(labelMaker LabelMaker) reconcilerOption {
 }
 
 // WithStatus provides a Status interface that will be used during Reconcile
-func WithStatus(status Status) reconcilerOption {
+func WithStatus(status Status) ReconcilerOption {
 	return func(p reconcilerParams) reconcilerParams {
 		p.status = status
 		return p
@@ -139,7 +145,7 @@ func WithStatus(status Status) reconcilerOption {
 
 // WithPreserveNamespace preserves the namespaces defined in the deployment manifest
 // instead of matching the namespace of the DeclarativeObject
-func WithPreserveNamespace() reconcilerOption {
+func WithPreserveNamespace() ReconcilerOption {
 	return func(p reconcilerParams) reconcilerParams {
 		p.preserveNamespace = true
 		return p
@@ -147,7 +153,7 @@ func WithPreserveNamespace() reconcilerOption {
 }
 
 // WithApplyKustomize run kustomize build to create final manifest
-func WithApplyKustomize() reconcilerOption {
+func WithApplyKustomize() ReconcilerOption {
 	return func(p reconcilerParams) reconcilerParams {
 		p.kustomize = true
 		return p
@@ -156,7 +162,7 @@ func WithApplyKustomize() reconcilerOption {
 
 // WithManagedApplication is a transform that will modify the Application object
 // in the deployment to match the configuration of the rest of the deployment.
-func WithManagedApplication(labelMaker LabelMaker) reconcilerOption {
+func WithManagedApplication(labelMaker LabelMaker) ReconcilerOption {
 	return func(p reconcilerParams) reconcilerParams {
 		p.objectTransformations = append(p.objectTransformations, func(ctx context.Context, instance DeclarativeObject, objects *manifest.Objects) error {
 			return transformApplication(ctx, instance, objects, labelMaker)
@@ -166,9 +172,17 @@ func WithManagedApplication(labelMaker LabelMaker) reconcilerOption {
 }
 
 // WithApplyValidation enables validation with kubectl apply
-func WithApplyValidation() reconcilerOption {
+func WithApplyValidation() ReconcilerOption {
 	return func(p reconcilerParams) reconcilerParams {
 		p.validate = true
+		return p
+	}
+}
+
+// WithApplier allows us to select a different applier strategy
+func WithApplier(applier applier.Applier) ReconcilerOption {
+	return func(p reconcilerParams) reconcilerParams {
+		p.applier = applier
 		return p
 	}
 }
@@ -189,7 +203,7 @@ func WithApplyValidation() reconcilerOption {
 //
 // If WithReconcileMetrics is called multiple times with same ot
 // argument, largest metricsDuration is set against that ot.
-func WithReconcileMetrics(metricsDuration int, ot *ObjectTracker) reconcilerOption {
+func WithReconcileMetrics(metricsDuration int, ot *ObjectTracker) ReconcilerOption {
 	return func(p reconcilerParams) reconcilerParams {
 		var err error
 
@@ -216,5 +230,3 @@ func WithReconcileMetrics(metricsDuration int, ot *ObjectTracker) reconcilerOpti
 		return p
 	}
 }
-
-type reconcilerOption func(params reconcilerParams) reconcilerParams

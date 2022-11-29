@@ -102,7 +102,9 @@ func (dw *dynamicWatch) Add(trigger schema.GroupVersionKind, options metav1.List
 
 	go func() {
 		for {
-			dkw.watchUntilClosed(target)
+			ctx := context.TODO()
+
+			dkw.watchUntilClosed(ctx, target)
 
 			time.Sleep(WatchDelay)
 		}
@@ -125,8 +127,8 @@ type clientObject struct {
 // from this Watch but it will ensure we always Reconcile when needed`.
 //
 // [1] https://github.com/kubernetes/kubernetes/issues/54878#issuecomment-357575276
-func (w *dynamicKindWatch) watchUntilClosed(eventTarget metav1.ObjectMeta) {
-	log := log.Log
+func (w *dynamicKindWatch) watchUntilClosed(ctx context.Context, eventTarget metav1.ObjectMeta) {
+	log := log.FromContext(ctx)
 
 	options := w.FilterOptions
 	// Though we don't use the resource version, we allow bookmarks to help keep TCP connections healthy.

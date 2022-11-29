@@ -33,7 +33,7 @@ import (
 // ApplyPatches is an ObjectTransform to apply Patches specified on the Addon object to the manifest
 // This transform requires the DeclarativeObject to implement addonsv1alpha1.Patchable
 func ApplyPatches(ctx context.Context, object declarative.DeclarativeObject, objects *manifest.Objects) error {
-	log := log.Log
+	log := log.FromContext(ctx)
 
 	var patches []*unstructured.Unstructured
 
@@ -68,5 +68,5 @@ func ApplyPatches(ctx context.Context, object declarative.DeclarativeObject, obj
 		return fmt.Errorf("provided object (%T) does not implement Patchable type", object)
 	}
 
-	return objects.Patch(patches)
+	return objects.Patch(ctx, patches)
 }

@@ -22,7 +22,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
@@ -73,6 +75,8 @@ func (req *patchResource) Run(ctx context.Context, s *MockKubeAPIServer) error {
 			return req.writeErrorResponse(http.StatusNotFound)
 		}
 
+		// TODO: Should we treat this like an apply to an empty object?
+
 		patched := body
 		if err := s.storage.CreateObject(ctx, resource, id, patched); err != nil {
 			return err
@@ -81,27 +85,57 @@ func (req *patchResource) Run(ctx context.Context, s *MockKubeAPIServer) error {
 		return req.writeResponse(patched)
 	}
 
+	var updated *unstructured.Unstructured
+	changed := true
 	if req.SubResource == "" {
-		if err := applyPatch(existingObj.Object, body.Object); err != nil {
-			klog.Warningf("error from patch: %v", err)
-			return err
+		if resource.TypeInfo != nil {
+
+			patchOptions := metav1.PatchOptions{}
+			if fieldManager := req.r.URL.Query().Get("fieldManager"); fieldManager != "" {
+				patchOptions.FieldManager = fieldManager
+			}
+			if force := req.r.URL.Query().Get("force"); force != "" {
+				forceBool, err := strconv.ParseBool(force)
+				if err != nil {
+					return fmt.Errorf("invalid value %q for force", force)
+				}
+				patchOptions.Force = &forceBool
+			}
+			updated, changed, err = resource.DoServerSideApply(ctx, existingObj, bodyBytes, patchOptions)
+			if err != nil {
+				klog.Warningf("error from DoServerSideApply: %v", err)
+				return err
+			}
+
+		} else {
+			klog.Warningf("falling back to untyped apply emulation")
+			updated = existingObj.DeepCopy()
+			if err := applyPatch(updated.Object, body.Object); err != nil {
+				klog.Warningf("error from patch: %v", err)
+				return err
+			}
 		}
 	} else {
 		// TODO: We need to implement put properly
 		return fmt.Errorf("unknown subresource %q", req.SubResource)
 	}
 
-	if err := s.storage.UpdateObject(ctx, resource, id, existingObj); err != nil {
-		return err
+	if !changed {
+		klog.Infof("skipping write, object not changed")
+		return req.writeResponse(existingObj)
+	} else {
+		if err := s.storage.UpdateObject(ctx, resource, id, updated); err != nil {
+			return err
+		}
+		return req.writeResponse(updated)
 	}
-	return req.writeResponse(existingObj)
 }
 
 func applyPatch(existing, patch map[string]interface{}) error {
 	for k, patchValue := range patch {
 		existingValue := existing[k]
 		switch patchValue := patchValue.(type) {
-		case string, int64:
+		case string, int64, float64:
 			existing[k] = patchValue
 		case map[string]interface{}:
 			if existingValue == nil {

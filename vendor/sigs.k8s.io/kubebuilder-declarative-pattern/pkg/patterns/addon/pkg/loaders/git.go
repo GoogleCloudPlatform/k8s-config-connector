@@ -35,7 +35,7 @@ func (r *GitRepository) LoadChannel(ctx context.Context, name string) (*Channel,
 		return nil, fmt.Errorf("invalid channel name: %q", name)
 	}
 
-	log := log.Log
+	log := log.FromContext(ctx)
 	log.WithValues("baseURL", r.baseURL).Info("loading channel")
 	log.WithValues("baseURL", r.baseURL).Info("cloning git repository")
 
@@ -65,7 +65,7 @@ func (r *GitRepository) LoadManifest(ctx context.Context, packageName string, id
 		return nil, fmt.Errorf("invalid manifest id: %q", id)
 	}
 
-	log := log.Log
+	log := log.FromContext(ctx)
 	log.WithValues("package", packageName).Info("loading package")
 
 	var filePath string

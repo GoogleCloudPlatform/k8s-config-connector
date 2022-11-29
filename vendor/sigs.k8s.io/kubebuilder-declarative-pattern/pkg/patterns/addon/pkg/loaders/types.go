@@ -93,7 +93,7 @@ func (r *FSRepository) LoadChannel(ctx context.Context, name string) (*Channel, 
 		return nil, fmt.Errorf("invalid channel name: %q", name)
 	}
 
-	log := log.Log
+	log := log.FromContext(ctx)
 	log.WithValues("channel", name).WithValues("base", r.basedir).Info("loading channel")
 
 	p := filepath.Join(r.basedir, name)
@@ -120,7 +120,7 @@ func (r *FSRepository) LoadManifest(ctx context.Context, packageName string, id 
 		return nil, fmt.Errorf("invalid manifest id: %q", id)
 	}
 
-	log := log.Log
+	log := log.FromContext(ctx)
 	log.WithValues("package", packageName).Info("loading package")
 
 	dirPath := filepath.Join(r.basedir, "packages", packageName, id)
@@ -155,7 +155,7 @@ type Version struct {
 	Version string `json:"version"`
 }
 
-func (c *Channel) Latest(packageName string) (*Version, error) {
+func (c *Channel) Latest(ctx context.Context, packageName string) (*Version, error) {
 	var latest *Version
 	for i := range c.Manifests {
 		v := &c.Manifests[i]
@@ -164,7 +164,7 @@ func (c *Channel) Latest(packageName string) (*Version, error) {
 		}
 		if latest == nil {
 			latest = v
-		} else if latest.Compare(v) < 0 {
+		} else if latest.Compare(ctx, v) < 0 {
 			// Tie-break by taking the later version
 			latest = v
 		}
@@ -174,7 +174,7 @@ func (c *Channel) Latest(packageName string) (*Version, error) {
 }
 
 // Compare compares two Versions, returning >0 for l>r, =0 if l=r, <0 if l<r
-func (l *Version) Compare(r *Version) int {
+func (l *Version) Compare(ctx context.Context, r *Version) int {
 	// If the package name is specified, it "wins"
 	if l.Package != r.Package {
 		if l.Package == "" {
@@ -188,15 +188,15 @@ func (l *Version) Compare(r *Version) int {
 	lSemver, lErr := semver.ParseTolerant(l.Version)
 	rSemver, rErr := semver.ParseTolerant(r.Version)
 	if lErr != nil {
-		log.Log.Info("invalid semver in version", "version", l)
+		log.FromContext(ctx).Info("invalid semver in version", "version", l)
 		if rErr != nil {
-			log.Log.Info("invalid semver in version", "version", r)
+			log.FromContext(ctx).Info("invalid semver in version", "version", r)
 			return 0
 		}
 		return -1
 	}
 	if rErr != nil {
-		log.Log.Info("invalid semver in version", "version", r)
+		log.FromContext(ctx).Info("invalid semver in version", "version", r)
 		return 1
 	}
 

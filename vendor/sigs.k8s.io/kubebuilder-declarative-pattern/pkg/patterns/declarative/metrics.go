@@ -245,10 +245,12 @@ func (ot *ObjectTracker) addIfNotPresent(objects []*manifest.Object, defaultName
 		ot.trackedGVK[gvk] = newGVKTracker(ot.mgr, object.UnstructuredObject(), namespaced)
 		ot.trackedGVK[gvk].insert(ns, name)
 
-		// addIfNotPresent is called at Reconcler.reconcileExists,
+		// addIfNotPresent is called at Reconciler.reconcileExists,
 		// so Controller & Manager is already running
 		ctx := context.TODO()
-		ot.trackedGVK[gvk].start(ctx)
+		if err := ot.trackedGVK[gvk].start(ctx); err != nil {
+			errs = append(errs, err)
+		}
 	}
 
 	return errors.NewAggregate(errs)
@@ -341,8 +343,8 @@ func (gvkt *gvkTracker) deleteMetricsIfNeeded(metricsDuration int) {
 	}
 }
 
-func (gvkt *gvkTracker) start(ctx context.Context) {
-	gvkt.src.Start(ctx, gvkt.eventHandler, dummyQueue{}, gvkt.predicate)
+func (gvkt *gvkTracker) start(ctx context.Context) error {
+	return gvkt.src.Start(ctx, gvkt.eventHandler, dummyQueue{}, gvkt.predicate)
 }
 
 func newGVKTracker(mgr manager.Manager, obj *unstructured.Unstructured, namespaced bool) (gvkt *gvkTracker) {

@@ -50,6 +50,8 @@ var (
 // Download the latest KCC manifest, kustomize and upload it to the stable channel
 // Usage: go run scripts/update-kcc-manifest/main.go --version latest
 func main() {
+	ctx := context.TODO()
+
 	flag.StringVar(&version, "version", "latest", "Version of the KCC core to download.")
 	flag.Parse()
 
@@ -146,11 +148,11 @@ func main() {
 
 	//remove the stale manifest
 	r := loaders.NewFSRepository(path.Join(operatorSrcRoot, loaders.FlagChannel))
-	channel, err := r.LoadChannel(context.TODO(), k8s.StableChannel)
+	channel, err := r.LoadChannel(ctx, k8s.StableChannel)
 	if err != nil {
 		log.Fatalf("error loading %v channel: %v", k8s.StableChannel, err)
 	}
-	currentVersion, err := channel.Latest("configconnector")
+	currentVersion, err := channel.Latest(ctx, "configconnector")
 	if err != nil {
 		log.Fatalf("error resolving the current version: %v", err)
 	}
