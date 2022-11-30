@@ -36,13 +36,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/pathslice"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/typeutil"
 
-	"github.com/golang/glog"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta"
 	"github.com/nasa9084/go-openapi"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
@@ -81,13 +81,13 @@ func (a *immutableFieldsValidatorHandler) Handle(ctx context.Context, req admiss
 	deserializer := codecs.UniversalDeserializer()
 	obj := &unstructured.Unstructured{}
 	if _, _, err := deserializer.Decode(req.AdmissionRequest.Object.Raw, nil, obj); err != nil {
-		glog.Error(err)
+		klog.Error(err)
 		return admission.Errored(http.StatusBadRequest,
 			fmt.Errorf("error decoding object: %v", err))
 	}
 	oldObj := &unstructured.Unstructured{}
 	if _, _, err := deserializer.Decode(req.AdmissionRequest.OldObject.Raw, nil, oldObj); err != nil {
-		glog.Error(err)
+		klog.Error(err)
 		return admission.Errored(http.StatusBadRequest,
 			fmt.Errorf("error decoding old object: %v", err))
 	}

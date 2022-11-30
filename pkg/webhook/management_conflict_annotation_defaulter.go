@@ -24,12 +24,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 
-	"github.com/golang/glog"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	apimachinerytypes "k8s.io/apimachinery/pkg/types"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/runtime/inject"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
@@ -65,7 +65,7 @@ func (a *managementConflictAnnotationDefaulter) Handle(ctx context.Context, req 
 	deserializer := codecs.UniversalDeserializer()
 	obj := &unstructured.Unstructured{}
 	if _, _, err := deserializer.Decode(req.AdmissionRequest.Object.Raw, nil, obj); err != nil {
-		glog.Error(err)
+		klog.Error(err)
 		return admission.Errored(http.StatusBadRequest,
 			fmt.Errorf("error decoding object: %v", err))
 	}

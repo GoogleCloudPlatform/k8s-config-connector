@@ -19,7 +19,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/golang/glog"
+	"k8s.io/klog/v2"
 )
 
 func getGitRoot() (string, error) {
@@ -62,7 +62,7 @@ func GetOperatorCRDsPath() string {
 func GetOperatorSrcRootOrLogFatal() string {
 	root, err := GetOperatorSrcRoot()
 	if err != nil {
-		glog.Fatal(err)
+		klog.Fatal(err)
 	}
 	return root
 }

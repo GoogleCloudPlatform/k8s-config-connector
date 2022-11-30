@@ -21,8 +21,8 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
-	"github.com/golang/glog"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
@@ -44,7 +44,7 @@ func (a *genericDefaulter) Handle(ctx context.Context, req admission.Request) ad
 	deserializer := codecs.UniversalDeserializer()
 	obj := &unstructured.Unstructured{}
 	if _, _, err := deserializer.Decode(req.AdmissionRequest.Object.Raw, nil, obj); err != nil {
-		glog.Error(err)
+		klog.Error(err)
 		return admission.Errored(http.StatusBadRequest,
 			fmt.Errorf("error decoding object: %v", err))
 	}

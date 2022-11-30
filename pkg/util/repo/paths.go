@@ -18,7 +18,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/golang/glog"
+	"k8s.io/klog/v2"
 )
 
 const serviceMappingDirEnvVar = "SERVICE_MAPPING_DIR"
@@ -28,7 +28,7 @@ func GetServiceMappingsPathOrLogFatal() string {
 	if dir, ok := os.LookupEnv(serviceMappingDirEnvVar); ok {
 		val, err := filepath.Abs(dir)
 		if err != nil {
-			glog.Fatalf("error getting absolute path for '%v': %v", dir, err)
+			klog.Fatalf("error getting absolute path for '%v': %v", dir, err)
 		}
 		return val
 	}
@@ -39,7 +39,7 @@ func GetServiceMappingsPathOrLogFatal() string {
 	dir := serviceMappingDir
 	absPath, err := filepath.Abs(dir)
 	if err != nil {
-		glog.Fatalf("error getting absolute path for '%v': %v", dir, err)
+		klog.Fatalf("error getting absolute path for '%v': %v", dir, err)
 	}
 	return absPath
 }

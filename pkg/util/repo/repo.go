@@ -22,7 +22,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/golang/glog"
+	"k8s.io/klog/v2"
 )
 
 func getGitRoot() (string, error) {
@@ -57,7 +57,7 @@ func GetRoot() (string, error) {
 func GetRootOrLogFatal() string {
 	root, err := GetRoot()
 	if err != nil {
-		glog.Fatal(err)
+		klog.Fatal(err)
 	}
 	return root
 }
