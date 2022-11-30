@@ -54,6 +54,10 @@ type Config struct {
 	// HTTPClient is the http client to use for DCL.
 	// Currently only used in tests.
 	HTTPClient *http.Client
+
+	// AccessToken allows configuration of a static access token.
+	// Currently only used in tests.
+	AccessToken string
 }
 
 // Creates a new controller-runtime manager.Manager and starts all of the KCC controllers pointed at the
@@ -62,9 +66,7 @@ type Config struct {
 //
 // This serves as the entry point for the in-cluster main and the Borg service main. Any changes made should be done
 // with care.
-func New(restConfig *rest.Config, config Config) (manager.Manager, error) {
-	ctx := context.TODO()
-
+func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.Manager, error) {
 	opts := config.ManagerOptions
 	if opts.Scheme == nil {
 		// By default, controller-runtime uses the Kubernetes client-go scheme, this can create concurrency bugs as the
@@ -86,6 +88,8 @@ func New(restConfig *rest.Config, config Config) (manager.Manager, error) {
 	tfCfg := tfprovider.NewConfig()
 	tfCfg.UserProjectOverride = config.UserProjectOverride
 	tfCfg.BillingProject = config.BillingProject
+	tfCfg.AccessToken = config.AccessToken
+
 	provider, err := tfprovider.New(ctx, tfCfg)
 	if err != nil {
 		return nil, fmt.Errorf("error creating TF provider: %w", err)

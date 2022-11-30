@@ -17,39 +17,37 @@ package e2e
 import (
 	"context"
 	"os"
+	"strconv"
 	"testing"
+	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
-	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
 )
-
-var (
-	// This manager is only used to get the rest.Config from the test framework.
-	unusedManager manager.Manager
-)
-
-func TestMain(m *testing.M) {
-	testmain.TestMainForIntegrationTests(m, &unusedManager)
-}
 
 func TestAllInSeries(t *testing.T) {
 	if os.Getenv("RUN_E2E") == "" {
 		t.Skip("RUN_E2E not set; skipping")
 	}
 
-	project := testgcp.GetDefaultProject(t)
+	var project testgcp.GCPProject
+	if os.Getenv("E2E_GCP_TARGET") == "mock" {
+		projectNumber := time.Now().Unix()
+		project = testgcp.GCPProject{
+			ProjectID:     "mock-project-" + strconv.FormatInt(projectNumber, 10),
+			ProjectNumber: projectNumber,
+		}
+	} else {
+		project = testgcp.GetDefaultProject(t)
+	}
 
 	ctx := signals.SetupSignalHandler()
 	ctx, cancel := context.WithCancel(ctx)
@@ -57,32 +55,32 @@ func TestAllInSeries(t *testing.T) {
 		cancel()
 	})
 
-	mgr, err := kccmanager.New(unusedManager.GetConfig(), kccmanager.Config{})
-	if err != nil {
-		t.Fatalf("error creating new manager: %v", err)
-	}
-	// Register the deletion defender controller.
-	if err := registration.Add(mgr, nil, nil, nil, nil, registration.RegisterDeletionDefenderController); err != nil {
-		t.Fatalf("error adding registration controller for deletion defender controllers: %v", err)
-	}
-	// Start the manager, Start(...) is a blocking operation so it needs to be done asynchronously.
-	errors := make(chan error)
-	go func() {
-		errors <- mgr.Start(ctx)
-	}()
-
 	t.Run("samples", func(t *testing.T) {
-		samples := create.LoadSamples(t)
+		samples := create.LoadSamples(t, project)
 
 		for _, s := range samples {
 			s := s
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
 			t.Run(s.Name, func(t *testing.T) {
+				create.MaybeSkip(t, s.Name, s.Resources)
+
+				h := create.NewHarness(t, ctx)
+
 				cleanupResources := true
 
-				h := create.NewHarness(t, ctx, mgr)
-				create.SetupNamespacesAndApplyDefaults(h, []create.Sample{s})
+				create.SetupNamespacesAndApplyDefaults(h, []create.Sample{s}, project)
+
+				// Hack: set project-id because mockkubeapiserver does not support webhooks
+				for _, u := range s.Resources {
+					annotations := u.GetAnnotations()
+					if annotations == nil {
+						annotations = make(map[string]string)
+					}
+					annotations["cnrm.cloud.google.com/project-id"] = project.ProjectID
+					u.SetAnnotations(annotations)
+				}
+
 				create.RunCreateDeleteTest(h, s.Resources, cleanupResources)
 			})
 		}
@@ -112,11 +110,13 @@ func TestAllInSeries(t *testing.T) {
 			}
 
 			t.Run(s.Name, func(t *testing.T) {
+				create.MaybeSkip(t, s.Name, s.Resources)
+
+				h := create.NewHarness(t, ctx)
+
 				cleanupResources := true
 
-				h := create.NewHarness(t, ctx, mgr)
-				create.SetupNamespacesAndApplyDefaults(h, []create.Sample{s})
-				// TODO(b/259496928): Do resource update
+				create.SetupNamespacesAndApplyDefaults(h, []create.Sample{s}, project)
 				create.RunCreateDeleteTest(h, s.Resources, cleanupResources)
 			})
 		}
@@ -125,10 +125,6 @@ func TestAllInSeries(t *testing.T) {
 	// Do a cleanup while we can still handle the error.
 	t.Logf("shutting down manager")
 	cancel()
-
-	if err := <-errors; err != nil {
-		t.Fatalf("error from mgr.Start: %v", err)
-	}
 }
 
 func bytesToUnstructured(t *testing.T, bytes []byte, testID string, project testgcp.GCPProject) *unstructured.Unstructured {

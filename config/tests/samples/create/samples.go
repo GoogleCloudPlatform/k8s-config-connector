@@ -65,15 +65,14 @@ func networksInSampleCount(sample Sample) int {
 	return count
 }
 
-func SetupNamespacesAndApplyDefaults(t *Harness, samples []Sample) {
+func SetupNamespacesAndApplyDefaults(t *Harness, samples []Sample, project testgcp.GCPProject) {
 	namespaceNames := getNamespaces(samples)
-	setupNamespaces(t, namespaceNames)
+	setupNamespaces(t, namespaceNames, project)
 }
 
-func setupNamespaces(t *Harness, namespaces []string) {
-	projectID := testgcp.GetDefaultProjectID(t.T)
+func setupNamespaces(t *Harness, namespaces []string, project testgcp.GCPProject) {
 	for _, n := range namespaces {
-		testcontroller.SetupNamespaceForProject(t.T, t.GetClient(), n, projectID)
+		testcontroller.SetupNamespaceForProject(t.T, t.GetClient(), n, project.ProjectID)
 	}
 }
 
@@ -204,14 +203,13 @@ func waitForDeleteToComplete(t *Harness, wg *sync.WaitGroup, u *unstructured.Uns
 }
 
 // LoadSamples loads all the samples
-func LoadSamples(t *testing.T) []Sample {
+func LoadSamples(t *testing.T, project testgcp.GCPProject) []Sample {
 	matchEverything := regexp.MustCompile(".*")
-	return loadSamplesOntoUnstructs(t, matchEverything)
+	return loadSamplesOntoUnstructs(t, matchEverything, project)
 }
 
-func loadSamplesOntoUnstructs(t *testing.T, regex *regexp.Regexp) []Sample {
+func loadSamplesOntoUnstructs(t *testing.T, regex *regexp.Regexp, project testgcp.GCPProject) []Sample {
 	t.Helper()
-	project := testgcp.GetDefaultProject(t)
 
 	samples := make([]Sample, 0)
 	sampleNamesToFiles := mapSampleNamesToFilePaths(t, regex)
@@ -274,23 +272,25 @@ func newSubstitutionVariables(t *testing.T, project testgcp.GCPProject) map[stri
 	subs["${ORG_ID?}"] = testgcp.GetOrgID(t)
 	subs["${BILLING_ACCOUNT_ID?}"] = testgcp.GetBillingAccountID(t)
 	subs["${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}"] = testgcp.GetTestBillingAccountIDForBillingResources(t)
-	subs["${GSA_EMAIL?}"] = getKCCServiceAccountEmail(t)
+	subs["${GSA_EMAIL?}"] = getKCCServiceAccountEmail(t, project)
 	subs["${DLP_TEST_BUCKET?}"] = testgcp.GetDLPTestBucket(t)
 	return subs
 }
 
 // getKCCServiceAccountEmail attempts to get the email address of the service
 // account used by KCC.
-func getKCCServiceAccountEmail(t *testing.T) string {
+func getKCCServiceAccountEmail(t *testing.T, project testgcp.GCPProject) string {
 	// If there is a service account configured via "Application Default
 	// Credentials", then assume this is the service account used by KCC. This
 	// assumption holds true if the test is run by Prow.
-	if sa := testgcp.GetDefaultServiceAccount(t); sa != "" {
+	if sa, err := testgcp.FindDefaultServiceAccount(); err != nil {
+		t.Fatalf("error from FindDefaultServiceAccount: %v", err)
+	} else if sa != "" {
 		return sa
 	}
 	// Otherwise, assume the project has a standard, cluster-mode KCC service
 	// account set up.
-	return fmt.Sprintf("cnrm-system@%v.iam.gserviceaccount.com", testgcp.GetDefaultProjectID(t))
+	return fmt.Sprintf("cnrm-system@%v.iam.gserviceaccount.com", project.ProjectID)
 }
 
 func readFileToUnstructs(t *testing.T, fileName string, subVars map[string]string) []*unstructured.Unstructured {

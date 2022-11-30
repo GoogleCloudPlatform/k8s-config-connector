@@ -15,6 +15,7 @@
 package main
 
 import (
+	"context"
 	goflag "flag"
 	"fmt"
 	"io/ioutil"
@@ -42,6 +43,8 @@ import (
 var logger = klog.Log.WithName("setup")
 
 func main() {
+	ctx := context.Background()
+
 	stop := signals.SetupSignalHandler()
 
 	var (
@@ -91,7 +94,7 @@ func main() {
 	}
 
 	logger.Info("Creating the manager")
-	mgr, err := newManager(restCfg, scopedNamespace, userProjectOverride, billingProject)
+	mgr, err := newManager(ctx, restCfg, scopedNamespace, userProjectOverride, billingProject)
 	if err != nil {
 		logging.Fatal(err, "error creating the manager")
 	}
@@ -130,7 +133,7 @@ func main() {
 	logging.Fatal(mgr.Start(stop), "error during manager execution.")
 }
 
-func newManager(restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string) (manager.Manager, error) {
+func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string) (manager.Manager, error) {
 	krmtotf.SetUserAgentForTerraformProvider()
 	controllersCfg := kccmanager.Config{
 		ManagerOptions: manager.Options{
@@ -140,7 +143,7 @@ func newManager(restCfg *rest.Config, scopedNamespace string, userProjectOverrid
 
 	controllersCfg.UserProjectOverride = userProjectOverride
 	controllersCfg.BillingProject = billingProject
-	mgr, err := kccmanager.New(restCfg, controllersCfg)
+	mgr, err := kccmanager.New(ctx, restCfg, controllersCfg)
 	if err != nil {
 		return nil, fmt.Errorf("error creating manager: %w", err)
 	}

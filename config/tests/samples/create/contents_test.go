@@ -10,13 +10,16 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
+	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
+
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 var matchEverythingRegex = regexp.MustCompile(".*")
 
 func TestNames(t *testing.T) {
-	samples := loadSamplesOntoUnstructs(t, matchEverythingRegex)
+	project := testgcp.GetDefaultProject(t)
+	samples := loadSamplesOntoUnstructs(t, matchEverythingRegex, project)
 	for _, s := range samples {
 		for _, r := range s.Resources {
 			validateResourceName(t, s.Name, r)

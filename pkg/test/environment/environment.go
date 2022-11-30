@@ -61,7 +61,7 @@ func startTestEnvironment(testType test.TestType, crds []*apiextensions.CustomRe
 		env.CRDDirectoryPaths = []string{repo.GetCRDsPath()}
 	}
 	if testType == test.IntegrationTestType {
-		configureWebhookInstallOptions(env, whCfgs)
+		ConfigureWebhookInstallOptions(env, whCfgs)
 	}
 	_, err := env.Start()
 	if err != nil {
@@ -70,7 +70,7 @@ func startTestEnvironment(testType test.TestType, crds []*apiextensions.CustomRe
 	return env, nil
 }
 
-func configureWebhookInstallOptions(env *envtest.Environment, whCfgs []webhook.WebhookConfig) {
+func ConfigureWebhookInstallOptions(env *envtest.Environment, whCfgs []webhook.WebhookConfig) {
 	validatingWebhookCfg, mutatingWebhookCfg := webhook.GenerateWebhookManifests(
 		webhook.ValidatingWebhookConfigurationName,
 		webhook.MutatingWebhookConfigurationName,
