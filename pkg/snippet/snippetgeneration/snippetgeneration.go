@@ -61,6 +61,7 @@ var preferredSampleForResource = map[string]string{
 	"computesslcertificate":             "global-compute-ssl-certificate",
 	"computesslpolicy":                  "modern-tls-1-1-ssl-policy",
 	"computeurlmap":                     "global-compute-url-map",
+	"configcontrollerinstance":          "autopilot-config-controller-instance",
 	"containercluster":                  "vpc-native-container-cluster",
 	"containernodepool":                 "basic-node-pool",
 	"dataflowjob":                       "streaming-dataflow-job",

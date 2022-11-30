@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,16 +18,13 @@ metadata:
   labels:
     label-one: "value-one"
   # The maximum allowed length for the name of a ConfigControllerInstance is 24.
-  name: ccinstance-sample
+  name: cc-sample-autopilot
 spec:
   projectRef:
      # Replace ${PROJECT_ID?} with your project ID
      external: "projects/${PROJECT_ID?}"
   location: us-central1
   managementConfig:
-    standardManagementConfig:
-      networkRef:
-        name: configcontrollerinstance-dep
-      masterIPv4CidrBlock: 172.16.123.64/28
+    fullManagementConfig:
       clusterCidrBlock: /20
       servicesCidrBlock: /24
