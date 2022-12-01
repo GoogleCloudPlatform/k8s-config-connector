@@ -157,6 +157,21 @@ func (in *SecretManagerSecretStatus) DeepCopyInto(out *SecretManagerSecretStatus
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreateTime != nil {
+		in, out := &in.CreateTime, &out.CreateTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -266,6 +281,31 @@ func (in *SecretManagerSecretVersionStatus) DeepCopyInto(out *SecretManagerSecre
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.CreateTime != nil {
+		in, out := &in.CreateTime, &out.CreateTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.DestroyTime != nil {
+		in, out := &in.DestroyTime, &out.DestroyTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.Version != nil {
+		in, out := &in.Version, &out.Version
+		*out = new(string)
+		**out = **in
 	}
 	return
 }

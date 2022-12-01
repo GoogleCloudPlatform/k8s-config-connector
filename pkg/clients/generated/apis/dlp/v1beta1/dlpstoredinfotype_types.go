@@ -100,15 +100,12 @@ type StoredinfotypeRegex struct {
 }
 
 type StoredinfotypeTable struct {
-	/*  */
 	// +optional
 	DatasetRef *v1alpha1.ResourceRef `json:"datasetRef,omitempty"`
 
-	/*  */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/*  */
 	// +optional
 	TableRef *v1alpha1.ResourceRef `json:"tableRef,omitempty"`
 }
@@ -161,7 +158,8 @@ type DLPStoredInfoTypeStatus struct {
 	   DLPStoredInfoType's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

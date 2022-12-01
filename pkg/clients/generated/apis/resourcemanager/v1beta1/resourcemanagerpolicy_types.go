@@ -124,11 +124,16 @@ type ResourceManagerPolicyStatus struct {
 	   ResourceManagerPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The etag of the organization policy. etag is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other. */
-	Etag string `json:"etag,omitempty"`
+	// +optional
+	Etag *string `json:"etag,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* The timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds, representing when the variable was last updated. Example: "2016-10-09T12:33:37.578138407Z". */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

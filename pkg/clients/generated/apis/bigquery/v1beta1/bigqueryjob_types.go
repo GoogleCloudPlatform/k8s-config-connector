@@ -430,37 +430,46 @@ type BigQueryJobSpec struct {
 
 type JobErrorResultStatus struct {
 	/* Specifies where the error occurred, if present. */
-	Location string `json:"location,omitempty"`
+	// +optional
+	Location *string `json:"location,omitempty"`
 
 	/* A human-readable description of the error. */
-	Message string `json:"message,omitempty"`
+	// +optional
+	Message *string `json:"message,omitempty"`
 
 	/* A short error code that summarizes the error. */
-	Reason string `json:"reason,omitempty"`
+	// +optional
+	Reason *string `json:"reason,omitempty"`
 }
 
 type JobErrorsStatus struct {
 	/* Specifies where the error occurred, if present. */
-	Location string `json:"location,omitempty"`
+	// +optional
+	Location *string `json:"location,omitempty"`
 
 	/* A human-readable description of the error. */
-	Message string `json:"message,omitempty"`
+	// +optional
+	Message *string `json:"message,omitempty"`
 
 	/* A short error code that summarizes the error. */
-	Reason string `json:"reason,omitempty"`
+	// +optional
+	Reason *string `json:"reason,omitempty"`
 }
 
 type JobStatusStatus struct {
 	/* Final error result of the job. If present, indicates that the job has completed and was unsuccessful. */
+	// +optional
 	ErrorResult []JobErrorResultStatus `json:"errorResult,omitempty"`
 
 	/* The first errors encountered during the running of the job. The final message
 	includes the number of errors that caused the process to stop. Errors here do
 	not necessarily mean that the job has not completed or was unsuccessful. */
+	// +optional
 	Errors []JobErrorsStatus `json:"errors,omitempty"`
 
 	/* Running state of the job. Valid states include 'PENDING', 'RUNNING', and 'DONE'. */
-	State string `json:"state,omitempty"`
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 type BigQueryJobStatus struct {
@@ -468,13 +477,20 @@ type BigQueryJobStatus struct {
 	   BigQueryJob's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The type of the job. */
-	JobType string `json:"jobType,omitempty"`
+	// +optional
+	JobType *string `json:"jobType,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* The status of this job. Examine this value when polling an asynchronous job to see if the job is complete. */
+	// +optional
 	Status []JobStatusStatus `json:"status,omitempty"`
+
 	/* Email address of the user who ran the job. */
-	UserEmail string `json:"userEmail,omitempty"`
+	// +optional
+	UserEmail *string `json:"userEmail,omitempty"`
 }
 
 // +genclient

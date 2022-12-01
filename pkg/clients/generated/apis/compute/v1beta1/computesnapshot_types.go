@@ -141,27 +141,41 @@ type ComputeSnapshotStatus struct {
 	   ComputeSnapshot's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
-	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
 	/* Size of the snapshot, specified in GB. */
-	DiskSizeGb int `json:"diskSizeGb,omitempty"`
+	// +optional
+	DiskSizeGb *int `json:"diskSizeGb,omitempty"`
+
 	/* The fingerprint used for optimistic locking of this resource. Used
 	internally during updates. */
-	LabelFingerprint string `json:"labelFingerprint,omitempty"`
+	// +optional
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
 	/* A list of public visible licenses that apply to this snapshot. This
 	can be because the original image had licenses attached (such as a
 	Windows image).  snapshotEncryptionKey nested object Encrypts the
 	snapshot using a customer-supplied encryption key. */
+	// +optional
 	Licenses []string `json:"licenses,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/*  */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
 	/* The unique identifier for the resource. */
-	SnapshotId int `json:"snapshotId,omitempty"`
+	// +optional
+	SnapshotId *int `json:"snapshotId,omitempty"`
+
 	/* A size of the storage used by the snapshot. As snapshots share
 	storage, this number is expected to change with snapshot
 	creation/deletion. */
-	StorageBytes int `json:"storageBytes,omitempty"`
+	// +optional
+	StorageBytes *int `json:"storageBytes,omitempty"`
 }
 
 // +genclient

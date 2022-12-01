@@ -118,15 +118,23 @@ type ComputeReservationStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Full or partial URL to a parent commitment. This field displays for
 	reservations that are tied to a commitment. */
-	Commitment string `json:"commitment,omitempty"`
+	// +optional
+	Commitment *string `json:"commitment,omitempty"`
+
 	/* Creation timestamp in RFC3339 text format. */
-	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/*  */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
 	/* The status of the reservation. */
-	Status string `json:"status,omitempty"`
+	// +optional
+	Status *string `json:"status,omitempty"`
 }
 
 // +genclient

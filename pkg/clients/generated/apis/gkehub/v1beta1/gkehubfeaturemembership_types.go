@@ -42,11 +42,9 @@ type FeaturemembershipBinauthz struct {
 }
 
 type FeaturemembershipConfigSync struct {
-	/*  */
 	// +optional
 	Git *FeaturemembershipGit `json:"git,omitempty"`
 
-	/*  */
 	// +optional
 	Oci *FeaturemembershipOci `json:"oci,omitempty"`
 
@@ -82,7 +80,6 @@ type FeaturemembershipConfigmanagement struct {
 }
 
 type FeaturemembershipGit struct {
-	/*  */
 	// +optional
 	GcpServiceAccountRef *v1alpha1.ResourceRef `json:"gcpServiceAccountRef,omitempty"`
 
@@ -140,13 +137,12 @@ type FeaturemembershipMesh struct {
 }
 
 type FeaturemembershipMonitoring struct {
-	/*  Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export. */
+	/* Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export. */
 	// +optional
 	Backends []string `json:"backends,omitempty"`
 }
 
 type FeaturemembershipOci struct {
-	/*  */
 	// +optional
 	GcpServiceAccountRef *v1alpha1.ResourceRef `json:"gcpServiceAccountRef,omitempty"`
 
@@ -228,7 +224,8 @@ type GKEHubFeatureMembershipStatus struct {
 	   GKEHubFeatureMembership's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

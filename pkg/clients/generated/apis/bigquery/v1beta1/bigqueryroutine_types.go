@@ -126,12 +126,17 @@ type BigQueryRoutineStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The time when this routine was created, in milliseconds since the
 	epoch. */
-	CreationTime int `json:"creationTime,omitempty"`
+	// +optional
+	CreationTime *int `json:"creationTime,omitempty"`
+
 	/* The time when this routine was modified, in milliseconds since the
 	epoch. */
-	LastModifiedTime int `json:"lastModifiedTime,omitempty"`
+	// +optional
+	LastModifiedTime *int `json:"lastModifiedTime,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

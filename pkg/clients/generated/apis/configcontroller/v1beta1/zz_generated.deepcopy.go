@@ -126,6 +126,21 @@ func (in *ConfigControllerInstanceStatus) DeepCopyInto(out *ConfigControllerInst
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.GkeResourceLink != nil {
+		in, out := &in.GkeResourceLink, &out.GkeResourceLink
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.State != nil {
+		in, out := &in.State, &out.State
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 

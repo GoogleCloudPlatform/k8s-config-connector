@@ -112,7 +112,6 @@ type ClusterAutoProvisioningDefaults struct {
 	// +optional
 	OauthScopes []string `json:"oauthScopes,omitempty"`
 
-	/*  */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
@@ -167,10 +166,8 @@ type ClusterClientCertificateConfig struct {
 }
 
 type ClusterCloudrunConfig struct {
-	/*  */
 	Disabled bool `json:"disabled"`
 
-	/*  */
 	// +optional
 	LoadBalancerType *string `json:"loadBalancerType,omitempty"`
 }
@@ -204,7 +201,6 @@ type ClusterConfidentialNodes struct {
 }
 
 type ClusterConfigConnectorConfig struct {
-	/*  */
 	Enabled bool `json:"enabled"`
 }
 
@@ -214,11 +210,9 @@ type ClusterCostManagementConfig struct {
 }
 
 type ClusterDailyMaintenanceWindow struct {
-	/*  */
 	// +optional
 	Duration *string `json:"duration,omitempty"`
 
-	/*  */
 	StartTime string `json:"startTime"`
 }
 
@@ -237,7 +231,6 @@ type ClusterDefaultSnatStatus struct {
 }
 
 type ClusterDnsCacheConfig struct {
-	/*  */
 	Enabled bool `json:"enabled"`
 }
 
@@ -276,7 +269,6 @@ type ClusterGatewayApiConfig struct {
 }
 
 type ClusterGcePersistentDiskCsiDriverConfig struct {
-	/*  */
 	Enabled bool `json:"enabled"`
 }
 
@@ -286,12 +278,10 @@ type ClusterGcfsConfig struct {
 }
 
 type ClusterGcpFilestoreCsiDriverConfig struct {
-	/*  */
 	Enabled bool `json:"enabled"`
 }
 
 type ClusterGkeBackupAgentConfig struct {
-	/*  */
 	Enabled bool `json:"enabled"`
 }
 
@@ -325,12 +315,10 @@ type ClusterGvnic struct {
 }
 
 type ClusterHorizontalPodAutoscaling struct {
-	/*  */
 	Disabled bool `json:"disabled"`
 }
 
 type ClusterHttpLoadBalancing struct {
-	/*  */
 	Disabled bool `json:"disabled"`
 }
 
@@ -368,7 +356,6 @@ type ClusterIstioConfig struct {
 }
 
 type ClusterKalmConfig struct {
-	/*  */
 	Enabled bool `json:"enabled"`
 }
 
@@ -396,17 +383,14 @@ type ClusterLoggingConfig struct {
 }
 
 type ClusterMaintenanceExclusion struct {
-	/*  */
 	EndTime string `json:"endTime"`
 
-	/*  */
 	ExclusionName string `json:"exclusionName"`
 
 	/* Maintenance exclusion related options. */
 	// +optional
 	ExclusionOptions *ClusterExclusionOptions `json:"exclusionOptions,omitempty"`
 
-	/*  */
 	StartTime string `json:"startTime"`
 }
 
@@ -509,7 +493,6 @@ type ClusterNetworkPolicy struct {
 }
 
 type ClusterNetworkPolicyConfig struct {
-	/*  */
 	Disabled bool `json:"disabled"`
 }
 
@@ -520,7 +503,6 @@ type ClusterNetworkTags struct {
 }
 
 type ClusterNodeConfig struct {
-	/*  */
 	// +optional
 	BootDiskKMSCryptoKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSCryptoKeyRef,omitempty"`
 
@@ -610,7 +592,6 @@ type ClusterNodeConfig struct {
 	// +optional
 	SandboxConfig *ClusterSandboxConfig `json:"sandboxConfig,omitempty"`
 
-	/*  */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
@@ -726,13 +707,10 @@ type ClusterPubsub struct {
 }
 
 type ClusterRecurringWindow struct {
-	/*  */
 	EndTime string `json:"endTime"`
 
-	/*  */
 	Recurrence string `json:"recurrence"`
 
-	/*  */
 	StartTime string `json:"startTime"`
 }
 
@@ -1039,7 +1017,6 @@ type ContainerClusterSpec struct {
 	// +optional
 	NetworkPolicy *ClusterNetworkPolicy `json:"networkPolicy,omitempty"`
 
-	/*  */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
@@ -1063,7 +1040,6 @@ type ContainerClusterSpec struct {
 	// +optional
 	NodePoolDefaults *ClusterNodePoolDefaults `json:"nodePoolDefaults,omitempty"`
 
-	/*  */
 	// +optional
 	NodeVersion *string `json:"nodeVersion,omitempty"`
 
@@ -1099,7 +1075,6 @@ type ContainerClusterSpec struct {
 	// +optional
 	ServiceExternalIpsConfig *ClusterServiceExternalIpsConfig `json:"serviceExternalIpsConfig,omitempty"`
 
-	/*  */
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
@@ -1117,21 +1092,35 @@ type ContainerClusterStatus struct {
 	   ContainerCluster's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The IP address of this cluster's Kubernetes master. */
-	Endpoint string `json:"endpoint,omitempty"`
+	// +optional
+	Endpoint *string `json:"endpoint,omitempty"`
+
 	/* The fingerprint of the set of labels for this cluster. */
-	LabelFingerprint string `json:"labelFingerprint,omitempty"`
+	// +optional
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
 	/* The current version of the master in the cluster. This may be different than the min_master_version set in the config if the master has been updated by GKE. */
-	MasterVersion string `json:"masterVersion,omitempty"`
+	// +optional
+	MasterVersion *string `json:"masterVersion,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/*  */
-	Operation string `json:"operation,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	// +optional
+	Operation *string `json:"operation,omitempty"`
+
 	/* Server-defined URL for the resource. */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
 	/* The IP address range of the Kubernetes services in this cluster, in CIDR notation (e.g. 1.2.3.4/29). Service addresses are typically put in the last /16 from the container CIDR. */
-	ServicesIpv4Cidr string `json:"servicesIpv4Cidr,omitempty"`
+	// +optional
+	ServicesIpv4Cidr *string `json:"servicesIpv4Cidr,omitempty"`
+
 	/* The IP address range of the Cloud TPUs in this cluster, in CIDR notation (e.g. 1.2.3.4/29). */
-	TpuIpv4CidrBlock string `json:"tpuIpv4CidrBlock,omitempty"`
+	// +optional
+	TpuIpv4CidrBlock *string `json:"tpuIpv4CidrBlock,omitempty"`
 }
 
 // +genclient

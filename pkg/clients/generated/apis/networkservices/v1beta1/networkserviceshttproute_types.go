@@ -132,7 +132,6 @@ type HttprouteDelay struct {
 }
 
 type HttprouteDestination struct {
-	/*  */
 	// +optional
 	ServiceRef *v1alpha1.ResourceRef `json:"serviceRef,omitempty"`
 
@@ -142,7 +141,6 @@ type HttprouteDestination struct {
 }
 
 type HttprouteDestinations struct {
-	/*  */
 	// +optional
 	ServiceRef *v1alpha1.ResourceRef `json:"serviceRef,omitempty"`
 
@@ -352,7 +350,6 @@ type NetworkServicesHTTPRouteSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/*  */
 	// +optional
 	Gateways []v1alpha1.ResourceRef `json:"gateways,omitempty"`
 
@@ -362,7 +359,6 @@ type NetworkServicesHTTPRouteSpec struct {
 	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
-	/*  */
 	// +optional
 	Meshes []v1alpha1.ResourceRef `json:"meshes,omitempty"`
 
@@ -382,13 +378,20 @@ type NetworkServicesHTTPRouteStatus struct {
 	   NetworkServicesHTTPRoute's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The timestamp when the resource was created. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. Server-defined URL of this resource */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
 	/* Output only. The timestamp when the resource was updated. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

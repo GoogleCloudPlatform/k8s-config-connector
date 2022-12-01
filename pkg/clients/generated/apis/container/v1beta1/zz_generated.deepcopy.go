@@ -2285,6 +2285,46 @@ func (in *ContainerClusterStatus) DeepCopyInto(out *ContainerClusterStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.Endpoint != nil {
+		in, out := &in.Endpoint, &out.Endpoint
+		*out = new(string)
+		**out = **in
+	}
+	if in.LabelFingerprint != nil {
+		in, out := &in.LabelFingerprint, &out.LabelFingerprint
+		*out = new(string)
+		**out = **in
+	}
+	if in.MasterVersion != nil {
+		in, out := &in.MasterVersion, &out.MasterVersion
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.Operation != nil {
+		in, out := &in.Operation, &out.Operation
+		*out = new(string)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
+	if in.ServicesIpv4Cidr != nil {
+		in, out := &in.ServicesIpv4Cidr, &out.ServicesIpv4Cidr
+		*out = new(string)
+		**out = **in
+	}
+	if in.TpuIpv4CidrBlock != nil {
+		in, out := &in.TpuIpv4CidrBlock, &out.TpuIpv4CidrBlock
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -2458,6 +2498,16 @@ func (in *ContainerNodePoolStatus) DeepCopyInto(out *ContainerNodePoolStatus) {
 		in, out := &in.ManagedInstanceGroupUrls, &out.ManagedInstanceGroupUrls
 		*out = make([]string, len(*in))
 		copy(*out, *in)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.Operation != nil {
+		in, out := &in.Operation, &out.Operation
+		*out = new(string)
+		**out = **in
 	}
 	return
 }

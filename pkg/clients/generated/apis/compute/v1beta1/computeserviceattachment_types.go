@@ -40,7 +40,6 @@ type ServiceattachmentConsumerAcceptLists struct {
 	// +optional
 	ConnectionLimit *int `json:"connectionLimit,omitempty"`
 
-	/*  */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 }
 
@@ -52,7 +51,6 @@ type ComputeServiceAttachmentSpec struct {
 	// +optional
 	ConsumerAcceptLists []ServiceattachmentConsumerAcceptLists `json:"consumerAcceptLists,omitempty"`
 
-	/*  */
 	// +optional
 	ConsumerRejectLists []v1alpha1.ResourceRef `json:"consumerRejectLists,omitempty"`
 
@@ -67,7 +65,6 @@ type ComputeServiceAttachmentSpec struct {
 	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
-	/*  */
 	NatSubnets []v1alpha1.ResourceRef `json:"natSubnets"`
 
 	/* Immutable. The Project that this resource belongs to. */
@@ -83,21 +80,24 @@ type ComputeServiceAttachmentSpec struct {
 
 type ServiceattachmentConnectedEndpointsStatus struct {
 	/* The url of a connected endpoint. */
-	Endpoint string `json:"endpoint,omitempty"`
+	// +optional
+	Endpoint *string `json:"endpoint,omitempty"`
 
 	/* The PSC connection id of the connected endpoint. */
-	PscConnectionId int `json:"pscConnectionId,omitempty"`
+	// +optional
+	PscConnectionId *int `json:"pscConnectionId,omitempty"`
 
 	/* The status of a connected endpoint to this service attachment. Possible values: PENDING, RUNNING, DONE */
-	Status string `json:"status,omitempty"`
+	// +optional
+	Status *string `json:"status,omitempty"`
 }
 
 type ServiceattachmentPscServiceAttachmentIdStatus struct {
-	/*  */
-	High int `json:"high,omitempty"`
+	// +optional
+	High *int `json:"high,omitempty"`
 
-	/*  */
-	Low int `json:"low,omitempty"`
+	// +optional
+	Low *int `json:"low,omitempty"`
 }
 
 type ComputeServiceAttachmentStatus struct {
@@ -105,19 +105,32 @@ type ComputeServiceAttachmentStatus struct {
 	   ComputeServiceAttachment's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* An array of connections for all the consumers connected to this service attachment. */
+	// +optional
 	ConnectedEndpoints []ServiceattachmentConnectedEndpointsStatus `json:"connectedEndpoints,omitempty"`
+
 	/* Fingerprint of this resource. This field is used internally during updates of this resource. */
-	Fingerprint string `json:"fingerprint,omitempty"`
+	// +optional
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
 	/* The unique identifier for the resource type. The server generates this identifier. */
-	Id int `json:"id,omitempty"`
+	// +optional
+	Id *int `json:"id,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* An 128-bit global unique ID of the PSC service attachment. */
-	PscServiceAttachmentId ServiceattachmentPscServiceAttachmentIdStatus `json:"pscServiceAttachmentId,omitempty"`
+	// +optional
+	PscServiceAttachmentId *ServiceattachmentPscServiceAttachmentIdStatus `json:"pscServiceAttachmentId,omitempty"`
+
 	/* URL of the region where the service attachment resides. This field applies only to the region resource. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body. */
-	Region string `json:"region,omitempty"`
+	// +optional
+	Region *string `json:"region,omitempty"`
+
 	/* Server-defined URL for the resource. */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 }
 
 // +genclient

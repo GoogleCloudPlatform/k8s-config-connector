@@ -48,11 +48,9 @@ type ForwardingruleFilterLabels struct {
 }
 
 type ForwardingruleIpAddress struct {
-	/*  */
 	// +optional
 	AddressRef *v1alpha1.ResourceRef `json:"addressRef,omitempty"`
 
-	/*  */
 	// +optional
 	Ip *string `json:"ip,omitempty"`
 }
@@ -83,27 +81,21 @@ type ForwardingruleServiceDirectoryRegistrations struct {
 }
 
 type ForwardingruleTarget struct {
-	/*  */
 	// +optional
 	TargetGRPCProxyRef *v1alpha1.ResourceRef `json:"targetGRPCProxyRef,omitempty"`
 
-	/*  */
 	// +optional
 	TargetHTTPProxyRef *v1alpha1.ResourceRef `json:"targetHTTPProxyRef,omitempty"`
 
-	/*  */
 	// +optional
 	TargetHTTPSProxyRef *v1alpha1.ResourceRef `json:"targetHTTPSProxyRef,omitempty"`
 
-	/*  */
 	// +optional
 	TargetSSLProxyRef *v1alpha1.ResourceRef `json:"targetSSLProxyRef,omitempty"`
 
-	/*  */
 	// +optional
 	TargetTCPProxyRef *v1alpha1.ResourceRef `json:"targetTCPProxyRef,omitempty"`
 
-	/*  */
 	// +optional
 	TargetVPNGatewayRef *v1alpha1.ResourceRef `json:"targetVPNGatewayRef,omitempty"`
 }
@@ -163,18 +155,18 @@ type ComputeForwardingRuleSpec struct {
 	/* Immutable. Specifies the forwarding rule type.
 
 	*   `EXTERNAL` is used for:
-	    *   Classic Cloud VPN gateways
-	    *   Protocol forwarding to VMs from an external IP address
-	    *   The following load balancers: HTTP(S), SSL Proxy, TCP Proxy, and Network TCP/UDP
+	*   Classic Cloud VPN gateways
+	*   Protocol forwarding to VMs from an external IP address
+	*   The following load balancers: HTTP(S), SSL Proxy, TCP Proxy, and Network TCP/UDP
 	*   `INTERNAL` is used for:
-	    *   Protocol forwarding to VMs from an internal IP address
-	    *   Internal TCP/UDP load balancers
+	*   Protocol forwarding to VMs from an internal IP address
+	*   Internal TCP/UDP load balancers
 	*   `INTERNAL_MANAGED` is used for:
-	    *   Internal HTTP(S) load balancers
+	*   Internal HTTP(S) load balancers
 	*   `INTERNAL_SELF_MANAGED` is used for:
-	    *   Traffic Director
+	*   Traffic Director
 	*   `EXTERNAL_MANAGED` is used for:
-	    *   Global external HTTP(S) load balancers
+	*   Global external HTTP(S) load balancers
 
 	For more information about forwarding rules, refer to [Forwarding rule concepts](/load-balancing/docs/forwarding-rule-concepts). Possible values: INVALID, INTERNAL, INTERNAL_MANAGED, INTERNAL_SELF_MANAGED, EXTERNAL, EXTERNAL_MANAGED. */
 	// +optional
@@ -255,19 +247,32 @@ type ComputeForwardingRuleStatus struct {
 	   ComputeForwardingRule's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* [Output Only] Creation timestamp in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format. */
-	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
 	/* Used internally during label updates. */
-	LabelFingerprint string `json:"labelFingerprint,omitempty"`
+	// +optional
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* The PSC connection id of the PSC Forwarding Rule. */
-	PscConnectionId string `json:"pscConnectionId,omitempty"`
+	// +optional
+	PscConnectionId *string `json:"pscConnectionId,omitempty"`
+
 	/* The PSC connection status of the PSC Forwarding Rule. Possible values: STATUS_UNSPECIFIED, PENDING, ACCEPTED, REJECTED, CLOSED. */
-	PscConnectionStatus string `json:"pscConnectionStatus,omitempty"`
+	// +optional
+	PscConnectionStatus *string `json:"pscConnectionStatus,omitempty"`
+
 	/* [Output Only] Server-defined URL for the resource. */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
 	/* [Output Only] The internal fully qualified service name for this Forwarding Rule. This field is only used for internal load balancing. */
-	ServiceName string `json:"serviceName,omitempty"`
+	// +optional
+	ServiceName *string `json:"serviceName,omitempty"`
 }
 
 // +genclient

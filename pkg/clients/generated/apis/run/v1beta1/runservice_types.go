@@ -46,7 +46,6 @@ type ServiceBinaryAuthorization struct {
 }
 
 type ServiceCloudSqlInstance struct {
-	/*  */
 	// +optional
 	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
 }
@@ -105,7 +104,6 @@ type ServiceItems struct {
 	/* Required. The relative path of the secret in the container. */
 	Path string `json:"path"`
 
-	/*  */
 	// +optional
 	VersionRef *v1alpha1.ResourceRef `json:"versionRef,omitempty"`
 }
@@ -149,7 +147,6 @@ type ServiceSecret struct {
 	// +optional
 	Items []ServiceItems `json:"items,omitempty"`
 
-	/*  */
 	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
 }
 
@@ -182,7 +179,6 @@ type ServiceTemplate struct {
 	// +optional
 	Scaling *ServiceScaling `json:"scaling,omitempty"`
 
-	/*  */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
@@ -245,7 +241,6 @@ type ServiceVolumes struct {
 }
 
 type ServiceVpcAccess struct {
-	/*  */
 	// +optional
 	ConnectorRef *v1alpha1.ResourceRef `json:"connectorRef,omitempty"`
 
@@ -303,45 +298,58 @@ type RunServiceSpec struct {
 
 type ServiceTerminalConditionStatus struct {
 	/* A reason for the job condition. Possible values: JOB_REASON_UNDEFINED, JOB_STATUS_SERVICE_POLLING_ERROR */
-	JobReason string `json:"jobReason,omitempty"`
+	// +optional
+	JobReason *string `json:"jobReason,omitempty"`
 
 	/* Last time the condition transitioned from one status to another. */
-	LastTransitionTime string `json:"lastTransitionTime,omitempty"`
+	// +optional
+	LastTransitionTime *string `json:"lastTransitionTime,omitempty"`
 
 	/* Human readable message indicating details about the current status. */
-	Message string `json:"message,omitempty"`
+	// +optional
+	Message *string `json:"message,omitempty"`
 
 	/* A common (service-level) reason for this condition. Possible values: COMMON_REASON_UNDEFINED, UNKNOWN, REVISION_FAILED, PROGRESS_DEADLINE_EXCEEDED, CONTAINER_MISSING, CONTAINER_PERMISSION_DENIED, CONTAINER_IMAGE_UNAUTHORIZED, CONTAINER_IMAGE_AUTHORIZATION_CHECK_FAILED, ENCRYPTION_KEY_PERMISSION_DENIED, ENCRYPTION_KEY_CHECK_FAILED, SECRETS_ACCESS_CHECK_FAILED, WAITING_FOR_OPERATION, IMMEDIATE_RETRY, POSTPONED_RETRY, INTERNAL */
-	Reason string `json:"reason,omitempty"`
+	// +optional
+	Reason *string `json:"reason,omitempty"`
 
 	/* A reason for the revision condition. Possible values: REVISION_REASON_UNDEFINED, PENDING, RESERVE, RETIRED, RETIRING, RECREATING, HEALTH_CHECK_CONTAINER_ERROR, CUSTOMIZED_PATH_RESPONSE_PENDING, MIN_INSTANCES_NOT_PROVISIONED, ACTIVE_REVISION_LIMIT_REACHED, NO_DEPLOYMENT */
-	RevisionReason string `json:"revisionReason,omitempty"`
+	// +optional
+	RevisionReason *string `json:"revisionReason,omitempty"`
 
 	/* How to interpret failures of this condition, one of Error, Warning, Info Possible values: SEVERITY_UNSPECIFIED, ERROR, WARNING, INFO */
-	Severity string `json:"severity,omitempty"`
+	// +optional
+	Severity *string `json:"severity,omitempty"`
 
 	/* State of the condition. Possible values: STATE_UNSPECIFIED, CONDITION_PENDING, CONDITION_RECONCILING, CONDITION_FAILED, CONDITION_SUCCEEDED */
-	State string `json:"state,omitempty"`
+	// +optional
+	State *string `json:"state,omitempty"`
 
 	/* type is used to communicate the status of the reconciliation process. See also: https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting Types common to all resources include: * "Ready": True when the Resource is ready. */
-	Type string `json:"type,omitempty"`
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 type ServiceTrafficStatusesStatus struct {
 	/* Specifies percent of the traffic to this Revision. */
-	Percent int `json:"percent,omitempty"`
+	// +optional
+	Percent *int `json:"percent,omitempty"`
 
 	/* Revision to which this traffic is sent. */
-	Revision string `json:"revision,omitempty"`
+	// +optional
+	Revision *string `json:"revision,omitempty"`
 
 	/* Indicates the string used in the URI to exclusively reference this target. */
-	Tag string `json:"tag,omitempty"`
+	// +optional
+	Tag *string `json:"tag,omitempty"`
 
 	/* The allocation type for this traffic target. Possible values: TRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED, TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST, TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION */
-	Type string `json:"type,omitempty"`
+	// +optional
+	Type *string `json:"type,omitempty"`
 
 	/* Displays the target URI. */
-	Uri string `json:"uri,omitempty"`
+	// +optional
+	Uri *string `json:"uri,omitempty"`
 }
 
 type RunServiceStatus struct {
@@ -349,39 +357,72 @@ type RunServiceStatus struct {
 	   RunService's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The creation time. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* Output only. Email address of the authenticated creator. */
-	Creator string `json:"creator,omitempty"`
+	// +optional
+	Creator *string `json:"creator,omitempty"`
+
 	/* Output only. The deletion time. */
-	DeleteTime string `json:"deleteTime,omitempty"`
+	// +optional
+	DeleteTime *string `json:"deleteTime,omitempty"`
+
 	/* Output only. A system-generated fingerprint for this version of the resource. May be used to detect modification conflict during updates. */
-	Etag string `json:"etag,omitempty"`
+	// +optional
+	Etag *string `json:"etag,omitempty"`
+
 	/* Output only. For a deleted resource, the time after which it will be permamently deleted. */
-	ExpireTime string `json:"expireTime,omitempty"`
+	// +optional
+	ExpireTime *string `json:"expireTime,omitempty"`
+
 	/* Map of string keys and values that can be used to organize and categorize objects. User-provided labels are shared with Google's billing system, so they can be used to filter, or break down billing charges by team, component, environment, state, etc. For more information, visit https://cloud.google.com/resource-manager/docs/creating-managing-labels or https://cloud.google.com/run/docs/configuring/labels Cloud Run will populate some labels with 'run.googleapis.com' or 'serving.knative.dev' namespaces. Those labels are read-only, and user changes will not be preserved. */
+	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
+
 	/* Output only. Email address of the last authenticated modifier. */
-	LastModifier string `json:"lastModifier,omitempty"`
+	// +optional
+	LastModifier *string `json:"lastModifier,omitempty"`
+
 	/* Output only. Name of the last created revision. See comments in `reconciling` for additional information on reconciliation process in Cloud Run. */
-	LatestCreatedRevision string `json:"latestCreatedRevision,omitempty"`
+	// +optional
+	LatestCreatedRevision *string `json:"latestCreatedRevision,omitempty"`
+
 	/* Output only. Name of the latest revision that is serving traffic. See comments in `reconciling` for additional information on reconciliation process in Cloud Run. */
-	LatestReadyRevision string `json:"latestReadyRevision,omitempty"`
+	// +optional
+	LatestReadyRevision *string `json:"latestReadyRevision,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. Returns true if the Service is currently being acted upon by the system to bring it into the desired state. When a new Service is created, or an existing one is updated, Cloud Run will asynchronously perform all necessary steps to bring the Service to the desired serving state. This process is called reconciliation. While reconciliation is in process, `observed_generation`, `latest_ready_revison`, `traffic_statuses`, and `uri` will have transient values that might mismatch the intended state: Once reconciliation is over (and this field is false), there are two possible outcomes: reconciliation succeeded and the serving state matches the Service, or there was an error, and reconciliation failed. This state can be found in `terminal_condition.state`. If reconciliation succeeded, the following fields will match: `traffic` and `traffic_statuses`, `observed_generation` and `generation`, `latest_ready_revision` and `latest_created_revision`. If reconciliation failed, `traffic_statuses`, `observed_generation`, and `latest_ready_revision` will have the state of the last serving revision, or empty for newly created Services. Additional information on the failure can be found in `terminal_condition` and `conditions`. */
-	Reconciling bool `json:"reconciling,omitempty"`
+	// +optional
+	Reconciling *bool `json:"reconciling,omitempty"`
+
 	/* Output only. A number that monotonically increases every time the user modifies the desired state. */
-	ResourceGeneration int `json:"resourceGeneration,omitempty"`
+	// +optional
+	ResourceGeneration *int `json:"resourceGeneration,omitempty"`
+
 	/* Output only. The Condition of this Service, containing its readiness status, and detailed error information in case it did not reach a serving state. See comments in `reconciling` for additional information on reconciliation process in Cloud Run. */
-	TerminalCondition ServiceTerminalConditionStatus `json:"terminalCondition,omitempty"`
+	// +optional
+	TerminalCondition *ServiceTerminalConditionStatus `json:"terminalCondition,omitempty"`
+
 	/* Output only. Detailed status information for corresponding traffic targets. See comments in `reconciling` for additional information on reconciliation process in Cloud Run. */
+	// +optional
 	TrafficStatuses []ServiceTrafficStatusesStatus `json:"trafficStatuses,omitempty"`
+
 	/* Output only. Server assigned unique identifier for the trigger. The value is a UUID4 string and guaranteed to remain unchanged until the resource is deleted. */
-	Uid string `json:"uid,omitempty"`
+	// +optional
+	Uid *string `json:"uid,omitempty"`
+
 	/* Output only. The last-modified time. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+
 	/* Output only. The main URI in which this Service is serving traffic. */
-	Uri string `json:"uri,omitempty"`
+	// +optional
+	Uri *string `json:"uri,omitempty"`
 }
 
 // +genclient

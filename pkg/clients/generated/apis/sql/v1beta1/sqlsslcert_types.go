@@ -52,21 +52,36 @@ type SQLSSLCertStatus struct {
 	   SQLSSLCert's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The actual certificate data for this client certificate. */
-	Cert string `json:"cert,omitempty"`
+	// +optional
+	Cert *string `json:"cert,omitempty"`
+
 	/* The serial number extracted from the certificate data. */
-	CertSerialNumber string `json:"certSerialNumber,omitempty"`
+	// +optional
+	CertSerialNumber *string `json:"certSerialNumber,omitempty"`
+
 	/* The time when the certificate was created in RFC 3339 format, for example 2012-11-15T16:19:00.094Z. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* The time when the certificate expires in RFC 3339 format, for example 2012-11-15T16:19:00.094Z. */
-	ExpirationTime string `json:"expirationTime,omitempty"`
+	// +optional
+	ExpirationTime *string `json:"expirationTime,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* The private key associated with the client certificate. */
-	PrivateKey string `json:"privateKey,omitempty"`
+	// +optional
+	PrivateKey *string `json:"privateKey,omitempty"`
+
 	/* The CA cert of the server this client cert was generated from. */
-	ServerCaCert string `json:"serverCaCert,omitempty"`
+	// +optional
+	ServerCaCert *string `json:"serverCaCert,omitempty"`
+
 	/* The SHA1 Fingerprint of the certificate. */
-	Sha1Fingerprint string `json:"sha1Fingerprint,omitempty"`
+	// +optional
+	Sha1Fingerprint *string `json:"sha1Fingerprint,omitempty"`
 }
 
 // +genclient

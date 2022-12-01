@@ -48,7 +48,6 @@ type ComputeInstanceGroupSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/*  */
 	// +optional
 	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
 
@@ -56,7 +55,6 @@ type ComputeInstanceGroupSpec struct {
 	// +optional
 	NamedPort []InstancegroupNamedPort `json:"namedPort,omitempty"`
 
-	/*  */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
@@ -73,11 +71,16 @@ type ComputeInstanceGroupStatus struct {
 	   ComputeInstanceGroup's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* The URI of the created resource. */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
 	/* The number of instances in the group. */
-	Size int `json:"size,omitempty"`
+	// +optional
+	Size *int `json:"size,omitempty"`
 }
 
 // +genclient

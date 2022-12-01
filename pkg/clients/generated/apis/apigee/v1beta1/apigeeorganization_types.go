@@ -65,7 +65,6 @@ type ApigeeOrganizationSpec struct {
 	/* Immutable. Required. Primary GCP region for analytics data storage. For valid values, see (https://cloud.google.com/apigee/docs/api-platform/get-started/create-org). */
 	AnalyticsRegion string `json:"analyticsRegion"`
 
-	/*  */
 	// +optional
 	AuthorizedNetworkRef *v1alpha1.ResourceRef `json:"authorizedNetworkRef,omitempty"`
 
@@ -88,7 +87,6 @@ type ApigeeOrganizationSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/*  */
 	// +optional
 	RuntimeDatabaseEncryptionKeyRef *v1alpha1.ResourceRef `json:"runtimeDatabaseEncryptionKeyRef,omitempty"`
 
@@ -101,25 +99,44 @@ type ApigeeOrganizationStatus struct {
 	   ApigeeOrganization's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. Billing type of the Apigee organization. See (https://cloud.google.com/apigee/pricing). Possible values: BILLING_TYPE_UNSPECIFIED, SUBSCRIPTION, EVALUATION */
-	BillingType string `json:"billingType,omitempty"`
+	// +optional
+	BillingType *string `json:"billingType,omitempty"`
+
 	/* Output only. Base64-encoded public certificate for the root CA of the Apigee organization. Valid only when (#RuntimeType) is `CLOUD`. */
-	CaCertificate string `json:"caCertificate,omitempty"`
+	// +optional
+	CaCertificate *string `json:"caCertificate,omitempty"`
+
 	/* Output only. Time that the Apigee organization was created in milliseconds since epoch. */
-	CreatedAt int `json:"createdAt,omitempty"`
+	// +optional
+	CreatedAt *int `json:"createdAt,omitempty"`
+
 	/* Output only. List of environments in the Apigee organization. */
+	// +optional
 	Environments []string `json:"environments,omitempty"`
+
 	/* Output only. Time that the Apigee organization is scheduled for deletion. */
-	ExpiresAt int `json:"expiresAt,omitempty"`
+	// +optional
+	ExpiresAt *int `json:"expiresAt,omitempty"`
+
 	/* Output only. Time that the Apigee organization was last modified in milliseconds since epoch. */
-	LastModifiedAt int `json:"lastModifiedAt,omitempty"`
+	// +optional
+	LastModifiedAt *int `json:"lastModifiedAt,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. Project ID associated with the Apigee organization. */
-	ProjectId string `json:"projectId,omitempty"`
+	// +optional
+	ProjectId *string `json:"projectId,omitempty"`
+
 	/* Output only. State of the organization. Values other than ACTIVE means the resource is not ready to use. Possible values: SNAPSHOT_STATE_UNSPECIFIED, MISSING, OK_DOCSTORE, OK_SUBMITTED, OK_EXTERNAL, DELETED */
-	State string `json:"state,omitempty"`
+	// +optional
+	State *string `json:"state,omitempty"`
+
 	/* Output only. DEPRECATED: This will eventually be replaced by BillingType. Subscription type of the Apigee organization. Valid values include trial (free, limited, and for evaluation purposes only) or paid (full subscription has been purchased). See (https://cloud.google.com/apigee/pricing/). Possible values: SUBSCRIPTION_TYPE_UNSPECIFIED, PAID, TRIAL */
-	SubscriptionType string `json:"subscriptionType,omitempty"`
+	// +optional
+	SubscriptionType *string `json:"subscriptionType,omitempty"`
 }
 
 // +genclient

@@ -135,6 +135,16 @@ func (in *DataCatalogPolicyTagStatus) DeepCopyInto(out *DataCatalogPolicyTagStat
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -253,6 +263,16 @@ func (in *DataCatalogTaxonomyStatus) DeepCopyInto(out *DataCatalogTaxonomyStatus
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
 	}
 	return
 }

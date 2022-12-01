@@ -126,6 +126,41 @@ func (in *FilestoreBackupStatus) DeepCopyInto(out *FilestoreBackupStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CapacityGb != nil {
+		in, out := &in.CapacityGb, &out.CapacityGb
+		*out = new(int)
+		**out = **in
+	}
+	if in.CreateTime != nil {
+		in, out := &in.CreateTime, &out.CreateTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.DownloadBytes != nil {
+		in, out := &in.DownloadBytes, &out.DownloadBytes
+		*out = new(int)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SourceInstanceTier != nil {
+		in, out := &in.SourceInstanceTier, &out.SourceInstanceTier
+		*out = new(string)
+		**out = **in
+	}
+	if in.State != nil {
+		in, out := &in.State, &out.State
+		*out = new(string)
+		**out = **in
+	}
+	if in.StorageBytes != nil {
+		in, out := &in.StorageBytes, &out.StorageBytes
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -253,6 +288,31 @@ func (in *FilestoreInstanceStatus) DeepCopyInto(out *FilestoreInstanceStatus) {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.CreateTime != nil {
+		in, out := &in.CreateTime, &out.CreateTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.Etag != nil {
+		in, out := &in.Etag, &out.Etag
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.State != nil {
+		in, out := &in.State, &out.State
+		*out = new(string)
+		**out = **in
+	}
+	if in.StatusMessage != nil {
+		in, out := &in.StatusMessage, &out.StatusMessage
+		*out = new(string)
+		**out = **in
 	}
 	return
 }

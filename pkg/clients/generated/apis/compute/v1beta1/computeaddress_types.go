@@ -78,16 +78,16 @@ type ComputeAddressSpec struct {
 	/* Immutable. The purpose of this resource, which can be one of the following values:
 
 	* GCE_ENDPOINT for addresses that are used by VM instances, alias IP
-	  ranges, internal load balancers, and similar resources.
+	ranges, internal load balancers, and similar resources.
 
 	* SHARED_LOADBALANCER_VIP for an address that can be used by multiple
-	  internal load balancers.
+	internal load balancers.
 
 	* VPC_PEERING for addresses that are reserved for VPC peer networks.
 
 	* IPSEC_INTERCONNECT for addresses created from a private IP range
-	  that are reserved for a VLAN attachment in an IPsec-encrypted Cloud
-	  Interconnect configuration. These addresses are regional resources.
+	that are reserved for a VLAN attachment in an IPsec-encrypted Cloud
+	Interconnect configuration. These addresses are regional resources.
 
 	* PRIVATE_SERVICE_CONNECT for a private network address that is used
 	to configure Private Service Connect. Only global internal addresses
@@ -114,15 +114,23 @@ type ComputeAddressStatus struct {
 	   ComputeAddress's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
-	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
 	/* The fingerprint used for optimistic locking of this resource.  Used
 	internally during updates. */
-	LabelFingerprint string `json:"labelFingerprint,omitempty"`
+	// +optional
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/*  */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
 	/* The URLs of the resources that are using this address. */
+	// +optional
 	Users []string `json:"users,omitempty"`
 }
 

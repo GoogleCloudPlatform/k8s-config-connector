@@ -73,11 +73,16 @@ type LoggingLogExclusionStatus struct {
 	   LoggingLogExclusion's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The creation timestamp of the exclusion. This field may not be present for older exclusions. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. The last update timestamp of the exclusion. This field may not be present for older exclusions. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

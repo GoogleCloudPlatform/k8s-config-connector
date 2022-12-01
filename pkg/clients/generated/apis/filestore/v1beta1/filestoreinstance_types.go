@@ -48,7 +48,6 @@ type InstanceFileShares struct {
 	// +optional
 	NfsExportOptions []InstanceNfsExportOptions `json:"nfsExportOptions,omitempty"`
 
-	/*  */
 	// +optional
 	SourceBackupRef *v1alpha1.ResourceRef `json:"sourceBackupRef,omitempty"`
 }
@@ -126,15 +125,24 @@ type FilestoreInstanceStatus struct {
 	   FilestoreInstance's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The time when the instance was created. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* Server-specified ETag for the instance resource to prevent simultaneous updates from overwriting each other. */
-	Etag string `json:"etag,omitempty"`
+	// +optional
+	Etag *string `json:"etag,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. The instance state. Possible values: STATE_UNSPECIFIED, CREATING, READY, REPAIRING, DELETING, ERROR */
-	State string `json:"state,omitempty"`
+	// +optional
+	State *string `json:"state,omitempty"`
+
 	/* Output only. Additional information about the instance state, if available. */
-	StatusMessage string `json:"statusMessage,omitempty"`
+	// +optional
+	StatusMessage *string `json:"statusMessage,omitempty"`
 }
 
 // +genclient

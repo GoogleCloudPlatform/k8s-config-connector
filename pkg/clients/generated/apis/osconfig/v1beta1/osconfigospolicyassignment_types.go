@@ -433,23 +433,40 @@ type OSConfigOSPolicyAssignmentStatus struct {
 	   OSConfigOSPolicyAssignment's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. Indicates that this revision has been successfully rolled out in this zone and new VMs will be assigned OS policies from this revision. For a given OS policy assignment, there is only one revision with a value of `true` for this field. */
-	Baseline bool `json:"baseline,omitempty"`
+	// +optional
+	Baseline *bool `json:"baseline,omitempty"`
+
 	/* Output only. Indicates that this revision deletes the OS policy assignment. */
-	Deleted bool `json:"deleted,omitempty"`
+	// +optional
+	Deleted *bool `json:"deleted,omitempty"`
+
 	/* The etag for this OS policy assignment. If this is provided on update, it must match the server's etag. */
-	Etag string `json:"etag,omitempty"`
+	// +optional
+	Etag *string `json:"etag,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. Indicates that reconciliation is in progress for the revision. This value is `true` when the `rollout_state` is one of: * IN_PROGRESS * CANCELLING */
-	Reconciling bool `json:"reconciling,omitempty"`
+	// +optional
+	Reconciling *bool `json:"reconciling,omitempty"`
+
 	/* Output only. The timestamp that the revision was created. */
-	RevisionCreateTime string `json:"revisionCreateTime,omitempty"`
+	// +optional
+	RevisionCreateTime *string `json:"revisionCreateTime,omitempty"`
+
 	/* Output only. The assignment revision ID A new revision is committed whenever a rollout is triggered for a OS policy assignment */
-	RevisionId string `json:"revisionId,omitempty"`
+	// +optional
+	RevisionId *string `json:"revisionId,omitempty"`
+
 	/* Output only. OS policy assignment rollout state Possible values: ROLLOUT_STATE_UNSPECIFIED, IN_PROGRESS, CANCELLING, CANCELLED, SUCCEEDED */
-	RolloutState string `json:"rolloutState,omitempty"`
+	// +optional
+	RolloutState *string `json:"rolloutState,omitempty"`
+
 	/* Output only. Server generated unique id for the OS policy assignment resource. */
-	Uid string `json:"uid,omitempty"`
+	// +optional
+	Uid *string `json:"uid,omitempty"`
 }
 
 // +genclient

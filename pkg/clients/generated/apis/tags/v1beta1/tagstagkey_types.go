@@ -72,17 +72,26 @@ type TagsTagKeyStatus struct {
 	/* Output only. Creation time.
 
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* The generated numeric id for the TagKey. */
-	Name string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
+
 	/* Output only. Namespaced name of the TagKey. */
-	NamespacedName string `json:"namespacedName,omitempty"`
+	// +optional
+	NamespacedName *string `json:"namespacedName,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. Update time.
 
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

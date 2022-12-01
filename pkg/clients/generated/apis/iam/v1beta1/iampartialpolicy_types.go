@@ -49,14 +49,11 @@ type PartialpolicyBindings struct {
 }
 
 type PartialpolicyCondition struct {
-	/*  */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/*  */
 	Expression string `json:"expression"`
 
-	/*  */
 	Title string `json:"title"`
 }
 
@@ -99,9 +96,11 @@ type IAMPartialPolicySpec struct {
 
 type PartialpolicyAllBindingsStatus struct {
 	/* Optional. The condition under which the binding applies. */
-	Condition PartialpolicyConditionStatus `json:"condition,omitempty"`
+	// +optional
+	Condition *PartialpolicyConditionStatus `json:"condition,omitempty"`
 
 	/* Optional. The list of IAM users to be bound to the role. */
+	// +optional
 	Members []string `json:"members,omitempty"`
 
 	/* Required. The role to bind the users to. */
@@ -109,21 +108,21 @@ type PartialpolicyAllBindingsStatus struct {
 }
 
 type PartialpolicyConditionStatus struct {
-	/*  */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
 
-	/*  */
 	Expression string `json:"expression"`
 
-	/*  */
 	Title string `json:"title"`
 }
 
 type PartialpolicyLastAppliedBindingsStatus struct {
 	/* Optional. The condition under which the binding applies. */
-	Condition PartialpolicyConditionStatus `json:"condition,omitempty"`
+	// +optional
+	Condition *PartialpolicyConditionStatus `json:"condition,omitempty"`
 
 	/* Optional. The list of IAM users to be bound to the role. */
+	// +optional
 	Members []string `json:"members,omitempty"`
 
 	/* Required. The role to bind the users to. */
@@ -135,11 +134,16 @@ type IAMPartialPolicyStatus struct {
 	   IAMPartialPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* AllBindings surfaces all IAM bindings for the referenced resource. */
+	// +optional
 	AllBindings []PartialpolicyAllBindingsStatus `json:"allBindings,omitempty"`
+
 	/* LastAppliedBindings is the list of IAM bindings that were most recently applied by Config Connector. */
+	// +optional
 	LastAppliedBindings []PartialpolicyLastAppliedBindingsStatus `json:"lastAppliedBindings,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

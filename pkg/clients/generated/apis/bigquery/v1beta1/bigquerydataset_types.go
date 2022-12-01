@@ -202,16 +202,24 @@ type BigQueryDatasetStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The time when this dataset was created, in milliseconds since the
 	epoch. */
-	CreationTime int `json:"creationTime,omitempty"`
+	// +optional
+	CreationTime *int `json:"creationTime,omitempty"`
+
 	/* A hash of the resource. */
-	Etag string `json:"etag,omitempty"`
+	// +optional
+	Etag *string `json:"etag,omitempty"`
+
 	/* The date when this dataset or any of its tables was last modified, in
 	milliseconds since the epoch. */
-	LastModifiedTime int `json:"lastModifiedTime,omitempty"`
+	// +optional
+	LastModifiedTime *int `json:"lastModifiedTime,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/*  */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 }
 
 // +genclient

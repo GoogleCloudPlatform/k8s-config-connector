@@ -50,7 +50,8 @@ type NetworkConnectivityHubSpec struct {
 
 type HubRoutingVpcsStatus struct {
 	/* The URI of the VPC network. */
-	Uri string `json:"uri,omitempty"`
+	// +optional
+	Uri *string `json:"uri,omitempty"`
 }
 
 type NetworkConnectivityHubStatus struct {
@@ -58,17 +59,28 @@ type NetworkConnectivityHubStatus struct {
 	   NetworkConnectivityHub's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The time the hub was created. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* The VPC network associated with this hub's spokes. All of the VPN tunnels, VLAN attachments, and router appliance instances referenced by this hub's spokes must belong to this VPC network. This field is read-only. Network Connectivity Center automatically populates it based on the set of spokes attached to the hub. */
+	// +optional
 	RoutingVpcs []HubRoutingVpcsStatus `json:"routingVpcs,omitempty"`
+
 	/* Output only. The current lifecycle state of this hub. Possible values: STATE_UNSPECIFIED, CREATING, ACTIVE, DELETING */
-	State string `json:"state,omitempty"`
+	// +optional
+	State *string `json:"state,omitempty"`
+
 	/* Output only. The Google-generated UUID for the hub. This value is unique across all hub resources. If a hub is deleted and another with the same name is created, the new hub is assigned a different unique_id. */
-	UniqueId string `json:"uniqueId,omitempty"`
+	// +optional
+	UniqueId *string `json:"uniqueId,omitempty"`
+
 	/* Output only. The time the hub was last updated. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

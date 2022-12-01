@@ -66,7 +66,6 @@ type DataflowJobSpec struct {
 	// +optional
 	MaxWorkers *int `json:"maxWorkers,omitempty"`
 
-	/*  */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
@@ -82,11 +81,9 @@ type DataflowJobSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/*  */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
-	/*  */
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
@@ -110,13 +107,20 @@ type DataflowJobStatus struct {
 	   DataflowJob's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The unique ID of this job. */
-	JobId string `json:"jobId,omitempty"`
+	// +optional
+	JobId *string `json:"jobId,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* The current state of the resource, selected from the JobState enum. */
-	State string `json:"state,omitempty"`
+	// +optional
+	State *string `json:"state,omitempty"`
+
 	/* The type of this job, selected from the JobType enum. */
-	Type string `json:"type,omitempty"`
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 // +genclient

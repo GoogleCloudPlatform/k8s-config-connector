@@ -143,6 +143,11 @@ func (in *IAMAuditConfigStatus) DeepCopyInto(out *IAMAuditConfigStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -260,6 +265,21 @@ func (in *IAMCustomRoleStatus) DeepCopyInto(out *IAMCustomRoleStatus) {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.Deleted != nil {
+		in, out := &in.Deleted, &out.Deleted
+		*out = new(bool)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
 	}
 	return
 }
@@ -380,6 +400,11 @@ func (in *IAMPartialPolicyStatus) DeepCopyInto(out *IAMPartialPolicyStatus) {
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
 	}
 	return
 }
@@ -556,6 +581,11 @@ func (in *IAMPolicyMemberStatus) DeepCopyInto(out *IAMPolicyMemberStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -607,6 +637,11 @@ func (in *IAMPolicyStatus) DeepCopyInto(out *IAMPolicyStatus) {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
 	}
 	return
 }
@@ -755,6 +790,36 @@ func (in *IAMServiceAccountKeyStatus) DeepCopyInto(out *IAMServiceAccountKeyStat
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.PrivateKey != nil {
+		in, out := &in.PrivateKey, &out.PrivateKey
+		*out = new(string)
+		**out = **in
+	}
+	if in.PublicKey != nil {
+		in, out := &in.PublicKey, &out.PublicKey
+		*out = new(string)
+		**out = **in
+	}
+	if in.ValidAfter != nil {
+		in, out := &in.ValidAfter, &out.ValidAfter
+		*out = new(string)
+		**out = **in
+	}
+	if in.ValidBefore != nil {
+		in, out := &in.ValidBefore, &out.ValidBefore
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -844,6 +909,31 @@ func (in *IAMServiceAccountStatus) DeepCopyInto(out *IAMServiceAccountStatus) {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.Email != nil {
+		in, out := &in.Email, &out.Email
+		*out = new(string)
+		**out = **in
+	}
+	if in.Member != nil {
+		in, out := &in.Member, &out.Member
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.UniqueId != nil {
+		in, out := &in.UniqueId, &out.UniqueId
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -1047,6 +1137,16 @@ func (in *IAMWorkforcePoolProviderStatus) DeepCopyInto(out *IAMWorkforcePoolProv
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.State != nil {
+		in, out := &in.State, &out.State
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -1109,6 +1209,21 @@ func (in *IAMWorkforcePoolStatus) DeepCopyInto(out *IAMWorkforcePoolStatus) {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
+	if in.State != nil {
+		in, out := &in.State, &out.State
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -1313,6 +1428,16 @@ func (in *IAMWorkloadIdentityPoolProviderStatus) DeepCopyInto(out *IAMWorkloadId
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.State != nil {
+		in, out := &in.State, &out.State
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -1371,6 +1496,16 @@ func (in *IAMWorkloadIdentityPoolStatus) DeepCopyInto(out *IAMWorkloadIdentityPo
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.State != nil {
+		in, out := &in.State, &out.State
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -1387,7 +1522,11 @@ func (in *IAMWorkloadIdentityPoolStatus) DeepCopy() *IAMWorkloadIdentityPoolStat
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *PartialpolicyAllBindingsStatus) DeepCopyInto(out *PartialpolicyAllBindingsStatus) {
 	*out = *in
-	out.Condition = in.Condition
+	if in.Condition != nil {
+		in, out := &in.Condition, &out.Condition
+		*out = new(PartialpolicyConditionStatus)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Members != nil {
 		in, out := &in.Members, &out.Members
 		*out = make([]string, len(*in))
@@ -1458,6 +1597,11 @@ func (in *PartialpolicyCondition) DeepCopy() *PartialpolicyCondition {
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *PartialpolicyConditionStatus) DeepCopyInto(out *PartialpolicyConditionStatus) {
 	*out = *in
+	if in.Description != nil {
+		in, out := &in.Description, &out.Description
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -1474,7 +1618,11 @@ func (in *PartialpolicyConditionStatus) DeepCopy() *PartialpolicyConditionStatus
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *PartialpolicyLastAppliedBindingsStatus) DeepCopyInto(out *PartialpolicyLastAppliedBindingsStatus) {
 	*out = *in
-	out.Condition = in.Condition
+	if in.Condition != nil {
+		in, out := &in.Condition, &out.Condition
+		*out = new(PartialpolicyConditionStatus)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Members != nil {
 		in, out := &in.Members, &out.Members
 		*out = make([]string, len(*in))

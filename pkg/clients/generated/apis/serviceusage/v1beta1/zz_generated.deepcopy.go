@@ -148,6 +148,16 @@ func (in *ServiceIdentityStatus) DeepCopyInto(out *ServiceIdentityStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.Email != nil {
+		in, out := &in.Email, &out.Email
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -227,6 +237,11 @@ func (in *ServiceStatus) DeepCopyInto(out *ServiceStatus) {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
 	}
 	return
 }

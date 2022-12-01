@@ -130,6 +130,11 @@ func (in *PubSubSchemaStatus) DeepCopyInto(out *PubSubSchemaStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -289,6 +294,11 @@ func (in *PubSubSubscriptionStatus) DeepCopyInto(out *PubSubSubscriptionStatus) 
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -411,6 +421,11 @@ func (in *PubSubTopicStatus) DeepCopyInto(out *PubSubTopicStatus) {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
 	}
 	return
 }

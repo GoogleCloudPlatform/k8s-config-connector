@@ -40,11 +40,9 @@ type BudgetAllUpdatesRule struct {
 	// +optional
 	DisableDefaultIamRecipients *bool `json:"disableDefaultIamRecipients,omitempty"`
 
-	/*  */
 	// +optional
 	MonitoringNotificationChannels []v1alpha1.ResourceRef `json:"monitoringNotificationChannels,omitempty"`
 
-	/*  */
 	// +optional
 	PubsubTopicRef *v1alpha1.ResourceRef `json:"pubsubTopicRef,omitempty"`
 
@@ -84,7 +82,6 @@ type BudgetBudgetFilter struct {
 	// +optional
 	Labels map[string]BudgetLabels `json:"labels,omitempty"`
 
-	/*  */
 	// +optional
 	Projects []v1alpha1.ResourceRef `json:"projects,omitempty"`
 
@@ -92,7 +89,6 @@ type BudgetBudgetFilter struct {
 	// +optional
 	Services []string `json:"services,omitempty"`
 
-	/*  */
 	// +optional
 	Subaccounts []v1alpha1.ResourceRef `json:"subaccounts,omitempty"`
 }
@@ -199,9 +195,12 @@ type BillingBudgetsBudgetStatus struct {
 	   BillingBudgetsBudget's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Optional. Etag to validate that the object is unchanged for a read-modify-write operation. An empty etag will cause an update to overwrite other changes. */
-	Etag string `json:"etag,omitempty"`
+	// +optional
+	Etag *string `json:"etag,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

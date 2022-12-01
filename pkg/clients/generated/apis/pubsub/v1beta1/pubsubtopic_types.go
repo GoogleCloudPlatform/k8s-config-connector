@@ -50,7 +50,6 @@ type TopicSchemaSettings struct {
 	// +optional
 	Encoding *string `json:"encoding,omitempty"`
 
-	/*  */
 	SchemaRef v1alpha1.ResourceRef `json:"schemaRef"`
 }
 
@@ -93,7 +92,8 @@ type PubSubTopicStatus struct {
 	   PubSubTopic's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

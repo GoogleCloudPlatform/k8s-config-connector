@@ -61,19 +61,32 @@ type ComputeFirewallPolicyStatus struct {
 	   ComputeFirewallPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
-	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
 	/* Fingerprint of the resource. This field is used internally during updates of this resource. */
-	Fingerprint string `json:"fingerprint,omitempty"`
+	// +optional
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
 	/* The unique identifier for the resource. This identifier is defined by the server. */
-	Id string `json:"id,omitempty"`
+	// +optional
+	Id *string `json:"id,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Total count of all firewall policy rule tuples. A firewall policy can not exceed a set number of tuples. */
-	RuleTupleCount int `json:"ruleTupleCount,omitempty"`
+	// +optional
+	RuleTupleCount *int `json:"ruleTupleCount,omitempty"`
+
 	/* Server-defined URL for the resource. */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
 	/* Server-defined URL for this resource with the resource id. */
-	SelfLinkWithId string `json:"selfLinkWithId,omitempty"`
+	// +optional
+	SelfLinkWithId *string `json:"selfLinkWithId,omitempty"`
 }
 
 // +genclient

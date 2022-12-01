@@ -1048,6 +1048,26 @@ func (in *ComputeAddressStatus) DeepCopyInto(out *ComputeAddressStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.LabelFingerprint != nil {
+		in, out := &in.LabelFingerprint, &out.LabelFingerprint
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
 	if in.Users != nil {
 		in, out := &in.Users, &out.Users
 		*out = make([]string, len(*in))
@@ -1186,6 +1206,21 @@ func (in *ComputeBackendBucketStatus) DeepCopyInto(out *ComputeBackendBucketStat
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -1429,6 +1464,31 @@ func (in *ComputeBackendServiceStatus) DeepCopyInto(out *ComputeBackendServiceSt
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.Fingerprint != nil {
+		in, out := &in.Fingerprint, &out.Fingerprint
+		*out = new(string)
+		**out = **in
+	}
+	if in.GeneratedId != nil {
+		in, out := &in.GeneratedId, &out.GeneratedId
+		*out = new(int)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -1612,6 +1672,51 @@ func (in *ComputeDiskStatus) DeepCopyInto(out *ComputeDiskStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.LabelFingerprint != nil {
+		in, out := &in.LabelFingerprint, &out.LabelFingerprint
+		*out = new(string)
+		**out = **in
+	}
+	if in.LastAttachTimestamp != nil {
+		in, out := &in.LastAttachTimestamp, &out.LastAttachTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.LastDetachTimestamp != nil {
+		in, out := &in.LastDetachTimestamp, &out.LastDetachTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
+	if in.SourceDiskId != nil {
+		in, out := &in.SourceDiskId, &out.SourceDiskId
+		*out = new(string)
+		**out = **in
+	}
+	if in.SourceImageId != nil {
+		in, out := &in.SourceImageId, &out.SourceImageId
+		*out = new(string)
+		**out = **in
+	}
+	if in.SourceSnapshotId != nil {
+		in, out := &in.SourceSnapshotId, &out.SourceSnapshotId
+		*out = new(string)
+		**out = **in
+	}
 	if in.Users != nil {
 		in, out := &in.Users, &out.Users
 		*out = make([]string, len(*in))
@@ -1736,6 +1841,16 @@ func (in *ComputeExternalVPNGatewayStatus) DeepCopyInto(out *ComputeExternalVPNG
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -1931,6 +2046,16 @@ func (in *ComputeFirewallPolicyAssociationStatus) DeepCopyInto(out *ComputeFirew
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.ShortName != nil {
+		in, out := &in.ShortName, &out.ShortName
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -2089,6 +2214,21 @@ func (in *ComputeFirewallPolicyRuleStatus) DeepCopyInto(out *ComputeFirewallPoli
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.Kind != nil {
+		in, out := &in.Kind, &out.Kind
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.RuleTupleCount != nil {
+		in, out := &in.RuleTupleCount, &out.RuleTupleCount
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -2145,6 +2285,41 @@ func (in *ComputeFirewallPolicyStatus) DeepCopyInto(out *ComputeFirewallPolicySt
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.Fingerprint != nil {
+		in, out := &in.Fingerprint, &out.Fingerprint
+		*out = new(string)
+		**out = **in
+	}
+	if in.Id != nil {
+		in, out := &in.Id, &out.Id
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.RuleTupleCount != nil {
+		in, out := &in.RuleTupleCount, &out.RuleTupleCount
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
+	if in.SelfLinkWithId != nil {
+		in, out := &in.SelfLinkWithId, &out.SelfLinkWithId
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -2262,6 +2437,21 @@ func (in *ComputeFirewallStatus) DeepCopyInto(out *ComputeFirewallStatus) {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -2460,6 +2650,41 @@ func (in *ComputeForwardingRuleStatus) DeepCopyInto(out *ComputeForwardingRuleSt
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.LabelFingerprint != nil {
+		in, out := &in.LabelFingerprint, &out.LabelFingerprint
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.PscConnectionId != nil {
+		in, out := &in.PscConnectionId, &out.PscConnectionId
+		*out = new(string)
+		**out = **in
+	}
+	if in.PscConnectionStatus != nil {
+		in, out := &in.PscConnectionStatus, &out.PscConnectionStatus
+		*out = new(string)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
+	if in.ServiceName != nil {
+		in, out := &in.ServiceName, &out.ServiceName
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -2603,6 +2828,21 @@ func (in *ComputeHTTPHealthCheckStatus) DeepCopyInto(out *ComputeHTTPHealthCheck
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -2745,6 +2985,21 @@ func (in *ComputeHTTPSHealthCheckStatus) DeepCopyInto(out *ComputeHTTPSHealthChe
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -2909,6 +3164,26 @@ func (in *ComputeHealthCheckStatus) DeepCopyInto(out *ComputeHealthCheckStatus) 
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
+	if in.Type != nil {
+		in, out := &in.Type, &out.Type
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -3061,6 +3336,31 @@ func (in *ComputeImageStatus) DeepCopyInto(out *ComputeImageStatus) {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ArchiveSizeBytes != nil {
+		in, out := &in.ArchiveSizeBytes, &out.ArchiveSizeBytes
+		*out = new(int)
+		**out = **in
+	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.LabelFingerprint != nil {
+		in, out := &in.LabelFingerprint, &out.LabelFingerprint
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -3326,9 +3626,61 @@ func (in *ComputeInstanceGroupManagerStatus) DeepCopyInto(out *ComputeInstanceGr
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
-	out.CurrentActions = in.CurrentActions
-	out.Status = in.Status
-	out.UpdatePolicy = in.UpdatePolicy
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.CurrentActions != nil {
+		in, out := &in.CurrentActions, &out.CurrentActions
+		*out = new(InstancegroupmanagerCurrentActionsStatus)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.Fingerprint != nil {
+		in, out := &in.Fingerprint, &out.Fingerprint
+		*out = new(string)
+		**out = **in
+	}
+	if in.Id != nil {
+		in, out := &in.Id, &out.Id
+		*out = new(int)
+		**out = **in
+	}
+	if in.InstanceGroup != nil {
+		in, out := &in.InstanceGroup, &out.InstanceGroup
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.Region != nil {
+		in, out := &in.Region, &out.Region
+		*out = new(string)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
+	if in.Status != nil {
+		in, out := &in.Status, &out.Status
+		*out = new(InstancegroupmanagerStatusStatus)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.UpdatePolicy != nil {
+		in, out := &in.UpdatePolicy, &out.UpdatePolicy
+		*out = new(InstancegroupmanagerUpdatePolicyStatus)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.Zone != nil {
+		in, out := &in.Zone, &out.Zone
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -3390,6 +3742,21 @@ func (in *ComputeInstanceGroupStatus) DeepCopyInto(out *ComputeInstanceGroupStat
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
+	if in.Size != nil {
+		in, out := &in.Size, &out.Size
+		*out = new(int)
+		**out = **in
 	}
 	return
 }
@@ -3600,6 +3967,46 @@ func (in *ComputeInstanceStatus) DeepCopyInto(out *ComputeInstanceStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CpuPlatform != nil {
+		in, out := &in.CpuPlatform, &out.CpuPlatform
+		*out = new(string)
+		**out = **in
+	}
+	if in.CurrentStatus != nil {
+		in, out := &in.CurrentStatus, &out.CurrentStatus
+		*out = new(string)
+		**out = **in
+	}
+	if in.InstanceId != nil {
+		in, out := &in.InstanceId, &out.InstanceId
+		*out = new(string)
+		**out = **in
+	}
+	if in.LabelFingerprint != nil {
+		in, out := &in.LabelFingerprint, &out.LabelFingerprint
+		*out = new(string)
+		**out = **in
+	}
+	if in.MetadataFingerprint != nil {
+		in, out := &in.MetadataFingerprint, &out.MetadataFingerprint
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
+	if in.TagsFingerprint != nil {
+		in, out := &in.TagsFingerprint, &out.TagsFingerprint
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -3807,6 +4214,26 @@ func (in *ComputeInstanceTemplateStatus) DeepCopyInto(out *ComputeInstanceTempla
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.MetadataFingerprint != nil {
+		in, out := &in.MetadataFingerprint, &out.MetadataFingerprint
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
+	if in.TagsFingerprint != nil {
+		in, out := &in.TagsFingerprint, &out.TagsFingerprint
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -3966,7 +4393,56 @@ func (in *ComputeInterconnectAttachmentStatus) DeepCopyInto(out *ComputeIntercon
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
-	out.PrivateInterconnectInfo = in.PrivateInterconnectInfo
+	if in.CloudRouterIpAddress != nil {
+		in, out := &in.CloudRouterIpAddress, &out.CloudRouterIpAddress
+		*out = new(string)
+		**out = **in
+	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.CustomerRouterIpAddress != nil {
+		in, out := &in.CustomerRouterIpAddress, &out.CustomerRouterIpAddress
+		*out = new(string)
+		**out = **in
+	}
+	if in.GoogleReferenceId != nil {
+		in, out := &in.GoogleReferenceId, &out.GoogleReferenceId
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.PairingKey != nil {
+		in, out := &in.PairingKey, &out.PairingKey
+		*out = new(string)
+		**out = **in
+	}
+	if in.PartnerAsn != nil {
+		in, out := &in.PartnerAsn, &out.PartnerAsn
+		*out = new(string)
+		**out = **in
+	}
+	if in.PrivateInterconnectInfo != nil {
+		in, out := &in.PrivateInterconnectInfo, &out.PrivateInterconnectInfo
+		*out = new(InterconnectattachmentPrivateInterconnectInfoStatus)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
+	if in.State != nil {
+		in, out := &in.State, &out.State
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -4118,6 +4594,21 @@ func (in *ComputeNetworkEndpointGroupStatus) DeepCopyInto(out *ComputeNetworkEnd
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
+	if in.Size != nil {
+		in, out := &in.Size, &out.Size
+		*out = new(int)
+		**out = **in
 	}
 	return
 }
@@ -4277,6 +4768,21 @@ func (in *ComputeNetworkPeeringStatus) DeepCopyInto(out *ComputeNetworkPeeringSt
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.State != nil {
+		in, out := &in.State, &out.State
+		*out = new(string)
+		**out = **in
+	}
+	if in.StateDetails != nil {
+		in, out := &in.StateDetails, &out.StateDetails
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -4353,6 +4859,21 @@ func (in *ComputeNetworkStatus) DeepCopyInto(out *ComputeNetworkStatus) {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.GatewayIpv4 != nil {
+		in, out := &in.GatewayIpv4, &out.GatewayIpv4
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -4488,6 +5009,21 @@ func (in *ComputeNodeGroupStatus) DeepCopyInto(out *ComputeNodeGroupStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -4616,6 +5152,21 @@ func (in *ComputeNodeTemplateStatus) DeepCopyInto(out *ComputeNodeTemplateStatus
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -4743,8 +5294,36 @@ func (in *ComputePacketMirroringStatus) DeepCopyInto(out *ComputePacketMirroring
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
-	out.CollectorIlb = in.CollectorIlb
-	out.Network = in.Network
+	if in.CollectorIlb != nil {
+		in, out := &in.CollectorIlb, &out.CollectorIlb
+		*out = new(PacketmirroringCollectorIlbStatus)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.Id != nil {
+		in, out := &in.Id, &out.Id
+		*out = new(int)
+		**out = **in
+	}
+	if in.Network != nil {
+		in, out := &in.Network, &out.Network
+		*out = new(PacketmirroringNetworkStatus)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.Region != nil {
+		in, out := &in.Region, &out.Region
+		*out = new(string)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -4849,6 +5428,11 @@ func (in *ComputeProjectMetadataStatus) DeepCopyInto(out *ComputeProjectMetadata
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
 	}
 	return
 }
@@ -4988,6 +5572,16 @@ func (in *ComputeRegionNetworkEndpointGroupStatus) DeepCopyInto(out *ComputeRegi
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -5101,6 +5695,31 @@ func (in *ComputeReservationStatus) DeepCopyInto(out *ComputeReservationStatus) 
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.Commitment != nil {
+		in, out := &in.Commitment, &out.Commitment
+		*out = new(string)
+		**out = **in
+	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
+	if in.Status != nil {
+		in, out := &in.Status, &out.Status
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -5224,6 +5843,16 @@ func (in *ComputeResourcePolicyStatus) DeepCopyInto(out *ComputeResourcePolicySt
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -5368,6 +5997,21 @@ func (in *ComputeRouteStatus) DeepCopyInto(out *ComputeRouteStatus) {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.NextHopNetwork != nil {
+		in, out := &in.NextHopNetwork, &out.NextHopNetwork
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -5530,6 +6174,11 @@ func (in *ComputeRouterInterfaceStatus) DeepCopyInto(out *ComputeRouterInterface
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
 	}
 	return
 }
@@ -5737,6 +6386,11 @@ func (in *ComputeRouterNATStatus) DeepCopyInto(out *ComputeRouterNATStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -5884,6 +6538,16 @@ func (in *ComputeRouterPeerStatus) DeepCopyInto(out *ComputeRouterPeerStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ManagementType != nil {
+		in, out := &in.ManagementType, &out.ManagementType
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -5941,6 +6605,21 @@ func (in *ComputeRouterStatus) DeepCopyInto(out *ComputeRouterStatus) {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -6051,6 +6730,31 @@ func (in *ComputeSSLCertificateStatus) DeepCopyInto(out *ComputeSSLCertificateSt
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.CertificateId != nil {
+		in, out := &in.CertificateId, &out.CertificateId
+		*out = new(int)
+		**out = **in
+	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.ExpireTime != nil {
+		in, out := &in.ExpireTime, &out.ExpireTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -6175,10 +6879,30 @@ func (in *ComputeSSLPolicyStatus) DeepCopyInto(out *ComputeSSLPolicyStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
 	if in.EnabledFeatures != nil {
 		in, out := &in.EnabledFeatures, &out.EnabledFeatures
 		*out = make([]string, len(*in))
 		copy(*out, *in)
+	}
+	if in.Fingerprint != nil {
+		in, out := &in.Fingerprint, &out.Fingerprint
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -6315,6 +7039,21 @@ func (in *ComputeSecurityPolicyStatus) DeepCopyInto(out *ComputeSecurityPolicySt
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.Fingerprint != nil {
+		in, out := &in.Fingerprint, &out.Fingerprint
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -6450,9 +7189,40 @@ func (in *ComputeServiceAttachmentStatus) DeepCopyInto(out *ComputeServiceAttach
 	if in.ConnectedEndpoints != nil {
 		in, out := &in.ConnectedEndpoints, &out.ConnectedEndpoints
 		*out = make([]ServiceattachmentConnectedEndpointsStatus, len(*in))
-		copy(*out, *in)
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
-	out.PscServiceAttachmentId = in.PscServiceAttachmentId
+	if in.Fingerprint != nil {
+		in, out := &in.Fingerprint, &out.Fingerprint
+		*out = new(string)
+		**out = **in
+	}
+	if in.Id != nil {
+		in, out := &in.Id, &out.Id
+		*out = new(int)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.PscServiceAttachmentId != nil {
+		in, out := &in.PscServiceAttachmentId, &out.PscServiceAttachmentId
+		*out = new(ServiceattachmentPscServiceAttachmentIdStatus)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.Region != nil {
+		in, out := &in.Region, &out.Region
+		*out = new(string)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -6550,6 +7320,11 @@ func (in *ComputeSharedVPCHostProjectStatus) DeepCopyInto(out *ComputeSharedVPCH
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
 	}
 	return
 }
@@ -6649,6 +7424,11 @@ func (in *ComputeSharedVPCServiceProjectStatus) DeepCopyInto(out *ComputeSharedV
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
 	}
 	return
 }
@@ -6784,10 +7564,45 @@ func (in *ComputeSnapshotStatus) DeepCopyInto(out *ComputeSnapshotStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.DiskSizeGb != nil {
+		in, out := &in.DiskSizeGb, &out.DiskSizeGb
+		*out = new(int)
+		**out = **in
+	}
+	if in.LabelFingerprint != nil {
+		in, out := &in.LabelFingerprint, &out.LabelFingerprint
+		*out = new(string)
+		**out = **in
+	}
 	if in.Licenses != nil {
 		in, out := &in.Licenses, &out.Licenses
 		*out = make([]string, len(*in))
 		copy(*out, *in)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
+	if in.SnapshotId != nil {
+		in, out := &in.SnapshotId, &out.SnapshotId
+		*out = new(int)
+		**out = **in
+	}
+	if in.StorageBytes != nil {
+		in, out := &in.StorageBytes, &out.StorageBytes
+		*out = new(int)
+		**out = **in
 	}
 	return
 }
@@ -6938,6 +7753,41 @@ func (in *ComputeSubnetworkStatus) DeepCopyInto(out *ComputeSubnetworkStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.ExternalIpv6Prefix != nil {
+		in, out := &in.ExternalIpv6Prefix, &out.ExternalIpv6Prefix
+		*out = new(string)
+		**out = **in
+	}
+	if in.Fingerprint != nil {
+		in, out := &in.Fingerprint, &out.Fingerprint
+		*out = new(string)
+		**out = **in
+	}
+	if in.GatewayAddress != nil {
+		in, out := &in.GatewayAddress, &out.GatewayAddress
+		*out = new(string)
+		**out = **in
+	}
+	if in.Ipv6CidrRange != nil {
+		in, out := &in.Ipv6CidrRange, &out.Ipv6CidrRange
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -7056,6 +7906,31 @@ func (in *ComputeTargetGRPCProxyStatus) DeepCopyInto(out *ComputeTargetGRPCProxy
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.Fingerprint != nil {
+		in, out := &in.Fingerprint, &out.Fingerprint
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
+	if in.SelfLinkWithId != nil {
+		in, out := &in.SelfLinkWithId, &out.SelfLinkWithId
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -7169,6 +8044,26 @@ func (in *ComputeTargetHTTPProxyStatus) DeepCopyInto(out *ComputeTargetHTTPProxy
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.ProxyId != nil {
+		in, out := &in.ProxyId, &out.ProxyId
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -7304,6 +8199,26 @@ func (in *ComputeTargetHTTPSProxyStatus) DeepCopyInto(out *ComputeTargetHTTPSPro
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.ProxyId != nil {
+		in, out := &in.ProxyId, &out.ProxyId
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -7422,6 +8337,21 @@ func (in *ComputeTargetInstanceStatus) DeepCopyInto(out *ComputeTargetInstanceSt
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -7558,6 +8488,16 @@ func (in *ComputeTargetPoolStatus) DeepCopyInto(out *ComputeTargetPoolStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -7687,6 +8627,26 @@ func (in *ComputeTargetSSLProxyStatus) DeepCopyInto(out *ComputeTargetSSLProxySt
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.ProxyId != nil {
+		in, out := &in.ProxyId, &out.ProxyId
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -7806,6 +8766,26 @@ func (in *ComputeTargetTCPProxyStatus) DeepCopyInto(out *ComputeTargetTCPProxySt
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.ProxyId != nil {
+		in, out := &in.ProxyId, &out.ProxyId
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -7914,6 +8894,26 @@ func (in *ComputeTargetVPNGatewayStatus) DeepCopyInto(out *ComputeTargetVPNGatew
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.GatewayId != nil {
+		in, out := &in.GatewayId, &out.GatewayId
+		*out = new(int)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -8064,6 +9064,31 @@ func (in *ComputeURLMapStatus) DeepCopyInto(out *ComputeURLMapStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.Fingerprint != nil {
+		in, out := &in.Fingerprint, &out.Fingerprint
+		*out = new(string)
+		**out = **in
+	}
+	if in.MapId != nil {
+		in, out := &in.MapId, &out.MapId
+		*out = new(int)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -8179,6 +9204,16 @@ func (in *ComputeVPNGatewayStatus) DeepCopyInto(out *ComputeVPNGatewayStatus) {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -8343,6 +9378,41 @@ func (in *ComputeVPNTunnelStatus) DeepCopyInto(out *ComputeVPNTunnelStatus) {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.CreationTimestamp != nil {
+		in, out := &in.CreationTimestamp, &out.CreationTimestamp
+		*out = new(string)
+		**out = **in
+	}
+	if in.DetailedStatus != nil {
+		in, out := &in.DetailedStatus, &out.DetailedStatus
+		*out = new(string)
+		**out = **in
+	}
+	if in.LabelFingerprint != nil {
+		in, out := &in.LabelFingerprint, &out.LabelFingerprint
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
+	if in.SharedSecretHash != nil {
+		in, out := &in.SharedSecretHash, &out.SharedSecretHash
+		*out = new(string)
+		**out = **in
+	}
+	if in.TunnelId != nil {
+		in, out := &in.TunnelId, &out.TunnelId
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -9867,6 +10937,51 @@ func (in *InstancegroupmanagerAutoHealingPolicies) DeepCopy() *Instancegroupmana
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *InstancegroupmanagerCurrentActionsStatus) DeepCopyInto(out *InstancegroupmanagerCurrentActionsStatus) {
 	*out = *in
+	if in.Abandoning != nil {
+		in, out := &in.Abandoning, &out.Abandoning
+		*out = new(int)
+		**out = **in
+	}
+	if in.Creating != nil {
+		in, out := &in.Creating, &out.Creating
+		*out = new(int)
+		**out = **in
+	}
+	if in.CreatingWithoutRetries != nil {
+		in, out := &in.CreatingWithoutRetries, &out.CreatingWithoutRetries
+		*out = new(int)
+		**out = **in
+	}
+	if in.Deleting != nil {
+		in, out := &in.Deleting, &out.Deleting
+		*out = new(int)
+		**out = **in
+	}
+	if in.None != nil {
+		in, out := &in.None, &out.None
+		*out = new(int)
+		**out = **in
+	}
+	if in.Recreating != nil {
+		in, out := &in.Recreating, &out.Recreating
+		*out = new(int)
+		**out = **in
+	}
+	if in.Refreshing != nil {
+		in, out := &in.Refreshing, &out.Refreshing
+		*out = new(int)
+		**out = **in
+	}
+	if in.Restarting != nil {
+		in, out := &in.Restarting, &out.Restarting
+		*out = new(int)
+		**out = **in
+	}
+	if in.Verifying != nil {
+		in, out := &in.Verifying, &out.Verifying
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -10000,6 +11115,11 @@ func (in *InstancegroupmanagerMaxSurge) DeepCopy() *InstancegroupmanagerMaxSurge
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *InstancegroupmanagerMaxSurgeStatus) DeepCopyInto(out *InstancegroupmanagerMaxSurgeStatus) {
 	*out = *in
+	if in.Calculated != nil {
+		in, out := &in.Calculated, &out.Calculated
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -10042,6 +11162,11 @@ func (in *InstancegroupmanagerMaxUnavailable) DeepCopy() *InstancegroupmanagerMa
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *InstancegroupmanagerMaxUnavailableStatus) DeepCopyInto(out *InstancegroupmanagerMaxUnavailableStatus) {
 	*out = *in
+	if in.Calculated != nil {
+		in, out := &in.Calculated, &out.Calculated
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -10084,6 +11209,11 @@ func (in *InstancegroupmanagerNamedPorts) DeepCopy() *InstancegroupmanagerNamedP
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *InstancegroupmanagerPerInstanceConfigsStatus) DeepCopyInto(out *InstancegroupmanagerPerInstanceConfigsStatus) {
 	*out = *in
+	if in.AllEffective != nil {
+		in, out := &in.AllEffective, &out.AllEffective
+		*out = new(bool)
+		**out = **in
+	}
 	return
 }
 
@@ -10158,7 +11288,21 @@ func (in *InstancegroupmanagerStatefulPolicy) DeepCopy() *InstancegroupmanagerSt
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *InstancegroupmanagerStatefulStatus) DeepCopyInto(out *InstancegroupmanagerStatefulStatus) {
 	*out = *in
-	out.PerInstanceConfigs = in.PerInstanceConfigs
+	if in.HasStatefulConfig != nil {
+		in, out := &in.HasStatefulConfig, &out.HasStatefulConfig
+		*out = new(bool)
+		**out = **in
+	}
+	if in.IsStateful != nil {
+		in, out := &in.IsStateful, &out.IsStateful
+		*out = new(bool)
+		**out = **in
+	}
+	if in.PerInstanceConfigs != nil {
+		in, out := &in.PerInstanceConfigs, &out.PerInstanceConfigs
+		*out = new(InstancegroupmanagerPerInstanceConfigsStatus)
+		(*in).DeepCopyInto(*out)
+	}
 	return
 }
 
@@ -10175,8 +11319,26 @@ func (in *InstancegroupmanagerStatefulStatus) DeepCopy() *InstancegroupmanagerSt
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *InstancegroupmanagerStatusStatus) DeepCopyInto(out *InstancegroupmanagerStatusStatus) {
 	*out = *in
-	out.Stateful = in.Stateful
-	out.VersionTarget = in.VersionTarget
+	if in.Autoscaler != nil {
+		in, out := &in.Autoscaler, &out.Autoscaler
+		*out = new(string)
+		**out = **in
+	}
+	if in.IsStable != nil {
+		in, out := &in.IsStable, &out.IsStable
+		*out = new(bool)
+		**out = **in
+	}
+	if in.Stateful != nil {
+		in, out := &in.Stateful, &out.Stateful
+		*out = new(InstancegroupmanagerStatefulStatus)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.VersionTarget != nil {
+		in, out := &in.VersionTarget, &out.VersionTarget
+		*out = new(InstancegroupmanagerVersionTargetStatus)
+		(*in).DeepCopyInto(*out)
+	}
 	return
 }
 
@@ -10280,8 +11442,16 @@ func (in *InstancegroupmanagerUpdatePolicy) DeepCopy() *InstancegroupmanagerUpda
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *InstancegroupmanagerUpdatePolicyStatus) DeepCopyInto(out *InstancegroupmanagerUpdatePolicyStatus) {
 	*out = *in
-	out.MaxSurge = in.MaxSurge
-	out.MaxUnavailable = in.MaxUnavailable
+	if in.MaxSurge != nil {
+		in, out := &in.MaxSurge, &out.MaxSurge
+		*out = new(InstancegroupmanagerMaxSurgeStatus)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.MaxUnavailable != nil {
+		in, out := &in.MaxUnavailable, &out.MaxUnavailable
+		*out = new(InstancegroupmanagerMaxUnavailableStatus)
+		(*in).DeepCopyInto(*out)
+	}
 	return
 }
 
@@ -10298,6 +11468,11 @@ func (in *InstancegroupmanagerUpdatePolicyStatus) DeepCopy() *Instancegroupmanag
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *InstancegroupmanagerVersionTargetStatus) DeepCopyInto(out *InstancegroupmanagerVersionTargetStatus) {
 	*out = *in
+	if in.IsReached != nil {
+		in, out := &in.IsReached, &out.IsReached
+		*out = new(bool)
+		**out = **in
+	}
 	return
 }
 
@@ -10979,6 +12154,11 @@ func (in *InstancetemplateValue) DeepCopy() *InstancetemplateValue {
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *InterconnectattachmentPrivateInterconnectInfoStatus) DeepCopyInto(out *InterconnectattachmentPrivateInterconnectInfoStatus) {
 	*out = *in
+	if in.Tag8021q != nil {
+		in, out := &in.Tag8021q, &out.Tag8021q
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -11106,6 +12286,11 @@ func (in *PacketmirroringCollectorIlb) DeepCopy() *PacketmirroringCollectorIlb {
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *PacketmirroringCollectorIlbStatus) DeepCopyInto(out *PacketmirroringCollectorIlbStatus) {
 	*out = *in
+	if in.CanonicalUrl != nil {
+		in, out := &in.CanonicalUrl, &out.CanonicalUrl
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -11231,6 +12416,11 @@ func (in *PacketmirroringNetwork) DeepCopy() *PacketmirroringNetwork {
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *PacketmirroringNetworkStatus) DeepCopyInto(out *PacketmirroringNetworkStatus) {
 	*out = *in
+	if in.CanonicalUrl != nil {
+		in, out := &in.CanonicalUrl, &out.CanonicalUrl
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -12481,6 +13671,21 @@ func (in *SecuritypolicyRule) DeepCopy() *SecuritypolicyRule {
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ServiceattachmentConnectedEndpointsStatus) DeepCopyInto(out *ServiceattachmentConnectedEndpointsStatus) {
 	*out = *in
+	if in.Endpoint != nil {
+		in, out := &in.Endpoint, &out.Endpoint
+		*out = new(string)
+		**out = **in
+	}
+	if in.PscConnectionId != nil {
+		in, out := &in.PscConnectionId, &out.PscConnectionId
+		*out = new(int)
+		**out = **in
+	}
+	if in.Status != nil {
+		in, out := &in.Status, &out.Status
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -12519,6 +13724,16 @@ func (in *ServiceattachmentConsumerAcceptLists) DeepCopy() *ServiceattachmentCon
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ServiceattachmentPscServiceAttachmentIdStatus) DeepCopyInto(out *ServiceattachmentPscServiceAttachmentIdStatus) {
 	*out = *in
+	if in.High != nil {
+		in, out := &in.High, &out.High
+		*out = new(int)
+		**out = **in
+	}
+	if in.Low != nil {
+		in, out := &in.Low, &out.Low
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 

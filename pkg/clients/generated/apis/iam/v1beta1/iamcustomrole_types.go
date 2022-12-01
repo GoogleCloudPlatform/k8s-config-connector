@@ -60,11 +60,16 @@ type IAMCustomRoleStatus struct {
 	   IAMCustomRole's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The current deleted state of the role. */
-	Deleted bool `json:"deleted,omitempty"`
+	// +optional
+	Deleted *bool `json:"deleted,omitempty"`
+
 	/* The full name of the role. */
-	Name string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

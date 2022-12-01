@@ -49,13 +49,20 @@ type AccessContextManagerAccessPolicyStatus struct {
 	   AccessContextManagerAccessPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Time the AccessPolicy was created in UTC. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* Resource name of the AccessPolicy. Format: {policy_id}. */
-	Name string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Time the AccessPolicy was updated in UTC. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

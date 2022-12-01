@@ -36,7 +36,6 @@ import (
 )
 
 type InstanceAccessConfig struct {
-	/*  */
 	// +optional
 	NatIpRef *v1alpha1.ResourceRef `json:"natIpRef,omitempty"`
 
@@ -85,7 +84,6 @@ type InstanceAttachedDisk struct {
 	// +optional
 	DiskEncryptionKeySha256 *string `json:"diskEncryptionKeySha256,omitempty"`
 
-	/*  */
 	// +optional
 	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
@@ -93,7 +91,6 @@ type InstanceAttachedDisk struct {
 	// +optional
 	Mode *string `json:"mode,omitempty"`
 
-	/*  */
 	SourceDiskRef v1alpha1.ResourceRef `json:"sourceDiskRef"`
 }
 
@@ -118,7 +115,6 @@ type InstanceBootDisk struct {
 	// +optional
 	InitializeParams *InstanceInitializeParams `json:"initializeParams,omitempty"`
 
-	/*  */
 	// +optional
 	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
@@ -126,7 +122,6 @@ type InstanceBootDisk struct {
 	// +optional
 	Mode *string `json:"mode,omitempty"`
 
-	/*  */
 	// +optional
 	SourceDiskRef *v1alpha1.ResourceRef `json:"sourceDiskRef,omitempty"`
 }
@@ -163,7 +158,6 @@ type InstanceInitializeParams struct {
 	// +optional
 	Size *int `json:"size,omitempty"`
 
-	/*  */
 	// +optional
 	SourceImageRef *v1alpha1.ResourceRef `json:"sourceImageRef,omitempty"`
 
@@ -193,10 +187,8 @@ type InstanceLabels struct {
 }
 
 type InstanceMetadata struct {
-	/*  */
 	Key string `json:"key"`
 
-	/*  */
 	Value string `json:"value"`
 }
 
@@ -225,11 +217,9 @@ type InstanceNetworkInterface struct {
 	// +optional
 	NetworkIp *string `json:"networkIp,omitempty"`
 
-	/*  */
 	// +optional
 	NetworkIpRef *v1alpha1.ResourceRef `json:"networkIpRef,omitempty"`
 
-	/*  */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
@@ -249,7 +239,6 @@ type InstanceNetworkInterface struct {
 	// +optional
 	SubnetworkProject *string `json:"subnetworkProject,omitempty"`
 
-	/*  */
 	// +optional
 	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
@@ -260,7 +249,6 @@ type InstanceNetworkPerformanceConfig struct {
 }
 
 type InstanceNodeAffinities struct {
-	/*  */
 	// +optional
 	Value *InstanceValue `json:"value,omitempty"`
 }
@@ -283,11 +271,9 @@ type InstanceScheduling struct {
 	// +optional
 	InstanceTerminationAction *string `json:"instanceTerminationAction,omitempty"`
 
-	/*  */
 	// +optional
 	MinNodeCpus *int `json:"minNodeCpus,omitempty"`
 
-	/*  */
 	// +optional
 	NodeAffinities []InstanceNodeAffinities `json:"nodeAffinities,omitempty"`
 
@@ -313,7 +299,6 @@ type InstanceServiceAccount struct {
 	/* A list of service scopes. */
 	Scopes []string `json:"scopes"`
 
-	/*  */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
@@ -394,7 +379,6 @@ type ComputeInstanceSpec struct {
 	// +optional
 	Hostname *string `json:"hostname,omitempty"`
 
-	/*  */
 	// +optional
 	InstanceTemplateRef *v1alpha1.ResourceRef `json:"instanceTemplateRef,omitempty"`
 
@@ -402,7 +386,6 @@ type ComputeInstanceSpec struct {
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
 
-	/*  */
 	// +optional
 	Metadata []InstanceMetadata `json:"metadata,omitempty"`
 
@@ -430,7 +413,6 @@ type ComputeInstanceSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/*  */
 	// +optional
 	ResourcePolicies []v1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
 
@@ -464,21 +446,36 @@ type ComputeInstanceStatus struct {
 	   ComputeInstance's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The CPU platform used by this instance. */
-	CpuPlatform string `json:"cpuPlatform,omitempty"`
+	// +optional
+	CpuPlatform *string `json:"cpuPlatform,omitempty"`
+
 	/* Current status of the instance. */
-	CurrentStatus string `json:"currentStatus,omitempty"`
+	// +optional
+	CurrentStatus *string `json:"currentStatus,omitempty"`
+
 	/* The server-assigned unique identifier of this instance. */
-	InstanceId string `json:"instanceId,omitempty"`
+	// +optional
+	InstanceId *string `json:"instanceId,omitempty"`
+
 	/* The unique fingerprint of the labels. */
-	LabelFingerprint string `json:"labelFingerprint,omitempty"`
+	// +optional
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
 	/* The unique fingerprint of the metadata. */
-	MetadataFingerprint string `json:"metadataFingerprint,omitempty"`
+	// +optional
+	MetadataFingerprint *string `json:"metadataFingerprint,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* The URI of the created resource. */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
 	/* The unique fingerprint of the tags. */
-	TagsFingerprint string `json:"tagsFingerprint,omitempty"`
+	// +optional
+	TagsFingerprint *string `json:"tagsFingerprint,omitempty"`
 }
 
 // +genclient

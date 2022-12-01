@@ -112,7 +112,6 @@ type ConfigMultiTenant struct {
 	// +optional
 	AllowTenants *bool `json:"allowTenants,omitempty"`
 
-	/*  */
 	// +optional
 	DefaultTenantLocationRef *v1alpha1.ResourceRef `json:"defaultTenantLocationRef,omitempty"`
 }
@@ -324,7 +323,6 @@ type ConfigSmtp struct {
 }
 
 type ConfigTriggers struct {
-	/*  */
 	// +optional
 	FunctionUriRef *v1alpha1.ResourceRef `json:"functionUriRef,omitempty"`
 
@@ -408,125 +406,150 @@ type IdentityPlatformConfigSpec struct {
 
 type ConfigChangeEmailTemplateStatus struct {
 	/* Output only. Whether the body or subject of the email is customized. */
-	Customized bool `json:"customized,omitempty"`
+	// +optional
+	Customized *bool `json:"customized,omitempty"`
 }
 
 type ConfigClientStatus struct {
 	/* Output only. API key that can be used when making requests for this project. */
-	ApiKey string `json:"apiKey,omitempty"`
+	// +optional
+	ApiKey *string `json:"apiKey,omitempty"`
 
 	/* Output only. Firebase subdomain. */
-	FirebaseSubdomain string `json:"firebaseSubdomain,omitempty"`
+	// +optional
+	FirebaseSubdomain *string `json:"firebaseSubdomain,omitempty"`
 }
 
 type ConfigDnsInfoStatus struct {
 	/* Output only. The applied verified custom domain. */
-	CustomDomain string `json:"customDomain,omitempty"`
+	// +optional
+	CustomDomain *string `json:"customDomain,omitempty"`
 
 	/* Output only. The current verification state of the custom domain. The custom domain will only be used once the domain verification is successful. Possible values: VERIFICATION_STATE_UNSPECIFIED, NOT_STARTED, IN_PROGRESS, FAILED, SUCCEEDED */
-	CustomDomainState string `json:"customDomainState,omitempty"`
+	// +optional
+	CustomDomainState *string `json:"customDomainState,omitempty"`
 
 	/* Output only. The timestamp of initial request for the current domain verification. */
-	DomainVerificationRequestTime string `json:"domainVerificationRequestTime,omitempty"`
+	// +optional
+	DomainVerificationRequestTime *string `json:"domainVerificationRequestTime,omitempty"`
 
 	/* Output only. The custom domain that's to be verified. */
-	PendingCustomDomain string `json:"pendingCustomDomain,omitempty"`
+	// +optional
+	PendingCustomDomain *string `json:"pendingCustomDomain,omitempty"`
 }
 
 type ConfigEmailStatus struct {
 	/* Output only. Hash config information. */
-	HashConfig ConfigHashConfigStatus `json:"hashConfig,omitempty"`
+	// +optional
+	HashConfig *ConfigHashConfigStatus `json:"hashConfig,omitempty"`
 }
 
 type ConfigHashConfigStatus struct {
 	/* Output only. Different password hash algorithms used in Identity Toolkit. Possible values: HASH_ALGORITHM_UNSPECIFIED, HMAC_SHA256, HMAC_SHA1, HMAC_MD5, SCRYPT, PBKDF_SHA1, MD5, HMAC_SHA512, SHA1, BCRYPT, PBKDF2_SHA256, SHA256, SHA512, STANDARD_SCRYPT */
-	Algorithm string `json:"algorithm,omitempty"`
+	// +optional
+	Algorithm *string `json:"algorithm,omitempty"`
 
 	/* Output only. Memory cost for hash calculation. Used by scrypt and other similar password derivation algorithms. See https://tools.ietf.org/html/rfc7914 for explanation of field. */
-	MemoryCost int `json:"memoryCost,omitempty"`
+	// +optional
+	MemoryCost *int `json:"memoryCost,omitempty"`
 
 	/* Output only. How many rounds for hash calculation. Used by scrypt and other similar password derivation algorithms. */
-	Rounds int `json:"rounds,omitempty"`
+	// +optional
+	Rounds *int `json:"rounds,omitempty"`
 
 	/* Output only. Non-printable character to be inserted between the salt and plain text password in base64. */
-	SaltSeparator string `json:"saltSeparator,omitempty"`
+	// +optional
+	SaltSeparator *string `json:"saltSeparator,omitempty"`
 
 	/* Output only. Signer key in base64. */
-	SignerKey string `json:"signerKey,omitempty"`
+	// +optional
+	SignerKey *string `json:"signerKey,omitempty"`
 }
 
 type ConfigNotificationStatus struct {
-	/*  */
-	SendEmail ConfigSendEmailStatus `json:"sendEmail,omitempty"`
+	// +optional
+	SendEmail *ConfigSendEmailStatus `json:"sendEmail,omitempty"`
 
-	/*  */
-	SendSms ConfigSendSmsStatus `json:"sendSms,omitempty"`
+	// +optional
+	SendSms *ConfigSendSmsStatus `json:"sendSms,omitempty"`
 }
 
 type ConfigResetPasswordTemplateStatus struct {
 	/* Output only. Whether the body or subject of the email is customized. */
-	Customized bool `json:"customized,omitempty"`
+	// +optional
+	Customized *bool `json:"customized,omitempty"`
 }
 
 type ConfigRevertSecondFactorAdditionTemplateStatus struct {
 	/* Output only. Whether the body or subject of the email is customized. */
-	Customized bool `json:"customized,omitempty"`
+	// +optional
+	Customized *bool `json:"customized,omitempty"`
 }
 
 type ConfigSendEmailStatus struct {
-	/*  */
-	ChangeEmailTemplate ConfigChangeEmailTemplateStatus `json:"changeEmailTemplate,omitempty"`
+	// +optional
+	ChangeEmailTemplate *ConfigChangeEmailTemplateStatus `json:"changeEmailTemplate,omitempty"`
 
-	/*  */
-	DnsInfo ConfigDnsInfoStatus `json:"dnsInfo,omitempty"`
+	// +optional
+	DnsInfo *ConfigDnsInfoStatus `json:"dnsInfo,omitempty"`
 
-	/*  */
-	ResetPasswordTemplate ConfigResetPasswordTemplateStatus `json:"resetPasswordTemplate,omitempty"`
+	// +optional
+	ResetPasswordTemplate *ConfigResetPasswordTemplateStatus `json:"resetPasswordTemplate,omitempty"`
 
-	/*  */
-	RevertSecondFactorAdditionTemplate ConfigRevertSecondFactorAdditionTemplateStatus `json:"revertSecondFactorAdditionTemplate,omitempty"`
+	// +optional
+	RevertSecondFactorAdditionTemplate *ConfigRevertSecondFactorAdditionTemplateStatus `json:"revertSecondFactorAdditionTemplate,omitempty"`
 
-	/*  */
-	VerifyEmailTemplate ConfigVerifyEmailTemplateStatus `json:"verifyEmailTemplate,omitempty"`
+	// +optional
+	VerifyEmailTemplate *ConfigVerifyEmailTemplateStatus `json:"verifyEmailTemplate,omitempty"`
 }
 
 type ConfigSendSmsStatus struct {
 	/* Output only. The template to use when sending an SMS. */
-	SmsTemplate ConfigSmsTemplateStatus `json:"smsTemplate,omitempty"`
+	// +optional
+	SmsTemplate *ConfigSmsTemplateStatus `json:"smsTemplate,omitempty"`
 }
 
 type ConfigSignInStatus struct {
-	/*  */
-	Email ConfigEmailStatus `json:"email,omitempty"`
+	// +optional
+	Email *ConfigEmailStatus `json:"email,omitempty"`
 
 	/* Output only. Hash config information. */
-	HashConfig ConfigHashConfigStatus `json:"hashConfig,omitempty"`
+	// +optional
+	HashConfig *ConfigHashConfigStatus `json:"hashConfig,omitempty"`
 }
 
 type ConfigSmsTemplateStatus struct {
 	/* Output only. The SMS's content. Can contain the following placeholders which will be replaced with the appropriate values: %APP_NAME% - For Android or iOS apps, the app's display name. For web apps, the domain hosting the application. %LOGIN_CODE% - The OOB code being sent in the SMS. */
-	Content string `json:"content,omitempty"`
+	// +optional
+	Content *string `json:"content,omitempty"`
 }
 
 type ConfigVerifyEmailTemplateStatus struct {
 	/* Output only. Whether the body or subject of the email is customized. */
-	Customized bool `json:"customized,omitempty"`
+	// +optional
+	Customized *bool `json:"customized,omitempty"`
 }
 
 type IdentityPlatformConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   IdentityPlatformConfig's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/*  */
-	Client ConfigClientStatus `json:"client,omitempty"`
-	/*  */
-	Notification ConfigNotificationStatus `json:"notification,omitempty"`
+	// +optional
+	Client *ConfigClientStatus `json:"client,omitempty"`
+
+	// +optional
+	Notification *ConfigNotificationStatus `json:"notification,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/*  */
-	SignIn ConfigSignInStatus `json:"signIn,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	// +optional
+	SignIn *ConfigSignInStatus `json:"signIn,omitempty"`
+
 	/* Output only. The subtype of this config. Possible values: SUBTYPE_UNSPECIFIED, IDENTITY_PLATFORM, FIREBASE_AUTH */
-	Subtype string `json:"subtype,omitempty"`
+	// +optional
+	Subtype *string `json:"subtype,omitempty"`
 }
 
 // +genclient

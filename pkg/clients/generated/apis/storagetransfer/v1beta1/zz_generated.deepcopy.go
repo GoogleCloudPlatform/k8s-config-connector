@@ -644,6 +644,31 @@ func (in *StorageTransferJobStatus) DeepCopyInto(out *StorageTransferJobStatus) 
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreationTime != nil {
+		in, out := &in.CreationTime, &out.CreationTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.DeletionTime != nil {
+		in, out := &in.DeletionTime, &out.DeletionTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.LastModificationTime != nil {
+		in, out := &in.LastModificationTime, &out.LastModificationTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 

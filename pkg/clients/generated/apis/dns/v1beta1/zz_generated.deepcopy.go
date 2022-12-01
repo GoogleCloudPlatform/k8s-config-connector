@@ -164,10 +164,25 @@ func (in *DNSManagedZoneStatus) DeepCopyInto(out *DNSManagedZoneStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreationTime != nil {
+		in, out := &in.CreationTime, &out.CreationTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.ManagedZoneId != nil {
+		in, out := &in.ManagedZoneId, &out.ManagedZoneId
+		*out = new(int)
+		**out = **in
+	}
 	if in.NameServers != nil {
 		in, out := &in.NameServers, &out.NameServers
 		*out = make([]string, len(*in))
 		copy(*out, *in)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
 	}
 	return
 }
@@ -297,6 +312,11 @@ func (in *DNSPolicyStatus) DeepCopyInto(out *DNSPolicyStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -412,6 +432,11 @@ func (in *DNSRecordSetStatus) DeepCopyInto(out *DNSRecordSetStatus) {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
 	}
 	return
 }

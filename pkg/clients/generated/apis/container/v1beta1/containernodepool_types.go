@@ -152,7 +152,6 @@ type NodepoolNetworkConfig struct {
 }
 
 type NodepoolNodeConfig struct {
-	/*  */
 	// +optional
 	BootDiskKMSCryptoKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSCryptoKeyRef,omitempty"`
 
@@ -242,7 +241,6 @@ type NodepoolNodeConfig struct {
 	// +optional
 	SandboxConfig *NodepoolSandboxConfig `json:"sandboxConfig,omitempty"`
 
-	/*  */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
@@ -358,7 +356,6 @@ type ContainerNodePoolSpec struct {
 	// +optional
 	Autoscaling *NodepoolAutoscaling `json:"autoscaling,omitempty"`
 
-	/*  */
 	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
 
 	/* Immutable. The initial number of nodes for the pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Changing this will force recreation of the resource. */
@@ -408,7 +405,6 @@ type ContainerNodePoolSpec struct {
 	// +optional
 	UpgradeSettings *NodepoolUpgradeSettings `json:"upgradeSettings,omitempty"`
 
-	/*  */
 	// +optional
 	Version *string `json:"version,omitempty"`
 }
@@ -418,13 +414,19 @@ type ContainerNodePoolStatus struct {
 	   ContainerNodePool's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The resource URLs of the managed instance groups associated with this node pool. */
+	// +optional
 	InstanceGroupUrls []string `json:"instanceGroupUrls,omitempty"`
+
 	/* List of instance group URLs which have been assigned to this node pool. */
+	// +optional
 	ManagedInstanceGroupUrls []string `json:"managedInstanceGroupUrls,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/*  */
-	Operation string `json:"operation,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	// +optional
+	Operation *string `json:"operation,omitempty"`
 }
 
 // +genclient

@@ -136,16 +136,24 @@ type ComputeImageStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Size of the image tar.gz archive stored in Google Cloud Storage (in
 	bytes). */
-	ArchiveSizeBytes int `json:"archiveSizeBytes,omitempty"`
+	// +optional
+	ArchiveSizeBytes *int `json:"archiveSizeBytes,omitempty"`
+
 	/* Creation timestamp in RFC3339 text format. */
-	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
 	/* The fingerprint used for optimistic locking of this resource. Used
 	internally during updates. */
-	LabelFingerprint string `json:"labelFingerprint,omitempty"`
+	// +optional
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/*  */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 }
 
 // +genclient

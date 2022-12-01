@@ -55,9 +55,12 @@ type ServiceDirectoryNamespaceStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The resource name for the namespace
 	in the format 'projects/* /locations/* /namespaces/*'. */
-	Name string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

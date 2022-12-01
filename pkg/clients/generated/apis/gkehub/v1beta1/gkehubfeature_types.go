@@ -36,7 +36,6 @@ import (
 )
 
 type FeatureMulticlusteringress struct {
-	/*  */
 	ConfigMembershipRef v1alpha1.ResourceRef `json:"configMembershipRef"`
 }
 
@@ -64,21 +63,26 @@ type GKEHubFeatureSpec struct {
 
 type FeatureResourceStateStatus struct {
 	/* Whether this Feature has outstanding resources that need to be cleaned up before it can be disabled. */
-	HasResources bool `json:"hasResources,omitempty"`
+	// +optional
+	HasResources *bool `json:"hasResources,omitempty"`
 
 	/* The current state of the Feature resource in the Hub API. Possible values: STATE_UNSPECIFIED, ENABLING, ACTIVE, DISABLING, UPDATING, SERVICE_UPDATING */
-	State string `json:"state,omitempty"`
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 type FeatureStateStatus struct {
 	/* The high-level, machine-readable status of this Feature. Possible values: CODE_UNSPECIFIED, OK, WARNING, ERROR */
-	Code string `json:"code,omitempty"`
+	// +optional
+	Code *string `json:"code,omitempty"`
 
 	/* A human-readable description of the current status. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
 
 	/* The time this status and any related Feature-specific details were updated. A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z" */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 type GKEHubFeatureStatus struct {
@@ -86,17 +90,28 @@ type GKEHubFeatureStatus struct {
 	   GKEHubFeature's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. When the Feature resource was created. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* Output only. When the Feature resource was deleted. */
-	DeleteTime string `json:"deleteTime,omitempty"`
+	// +optional
+	DeleteTime *string `json:"deleteTime,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* State of the Feature resource itself. */
-	ResourceState FeatureResourceStateStatus `json:"resourceState,omitempty"`
+	// +optional
+	ResourceState *FeatureResourceStateStatus `json:"resourceState,omitempty"`
+
 	/* Output only. The Hub-wide Feature state */
-	State FeatureStateStatus `json:"state,omitempty"`
+	// +optional
+	State *FeatureStateStatus `json:"state,omitempty"`
+
 	/* Output only. When the Feature resource was last updated. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

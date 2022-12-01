@@ -171,12 +171,62 @@ func (in *DataFusionInstanceStatus) DeepCopyInto(out *DataFusionInstanceStatus) 
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ApiEndpoint != nil {
+		in, out := &in.ApiEndpoint, &out.ApiEndpoint
+		*out = new(string)
+		**out = **in
+	}
 	if in.AvailableVersion != nil {
 		in, out := &in.AvailableVersion, &out.AvailableVersion
 		*out = make([]InstanceAvailableVersionStatus, len(*in))
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
+	}
+	if in.CreateTime != nil {
+		in, out := &in.CreateTime, &out.CreateTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.GcsBucket != nil {
+		in, out := &in.GcsBucket, &out.GcsBucket
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.P4ServiceAccount != nil {
+		in, out := &in.P4ServiceAccount, &out.P4ServiceAccount
+		*out = new(string)
+		**out = **in
+	}
+	if in.ServiceEndpoint != nil {
+		in, out := &in.ServiceEndpoint, &out.ServiceEndpoint
+		*out = new(string)
+		**out = **in
+	}
+	if in.State != nil {
+		in, out := &in.State, &out.State
+		*out = new(string)
+		**out = **in
+	}
+	if in.StateMessage != nil {
+		in, out := &in.StateMessage, &out.StateMessage
+		*out = new(string)
+		**out = **in
+	}
+	if in.TenantProjectId != nil {
+		in, out := &in.TenantProjectId, &out.TenantProjectId
+		*out = new(string)
+		**out = **in
+	}
+	if in.UpdateTime != nil {
+		in, out := &in.UpdateTime, &out.UpdateTime
+		*out = new(string)
+		**out = **in
 	}
 	return
 }
@@ -198,6 +248,16 @@ func (in *InstanceAvailableVersionStatus) DeepCopyInto(out *InstanceAvailableVer
 		in, out := &in.AvailableFeatures, &out.AvailableFeatures
 		*out = make([]string, len(*in))
 		copy(*out, *in)
+	}
+	if in.DefaultVersion != nil {
+		in, out := &in.DefaultVersion, &out.DefaultVersion
+		*out = new(bool)
+		**out = **in
+	}
+	if in.VersionNumber != nil {
+		in, out := &in.VersionNumber, &out.VersionNumber
+		*out = new(string)
+		**out = **in
 	}
 	return
 }

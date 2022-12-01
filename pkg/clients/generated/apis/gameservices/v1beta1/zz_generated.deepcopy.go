@@ -124,6 +124,21 @@ func (in *GameServicesRealmStatus) DeepCopyInto(out *GameServicesRealmStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreateTime != nil {
+		in, out := &in.CreateTime, &out.CreateTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.UpdateTime != nil {
+		in, out := &in.UpdateTime, &out.UpdateTime
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 

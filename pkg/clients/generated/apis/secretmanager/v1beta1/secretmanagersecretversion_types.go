@@ -72,16 +72,25 @@ type SecretManagerSecretVersionStatus struct {
 	   SecretManagerSecretVersion's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The time at which the Secret was created. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* The time at which the Secret was destroyed. Only present if state is DESTROYED. */
-	DestroyTime string `json:"destroyTime,omitempty"`
+	// +optional
+	DestroyTime *string `json:"destroyTime,omitempty"`
+
 	/* The resource name of the SecretVersion. Format:
 	'projects/{{project}}/secrets/{{secret_id}}/versions/{{version}}'. */
-	Name string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* The version of the Secret. */
-	Version string `json:"version,omitempty"`
+	// +optional
+	Version *string `json:"version,omitempty"`
 }
 
 // +genclient

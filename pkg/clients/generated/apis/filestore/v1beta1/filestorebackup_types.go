@@ -62,19 +62,32 @@ type FilestoreBackupStatus struct {
 	   FilestoreBackup's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. Capacity of the source file share when the backup was created. */
-	CapacityGb int `json:"capacityGb,omitempty"`
+	// +optional
+	CapacityGb *int `json:"capacityGb,omitempty"`
+
 	/* Output only. The time when the backup was created. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* Output only. Amount of bytes that will be downloaded if the backup is restored. This may be different than storage bytes, since sequential backups of the same disk will share storage. */
-	DownloadBytes int `json:"downloadBytes,omitempty"`
+	// +optional
+	DownloadBytes *int `json:"downloadBytes,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. The service tier of the source Cloud Filestore instance that this backup is created from. Possible values: TIER_UNSPECIFIED, STANDARD, PREMIUM, BASIC_HDD, BASIC_SSD, HIGH_SCALE_SSD */
-	SourceInstanceTier string `json:"sourceInstanceTier,omitempty"`
+	// +optional
+	SourceInstanceTier *string `json:"sourceInstanceTier,omitempty"`
+
 	/* Output only. The backup state. Possible values: STATE_UNSPECIFIED, CREATING, READY, REPAIRING, DELETING, ERROR, RESTORING */
-	State string `json:"state,omitempty"`
+	// +optional
+	State *string `json:"state,omitempty"`
+
 	/* Output only. The size of the storage used by the backup. As backups share storage, this number is expected to change with backup creation/deletion. */
-	StorageBytes int `json:"storageBytes,omitempty"`
+	// +optional
+	StorageBytes *int `json:"storageBytes,omitempty"`
 }
 
 // +genclient

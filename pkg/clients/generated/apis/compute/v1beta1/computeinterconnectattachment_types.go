@@ -95,7 +95,6 @@ type ComputeInterconnectAttachmentSpec struct {
 	// +optional
 	Interconnect *string `json:"interconnect,omitempty"`
 
-	/*  */
 	// +optional
 	IpsecInternalAddresses []v1alpha1.ResourceRef `json:"ipsecInternalAddresses,omitempty"`
 
@@ -132,7 +131,8 @@ type ComputeInterconnectAttachmentSpec struct {
 type InterconnectattachmentPrivateInterconnectInfoStatus struct {
 	/* 802.1q encapsulation tag to be used for traffic between
 	Google and the customer, going to and from this network and region. */
-	Tag8021q int `json:"tag8021q,omitempty"`
+	// +optional
+	Tag8021q *int `json:"tag8021q,omitempty"`
 }
 
 type ComputeInterconnectAttachmentStatus struct {
@@ -141,32 +141,50 @@ type ComputeInterconnectAttachmentStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* IPv4 address + prefix length to be configured on Cloud Router
 	Interface for this interconnect attachment. */
-	CloudRouterIpAddress string `json:"cloudRouterIpAddress,omitempty"`
+	// +optional
+	CloudRouterIpAddress *string `json:"cloudRouterIpAddress,omitempty"`
+
 	/* Creation timestamp in RFC3339 text format. */
-	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
 	/* IPv4 address + prefix length to be configured on the customer
 	router subinterface for this interconnect attachment. */
-	CustomerRouterIpAddress string `json:"customerRouterIpAddress,omitempty"`
+	// +optional
+	CustomerRouterIpAddress *string `json:"customerRouterIpAddress,omitempty"`
+
 	/* Google reference ID, to be used when raising support tickets with
 	Google or otherwise to debug backend connectivity issues. */
-	GoogleReferenceId string `json:"googleReferenceId,omitempty"`
+	// +optional
+	GoogleReferenceId *string `json:"googleReferenceId,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* [Output only for type PARTNER. Not present for DEDICATED]. The opaque
 	identifier of an PARTNER attachment used to initiate provisioning with
 	a selected partner. Of the form "XXXXX/region/domain". */
-	PairingKey string `json:"pairingKey,omitempty"`
+	// +optional
+	PairingKey *string `json:"pairingKey,omitempty"`
+
 	/* [Output only for type PARTNER. Not present for DEDICATED]. Optional
 	BGP ASN for the router that should be supplied by a layer 3 Partner if
 	they configured BGP on behalf of the customer. */
-	PartnerAsn string `json:"partnerAsn,omitempty"`
+	// +optional
+	PartnerAsn *string `json:"partnerAsn,omitempty"`
+
 	/* Information specific to an InterconnectAttachment. This property
 	is populated if the interconnect that this is attached to is of type DEDICATED. */
-	PrivateInterconnectInfo InterconnectattachmentPrivateInterconnectInfoStatus `json:"privateInterconnectInfo,omitempty"`
-	/*  */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	PrivateInterconnectInfo *InterconnectattachmentPrivateInterconnectInfoStatus `json:"privateInterconnectInfo,omitempty"`
+
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
 	/* [Output Only] The current state of this attachment's functionality. */
-	State string `json:"state,omitempty"`
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 // +genclient

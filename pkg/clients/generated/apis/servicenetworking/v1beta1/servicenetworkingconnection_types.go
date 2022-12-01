@@ -36,10 +36,8 @@ import (
 )
 
 type ServiceNetworkingConnectionSpec struct {
-	/*  */
 	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 
-	/*  */
 	ReservedPeeringRanges []v1alpha1.ResourceRef `json:"reservedPeeringRanges"`
 
 	/* Immutable. Provider peering service that is managing peering connectivity for a service provider organization. For Google services that support this functionality it is 'servicenetworking.googleapis.com'. */
@@ -51,9 +49,11 @@ type ServiceNetworkingConnectionStatus struct {
 	   ServiceNetworkingConnection's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/*  */
-	Peering string `json:"peering,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	// +optional
+	Peering *string `json:"peering,omitempty"`
 }
 
 // +genclient

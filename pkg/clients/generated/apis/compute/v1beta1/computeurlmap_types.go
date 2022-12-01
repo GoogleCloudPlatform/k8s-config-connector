@@ -138,11 +138,9 @@ type UrlmapDefaultRouteAction struct {
 }
 
 type UrlmapDefaultService struct {
-	/*  */
 	// +optional
 	BackendBucketRef *v1alpha1.ResourceRef `json:"backendBucketRef,omitempty"`
 
-	/*  */
 	// +optional
 	BackendServiceRef *v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
 }
@@ -195,7 +193,7 @@ type UrlmapDefaultUrlRedirect struct {
 	/* If set to true, any accompanying query portion of the original URL is removed prior
 	to redirecting the request. If set to false, the query portion of the original URL is
 	retained.
-	 This field is required to ensure an empty block is not set. The normal default value is false. */
+	This field is required to ensure an empty block is not set. The normal default value is false. */
 	StripQuery bool `json:"stripQuery"`
 }
 
@@ -596,25 +594,25 @@ type UrlmapRetryPolicy struct {
 	/* Specifies one or more conditions when this retry rule applies. Valid values are:
 
 	* 5xx: Loadbalancer will attempt a retry if the backend service responds with
-	  any 5xx response code, or if the backend service does not respond at all,
-	  example: disconnects, reset, read timeout, connection failure, and refused
-	  streams.
+	any 5xx response code, or if the backend service does not respond at all,
+	example: disconnects, reset, read timeout, connection failure, and refused
+	streams.
 	* gateway-error: Similar to 5xx, but only applies to response codes
-	  502, 503 or 504.
+	502, 503 or 504.
 	* connect-failure: Loadbalancer will retry on failures
-	  connecting to backend services, for example due to connection timeouts.
+	connecting to backend services, for example due to connection timeouts.
 	* retriable-4xx: Loadbalancer will retry for retriable 4xx response codes.
-	  Currently the only retriable error supported is 409.
+	Currently the only retriable error supported is 409.
 	* refused-stream: Loadbalancer will retry if the backend service resets the stream with a
-	  REFUSED_STREAM error code. This reset type indicates that it is safe to retry.
+	REFUSED_STREAM error code. This reset type indicates that it is safe to retry.
 	* cancelled: Loadbalancer will retry if the gRPC status code in the response
-	  header is set to cancelled
+	header is set to cancelled
 	* deadline-exceeded: Loadbalancer will retry if the
-	  gRPC status code in the response header is set to deadline-exceeded
+	gRPC status code in the response header is set to deadline-exceeded
 	* resource-exhausted: Loadbalancer will retry if the gRPC status code in the response
-	  header is set to resource-exhausted
+	header is set to resource-exhausted
 	* unavailable: Loadbalancer will retry if the gRPC status code in
-	  the response header is set to unavailable. */
+	the response header is set to unavailable. */
 	// +optional
 	RetryConditions []string `json:"retryConditions,omitempty"`
 }
@@ -726,11 +724,9 @@ type UrlmapRouteRules struct {
 }
 
 type UrlmapService struct {
-	/*  */
 	// +optional
 	BackendBucketRef *v1alpha1.ResourceRef `json:"backendBucketRef,omitempty"`
 
-	/*  */
 	// +optional
 	BackendServiceRef *v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
 }
@@ -924,16 +920,24 @@ type ComputeURLMapStatus struct {
 	   ComputeURLMap's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
-	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
 	/* Fingerprint of this resource. This field is used internally during
 	updates of this resource. */
-	Fingerprint string `json:"fingerprint,omitempty"`
+	// +optional
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
 	/* The unique identifier for the resource. */
-	MapId int `json:"mapId,omitempty"`
+	// +optional
+	MapId *int `json:"mapId,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/*  */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 }
 
 // +genclient

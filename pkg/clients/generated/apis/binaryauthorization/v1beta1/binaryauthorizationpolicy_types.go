@@ -48,7 +48,6 @@ type PolicyClusterAdmissionRules struct {
 	/* Required. How this admission rule will be evaluated. Possible values: ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION */
 	EvaluationMode string `json:"evaluationMode"`
 
-	/*  */
 	// +optional
 	RequireAttestationsBy []v1alpha1.ResourceRef `json:"requireAttestationsBy,omitempty"`
 }
@@ -60,7 +59,6 @@ type PolicyDefaultAdmissionRule struct {
 	/* Required. How this admission rule will be evaluated. Possible values: ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION */
 	EvaluationMode string `json:"evaluationMode"`
 
-	/*  */
 	// +optional
 	RequireAttestationsBy []v1alpha1.ResourceRef `json:"requireAttestationsBy,omitempty"`
 }
@@ -72,7 +70,6 @@ type PolicyIstioServiceIdentityAdmissionRules struct {
 	/* Required. How this admission rule will be evaluated. Possible values: ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION */
 	EvaluationMode string `json:"evaluationMode"`
 
-	/*  */
 	// +optional
 	RequireAttestationsBy []v1alpha1.ResourceRef `json:"requireAttestationsBy,omitempty"`
 }
@@ -84,7 +81,6 @@ type PolicyKubernetesNamespaceAdmissionRules struct {
 	/* Required. How this admission rule will be evaluated. Possible values: ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION */
 	EvaluationMode string `json:"evaluationMode"`
 
-	/*  */
 	// +optional
 	RequireAttestationsBy []v1alpha1.ResourceRef `json:"requireAttestationsBy,omitempty"`
 }
@@ -96,7 +92,6 @@ type PolicyKubernetesServiceAccountAdmissionRules struct {
 	/* Required. How this admission rule will be evaluated. Possible values: ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION */
 	EvaluationMode string `json:"evaluationMode"`
 
-	/*  */
 	// +optional
 	RequireAttestationsBy []v1alpha1.ResourceRef `json:"requireAttestationsBy,omitempty"`
 }
@@ -142,11 +137,16 @@ type BinaryAuthorizationPolicyStatus struct {
 	   BinaryAuthorizationPolicy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. The resource name, in the format `projects/* /policy`. There is at most one policy per project. */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
 	/* Output only. Time when the policy was last updated. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

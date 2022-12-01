@@ -120,6 +120,11 @@ func (in *PubSubLiteReservationStatus) DeepCopyInto(out *PubSubLiteReservationSt
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 

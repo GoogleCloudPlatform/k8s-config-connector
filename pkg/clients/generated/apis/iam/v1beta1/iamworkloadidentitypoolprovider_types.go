@@ -101,9 +101,12 @@ type IAMWorkloadIdentityPoolProviderStatus struct {
 	   IAMWorkloadIdentityPoolProvider's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. The state of the provider. Possible values: STATE_UNSPECIFIED, ACTIVE, DELETED */
-	State string `json:"state,omitempty"`
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 // +genclient

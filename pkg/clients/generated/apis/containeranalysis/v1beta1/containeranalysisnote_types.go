@@ -89,7 +89,7 @@ type NoteBuild struct {
 }
 
 type NoteCvssV3 struct {
-	/*  Possible values: ATTACK_COMPLEXITY_UNSPECIFIED, ATTACK_COMPLEXITY_LOW, ATTACK_COMPLEXITY_HIGH */
+	/* Possible values: ATTACK_COMPLEXITY_UNSPECIFIED, ATTACK_COMPLEXITY_LOW, ATTACK_COMPLEXITY_HIGH */
 	// +optional
 	AttackComplexity *string `json:"attackComplexity,omitempty"`
 
@@ -97,7 +97,7 @@ type NoteCvssV3 struct {
 	// +optional
 	AttackVector *string `json:"attackVector,omitempty"`
 
-	/*  Possible values: IMPACT_UNSPECIFIED, IMPACT_HIGH, IMPACT_LOW, IMPACT_NONE */
+	/* Possible values: IMPACT_UNSPECIFIED, IMPACT_HIGH, IMPACT_LOW, IMPACT_NONE */
 	// +optional
 	AvailabilityImpact *string `json:"availabilityImpact,omitempty"`
 
@@ -105,31 +105,29 @@ type NoteCvssV3 struct {
 	// +optional
 	BaseScore *float64 `json:"baseScore,omitempty"`
 
-	/*  Possible values: IMPACT_UNSPECIFIED, IMPACT_HIGH, IMPACT_LOW, IMPACT_NONE */
+	/* Possible values: IMPACT_UNSPECIFIED, IMPACT_HIGH, IMPACT_LOW, IMPACT_NONE */
 	// +optional
 	ConfidentialityImpact *string `json:"confidentialityImpact,omitempty"`
 
-	/*  */
 	// +optional
 	ExploitabilityScore *float64 `json:"exploitabilityScore,omitempty"`
 
-	/*  */
 	// +optional
 	ImpactScore *float64 `json:"impactScore,omitempty"`
 
-	/*  Possible values: IMPACT_UNSPECIFIED, IMPACT_HIGH, IMPACT_LOW, IMPACT_NONE */
+	/* Possible values: IMPACT_UNSPECIFIED, IMPACT_HIGH, IMPACT_LOW, IMPACT_NONE */
 	// +optional
 	IntegrityImpact *string `json:"integrityImpact,omitempty"`
 
-	/*  Possible values: PRIVILEGES_REQUIRED_UNSPECIFIED, PRIVILEGES_REQUIRED_NONE, PRIVILEGES_REQUIRED_LOW, PRIVILEGES_REQUIRED_HIGH */
+	/* Possible values: PRIVILEGES_REQUIRED_UNSPECIFIED, PRIVILEGES_REQUIRED_NONE, PRIVILEGES_REQUIRED_LOW, PRIVILEGES_REQUIRED_HIGH */
 	// +optional
 	PrivilegesRequired *string `json:"privilegesRequired,omitempty"`
 
-	/*  Possible values: SCOPE_UNSPECIFIED, SCOPE_UNCHANGED, SCOPE_CHANGED */
+	/* Possible values: SCOPE_UNSPECIFIED, SCOPE_UNCHANGED, SCOPE_CHANGED */
 	// +optional
 	Scope *string `json:"scope,omitempty"`
 
-	/*  Possible values: USER_INTERACTION_UNSPECIFIED, USER_INTERACTION_NONE, USER_INTERACTION_REQUIRED */
+	/* Possible values: USER_INTERACTION_UNSPECIFIED, USER_INTERACTION_NONE, USER_INTERACTION_REQUIRED */
 	// +optional
 	UserInteraction *string `json:"userInteraction,omitempty"`
 }
@@ -383,7 +381,6 @@ type ContainerAnalysisNoteSpec struct {
 	// +optional
 	Package *NotePackage `json:"package,omitempty"`
 
-	/*  */
 	// +optional
 	RelatedNoteNames []v1alpha1.ResourceRef `json:"relatedNoteNames,omitempty"`
 
@@ -406,12 +403,13 @@ type ContainerAnalysisNoteSpec struct {
 
 type NoteFingerprintStatus struct {
 	/* Output only. The name of the image's v2 blobs computed via: ) Only the name of the final blob is kept. */
-	V2Name string `json:"v2Name,omitempty"`
+	// +optional
+	V2Name *string `json:"v2Name,omitempty"`
 }
 
 type NoteImageStatus struct {
-	/*  */
-	Fingerprint NoteFingerprintStatus `json:"fingerprint,omitempty"`
+	// +optional
+	Fingerprint *NoteFingerprintStatus `json:"fingerprint,omitempty"`
 }
 
 type ContainerAnalysisNoteStatus struct {
@@ -419,13 +417,19 @@ type ContainerAnalysisNoteStatus struct {
 	   ContainerAnalysisNote's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The time this note was created. This field can be used as a filter in list requests. */
-	CreateTime string `json:"createTime,omitempty"`
-	/*  */
-	Image NoteImageStatus `json:"image,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// +optional
+	Image *NoteImageStatus `json:"image,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. The time this note was last updated. This field can be used as a filter in list requests. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

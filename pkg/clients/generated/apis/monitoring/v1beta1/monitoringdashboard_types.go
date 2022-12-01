@@ -79,7 +79,7 @@ type DashboardColumns struct {
 }
 
 type DashboardDataSets struct {
-	/* A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value.  */
+	/* A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value. */
 	// +optional
 	LegendTemplate *string `json:"legendTemplate,omitempty"`
 
@@ -129,7 +129,6 @@ type DashboardLogsPanel struct {
 	// +optional
 	Filter *string `json:"filter,omitempty"`
 
-	/*  */
 	// +optional
 	ResourceNames []v1alpha1.ResourceRef `json:"resourceNames,omitempty"`
 }
@@ -335,7 +334,6 @@ type DashboardWidget struct {
 	// +optional
 	Blank *DashboardBlank `json:"blank,omitempty"`
 
-	/*  */
 	// +optional
 	LogsPanel *DashboardLogsPanel `json:"logsPanel,omitempty"`
 
@@ -361,7 +359,6 @@ type DashboardWidgets struct {
 	// +optional
 	Blank *DashboardBlank `json:"blank,omitempty"`
 
-	/*  */
 	// +optional
 	LogsPanel *DashboardLogsPanel `json:"logsPanel,omitempty"`
 
@@ -460,9 +457,12 @@ type MonitoringDashboardStatus struct {
 	   MonitoringDashboard's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* \`etag\` is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other. An \`etag\` is returned in the response to \`GetDashboard\`, and users are expected to put that etag in the request to \`UpdateDashboard\` to ensure that their change will be applied to the same version of the Dashboard configuration. The field should not be passed during dashboard creation. */
-	Etag string `json:"etag,omitempty"`
+	// +optional
+	Etag *string `json:"etag,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

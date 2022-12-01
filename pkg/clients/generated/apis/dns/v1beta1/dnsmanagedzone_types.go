@@ -123,7 +123,6 @@ type ManagedzonePrivateVisibilityConfig struct {
 	// +optional
 	GkeClusters []ManagedzoneGkeClusters `json:"gkeClusters,omitempty"`
 
-	/*  */
 	Networks []ManagedzoneNetworks `json:"networks"`
 }
 
@@ -206,14 +205,21 @@ type DNSManagedZoneStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The time that this resource was created on the server.
 	This is in RFC3339 text format. */
-	CreationTime string `json:"creationTime,omitempty"`
+	// +optional
+	CreationTime *string `json:"creationTime,omitempty"`
+
 	/* Unique identifier for the resource; defined by the server. */
-	ManagedZoneId int `json:"managedZoneId,omitempty"`
+	// +optional
+	ManagedZoneId *int `json:"managedZoneId,omitempty"`
+
 	/* Delegate your managed_zone to these virtual name servers;
 	defined by the server. */
+	// +optional
 	NameServers []string `json:"nameServers,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

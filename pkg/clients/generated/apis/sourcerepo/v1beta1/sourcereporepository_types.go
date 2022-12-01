@@ -50,7 +50,6 @@ type RepositoryPubsubConfigs struct {
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
-	/*  */
 	TopicRef v1alpha1.ResourceRef `json:"topicRef"`
 }
 
@@ -70,11 +69,16 @@ type SourceRepoRepositoryStatus struct {
 	   SourceRepoRepository's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* The disk usage of the repo, in bytes. */
-	Size int `json:"size,omitempty"`
+	// +optional
+	Size *int `json:"size,omitempty"`
+
 	/* URL to clone the repository from Google Cloud Source Repositories. */
-	Url string `json:"url,omitempty"`
+	// +optional
+	Url *string `json:"url,omitempty"`
 }
 
 // +genclient

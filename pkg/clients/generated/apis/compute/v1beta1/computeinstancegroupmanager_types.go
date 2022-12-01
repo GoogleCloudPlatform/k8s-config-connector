@@ -36,7 +36,6 @@ import (
 )
 
 type InstancegroupmanagerAutoHealingPolicies struct {
-	/*  */
 	// +optional
 	HealthCheckRef *v1alpha1.ResourceRef `json:"healthCheckRef,omitempty"`
 
@@ -118,7 +117,6 @@ type InstancegroupmanagerPreservedState struct {
 }
 
 type InstancegroupmanagerStatefulPolicy struct {
-	/*  */
 	// +optional
 	PreservedState *InstancegroupmanagerPreservedState `json:"preservedState,omitempty"`
 }
@@ -172,7 +170,6 @@ type InstancegroupmanagerUpdatePolicy struct {
 }
 
 type InstancegroupmanagerVersions struct {
-	/*  */
 	// +optional
 	InstanceTemplateRef *v1alpha1.ResourceRef `json:"instanceTemplateRef,omitempty"`
 
@@ -212,7 +209,6 @@ type ComputeInstanceGroupManagerSpec struct {
 	// +optional
 	FailoverAction *string `json:"failoverAction,omitempty"`
 
-	/*  */
 	// +optional
 	InstanceTemplateRef *v1alpha1.ResourceRef `json:"instanceTemplateRef,omitempty"`
 
@@ -231,7 +227,6 @@ type ComputeInstanceGroupManagerSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/*  */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
@@ -239,7 +234,6 @@ type ComputeInstanceGroupManagerSpec struct {
 	// +optional
 	StatefulPolicy *InstancegroupmanagerStatefulPolicy `json:"statefulPolicy,omitempty"`
 
-	/*  */
 	// +optional
 	TargetPools []v1alpha1.ResourceRef `json:"targetPools,omitempty"`
 
@@ -257,84 +251,104 @@ type ComputeInstanceGroupManagerSpec struct {
 
 type InstancegroupmanagerCurrentActionsStatus struct {
 	/* [Output Only] The total number of instances in the managed instance group that are scheduled to be abandoned. Abandoning an instance removes it from the managed instance group without deleting it. */
-	Abandoning int `json:"abandoning,omitempty"`
+	// +optional
+	Abandoning *int `json:"abandoning,omitempty"`
 
 	/* [Output Only] The number of instances in the managed instance group that are scheduled to be created or are currently being created. If the group fails to create any of these instances, it tries again until it creates the instance successfully. If you have disabled creation retries, this field will not be populated; instead, the `creatingWithoutRetries` field will be populated. */
-	Creating int `json:"creating,omitempty"`
+	// +optional
+	Creating *int `json:"creating,omitempty"`
 
 	/* [Output Only] The number of instances that the managed instance group will attempt to create. The group attempts to create each instance only once. If the group fails to create any of these instances, it decreases the group's `targetSize` value accordingly. */
-	CreatingWithoutRetries int `json:"creatingWithoutRetries,omitempty"`
+	// +optional
+	CreatingWithoutRetries *int `json:"creatingWithoutRetries,omitempty"`
 
 	/* [Output Only] The number of instances in the managed instance group that are scheduled to be deleted or are currently being deleted. */
-	Deleting int `json:"deleting,omitempty"`
+	// +optional
+	Deleting *int `json:"deleting,omitempty"`
 
 	/* [Output Only] The number of instances in the managed instance group that are running and have no scheduled actions. */
-	None int `json:"none,omitempty"`
+	// +optional
+	None *int `json:"none,omitempty"`
 
 	/* [Output Only] The number of instances in the managed instance group that are scheduled to be recreated or are currently being being recreated. Recreating an instance deletes the existing root persistent disk and creates a new disk from the image that is defined in the instance template. */
-	Recreating int `json:"recreating,omitempty"`
+	// +optional
+	Recreating *int `json:"recreating,omitempty"`
 
 	/* [Output Only] The number of instances in the managed instance group that are being reconfigured with properties that do not require a restart or a recreate action. For example, setting or removing target pools for the instance. */
-	Refreshing int `json:"refreshing,omitempty"`
+	// +optional
+	Refreshing *int `json:"refreshing,omitempty"`
 
 	/* [Output Only] The number of instances in the managed instance group that are scheduled to be restarted or are currently being restarted. */
-	Restarting int `json:"restarting,omitempty"`
+	// +optional
+	Restarting *int `json:"restarting,omitempty"`
 
 	/* [Output Only] The number of instances in the managed instance group that are being verified. See the `managedInstances[].currentAction` property in the `listManagedInstances` method documentation. */
-	Verifying int `json:"verifying,omitempty"`
+	// +optional
+	Verifying *int `json:"verifying,omitempty"`
 }
 
 type InstancegroupmanagerMaxSurgeStatus struct {
 	/* [Output Only] Absolute value of VM instances calculated based on the specific mode. - If the value is `fixed`, then the `calculated` value is equal to the `fixed` value. - If the value is a `percent`, then the `calculated` value is `percent`/100 * `targetSize`. For example, the `calculated` value of a 80% of a managed instance group with 150 instances would be (80/100 * 150) = 120 VM instances. If there is a remainder, the number is rounded. */
-	Calculated int `json:"calculated,omitempty"`
+	// +optional
+	Calculated *int `json:"calculated,omitempty"`
 }
 
 type InstancegroupmanagerMaxUnavailableStatus struct {
 	/* [Output Only] Absolute value of VM instances calculated based on the specific mode. - If the value is `fixed`, then the `calculated` value is equal to the `fixed` value. - If the value is a `percent`, then the `calculated` value is `percent`/100 * `targetSize`. For example, the `calculated` value of a 80% of a managed instance group with 150 instances would be (80/100 * 150) = 120 VM instances. If there is a remainder, the number is rounded. */
-	Calculated int `json:"calculated,omitempty"`
+	// +optional
+	Calculated *int `json:"calculated,omitempty"`
 }
 
 type InstancegroupmanagerPerInstanceConfigsStatus struct {
 	/* A bit indicating if all of the group's per-instance configs (listed in the output of a listPerInstanceConfigs API call) have status `EFFECTIVE` or there are no per-instance-configs. */
-	AllEffective bool `json:"allEffective,omitempty"`
+	// +optional
+	AllEffective *bool `json:"allEffective,omitempty"`
 }
 
 type InstancegroupmanagerStatefulStatus struct {
 	/* [Output Only] A bit indicating whether the managed instance group has stateful configuration, that is, if you have configured any items in a stateful policy or in per-instance configs. The group might report that it has no stateful config even when there is still some preserved state on a managed instance, for example, if you have deleted all PICs but not yet applied those deletions. */
-	HasStatefulConfig bool `json:"hasStatefulConfig,omitempty"`
+	// +optional
+	HasStatefulConfig *bool `json:"hasStatefulConfig,omitempty"`
 
 	/* [Output Only] A bit indicating whether the managed instance group has stateful configuration, that is, if you have configured any items in a stateful policy or in per-instance configs. The group might report that it has no stateful config even when there is still some preserved state on a managed instance, for example, if you have deleted all PICs but not yet applied those deletions. This field is deprecated in favor of has_stateful_config. */
-	IsStateful bool `json:"isStateful,omitempty"`
+	// +optional
+	IsStateful *bool `json:"isStateful,omitempty"`
 
 	/* [Output Only] Status of per-instance configs on the instance. */
-	PerInstanceConfigs InstancegroupmanagerPerInstanceConfigsStatus `json:"perInstanceConfigs,omitempty"`
+	// +optional
+	PerInstanceConfigs *InstancegroupmanagerPerInstanceConfigsStatus `json:"perInstanceConfigs,omitempty"`
 }
 
 type InstancegroupmanagerStatusStatus struct {
 	/* [Output Only] The URL of the [Autoscaler](/compute/docs/autoscaler/) that targets this instance group manager. */
-	Autoscaler string `json:"autoscaler,omitempty"`
+	// +optional
+	Autoscaler *string `json:"autoscaler,omitempty"`
 
 	/* [Output Only] A bit indicating whether the managed instance group is in a stable state. A stable state means that: none of the instances in the managed instance group is currently undergoing any type of change (for example, creation, restart, or deletion); no future changes are scheduled for instances in the managed instance group; and the managed instance group itself is not being modified. */
-	IsStable bool `json:"isStable,omitempty"`
+	// +optional
+	IsStable *bool `json:"isStable,omitempty"`
 
 	/* [Output Only] Stateful status of the given Instance Group Manager. */
-	Stateful InstancegroupmanagerStatefulStatus `json:"stateful,omitempty"`
+	// +optional
+	Stateful *InstancegroupmanagerStatefulStatus `json:"stateful,omitempty"`
 
 	/* [Output Only] A status of consistency of Instances' versions with their target version specified by `version` field on Instance Group Manager. */
-	VersionTarget InstancegroupmanagerVersionTargetStatus `json:"versionTarget,omitempty"`
+	// +optional
+	VersionTarget *InstancegroupmanagerVersionTargetStatus `json:"versionTarget,omitempty"`
 }
 
 type InstancegroupmanagerUpdatePolicyStatus struct {
-	/*  */
-	MaxSurge InstancegroupmanagerMaxSurgeStatus `json:"maxSurge,omitempty"`
+	// +optional
+	MaxSurge *InstancegroupmanagerMaxSurgeStatus `json:"maxSurge,omitempty"`
 
-	/*  */
-	MaxUnavailable InstancegroupmanagerMaxUnavailableStatus `json:"maxUnavailable,omitempty"`
+	// +optional
+	MaxUnavailable *InstancegroupmanagerMaxUnavailableStatus `json:"maxUnavailable,omitempty"`
 }
 
 type InstancegroupmanagerVersionTargetStatus struct {
 	/* [Output Only] A bit indicating whether version target has been reached in this managed instance group, i.e. all instances are in their target version. Instances' target version are specified by `version` field on Instance Group Manager. */
-	IsReached bool `json:"isReached,omitempty"`
+	// +optional
+	IsReached *bool `json:"isReached,omitempty"`
 }
 
 type ComputeInstanceGroupManagerStatus struct {
@@ -342,27 +356,47 @@ type ComputeInstanceGroupManagerStatus struct {
 	   ComputeInstanceGroupManager's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The creation timestamp for this managed instance group in \[RFC3339\](https://www.ietf.org/rfc/rfc3339.txt) text format. */
-	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
 	/* [Output Only] The list of instance actions and the number of instances in this managed instance group that are scheduled for each of those actions. */
-	CurrentActions InstancegroupmanagerCurrentActionsStatus `json:"currentActions,omitempty"`
+	// +optional
+	CurrentActions *InstancegroupmanagerCurrentActionsStatus `json:"currentActions,omitempty"`
+
 	/* Fingerprint of this resource. This field may be used in optimistic locking. It will be ignored when inserting an InstanceGroupManager. An up-to-date fingerprint must be provided in order to update the InstanceGroupManager, otherwise the request will fail with error `412 conditionNotMet`. To see the latest fingerprint, make a `get()` request to retrieve an InstanceGroupManager. */
-	Fingerprint string `json:"fingerprint,omitempty"`
+	// +optional
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
 	/* [Output Only] A unique identifier for this resource type. The server generates this identifier. */
-	Id int `json:"id,omitempty"`
+	// +optional
+	Id *int `json:"id,omitempty"`
+
 	/* [Output Only] The URL of the Instance Group resource. */
-	InstanceGroup string `json:"instanceGroup,omitempty"`
+	// +optional
+	InstanceGroup *string `json:"instanceGroup,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* [Output Only] The URL of the [region](/compute/docs/regions-zones/#available) where the managed instance group resides (for regional resources). */
-	Region string `json:"region,omitempty"`
+	// +optional
+	Region *string `json:"region,omitempty"`
+
 	/* [Output Only] The URL for this managed instance group. The server defines this URL. */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
 	/* [Output Only] The status of this managed instance group. */
-	Status InstancegroupmanagerStatusStatus `json:"status,omitempty"`
-	/*  */
-	UpdatePolicy InstancegroupmanagerUpdatePolicyStatus `json:"updatePolicy,omitempty"`
+	// +optional
+	Status *InstancegroupmanagerStatusStatus `json:"status,omitempty"`
+
+	// +optional
+	UpdatePolicy *InstancegroupmanagerUpdatePolicyStatus `json:"updatePolicy,omitempty"`
+
 	/* [Output Only] The URL of a [zone](/compute/docs/regions-zones/#available) where the managed instance group is located (for zonal resources). */
-	Zone string `json:"zone,omitempty"`
+	// +optional
+	Zone *string `json:"zone,omitempty"`
 }
 
 // +genclient

@@ -82,7 +82,7 @@ type JobtriggerBigQueryOptions struct {
 	// +optional
 	RowsLimitPercent *int `json:"rowsLimitPercent,omitempty"`
 
-	/*  Possible values: SAMPLE_METHOD_UNSPECIFIED, TOP, RANDOM_START */
+	/* Possible values: SAMPLE_METHOD_UNSPECIFIED, TOP, RANDOM_START */
 	// +optional
 	SampleMethod *string `json:"sampleMethod,omitempty"`
 
@@ -111,7 +111,7 @@ type JobtriggerCloudStorageOptions struct {
 	// +optional
 	FilesLimitPercent *int `json:"filesLimitPercent,omitempty"`
 
-	/*  Possible values: SAMPLE_METHOD_UNSPECIFIED, TOP, RANDOM_START */
+	/* Possible values: SAMPLE_METHOD_UNSPECIFIED, TOP, RANDOM_START */
 	// +optional
 	SampleMethod *string `json:"sampleMethod,omitempty"`
 }
@@ -338,7 +338,6 @@ type JobtriggerInspectJob struct {
 	// +optional
 	InspectConfig *JobtriggerInspectConfig `json:"inspectConfig,omitempty"`
 
-	/*  */
 	// +optional
 	InspectTemplateRef *v1alpha1.ResourceRef `json:"inspectTemplateRef,omitempty"`
 
@@ -411,7 +410,6 @@ type JobtriggerPartitionId struct {
 	// +optional
 	NamespaceId *string `json:"namespaceId,omitempty"`
 
-	/*  */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
@@ -427,7 +425,6 @@ type JobtriggerProximity struct {
 }
 
 type JobtriggerPubSub struct {
-	/*  */
 	// +optional
 	TopicRef *v1alpha1.ResourceRef `json:"topicRef,omitempty"`
 }
@@ -452,7 +449,6 @@ type JobtriggerRegex struct {
 }
 
 type JobtriggerRegexFileSet struct {
-	/*  */
 	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
 
 	/* A list of regular expressions matching file paths to exclude. All files in the bucket that match at least one of these regular expressions will be excluded from the scan. Regular expressions use RE2 [syntax](https://github.com/google/re2/wiki/Syntax); a guide can be found under the google/re2 repository on GitHub. */
@@ -479,7 +475,6 @@ type JobtriggerRules struct {
 	// +optional
 	ExclusionRule *JobtriggerExclusionRule `json:"exclusionRule,omitempty"`
 
-	/*  */
 	// +optional
 	HotwordRule *JobtriggerHotwordRule `json:"hotwordRule,omitempty"`
 }
@@ -513,7 +508,6 @@ type JobtriggerStorageConfig struct {
 	// +optional
 	HybridOptions *JobtriggerHybridOptions `json:"hybridOptions,omitempty"`
 
-	/*  */
 	// +optional
 	TimespanConfig *JobtriggerTimespanConfig `json:"timespanConfig,omitempty"`
 }
@@ -523,7 +517,6 @@ type JobtriggerStoredType struct {
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/*  */
 	// +optional
 	NameRef *v1alpha1.ResourceRef `json:"nameRef,omitempty"`
 }
@@ -532,15 +525,12 @@ type JobtriggerSurrogateType struct {
 }
 
 type JobtriggerTable struct {
-	/*  */
 	// +optional
 	DatasetRef *v1alpha1.ResourceRef `json:"datasetRef,omitempty"`
 
-	/*  */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/*  */
 	// +optional
 	TableRef *v1alpha1.ResourceRef `json:"tableRef,omitempty"`
 }
@@ -552,15 +542,12 @@ type JobtriggerTableOptions struct {
 }
 
 type JobtriggerTableReference struct {
-	/*  */
 	// +optional
 	DatasetRef *v1alpha1.ResourceRef `json:"datasetRef,omitempty"`
 
-	/*  */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
-	/*  */
 	// +optional
 	TableRef *v1alpha1.ResourceRef `json:"tableRef,omitempty"`
 }
@@ -637,17 +624,21 @@ type DLPJobTriggerSpec struct {
 
 type JobtriggerDetailsStatus struct {
 	/* A URL/resource name that uniquely identifies the type of the serialized protocol buffer message. This string must contain at least one "/" character. The last segment of the URL's path must represent the fully qualified name of the type (as in `path/google.protobuf.Duration`). The name should be in a canonical form (e.g., leading "." is not accepted). In practice, teams usually precompile into the binary all types that they expect it to use in the context of Any. However, for URLs which use the scheme `http`, `https`, or no scheme, one can optionally set up a type server that maps type URLs to message definitions as follows: * If no scheme is provided, `https` is assumed. * An HTTP GET on the URL must yield a google.protobuf.Type value in binary format, or produce an error. * Applications are allowed to cache lookup results based on the URL, or have them precompiled into a binary to avoid any lookup. Therefore, binary compatibility needs to be preserved on changes to types. (Use versioned type names to manage breaking changes.) Note: this functionality is not currently available in the official protobuf release, and it is not used for type URLs beginning with type.googleapis.com. Schemes other than `http`, `https` (or the empty scheme) might be used with implementation specific semantics. */
-	TypeUrl string `json:"typeUrl,omitempty"`
+	// +optional
+	TypeUrl *string `json:"typeUrl,omitempty"`
 
 	/* Must be a valid serialized protocol buffer of the above specified type. */
-	Value string `json:"value,omitempty"`
+	// +optional
+	Value *string `json:"value,omitempty"`
 }
 
 type JobtriggerErrorsStatus struct {
 	/* Detailed error codes and messages. */
-	Details JobtriggerDetailsStatus `json:"details,omitempty"`
+	// +optional
+	Details *JobtriggerDetailsStatus `json:"details,omitempty"`
 
 	/* The times the error occurred. */
+	// +optional
 	Timestamps []string `json:"timestamps,omitempty"`
 }
 
@@ -656,17 +647,28 @@ type DLPJobTriggerStatus struct {
 	   DLPJobTrigger's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The creation timestamp of a triggeredJob. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* Output only. A stream of errors encountered when the trigger was activated. Repeated errors may result in the JobTrigger automatically being paused. Will return the last 100 errors. Whenever the JobTrigger is modified this list will be cleared. */
+	// +optional
 	Errors []JobtriggerErrorsStatus `json:"errors,omitempty"`
+
 	/* Output only. The timestamp of the last time this trigger executed. */
-	LastRunTime string `json:"lastRunTime,omitempty"`
+	// +optional
+	LastRunTime *string `json:"lastRunTime,omitempty"`
+
 	/* Output only. The geographic location where this resource is stored. */
-	LocationId string `json:"locationId,omitempty"`
+	// +optional
+	LocationId *string `json:"locationId,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. The last update timestamp of a triggeredJob. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

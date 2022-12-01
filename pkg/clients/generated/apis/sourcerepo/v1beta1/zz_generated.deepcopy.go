@@ -148,6 +148,21 @@ func (in *SourceRepoRepositoryStatus) DeepCopyInto(out *SourceRepoRepositoryStat
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.Size != nil {
+		in, out := &in.Size, &out.Size
+		*out = new(int)
+		**out = **in
+	}
+	if in.Url != nil {
+		in, out := &in.Url, &out.Url
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 

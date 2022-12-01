@@ -36,7 +36,6 @@ import (
 )
 
 type ProjectSpec struct {
-	/*  */
 	// +optional
 	BillingAccountRef *v1alpha1.ResourceRef `json:"billingAccountRef,omitempty"`
 
@@ -66,9 +65,12 @@ type ProjectStatus struct {
 	   Project's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The numeric identifier of the project. */
-	Number string `json:"number,omitempty"`
+	// +optional
+	Number *string `json:"number,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

@@ -189,7 +189,6 @@ type ComputeDiskSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/*  */
 	// +optional
 	ResourcePolicies []v1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
 
@@ -237,37 +236,55 @@ type ComputeDiskStatus struct {
 	   ComputeDisk's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
-	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
 	/* The fingerprint used for optimistic locking of this resource.  Used
 	internally during updates. */
-	LabelFingerprint string `json:"labelFingerprint,omitempty"`
+	// +optional
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
 	/* Last attach timestamp in RFC3339 text format. */
-	LastAttachTimestamp string `json:"lastAttachTimestamp,omitempty"`
+	// +optional
+	LastAttachTimestamp *string `json:"lastAttachTimestamp,omitempty"`
+
 	/* Last detach timestamp in RFC3339 text format. */
-	LastDetachTimestamp string `json:"lastDetachTimestamp,omitempty"`
+	// +optional
+	LastDetachTimestamp *string `json:"lastDetachTimestamp,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/*  */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
 	/* The ID value of the disk used to create this image. This value may
 	be used to determine whether the image was taken from the current
 	or a previous instance of a given disk name. */
-	SourceDiskId string `json:"sourceDiskId,omitempty"`
+	// +optional
+	SourceDiskId *string `json:"sourceDiskId,omitempty"`
+
 	/* The ID value of the image used to create this disk. This value
 	identifies the exact image that was used to create this persistent
 	disk. For example, if you created the persistent disk from an image
 	that was later deleted and recreated under the same name, the source
 	image ID would identify the exact version of the image that was used. */
-	SourceImageId string `json:"sourceImageId,omitempty"`
+	// +optional
+	SourceImageId *string `json:"sourceImageId,omitempty"`
+
 	/* The unique ID of the snapshot used to create this disk. This value
 	identifies the exact snapshot that was used to create this persistent
 	disk. For example, if you created the persistent disk from a snapshot
 	that was later deleted and recreated under the same name, the source
 	snapshot ID would identify the exact version of the snapshot that was
 	used. */
-	SourceSnapshotId string `json:"sourceSnapshotId,omitempty"`
+	// +optional
+	SourceSnapshotId *string `json:"sourceSnapshotId,omitempty"`
+
 	/* Links to the users of the disk (attached instances) in form:
 	project/zones/zone/instances/instance. */
+	// +optional
 	Users []string `json:"users,omitempty"`
 }
 

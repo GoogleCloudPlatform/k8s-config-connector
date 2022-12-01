@@ -40,20 +40,20 @@ type StorageBucketAccessControlSpec struct {
 	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
 
 	/* Immutable. The entity holding the permission, in one of the following forms:
-	  user-userId
-	  user-email
-	  group-groupId
-	  group-email
-	  domain-domain
-	  project-team-projectId
-	  allUsers
-	  allAuthenticatedUsers
+	user-userId
+	user-email
+	group-groupId
+	group-email
+	domain-domain
+	project-team-projectId
+	allUsers
+	allAuthenticatedUsers
 	Examples:
-	  The user liz@example.com would be user-liz@example.com.
-	  The group example@googlegroups.com would be
-	  group-example@googlegroups.com.
-	  To refer to all members of the Google Apps for Business domain
-	  example.com, the entity would be domain-example.com. */
+	The user liz@example.com would be user-liz@example.com.
+	The group example@googlegroups.com would be
+	group-example@googlegroups.com.
+	To refer to all members of the Google Apps for Business domain
+	example.com, the entity would be domain-example.com. */
 	Entity string `json:"entity"`
 
 	/* The access permission for the entity. Possible values: ["OWNER", "READER", "WRITER"]. */
@@ -66,11 +66,16 @@ type StorageBucketAccessControlStatus struct {
 	   StorageBucketAccessControl's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The domain associated with the entity. */
-	Domain string `json:"domain,omitempty"`
+	// +optional
+	Domain *string `json:"domain,omitempty"`
+
 	/* The email address associated with the entity. */
-	Email string `json:"email,omitempty"`
+	// +optional
+	Email *string `json:"email,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

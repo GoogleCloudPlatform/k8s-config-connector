@@ -36,11 +36,9 @@ import (
 )
 
 type RouternatAction struct {
-	/*  */
 	// +optional
 	SourceNatActiveIpsRefs []v1alpha1.ResourceRef `json:"sourceNatActiveIpsRefs,omitempty"`
 
-	/*  */
 	// +optional
 	SourceNatDrainIpsRefs []v1alpha1.ResourceRef `json:"sourceNatDrainIpsRefs,omitempty"`
 }
@@ -100,7 +98,6 @@ type RouternatSubnetwork struct {
 }
 
 type ComputeRouterNATSpec struct {
-	/*  */
 	// +optional
 	DrainNatIps []v1alpha1.ResourceRef `json:"drainNatIps,omitempty"`
 
@@ -141,7 +138,6 @@ type ComputeRouterNATSpec struct {
 	Platform, or 'MANUAL_ONLY' for only user-allocated NAT IP addresses. Possible values: ["MANUAL_ONLY", "AUTO_ONLY"]. */
 	NatIpAllocateOption string `json:"natIpAllocateOption"`
 
-	/*  */
 	// +optional
 	NatIps []v1alpha1.ResourceRef `json:"natIps,omitempty"`
 
@@ -196,7 +192,8 @@ type ComputeRouterNATStatus struct {
 	   ComputeRouterNAT's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

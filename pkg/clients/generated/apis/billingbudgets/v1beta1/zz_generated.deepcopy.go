@@ -143,6 +143,16 @@ func (in *BillingBudgetsBudgetStatus) DeepCopyInto(out *BillingBudgetsBudgetStat
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.Etag != nil {
+		in, out := &in.Etag, &out.Etag
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 

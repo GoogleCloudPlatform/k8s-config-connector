@@ -68,7 +68,6 @@ type AccesslevelConditions struct {
 	// +optional
 	IpSubnetworks []string `json:"ipSubnetworks,omitempty"`
 
-	/*  */
 	// +optional
 	Members []AccesslevelMembers `json:"members,omitempty"`
 
@@ -84,7 +83,6 @@ type AccesslevelConditions struct {
 	// +optional
 	Regions []string `json:"regions,omitempty"`
 
-	/*  */
 	// +optional
 	RequiredAccessLevels []v1alpha1.ResourceRef `json:"requiredAccessLevels,omitempty"`
 }
@@ -144,11 +142,9 @@ type AccesslevelExpr struct {
 }
 
 type AccesslevelMembers struct {
-	/*  */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
-	/*  */
 	// +optional
 	User *string `json:"user,omitempty"`
 }
@@ -199,7 +195,8 @@ type AccessContextManagerAccessLevelStatus struct {
 	   AccessContextManagerAccessLevel's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

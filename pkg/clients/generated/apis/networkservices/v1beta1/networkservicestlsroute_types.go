@@ -41,7 +41,6 @@ type TlsrouteAction struct {
 }
 
 type TlsrouteDestinations struct {
-	/*  */
 	ServiceRef v1alpha1.ResourceRef `json:"serviceRef"`
 
 	/* Optional. Specifies the proportion of requests forwareded to the backend referenced by the service_name field. This is computed as: weight/Sum(weights in destinations) Weights in all destinations does not need to sum up to 100. */
@@ -72,14 +71,12 @@ type NetworkServicesTLSRouteSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/*  */
 	// +optional
 	Gateways []v1alpha1.ResourceRef `json:"gateways,omitempty"`
 
 	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
-	/*  */
 	// +optional
 	Meshes []v1alpha1.ResourceRef `json:"meshes,omitempty"`
 
@@ -99,13 +96,20 @@ type NetworkServicesTLSRouteStatus struct {
 	   NetworkServicesTLSRoute's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The timestamp when the resource was created. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. Server-defined URL of this resource */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
 	/* Output only. The timestamp when the resource was updated. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

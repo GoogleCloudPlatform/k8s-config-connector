@@ -171,6 +171,16 @@ func (in *KMSCryptoKeyStatus) DeepCopyInto(out *KMSCryptoKeyStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -273,6 +283,16 @@ func (in *KMSKeyRingStatus) DeepCopyInto(out *KMSKeyRingStatus) {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.SelfLink != nil {
+		in, out := &in.SelfLink, &out.SelfLink
+		*out = new(string)
+		**out = **in
 	}
 	return
 }

@@ -36,7 +36,6 @@ import (
 )
 
 type PacketmirroringCollectorIlb struct {
-	/*  */
 	UrlRef v1alpha1.ResourceRef `json:"urlRef"`
 }
 
@@ -59,7 +58,6 @@ type PacketmirroringInstances struct {
 	// +optional
 	CanonicalUrl *string `json:"canonicalUrl,omitempty"`
 
-	/*  */
 	// +optional
 	UrlRef *v1alpha1.ResourceRef `json:"urlRef,omitempty"`
 }
@@ -132,30 +130,41 @@ type ComputePacketMirroringSpec struct {
 
 type PacketmirroringCollectorIlbStatus struct {
 	/* Output only. Unique identifier for the forwarding rule; defined by the server. */
-	CanonicalUrl string `json:"canonicalUrl,omitempty"`
+	// +optional
+	CanonicalUrl *string `json:"canonicalUrl,omitempty"`
 }
 
 type PacketmirroringNetworkStatus struct {
 	/* Output only. Unique identifier for the network; defined by the server. */
-	CanonicalUrl string `json:"canonicalUrl,omitempty"`
+	// +optional
+	CanonicalUrl *string `json:"canonicalUrl,omitempty"`
 }
 
 type ComputePacketMirroringStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputePacketMirroring's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/*  */
-	CollectorIlb PacketmirroringCollectorIlbStatus `json:"collectorIlb,omitempty"`
+	// +optional
+	CollectorIlb *PacketmirroringCollectorIlbStatus `json:"collectorIlb,omitempty"`
+
 	/* Output only. The unique identifier for the resource. This identifier is defined by the server. */
-	Id int `json:"id,omitempty"`
-	/*  */
-	Network PacketmirroringNetworkStatus `json:"network,omitempty"`
+	// +optional
+	Id *int `json:"id,omitempty"`
+
+	// +optional
+	Network *PacketmirroringNetworkStatus `json:"network,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* URI of the region where the packetMirroring resides. */
-	Region string `json:"region,omitempty"`
+	// +optional
+	Region *string `json:"region,omitempty"`
+
 	/* Server-defined URL for the resource. */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 }
 
 // +genclient

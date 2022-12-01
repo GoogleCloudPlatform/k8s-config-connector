@@ -121,6 +121,16 @@ func (in *TagsTagBindingStatus) DeepCopyInto(out *TagsTagBindingStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -241,6 +251,31 @@ func (in *TagsTagKeyStatus) DeepCopyInto(out *TagsTagKeyStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreateTime != nil {
+		in, out := &in.CreateTime, &out.CreateTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.NamespacedName != nil {
+		in, out := &in.NamespacedName, &out.NamespacedName
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.UpdateTime != nil {
+		in, out := &in.UpdateTime, &out.UpdateTime
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -349,6 +384,31 @@ func (in *TagsTagValueStatus) DeepCopyInto(out *TagsTagValueStatus) {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.CreateTime != nil {
+		in, out := &in.CreateTime, &out.CreateTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.NamespacedName != nil {
+		in, out := &in.NamespacedName, &out.NamespacedName
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.UpdateTime != nil {
+		in, out := &in.UpdateTime, &out.UpdateTime
+		*out = new(string)
+		**out = **in
 	}
 	return
 }

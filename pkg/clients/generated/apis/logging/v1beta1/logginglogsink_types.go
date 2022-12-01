@@ -41,7 +41,6 @@ type LogsinkBigqueryOptions struct {
 }
 
 type LogsinkDestination struct {
-	/*  */
 	// +optional
 	BigQueryDatasetRef *v1alpha1.ResourceRef `json:"bigQueryDatasetRef,omitempty"`
 
@@ -49,11 +48,9 @@ type LogsinkDestination struct {
 	// +optional
 	LoggingLogBucketRef *v1alpha1.ResourceRef `json:"loggingLogBucketRef,omitempty"`
 
-	/*  */
 	// +optional
 	PubSubTopicRef *v1alpha1.ResourceRef `json:"pubSubTopicRef,omitempty"`
 
-	/*  */
 	// +optional
 	StorageBucketRef *v1alpha1.ResourceRef `json:"storageBucketRef,omitempty"`
 }
@@ -83,7 +80,6 @@ type LoggingLogSinkSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/*  */
 	Destination LogsinkDestination `json:"destination"`
 
 	/* If set to True, then this sink is disabled and it does not export any log entries. */
@@ -131,9 +127,12 @@ type LoggingLogSinkStatus struct {
 	   LoggingLogSink's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* The identity associated with this sink. This identity must be granted write access to the configured destination. */
-	WriterIdentity string `json:"writerIdentity,omitempty"`
+	// +optional
+	WriterIdentity *string `json:"writerIdentity,omitempty"`
 }
 
 // +genclient

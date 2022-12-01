@@ -44,11 +44,11 @@ type FunctionEventTrigger struct {
 	The pattern contains:
 
 	1. namespace: For example, `cloud.storage` and
-	   `google.firebase.analytics`.
+	`google.firebase.analytics`.
 	2. resource type: The type of resource on which event occurs. For
-	   example, the Google Cloud Storage API includes the type `object`.
+	example, the Google Cloud Storage API includes the type `object`.
 	3. action: The action that generates the event. For example, action for
-	   a Google Cloud Storage Object is 'change'.
+	a Google Cloud Storage Object is 'change'.
 	These parts are lower case. */
 	EventType string `json:"eventType"`
 
@@ -145,8 +145,7 @@ type CloudFunctionsFunctionSpec struct {
 	function, optional when updating an existing function. For a complete
 	list of possible choices, see the
 	[`gcloud` command
-	reference](/sdk/gcloud/reference/functions/deploy#--runtime).
-	*/
+	reference](/sdk/gcloud/reference/functions/deploy#--runtime). */
 	Runtime string `json:"runtime"`
 
 	/* Immutable. */
@@ -172,40 +171,50 @@ type CloudFunctionsFunctionSpec struct {
 	// +optional
 	VpcConnectorEgressSettings *string `json:"vpcConnectorEgressSettings,omitempty"`
 
-	/*  */
 	// +optional
 	VpcConnectorRef *v1alpha1.ResourceRef `json:"vpcConnectorRef,omitempty"`
 }
 
 type FunctionHttpsTriggerStatus struct {
 	/* Output only. The deployed url for the function. */
-	Url string `json:"url,omitempty"`
+	// +optional
+	Url *string `json:"url,omitempty"`
 }
 
 type FunctionSourceRepositoryStatus struct {
 	/* Output only. The URL pointing to the hosted repository where the function
 	were defined at the time of deployment. It always points to a specific
 	commit in the format described above. */
-	DeployedUrl string `json:"deployedUrl,omitempty"`
+	// +optional
+	DeployedUrl *string `json:"deployedUrl,omitempty"`
 }
 
 type CloudFunctionsFunctionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CloudFunctionsFunction's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/*  */
-	HttpsTrigger FunctionHttpsTriggerStatus `json:"httpsTrigger,omitempty"`
+	// +optional
+	HttpsTrigger *FunctionHttpsTriggerStatus `json:"httpsTrigger,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/*  */
-	SourceRepository FunctionSourceRepositoryStatus `json:"sourceRepository,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	// +optional
+	SourceRepository *FunctionSourceRepositoryStatus `json:"sourceRepository,omitempty"`
+
 	/* Output only. Status of the function deployment. Possible values: CLOUD_FUNCTION_STATUS_UNSPECIFIED, ACTIVE, OFFLINE, DEPLOY_IN_PROGRESS, DELETE_IN_PROGRESS, UNKNOWN */
-	Status string `json:"status,omitempty"`
+	// +optional
+	Status *string `json:"status,omitempty"`
+
 	/* Output only. The last update timestamp of a Cloud Function in RFC3339 UTC 'Zulu' format, with nanosecond resolution and up to nine fractional digits. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+
 	/* Output only. The version identifier of the Cloud Function. Each deployment attempt
 	results in a new version of a function being created. */
-	VersionId int `json:"versionId,omitempty"`
+	// +optional
+	VersionId *int `json:"versionId,omitempty"`
 }
 
 // +genclient

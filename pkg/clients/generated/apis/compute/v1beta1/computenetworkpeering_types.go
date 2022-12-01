@@ -52,10 +52,8 @@ type ComputeNetworkPeeringSpec struct {
 	// +optional
 	ImportSubnetRoutesWithPublicIp *bool `json:"importSubnetRoutesWithPublicIp,omitempty"`
 
-	/*  */
 	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 
-	/*  */
 	PeerNetworkRef v1alpha1.ResourceRef `json:"peerNetworkRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
@@ -68,11 +66,16 @@ type ComputeNetworkPeeringStatus struct {
 	   ComputeNetworkPeering's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* State for the peering, either ACTIVE or INACTIVE. The peering is ACTIVE when there's a matching configuration in the peer network. */
-	State string `json:"state,omitempty"`
+	// +optional
+	State *string `json:"state,omitempty"`
+
 	/* Details about the current state of the peering. */
-	StateDetails string `json:"stateDetails,omitempty"`
+	// +optional
+	StateDetails *string `json:"stateDetails,omitempty"`
 }
 
 // +genclient

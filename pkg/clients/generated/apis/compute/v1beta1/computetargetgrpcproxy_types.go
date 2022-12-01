@@ -68,7 +68,9 @@ type ComputeTargetGRPCProxyStatus struct {
 	   ComputeTargetGRPCProxy's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
-	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
 	/* Fingerprint of this resource. A hash of the contents stored in
 	this object. This field is used in optimistic locking. This field
 	will be ignored when inserting a TargetGrpcProxy. An up-to-date
@@ -76,13 +78,19 @@ type ComputeTargetGRPCProxyStatus struct {
 	TargetGrpcProxy; otherwise, the request will fail with error
 	412 conditionNotMet. To see the latest fingerprint, make a get()
 	request to retrieve the TargetGrpcProxy. A base64-encoded string. */
-	Fingerprint string `json:"fingerprint,omitempty"`
+	// +optional
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/*  */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
 	/* Server-defined URL with id for the resource. */
-	SelfLinkWithId string `json:"selfLinkWithId,omitempty"`
+	// +optional
+	SelfLinkWithId *string `json:"selfLinkWithId,omitempty"`
 }
 
 // +genclient

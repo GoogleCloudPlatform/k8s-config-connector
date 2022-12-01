@@ -813,81 +813,94 @@ type DataprocWorkflowTemplateSpec struct {
 }
 
 type WorkflowtemplateConfigStatus struct {
-	/*  */
-	EndpointConfig WorkflowtemplateEndpointConfigStatus `json:"endpointConfig,omitempty"`
+	// +optional
+	EndpointConfig *WorkflowtemplateEndpointConfigStatus `json:"endpointConfig,omitempty"`
 
-	/*  */
-	LifecycleConfig WorkflowtemplateLifecycleConfigStatus `json:"lifecycleConfig,omitempty"`
+	// +optional
+	LifecycleConfig *WorkflowtemplateLifecycleConfigStatus `json:"lifecycleConfig,omitempty"`
 
-	/*  */
-	MasterConfig WorkflowtemplateMasterConfigStatus `json:"masterConfig,omitempty"`
+	// +optional
+	MasterConfig *WorkflowtemplateMasterConfigStatus `json:"masterConfig,omitempty"`
 
-	/*  */
-	SecondaryWorkerConfig WorkflowtemplateSecondaryWorkerConfigStatus `json:"secondaryWorkerConfig,omitempty"`
+	// +optional
+	SecondaryWorkerConfig *WorkflowtemplateSecondaryWorkerConfigStatus `json:"secondaryWorkerConfig,omitempty"`
 
-	/*  */
-	WorkerConfig WorkflowtemplateWorkerConfigStatus `json:"workerConfig,omitempty"`
+	// +optional
+	WorkerConfig *WorkflowtemplateWorkerConfigStatus `json:"workerConfig,omitempty"`
 }
 
 type WorkflowtemplateEndpointConfigStatus struct {
 	/* Output only. The map of port descriptions to URLs. Will only be populated if enable_http_port_access is true. */
+	// +optional
 	HttpPorts map[string]string `json:"httpPorts,omitempty"`
 }
 
 type WorkflowtemplateLifecycleConfigStatus struct {
 	/* Output only. The time when cluster became idle (most recent job finished) and became eligible for deletion due to idleness (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
-	IdleStartTime string `json:"idleStartTime,omitempty"`
+	// +optional
+	IdleStartTime *string `json:"idleStartTime,omitempty"`
 }
 
 type WorkflowtemplateManagedClusterStatus struct {
-	/*  */
-	Config WorkflowtemplateConfigStatus `json:"config,omitempty"`
+	// +optional
+	Config *WorkflowtemplateConfigStatus `json:"config,omitempty"`
 }
 
 type WorkflowtemplateManagedGroupConfigStatus struct {
 	/* Output only. The name of the Instance Group Manager for this group. */
-	InstanceGroupManagerName string `json:"instanceGroupManagerName,omitempty"`
+	// +optional
+	InstanceGroupManagerName *string `json:"instanceGroupManagerName,omitempty"`
 
 	/* Output only. The name of the Instance Template used for the Managed Instance Group. */
-	InstanceTemplateName string `json:"instanceTemplateName,omitempty"`
+	// +optional
+	InstanceTemplateName *string `json:"instanceTemplateName,omitempty"`
 }
 
 type WorkflowtemplateMasterConfigStatus struct {
 	/* Output only. The list of instance names. Dataproc derives the names from `cluster_name`, `num_instances`, and the instance group. */
+	// +optional
 	InstanceNames []string `json:"instanceNames,omitempty"`
 
 	/* Output only. Specifies that this instance group contains preemptible instances. */
-	IsPreemptible bool `json:"isPreemptible,omitempty"`
+	// +optional
+	IsPreemptible *bool `json:"isPreemptible,omitempty"`
 
 	/* Output only. The config for Compute Engine Instance Group Manager that manages this group. This is only used for preemptible instance groups. */
-	ManagedGroupConfig WorkflowtemplateManagedGroupConfigStatus `json:"managedGroupConfig,omitempty"`
+	// +optional
+	ManagedGroupConfig *WorkflowtemplateManagedGroupConfigStatus `json:"managedGroupConfig,omitempty"`
 }
 
 type WorkflowtemplatePlacementStatus struct {
-	/*  */
-	ManagedCluster WorkflowtemplateManagedClusterStatus `json:"managedCluster,omitempty"`
+	// +optional
+	ManagedCluster *WorkflowtemplateManagedClusterStatus `json:"managedCluster,omitempty"`
 }
 
 type WorkflowtemplateSecondaryWorkerConfigStatus struct {
 	/* Output only. The list of instance names. Dataproc derives the names from `cluster_name`, `num_instances`, and the instance group. */
+	// +optional
 	InstanceNames []string `json:"instanceNames,omitempty"`
 
 	/* Output only. Specifies that this instance group contains preemptible instances. */
-	IsPreemptible bool `json:"isPreemptible,omitempty"`
+	// +optional
+	IsPreemptible *bool `json:"isPreemptible,omitempty"`
 
 	/* Output only. The config for Compute Engine Instance Group Manager that manages this group. This is only used for preemptible instance groups. */
-	ManagedGroupConfig WorkflowtemplateManagedGroupConfigStatus `json:"managedGroupConfig,omitempty"`
+	// +optional
+	ManagedGroupConfig *WorkflowtemplateManagedGroupConfigStatus `json:"managedGroupConfig,omitempty"`
 }
 
 type WorkflowtemplateWorkerConfigStatus struct {
 	/* Output only. The list of instance names. Dataproc derives the names from `cluster_name`, `num_instances`, and the instance group. */
+	// +optional
 	InstanceNames []string `json:"instanceNames,omitempty"`
 
 	/* Output only. Specifies that this instance group contains preemptible instances. */
-	IsPreemptible bool `json:"isPreemptible,omitempty"`
+	// +optional
+	IsPreemptible *bool `json:"isPreemptible,omitempty"`
 
 	/* Output only. The config for Compute Engine Instance Group Manager that manages this group. This is only used for preemptible instance groups. */
-	ManagedGroupConfig WorkflowtemplateManagedGroupConfigStatus `json:"managedGroupConfig,omitempty"`
+	// +optional
+	ManagedGroupConfig *WorkflowtemplateManagedGroupConfigStatus `json:"managedGroupConfig,omitempty"`
 }
 
 type DataprocWorkflowTemplateStatus struct {
@@ -895,15 +908,23 @@ type DataprocWorkflowTemplateStatus struct {
 	   DataprocWorkflowTemplate's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The time template was created. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/*  */
-	Placement WorkflowtemplatePlacementStatus `json:"placement,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	// +optional
+	Placement *WorkflowtemplatePlacementStatus `json:"placement,omitempty"`
+
 	/* Output only. The time template was last updated. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+
 	/* Output only. The current version of this workflow template. */
-	Version int `json:"version,omitempty"`
+	// +optional
+	Version *int `json:"version,omitempty"`
 }
 
 // +genclient

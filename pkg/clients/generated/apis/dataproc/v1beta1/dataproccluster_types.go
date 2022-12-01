@@ -561,130 +561,160 @@ type DataprocClusterSpec struct {
 }
 
 type ClusterConfigStatus struct {
-	/*  */
-	EndpointConfig ClusterEndpointConfigStatus `json:"endpointConfig,omitempty"`
+	// +optional
+	EndpointConfig *ClusterEndpointConfigStatus `json:"endpointConfig,omitempty"`
 
-	/*  */
-	LifecycleConfig ClusterLifecycleConfigStatus `json:"lifecycleConfig,omitempty"`
+	// +optional
+	LifecycleConfig *ClusterLifecycleConfigStatus `json:"lifecycleConfig,omitempty"`
 
-	/*  */
-	MasterConfig ClusterMasterConfigStatus `json:"masterConfig,omitempty"`
+	// +optional
+	MasterConfig *ClusterMasterConfigStatus `json:"masterConfig,omitempty"`
 
-	/*  */
-	SecondaryWorkerConfig ClusterSecondaryWorkerConfigStatus `json:"secondaryWorkerConfig,omitempty"`
+	// +optional
+	SecondaryWorkerConfig *ClusterSecondaryWorkerConfigStatus `json:"secondaryWorkerConfig,omitempty"`
 
-	/*  */
-	WorkerConfig ClusterWorkerConfigStatus `json:"workerConfig,omitempty"`
+	// +optional
+	WorkerConfig *ClusterWorkerConfigStatus `json:"workerConfig,omitempty"`
 }
 
 type ClusterEndpointConfigStatus struct {
 	/* Output only. The map of port descriptions to URLs. Will only be populated if enable_http_port_access is true. */
+	// +optional
 	HttpPorts map[string]string `json:"httpPorts,omitempty"`
 }
 
 type ClusterInstanceReferencesStatus struct {
 	/* The unique identifier of the Compute Engine instance. */
-	InstanceId string `json:"instanceId,omitempty"`
+	// +optional
+	InstanceId *string `json:"instanceId,omitempty"`
 
 	/* The user-friendly name of the Compute Engine instance. */
-	InstanceName string `json:"instanceName,omitempty"`
+	// +optional
+	InstanceName *string `json:"instanceName,omitempty"`
 
 	/* The public ECIES key used for sharing data with this instance. */
-	PublicEciesKey string `json:"publicEciesKey,omitempty"`
+	// +optional
+	PublicEciesKey *string `json:"publicEciesKey,omitempty"`
 
 	/* The public RSA key used for sharing data with this instance. */
-	PublicKey string `json:"publicKey,omitempty"`
+	// +optional
+	PublicKey *string `json:"publicKey,omitempty"`
 }
 
 type ClusterLifecycleConfigStatus struct {
 	/* Output only. The time when cluster became idle (most recent job finished) and became eligible for deletion due to idleness (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
-	IdleStartTime string `json:"idleStartTime,omitempty"`
+	// +optional
+	IdleStartTime *string `json:"idleStartTime,omitempty"`
 }
 
 type ClusterManagedGroupConfigStatus struct {
 	/* Output only. The name of the Instance Group Manager for this group. */
-	InstanceGroupManagerName string `json:"instanceGroupManagerName,omitempty"`
+	// +optional
+	InstanceGroupManagerName *string `json:"instanceGroupManagerName,omitempty"`
 
 	/* Output only. The name of the Instance Template used for the Managed Instance Group. */
-	InstanceTemplateName string `json:"instanceTemplateName,omitempty"`
+	// +optional
+	InstanceTemplateName *string `json:"instanceTemplateName,omitempty"`
 }
 
 type ClusterMasterConfigStatus struct {
 	/* Output only. The list of instance names. Dataproc derives the names from `cluster_name`, `num_instances`, and the instance group. */
+	// +optional
 	InstanceNames []string `json:"instanceNames,omitempty"`
 
 	/* Output only. List of references to Compute Engine instances. */
+	// +optional
 	InstanceReferences []ClusterInstanceReferencesStatus `json:"instanceReferences,omitempty"`
 
 	/* Output only. Specifies that this instance group contains preemptible instances. */
-	IsPreemptible bool `json:"isPreemptible,omitempty"`
+	// +optional
+	IsPreemptible *bool `json:"isPreemptible,omitempty"`
 
 	/* Output only. The config for Compute Engine Instance Group Manager that manages this group. This is only used for preemptible instance groups. */
-	ManagedGroupConfig ClusterManagedGroupConfigStatus `json:"managedGroupConfig,omitempty"`
+	// +optional
+	ManagedGroupConfig *ClusterManagedGroupConfigStatus `json:"managedGroupConfig,omitempty"`
 }
 
 type ClusterMetricsStatus struct {
 	/* The HDFS metrics. */
+	// +optional
 	HdfsMetrics map[string]string `json:"hdfsMetrics,omitempty"`
 
 	/* The YARN metrics. */
+	// +optional
 	YarnMetrics map[string]string `json:"yarnMetrics,omitempty"`
 }
 
 type ClusterSecondaryWorkerConfigStatus struct {
 	/* Output only. The list of instance names. Dataproc derives the names from `cluster_name`, `num_instances`, and the instance group. */
+	// +optional
 	InstanceNames []string `json:"instanceNames,omitempty"`
 
 	/* Output only. List of references to Compute Engine instances. */
+	// +optional
 	InstanceReferences []ClusterInstanceReferencesStatus `json:"instanceReferences,omitempty"`
 
 	/* Output only. Specifies that this instance group contains preemptible instances. */
-	IsPreemptible bool `json:"isPreemptible,omitempty"`
+	// +optional
+	IsPreemptible *bool `json:"isPreemptible,omitempty"`
 
 	/* Output only. The config for Compute Engine Instance Group Manager that manages this group. This is only used for preemptible instance groups. */
-	ManagedGroupConfig ClusterManagedGroupConfigStatus `json:"managedGroupConfig,omitempty"`
+	// +optional
+	ManagedGroupConfig *ClusterManagedGroupConfigStatus `json:"managedGroupConfig,omitempty"`
 }
 
 type ClusterStatusHistoryStatus struct {
 	/* Optional. Output only. Details of cluster's state. */
-	Detail string `json:"detail,omitempty"`
+	// +optional
+	Detail *string `json:"detail,omitempty"`
 
 	/* Output only. The cluster's state. Possible values: UNKNOWN, CREATING, RUNNING, ERROR, DELETING, UPDATING, STOPPING, STOPPED, STARTING */
-	State string `json:"state,omitempty"`
+	// +optional
+	State *string `json:"state,omitempty"`
 
 	/* Output only. Time when this state was entered (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
-	StateStartTime string `json:"stateStartTime,omitempty"`
+	// +optional
+	StateStartTime *string `json:"stateStartTime,omitempty"`
 
 	/* Output only. Additional state information that includes status reported by the agent. Possible values: UNSPECIFIED, UNHEALTHY, STALE_STATUS */
-	Substate string `json:"substate,omitempty"`
+	// +optional
+	Substate *string `json:"substate,omitempty"`
 }
 
 type ClusterStatusStatus struct {
 	/* Optional. Output only. Details of cluster's state. */
-	Detail string `json:"detail,omitempty"`
+	// +optional
+	Detail *string `json:"detail,omitempty"`
 
 	/* Output only. The cluster's state. Possible values: UNKNOWN, CREATING, RUNNING, ERROR, DELETING, UPDATING, STOPPING, STOPPED, STARTING */
-	State string `json:"state,omitempty"`
+	// +optional
+	State *string `json:"state,omitempty"`
 
 	/* Output only. Time when this state was entered (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)). */
-	StateStartTime string `json:"stateStartTime,omitempty"`
+	// +optional
+	StateStartTime *string `json:"stateStartTime,omitempty"`
 
 	/* Output only. Additional state information that includes status reported by the agent. Possible values: UNSPECIFIED, UNHEALTHY, STALE_STATUS */
-	Substate string `json:"substate,omitempty"`
+	// +optional
+	Substate *string `json:"substate,omitempty"`
 }
 
 type ClusterWorkerConfigStatus struct {
 	/* Output only. The list of instance names. Dataproc derives the names from `cluster_name`, `num_instances`, and the instance group. */
+	// +optional
 	InstanceNames []string `json:"instanceNames,omitempty"`
 
 	/* Output only. List of references to Compute Engine instances. */
+	// +optional
 	InstanceReferences []ClusterInstanceReferencesStatus `json:"instanceReferences,omitempty"`
 
 	/* Output only. Specifies that this instance group contains preemptible instances. */
-	IsPreemptible bool `json:"isPreemptible,omitempty"`
+	// +optional
+	IsPreemptible *bool `json:"isPreemptible,omitempty"`
 
 	/* Output only. The config for Compute Engine Instance Group Manager that manages this group. This is only used for preemptible instance groups. */
-	ManagedGroupConfig ClusterManagedGroupConfigStatus `json:"managedGroupConfig,omitempty"`
+	// +optional
+	ManagedGroupConfig *ClusterManagedGroupConfigStatus `json:"managedGroupConfig,omitempty"`
 }
 
 type DataprocClusterStatus struct {
@@ -692,16 +722,26 @@ type DataprocClusterStatus struct {
 	   DataprocCluster's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. A cluster UUID (Unique Universal Identifier). Dataproc generates this value when it creates the cluster. */
-	ClusterUuid string `json:"clusterUuid,omitempty"`
-	/*  */
-	Config ClusterConfigStatus `json:"config,omitempty"`
+	// +optional
+	ClusterUuid *string `json:"clusterUuid,omitempty"`
+
+	// +optional
+	Config *ClusterConfigStatus `json:"config,omitempty"`
+
 	/* Output only. Contains cluster daemon metrics such as HDFS and YARN stats. **Beta Feature**: This report is available for testing purposes only. It may be changed before final release. */
-	Metrics ClusterMetricsStatus `json:"metrics,omitempty"`
+	// +optional
+	Metrics *ClusterMetricsStatus `json:"metrics,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. Cluster status. */
-	Status ClusterStatusStatus `json:"status,omitempty"`
+	// +optional
+	Status *ClusterStatusStatus `json:"status,omitempty"`
+
 	/* Output only. The previous cluster status. */
+	// +optional
 	StatusHistory []ClusterStatusHistoryStatus `json:"statusHistory,omitempty"`
 }
 

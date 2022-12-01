@@ -62,15 +62,24 @@ type FolderStatus struct {
 	   Folder's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Timestamp when the Folder was created. Assigned by the server. A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z". */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* The folder id from the name "folders/{folder_id}". */
-	FolderId string `json:"folderId,omitempty"`
+	// +optional
+	FolderId *string `json:"folderId,omitempty"`
+
 	/* The lifecycle state of the folder such as ACTIVE or DELETE_REQUESTED. */
-	LifecycleState string `json:"lifecycleState,omitempty"`
+	// +optional
+	LifecycleState *string `json:"lifecycleState,omitempty"`
+
 	/* The resource name of the Folder. Its format is folders/{folder_id}. */
-	Name string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

@@ -129,6 +129,31 @@ func (in *FolderStatus) DeepCopyInto(out *FolderStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreateTime != nil {
+		in, out := &in.CreateTime, &out.CreateTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.FolderId != nil {
+		in, out := &in.FolderId, &out.FolderId
+		*out = new(string)
+		**out = **in
+	}
+	if in.LifecycleState != nil {
+		in, out := &in.LifecycleState, &out.LifecycleState
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -388,6 +413,16 @@ func (in *ProjectStatus) DeepCopyInto(out *ProjectStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.Number != nil {
+		in, out := &in.Number, &out.Number
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -496,6 +531,21 @@ func (in *ResourceManagerLienStatus) DeepCopyInto(out *ResourceManagerLienStatus
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.CreateTime != nil {
+		in, out := &in.CreateTime, &out.CreateTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
 	}
 	return
 }
@@ -629,6 +679,21 @@ func (in *ResourceManagerPolicyStatus) DeepCopyInto(out *ResourceManagerPolicySt
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.Etag != nil {
+		in, out := &in.Etag, &out.Etag
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.UpdateTime != nil {
+		in, out := &in.UpdateTime, &out.UpdateTime
+		*out = new(string)
+		**out = **in
 	}
 	return
 }

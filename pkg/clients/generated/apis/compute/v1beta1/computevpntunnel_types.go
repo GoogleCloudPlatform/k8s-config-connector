@@ -131,20 +131,32 @@ type ComputeVPNTunnelStatus struct {
 	   ComputeVPNTunnel's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
-	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
 	/* Detailed status message for the VPN tunnel. */
-	DetailedStatus string `json:"detailedStatus,omitempty"`
+	// +optional
+	DetailedStatus *string `json:"detailedStatus,omitempty"`
+
 	/* The fingerprint used for optimistic locking of this resource.  Used
 	internally during updates. */
-	LabelFingerprint string `json:"labelFingerprint,omitempty"`
+	// +optional
+	LabelFingerprint *string `json:"labelFingerprint,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/*  */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
 	/* Hash of the shared secret. */
-	SharedSecretHash string `json:"sharedSecretHash,omitempty"`
+	// +optional
+	SharedSecretHash *string `json:"sharedSecretHash,omitempty"`
+
 	/* The unique identifier for the resource. This identifier is defined by the server. */
-	TunnelId string `json:"tunnelId,omitempty"`
+	// +optional
+	TunnelId *string `json:"tunnelId,omitempty"`
 }
 
 // +genclient

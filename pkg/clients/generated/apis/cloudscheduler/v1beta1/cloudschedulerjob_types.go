@@ -101,7 +101,6 @@ type JobOauthToken struct {
 	// +optional
 	Scope *string `json:"scope,omitempty"`
 
-	/*  */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
@@ -111,7 +110,6 @@ type JobOidcToken struct {
 	// +optional
 	Audience *string `json:"audience,omitempty"`
 
-	/*  */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
@@ -125,7 +123,6 @@ type JobPubsubTarget struct {
 	// +optional
 	Data *string `json:"data,omitempty"`
 
-	/*  */
 	TopicRef v1alpha1.ResourceRef `json:"topicRef"`
 }
 
@@ -193,52 +190,70 @@ type CloudSchedulerJobSpec struct {
 }
 
 type JobAppEngineHttpTargetStatus struct {
-	/*  */
-	AppEngineRouting JobAppEngineRoutingStatus `json:"appEngineRouting,omitempty"`
+	// +optional
+	AppEngineRouting *JobAppEngineRoutingStatus `json:"appEngineRouting,omitempty"`
 }
 
 type JobAppEngineRoutingStatus struct {
 	/* Output only. The host that the job is sent to. For more information about how App Engine requests are routed, see [here](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed). The host is constructed as: * `host = [application_domain_name]` `| [service] + '.' + [application_domain_name]` `| [version] + '.' + [application_domain_name]` `| [version_dot_service]+ '.' + [application_domain_name]` `| [instance] + '.' + [application_domain_name]` `| [instance_dot_service] + '.' + [application_domain_name]` `| [instance_dot_version] + '.' + [application_domain_name]` `| [instance_dot_version_dot_service] + '.' + [application_domain_name]` * `application_domain_name` = The domain name of the app, for example .appspot.com, which is associated with the job's project ID. * `service =` service * `version =` version * `version_dot_service =` version `+ '.' +` service * `instance =` instance * `instance_dot_service =` instance `+ '.' +` service * `instance_dot_version =` instance `+ '.' +` version * `instance_dot_version_dot_service =` instance `+ '.' +` version `+ '.' +` service If service is empty, then the job will be sent to the service which is the default service when the job is attempted. If version is empty, then the job will be sent to the version which is the default version when the job is attempted. If instance is empty, then the job will be sent to an instance which is available when the job is attempted. If service, version, or instance is invalid, then the job will be sent to the default version of the default service when the job is attempted. */
-	Host string `json:"host,omitempty"`
+	// +optional
+	Host *string `json:"host,omitempty"`
 }
 
 type JobDetailsStatus struct {
 	/* A URL/resource name that uniquely identifies the type of the serialized protocol buffer message. This string must contain at least one "/" character. The last segment of the URL's path must represent the fully qualified name of the type (as in `path/google.protobuf.Duration`). The name should be in a canonical form (e.g., leading "." is not accepted). In practice, teams usually precompile into the binary all types that they expect it to use in the context of Any. However, for URLs which use the scheme `http`, `https`, or no scheme, one can optionally set up a type server that maps type URLs to message definitions as follows: * If no scheme is provided, `https` is assumed. * An HTTP GET on the URL must yield a google.protobuf.Type value in binary format, or produce an error. * Applications are allowed to cache lookup results based on the URL, or have them precompiled into a binary to avoid any lookup. Therefore, binary compatibility needs to be preserved on changes to types. (Use versioned type names to manage breaking changes.) Note: this functionality is not currently available in the official protobuf release, and it is not used for type URLs beginning with type.googleapis.com. Schemes other than `http`, `https` (or the empty scheme) might be used with implementation specific semantics. */
-	TypeUrl string `json:"typeUrl,omitempty"`
+	// +optional
+	TypeUrl *string `json:"typeUrl,omitempty"`
 
 	/* Must be a valid serialized protocol buffer of the above specified type. */
-	Value string `json:"value,omitempty"`
+	// +optional
+	Value *string `json:"value,omitempty"`
 }
 
 type JobStatusStatus struct {
 	/* The status code, which should be an enum value of google.rpc.Code. */
-	Code int `json:"code,omitempty"`
+	// +optional
+	Code *int `json:"code,omitempty"`
 
 	/* A list of messages that carry the error details. There is a common set of message types for APIs to use. */
+	// +optional
 	Details []JobDetailsStatus `json:"details,omitempty"`
 
 	/* A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client. */
-	Message string `json:"message,omitempty"`
+	// +optional
+	Message *string `json:"message,omitempty"`
 }
 
 type CloudSchedulerJobStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CloudSchedulerJob's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/*  */
-	AppEngineHttpTarget JobAppEngineHttpTargetStatus `json:"appEngineHttpTarget,omitempty"`
+	// +optional
+	AppEngineHttpTarget *JobAppEngineHttpTargetStatus `json:"appEngineHttpTarget,omitempty"`
+
 	/* Output only. The time the last job attempt started. */
-	LastAttemptTime string `json:"lastAttemptTime,omitempty"`
+	// +optional
+	LastAttemptTime *string `json:"lastAttemptTime,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. The next time the job is scheduled. Note that this may be a retry of a previously failed attempt or the next execution time according to the schedule. */
-	ScheduleTime string `json:"scheduleTime,omitempty"`
+	// +optional
+	ScheduleTime *string `json:"scheduleTime,omitempty"`
+
 	/* Output only. State of the job. Possible values: STATE_UNSPECIFIED, ENABLED, PAUSED, DISABLED, UPDATE_FAILED */
-	State string `json:"state,omitempty"`
+	// +optional
+	State *string `json:"state,omitempty"`
+
 	/* Output only. The response from the target for the last attempted execution. */
-	Status JobStatusStatus `json:"status,omitempty"`
+	// +optional
+	Status *JobStatusStatus `json:"status,omitempty"`
+
 	/* Output only. The creation time of the job. */
-	UserUpdateTime string `json:"userUpdateTime,omitempty"`
+	// +optional
+	UserUpdateTime *string `json:"userUpdateTime,omitempty"`
 }
 
 // +genclient

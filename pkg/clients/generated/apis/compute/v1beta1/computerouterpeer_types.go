@@ -77,7 +77,6 @@ type RouterpeerBfd struct {
 }
 
 type RouterpeerIpAddress struct {
-	/*  */
 	// +optional
 	External *string `json:"external,omitempty"`
 }
@@ -178,9 +177,12 @@ type ComputeRouterPeerStatus struct {
 	creates, updates, and deletes this type of BGP peer when the
 	PARTNER InterconnectAttachment is created, updated,
 	or deleted. */
-	ManagementType string `json:"managementType,omitempty"`
+	// +optional
+	ManagementType *string `json:"managementType,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

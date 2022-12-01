@@ -120,6 +120,16 @@ func (in *ServiceNetworkingConnectionStatus) DeepCopyInto(out *ServiceNetworking
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.Peering != nil {
+		in, out := &in.Peering, &out.Peering
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 

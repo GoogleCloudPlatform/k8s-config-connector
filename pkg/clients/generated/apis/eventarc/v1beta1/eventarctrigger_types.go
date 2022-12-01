@@ -43,12 +43,10 @@ type TriggerCloudRunService struct {
 	/* Required. The region the Cloud Run service is deployed in. */
 	Region string `json:"region"`
 
-	/*  */
 	ServiceRef v1alpha1.ResourceRef `json:"serviceRef"`
 }
 
 type TriggerDestination struct {
-	/*  */
 	// +optional
 	CloudFunctionRef *v1alpha1.ResourceRef `json:"cloudFunctionRef,omitempty"`
 
@@ -60,13 +58,11 @@ type TriggerDestination struct {
 	// +optional
 	Gke *TriggerGke `json:"gke,omitempty"`
 
-	/*  */
 	// +optional
 	WorkflowRef *v1alpha1.ResourceRef `json:"workflowRef,omitempty"`
 }
 
 type TriggerGke struct {
-	/*  */
 	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
 
 	/* Required. The name of the Google Compute Engine in which the cluster resides, which can either be compute zone (for example, us-central1-a) for the zonal clusters or region (for example, us-central1) for regional clusters. */
@@ -128,7 +124,6 @@ type EventarcTriggerSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/*  */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
@@ -139,12 +134,13 @@ type EventarcTriggerSpec struct {
 
 type TriggerPubsubStatus struct {
 	/* Output only. The name of the Pub/Sub subscription created and managed by Eventarc system as a transport for the event delivery. Format: `projects/{PROJECT_ID}/subscriptions/{SUBSCRIPTION_NAME}`. */
-	Subscription string `json:"subscription,omitempty"`
+	// +optional
+	Subscription *string `json:"subscription,omitempty"`
 }
 
 type TriggerTransportStatus struct {
-	/*  */
-	Pubsub TriggerPubsubStatus `json:"pubsub,omitempty"`
+	// +optional
+	Pubsub *TriggerPubsubStatus `json:"pubsub,omitempty"`
 }
 
 type EventarcTriggerStatus struct {
@@ -152,19 +148,31 @@ type EventarcTriggerStatus struct {
 	   EventarcTrigger's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The creation time. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* Output only. This checksum is computed by the server based on the value of other fields, and may be sent only on create requests to ensure the client has an up-to-date value before proceeding. */
-	Etag string `json:"etag,omitempty"`
+	// +optional
+	Etag *string `json:"etag,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. The reason(s) why a trigger is in FAILED state. */
+	// +optional
 	ResourceConditions map[string]string `json:"resourceConditions,omitempty"`
-	/*  */
-	Transport TriggerTransportStatus `json:"transport,omitempty"`
+
+	// +optional
+	Transport *TriggerTransportStatus `json:"transport,omitempty"`
+
 	/* Output only. Server assigned unique identifier for the trigger. The value is a UUID4 string and guaranteed to remain unchanged until the resource is deleted. */
-	Uid string `json:"uid,omitempty"`
+	// +optional
+	Uid *string `json:"uid,omitempty"`
+
 	/* Output only. The last-modified time. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

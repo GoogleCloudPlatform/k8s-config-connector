@@ -77,7 +77,6 @@ type MembershipRoles struct {
 	// +optional
 	ExpiryDetail *MembershipExpiryDetail `json:"expiryDetail,omitempty"`
 
-	/*  */
 	Name string `json:"name"`
 
 	/* Evaluations of restrictions applied to parent group on this membership. */
@@ -106,13 +105,16 @@ type CloudIdentityMembershipSpec struct {
 
 type MembershipDisplayNameStatus struct {
 	/* Output only. Member's family name */
-	FamilyName string `json:"familyName,omitempty"`
+	// +optional
+	FamilyName *string `json:"familyName,omitempty"`
 
 	/* Output only. Localized UTF-16 full name for the member. Localization is done based on the language in the request and the language of the stored display name. */
-	FullName string `json:"fullName,omitempty"`
+	// +optional
+	FullName *string `json:"fullName,omitempty"`
 
 	/* Output only. Member's given name */
-	GivenName string `json:"givenName,omitempty"`
+	// +optional
+	GivenName *string `json:"givenName,omitempty"`
 }
 
 type CloudIdentityMembershipStatus struct {
@@ -120,17 +122,28 @@ type CloudIdentityMembershipStatus struct {
 	   CloudIdentityMembership's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The time when the `Membership` was created. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* Output only. Delivery setting associated with the membership. Possible values: DELIVERY_SETTING_UNSPECIFIED, ALL_MAIL, DIGEST, DAILY, NONE, DISABLED */
-	DeliverySetting string `json:"deliverySetting,omitempty"`
+	// +optional
+	DeliverySetting *string `json:"deliverySetting,omitempty"`
+
 	/* Output only. The display name of this member, if available */
-	DisplayName MembershipDisplayNameStatus `json:"displayName,omitempty"`
+	// +optional
+	DisplayName *MembershipDisplayNameStatus `json:"displayName,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. The type of the membership. Possible values: OWNER_TYPE_UNSPECIFIED, OWNER_TYPE_CUSTOMER, OWNER_TYPE_PARTNER */
-	Type string `json:"type,omitempty"`
+	// +optional
+	Type *string `json:"type,omitempty"`
+
 	/* Output only. The time when the `Membership` was last updated. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

@@ -94,11 +94,16 @@ type VPCAccessConnectorStatus struct {
 	   VPCAccessConnector's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. List of projects using the connector. */
+	// +optional
 	ConnectedProjects []string `json:"connectedProjects,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. State of the VPC access connector. Possible values: STATE_UNSPECIFIED, READY, CREATING, DELETING, ERROR, UPDATING */
-	State string `json:"state,omitempty"`
+	// +optional
+	State *string `json:"state,omitempty"`
 }
 
 // +genclient

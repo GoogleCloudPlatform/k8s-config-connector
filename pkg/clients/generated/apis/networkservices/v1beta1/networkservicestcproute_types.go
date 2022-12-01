@@ -46,7 +46,6 @@ type TcprouteAction struct {
 }
 
 type TcprouteDestinations struct {
-	/*  */
 	ServiceRef v1alpha1.ResourceRef `json:"serviceRef"`
 
 	/* Optional. Specifies the proportion of requests forwarded to the backend referenced by the serviceName field. This is computed as: weight/Sum(weights in this destination list). For non-zero values, there may be some epsilon from the exact proportion defined here depending on the precision an implementation supports. If only one serviceName is specified and it has a weight greater than 0, 100% of the traffic is forwarded to that backend. If weights are specified for any one service name, they need to be specified for all of them. If weights are unspecified for all services, then, traffic is distributed in equal proportions to all of them. */
@@ -76,14 +75,12 @@ type NetworkServicesTCPRouteSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/*  */
 	// +optional
 	Gateways []v1alpha1.ResourceRef `json:"gateways,omitempty"`
 
 	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
-	/*  */
 	// +optional
 	Meshes []v1alpha1.ResourceRef `json:"meshes,omitempty"`
 
@@ -103,13 +100,20 @@ type NetworkServicesTCPRouteStatus struct {
 	   NetworkServicesTCPRoute's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The timestamp when the resource was created. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. Server-defined URL of this resource */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
 	/* Output only. The timestamp when the resource was updated. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

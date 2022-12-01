@@ -281,13 +281,20 @@ type MonitoringServiceLevelObjectiveStatus struct {
 	   MonitoringServiceLevelObjective's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Time stamp of the `Create` or most recent `Update` command on this `Slo`. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* Time stamp of the `Update` or `Delete` command that made this no longer a current `Slo`. This field is not populated in `ServiceLevelObjective`s returned from calls to `GetServiceLevelObjective` and `ListServiceLevelObjectives`, because it is always empty in the current version. It is populated in `ServiceLevelObjective`s representing previous versions in the output of `ListServiceLevelObjectiveVersions`. Because all old configuration versions are stored, `Update` operations mark the obsoleted version as deleted. */
-	DeleteTime string `json:"deleteTime,omitempty"`
+	// +optional
+	DeleteTime *string `json:"deleteTime,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. If set, this SLO is managed at the [Service Management](https://cloud.google.com/service-management/overview) level. Therefore the service yaml file is the source of truth for this SLO, and API `Update` and `Delete` operations are forbidden. */
-	ServiceManagementOwned bool `json:"serviceManagementOwned,omitempty"`
+	// +optional
+	ServiceManagementOwned *bool `json:"serviceManagementOwned,omitempty"`
 }
 
 // +genclient

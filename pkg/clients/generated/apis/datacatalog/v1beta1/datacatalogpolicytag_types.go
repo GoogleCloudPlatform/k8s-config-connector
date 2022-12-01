@@ -48,7 +48,6 @@ type DataCatalogPolicyTagSpec struct {
 	not start or end with spaces; and be at most 200 bytes long when encoded in UTF-8. */
 	DisplayName string `json:"displayName"`
 
-	/*  */
 	// +optional
 	ParentPolicyTagRef *v1alpha1.ResourceRef `json:"parentPolicyTagRef,omitempty"`
 
@@ -56,7 +55,6 @@ type DataCatalogPolicyTagSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/*  */
 	TaxonomyRef v1alpha1.ResourceRef `json:"taxonomyRef"`
 }
 
@@ -65,12 +63,17 @@ type DataCatalogPolicyTagStatus struct {
 	   DataCatalogPolicyTag's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Resource names of child policy tags of this policy tag. */
+	// +optional
 	ChildPolicyTags []string `json:"childPolicyTags,omitempty"`
+
 	/* Resource name of this policy tag, whose format is:
 	"projects/{project}/locations/{region}/taxonomies/{taxonomy}/policyTags/{policytag}". */
-	Name string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

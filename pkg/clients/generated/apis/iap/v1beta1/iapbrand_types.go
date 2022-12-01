@@ -54,9 +54,12 @@ type IAPBrandStatus struct {
 	   IAPBrand's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. Whether the brand is only intended for usage inside the G Suite organization only. */
-	OrgInternalOnly bool `json:"orgInternalOnly,omitempty"`
+	// +optional
+	OrgInternalOnly *bool `json:"orgInternalOnly,omitempty"`
 }
 
 // +genclient

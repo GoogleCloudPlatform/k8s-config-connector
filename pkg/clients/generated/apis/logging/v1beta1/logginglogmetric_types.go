@@ -175,16 +175,20 @@ type LoggingLogMetricSpec struct {
 
 type LogmetricMetricDescriptorStatus struct {
 	/* A detailed description of the metric, which can be used in documentation. */
-	Description string `json:"description,omitempty"`
+	// +optional
+	Description *string `json:"description,omitempty"`
 
 	/* Read-only. If present, then a time series, which is identified partially by a metric type and a MonitoredResourceDescriptor, that is associated with this metric type can only be associated with one of the monitored resource types listed here. */
+	// +optional
 	MonitoredResourceTypes []string `json:"monitoredResourceTypes,omitempty"`
 
 	/* The resource name of the metric descriptor. */
-	Name string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
 
 	/* The metric type, including its DNS name prefix. The type is not URL-encoded. All user-defined metric types have the DNS name `custom.googleapis.com` or `external.googleapis.com`. Metric types should use a natural hierarchical grouping. For example: "custom.googleapis.com/invoice/paid/amount" "external.googleapis.com/prometheus/up" "appengine.googleapis.com/http/server/response_latencies" */
-	Type string `json:"type,omitempty"`
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 type LoggingLogMetricStatus struct {
@@ -192,13 +196,19 @@ type LoggingLogMetricStatus struct {
 	   LoggingLogMetric's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The creation timestamp of the metric. This field may not be present for older metrics. */
-	CreateTime string `json:"createTime,omitempty"`
-	/*  */
-	MetricDescriptor LogmetricMetricDescriptorStatus `json:"metricDescriptor,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// +optional
+	MetricDescriptor *LogmetricMetricDescriptorStatus `json:"metricDescriptor,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. The last update timestamp of the metric. This field may not be present for older metrics. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

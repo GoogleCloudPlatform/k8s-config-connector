@@ -869,6 +869,26 @@ func (in *OSConfigGuestPolicyStatus) DeepCopyInto(out *OSConfigGuestPolicyStatus
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreateTime != nil {
+		in, out := &in.CreateTime, &out.CreateTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.Etag != nil {
+		in, out := &in.Etag, &out.Etag
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.UpdateTime != nil {
+		in, out := &in.UpdateTime, &out.UpdateTime
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -991,6 +1011,51 @@ func (in *OSConfigOSPolicyAssignmentStatus) DeepCopyInto(out *OSConfigOSPolicyAs
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.Baseline != nil {
+		in, out := &in.Baseline, &out.Baseline
+		*out = new(bool)
+		**out = **in
+	}
+	if in.Deleted != nil {
+		in, out := &in.Deleted, &out.Deleted
+		*out = new(bool)
+		**out = **in
+	}
+	if in.Etag != nil {
+		in, out := &in.Etag, &out.Etag
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.Reconciling != nil {
+		in, out := &in.Reconciling, &out.Reconciling
+		*out = new(bool)
+		**out = **in
+	}
+	if in.RevisionCreateTime != nil {
+		in, out := &in.RevisionCreateTime, &out.RevisionCreateTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.RevisionId != nil {
+		in, out := &in.RevisionId, &out.RevisionId
+		*out = new(string)
+		**out = **in
+	}
+	if in.RolloutState != nil {
+		in, out := &in.RolloutState, &out.RolloutState
+		*out = new(string)
+		**out = **in
+	}
+	if in.Uid != nil {
+		in, out := &in.Uid, &out.Uid
+		*out = new(string)
+		**out = **in
 	}
 	return
 }

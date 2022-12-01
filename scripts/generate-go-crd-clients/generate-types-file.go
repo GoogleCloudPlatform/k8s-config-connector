@@ -16,6 +16,7 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"os"
@@ -25,7 +26,6 @@ import (
 	"regexp"
 	"sort"
 	"strings"
-	"text/template"
 
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
@@ -117,7 +117,7 @@ func main() {
 
 	// template execution
 	typesTemplateDir := repo.GetTypesTemplatePath()
-	typesTemplateFile := path.Join(typesTemplateDir, "general_types.go.tmpl")
+	// typesTemplateFile := path.Join(typesTemplateDir, "general_types.go.tmpl")
 	for _, rd := range resources {
 		serviceDir := path.Join(typesDir, rd.Service)
 		checkAndCreateFolder(serviceDir)
@@ -127,15 +127,19 @@ func main() {
 
 		// create new file for generated types file
 		typesFileName := fmt.Sprintf("%s_types.go", rd.Kind)
-		f, err := os.Create(path.Join(serviceVersionDir, typesFileName))
-		if err != nil {
-			log.Fatalf("error creating %s_types.go file: %v", rd.Kind, err)
-		}
 
-		executeTemplateWithResourceDefinition(f, typesTemplateFile, rd)
+		{
+			var gen GeneralTypes
+			gen.resourceDefinition = rd
+			gen.Generate()
+			if err := gen.WriteToFile(path.Join(serviceVersionDir, typesFileName)); err != nil {
+				log.Fatalf("error creating %s_types.go file: %v", rd.Kind, err)
+			}
+		}
+		// executeTemplateWithResourceDefinition(f, typesTemplateFile, rd)
 
 		// create doc.go file per service/version directory
-		f, err = os.Create(path.Join(serviceVersionDir, "doc.go"))
+		f, err := os.Create(path.Join(serviceVersionDir, "doc.go"))
 		if err != nil {
 			log.Fatalf("error creating %v doc.go file: %v", serviceVersionString, err)
 		}

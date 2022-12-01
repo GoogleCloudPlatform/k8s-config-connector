@@ -106,11 +106,16 @@ type MonitoringMetricDescriptorStatus struct {
 	   MonitoringMetricDescriptor's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Read-only. If present, then a time series, which is identified partially by a metric type and a MonitoredResourceDescriptor, that is associated with this metric type can only be associated with one of the monitored resource types listed here. */
+	// +optional
 	MonitoredResourceTypes []string `json:"monitoredResourceTypes,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* The resource name of the metric descriptor. */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 }
 
 // +genclient

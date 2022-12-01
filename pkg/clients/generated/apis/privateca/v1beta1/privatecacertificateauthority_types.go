@@ -296,269 +296,342 @@ type PrivateCACertificateAuthoritySpec struct {
 
 type CertificateauthorityAccessUrlsStatus struct {
 	/* The URL where this CertificateAuthority's CA certificate is published. This will only be set for CAs that have been activated. */
-	CaCertificateAccessUrl string `json:"caCertificateAccessUrl,omitempty"`
+	// +optional
+	CaCertificateAccessUrl *string `json:"caCertificateAccessUrl,omitempty"`
 
 	/* The URLs where this CertificateAuthority's CRLs are published. This will only be set for CAs that have been activated. */
+	// +optional
 	CrlAccessUrls []string `json:"crlAccessUrls,omitempty"`
 }
 
 type CertificateauthorityAdditionalExtensionsStatus struct {
 	/* Optional. Indicates whether or not this extension is critical (i.e., if the client does not know how to handle this extension, the client should consider this to be an error). */
-	Critical bool `json:"critical,omitempty"`
+	// +optional
+	Critical *bool `json:"critical,omitempty"`
 
 	/* Required. The OID for this X.509 extension. */
-	ObjectId CertificateauthorityObjectIdStatus `json:"objectId,omitempty"`
+	// +optional
+	ObjectId *CertificateauthorityObjectIdStatus `json:"objectId,omitempty"`
 
 	/* Required. The value of this X.509 extension. */
-	Value string `json:"value,omitempty"`
+	// +optional
+	Value *string `json:"value,omitempty"`
 }
 
 type CertificateauthorityAuthorityKeyIdStatus struct {
 	/* Optional. The value of this KeyId encoded in lowercase hexadecimal. This is most likely the 160 bit SHA-1 hash of the public key. */
-	KeyId string `json:"keyId,omitempty"`
+	// +optional
+	KeyId *string `json:"keyId,omitempty"`
 }
 
 type CertificateauthorityBaseKeyUsageStatus struct {
 	/* The key may be used to sign certificates. */
-	CertSign bool `json:"certSign,omitempty"`
+	// +optional
+	CertSign *bool `json:"certSign,omitempty"`
 
 	/* The key may be used for cryptographic commitments. Note that this may also be referred to as "non-repudiation". */
-	ContentCommitment bool `json:"contentCommitment,omitempty"`
+	// +optional
+	ContentCommitment *bool `json:"contentCommitment,omitempty"`
 
 	/* The key may be used sign certificate revocation lists. */
-	CrlSign bool `json:"crlSign,omitempty"`
+	// +optional
+	CrlSign *bool `json:"crlSign,omitempty"`
 
 	/* The key may be used to encipher data. */
-	DataEncipherment bool `json:"dataEncipherment,omitempty"`
+	// +optional
+	DataEncipherment *bool `json:"dataEncipherment,omitempty"`
 
 	/* The key may be used to decipher only. */
-	DecipherOnly bool `json:"decipherOnly,omitempty"`
+	// +optional
+	DecipherOnly *bool `json:"decipherOnly,omitempty"`
 
 	/* The key may be used for digital signatures. */
-	DigitalSignature bool `json:"digitalSignature,omitempty"`
+	// +optional
+	DigitalSignature *bool `json:"digitalSignature,omitempty"`
 
 	/* The key may be used to encipher only. */
-	EncipherOnly bool `json:"encipherOnly,omitempty"`
+	// +optional
+	EncipherOnly *bool `json:"encipherOnly,omitempty"`
 
 	/* The key may be used in a key agreement protocol. */
-	KeyAgreement bool `json:"keyAgreement,omitempty"`
+	// +optional
+	KeyAgreement *bool `json:"keyAgreement,omitempty"`
 
 	/* The key may be used to encipher other keys. */
-	KeyEncipherment bool `json:"keyEncipherment,omitempty"`
+	// +optional
+	KeyEncipherment *bool `json:"keyEncipherment,omitempty"`
 }
 
 type CertificateauthorityCaCertificateDescriptionsStatus struct {
 	/* Describes lists of issuer CA certificate URLs that appear in the "Authority Information Access" extension in the certificate. */
+	// +optional
 	AiaIssuingCertificateUrls []string `json:"aiaIssuingCertificateUrls,omitempty"`
 
 	/* Identifies the subject_key_id of the parent certificate, per https://tools.ietf.org/html/rfc5280#section-4.2.1.1 */
-	AuthorityKeyId CertificateauthorityAuthorityKeyIdStatus `json:"authorityKeyId,omitempty"`
+	// +optional
+	AuthorityKeyId *CertificateauthorityAuthorityKeyIdStatus `json:"authorityKeyId,omitempty"`
 
 	/* The hash of the x.509 certificate. */
-	CertFingerprint CertificateauthorityCertFingerprintStatus `json:"certFingerprint,omitempty"`
+	// +optional
+	CertFingerprint *CertificateauthorityCertFingerprintStatus `json:"certFingerprint,omitempty"`
 
 	/* Describes a list of locations to obtain CRL information, i.e. the DistributionPoint.fullName described by https://tools.ietf.org/html/rfc5280#section-4.2.1.13 */
+	// +optional
 	CrlDistributionPoints []string `json:"crlDistributionPoints,omitempty"`
 
 	/* The public key that corresponds to an issued certificate. */
-	PublicKey CertificateauthorityPublicKeyStatus `json:"publicKey,omitempty"`
+	// +optional
+	PublicKey *CertificateauthorityPublicKeyStatus `json:"publicKey,omitempty"`
 
 	/* Describes some of the values in a certificate that are related to the subject and lifetime. */
-	SubjectDescription CertificateauthoritySubjectDescriptionStatus `json:"subjectDescription,omitempty"`
+	// +optional
+	SubjectDescription *CertificateauthoritySubjectDescriptionStatus `json:"subjectDescription,omitempty"`
 
 	/* Provides a means of identifiying certificates that contain a particular public key, per https://tools.ietf.org/html/rfc5280#section-4.2.1.2. */
-	SubjectKeyId CertificateauthoritySubjectKeyIdStatus `json:"subjectKeyId,omitempty"`
+	// +optional
+	SubjectKeyId *CertificateauthoritySubjectKeyIdStatus `json:"subjectKeyId,omitempty"`
 
 	/* Describes some of the technical X.509 fields in a certificate. */
-	X509Description CertificateauthorityX509DescriptionStatus `json:"x509Description,omitempty"`
+	// +optional
+	X509Description *CertificateauthorityX509DescriptionStatus `json:"x509Description,omitempty"`
 }
 
 type CertificateauthorityCaOptionsStatus struct {
 	/* Optional. Refers to the "CA" X.509 extension, which is a boolean value. When this value is missing, the extension will be omitted from the CA certificate. */
-	IsCa bool `json:"isCa,omitempty"`
+	// +optional
+	IsCa *bool `json:"isCa,omitempty"`
 
 	/* Optional. Refers to the path length restriction X.509 extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail. If this value is missing, the max path length will be omitted from the CA certificate. */
-	MaxIssuerPathLength int `json:"maxIssuerPathLength,omitempty"`
+	// +optional
+	MaxIssuerPathLength *int `json:"maxIssuerPathLength,omitempty"`
 }
 
 type CertificateauthorityCertFingerprintStatus struct {
 	/* The SHA 256 hash, encoded in hexadecimal, of the DER x509 certificate. */
-	Sha256Hash string `json:"sha256Hash,omitempty"`
+	// +optional
+	Sha256Hash *string `json:"sha256Hash,omitempty"`
 }
 
 type CertificateauthorityConfigStatus struct {
 	/* Optional. The public key that corresponds to this config. This is, for example, used when issuing Certificates, but not when creating a self-signed CertificateAuthority or CertificateAuthority CSR. */
-	PublicKey CertificateauthorityPublicKeyStatus `json:"publicKey,omitempty"`
+	// +optional
+	PublicKey *CertificateauthorityPublicKeyStatus `json:"publicKey,omitempty"`
 
-	/*  */
-	X509Config CertificateauthorityX509ConfigStatus `json:"x509Config,omitempty"`
+	// +optional
+	X509Config *CertificateauthorityX509ConfigStatus `json:"x509Config,omitempty"`
 }
 
 type CertificateauthorityCustomSansStatus struct {
 	/* Optional. Indicates whether or not this extension is critical (i.e., if the client does not know how to handle this extension, the client should consider this to be an error). */
-	Critical bool `json:"critical,omitempty"`
+	// +optional
+	Critical *bool `json:"critical,omitempty"`
 
 	/* Required. The OID for this X.509 extension. */
-	ObjectId CertificateauthorityObjectIdStatus `json:"objectId,omitempty"`
+	// +optional
+	ObjectId *CertificateauthorityObjectIdStatus `json:"objectId,omitempty"`
 
 	/* Required. The value of this X.509 extension. */
-	Value string `json:"value,omitempty"`
+	// +optional
+	Value *string `json:"value,omitempty"`
 }
 
 type CertificateauthorityExtendedKeyUsageStatus struct {
 	/* Corresponds to OID 1.3.6.1.5.5.7.3.2. Officially described as "TLS WWW client authentication", though regularly used for non-WWW TLS. */
-	ClientAuth bool `json:"clientAuth,omitempty"`
+	// +optional
+	ClientAuth *bool `json:"clientAuth,omitempty"`
 
 	/* Corresponds to OID 1.3.6.1.5.5.7.3.3. Officially described as "Signing of downloadable executable code client authentication". */
-	CodeSigning bool `json:"codeSigning,omitempty"`
+	// +optional
+	CodeSigning *bool `json:"codeSigning,omitempty"`
 
 	/* Corresponds to OID 1.3.6.1.5.5.7.3.4. Officially described as "Email protection". */
-	EmailProtection bool `json:"emailProtection,omitempty"`
+	// +optional
+	EmailProtection *bool `json:"emailProtection,omitempty"`
 
 	/* Corresponds to OID 1.3.6.1.5.5.7.3.9. Officially described as "Signing OCSP responses". */
-	OcspSigning bool `json:"ocspSigning,omitempty"`
+	// +optional
+	OcspSigning *bool `json:"ocspSigning,omitempty"`
 
 	/* Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW server authentication", though regularly used for non-WWW TLS. */
-	ServerAuth bool `json:"serverAuth,omitempty"`
+	// +optional
+	ServerAuth *bool `json:"serverAuth,omitempty"`
 
 	/* Corresponds to OID 1.3.6.1.5.5.7.3.8. Officially described as "Binding the hash of an object to a time". */
-	TimeStamping bool `json:"timeStamping,omitempty"`
+	// +optional
+	TimeStamping *bool `json:"timeStamping,omitempty"`
 }
 
 type CertificateauthorityKeyUsageStatus struct {
 	/* Describes high-level ways in which a key may be used. */
-	BaseKeyUsage CertificateauthorityBaseKeyUsageStatus `json:"baseKeyUsage,omitempty"`
+	// +optional
+	BaseKeyUsage *CertificateauthorityBaseKeyUsageStatus `json:"baseKeyUsage,omitempty"`
 
 	/* Detailed scenarios in which a key may be used. */
-	ExtendedKeyUsage CertificateauthorityExtendedKeyUsageStatus `json:"extendedKeyUsage,omitempty"`
+	// +optional
+	ExtendedKeyUsage *CertificateauthorityExtendedKeyUsageStatus `json:"extendedKeyUsage,omitempty"`
 
 	/* Used to describe extended key usages that are not listed in the KeyUsage.ExtendedKeyUsageOptions message. */
+	// +optional
 	UnknownExtendedKeyUsages []CertificateauthorityUnknownExtendedKeyUsagesStatus `json:"unknownExtendedKeyUsages,omitempty"`
 }
 
 type CertificateauthorityObjectIdStatus struct {
 	/* Required. The parts of an OID path. The most significant parts of the path come first. */
+	// +optional
 	ObjectIdPath []int `json:"objectIdPath,omitempty"`
 }
 
 type CertificateauthorityPemIssuerChainStatus struct {
 	/* Required. Expected to be in leaf-to-root order according to RFC 5246. */
+	// +optional
 	PemCertificates []string `json:"pemCertificates,omitempty"`
 }
 
 type CertificateauthorityPolicyIdsStatus struct {
 	/* Required. The parts of an OID path. The most significant parts of the path come first. */
+	// +optional
 	ObjectIdPath []int `json:"objectIdPath,omitempty"`
 }
 
 type CertificateauthorityPublicKeyStatus struct {
 	/* Required. The format of the public key. Possible values: PEM */
-	Format string `json:"format,omitempty"`
+	// +optional
+	Format *string `json:"format,omitempty"`
 
 	/* Required. A public key. The padding and encoding must match with the `KeyFormat` value specified for the `format` field. */
-	Key string `json:"key,omitempty"`
+	// +optional
+	Key *string `json:"key,omitempty"`
 }
 
 type CertificateauthoritySubjectAltNameStatus struct {
 	/* Contains additional subject alternative name values. */
+	// +optional
 	CustomSans []CertificateauthorityCustomSansStatus `json:"customSans,omitempty"`
 
 	/* Contains only valid, fully-qualified host names. */
+	// +optional
 	DnsNames []string `json:"dnsNames,omitempty"`
 
 	/* Contains only valid RFC 2822 E-mail addresses. */
+	// +optional
 	EmailAddresses []string `json:"emailAddresses,omitempty"`
 
 	/* Contains only valid 32-bit IPv4 addresses or RFC 4291 IPv6 addresses. */
+	// +optional
 	IpAddresses []string `json:"ipAddresses,omitempty"`
 
 	/* Contains only valid RFC 3986 URIs. */
+	// +optional
 	Uris []string `json:"uris,omitempty"`
 }
 
 type CertificateauthoritySubjectDescriptionStatus struct {
 	/* The serial number encoded in lowercase hexadecimal. */
-	HexSerialNumber string `json:"hexSerialNumber,omitempty"`
+	// +optional
+	HexSerialNumber *string `json:"hexSerialNumber,omitempty"`
 
 	/* For convenience, the actual lifetime of an issued certificate. */
-	Lifetime string `json:"lifetime,omitempty"`
+	// +optional
+	Lifetime *string `json:"lifetime,omitempty"`
 
 	/* The time after which the certificate is expired. Per RFC 5280, the validity period for a certificate is the period of time from not_before_time through not_after_time, inclusive. Corresponds to 'not_before_time' + 'lifetime' - 1 second. */
-	NotAfterTime string `json:"notAfterTime,omitempty"`
+	// +optional
+	NotAfterTime *string `json:"notAfterTime,omitempty"`
 
 	/* The time at which the certificate becomes valid. */
-	NotBeforeTime string `json:"notBeforeTime,omitempty"`
+	// +optional
+	NotBeforeTime *string `json:"notBeforeTime,omitempty"`
 
 	/* Contains distinguished name fields such as the common name, location and organization. */
-	Subject CertificateauthoritySubjectStatus `json:"subject,omitempty"`
+	// +optional
+	Subject *CertificateauthoritySubjectStatus `json:"subject,omitempty"`
 
 	/* The subject alternative name fields. */
-	SubjectAltName CertificateauthoritySubjectAltNameStatus `json:"subjectAltName,omitempty"`
+	// +optional
+	SubjectAltName *CertificateauthoritySubjectAltNameStatus `json:"subjectAltName,omitempty"`
 }
 
 type CertificateauthoritySubjectKeyIdStatus struct {
 	/* Optional. The value of this KeyId encoded in lowercase hexadecimal. This is most likely the 160 bit SHA-1 hash of the public key. */
-	KeyId string `json:"keyId,omitempty"`
+	// +optional
+	KeyId *string `json:"keyId,omitempty"`
 }
 
 type CertificateauthoritySubjectStatus struct {
 	/* The "common name" of the subject. */
-	CommonName string `json:"commonName,omitempty"`
+	// +optional
+	CommonName *string `json:"commonName,omitempty"`
 
 	/* The country code of the subject. */
-	CountryCode string `json:"countryCode,omitempty"`
+	// +optional
+	CountryCode *string `json:"countryCode,omitempty"`
 
 	/* The locality or city of the subject. */
-	Locality string `json:"locality,omitempty"`
+	// +optional
+	Locality *string `json:"locality,omitempty"`
 
 	/* The organization of the subject. */
-	Organization string `json:"organization,omitempty"`
+	// +optional
+	Organization *string `json:"organization,omitempty"`
 
 	/* The organizational_unit of the subject. */
-	OrganizationalUnit string `json:"organizationalUnit,omitempty"`
+	// +optional
+	OrganizationalUnit *string `json:"organizationalUnit,omitempty"`
 
 	/* The postal code of the subject. */
-	PostalCode string `json:"postalCode,omitempty"`
+	// +optional
+	PostalCode *string `json:"postalCode,omitempty"`
 
 	/* The province, territory, or regional state of the subject. */
-	Province string `json:"province,omitempty"`
+	// +optional
+	Province *string `json:"province,omitempty"`
 
 	/* The street address of the subject. */
-	StreetAddress string `json:"streetAddress,omitempty"`
+	// +optional
+	StreetAddress *string `json:"streetAddress,omitempty"`
 }
 
 type CertificateauthoritySubordinateConfigStatus struct {
 	/* Required. This can refer to a CertificateAuthority in the same project that was used to create a subordinate CertificateAuthority. This field is used for information and usability purposes only. The resource name is in the format `projects/* /locations/* /caPools/* /certificateAuthorities/*`. */
-	CertificateAuthority string `json:"certificateAuthority,omitempty"`
+	// +optional
+	CertificateAuthority *string `json:"certificateAuthority,omitempty"`
 
 	/* Required. Contains the PEM certificate chain for the issuers of this CertificateAuthority, but not pem certificate for this CA itself. */
-	PemIssuerChain CertificateauthorityPemIssuerChainStatus `json:"pemIssuerChain,omitempty"`
+	// +optional
+	PemIssuerChain *CertificateauthorityPemIssuerChainStatus `json:"pemIssuerChain,omitempty"`
 }
 
 type CertificateauthorityUnknownExtendedKeyUsagesStatus struct {
 	/* Required. The parts of an OID path. The most significant parts of the path come first. */
+	// +optional
 	ObjectIdPath []int `json:"objectIdPath,omitempty"`
 }
 
 type CertificateauthorityX509ConfigStatus struct {
 	/* Optional. Describes Online Certificate Status Protocol (OCSP) endpoint addresses that appear in the "Authority Information Access" extension in the certificate. */
+	// +optional
 	AiaOcspServers []string `json:"aiaOcspServers,omitempty"`
 }
 
 type CertificateauthorityX509DescriptionStatus struct {
 	/* Optional. Describes custom X.509 extensions. */
+	// +optional
 	AdditionalExtensions []CertificateauthorityAdditionalExtensionsStatus `json:"additionalExtensions,omitempty"`
 
 	/* Optional. Describes Online Certificate Status Protocol (OCSP) endpoint addresses that appear in the "Authority Information Access" extension in the certificate. */
+	// +optional
 	AiaOcspServers []string `json:"aiaOcspServers,omitempty"`
 
 	/* Optional. Describes options in this X509Parameters that are relevant in a CA certificate. */
-	CaOptions CertificateauthorityCaOptionsStatus `json:"caOptions,omitempty"`
+	// +optional
+	CaOptions *CertificateauthorityCaOptionsStatus `json:"caOptions,omitempty"`
 
 	/* Optional. Indicates the intended use for keys that correspond to a certificate. */
-	KeyUsage CertificateauthorityKeyUsageStatus `json:"keyUsage,omitempty"`
+	// +optional
+	KeyUsage *CertificateauthorityKeyUsageStatus `json:"keyUsage,omitempty"`
 
 	/* Optional. Describes the X.509 certificate policy object identifiers, per https://tools.ietf.org/html/rfc5280#section-4.2.1.4. */
+	// +optional
 	PolicyIds []CertificateauthorityPolicyIdsStatus `json:"policyIds,omitempty"`
 }
 
@@ -567,29 +640,51 @@ type PrivateCACertificateAuthorityStatus struct {
 	   PrivateCACertificateAuthority's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. URLs for accessing content published by this CA, such as the CA certificate and CRLs. */
-	AccessUrls CertificateauthorityAccessUrlsStatus `json:"accessUrls,omitempty"`
+	// +optional
+	AccessUrls *CertificateauthorityAccessUrlsStatus `json:"accessUrls,omitempty"`
+
 	/* Output only. A structured description of this CertificateAuthority's CA certificate and its issuers. Ordered as self-to-root. */
+	// +optional
 	CaCertificateDescriptions []CertificateauthorityCaCertificateDescriptionsStatus `json:"caCertificateDescriptions,omitempty"`
-	/*  */
-	Config CertificateauthorityConfigStatus `json:"config,omitempty"`
+
+	// +optional
+	Config *CertificateauthorityConfigStatus `json:"config,omitempty"`
+
 	/* Output only. The time at which this CertificateAuthority was created. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* Output only. The time at which this CertificateAuthority was soft deleted, if it is in the DELETED state. */
-	DeleteTime string `json:"deleteTime,omitempty"`
+	// +optional
+	DeleteTime *string `json:"deleteTime,omitempty"`
+
 	/* Output only. The time at which this CertificateAuthority will be permanently purged, if it is in the DELETED state. */
-	ExpireTime string `json:"expireTime,omitempty"`
+	// +optional
+	ExpireTime *string `json:"expireTime,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. This CertificateAuthority's certificate chain, including the current CertificateAuthority's certificate. Ordered such that the root issuer is the final element (consistent with RFC 5246). For a self-signed CA, this will only list the current CertificateAuthority's certificate. */
+	// +optional
 	PemCaCertificates []string `json:"pemCaCertificates,omitempty"`
+
 	/* Output only. The State for this CertificateAuthority. Possible values: ENABLED, DISABLED, STAGED, AWAITING_USER_ACTIVATION, DELETED */
-	State string `json:"state,omitempty"`
+	// +optional
+	State *string `json:"state,omitempty"`
+
 	/* Optional. If this is a subordinate CertificateAuthority, this field will be set with the subordinate configuration, which describes its issuers. This may be updated, but this CertificateAuthority must continue to validate. */
-	SubordinateConfig CertificateauthoritySubordinateConfigStatus `json:"subordinateConfig,omitempty"`
+	// +optional
+	SubordinateConfig *CertificateauthoritySubordinateConfigStatus `json:"subordinateConfig,omitempty"`
+
 	/* Output only. The CaPool.Tier of the CaPool that includes this CertificateAuthority. Possible values: ENTERPRISE, DEVOPS */
-	Tier string `json:"tier,omitempty"`
+	// +optional
+	Tier *string `json:"tier,omitempty"`
+
 	/* Output only. The time at which this CertificateAuthority was last updated. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

@@ -165,35 +165,43 @@ type InstanceMaintenanceScheduleStatus struct {
 	/* Output only. The end time of any upcoming scheduled maintenance for this instance.
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
 	resolution and up to nine fractional digits. */
-	EndTime string `json:"endTime,omitempty"`
+	// +optional
+	EndTime *string `json:"endTime,omitempty"`
 
 	/* Output only. The deadline that the maintenance schedule start time
 	can not go beyond, including reschedule.
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
 	resolution and up to nine fractional digits. */
-	ScheduleDeadlineTime string `json:"scheduleDeadlineTime,omitempty"`
+	// +optional
+	ScheduleDeadlineTime *string `json:"scheduleDeadlineTime,omitempty"`
 
 	/* Output only. The start time of any upcoming scheduled maintenance for this instance.
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
 	resolution and up to nine fractional digits. */
-	StartTime string `json:"startTime,omitempty"`
+	// +optional
+	StartTime *string `json:"startTime,omitempty"`
 }
 
 type InstanceMemcacheNodesStatus struct {
 	/* Hostname or IP address of the Memcached node used by the clients to connect to the Memcached server on this node. */
-	Host string `json:"host,omitempty"`
+	// +optional
+	Host *string `json:"host,omitempty"`
 
 	/* Identifier of the Memcached node. The node id does not include project or location like the Memcached instance name. */
-	NodeId string `json:"nodeId,omitempty"`
+	// +optional
+	NodeId *string `json:"nodeId,omitempty"`
 
 	/* The port number of the Memcached server on this node. */
-	Port int `json:"port,omitempty"`
+	// +optional
+	Port *int `json:"port,omitempty"`
 
 	/* Current state of the Memcached node. */
-	State string `json:"state,omitempty"`
+	// +optional
+	State *string `json:"state,omitempty"`
 
 	/* Location (GCP Zone) for the Memcached node. */
-	Zone string `json:"zone,omitempty"`
+	// +optional
+	Zone *string `json:"zone,omitempty"`
 }
 
 type MemcacheInstanceStatus struct {
@@ -201,17 +209,28 @@ type MemcacheInstanceStatus struct {
 	   MemcacheInstance's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* Endpoint for Discovery API. */
-	DiscoveryEndpoint string `json:"discoveryEndpoint,omitempty"`
+	// +optional
+	DiscoveryEndpoint *string `json:"discoveryEndpoint,omitempty"`
+
 	/* Output only. Published maintenance schedule. */
+	// +optional
 	MaintenanceSchedule []InstanceMaintenanceScheduleStatus `json:"maintenanceSchedule,omitempty"`
+
 	/* The full version of memcached server running on this instance. */
-	MemcacheFullVersion string `json:"memcacheFullVersion,omitempty"`
+	// +optional
+	MemcacheFullVersion *string `json:"memcacheFullVersion,omitempty"`
+
 	/* Additional information about the instance state, if available. */
+	// +optional
 	MemcacheNodes []InstanceMemcacheNodesStatus `json:"memcacheNodes,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

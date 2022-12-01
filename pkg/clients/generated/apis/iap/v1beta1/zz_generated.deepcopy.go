@@ -129,6 +129,16 @@ func (in *IAPBrandStatus) DeepCopyInto(out *IAPBrandStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.OrgInternalOnly != nil {
+		in, out := &in.OrgInternalOnly, &out.OrgInternalOnly
+		*out = new(bool)
+		**out = **in
+	}
 	return
 }
 
@@ -237,6 +247,16 @@ func (in *IAPIdentityAwareProxyClientStatus) DeepCopyInto(out *IAPIdentityAwareP
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.Secret != nil {
+		in, out := &in.Secret, &out.Secret
+		*out = new(string)
+		**out = **in
 	}
 	return
 }

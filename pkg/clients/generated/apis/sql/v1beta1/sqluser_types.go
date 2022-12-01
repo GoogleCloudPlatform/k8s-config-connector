@@ -62,7 +62,6 @@ type UserPasswordPolicy struct {
 	// +optional
 	PasswordExpirationDuration *string `json:"passwordExpirationDuration,omitempty"`
 
-	/*  */
 	// +optional
 	Status []UserStatus `json:"status,omitempty"`
 }
@@ -88,15 +87,13 @@ type SQLUserSpec struct {
 	// +optional
 	Host *string `json:"host,omitempty"`
 
-	/*  */
 	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
 
 	/* The password for the user. Can be updated. For Postgres instances this is a Required field, unless type is set to
-	   either CLOUD_IAM_USER or CLOUD_IAM_SERVICE_ACCOUNT. */
+	either CLOUD_IAM_USER or CLOUD_IAM_SERVICE_ACCOUNT. */
 	// +optional
 	Password *UserPassword `json:"password,omitempty"`
 
-	/*  */
 	// +optional
 	PasswordPolicy *UserPasswordPolicy `json:"passwordPolicy,omitempty"`
 
@@ -105,16 +102,18 @@ type SQLUserSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Immutable. The user type. It determines the method to authenticate the user during login.
-	   The default is the database's built-in user type. Flags include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT". */
+	The default is the database's built-in user type. Flags include "BUILT_IN", "CLOUD_IAM_USER", or "CLOUD_IAM_SERVICE_ACCOUNT". */
 	// +optional
 	Type *string `json:"type,omitempty"`
 }
 
 type UserSqlServerUserDetailsStatus struct {
 	/* If the user has been disabled. */
-	Disabled bool `json:"disabled,omitempty"`
+	// +optional
+	Disabled *bool `json:"disabled,omitempty"`
 
 	/* The server roles for this user in the database. */
+	// +optional
 	ServerRoles []string `json:"serverRoles,omitempty"`
 }
 
@@ -123,8 +122,10 @@ type SQLUserStatus struct {
 	   SQLUser's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/*  */
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	// +optional
 	SqlServerUserDetails []UserSqlServerUserDetailsStatus `json:"sqlServerUserDetails,omitempty"`
 }
 

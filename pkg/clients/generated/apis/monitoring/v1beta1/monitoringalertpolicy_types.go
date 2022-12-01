@@ -542,7 +542,6 @@ type MonitoringAlertPolicySpec struct {
 	// +optional
 	Enabled *bool `json:"enabled,omitempty"`
 
-	/*  */
 	// +optional
 	NotificationChannels []v1alpha1.ResourceRef `json:"notificationChannels,omitempty"`
 
@@ -553,10 +552,12 @@ type MonitoringAlertPolicySpec struct {
 
 type AlertpolicyCreationRecordStatus struct {
 	/* When the change occurred. */
-	MutateTime string `json:"mutateTime,omitempty"`
+	// +optional
+	MutateTime *string `json:"mutateTime,omitempty"`
 
 	/* The email address of the user making the change. */
-	MutatedBy string `json:"mutatedBy,omitempty"`
+	// +optional
+	MutatedBy *string `json:"mutatedBy,omitempty"`
 }
 
 type MonitoringAlertPolicyStatus struct {
@@ -566,12 +567,17 @@ type MonitoringAlertPolicyStatus struct {
 	/* A read-only record of the creation of the alerting policy.
 	If provided in a call to create or update, this field will
 	be ignored. */
+	// +optional
 	CreationRecord []AlertpolicyCreationRecordStatus `json:"creationRecord,omitempty"`
+
 	/* The unique resource name for this policy.
 	Its syntax is: projects/[PROJECT_ID]/alertPolicies/[ALERT_POLICY_ID]. */
-	Name string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

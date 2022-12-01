@@ -91,7 +91,8 @@ type BinaryAuthorizationAttestorSpec struct {
 
 type AttestorUserOwnedDrydockNoteStatus struct {
 	/* Output only. This field will contain the service account email address that this Attestor will use as the principal when querying Container Analysis. Attestor administrators must grant this service account the IAM role needed to read attestations from the in Container Analysis (`containeranalysis.notes.occurrences.viewer`). This email address is fixed for the lifetime of the Attestor, but callers should not make any other assumptions about the service account email; future versions may use an email based on a different naming pattern. */
-	DelegationServiceAccountEmail string `json:"delegationServiceAccountEmail,omitempty"`
+	// +optional
+	DelegationServiceAccountEmail *string `json:"delegationServiceAccountEmail,omitempty"`
 }
 
 type BinaryAuthorizationAttestorStatus struct {
@@ -99,11 +100,15 @@ type BinaryAuthorizationAttestorStatus struct {
 	   BinaryAuthorizationAttestor's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. Time when the attestor was last updated. */
-	UpdateTime string `json:"updateTime,omitempty"`
-	/*  */
-	UserOwnedDrydockNote AttestorUserOwnedDrydockNoteStatus `json:"userOwnedDrydockNote,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// +optional
+	UserOwnedDrydockNote *AttestorUserOwnedDrydockNoteStatus `json:"userOwnedDrydockNote,omitempty"`
 }
 
 // +genclient

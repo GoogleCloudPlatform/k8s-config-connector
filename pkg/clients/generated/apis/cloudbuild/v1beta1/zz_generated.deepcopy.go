@@ -211,6 +211,21 @@ func (in *CloudBuildTriggerStatus) DeepCopyInto(out *CloudBuildTriggerStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreateTime != nil {
+		in, out := &in.CreateTime, &out.CreateTime
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.TriggerId != nil {
+		in, out := &in.TriggerId, &out.TriggerId
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 

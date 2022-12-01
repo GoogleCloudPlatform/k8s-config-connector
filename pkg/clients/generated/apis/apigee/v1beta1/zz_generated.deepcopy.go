@@ -137,6 +137,26 @@ func (in *ApigeeEnvironmentStatus) DeepCopyInto(out *ApigeeEnvironmentStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CreatedAt != nil {
+		in, out := &in.CreatedAt, &out.CreatedAt
+		*out = new(int)
+		**out = **in
+	}
+	if in.LastModifiedAt != nil {
+		in, out := &in.LastModifiedAt, &out.LastModifiedAt
+		*out = new(int)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.State != nil {
+		in, out := &in.State, &out.State
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -273,10 +293,55 @@ func (in *ApigeeOrganizationStatus) DeepCopyInto(out *ApigeeOrganizationStatus) 
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.BillingType != nil {
+		in, out := &in.BillingType, &out.BillingType
+		*out = new(string)
+		**out = **in
+	}
+	if in.CaCertificate != nil {
+		in, out := &in.CaCertificate, &out.CaCertificate
+		*out = new(string)
+		**out = **in
+	}
+	if in.CreatedAt != nil {
+		in, out := &in.CreatedAt, &out.CreatedAt
+		*out = new(int)
+		**out = **in
+	}
 	if in.Environments != nil {
 		in, out := &in.Environments, &out.Environments
 		*out = make([]string, len(*in))
 		copy(*out, *in)
+	}
+	if in.ExpiresAt != nil {
+		in, out := &in.ExpiresAt, &out.ExpiresAt
+		*out = new(int)
+		**out = **in
+	}
+	if in.LastModifiedAt != nil {
+		in, out := &in.LastModifiedAt, &out.LastModifiedAt
+		*out = new(int)
+		**out = **in
+	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.ProjectId != nil {
+		in, out := &in.ProjectId, &out.ProjectId
+		*out = new(string)
+		**out = **in
+	}
+	if in.State != nil {
+		in, out := &in.State, &out.State
+		*out = new(string)
+		**out = **in
+	}
+	if in.SubscriptionType != nil {
+		in, out := &in.SubscriptionType, &out.SubscriptionType
+		*out = new(string)
+		**out = **in
 	}
 	return
 }

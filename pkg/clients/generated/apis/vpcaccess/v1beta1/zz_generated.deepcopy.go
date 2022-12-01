@@ -191,6 +191,16 @@ func (in *VPCAccessConnectorStatus) DeepCopyInto(out *VPCAccessConnectorStatus) 
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
+	if in.ObservedGeneration != nil {
+		in, out := &in.ObservedGeneration, &out.ObservedGeneration
+		*out = new(int)
+		**out = **in
+	}
+	if in.State != nil {
+		in, out := &in.State, &out.State
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 

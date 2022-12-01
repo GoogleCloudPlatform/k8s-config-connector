@@ -286,27 +286,34 @@ type RedisInstanceSpec struct {
 
 type InstanceNodesStatus struct {
 	/* Node identifying string. e.g. 'node-0', 'node-1'. */
-	Id string `json:"id,omitempty"`
+	// +optional
+	Id *string `json:"id,omitempty"`
 
 	/* Location of the node. */
-	Zone string `json:"zone,omitempty"`
+	// +optional
+	Zone *string `json:"zone,omitempty"`
 }
 
 type InstanceServerCaCertsStatus struct {
 	/* The certificate data in PEM format. */
-	Cert string `json:"cert,omitempty"`
+	// +optional
+	Cert *string `json:"cert,omitempty"`
 
 	/* The time when the certificate was created. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
 
 	/* The time when the certificate expires. */
-	ExpireTime string `json:"expireTime,omitempty"`
+	// +optional
+	ExpireTime *string `json:"expireTime,omitempty"`
 
 	/* Serial number, as extracted from the certificate. */
-	SerialNumber string `json:"serialNumber,omitempty"`
+	// +optional
+	SerialNumber *string `json:"serialNumber,omitempty"`
 
 	/* Sha1 Fingerprint of the certificate. */
-	Sha1Fingerprint string `json:"sha1Fingerprint,omitempty"`
+	// +optional
+	Sha1Fingerprint *string `json:"sha1Fingerprint,omitempty"`
 }
 
 type RedisInstanceStatus struct {
@@ -315,35 +322,54 @@ type RedisInstanceStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The time the instance was created in RFC3339 UTC "Zulu" format,
 	accurate to nanoseconds. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* The current zone where the Redis endpoint is placed.
 	For Basic Tier instances, this will always be the same as the
 	[locationId] provided by the user at creation time. For Standard Tier
 	instances, this can be either [locationId] or [alternativeLocationId]
 	and can change after a failover event. */
-	CurrentLocationId string `json:"currentLocationId,omitempty"`
+	// +optional
+	CurrentLocationId *string `json:"currentLocationId,omitempty"`
+
 	/* Hostname or IP address of the exposed Redis endpoint used by clients
 	to connect to the service. */
-	Host string `json:"host,omitempty"`
+	// +optional
+	Host *string `json:"host,omitempty"`
+
 	/* Output only. Info per node. */
+	// +optional
 	Nodes []InstanceNodesStatus `json:"nodes,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. Cloud IAM identity used by import / export operations
 	to transfer data to/from Cloud Storage. Format is "serviceAccount:".
 	The value may change over time for a given instance so should be
 	checked before each import/export operation. */
-	PersistenceIamIdentity string `json:"persistenceIamIdentity,omitempty"`
+	// +optional
+	PersistenceIamIdentity *string `json:"persistenceIamIdentity,omitempty"`
+
 	/* The port number of the exposed Redis endpoint. */
-	Port int `json:"port,omitempty"`
+	// +optional
+	Port *int `json:"port,omitempty"`
+
 	/* Output only. Hostname or IP address of the exposed readonly Redis endpoint. Standard tier only.
 	Targets all healthy replica nodes in instance. Replication is asynchronous and replica nodes
 	will exhibit some lag behind the primary. Write requests must target 'host'. */
-	ReadEndpoint string `json:"readEndpoint,omitempty"`
+	// +optional
+	ReadEndpoint *string `json:"readEndpoint,omitempty"`
+
 	/* Output only. The port number of the exposed readonly redis endpoint. Standard tier only.
 	Write requests should target 'port'. */
-	ReadEndpointPort int `json:"readEndpointPort,omitempty"`
+	// +optional
+	ReadEndpointPort *int `json:"readEndpointPort,omitempty"`
+
 	/* List of server CA certificates for the instance. */
+	// +optional
 	ServerCaCerts []InstanceServerCaCertsStatus `json:"serverCaCerts,omitempty"`
 }
 

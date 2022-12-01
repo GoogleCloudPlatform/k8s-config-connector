@@ -392,21 +392,17 @@ type BackendserviceFailoverPolicy struct {
 }
 
 type BackendserviceGroup struct {
-	/*  */
 	// +optional
 	InstanceGroupRef *v1alpha1.ResourceRef `json:"instanceGroupRef,omitempty"`
 
-	/*  */
 	// +optional
 	NetworkEndpointGroupRef *v1alpha1.ResourceRef `json:"networkEndpointGroupRef,omitempty"`
 }
 
 type BackendserviceHealthChecks struct {
-	/*  */
 	// +optional
 	HealthCheckRef *v1alpha1.ResourceRef `json:"healthCheckRef,omitempty"`
 
-	/*  */
 	// +optional
 	HttpHealthCheckRef *v1alpha1.ResourceRef `json:"httpHealthCheckRef,omitempty"`
 }
@@ -673,7 +669,6 @@ type ComputeBackendServiceSpec struct {
 	// +optional
 	FailoverPolicy *BackendserviceFailoverPolicy `json:"failoverPolicy,omitempty"`
 
-	/*  */
 	// +optional
 	HealthChecks []BackendserviceHealthChecks `json:"healthChecks,omitempty"`
 
@@ -692,34 +687,34 @@ type ComputeBackendServiceSpec struct {
 	The possible values are:
 
 	* 'ROUND_ROBIN': This is a simple policy in which each healthy backend
-	                 is selected in round robin order.
+	is selected in round robin order.
 
 	* 'LEAST_REQUEST': An O(1) algorithm which selects two random healthy
-	                   hosts and picks the host which has fewer active requests.
+	hosts and picks the host which has fewer active requests.
 
 	* 'RING_HASH': The ring/modulo hash load balancer implements consistent
-	               hashing to backends. The algorithm has the property that the
-	               addition/removal of a host from a set of N hosts only affects
-	               1/N of the requests.
+	hashing to backends. The algorithm has the property that the
+	addition/removal of a host from a set of N hosts only affects
+	1/N of the requests.
 
 	* 'RANDOM': The load balancer selects a random healthy host.
 
 	* 'ORIGINAL_DESTINATION': Backend host is selected based on the client
-	                          connection metadata, i.e., connections are opened
-	                          to the same address as the destination address of
-	                          the incoming connection before the connection
-	                          was redirected to the load balancer.
+	connection metadata, i.e., connections are opened
+	to the same address as the destination address of
+	the incoming connection before the connection
+	was redirected to the load balancer.
 
 	* 'MAGLEV': used as a drop in replacement for the ring hash load balancer.
-	            Maglev is not as stable as ring hash but has faster table lookup
-	            build times and host selection times. For more information about
-	            Maglev, refer to https://ai.google/research/pubs/pub44824
+	Maglev is not as stable as ring hash but has faster table lookup
+	build times and host selection times. For more information about
+	Maglev, refer to https://ai.google/research/pubs/pub44824
 
 
 	This field is applicable to either:
 
 	* A regional backend service with the service_protocol set to HTTP, HTTPS, or HTTP2,
-	  and loadBalancingScheme set to INTERNAL_MANAGED.
+	and loadBalancingScheme set to INTERNAL_MANAGED.
 	* A global backend service with the load_balancing_scheme set to INTERNAL_SELF_MANAGED.
 
 
@@ -799,16 +794,24 @@ type ComputeBackendServiceStatus struct {
 	   ComputeBackendService's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
-	CreationTimestamp string `json:"creationTimestamp,omitempty"`
+	// +optional
+	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
+
 	/* Fingerprint of this resource. A hash of the contents stored in this
 	object. This field is used in optimistic locking. */
-	Fingerprint string `json:"fingerprint,omitempty"`
+	// +optional
+	Fingerprint *string `json:"fingerprint,omitempty"`
+
 	/* The unique identifier for the resource. This identifier is defined by the server. */
-	GeneratedId int `json:"generatedId,omitempty"`
+	// +optional
+	GeneratedId *int `json:"generatedId,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
-	/*  */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 }
 
 // +genclient

@@ -36,13 +36,11 @@ import (
 )
 
 type TargetpoolHealthChecks struct {
-	/*  */
 	// +optional
 	HttpHealthCheckRef *v1alpha1.ResourceRef `json:"httpHealthCheckRef,omitempty"`
 }
 
 type ComputeTargetPoolSpec struct {
-	/*  */
 	// +optional
 	BackupTargetPoolRef *v1alpha1.ResourceRef `json:"backupTargetPoolRef,omitempty"`
 
@@ -54,11 +52,9 @@ type ComputeTargetPoolSpec struct {
 	// +optional
 	FailoverRatio *float64 `json:"failoverRatio,omitempty"`
 
-	/*  */
 	// +optional
 	HealthChecks []TargetpoolHealthChecks `json:"healthChecks,omitempty"`
 
-	/*  */
 	// +optional
 	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
 
@@ -79,9 +75,12 @@ type ComputeTargetPoolStatus struct {
 	   ComputeTargetPool's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* The URI of the created resource. */
-	SelfLink string `json:"selfLink,omitempty"`
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
 }
 
 // +genclient

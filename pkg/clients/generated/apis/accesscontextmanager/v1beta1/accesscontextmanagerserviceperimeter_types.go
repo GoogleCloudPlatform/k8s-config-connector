@@ -36,7 +36,6 @@ import (
 )
 
 type ServiceperimeterEgressFrom struct {
-	/*  */
 	// +optional
 	Identities []ServiceperimeterIdentities `json:"identities,omitempty"`
 
@@ -70,23 +69,19 @@ type ServiceperimeterEgressTo struct {
 	// +optional
 	Operations []ServiceperimeterOperations `json:"operations,omitempty"`
 
-	/*  */
 	// +optional
 	Resources []ServiceperimeterResources `json:"resources,omitempty"`
 }
 
 type ServiceperimeterIdentities struct {
-	/*  */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
-	/*  */
 	// +optional
 	User *string `json:"user,omitempty"`
 }
 
 type ServiceperimeterIngressFrom struct {
-	/*  */
 	// +optional
 	Identities []ServiceperimeterIdentities `json:"identities,omitempty"`
 
@@ -119,7 +114,6 @@ type ServiceperimeterIngressTo struct {
 	// +optional
 	Operations []ServiceperimeterOperations `json:"operations,omitempty"`
 
-	/*  */
 	// +optional
 	Resources []ServiceperimeterResources `json:"resources,omitempty"`
 }
@@ -153,7 +147,6 @@ type ServiceperimeterOperations struct {
 }
 
 type ServiceperimeterResources struct {
-	/*  */
 	// +optional
 	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
@@ -179,7 +172,6 @@ type ServiceperimeterSources struct {
 }
 
 type ServiceperimeterSpec struct {
-	/*  */
 	// +optional
 	AccessLevels []v1alpha1.ResourceRef `json:"accessLevels,omitempty"`
 
@@ -197,7 +189,6 @@ type ServiceperimeterSpec struct {
 	// +optional
 	IngressPolicies []ServiceperimeterIngressPolicies `json:"ingressPolicies,omitempty"`
 
-	/*  */
 	// +optional
 	Resources []ServiceperimeterResources `json:"resources,omitempty"`
 
@@ -216,7 +207,6 @@ type ServiceperimeterSpec struct {
 }
 
 type ServiceperimeterStatus struct {
-	/*  */
 	// +optional
 	AccessLevels []v1alpha1.ResourceRef `json:"accessLevels,omitempty"`
 
@@ -234,7 +224,6 @@ type ServiceperimeterStatus struct {
 	// +optional
 	IngressPolicies []ServiceperimeterIngressPolicies `json:"ingressPolicies,omitempty"`
 
-	/*  */
 	// +optional
 	Resources []ServiceperimeterResources `json:"resources,omitempty"`
 
@@ -331,11 +320,16 @@ type AccessContextManagerServicePerimeterStatus struct {
 	   AccessContextManagerServicePerimeter's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Time the AccessPolicy was created in UTC. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Time the AccessPolicy was updated in UTC. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

@@ -52,7 +52,6 @@ type MembershipEndpoint struct {
 }
 
 type MembershipGkeCluster struct {
-	/*  */
 	// +optional
 	ResourceRef *v1alpha1.ResourceRef `json:"resourceRef,omitempty"`
 }
@@ -108,91 +107,122 @@ type GKEHubMembershipSpec struct {
 
 type MembershipAuthorityStatus struct {
 	/* Output only. An identity provider that reflects the `issuer` in the workload identity pool. */
-	IdentityProvider string `json:"identityProvider,omitempty"`
+	// +optional
+	IdentityProvider *string `json:"identityProvider,omitempty"`
 
 	/* Output only. The name of the workload identity pool in which `issuer` will be recognized. There is a single Workload Identity Pool per Hub that is shared between all Memberships that belong to that Hub. For a Hub hosted in: {PROJECT_ID}, the workload pool format is `{PROJECT_ID}.hub.id.goog`, although this is subject to change in newer versions of this API. */
-	WorkloadIdentityPool string `json:"workloadIdentityPool,omitempty"`
+	// +optional
+	WorkloadIdentityPool *string `json:"workloadIdentityPool,omitempty"`
 }
 
 type MembershipConnectResourcesStatus struct {
 	/* Whether the resource provided in the manifest is `cluster_scoped`. If unset, the manifest is assumed to be namespace scoped. This field is used for REST mapping when applying the resource in a cluster. */
-	ClusterScoped bool `json:"clusterScoped,omitempty"`
+	// +optional
+	ClusterScoped *bool `json:"clusterScoped,omitempty"`
 
 	/* YAML manifest of the resource. */
-	Manifest string `json:"manifest,omitempty"`
+	// +optional
+	Manifest *string `json:"manifest,omitempty"`
 }
 
 type MembershipEndpointStatus struct {
 	/* Output only. Useful Kubernetes-specific metadata. */
-	KubernetesMetadata MembershipKubernetesMetadataStatus `json:"kubernetesMetadata,omitempty"`
+	// +optional
+	KubernetesMetadata *MembershipKubernetesMetadataStatus `json:"kubernetesMetadata,omitempty"`
 
-	/*  */
-	KubernetesResource MembershipKubernetesResourceStatus `json:"kubernetesResource,omitempty"`
+	// +optional
+	KubernetesResource *MembershipKubernetesResourceStatus `json:"kubernetesResource,omitempty"`
 }
 
 type MembershipKubernetesMetadataStatus struct {
 	/* Output only. Kubernetes API server version string as reported by `/version`. */
-	KubernetesApiServerVersion string `json:"kubernetesApiServerVersion,omitempty"`
+	// +optional
+	KubernetesApiServerVersion *string `json:"kubernetesApiServerVersion,omitempty"`
 
 	/* Output only. The total memory capacity as reported by the sum of all Kubernetes nodes resources, defined in MB. */
-	MemoryMb int `json:"memoryMb,omitempty"`
+	// +optional
+	MemoryMb *int `json:"memoryMb,omitempty"`
 
 	/* Output only. Node count as reported by Kubernetes nodes resources. */
-	NodeCount int `json:"nodeCount,omitempty"`
+	// +optional
+	NodeCount *int `json:"nodeCount,omitempty"`
 
 	/* Output only. Node providerID as reported by the first node in the list of nodes on the Kubernetes endpoint. On Kubernetes platforms that support zero-node clusters (like GKE-on-GCP), the node_count will be zero and the node_provider_id will be empty. */
-	NodeProviderId string `json:"nodeProviderId,omitempty"`
+	// +optional
+	NodeProviderId *string `json:"nodeProviderId,omitempty"`
 
 	/* Output only. The time at which these details were last updated. This update_time is different from the Membership-level update_time since EndpointDetails are updated internally for API consumers. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 
 	/* Output only. vCPU count as reported by Kubernetes nodes resources. */
-	VcpuCount int `json:"vcpuCount,omitempty"`
+	// +optional
+	VcpuCount *int `json:"vcpuCount,omitempty"`
 }
 
 type MembershipKubernetesResourceStatus struct {
 	/* Output only. The Kubernetes resources for installing the GKE Connect agent This field is only populated in the Membership returned from a successful long-running operation from CreateMembership or UpdateMembership. It is not populated during normal GetMembership or ListMemberships requests. To get the resource manifest after the initial registration, the caller should make a UpdateMembership call with an empty field mask. */
+	// +optional
 	ConnectResources []MembershipConnectResourcesStatus `json:"connectResources,omitempty"`
 
 	/* Output only. Additional Kubernetes resources that need to be applied to the cluster after Membership creation, and after every update. This field is only populated in the Membership returned from a successful long-running operation from CreateMembership or UpdateMembership. It is not populated during normal GetMembership or ListMemberships requests. To get the resource manifest after the initial registration, the caller should make a UpdateMembership call with an empty field mask. */
+	// +optional
 	MembershipResources []MembershipMembershipResourcesStatus `json:"membershipResources,omitempty"`
 }
 
 type MembershipMembershipResourcesStatus struct {
 	/* Whether the resource provided in the manifest is `cluster_scoped`. If unset, the manifest is assumed to be namespace scoped. This field is used for REST mapping when applying the resource in a cluster. */
-	ClusterScoped bool `json:"clusterScoped,omitempty"`
+	// +optional
+	ClusterScoped *bool `json:"clusterScoped,omitempty"`
 
 	/* YAML manifest of the resource. */
-	Manifest string `json:"manifest,omitempty"`
+	// +optional
+	Manifest *string `json:"manifest,omitempty"`
 }
 
 type MembershipStateStatus struct {
 	/* Output only. The current state of the Membership resource. Possible values: CODE_UNSPECIFIED, CREATING, READY, DELETING, UPDATING, SERVICE_UPDATING */
-	Code string `json:"code,omitempty"`
+	// +optional
+	Code *string `json:"code,omitempty"`
 }
 
 type GKEHubMembershipStatus struct {
 	/* Conditions represent the latest available observations of the
 	   GKEHubMembership's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/*  */
-	Authority MembershipAuthorityStatus `json:"authority,omitempty"`
+	// +optional
+	Authority *MembershipAuthorityStatus `json:"authority,omitempty"`
+
 	/* Output only. When the Membership was created. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* Output only. When the Membership was deleted. */
-	DeleteTime string `json:"deleteTime,omitempty"`
-	/*  */
-	Endpoint MembershipEndpointStatus `json:"endpoint,omitempty"`
+	// +optional
+	DeleteTime *string `json:"deleteTime,omitempty"`
+
+	// +optional
+	Endpoint *MembershipEndpointStatus `json:"endpoint,omitempty"`
+
 	/* Output only. For clusters using Connect, the timestamp of the most recent connection established with Google Cloud. This time is updated every several minutes, not continuously. For clusters that do not use GKE Connect, or that have never connected successfully, this field will be unset. */
-	LastConnectionTime string `json:"lastConnectionTime,omitempty"`
+	// +optional
+	LastConnectionTime *string `json:"lastConnectionTime,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. State of the Membership resource. */
-	State MembershipStateStatus `json:"state,omitempty"`
+	// +optional
+	State *MembershipStateStatus `json:"state,omitempty"`
+
 	/* Output only. Google-generated UUID for this resource. This is unique across all Membership resources. If a Membership resource is deleted and another resource with the same name is created, it gets a different unique_id. */
-	UniqueId string `json:"uniqueId,omitempty"`
+	// +optional
+	UniqueId *string `json:"uniqueId,omitempty"`
+
 	/* Output only. When the Membership was last updated. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

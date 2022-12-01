@@ -244,7 +244,6 @@ type InspecttemplateRules struct {
 	// +optional
 	ExclusionRule *InspecttemplateExclusionRule `json:"exclusionRule,omitempty"`
 
-	/*  */
 	// +optional
 	HotwordRule *InspecttemplateHotwordRule `json:"hotwordRule,omitempty"`
 }
@@ -254,7 +253,6 @@ type InspecttemplateStoredType struct {
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/*  */
 	// +optional
 	NameRef *v1alpha1.ResourceRef `json:"nameRef,omitempty"`
 }
@@ -303,13 +301,20 @@ type DLPInspectTemplateStatus struct {
 	   DLPInspectTemplate's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The creation timestamp of an inspectTemplate. */
-	CreateTime string `json:"createTime,omitempty"`
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* Output only. The geographic location where this resource is stored. */
-	LocationId string `json:"locationId,omitempty"`
+	// +optional
+	LocationId *string `json:"locationId,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	/* Output only. The last update timestamp of an inspectTemplate. */
-	UpdateTime string `json:"updateTime,omitempty"`
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

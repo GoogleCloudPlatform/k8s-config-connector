@@ -67,7 +67,7 @@ type JobAwsS3DataSource struct {
 }
 
 type JobAzureBlobStorageDataSource struct {
-	/*  Credentials used to authenticate API requests to Azure. */
+	/* Credentials used to authenticate API requests to Azure. */
 	AzureCredentials JobAzureCredentials `json:"azureCredentials"`
 
 	/* The container to transfer from the Azure Storage account. */
@@ -87,7 +87,6 @@ type JobAzureCredentials struct {
 }
 
 type JobGcsDataSink struct {
-	/*  */
 	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
 
 	/* Google Cloud Storage path in bucket to transfer. */
@@ -96,7 +95,6 @@ type JobGcsDataSink struct {
 }
 
 type JobGcsDataSource struct {
-	/*  */
 	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
 
 	/* Google Cloud Storage path in bucket to transfer. */
@@ -313,15 +311,24 @@ type StorageTransferJobStatus struct {
 	   StorageTransferJob's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* When the Transfer Job was created. */
-	CreationTime string `json:"creationTime,omitempty"`
+	// +optional
+	CreationTime *string `json:"creationTime,omitempty"`
+
 	/* When the Transfer Job was deleted. */
-	DeletionTime string `json:"deletionTime,omitempty"`
+	// +optional
+	DeletionTime *string `json:"deletionTime,omitempty"`
+
 	/* When the Transfer Job was last modified. */
-	LastModificationTime string `json:"lastModificationTime,omitempty"`
+	// +optional
+	LastModificationTime *string `json:"lastModificationTime,omitempty"`
+
 	/* The name of the Transfer Job. */
-	Name string `json:"name,omitempty"`
+	// +optional
+	Name *string `json:"name,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	ObservedGeneration int `json:"observedGeneration,omitempty"`
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 }
 
 // +genclient
