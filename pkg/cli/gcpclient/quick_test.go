@@ -98,7 +98,7 @@ func newDependencies(t *testing.T) (gcpclient.Client, *servicemappingloader.Serv
 		return nil, nil, nil, nil, fmt.Errorf("error loading service mappings: %v", err)
 	}
 	config := tfprovider.Config{
-		AccessToken: "", // <- insert a valid oauth2 token here
+		GCPAccessToken: "", // <- insert a valid oauth2 token here
 	}
 	tfProvider, err := tfprovider.New(ctx, config)
 	if err != nil {

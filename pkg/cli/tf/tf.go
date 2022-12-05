@@ -22,11 +22,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func NewProvider(oauth2Token string) (*schema.Provider, error) {
-	ctx := context.TODO()
-
+func NewProvider(ctx context.Context, gcpAccessToken string) (*schema.Provider, error) {
 	config := tfprovider.Config{
-		AccessToken: oauth2Token,
+		GCPAccessToken: gcpAccessToken,
 	}
 	p, err := tfprovider.New(ctx, config)
 	if err != nil {

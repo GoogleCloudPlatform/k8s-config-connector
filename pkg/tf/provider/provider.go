@@ -30,9 +30,9 @@ import (
 
 // Config holds additional configuration for the google TF provider
 type Config struct {
-	// AccessToken is the access_token to be passed to the TF provider (if non-empty),
+	// GCPAccessToken is the access_token to be passed to the TF provider (if non-empty),
 	// allowing use of a non-default OAuth2 identity
-	AccessToken string
+	GCPAccessToken string
 
 	// Scopes is the list of OAuth2 scopes to be passed to the TF provider,
 	// allowing use of non-default OAuth2 scopes. If none are specified, then
@@ -64,7 +64,7 @@ func UnitTestConfig() Config {
 			// read Google Drive files.
 			"https://www.googleapis.com/auth/drive.readonly",
 		),
-		AccessToken: "dummyToken",
+		GCPAccessToken: "dummyToken",
 	}
 }
 
@@ -83,8 +83,8 @@ func NewConfig() Config {
 func New(ctx context.Context, config Config) (*tfschema.Provider, error) {
 	googleProvider := provider.Provider()
 	cfgMap := map[string]interface{}{}
-	if config.AccessToken != "" {
-		cfgMap["access_token"] = config.AccessToken
+	if config.GCPAccessToken != "" {
+		cfgMap["access_token"] = config.GCPAccessToken
 	}
 
 	cfgMap["scopes"] = config.Scopes
