@@ -21,6 +21,7 @@ cloud.google.com/go/compute/metadata
 # cloud.google.com/go/iam v0.13.0
 ## explicit; go 1.19
 cloud.google.com/go/iam
+cloud.google.com/go/iam/admin/apiv1/adminpb
 cloud.google.com/go/iam/apiv1/iampb
 # cloud.google.com/go/longrunning v0.4.1
 ## explicit; go 1.19
@@ -50,6 +51,8 @@ github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/api
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/networkservices/v1
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/secretmanager/v1
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/security/privateca/v1
+github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/iam/admin/v1
+github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockiam
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecretmanager
@@ -1257,6 +1260,7 @@ google.golang.org/genproto/googleapis/cloud/networkservices/v1
 google.golang.org/genproto/googleapis/cloud/secretmanager/v1
 google.golang.org/genproto/googleapis/cloud/security/privateca/v1
 google.golang.org/genproto/googleapis/devtools/cloudprofiler/v2
+google.golang.org/genproto/googleapis/iam/admin/v1
 google.golang.org/genproto/googleapis/iam/v1
 google.golang.org/genproto/googleapis/longrunning
 google.golang.org/genproto/googleapis/rpc/code
