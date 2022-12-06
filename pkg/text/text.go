@@ -149,3 +149,8 @@ func IsPascalCase(s string) bool {
 	sampleRegex := regexp.MustCompile("^[A-Z][a-z]*([A-Z][a-z]*)*$")
 	return sampleRegex.Match([]byte(s))
 }
+
+func RemoveSpecialCharacters(s string) string {
+	specialCharRegex := regexp.MustCompile(`[^0-9A-Za-z ]+`)
+	return specialCharRegex.ReplaceAllString(s, "")
+}

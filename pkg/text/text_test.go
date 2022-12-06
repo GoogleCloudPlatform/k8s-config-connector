@@ -107,3 +107,31 @@ func TestIsPascalCase(t *testing.T) {
 		})
 	}
 }
+
+func TestRemoveSpecialCharacters(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected string
+	}{
+		{
+			input:    "Config Connector 123",
+			expected: "Config Connector 123",
+		},
+		{
+			input:    "project_id",
+			expected: "projectid",
+		},
+		{
+			input:    "${uniqueId}",
+			expected: "uniqueId",
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.input, func(t *testing.T) {
+			output := RemoveSpecialCharacters(tc.input)
+			if tc.expected != output {
+				t.Errorf("error checking if the input is pascal case: got %v, want %v", output, tc.expected)
+			}
+		})
+	}
+}

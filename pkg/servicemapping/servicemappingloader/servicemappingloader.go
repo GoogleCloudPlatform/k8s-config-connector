@@ -154,6 +154,16 @@ func GetResourceConfigsForKind(sm *v1alpha1.ServiceMapping, kind string) []*v1al
 	return rcs
 }
 
+func GetResourceConfigsForTFType(sm *v1alpha1.ServiceMapping, tfType string) (*v1alpha1.ResourceConfig, error) {
+	for _, r := range sm.Spec.Resources {
+		r := r
+		if r.Name == tfType {
+			return &r, nil
+		}
+	}
+	return nil, fmt.Errorf("can't find resource config for TF type '%v' in group '%v'", tfType, sm.Name)
+}
+
 func getLocationalityOfResource(u *unstructured.Unstructured) (string, error) {
 	location, found, err := unstructured.NestedString(u.Object, "spec", "location")
 	if err != nil || !found {
