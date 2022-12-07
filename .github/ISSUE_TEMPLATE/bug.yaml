@@ -13,7 +13,7 @@
 # limitations under the License.
 
 name: 'Bug'
-description: "Report something that doesn't work how it should"
+description: "Report something that doesn't work how it should. Whenever possible, please open a ticket with [GCP support](https://cloud.google.com/support-hub) instead."
 labels: ['bug']
 body:
 - type: checkboxes
@@ -30,7 +30,7 @@ body:
 - type: 'markdown'
   attributes:
     value: |-
-      Thank you for filing an bug. Please complete the form below so we can triage, reproduce, and fix your issue.
+      Thank you for filing a bug. Please complete the form below so we can triage, reproduce, and fix your issue.
 
 - id: 'bug-desc'
   type: 'textarea'

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 name: 'Enhancement'
-description: 'Feature request or new resource request'
+description: 'Feature request or new resource request. Whenever possible, please open a ticket with [GCP support](https://cloud.google.com/support-hub) instead.'
 labels: ['enhancement']
 body:
 - type: checkboxes
