@@ -25,5 +25,6 @@ spec:
   ackDeadlineSeconds: 20
   messageRetentionDuration: 86400s
   retainAckedMessages: false
+  enableExactlyOnceDelivery: true
   topicRef:
     name: pubsubtopic-sample-${uniqueId}
