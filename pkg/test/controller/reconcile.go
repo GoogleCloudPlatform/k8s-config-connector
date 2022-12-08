@@ -16,10 +16,12 @@ package testcontroller
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"math/rand"
 	"regexp"
+	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -33,7 +35,6 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	"k8s.io/apimachinery/pkg/api/errors"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
@@ -49,6 +50,13 @@ var (
 	ExpectedSuccessfulReconcileResult   = reconcile.Result{RequeueAfter: k8s.MeanReconcileReenqueuePeriod}
 	ExpectedUnsuccessfulReconcileResult = reconcile.Result{Requeue: false, RequeueAfter: 0 * time.Minute}
 	ExpectedRequeueReconcileStruct      = reconcile.Result{Requeue: true}
+)
+
+const (
+	// transientErrorsMaxRetries sets the max number of retries on a transient error
+	transientErrorsMaxRetries = 5
+	// transientErrorsRetryInterval sets the interval between retries on a transient error
+	transientErrorsRetryInterval = 5 * time.Second
 )
 
 // StartTestManager begins a new test manager, and returns a function
@@ -110,12 +118,65 @@ func startMgr(mgr manager.Manager, mgrStartErrHandler func(string, ...interface{
 	return stop
 }
 
+// isTransientError reports whether the reconciler error is a random "flake" and we should retry.
+func isTransientError(t *testing.T, err error) bool {
+	if err == nil {
+		return false
+	}
+
+	// Print the chain so we don't have to use string matching for future errors
+	var chain []string
+	current := err
+	for {
+		chain = append(chain, fmt.Sprintf("[%T: %+v]", current, current))
+		current = errors.Unwrap(current)
+		if current == nil {
+			break
+		}
+	}
+
+	errorMessage := err.Error()
+
+	// Permission denied errors are considered transient
+	// We don't know the exact error currently, use string matching for now...
+	//
+	// Example error:
+	// {"severity":"info","timestamp":"2022-12-06T20:27:32.799Z","logger":"iapidentityawareproxyclient-controller","msg":"creating/updating underlying resource","resource":{"namespace":"jcjjsgqldlbw7hcvseiq","name":"iapidentityawareproxyclient-jcjjsgqldlbw7hcvseiq"}}
+	// W1206 20:27:35.461665  113200 logger.go:58] [DCL WARNING] [RequestID:km5nd0fv]  get returned error: googleapi: Error 403: The caller does not have permission
+	// {"severity":"error","timestamp":"2022-12-06T20:27:35.461Z","logger":"iapidentityawareproxyclient-controller","msg":"error applying desired state","resource":{"namespace":"jcjjsgqldlbw7hcvseiq","name":"iapidentityawareproxyclient-jcjjsgqldlbw7hcvseiq"},"error":"googleapi: Error 403: The caller does not have permission"}
+	// dynamic_controller_integration_test.go:190: reconcile returned unexpected error: Update call failed: error applying desired state: googleapi: Error 403: The caller does not have permission
+	if strings.Contains(errorMessage, "The caller does not have permission") {
+		t.Logf("permission error found; considered transient; chain is %v", chain)
+		return true
+	}
+
+	t.Logf("error was not considered transient; chain is %v", chain)
+	return false
+}
+
 // RunReconcilerAssertResults asserts the expected state of the reconciler run.
 func RunReconcilerAssertResults(t *testing.T, reconciler reconcile.Reconciler, objectMeta v1.ObjectMeta,
 	expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
+	attempt := 0
+tryAgain:
+	attempt++
 	t.Helper()
 	reconcileRequest := reconcile.Request{NamespacedName: k8s.GetNamespacedName(objectMeta.GetObjectMeta())}
 	result, err := reconciler.Reconcile(context.Background(), reconcileRequest)
+
+	// Retry if we see a "transient" error (up to our retry limit)
+	if err != nil {
+		if isTransientError(t, err) {
+			if attempt < transientErrorsMaxRetries {
+				t.Logf("detected transient error, will retry: %v", err)
+				time.Sleep(transientErrorsRetryInterval)
+				goto tryAgain
+			} else {
+				t.Logf("detected transient error, but maximum number of retries reached: %v", err)
+			}
+		}
+	}
+
 	if expectedErrorRegex == nil {
 		if err != nil {
 			t.Fatalf("reconcile returned unexpected error: %v", err)
@@ -153,7 +214,7 @@ func EnsureNamespaceExists(c client.Client, name string) error {
 	ns := &corev1.Namespace{}
 	ns.SetName(name)
 	if err := c.Create(context.Background(), ns); err != nil {
-		if !errors.IsAlreadyExists(err) {
+		if !apierrors.IsAlreadyExists(err) {
 			return fmt.Errorf("error creating namespace %v: %v", name, err)
 		}
 	}
