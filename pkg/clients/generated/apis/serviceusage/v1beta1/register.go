@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(Service{}).Name(),
 	}
 
+	ServiceIdentityGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ServiceIdentity{}).Name(),
+	}
+
 	serviceusageAPIVersion = SchemeGroupVersion.String()
 )

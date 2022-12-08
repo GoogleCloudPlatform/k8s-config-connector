@@ -35,6 +35,10 @@ func (c *FakeServiceusageV1beta1) Services(namespace string) v1beta1.ServiceInte
 	return &FakeServices{c, namespace}
 }
 
+func (c *FakeServiceusageV1beta1) ServiceIdentities(namespace string) v1beta1.ServiceIdentityInterface {
+	return &FakeServiceIdentities{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeServiceusageV1beta1) RESTClient() rest.Interface {

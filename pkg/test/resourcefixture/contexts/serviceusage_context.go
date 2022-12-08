@@ -19,4 +19,11 @@ func init() {
 		ResourceKind: "Service",
 		SkipUpdate:   true,
 	}
+	resourceContextMap["serviceidentity"] = ResourceContext{
+		ResourceKind:       "ServiceIdentity", // This resource only supports create.
+		SkipUpdate:         true,
+		SkipNoChange:       true,
+		SkipDriftDetection: true,
+		SkipDelete:         true,
+	}
 }

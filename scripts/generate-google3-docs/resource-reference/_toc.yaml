@@ -468,6 +468,8 @@ toc:
   section:
   - title: "Service"
     path: /config-connector/docs/reference/resource-docs/serviceusage/service.md
+  - title: "ServiceIdentity"
+    path: /config-connector/docs/reference/resource-docs/serviceusage/serviceidentity.md
 - title: "Storage Transfer Service"
   section:
   - title: "StorageTransferJob"

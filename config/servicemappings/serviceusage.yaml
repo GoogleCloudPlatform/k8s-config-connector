@@ -51,3 +51,27 @@ spec:
       hierarchicalReferences:
       - type: project
         key: projectRef
+    - name: google_project_service_identity
+      kind: ServiceIdentity
+      idTemplate: "projects/{{project}}/services/{{service}}"
+      # doesn't have a url to fetch this resource
+      idTemplateCanBeUsedToMatchResourceName: false
+      skipImport: true
+      unreadable: true
+      reconciliationIntervalInSeconds: 0
+      metadataMapping:
+        name: service
+      resourceID:
+        targetField: service
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+      hierarchicalReferences:
+        - type: project
+          key: projectRef

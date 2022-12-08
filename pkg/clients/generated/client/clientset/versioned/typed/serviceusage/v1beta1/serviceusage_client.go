@@ -32,6 +32,7 @@ import (
 type ServiceusageV1beta1Interface interface {
 	RESTClient() rest.Interface
 	ServicesGetter
+	ServiceIdentitiesGetter
 }
 
 // ServiceusageV1beta1Client is used to interact with features provided by the serviceusage.cnrm.cloud.google.com group.
@@ -41,6 +42,10 @@ type ServiceusageV1beta1Client struct {
 
 func (c *ServiceusageV1beta1Client) Services(namespace string) ServiceInterface {
 	return newServices(c, namespace)
+}
+
+func (c *ServiceusageV1beta1Client) ServiceIdentities(namespace string) ServiceIdentityInterface {
+	return newServiceIdentities(c, namespace)
 }
 
 // NewForConfig creates a new ServiceusageV1beta1Client for the given config.

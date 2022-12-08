@@ -22,3 +22,5 @@
 package v1beta1
 
 type ServiceExpansion interface{}
+
+type ServiceIdentityExpansion interface{}

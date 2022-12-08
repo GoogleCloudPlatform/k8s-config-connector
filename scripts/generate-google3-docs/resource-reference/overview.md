@@ -653,6 +653,10 @@
   <td><a href="/config-connector/docs/reference/resource-docs/serviceusage/service.md">Service</a></td>
 </tr>
 <tr>
+  <td><a href="/service-usage/docs/">{{usage_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/serviceusage/serviceidentity.md">Service</a></td>
+</tr>
+<tr>
   <td><a href="/source-repositories/docs/">{{source_repos_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/sourcerepo/sourcereporepository.md">SourceRepoRepository</a></td>
 </tr>

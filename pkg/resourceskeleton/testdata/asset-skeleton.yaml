@@ -1007,6 +1007,8 @@
         external: "1234567890"
   resourceConfigId: Service
 # not supported by asset inventory
+- resourceConfigID: ServiceIdentity
+# not supported by asset inventory
 - resourceConfigId: ServiceDirectoryEndpoint
 - asset:
     ancestors:

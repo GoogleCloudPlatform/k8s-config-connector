@@ -651,6 +651,9 @@
         external: kcc-test
   ResourceConfigId: Service
   URI: "https://serviceusage.googleapis.com/v1/projects/kcc-test/services/redis.googleapis.com"
+- ExpectedSkeleton: null
+  ResourceConfigId: ServiceIdentity
+  URI: ""
 - ExpectedSkeleton:
     apiVersion: sql.cnrm.cloud.google.com/v1beta1
     kind: SQLDatabase
