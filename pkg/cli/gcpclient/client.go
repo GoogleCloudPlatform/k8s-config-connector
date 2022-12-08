@@ -102,7 +102,7 @@ func (c *gcpClient) Apply(u *unstructured.Unstructured) (*unstructured.Unstructu
 	}
 	diff, err := krmResource.TFResource.Diff(ctx, liveState, config, c.tfProvider.Meta())
 	if err != nil {
-		return nil, fmt.Errorf("error calculating diff: %v", err)
+		return nil, fmt.Errorf("error calculating diff: %w", err)
 	}
 	if !liveState.Empty() && diff.RequiresNew() {
 		return nil, k8s.NewImmutableFieldsMutationError(tfresource.ImmutableFieldsFromDiff(diff))
@@ -111,7 +111,7 @@ func (c *gcpClient) Apply(u *unstructured.Unstructured) (*unstructured.Unstructu
 		appliedState, diagnostics := krmResource.TFResource.Apply(ctx, liveState, diff, c.tfProvider.Meta())
 		err := krmtotf.NewErrorFromDiagnostics(diagnostics)
 		if err != nil {
-			return nil, fmt.Errorf("error applying desired state: %v", err)
+			return nil, fmt.Errorf("error applying desired state: %w", err)
 		}
 		return updateResourceAndNewUnstructuredFromState(krmResource, appliedState)
 	}

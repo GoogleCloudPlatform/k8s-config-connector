@@ -296,7 +296,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 	newState, diagnostics := krmResource.TFResource.Apply(ctx, liveState, diff, r.provider.Meta())
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
 		r.logger.Error(err, "error applying desired state", "resource", krmResource.GetNamespacedName())
-		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error applying desired state: %v", err))
+		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error applying desired state: %w", err))
 	}
 	return false, r.handleUpToDate(ctx, krmResource, newState, secretVersions)
 }

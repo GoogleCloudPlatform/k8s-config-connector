@@ -155,6 +155,17 @@ func isTransientError(t *testing.T, err error) bool {
 		return true
 	}
 
+	// "is not ready" errors are considered transient
+	// We don't know the exact error currently, use string matching for now...
+	//
+	// Example error:
+	// reconcile.go:164: error was not considered transient; chain is [[*errors.errorString: Update call failed: error applying desired state: operation received error: error code "3", message: The resource 'projects/cnrm-test-mqtuo70y3lg3w1m7/regions/us-central1/subnetworks/default' is not ready, details: []
+	// details: map[]]]
+	if strings.Contains(errorMessage, "is not ready") {
+		t.Logf("internal error found; considered transient; chain is %v", chain)
+		return true
+	}
+
 	t.Logf("error was not considered transient; chain is %v", chain)
 	return false
 }
