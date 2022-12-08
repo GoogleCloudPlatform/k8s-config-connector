@@ -27,10 +27,8 @@ spec:
       serverGeneratedIDField: name
       resourceID:
         targetField: name
-        valueTemplate: "projects/{{project}}/alertPolicies/{{value}}"
-      idTemplate: "{{project}} {{name}}"
-      # TF provider import for Monitoring resources is strangely configured, matching import ID too broad
-      idTemplateCanBeUsedToMatchResourceName: false
+      idTemplate: "projects/{{project}}/alertPolicies/{{value}}"
+      idTemplateCanBeUsedToMatchResourceName: true
       resourceAvailableInAssetInventory: true
       metadataMapping:
         labels: user_labels
@@ -43,22 +41,21 @@ spec:
             version: v1beta1
             group: monitoring.cnrm.cloud.google.com
           targetField: name
+          valueTemplate: "projects/{{project}}/notificationChannels/{{value}}"
       containers:
         - type: project
           tfField: project
     - name: google_monitoring_notification_channel
       kind: MonitoringNotificationChannel
       serverGeneratedIDField: name
-      idTemplate: "{{project}} {{name}}"
-      # TF provider import for Monitoring resources is strangely configured, matching import ID too broad
-      idTemplateCanBeUsedToMatchResourceName: false
+      idTemplate: "projects/{{project}}/notificationChannels/{{value}}"
+      idTemplateCanBeUsedToMatchResourceName: true
       resourceAvailableInAssetInventory: false
       metadataMapping:
         name: display_name
         labels: user_labels
       resourceID:
         targetField: name
-        valueTemplate: "projects/{{project}}/notificationChannels/{{value}}"
       mutableButUnreadableFields:
         - sensitive_labels
       containers:
