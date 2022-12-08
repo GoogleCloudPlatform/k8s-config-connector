@@ -45,13 +45,13 @@ func (h *HCLStream) Next(ctx context.Context) ([]byte, *unstructured.Unstructure
 	unstructured, err := h.unstructuredStream.Next(ctx)
 	if err != nil {
 		if err != io.EOF {
-			err = fmt.Errorf("error getting next asset: %v", err)
+			err = fmt.Errorf("error getting next asset: %w", err)
 		}
 		return nil, unstructured, err
 	}
-	hcl, err := krmtohcl.UnstructuredToHCL(unstructured, h.smLoader, h.tfProvider)
+	hcl, err := krmtohcl.UnstructuredToHCL(ctx, unstructured, h.smLoader, h.tfProvider)
 	if err != nil {
-		return nil, unstructured, fmt.Errorf("error converting krm to hcl: %v", err)
+		return nil, unstructured, fmt.Errorf("error converting krm to hcl: %w", err)
 	}
 	return []byte(hcl), unstructured, nil
 }

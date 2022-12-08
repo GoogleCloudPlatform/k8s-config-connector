@@ -15,10 +15,13 @@
 package krmtohcl
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/serialization"
 
@@ -27,7 +30,8 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
-func UnstructuredToHCL(u *unstructured.Unstructured, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *schema.Provider) (string, error) {
+func UnstructuredToHCL(ctx context.Context, u *unstructured.Unstructured, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *schema.Provider) (string, error) {
+	gvk := u.GroupVersionKind()
 	sm, err := smLoader.GetServiceMapping(u.GroupVersionKind().Group)
 	if err != nil {
 		return "", err
@@ -51,10 +55,21 @@ func UnstructuredToHCL(u *unstructured.Unstructured, smLoader *servicemappingloa
 	//
 	// The bespoke InstanceState code considers TFInfo.Id to be the resource name.
 	krmResource.TFInfo.Id = krmtotf.KRMNameToTerraformID(krmResource.GetObjectMeta().GetName())
-	hcl, err := serialization.InstanceStateToHCL(state, krmResource.TFInfo, tfProvider)
+
+	exportOp := &operations.TerraformExport{
+		TerraformState: state,
+		TerraformInfo:  krmResource.TFInfo,
+	}
+
+	if err := resourceoverrides.Handler.PreTerraformExport(ctx, gvk, exportOp); err != nil {
+		return "", err
+	}
+
+	hcl, err := serialization.InstanceStateToHCL(exportOp.TerraformState, exportOp.TerraformInfo, tfProvider)
 	if err != nil {
 		return "", fmt.Errorf("error generating hcl: %w", err)
 	}
+
 	importId, err := krmResource.GetImportID(k8s.NewErroringClient(), smLoader)
 	if err != nil {
 		return "", fmt.Errorf("error getting import id for '%v': %w", krmResource.GetName(), err)
@@ -64,7 +79,7 @@ func UnstructuredToHCL(u *unstructured.Unstructured, smLoader *servicemappingloa
 	// 2. gcloud is looking for this output and printing it out for their users
 	//
 	// any changes to the format of this output should be communicated to the gcloud team
-	hcl = fmt.Sprintf("%v# terraform import %v.%v %v\n", hcl, krmResource.TFInfo.Type, krmResource.TFInfo.Id, importId)
+	hcl = fmt.Sprintf("%v# terraform import %v.%v %v\n", hcl, exportOp.TerraformInfo.Type, krmResource.TFInfo.Id, importId)
 	return hcl, nil
 }
 

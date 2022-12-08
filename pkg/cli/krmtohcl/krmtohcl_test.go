@@ -15,6 +15,7 @@
 package krmtohcl_test
 
 import (
+	"context"
 	"flag"
 	"io/fs"
 	"io/ioutil"
@@ -55,13 +56,15 @@ func TestUnstructuredToHCL(t *testing.T) {
 }
 
 func testUnstructuredToHCL(t *testing.T, krmFile, goldenHCLFile string, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *schema.Provider) {
+	ctx := context.TODO()
+
 	var u unstructured.Unstructured
 	testyaml.UnmarshalFile(t, krmFile, &u)
 	// the managed-by-cnrm is removed to test Terraform export for resources which are not managed by KCC.
 	labels := u.GetLabels()
 	delete(labels, "managed-by-cnrm")
 	u.SetLabels(labels)
-	hcl, err := krmtohcl.UnstructuredToHCL(&u, smLoader, tfProvider)
+	hcl, err := krmtohcl.UnstructuredToHCL(ctx, &u, smLoader, tfProvider)
 	if err != nil {
 		t.Fatalf("error converting unstructured to HCL: %v", err)
 	}

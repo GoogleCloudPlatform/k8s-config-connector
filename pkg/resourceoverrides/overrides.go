@@ -15,10 +15,14 @@
 package resourceoverrides
 
 import (
+	"context"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides/operations"
 
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 // CRDDecorate decorates the given CRD to ensure that its schemas are authored correctly.
@@ -36,6 +40,10 @@ type PostActuationTransform func(original, reconciled *k8s.Resource) error
 // ConfigValidate validates the input configuration in the webhook.
 type ConfigValidate func(r *unstructured.Unstructured) error
 
+// PreTerraformExport transforms the exported terraform prior to writing it.
+// A typical example of a transformation is to map our internal terraform types to real types.
+type PreTerraformExport func(ctx context.Context, op *operations.TerraformExport) error
+
 // ResourceOverride holds all pieces of changes needed, i.e. decoration, transformation and validation to author
 // a resource-specific behavior override.
 // Since one particular resource kind could have multiple overrides, each ResourceOverride should be logically orthogonal to each other and neutral to order of execution.
@@ -44,6 +52,7 @@ type ResourceOverride struct {
 	ConfigValidate         ConfigValidate
 	PreActuationTransform  PreActuationTransform
 	PostActuationTransform PostActuationTransform
+	PreTerraformExport     PreTerraformExport
 }
 
 type ResourceOverrides struct {
@@ -125,6 +134,22 @@ func (h *ResourceOverridesHandler) PostActuationTransform(original, post *k8s.Re
 	return nil
 }
 
+func (h *ResourceOverridesHandler) PreTerraformExport(ctx context.Context, gvk schema.GroupVersionKind, op *operations.TerraformExport) error {
+	kind := gvk.Kind
+	ro, found := h.registration(kind)
+	if !found {
+		return nil
+	}
+	for _, o := range ro.Overrides {
+		if o.PreTerraformExport != nil {
+			if err := o.PreTerraformExport(ctx, op); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
 func (h *ResourceOverridesHandler) HasOverrides(kind string) bool {
 	_, found := h.registration(kind)
 	return found
@@ -163,4 +188,7 @@ func init() {
 	Handler.Register(GetComputeInstanceResourceOverrides())
 	Handler.Register(GetDNSRecordSetOverrides())
 	Handler.Register(GetComputeBackendServiceResourceOverrides())
+
+	// IAM
+	Handler.Register(GetIAMCustomRoleResourceOverrides())
 }
