@@ -162,8 +162,9 @@ var testDisabledList = map[string]bool{
 	// Disable these samples for now until ContainerCluster supports
 	// hierarchical references or once we support proper deletion ordering
 	// (b/179907721).
-	"gkehubfeaturemembership":       true,
-	"multi-cluster-ingress-feature": true,
+	"config-management-feature-membership": true,
+	"service-mesh-feature-membership":      true,
+	"multi-cluster-ingress-feature":        true,
 	// There is a quota limit of only 10 FirewallPolicies globally in an org,
 	// these samples tests are omitted to minimize the number of FirewallPolicies created.
 	"computefirewallpolicy":                     true,

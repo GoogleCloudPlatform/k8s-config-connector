@@ -464,6 +464,58 @@ spec:
     name: gkehubfeature-dep-acmfeature
 ```
 
+### Anthos Service Mesh Feature
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubFeature
+metadata:
+  name: gkehubfeature-sample-asm
+spec:
+  projectRef:
+    name: gkehubfeature-dep-asm
+  location: global
+  # The resourceID must be "servicemesh" if you want to use Anthos Service Mesh feature.
+  resourceID: servicemesh
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  name: gkehubfeature-dep-asm
+spec:
+  name: Config Connector Sample
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "${ORG_ID?}"
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+  name: gkehubfeature-dep-asm
+spec:
+  resourceID: mesh.googleapis.com
+  projectRef:
+    name: gkehubfeature-dep-asm
+```
+
 ### Multi Cluster Ingress Feature
 ```yaml
 # Copyright 2021 Google LLC

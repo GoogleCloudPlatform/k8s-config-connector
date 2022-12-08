@@ -18,12 +18,12 @@ metadata:
   name: gkehubfeaturemembership-sample
 spec:
   projectRef:
-    name: gkehubfeaturemembership-dep
+    name: gkehubfeaturemembership-dep-acm
   location: global
   membershipRef:
-    name: gkehubfeaturemembership-dep
+    name: gkehubfeaturemembership-dep-acm
   featureRef:
-    name: gkehubfeaturemembership-dep
+    name: gkehubfeaturemembership-dep-acm
   configmanagement:
     configSync:
       sourceFormat: unstructured

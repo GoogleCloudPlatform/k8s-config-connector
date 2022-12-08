@@ -13,18 +13,13 @@
 # limitations under the License.
 
 apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
-kind: GKEHubMembership
+kind: GKEHubFeature
 metadata:
-  annotations:
-    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep
-  name: gkehubfeaturemembership-dep
+  name: gkehubfeature-sample-asm
 spec:
+  projectRef:
+    name: gkehubfeature-dep-asm
   location: global
-  authority:
-    # Issuer must contain a link to a valid JWT issuer. Your ContainerCluster is one.
-    issuer: https://container.googleapis.com/v1/projects/gkehubfeaturemembership-dep/locations/us-central1-a/clusters/gkehubfeaturemembership-dep
-  description: A sample GKE Hub membership
-  endpoint:
-    gkeCluster:
-      resourceRef:
-        name: gkehubfeaturemembership-dep
+  # The resourceID must be "servicemesh" if you want to use Anthos Service Mesh feature.
+  resourceID: servicemesh
+

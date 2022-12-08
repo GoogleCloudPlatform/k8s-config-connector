@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,15 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-kind: Project
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubMembership
 metadata:
-  name: gkehubfeaturemembership-dep
+  annotations:
+    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-asm
+  name: gkehubfeaturemembership-dep-asm
 spec:
-  name: Config Connector Sample
-  organizationRef:
-    # Replace "${ORG_ID?}" with the numeric ID for your organization
-    external: "${ORG_ID?}"
-  billingAccountRef:
-    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
-    external: "${BILLING_ACCOUNT_ID?}"
+  location: global
+  authority:
+    issuer: https://container.googleapis.com/v1/projects/gkehubfeaturemembership-dep-asm/locations/us-east4-a/clusters/gkehubfeaturemembership-dep-asm
+  endpoint:
+    gkeCluster:
+      resourceRef:
+        name: gkehubfeaturemembership-dep-asm

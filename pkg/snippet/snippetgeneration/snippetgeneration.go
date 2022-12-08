@@ -73,6 +73,7 @@ var preferredSampleForResource = map[string]string{
 	"dnsrecordset":                      "dns-a-record-set",
 	"folder":                            "folder-in-folder",
 	"gkehubfeature":                     "multi-cluster-ingress-feature",
+	"gkehubfeaturemembership":           "config-management-feature-membership",
 	"iamauditconfig":                    "project-level-audit-config",
 	"iamcustomrole":                     "project-role",
 	"iampolicy":                         "external-project-level-policy",

@@ -728,7 +728,7 @@ observedGeneration: integer
 
 ## Sample YAML(s)
 
-### Typical Use Case
+### Config Management Feature Membership
 ```yaml
 # Copyright 2021 Google LLC
 #
@@ -750,12 +750,12 @@ metadata:
   name: gkehubfeaturemembership-sample
 spec:
   projectRef:
-    name: gkehubfeaturemembership-dep
+    name: gkehubfeaturemembership-dep-acm
   location: global
   membershipRef:
-    name: gkehubfeaturemembership-dep
+    name: gkehubfeaturemembership-dep-acm
   featureRef:
-    name: gkehubfeaturemembership-dep
+    name: gkehubfeaturemembership-dep-acm
   configmanagement:
     configSync:
       sourceFormat: unstructured
@@ -785,22 +785,22 @@ apiVersion: container.cnrm.cloud.google.com/v1beta1
 kind: ContainerCluster
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep
-  name: gkehubfeaturemembership-dep
+    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-acm
+  name: gkehubfeaturemembership-dep-acm
 spec:
   location: us-central1-a
   initialNodeCount: 1
   workloadIdentityConfig:
     # Workload Identity supports only a single namespace based on your project name.
-    workloadPool: gkehubfeaturemembership-dep.svc.id.goog
+    workloadPool: gkehubfeaturemembership-dep-acm.svc.id.goog
 ---
 apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
 kind: GKEHubFeature
 metadata:
-  name: gkehubfeaturemembership-dep
+  name: gkehubfeaturemembership-dep-acm
 spec:
   projectRef:
-    name: gkehubfeaturemembership-dep
+    name: gkehubfeaturemembership-dep-acm
   location: global
   # The resourceID must be "configmanagement" if you want to use Anthos config
   # management feature.
@@ -810,23 +810,23 @@ apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
 kind: GKEHubMembership
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep
-  name: gkehubfeaturemembership-dep
+    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-acm
+  name: gkehubfeaturemembership-dep-acm
 spec:
   location: global
   authority:
     # Issuer must contain a link to a valid JWT issuer. Your ContainerCluster is one.
-    issuer: https://container.googleapis.com/v1/projects/gkehubfeaturemembership-dep/locations/us-central1-a/clusters/gkehubfeaturemembership-dep
+    issuer: https://container.googleapis.com/v1/projects/gkehubfeaturemembership-dep-acm/locations/us-central1-a/clusters/gkehubfeaturemembership-dep-acm
   description: A sample GKE Hub membership
   endpoint:
     gkeCluster:
       resourceRef:
-        name: gkehubfeaturemembership-dep
+        name: gkehubfeaturemembership-dep-acm
 ---
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
 metadata:
-  name: gkehubfeaturemembership-dep
+  name: gkehubfeaturemembership-dep-acm
 spec:
   name: Config Connector Sample
   organizationRef:
@@ -840,9 +840,9 @@ apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep
+    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-acm
     cnrm.cloud.google.com/disable-dependent-services: "false"
-  name: gkehubfeaturemembership-dep-1
+  name: gkehubfeaturemembership-dep1-acm1
 spec:
   resourceID: container.googleapis.com
 ---
@@ -850,9 +850,9 @@ apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep
+    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-acm
     cnrm.cloud.google.com/disable-dependent-services: "false"
-  name: gkehubfeaturemembership-dep-2
+  name: gkehubfeaturemembership-dep2-acm
 spec:
   resourceID: gkehub.googleapis.com
 ---
@@ -860,11 +860,109 @@ apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep
+    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-acm
     cnrm.cloud.google.com/disable-dependent-services: "false"
-  name: gkehubfeaturemembership-dep-3
+  name: gkehubfeaturemembership-dep3-acm
 spec:
   resourceID: anthosconfigmanagement.googleapis.com
+```
+
+### Service Mesh Feature Membership
+```yaml
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubFeatureMembership
+metadata:
+  name: gkehubfeaturemembership-sample-asm
+spec:
+  projectRef:
+    name: gkehubfeaturemembership-dep-asm
+  location: global
+  membershipRef:
+    name: gkehubfeaturemembership-dep-asm
+  featureRef:
+    name: gkehubfeaturemembership-dep-asm
+  mesh:
+    management: MANAGEMENT_AUTOMATIC
+---
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-asm
+  labels:
+    # Replace ${PROJECT_NUMBER?} with the number of the project once created,
+    # this will give you access to the ASM UI in the Google Cloud Console
+    mesh_id: proj-${PROJECT_NUMBER?}
+  name: gkehubfeaturemembership-dep-asm
+spec:
+  location: us-east4-a
+  initialNodeCount: 1
+  workloadIdentityConfig:
+    workloadPool: gkehubfeaturemembership-dep-asm.svc.id.goog
+---
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubFeature
+metadata:
+  name: gkehubfeaturemembership-dep-asm
+spec:
+  projectRef:
+    name: gkehubfeaturemembership-dep-asm
+  location: global
+  # The resourceID must be "servicemesh" if you want to use Anthos Service Mesh feature.
+  resourceID: servicemesh
+---
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubMembership
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-asm
+  name: gkehubfeaturemembership-dep-asm
+spec:
+  location: global
+  authority:
+    issuer: https://container.googleapis.com/v1/projects/gkehubfeaturemembership-dep-asm/locations/us-east4-a/clusters/gkehubfeaturemembership-dep-asm
+  endpoint:
+    gkeCluster:
+      resourceRef:
+        name: gkehubfeaturemembership-dep-asm
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  name: gkehubfeaturemembership-dep-asm
+spec:
+  name: Config Connector Sample
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "${ORG_ID?}"
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/disable-dependent-services: "false"
+  name: gkehubfeaturemembership-dep-asm
+spec:
+  resourceID: mesh.googleapis.com
+  projectRef:
+    name: gkehubfeaturemembership-dep-asm
 ```
 
 
