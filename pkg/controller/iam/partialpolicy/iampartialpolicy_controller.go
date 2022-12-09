@@ -259,7 +259,7 @@ func (r *reconcileContext) handleUpdateFailed(policy *iamv1beta1.IAMPartialPolic
 	if err != nil {
 		logger.Error(err, "error converting IAMPartialPolicy to k8s resource while handling event",
 			"resource", k8s.GetNamespacedName(policy), "event", k8s.UpdateFailed)
-		return fmt.Errorf(k8s.UpdateFailedMessageTmpl, origErr)
+		return fmt.Errorf("Update call failed: %w", origErr)
 	}
 	return r.Reconciler.HandleUpdateFailed(r.Ctx, resource, origErr)
 }

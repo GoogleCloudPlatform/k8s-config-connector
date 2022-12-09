@@ -44,7 +44,6 @@ const (
 	Updating                             = "Updating"
 	UpdatingMessage                      = "Update in progress"
 	UpdateFailed                         = "UpdateFailed"
-	UpdateFailedMessageTmpl              = "Update call failed: %v"
 	Deleting                             = "Deleting"
 	DeletingMessage                      = "Deletion in progress"
 	Deleted                              = "Deleted"

@@ -151,7 +151,7 @@ func (r *ReconcileSecret) Reconcile(ctx context.Context, request reconcile.Reque
 	if err = r.Get(ctx, request.NamespacedName, originalSecret); err == nil {
 		logger.Info("updating the secret", "resource", request.NamespacedName)
 		if err = r.Update(ctx, secret); err != nil {
-			r.recorder.Eventf(u, corev1.EventTypeWarning, k8s.UpdateFailed, eventMessageTemplate, u.GetName(), u.GetNamespace(), fmt.Sprintf(k8s.UpdateFailedMessageTmpl, err))
+			r.recorder.Eventf(u, corev1.EventTypeWarning, k8s.UpdateFailed, eventMessageTemplate, u.GetName(), u.GetNamespace(), fmt.Sprintf("Update call failed: %v", err))
 			return reconcile.Result{}, err
 		}
 		jitteredPeriod := jitter.GenerateWatchJitteredTimeoutPeriod()

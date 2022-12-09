@@ -292,7 +292,7 @@ func (r *LifecycleHandler) HandleUpdating(ctx context.Context, resource *k8s.Res
 }
 
 func (r *LifecycleHandler) HandleUpdateFailed(ctx context.Context, resource *k8s.Resource, err error) error {
-	msg := fmt.Sprintf(k8s.UpdateFailedMessageTmpl, err)
+	msg := fmt.Sprintf("Update call failed: %v", err)
 	setCondition(resource, corev1.ConditionFalse, k8s.UpdateFailed, msg)
 	setObservedGeneration(resource, resource.GetGeneration())
 	if err := r.updateStatus(ctx, resource); err != nil {

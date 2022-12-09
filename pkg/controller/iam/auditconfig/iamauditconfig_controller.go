@@ -228,7 +228,7 @@ func (r *reconcileContext) handleUpdateFailed(auditConfig *iamv1beta1.IAMAuditCo
 	if err != nil {
 		logger.Error(err, "error converting IAMAuditConfig to k8s resource while handling event",
 			"resource", k8s.GetNamespacedName(auditConfig), "event", k8s.UpdateFailed)
-		return fmt.Errorf(k8s.UpdateFailedMessageTmpl, origErr)
+		return fmt.Errorf("Update call failed: %w", origErr)
 	}
 	return r.Reconciler.HandleUpdateFailed(r.Ctx, resource, origErr)
 }
