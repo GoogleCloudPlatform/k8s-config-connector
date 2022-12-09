@@ -176,6 +176,17 @@ func isTransientError(t *testing.T, err error) bool {
 		return true
 	}
 
+	// "Hook call/poll failed for service" errors are considered transient
+	// We don't know the exact error currently, use string matching for now...
+	//
+	// Example error:
+	// testreconciler.go:96: reconcile returned unexpected error: Delete call failed: error deleting resource: [{0 Error when reading or editing Project Service projects/clienttls-aaoksjdrfqbos22kkhaa/services/: Error disabling service "networksecurity.googleapis.com" for project "clienttls-aaoksjdrfqbos22kkhaa": Error waiting for api to disable: Error code 8, message: [Hook call/poll failed for service "networksecurity.googleapis.com".
+	// Help Token: AZWD64q7zyHTI4hHRS7MG0gHM4T8nMAXsiKCMAohWDFWVzK5BIZes3oQScpmnmkpTBlr0T9zldAZZuOWsjgv7BdRwGCGoOFdr2KqNqOarqlffbV3] with failed services [networksecurity.googleapis.com]  []}]
+	if strings.Contains(errorMessage, "Hook call/poll failed for service") {
+		t.Logf("internal error found; considered transient; chain is %v", chain)
+		return true
+	}
+
 	t.Logf("error was not considered transient; chain is %v", chain)
 	return false
 }
