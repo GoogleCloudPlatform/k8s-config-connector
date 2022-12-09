@@ -16,7 +16,6 @@ package lifecyclehandler
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -300,7 +299,7 @@ func (r *LifecycleHandler) HandleUpdateFailed(ctx context.Context, resource *k8s
 		return err
 	}
 	r.recordEvent(resource, corev1.EventTypeWarning, k8s.UpdateFailed, msg)
-	return errors.New(msg)
+	return fmt.Errorf("Update call failed: %w", err)
 }
 
 func (r *LifecycleHandler) HandleDeleting(ctx context.Context, resource *k8s.Resource) error {
@@ -335,7 +334,7 @@ func (r *LifecycleHandler) HandleDeleteFailed(ctx context.Context, resource *k8s
 		return err
 	}
 	r.recordEvent(resource, corev1.EventTypeWarning, k8s.DeleteFailed, msg)
-	return errors.New(msg)
+	return fmt.Errorf("Delete call failed: %w", err)
 }
 
 func (r *LifecycleHandler) HandleUnmanaged(ctx context.Context, resource *k8s.Resource) error {
