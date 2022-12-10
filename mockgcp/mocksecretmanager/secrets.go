@@ -47,7 +47,7 @@ func (s *SecretsV1) CreateSecret(ctx context.Context, req *secretmanager.CreateS
 		return nil, err
 	}
 
-	project, err := s.projects.GetProjectByID(parent.Project)
+	project, err := s.projects.GetProject(parent)
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +134,12 @@ func (n *secretName) String() string {
 func (s *MockService) parseSecretName(name string) (*secretName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "secrets" {
-		project, err := s.projects.GetProjectByID(tokens[1])
+		projectName, err := projects.ParseProjectName("projects/" + tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		project, err := s.projects.GetProject(projectName)
 		if err != nil {
 			return nil, err
 		}

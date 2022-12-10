@@ -17,6 +17,7 @@ package mockprivateca
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/security/privateca/v1"
@@ -39,11 +40,11 @@ type MockService struct {
 }
 
 // New creates a MockService.
-func New(kube client.Client, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
-		kube:       kube,
+		kube:       env.GetKubeClient(),
 		storage:    storage,
-		projects:   projects.NewProjectStore(),
+		projects:   env.GetProjects(),
 		operations: operations.NewOperationsService(storage),
 	}
 	s.v1 = &PrivateCAV1{MockService: s}

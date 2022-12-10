@@ -16,6 +16,7 @@ package projects
 
 import (
 	"fmt"
+	"hash/adler32"
 	"strconv"
 	"strings"
 	"sync"
@@ -52,14 +53,19 @@ func projectNotFoundError(project string) error {
 	return status.Error(codes.PermissionDenied, msg)
 }
 
+// GetProjectByID returns the project with the specified project id, or an error if not found.
 func (s *ProjectStore) GetProjectByID(projectID string) (*ProjectData, error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
 	project := s.projectsByID[projectID]
 	if project == nil {
+		hasher := adler32.New()
+		hasher.Write([]byte(projectID))
+		projectNumber := int64(hasher.Sum32()) // TODO: Check project number is unique? (and maybe require projects to be created)
+
 		project = &ProjectData{
-			Number: 123, // TODO: Generate unique project number (and maybe require projects to be created)
+			Number: projectNumber,
 			ID:     projectID,
 		}
 		s.projectsByID[project.ID] = project
@@ -72,6 +78,8 @@ func (s *ProjectStore) GetProjectByID(projectID string) (*ProjectData, error) {
 	return project, nil
 }
 
+// GetProjectByNumber returns the project with the specified project number, or an error if not found.
+// Note that the project number must still be passed as a string, to keep terraform happy.
 func (s *ProjectStore) GetProjectByNumber(projectNumberAsString string) (*ProjectData, error) {
 	projectNumber, err := strconv.ParseInt(projectNumberAsString, 10, 64)
 	if err != nil {
@@ -90,19 +98,38 @@ func (s *ProjectStore) GetProjectByNumber(projectNumberAsString string) (*Projec
 	return project, nil
 }
 
+// GetProject returns the project for the parsed ProjectName.
+func (s *ProjectStore) GetProject(project *ProjectName) (*ProjectData, error) {
+	if project.ProjectID != "" {
+		return s.GetProjectByID(project.ProjectID)
+	} else {
+		return s.GetProjectByNumber(project.originalValue)
+	}
+}
+
 type ProjectName struct {
-	Project string
+	ProjectID     string
+	ProjectNumber int
+	originalValue string
 }
 
 func (n *ProjectName) String() string {
-	return "projects/" + n.Project
+	return "projects/" + n.originalValue
 }
 
 func ParseProjectName(name string) (*ProjectName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 2 && tokens[0] == "projects" {
+		s := tokens[1]
 		name := &ProjectName{
-			Project: tokens[1],
+			originalValue: s,
+		}
+
+		n, err := strconv.ParseInt(s, 10, 64)
+		if err == nil {
+			name.ProjectNumber = int(n)
+		} else {
+			name.ProjectID = s
 		}
 
 		return name, nil

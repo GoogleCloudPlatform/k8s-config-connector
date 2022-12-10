@@ -17,6 +17,7 @@ package mocksecretmanager
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	secretmanager_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/secretmanager/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -37,11 +38,11 @@ type MockService struct {
 }
 
 // New creates a mockSecretManager
-func New(kube client.Client, storage storage.Storage) *MockService {
+func New(mockenv *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
-		kube:     kube,
+		kube:     mockenv.GetKubeClient(),
 		storage:  storage,
-		projects: projects.NewProjectStore(),
+		projects: mockenv.GetProjects(),
 	}
 	s.v1 = &SecretsV1{MockService: s}
 	return s
