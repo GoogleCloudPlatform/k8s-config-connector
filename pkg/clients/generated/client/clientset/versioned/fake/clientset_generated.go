@@ -129,6 +129,8 @@ import (
 	fakestoragev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1beta1/fake"
 	storagetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1beta1"
 	fakestoragetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1beta1/fake"
+	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1beta1"
+	faketagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1beta1/fake"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vpcaccess/v1beta1"
 	fakevpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vpcaccess/v1beta1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -451,6 +453,11 @@ func (c *Clientset) StorageV1beta1() storagev1beta1.StorageV1beta1Interface {
 // StoragetransferV1beta1 retrieves the StoragetransferV1beta1Client
 func (c *Clientset) StoragetransferV1beta1() storagetransferv1beta1.StoragetransferV1beta1Interface {
 	return &fakestoragetransferv1beta1.FakeStoragetransferV1beta1{Fake: &c.Fake}
+}
+
+// TagsV1beta1 retrieves the TagsV1beta1Client
+func (c *Clientset) TagsV1beta1() tagsv1beta1.TagsV1beta1Interface {
+	return &faketagsv1beta1.FakeTagsV1beta1{Fake: &c.Fake}
 }
 
 // VpcaccessV1beta1 retrieves the VpcaccessV1beta1Client

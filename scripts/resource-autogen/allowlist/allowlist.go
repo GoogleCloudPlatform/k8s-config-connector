@@ -25,6 +25,7 @@ var (
 	allowlist = []string{
 		"DataCatalog/PolicyTag",
 		"DataCatalog/Taxonomy",
+		"Tags/TagKey",
 	}
 	legacyServiceNames = map[string]string{}
 )

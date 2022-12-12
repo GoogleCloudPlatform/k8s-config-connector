@@ -128,8 +128,6 @@ operator/config/manager/manager_image_patch.yaml
 Session.vim
 # temporary
 .netrwhist
-# auto-generated tag files
-tags
 
 ### VisualStudioCode ###
 .vscode

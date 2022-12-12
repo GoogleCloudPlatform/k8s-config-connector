@@ -75,6 +75,7 @@ import (
 	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/sql/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storage/v1beta1"
 	storagetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/storagetransfer/v1beta1"
+	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tags/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vpcaccess/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -140,6 +141,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	sqlv1beta1.AddToScheme,
 	storagev1beta1.AddToScheme,
 	storagetransferv1beta1.AddToScheme,
+	tagsv1beta1.AddToScheme,
 	vpcaccessv1beta1.AddToScheme,
 }
 

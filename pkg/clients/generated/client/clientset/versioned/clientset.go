@@ -78,6 +78,7 @@ import (
 	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/sql/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1beta1"
 	storagetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1beta1"
+	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vpcaccess/v1beta1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
@@ -139,6 +140,7 @@ type Interface interface {
 	SqlV1beta1() sqlv1beta1.SqlV1beta1Interface
 	StorageV1beta1() storagev1beta1.StorageV1beta1Interface
 	StoragetransferV1beta1() storagetransferv1beta1.StoragetransferV1beta1Interface
+	TagsV1beta1() tagsv1beta1.TagsV1beta1Interface
 	VpcaccessV1beta1() vpcaccessv1beta1.VpcaccessV1beta1Interface
 }
 
@@ -199,6 +201,7 @@ type Clientset struct {
 	sqlV1beta1                  *sqlv1beta1.SqlV1beta1Client
 	storageV1beta1              *storagev1beta1.StorageV1beta1Client
 	storagetransferV1beta1      *storagetransferv1beta1.StoragetransferV1beta1Client
+	tagsV1beta1                 *tagsv1beta1.TagsV1beta1Client
 	vpcaccessV1beta1            *vpcaccessv1beta1.VpcaccessV1beta1Client
 }
 
@@ -467,6 +470,11 @@ func (c *Clientset) StoragetransferV1beta1() storagetransferv1beta1.Storagetrans
 	return c.storagetransferV1beta1
 }
 
+// TagsV1beta1 retrieves the TagsV1beta1Client
+func (c *Clientset) TagsV1beta1() tagsv1beta1.TagsV1beta1Interface {
+	return c.tagsV1beta1
+}
+
 // VpcaccessV1beta1 retrieves the VpcaccessV1beta1Client
 func (c *Clientset) VpcaccessV1beta1() vpcaccessv1beta1.VpcaccessV1beta1Interface {
 	return c.vpcaccessV1beta1
@@ -728,6 +736,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.tagsV1beta1, err = tagsv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.vpcaccessV1beta1, err = vpcaccessv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -806,6 +818,7 @@ func New(c rest.Interface) *Clientset {
 	cs.sqlV1beta1 = sqlv1beta1.New(c)
 	cs.storageV1beta1 = storagev1beta1.New(c)
 	cs.storagetransferV1beta1 = storagetransferv1beta1.New(c)
+	cs.tagsV1beta1 = tagsv1beta1.New(c)
 	cs.vpcaccessV1beta1 = vpcaccessv1beta1.New(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClient(c)
