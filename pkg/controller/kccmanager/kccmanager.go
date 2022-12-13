@@ -17,6 +17,7 @@ package kccmanager
 import (
 	"context"
 	"fmt"
+	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
@@ -25,6 +26,7 @@ import (
 	dclconversion "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 
@@ -48,6 +50,10 @@ type Config struct {
 	// quota, and billing if UserProjectOverride is set to true. If this field is empty,
 	// but UserProjectOverride is set to true, resource project will be used.
 	BillingProject string
+
+	// HTTPClient is the http client to use for DCL.
+	// Currently only used in tests.
+	HTTPClient *http.Client
 }
 
 // Creates a new controller-runtime manager.Manager and starts all of the KCC controllers pointed at the
@@ -95,7 +101,14 @@ func New(restConfig *rest.Config, config Config) (manager.Manager, error) {
 	}
 	serviceMetadataLoader := dclmetadata.New()
 	dclConverter := dclconversion.New(dclSchemaLoader, serviceMetadataLoader)
-	dclConfig, err := clientconfig.New(config.UserProjectOverride, config.BillingProject)
+
+	dclOptions := clientconfig.Options{
+		UserProjectOverride: config.UserProjectOverride,
+		BillingProject:      config.BillingProject,
+		HTTPClient:          config.HTTPClient,
+		UserAgent:           gcp.KCCUserAgent,
+	}
+	dclConfig, err := clientconfig.New(ctx, dclOptions)
 	if err != nil {
 		return nil, fmt.Errorf("error creating a DCL client config: %w", err)
 	}
