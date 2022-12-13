@@ -42,4 +42,6 @@ spec:
   monitoringConfig:
     enableComponents:
       - "SYSTEM_COMPONENTS"
-      - "WORKLOADS"
+      - "APISERVER"
+    managedPrometheus:
+      enabled: true

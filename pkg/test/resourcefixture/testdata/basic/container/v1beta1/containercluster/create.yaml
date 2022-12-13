@@ -40,7 +40,9 @@ spec:
   monitoringConfig:
     enableComponents:
       - "SYSTEM_COMPONENTS"
-      - "WORKLOADS"
+      - "APISERVER"
+    managedPrometheus:
+      enabled: true
   clusterAutoscaling:
     enabled: true
     autoscalingProfile: BALANCED
