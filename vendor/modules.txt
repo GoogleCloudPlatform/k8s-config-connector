@@ -29,7 +29,11 @@ cloud.google.com/go/profiler
 # github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp v0.0.0-00010101000000-000000000000 => ./mockgcp
 ## explicit; go 1.19
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp
+github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations
+github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/secretmanager/v1
+github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/security/privateca/v1
+github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecretmanager
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage
 # contrib.go.opencensus.io/exporter/prometheus v0.1.0
@@ -1045,6 +1049,7 @@ google.golang.org/genproto/googleapis/api/httpbody
 google.golang.org/genproto/googleapis/bigtable/admin/v2
 google.golang.org/genproto/googleapis/bigtable/v2
 google.golang.org/genproto/googleapis/cloud/secretmanager/v1
+google.golang.org/genproto/googleapis/cloud/security/privateca/v1
 google.golang.org/genproto/googleapis/devtools/cloudprofiler/v2
 google.golang.org/genproto/googleapis/iam/v1
 google.golang.org/genproto/googleapis/longrunning

@@ -19,6 +19,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	secretmanager "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -39,19 +40,19 @@ func (s *MockService) CreateSecret(ctx context.Context, req *secretmanager.Creat
 		return nil, status.Errorf(codes.InvalidArgument, "SecretId is required")
 	}
 
-	parent, err := parseProjectName(req.Parent)
+	parent, err := projects.ParseProjectName(req.Parent)
 	if err != nil {
 		return nil, err
 	}
 
-	project := s.projects.getProject(parent.Project)
-	if project == nil {
-		return nil, status.Errorf(codes.InvalidArgument, "project %q not known", parent)
+	project, err := s.projects.GetProjectByID(parent.Project)
+	if err != nil {
+		return nil, err
 	}
 
 	name := secretName{
-		ProjectNumber: project.Number,
-		SecretName:    secretID,
+		Project:    project,
+		SecretName: secretID,
 	}
 	fqn := name.String()
 
@@ -71,11 +72,6 @@ func (s *MockService) GetSecret(ctx context.Context, req *secretmanager.GetSecre
 	name, err := s.parseSecretName(req.Name)
 	if err != nil {
 		return nil, err
-	}
-
-	project := s.projects.getProjectByNumber(name.ProjectNumber)
-	if project == nil {
-		return nil, status.Errorf(codes.InvalidArgument, "project %q not known", name.ProjectNumber)
 	}
 
 	var secret secretmanager.Secret
@@ -102,27 +98,27 @@ func (s *MockService) DeleteSecret(context.Context, *secretmanager.DeleteSecretR
 }
 
 type secretName struct {
-	ProjectNumber int64
-	SecretName    string
+	Project    *projects.ProjectData
+	SecretName string
 }
 
 func (n *secretName) String() string {
-	return "projects/" + strconv.FormatInt(n.ProjectNumber, 10) + "/secrets/" + n.SecretName
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/secrets/" + n.SecretName
 }
 
 // parseSecretName parses a string into a secretName.
-// The expected form is projects/<projectNumber>/secrets/<secretName>
+// The expected form is projects/<projectID>/secrets/<secretName>
 func (s *MockService) parseSecretName(name string) (*secretName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "secrets" {
-		project := s.projects.getProject(tokens[1])
-		if project == nil {
-			return nil, status.Errorf(codes.InvalidArgument, "project %q not known", tokens[1])
+		project, err := s.projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
 		}
 
 		name := &secretName{
-			ProjectNumber: project.Number,
-			SecretName:    tokens[3],
+			Project:    project,
+			SecretName: tokens[3],
 		}
 
 		return name, nil

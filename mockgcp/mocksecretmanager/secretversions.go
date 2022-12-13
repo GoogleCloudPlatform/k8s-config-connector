@@ -20,6 +20,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	secretmanager "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 	"google.golang.org/grpc/codes"
@@ -38,11 +39,6 @@ func (s *MockService) AddSecretVersion(ctx context.Context, req *secretmanager.A
 	secretName, err := s.parseSecretName(req.Parent)
 	if err != nil {
 		return nil, err
-	}
-
-	project := s.projects.getProjectByNumber(secretName.ProjectNumber)
-	if project == nil {
-		return nil, status.Errorf(codes.InvalidArgument, "project %q not known", secretName)
 	}
 
 	var secret secretmanager.Secret
@@ -81,9 +77,9 @@ func (s *MockService) AddSecretVersion(ctx context.Context, req *secretmanager.A
 	}
 
 	secretVersionName := secretVersionName{
-		ProjectNumber: secretName.ProjectNumber,
-		SecretName:    secretName.SecretName,
-		Version:       strconv.Itoa(version),
+		Project:    secretName.Project,
+		SecretName: secretName.SecretName,
+		Version:    strconv.Itoa(version),
 	}
 
 	secretObj := &corev1.Secret{}
@@ -128,7 +124,7 @@ func (s *MockService) ListSecretVersions(context.Context, *secretmanager.ListSec
 // `projects/*/secrets/*/versions/latest` is an alias to the most recently
 // created [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
 func (s *MockService) GetSecretVersion(ctx context.Context, req *secretmanager.GetSecretVersionRequest) (*secretmanager.SecretVersion, error) {
-	rawName, err := parseSecretVersionName(req.Name)
+	rawName, err := s.parseSecretVersionName(req.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +155,7 @@ func (s *MockService) getSecretVersion(ctx context.Context, name *secretVersionN
 }
 
 func (s *MockService) accessSecret(ctx context.Context, secretVersion *secretmanager.SecretVersion) (*corev1.Secret, error) {
-	name, err := parseSecretVersionName(secretVersion.Name)
+	name, err := s.parseSecretVersionName(secretVersion.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -183,7 +179,7 @@ func (s *MockService) accessSecret(ctx context.Context, secretVersion *secretman
 // `projects/*/secrets/*/versions/latest` is an alias to the most recently
 // created [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
 func (s *MockService) AccessSecretVersion(ctx context.Context, req *secretmanager.AccessSecretVersionRequest) (*secretmanager.AccessSecretVersionResponse, error) {
-	rawName, err := parseSecretVersionName(req.Name)
+	rawName, err := s.parseSecretVersionName(req.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -227,7 +223,7 @@ func (s *MockService) DisableSecretVersion(ctx context.Context, req *secretmanag
 // Sets the [state][google.cloud.secretmanager.v1.SecretVersion.state] of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] to
 // [ENABLED][google.cloud.secretmanager.v1.SecretVersion.State.ENABLED].
 func (s *MockService) EnableSecretVersion(ctx context.Context, req *secretmanager.EnableSecretVersionRequest) (*secretmanager.SecretVersion, error) {
-	name, err := parseSecretVersionName(req.Name)
+	name, err := s.parseSecretVersionName(req.Name)
 	if err != nil {
 		return nil, err
 	}
@@ -262,27 +258,26 @@ func lastComponent(s string) string {
 }
 
 type secretVersionName struct {
-	ProjectNumber int64
-	SecretName    string
-	Version       string
+	Project    *projects.ProjectData
+	SecretName string
+	Version    string
 }
 
 func (n *secretVersionName) String() string {
-	return "projects/" + strconv.FormatInt(n.ProjectNumber, 10) + "/secrets/" + n.SecretName + "/versions/" + n.Version
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/secrets/" + n.SecretName + "/versions/" + n.Version
 }
 
-func parseSecretVersionName(name string) (*secretVersionName, error) {
+func (s *MockService) parseSecretVersionName(name string) (*secretVersionName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "secrets" && tokens[4] == "versions" {
-		projectNumber, err := strconv.ParseInt(tokens[1], 10, 64)
+		project, err := s.projects.GetProjectByNumber(tokens[1])
 		if err != nil {
-			return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid (expected project number)", name)
+			return nil, err
 		}
-
 		name := &secretVersionName{
-			ProjectNumber: projectNumber,
-			SecretName:    tokens[3],
-			Version:       tokens[5],
+			Project:    project,
+			SecretName: tokens[3],
+			Version:    tokens[5],
 		}
 
 		if name.Version == "latest" {
@@ -302,7 +297,7 @@ func parseSecretVersionName(name string) (*secretVersionName, error) {
 func (s *secretVersionName) kubernetesSecretID() types.NamespacedName {
 	key := types.NamespacedName{
 		Name:      fmt.Sprintf("secretmanager-%s-%s", s.SecretName, s.Version),
-		Namespace: strconv.FormatInt(s.ProjectNumber, 10),
+		Namespace: strconv.FormatInt(s.Project.Number, 10),
 	}
 	return key
 }

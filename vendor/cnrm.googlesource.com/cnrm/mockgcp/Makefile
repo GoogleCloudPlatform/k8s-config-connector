@@ -16,4 +16,6 @@ gen-proto:
 		--grpc-gateway_opt logtostderr=true \
 		--grpc-gateway_opt paths=source_relative \
 		--grpc-gateway_opt standalone=true \
-		./third_party/googleapis/google/cloud/secretmanager/v1/service.proto
+		--experimental_allow_proto3_optional \
+		./third_party/googleapis/google/cloud/secretmanager/v1/service.proto \
+		./third_party/googleapis/google/cloud/security/privateca/v1/*.proto \

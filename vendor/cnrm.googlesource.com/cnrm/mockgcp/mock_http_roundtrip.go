@@ -26,6 +26,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecretmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -36,6 +37,7 @@ import (
 
 type mockRoundTripper struct {
 	secretmanager *mocksecretmanager.MockService
+	privateca     *mockprivateca.MockService
 
 	grpcConnection *grpc.ClientConn
 	grpcListener   net.Listener
@@ -54,6 +56,9 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 
 	rt.secretmanager = mocksecretmanager.NewMockService(k8sClient, storage)
 	rt.secretmanager.Register(server)
+
+	rt.privateca = mockprivateca.New(k8sClient, storage)
+	rt.privateca.Register(server)
 
 	listener, err := net.Listen("tcp", "localhost:0")
 	if err != nil {
@@ -87,6 +92,14 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 			t.Fatalf("error building mux: %v", err)
 		}
 		rt.hosts[mocksecretmanager.ExpectedHost] = mux
+	}
+
+	{
+		mux, err := rt.privateca.NewMux(ctx, conn)
+		if err != nil {
+			t.Fatalf("error building mux: %v", err)
+		}
+		rt.hosts[mockprivateca.ExpectedHost] = mux
 	}
 
 	return rt
