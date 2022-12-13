@@ -12,9 +12,6 @@ insertText: |
       external: \${4:projects/[PROJECT_ID?]}
     location: \${5:us-central1}
     managementConfig:
-      standardManagementConfig:
-        networkRef:
-          name: \${6:configcontrollerinstance-dep}
-        masterIPv4CidrBlock: \${7:172.16.123.64/28}
-        clusterCidrBlock: \${8:/20}
-        servicesCidrBlock: \${9:/24}
+      fullManagementConfig:
+        clusterCidrBlock: \${6:/20}
+        servicesCidrBlock: \${7:/24}

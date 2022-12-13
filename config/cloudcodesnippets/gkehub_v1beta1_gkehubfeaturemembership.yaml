@@ -7,12 +7,12 @@ insertText: |
     name: \${1:gkehubfeaturemembership-name}
   spec:
     projectRef:
-      name: \${2:gkehubfeaturemembership-dep}
+      name: \${2:gkehubfeaturemembership-dep-acm}
     location: \${3:global}
     membershipRef:
-      name: \${4:gkehubfeaturemembership-dep}
+      name: \${4:gkehubfeaturemembership-dep-acm}
     featureRef:
-      name: \${5:gkehubfeaturemembership-dep}
+      name: \${5:gkehubfeaturemembership-dep-acm}
     configmanagement:
       configSync:
         sourceFormat: \${6:unstructured}
