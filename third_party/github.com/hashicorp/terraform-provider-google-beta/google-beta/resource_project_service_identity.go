@@ -34,7 +34,6 @@ func resourceProjectServiceIdentity() *schema.Resource {
 			},
 			"email": {
 				Type:     schema.TypeString,
-				Optional: true,
 				Computed: true,
 			},
 		},

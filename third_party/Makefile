@@ -281,3 +281,6 @@ apply-patches:
 	# `disk_type` field unset.
 	# TODO(b/258864199): Remove this patch if disk_type field no longer causes unexpected diffs.
 	git apply ../hack/terraform-overrides/container_cluster_autopilot_disk_type.patch
+	# The "email" field in service identity resource should not be marked as "optional".
+	# TODO(b/262423105): Remove this patch when the OSS fix is picked up
+	git apply ../hack/terraform-overrides/service_identity_email.patch
