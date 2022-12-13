@@ -26,6 +26,7 @@ var (
 		"DataCatalog/PolicyTag",
 		"DataCatalog/Taxonomy",
 		"Tags/TagKey",
+		"Tags/TagValue",
 	}
 	legacyServiceNames = map[string]string{}
 )

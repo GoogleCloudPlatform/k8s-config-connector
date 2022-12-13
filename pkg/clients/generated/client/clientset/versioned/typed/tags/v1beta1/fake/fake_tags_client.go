@@ -35,6 +35,10 @@ func (c *FakeTagsV1beta1) TagsTagKeys(namespace string) v1beta1.TagsTagKeyInterf
 	return &FakeTagsTagKeys{c, namespace}
 }
 
+func (c *FakeTagsV1beta1) TagsTagValues(namespace string) v1beta1.TagsTagValueInterface {
+	return &FakeTagsTagValues{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeTagsV1beta1) RESTClient() rest.Interface {

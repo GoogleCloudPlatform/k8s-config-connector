@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(TagsTagKey{}).Name(),
 	}
 
+	TagsTagValueGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(TagsTagValue{}).Name(),
+	}
+
 	tagsAPIVersion = SchemeGroupVersion.String()
 )

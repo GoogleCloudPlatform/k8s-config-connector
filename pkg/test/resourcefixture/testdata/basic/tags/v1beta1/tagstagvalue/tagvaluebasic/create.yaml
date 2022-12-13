@@ -1,0 +1,9 @@
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
+kind: TagsTagValue
+metadata:
+  name: tagstagvalue-${uniqueId}
+spec:
+  description: For valuename resources.
+  parentRef:
+    name: tagstagkey-${uniqueId}
+  shortName: valuename
