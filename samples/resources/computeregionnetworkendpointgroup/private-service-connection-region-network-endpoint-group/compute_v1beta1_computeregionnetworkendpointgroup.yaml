@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Caution: There is a known issue when deleting all resources in this sample
+# in parallel. If you see deletion errors, try waiting to delete the
+# ComputeServiceAttachment resource until the
+# ComputeRegionNetworkEndpointGroup resource is fully deleted.
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeRegionNetworkEndpointGroup
 metadata:

@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.97.0
+    cnrm.cloud.google.com/version: 1.98.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -217,6 +217,112 @@ spec:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
+              rules:
+                description: A list of rules associated with this NAT.
+                items:
+                  properties:
+                    action:
+                      description: The action to be enforced for traffic that matches
+                        this rule.
+                      properties:
+                        sourceNatActiveIpsRefs:
+                          items:
+                            description: |-
+                              A list of URLs of the IP resources used for this NAT rule. These IP
+                              addresses must be valid static external IP addresses assigned to the
+                              project. This field is used for public NAT.
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: 'Allowed value: The `selfLink` field
+                                  of a `ComputeAddress` resource.'
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                type: string
+                              namespace:
+                                description: 'Namespace of the referent. More info:
+                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                type: string
+                            type: object
+                          type: array
+                        sourceNatDrainIpsRefs:
+                          items:
+                            description: |-
+                              A list of URLs of the IP resources to be drained. These IPs must be
+                              valid static external IPs that have been assigned to the NAT. These
+                              IPs should be used for updating/patching a NAT rule only. This field
+                              is used for public NAT.
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: 'Allowed value: The `selfLink` field
+                                  of a `ComputeAddress` resource.'
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                type: string
+                              namespace:
+                                description: 'Namespace of the referent. More info:
+                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    description:
+                      description: An optional description of this rule.
+                      type: string
+                    match:
+                      description: |-
+                        CEL expression that specifies the match condition that egress traffic from a VM is evaluated against.
+                        If it evaluates to true, the corresponding action is enforced.
+
+                        The following examples are valid match expressions for public NAT:
+
+                        "inIpRange(destination.ip, '1.1.0.0/16') || inIpRange(destination.ip, '2.2.0.0/16')"
+
+                        "destination.ip == '1.1.0.1' || destination.ip == '8.8.8.8'"
+
+                        The following example is a valid match expression for private NAT:
+
+                        "nexthop.hub == 'https://networkconnectivity.googleapis.com/v1alpha1/projects/my-project/global/hub/hub-1'".
+                      type: string
+                    ruleNumber:
+                      description: |-
+                        An integer uniquely identifying a rule in the list.
+                        The rule number must be a positive value between 0 and 65000, and must be unique among rules within a NAT.
+                      type: integer
+                  required:
+                  - match
+                  - ruleNumber
+                  type: object
+                type: array
               sourceSubnetworkIpRangesToNat:
                 description: |-
                   How NAT should be configured per Subnetwork.

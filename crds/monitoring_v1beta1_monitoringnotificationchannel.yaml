@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.97.0
+    cnrm.cloud.google.com/version: 1.98.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -87,6 +87,12 @@ spec:
                   in the future.
                 type: boolean
               forceDelete:
+                description: |-
+                  If true, the notification channel will be deleted regardless
+                  of its use in alert policies (the policies will be updated
+                  to remove the channel). If false, channels that are still
+                  referenced by an existing alerting policy will fail to be
+                  deleted in a delete operation.
                 type: boolean
               labels:
                 additionalProperties:
