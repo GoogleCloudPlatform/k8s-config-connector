@@ -84,6 +84,7 @@ func FakeCRDsWithHierarchicalResources() []*apiextensions.CustomResourceDefiniti
 }
 
 func FakeServiceMappings() []v1alpha1.ServiceMapping {
+	var test1FooReconciliationIntervalInSeconds uint32 = 100
 	return []v1alpha1.ServiceMapping{
 		{
 			ObjectMeta: metav1.ObjectMeta{
@@ -96,8 +97,9 @@ func FakeServiceMappings() []v1alpha1.ServiceMapping {
 				Version:         "v1alpha1",
 				Resources: []v1alpha1.ResourceConfig{
 					{
-						Name: "foo",
-						Kind: "Test1Foo",
+						Name:                            "foo",
+						Kind:                            "Test1Foo",
+						ReconciliationIntervalInSeconds: &test1FooReconciliationIntervalInSeconds,
 					},
 					{
 						Name: "bar",

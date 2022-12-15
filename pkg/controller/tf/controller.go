@@ -175,7 +175,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
 	}
-	jitteredPeriod := jitter.GenerateJitteredReenqueuePeriod()
+	jitteredPeriod := jitter.GenerateJitteredReenqueuePeriod(r.gvk, r.smLoader, nil)
 	r.logger.Info("successfully finished reconcile", "resource", k8s.GetNamespacedName(resource), "time to next reconciliation", jitteredPeriod)
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }
@@ -339,7 +339,7 @@ func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.R
 		// Decrement the count of active resource watches after
 		// the watch finishes
 		defer r.resourceWatcherRoutines.Release(1)
-		timeoutPeriod := jitter.GenerateJitteredReenqueuePeriod()
+		timeoutPeriod := jitter.GenerateWatchJitteredTimeoutPeriod()
 		ctx, cancel := context.WithTimeout(ctx, timeoutPeriod)
 		defer cancel()
 		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)

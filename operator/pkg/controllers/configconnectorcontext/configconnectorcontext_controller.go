@@ -129,7 +129,7 @@ func (r *ConfigConnectorContextReconciler) Reconcile(ctx context.Context, req re
 		}
 		return reconcile.Result{}, reconciliationErr
 	}
-	jitteredPeriod := jitter.GenerateJitteredReenqueuePeriod()
+	jitteredPeriod := jitter.GenerateWatchJitteredTimeoutPeriod()
 	r.log.Info("successfully finished reconcile", "ConfigConnectorContext", req.NamespacedName, "time to next reconciliation", jitteredPeriod)
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, r.handleReconcileSucceeded(ctx, req.NamespacedName)
 }

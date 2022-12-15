@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	condition "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
@@ -80,7 +80,7 @@ func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *s
 
 // add adds a new Controller to mgr with r as the reconcile.Reconciler.
 func add(mgr manager.Manager, r *Reconciler) error {
-	obj := &v1beta1.IAMPolicyMember{}
+	obj := &iamv1beta1.IAMPolicyMember{}
 	_, err := builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
@@ -115,11 +115,11 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 	startTime := time.Now()
 	ctx, cancel := context.WithTimeout(ctx, k8s.ReconcileDeadline)
 	defer cancel()
-	r.RecordReconcileWorkers(ctx, v1beta1.IAMPolicyMemberGVK)
+	r.RecordReconcileWorkers(ctx, iamv1beta1.IAMPolicyMemberGVK)
 	defer r.AfterReconcile()
-	defer r.RecordReconcileMetrics(ctx, v1beta1.IAMPolicyMemberGVK, request.Namespace, request.Name, startTime, &err)
+	defer r.RecordReconcileMetrics(ctx, iamv1beta1.IAMPolicyMemberGVK, request.Namespace, request.Name, startTime, &err)
 
-	var memberPolicy v1beta1.IAMPolicyMember
+	var memberPolicy iamv1beta1.IAMPolicyMember
 	if err := r.Get(context.TODO(), request.NamespacedName, &memberPolicy); err != nil {
 		if apierrors.IsNotFound(err) {
 			return reconcile.Result{}, nil
@@ -138,12 +138,12 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
 	}
-	jitteredPeriod := jitter.GenerateJitteredReenqueuePeriod()
+	jitteredPeriod := jitter.GenerateJitteredReenqueuePeriod(iamv1beta1.IAMPolicyMemberGVK, nil, nil)
 	logger.Info("successfully finished reconcile", "resource", request.NamespacedName, "time to next reconciliation", jitteredPeriod)
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }
 
-func (r *reconcileContext) doReconcile(policyMember *v1beta1.IAMPolicyMember) (requeue bool, err error) {
+func (r *reconcileContext) doReconcile(policyMember *iamv1beta1.IAMPolicyMember) (requeue bool, err error) {
 	defer execution.RecoverWithInternalError(&err)
 	if !policyMember.DeletionTimestamp.IsZero() {
 		if !k8s.HasFinalizer(policyMember, k8s.ControllerFinalizerName) {
@@ -195,14 +195,14 @@ func (r *reconcileContext) doReconcile(policyMember *v1beta1.IAMPolicyMember) (r
 	return false, nil
 }
 
-func (r *reconcileContext) update(policyMember *v1beta1.IAMPolicyMember) error {
+func (r *reconcileContext) update(policyMember *iamv1beta1.IAMPolicyMember) error {
 	if err := r.Reconciler.Client.Update(r.Ctx, policyMember); err != nil {
 		return fmt.Errorf("error updating '%v' in API server: %w", r.NamespacedName, err)
 	}
 	return nil
 }
 
-func (r *reconcileContext) handleUpToDate(policyMember *v1beta1.IAMPolicyMember) error {
+func (r *reconcileContext) handleUpToDate(policyMember *iamv1beta1.IAMPolicyMember) error {
 	resource, err := toK8sResource(policyMember)
 	if err != nil {
 		return fmt.Errorf("error converting IAMPolicyMember to k8s resource while handling %v event: %w", k8s.UpToDate, err)
@@ -210,7 +210,7 @@ func (r *reconcileContext) handleUpToDate(policyMember *v1beta1.IAMPolicyMember)
 	return r.Reconciler.HandleUpToDate(r.Ctx, resource)
 }
 
-func (r *reconcileContext) handleUpdateFailed(policyMember *v1beta1.IAMPolicyMember, origErr error) error {
+func (r *reconcileContext) handleUpdateFailed(policyMember *iamv1beta1.IAMPolicyMember, origErr error) error {
 	resource, err := toK8sResource(policyMember)
 	if err != nil {
 		logger.Error(err, "error converting IAMPolicyMember to k8s resource while handling event",
@@ -220,7 +220,7 @@ func (r *reconcileContext) handleUpdateFailed(policyMember *v1beta1.IAMPolicyMem
 	return r.Reconciler.HandleUpdateFailed(r.Ctx, resource, origErr)
 }
 
-func (r *reconcileContext) handleDeleted(policyMember *v1beta1.IAMPolicyMember) error {
+func (r *reconcileContext) handleDeleted(policyMember *iamv1beta1.IAMPolicyMember) error {
 	resource, err := toK8sResource(policyMember)
 	if err != nil {
 		return fmt.Errorf("error converting IAMPolicyMember to k8s resource while handling %v event: %w", k8s.Deleted, err)
@@ -228,7 +228,7 @@ func (r *reconcileContext) handleDeleted(policyMember *v1beta1.IAMPolicyMember) 
 	return r.Reconciler.HandleDeleted(r.Ctx, resource)
 }
 
-func (r *reconcileContext) handleDeleteFailed(policyMember *v1beta1.IAMPolicyMember, origErr error) error {
+func (r *reconcileContext) handleDeleteFailed(policyMember *iamv1beta1.IAMPolicyMember, origErr error) error {
 	resource, err := toK8sResource(policyMember)
 	if err != nil {
 		logger.Error(err, "error converting IAMPolicyMember to k8s resource while handling event",
@@ -238,7 +238,7 @@ func (r *reconcileContext) handleDeleteFailed(policyMember *v1beta1.IAMPolicyMem
 	return r.Reconciler.HandleDeleteFailed(r.Ctx, resource, origErr)
 }
 
-func (r *reconcileContext) handleUnresolvableDeps(policyMember *v1beta1.IAMPolicyMember, origErr error) error {
+func (r *reconcileContext) handleUnresolvableDeps(policyMember *iamv1beta1.IAMPolicyMember, origErr error) error {
 	resource, err := toK8sResource(policyMember)
 	if err != nil {
 		return fmt.Errorf("error converting IAMPolicyMember to k8s resource while handling unresolvable dependencies event: %w", err)
@@ -246,7 +246,7 @@ func (r *reconcileContext) handleUnresolvableDeps(policyMember *v1beta1.IAMPolic
 	return r.Reconciler.HandleUnresolvableDeps(r.Ctx, resource, origErr)
 }
 
-func isAPIServerUpdateRequired(policyMember *v1beta1.IAMPolicyMember) bool {
+func isAPIServerUpdateRequired(policyMember *iamv1beta1.IAMPolicyMember) bool {
 	// TODO: even in the event of an actual update to GCP, this function will
 	// return false because the condition comparison doesn't account for time.
 	conditions := []condition.Condition{
@@ -261,7 +261,7 @@ func isAPIServerUpdateRequired(policyMember *v1beta1.IAMPolicyMember) bool {
 	return false
 }
 
-func toK8sResource(policyMember *v1beta1.IAMPolicyMember) (*k8s.Resource, error) {
+func toK8sResource(policyMember *iamv1beta1.IAMPolicyMember) (*k8s.Resource, error) {
 	kcciamclient.SetGVK(policyMember)
 	resource := k8s.Resource{}
 	if err := util.Marshal(policyMember, &resource); err != nil {

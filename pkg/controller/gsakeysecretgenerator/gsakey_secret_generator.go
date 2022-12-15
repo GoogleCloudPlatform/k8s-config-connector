@@ -154,7 +154,7 @@ func (r *ReconcileSecret) Reconcile(ctx context.Context, request reconcile.Reque
 			r.recorder.Eventf(u, corev1.EventTypeWarning, k8s.UpdateFailed, eventMessageTemplate, u.GetName(), u.GetNamespace(), fmt.Sprintf(k8s.UpdateFailedMessageTmpl, err))
 			return reconcile.Result{}, err
 		}
-		jitteredPeriod := jitter.GenerateJitteredReenqueuePeriod()
+		jitteredPeriod := jitter.GenerateWatchJitteredTimeoutPeriod()
 		logger.Info("successfully finished reconcile", "time to next reconciliation", jitteredPeriod)
 		return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 	}
@@ -168,7 +168,7 @@ func (r *ReconcileSecret) Reconcile(ctx context.Context, request reconcile.Reque
 		return reconcile.Result{}, err
 	}
 	r.recorder.Eventf(u, corev1.EventTypeNormal, k8s.Created, eventMessageTemplate, u.GetName(), u.GetNamespace(), k8s.CreatedMessage)
-	jitteredPeriod := jitter.GenerateJitteredReenqueuePeriod()
+	jitteredPeriod := jitter.GenerateWatchJitteredTimeoutPeriod()
 	logger.Info("successfully finished reconcile", "time to next reconciliation", jitteredPeriod)
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }

@@ -162,7 +162,7 @@ func (r *ReconcileIAMPolicy) Reconcile(ctx context.Context, request reconcile.Re
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
 	}
-	jitteredPeriod := jitter.GenerateJitteredReenqueuePeriod()
+	jitteredPeriod := jitter.GenerateJitteredReenqueuePeriod(iamv1beta1.IAMPolicyGVK, nil, nil)
 	logger.Info("successfully finished reconcile", "resource", request.NamespacedName, "time to next reconciliation", jitteredPeriod)
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }
@@ -295,7 +295,7 @@ func (r *reconcileContext) handleUnresolvableDeps(policy *iamv1beta1.IAMPolicy, 
 		// Decrement the count of active resource watches after
 		// the watch finishes
 		defer r.Reconciler.resourceWatcherRoutines.Release(1)
-		timeoutPeriod := jitter.GenerateJitteredReenqueuePeriod()
+		timeoutPeriod := jitter.GenerateWatchJitteredTimeoutPeriod()
 		ctx, cancel := context.WithTimeout(context.TODO(), timeoutPeriod)
 		defer cancel()
 		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)

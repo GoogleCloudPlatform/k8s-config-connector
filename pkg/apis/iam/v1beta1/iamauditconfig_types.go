@@ -15,6 +15,8 @@
 package v1beta1
 
 import (
+	"time"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -75,6 +77,8 @@ type IAMAuditConfigList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []IAMAuditConfig `json:"items"`
 }
+
+const IAMAuditConfigReconcileInterval = 10 * time.Minute
 
 func init() {
 	SchemeBuilder.Register(&IAMAuditConfig{}, &IAMAuditConfigList{})

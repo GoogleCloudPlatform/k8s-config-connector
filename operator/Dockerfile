@@ -25,6 +25,8 @@ COPY operator/pkg/      operator/pkg/
 COPY operator/cmd/      operator/cmd/
 COPY operator/channels/ operator/channels/
 COPY pkg/ pkg/
+COPY config/servicemappings/ config/servicemappings/
+COPY scripts/resource-autogen/ scripts/resource-autogen/
 COPY vendor/ vendor/
 COPY scripts/generate-third-party-licenses scripts/generate-third-party-licenses
 COPY go.mod  go.mod

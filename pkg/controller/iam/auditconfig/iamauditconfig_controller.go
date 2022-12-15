@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	condition "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
@@ -88,7 +88,7 @@ func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *s
 
 // add adds a new Controller to mgr with r as the reconcile.Reconciler.
 func add(mgr manager.Manager, r *Reconciler) error {
-	obj := &v1beta1.IAMAuditConfig{}
+	obj := &iamv1beta1.IAMAuditConfig{}
 	_, err := builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
@@ -127,11 +127,11 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 	startTime := time.Now()
 	ctx, cancel := context.WithTimeout(ctx, k8s.ReconcileDeadline)
 	defer cancel()
-	r.RecordReconcileWorkers(ctx, v1beta1.IAMAuditConfigGVK)
+	r.RecordReconcileWorkers(ctx, iamv1beta1.IAMAuditConfigGVK)
 	defer r.AfterReconcile()
-	defer r.RecordReconcileMetrics(ctx, v1beta1.IAMAuditConfigGVK, request.Namespace, request.Name, startTime, &err)
+	defer r.RecordReconcileMetrics(ctx, iamv1beta1.IAMAuditConfigGVK, request.Namespace, request.Name, startTime, &err)
 
-	var auditConfig v1beta1.IAMAuditConfig
+	var auditConfig iamv1beta1.IAMAuditConfig
 	if err := r.Get(context.TODO(), request.NamespacedName, &auditConfig); err != nil {
 		if apierrors.IsNotFound(err) {
 			logger.Info("resource not found in API server; finishing reconcile", "resource", request.NamespacedName)
@@ -151,12 +151,12 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
 	}
-	jitteredPeriod := jitter.GenerateJitteredReenqueuePeriod()
+	jitteredPeriod := jitter.GenerateJitteredReenqueuePeriod(iamv1beta1.IAMAuditConfigGVK, nil, nil)
 	logger.Info("successfully finished reconcile", "resource", request.NamespacedName, "time to next reconciliation", jitteredPeriod)
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }
 
-func (r *reconcileContext) doReconcile(auditConfig *v1beta1.IAMAuditConfig) (requeue bool, err error) {
+func (r *reconcileContext) doReconcile(auditConfig *iamv1beta1.IAMAuditConfig) (requeue bool, err error) {
 	defer execution.RecoverWithInternalError(&err)
 	if !auditConfig.DeletionTimestamp.IsZero() {
 		if !k8s.HasFinalizer(auditConfig, k8s.ControllerFinalizerName) {
@@ -208,14 +208,14 @@ func (r *reconcileContext) doReconcile(auditConfig *v1beta1.IAMAuditConfig) (req
 	return false, nil
 }
 
-func (r *reconcileContext) update(auditConfig *v1beta1.IAMAuditConfig) error {
+func (r *reconcileContext) update(auditConfig *iamv1beta1.IAMAuditConfig) error {
 	if err := r.Reconciler.Client.Update(r.Ctx, auditConfig); err != nil {
 		return fmt.Errorf("error updating '%v' in API server: %w", r.NamespacedName, err)
 	}
 	return nil
 }
 
-func (r *reconcileContext) handleUpToDate(auditConfig *v1beta1.IAMAuditConfig) error {
+func (r *reconcileContext) handleUpToDate(auditConfig *iamv1beta1.IAMAuditConfig) error {
 	resource, err := toK8sResource(auditConfig)
 	if err != nil {
 		return fmt.Errorf("error converting IAMAuditConfig to k8s resource while handling %v event: %w", k8s.UpToDate, err)
@@ -223,7 +223,7 @@ func (r *reconcileContext) handleUpToDate(auditConfig *v1beta1.IAMAuditConfig) e
 	return r.Reconciler.HandleUpToDate(r.Ctx, resource)
 }
 
-func (r *reconcileContext) handleUpdateFailed(auditConfig *v1beta1.IAMAuditConfig, origErr error) error {
+func (r *reconcileContext) handleUpdateFailed(auditConfig *iamv1beta1.IAMAuditConfig, origErr error) error {
 	resource, err := toK8sResource(auditConfig)
 	if err != nil {
 		logger.Error(err, "error converting IAMAuditConfig to k8s resource while handling event",
@@ -233,7 +233,7 @@ func (r *reconcileContext) handleUpdateFailed(auditConfig *v1beta1.IAMAuditConfi
 	return r.Reconciler.HandleUpdateFailed(r.Ctx, resource, origErr)
 }
 
-func (r *reconcileContext) handleDeleted(auditConfig *v1beta1.IAMAuditConfig) error {
+func (r *reconcileContext) handleDeleted(auditConfig *iamv1beta1.IAMAuditConfig) error {
 	resource, err := toK8sResource(auditConfig)
 	if err != nil {
 		return fmt.Errorf("error converting IAMAuditConfig to k8s resource while handling %v event: %w", k8s.Deleted, err)
@@ -241,7 +241,7 @@ func (r *reconcileContext) handleDeleted(auditConfig *v1beta1.IAMAuditConfig) er
 	return r.Reconciler.HandleDeleted(r.Ctx, resource)
 }
 
-func (r *reconcileContext) handleDeleteFailed(auditConfig *v1beta1.IAMAuditConfig, origErr error) error {
+func (r *reconcileContext) handleDeleteFailed(auditConfig *iamv1beta1.IAMAuditConfig, origErr error) error {
 	resource, err := toK8sResource(auditConfig)
 	if err != nil {
 		logger.Error(err, "error converting IAMAuditConfig to k8s resource while handling event",
@@ -255,7 +255,7 @@ func (r *Reconciler) supportsImmediateReconciliations() bool {
 	return r.immediateReconcileRequests != nil
 }
 
-func (r *reconcileContext) handleUnresolvableDeps(auditConfig *v1beta1.IAMAuditConfig, origErr error) (requeue bool, err error) {
+func (r *reconcileContext) handleUnresolvableDeps(auditConfig *iamv1beta1.IAMAuditConfig, origErr error) (requeue bool, err error) {
 	resource, err := toK8sResource(auditConfig)
 	if err != nil {
 		return false, fmt.Errorf("error converting IAMAuditConfig to k8s resource while handling unresolvable dependencies event: %w", err)
@@ -295,7 +295,7 @@ func (r *reconcileContext) handleUnresolvableDeps(auditConfig *v1beta1.IAMAuditC
 		// Decrement the count of active resource watches after
 		// the watch finishes
 		defer r.Reconciler.resourceWatcherRoutines.Release(1)
-		timeoutPeriod := jitter.GenerateJitteredReenqueuePeriod()
+		timeoutPeriod := jitter.GenerateWatchJitteredTimeoutPeriod()
 		ctx, cancel := context.WithTimeout(context.TODO(), timeoutPeriod)
 		defer cancel()
 		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
@@ -325,7 +325,7 @@ func (r *Reconciler) enqueueForImmediateReconciliation(resourceNN types.Namespac
 	r.immediateReconcileRequests <- genEvent
 }
 
-func isAPIServerUpdateRequired(auditConfig *v1beta1.IAMAuditConfig) bool {
+func isAPIServerUpdateRequired(auditConfig *iamv1beta1.IAMAuditConfig) bool {
 	// TODO: even in the event of an actual update to GCP, this function will
 	// return false because the condition comparison doesn't account for time.
 	conditions := []condition.Condition{
@@ -340,7 +340,7 @@ func isAPIServerUpdateRequired(auditConfig *v1beta1.IAMAuditConfig) bool {
 	return false
 }
 
-func toK8sResource(auditConfig *v1beta1.IAMAuditConfig) (*k8s.Resource, error) {
+func toK8sResource(auditConfig *iamv1beta1.IAMAuditConfig) (*k8s.Resource, error) {
 	kcciamclient.SetGVK(auditConfig)
 	resource := k8s.Resource{}
 	if err := util.Marshal(auditConfig, &resource); err != nil {
