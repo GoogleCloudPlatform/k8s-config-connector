@@ -25,6 +25,7 @@ var (
 	allowlist = []string{
 		"DataCatalog/PolicyTag",
 		"DataCatalog/Taxonomy",
+		"Tags/TagBinding",
 		"Tags/TagKey",
 		"Tags/TagValue",
 	}

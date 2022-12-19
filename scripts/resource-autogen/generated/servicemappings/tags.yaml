@@ -73,3 +73,21 @@ spec:
       serverGeneratedIDField: name
       resourceID:
         targetField: name
+      resourceReferences:
+        - key: parentRef
+          tfField: parent
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+          targetField: number
+          valueTemplate: "//cloudresourcemanager.googleapis.com/projects/{{value}}"
+          parent: true
+        - key: tagValueRef
+          tfField: tag_value
+          gvk:
+            kind: TagsTagValue
+            version: v1beta1
+            group: tags.cnrm.cloud.google.com
+          targetField: name
+          valueTemplate: "tagValues/{{value}}"

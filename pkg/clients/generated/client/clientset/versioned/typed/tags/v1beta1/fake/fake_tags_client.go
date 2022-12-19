@@ -31,6 +31,10 @@ type FakeTagsV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakeTagsV1beta1) TagsTagBindings(namespace string) v1beta1.TagsTagBindingInterface {
+	return &FakeTagsTagBindings{c, namespace}
+}
+
 func (c *FakeTagsV1beta1) TagsTagKeys(namespace string) v1beta1.TagsTagKeyInterface {
 	return &FakeTagsTagKeys{c, namespace}
 }

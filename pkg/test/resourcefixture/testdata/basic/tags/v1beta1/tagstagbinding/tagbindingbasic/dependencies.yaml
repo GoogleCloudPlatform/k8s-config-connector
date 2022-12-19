@@ -1,0 +1,27 @@
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  name: project-${uniqueId}
+spec:
+  name: project id
+  organizationRef:
+    external: ${TEST_ORG_ID}
+---
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
+kind: TagsTagKey
+metadata:
+  name: tagstagkey-${uniqueId}
+spec:
+  description: For keyname resources.
+  parent: organizations/${TEST_ORG_ID}
+  shortName: keyname
+---
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
+kind: TagsTagValue
+metadata:
+  name: tagstagvalue-${uniqueId}
+spec:
+  description: For valuename resources.
+  parentRef:
+    name: tagstagkey-${uniqueId}
+  shortName: valuename

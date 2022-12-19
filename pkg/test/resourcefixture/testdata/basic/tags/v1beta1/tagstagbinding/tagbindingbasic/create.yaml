@@ -1,0 +1,9 @@
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
+kind: TagsTagBinding
+metadata:
+  name: tagstagbinding-${uniqueId}
+spec:
+  parentRef:
+    name: project-${uniqueId}
+  tagValueRef:
+    name: tagstagvalue-${uniqueId}
