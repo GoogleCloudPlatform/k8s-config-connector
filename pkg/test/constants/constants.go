@@ -55,6 +55,4 @@ var TestNameRegexToSkipForTestCRUD = []string{
 	// The test cases are selected by GetFilteredSetCover(). After orgrole
 	// test is disabled, projectrole test is selected to test IAMRole resource.
 	".*orgrole.*",
-	// TODO(b/244203829) Remove the name regex for computenodegroup below once fixed.
-	".*computenodegroup.*",
 }
