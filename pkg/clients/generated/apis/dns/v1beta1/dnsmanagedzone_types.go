@@ -92,6 +92,13 @@ type ManagedzoneForwardingConfig struct {
 	TargetNameServers []ManagedzoneTargetNameServers `json:"targetNameServers"`
 }
 
+type ManagedzoneGkeClusters struct {
+	/* The resource name of the cluster to bind this ManagedZone to.
+	This should be specified in the format like
+	'projects/* /locations/* /clusters/*'. */
+	GkeClusterNameRef v1alpha1.ResourceRef `json:"gkeClusterNameRef"`
+}
+
 type ManagedzoneNamespace struct {
 	/* The fully qualified or partial URL of the service directory namespace that should be
 	associated with the zone. This should be formatted like
@@ -112,6 +119,10 @@ type ManagedzonePeeringConfig struct {
 }
 
 type ManagedzonePrivateVisibilityConfig struct {
+	/* The list of Google Kubernetes Engine clusters that can see this zone. */
+	// +optional
+	GkeClusters []ManagedzoneGkeClusters `json:"gkeClusters,omitempty"`
+
 	/*  */
 	Networks []ManagedzoneNetworks `json:"networks"`
 }

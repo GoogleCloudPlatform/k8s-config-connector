@@ -47,57 +47,6 @@ func resourceLoggingMetric() *schema.Resource {
 				Description: `An advanced logs filter (https://cloud.google.com/logging/docs/view/advanced-filters) which
 is used to match log entries.`,
 			},
-			"metric_descriptor": {
-				Type:        schema.TypeList,
-				Required:    true,
-				Description: `The metric descriptor associated with the logs-based metric.`,
-				MaxItems:    1,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"metric_kind": {
-							Type:         schema.TypeString,
-							Required:     true,
-							ValidateFunc: validateEnum([]string{"DELTA", "GAUGE", "CUMULATIVE"}),
-							Description: `Whether the metric records instantaneous values, changes to a value, etc.
-Some combinations of metricKind and valueType might not be supported.
-For counter metrics, set this to DELTA. Possible values: ["DELTA", "GAUGE", "CUMULATIVE"]`,
-						},
-						"value_type": {
-							Type:         schema.TypeString,
-							Required:     true,
-							ValidateFunc: validateEnum([]string{"BOOL", "INT64", "DOUBLE", "STRING", "DISTRIBUTION", "MONEY"}),
-							Description: `Whether the measurement is an integer, a floating-point number, etc.
-Some combinations of metricKind and valueType might not be supported.
-For counter metrics, set this to INT64. Possible values: ["BOOL", "INT64", "DOUBLE", "STRING", "DISTRIBUTION", "MONEY"]`,
-						},
-						"display_name": {
-							Type:     schema.TypeString,
-							Optional: true,
-							Description: `A concise name for the metric, which can be displayed in user interfaces. Use sentence case 
-without an ending period, for example "Request count". This field is optional but it is 
-recommended to be set for any metrics associated with user-visible concepts, such as Quota.`,
-						},
-						"labels": {
-							Type:     schema.TypeSet,
-							Optional: true,
-							Description: `The set of labels that can be used to describe a specific instance of this metric type. For
-example, the appengine.googleapis.com/http/server/response_latencies metric type has a label
-for the HTTP response code, response_code, so you can look at latencies for successful responses
-or just for responses that failed.`,
-							Elem: loggingMetricMetricDescriptorLabelsSchema(),
-							// Default schema.HashSchema is used.
-						},
-						"unit": {
-							Type:     schema.TypeString,
-							Optional: true,
-							Description: `The unit in which the metric value is reported. It is only applicable if the valueType is
-'INT64', 'DOUBLE', or 'DISTRIBUTION'. The supported units are a subset of
-[The Unified Code for Units of Measure](http://unitsofmeasure.org/ucum.html) standard`,
-							Default: "1",
-						},
-					},
-				},
-			},
 			"name": {
 				Type:     schema.TypeString,
 				Required: true,
@@ -106,6 +55,12 @@ Metric identifiers are limited to 100 characters and can include only the follow
 characters A-Z, a-z, 0-9, and the special characters _-.,+!*',()%/. The forward-slash
 character (/) denotes a hierarchy of name pieces, and it cannot be the first character
 of the name.`,
+			},
+			"bucket_name": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Description: `The resource name of the Log Bucket that owns the Log Metric. Only Log Buckets in projects
+are supported. The bucket has to be in the same project as the metric.`,
 			},
 			"bucket_options": {
 				Type:     schema.TypeList,
@@ -212,6 +167,61 @@ have an associated extractor expression in this map. The syntax of the extractor
 the same as for the valueExtractor field.`,
 				Elem: &schema.Schema{Type: schema.TypeString},
 			},
+			"metric_descriptor": {
+				Type:     schema.TypeList,
+				Computed: true,
+				Optional: true,
+				Description: `The optional metric descriptor associated with the logs-based metric.
+If unspecified, it uses a default metric descriptor with a DELTA metric kind,
+INT64 value type, with no labels and a unit of "1". Such a metric counts the
+number of log entries matching the filter expression.`,
+				MaxItems: 1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"metric_kind": {
+							Type:         schema.TypeString,
+							Required:     true,
+							ValidateFunc: validateEnum([]string{"DELTA", "GAUGE", "CUMULATIVE"}),
+							Description: `Whether the metric records instantaneous values, changes to a value, etc.
+Some combinations of metricKind and valueType might not be supported.
+For counter metrics, set this to DELTA. Possible values: ["DELTA", "GAUGE", "CUMULATIVE"]`,
+						},
+						"value_type": {
+							Type:         schema.TypeString,
+							Required:     true,
+							ValidateFunc: validateEnum([]string{"BOOL", "INT64", "DOUBLE", "STRING", "DISTRIBUTION", "MONEY"}),
+							Description: `Whether the measurement is an integer, a floating-point number, etc.
+Some combinations of metricKind and valueType might not be supported.
+For counter metrics, set this to INT64. Possible values: ["BOOL", "INT64", "DOUBLE", "STRING", "DISTRIBUTION", "MONEY"]`,
+						},
+						"display_name": {
+							Type:     schema.TypeString,
+							Optional: true,
+							Description: `A concise name for the metric, which can be displayed in user interfaces. Use sentence case 
+without an ending period, for example "Request count". This field is optional but it is 
+recommended to be set for any metrics associated with user-visible concepts, such as Quota.`,
+						},
+						"labels": {
+							Type:     schema.TypeSet,
+							Optional: true,
+							Description: `The set of labels that can be used to describe a specific instance of this metric type. For
+example, the appengine.googleapis.com/http/server/response_latencies metric type has a label
+for the HTTP response code, response_code, so you can look at latencies for successful responses
+or just for responses that failed.`,
+							Elem: loggingMetricMetricDescriptorLabelsSchema(),
+							// Default schema.HashSchema is used.
+						},
+						"unit": {
+							Type:     schema.TypeString,
+							Optional: true,
+							Description: `The unit in which the metric value is reported. It is only applicable if the valueType is
+'INT64', 'DOUBLE', or 'DISTRIBUTION'. The supported units are a subset of
+[The Unified Code for Units of Measure](http://unitsofmeasure.org/ucum.html) standard`,
+							Default: "1",
+						},
+					},
+				},
+			},
 			"value_extractor": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -279,6 +289,12 @@ func resourceLoggingMetricCreate(d *schema.ResourceData, meta interface{}) error
 		return err
 	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
+	}
+	bucketNameProp, err := expandLoggingMetricBucketName(d.Get("bucket_name"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("bucket_name"); !isEmptyValue(reflect.ValueOf(bucketNameProp)) && (ok || !reflect.DeepEqual(v, bucketNameProp)) {
+		obj["bucketName"] = bucketNameProp
 	}
 	filterProp, err := expandLoggingMetricFilter(d.Get("filter"), d, config)
 	if err != nil {
@@ -412,6 +428,9 @@ func resourceLoggingMetricRead(d *schema.ResourceData, meta interface{}) error {
 	if err := d.Set("description", flattenLoggingMetricDescription(res["description"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Metric: %s", err)
 	}
+	if err := d.Set("bucket_name", flattenLoggingMetricBucketName(res["bucketName"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Metric: %s", err)
+	}
 	if err := d.Set("filter", flattenLoggingMetricFilter(res["filter"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Metric: %s", err)
 	}
@@ -458,6 +477,12 @@ func resourceLoggingMetricUpdate(d *schema.ResourceData, meta interface{}) error
 		return err
 	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
 		obj["description"] = descriptionProp
+	}
+	bucketNameProp, err := expandLoggingMetricBucketName(d.Get("bucket_name"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("bucket_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, bucketNameProp)) {
+		obj["bucketName"] = bucketNameProp
 	}
 	filterProp, err := expandLoggingMetricFilter(d.Get("filter"), d, config)
 	if err != nil {
@@ -581,6 +606,10 @@ func flattenLoggingMetricName(v interface{}, d *schema.ResourceData, config *Con
 }
 
 func flattenLoggingMetricDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenLoggingMetricBucketName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	return v
 }
 
@@ -792,6 +821,10 @@ func expandLoggingMetricName(v interface{}, d TerraformResourceData, config *Con
 }
 
 func expandLoggingMetricDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandLoggingMetricBucketName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
 

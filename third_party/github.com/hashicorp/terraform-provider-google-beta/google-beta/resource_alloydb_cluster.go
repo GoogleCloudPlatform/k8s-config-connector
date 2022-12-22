@@ -49,8 +49,9 @@ func resourceAlloydbCluster() *schema.Resource {
 				Description: `The ID of the alloydb cluster.`,
 			},
 			"network": {
-				Type:     schema.TypeString,
-				Required: true,
+				Type:             schema.TypeString,
+				Required:         true,
+				DiffSuppressFunc: projectNumberDiffSuppress,
 				Description: `The relative resource name of the VPC network on which the instance can be accessed. It is specified in the following form:
 
 "projects/{projectNumber}/global/networks/{network_id}".`,

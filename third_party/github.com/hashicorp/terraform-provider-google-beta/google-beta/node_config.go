@@ -18,6 +18,16 @@ var defaultOauthScopes = []string{
 	"https://www.googleapis.com/auth/trace.append",
 }
 
+func schemaLoggingVariant() *schema.Schema {
+	return &schema.Schema{
+		Type:         schema.TypeString,
+		Optional:     true,
+		Description:  `Type of logging agent that is used as the default value for node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT.`,
+		Default:      "DEFAULT",
+		ValidateFunc: validation.StringInSlice([]string{"DEFAULT", "MAX_THROUGHPUT"}, false),
+	}
+}
+
 func schemaGcfsConfig(forceNew bool) *schema.Schema {
 	return &schema.Schema{
 		Type:        schema.TypeList,
@@ -142,6 +152,13 @@ func schemaNodeConfig() *schema.Schema {
 					DiffSuppressFunc: containerNodePoolLabelsSuppress,
 				},
 
+				"resource_labels": {
+					Type:        schema.TypeMap,
+					Optional:    true,
+					Elem:        &schema.Schema{Type: schema.TypeString},
+					Description: `The GCE resource labels (a map of key/value pairs) to be applied to the node pool.`,
+				},
+
 				"local_ssd_count": {
 					Type:         schema.TypeInt,
 					Optional:     true,
@@ -150,6 +167,8 @@ func schemaNodeConfig() *schema.Schema {
 					ValidateFunc: validation.IntAtLeast(0),
 					Description:  `The number of local SSD disks to be attached to the node.`,
 				},
+
+				"logging_variant": schemaLoggingVariant(),
 
 				"ephemeral_storage_config": {
 					Type:        schema.TypeList,
@@ -471,6 +490,13 @@ func expandNodeConfigDefaults(configured interface{}) *container.NodeConfigDefau
 	config := configs[0].(map[string]interface{})
 
 	nodeConfigDefaults := &container.NodeConfigDefaults{}
+	if variant, ok := config["logging_variant"]; ok {
+		nodeConfigDefaults.LoggingConfig = &container.NodePoolLoggingConfig{
+			VariantConfig: &container.LoggingVariantConfig{
+				Variant: variant.(string),
+			},
+		}
+	}
 	if v, ok := config["gcfs_config"]; ok && len(v.([]interface{})) > 0 {
 		gcfsConfig := v.([]interface{})[0].(map[string]interface{})
 		nodeConfigDefaults.GcfsConfig = &container.GcfsConfig{
@@ -533,6 +559,14 @@ func expandNodeConfig(v interface{}) *container.NodeConfig {
 
 	if v, ok := nodeConfig["local_ssd_count"]; ok {
 		nc.LocalSsdCount = int64(v.(int))
+	}
+
+	if v, ok := nodeConfig["logging_variant"]; ok {
+		nc.LoggingConfig = &container.NodePoolLoggingConfig{
+			VariantConfig: &container.LoggingVariantConfig{
+				Variant: v.(string),
+			},
+		}
 	}
 
 	if v, ok := nodeConfig["ephemeral_storage_config"]; ok && len(v.([]interface{})) > 0 {
@@ -603,6 +637,14 @@ func expandNodeConfig(v interface{}) *container.NodeConfig {
 			m[k] = val.(string)
 		}
 		nc.Labels = m
+	}
+
+	if v, ok := nodeConfig["resource_labels"]; ok {
+		m := make(map[string]string)
+		for k, val := range v.(map[string]interface{}) {
+			m[k] = val.(string)
+		}
+		nc.ResourceLabels = m
 	}
 
 	if v, ok := nodeConfig["tags"]; ok {
@@ -753,9 +795,11 @@ func flattenNodeConfigDefaults(c *container.NodeConfigDefaults) []map[string]int
 		return result
 	}
 
-	result = append(result, map[string]interface{}{
-		"gcfs_config": flattenGcfsConfig(c.GcfsConfig),
-	})
+	result = append(result, map[string]interface{}{})
+
+	result[0]["logging_variant"] = flattenLoggingVariant(c.LoggingConfig)
+
+	result[0]["gcfs_config"] = flattenGcfsConfig(c.GcfsConfig)
 	return result
 }
 
@@ -772,6 +816,7 @@ func flattenNodeConfig(c *container.NodeConfig) []map[string]interface{} {
 		"disk_type":                c.DiskType,
 		"guest_accelerator":        flattenContainerGuestAccelerators(c.Accelerators),
 		"local_ssd_count":          c.LocalSsdCount,
+		"logging_variant":          flattenLoggingVariant(c.LoggingConfig),
 		"ephemeral_storage_config": flattenEphemeralStorageConfig(c.EphemeralStorageConfig),
 		"gcfs_config":              flattenGcfsConfig(c.GcfsConfig),
 		"gvnic":                    flattenGvnic(c.Gvnic),
@@ -780,6 +825,7 @@ func flattenNodeConfig(c *container.NodeConfig) []map[string]interface{} {
 		"metadata":                 c.Metadata,
 		"image_type":               c.ImageType,
 		"labels":                   c.Labels,
+		"resource_labels":          c.ResourceLabels,
 		"tags":                     c.Tags,
 		"preemptible":              c.Preemptible,
 		"spot":                     c.Spot,
@@ -841,6 +887,14 @@ func flattenEphemeralStorageConfig(c *container.EphemeralStorageConfig) []map[st
 		})
 	}
 	return result
+}
+
+func flattenLoggingVariant(c *container.NodePoolLoggingConfig) string {
+	variant := "DEFAULT"
+	if c != nil && c.VariantConfig != nil && c.VariantConfig.Variant != "" {
+		variant = c.VariantConfig.Variant
+	}
+	return variant
 }
 
 func flattenGcfsConfig(c *container.GcfsConfig) []map[string]interface{} {

@@ -81,6 +81,7 @@ var (
 		"settings.0.insights_config.0.query_string_length",
 		"settings.0.insights_config.0.record_application_tags",
 		"settings.0.insights_config.0.record_client_address",
+		"settings.0.insights_config.0.query_plans_per_minute",
 	}
 )
 
@@ -158,6 +159,30 @@ func resourceSqlDatabaseInstance() *schema.Resource {
 								},
 							},
 						},
+						"deny_maintenance_period": {
+							Type:     schema.TypeList,
+							Optional: true,
+							MaxItems: 1,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"end_date": {
+										Type:        schema.TypeString,
+										Required:    true,
+										Description: `End date before which maintenance will not take place. The date is in format yyyy-mm-dd i.e., 2020-11-01, or mm-dd, i.e., 11-01`,
+									},
+									"start_date": {
+										Type:        schema.TypeString,
+										Required:    true,
+										Description: `Start date after which maintenance will not take place. The date is in format yyyy-mm-dd i.e., 2020-11-01, or mm-dd, i.e., 11-01`,
+									},
+									"time": {
+										Type:        schema.TypeString,
+										Required:    true,
+										Description: `Time in UTC when the "deny maintenance period" starts on start_date and ends on end_date. The time is in format: HH:mm:SS, i.e., 00:00:00`,
+									},
+								},
+							},
+						},
 						"sql_server_audit_config": {
 							Type:     schema.TypeList,
 							Optional: true,
@@ -186,7 +211,7 @@ func resourceSqlDatabaseInstance() *schema.Resource {
 							Type:        schema.TypeString,
 							ForceNew:    true,
 							Optional:    true,
-							Description: `The timezone to be used by the database engine (supported only for SQL Server), in SQL Server timezone format.`,
+							Description: `The time_zone to be used by the database engine (supported only for SQL Server), in SQL Server timezone format.`,
 						},
 						"availability_type": {
 							Type:         schema.TypeString,
@@ -466,6 +491,14 @@ is set to true. Defaults to ZONAL.`,
 										AtLeastOneOf: insightsConfigKeys,
 										Description:  `True if Query Insights will record client address when enabled.`,
 									},
+									"query_plans_per_minute": {
+										Type:         schema.TypeInt,
+										Optional:     true,
+										Computed:     true,
+										ValidateFunc: validation.IntBetween(0, 20),
+										AtLeastOneOf: insightsConfigKeys,
+										Description:  `Number of query execution plans captured by Insights per minute for all queries combined. Between 0 and 20. Default to 5.`,
+									},
 								},
 							},
 							Description: `Configuration of Query Insights.`,
@@ -511,6 +544,13 @@ is set to true. Defaults to ZONAL.`,
 									},
 								},
 							},
+						},
+						"connector_enforcement": {
+							Type:         schema.TypeString,
+							Optional:     true,
+							Computed:     true,
+							ValidateFunc: validation.StringInSlice([]string{"NOT_REQUIRED", "REQUIRED"}, false),
+							Description:  `Specifies if connections must use Cloud SQL connectors.`,
 						},
 					},
 				},
@@ -915,12 +955,12 @@ func resourceSqlDatabaseInstanceCreate(d *schema.ResourceData, meta interface{})
 	var patchData *sqladmin.DatabaseInstance
 
 	// BinaryLogging can be enabled on replica instances but only after creation.
-	if instance.MasterInstanceName != "" && instance.Settings != nil && instance.Settings.BackupConfiguration != nil {
-		bc := instance.Settings.BackupConfiguration
-		instance.Settings.BackupConfiguration = nil
-		if bc.BinaryLogEnabled {
-			patchData = &sqladmin.DatabaseInstance{Settings: &sqladmin.Settings{BackupConfiguration: bc}}
-		}
+	if instance.MasterInstanceName != "" && instance.Settings != nil && instance.Settings.BackupConfiguration != nil && instance.Settings.BackupConfiguration.BinaryLogEnabled {
+		settingsCopy := expandSqlDatabaseInstanceSettings(s.([]interface{}))
+		bc := settingsCopy.BackupConfiguration
+		patchData = &sqladmin.DatabaseInstance{Settings: &sqladmin.Settings{BackupConfiguration: bc}}
+
+		instance.Settings.BackupConfiguration.BinaryLogEnabled = false
 	}
 
 	var op *sqladmin.Operation
@@ -1051,9 +1091,11 @@ func expandSqlDatabaseInstanceSettings(configured []interface{}) *sqladmin.Setti
 		ForceSendFields:          []string{"StorageAutoResize"},
 		ActivationPolicy:         _settings["activation_policy"].(string),
 		ActiveDirectoryConfig:    expandActiveDirectoryConfig(_settings["active_directory_config"].([]interface{})),
+		DenyMaintenancePeriods:   expandDenyMaintenancePeriod(_settings["deny_maintenance_period"].([]interface{})),
 		SqlServerAuditConfig:     expandSqlServerAuditConfig(_settings["sql_server_audit_config"].([]interface{})),
 		TimeZone:                 _settings["time_zone"].(string),
 		AvailabilityType:         _settings["availability_type"].(string),
+		ConnectorEnforcement:     _settings["connector_enforcement"].(string),
 		Collation:                _settings["collation"].(string),
 		DataDiskSizeGb:           int64(_settings["disk_size"].(int)),
 		DataDiskType:             _settings["disk_type"].(string),
@@ -1229,6 +1271,25 @@ func expandActiveDirectoryConfig(configured interface{}) *sqladmin.SqlActiveDire
 	}
 }
 
+func expandDenyMaintenancePeriod(configured []interface{}) []*sqladmin.DenyMaintenancePeriod {
+	denyMaintenancePeriod := make([]*sqladmin.DenyMaintenancePeriod, 0, len(configured))
+
+	for _, _flag := range configured {
+		if _flag == nil {
+			continue
+		}
+		_entry := _flag.(map[string]interface{})
+
+		denyMaintenancePeriod = append(denyMaintenancePeriod, &sqladmin.DenyMaintenancePeriod{
+			EndDate:   _entry["end_date"].(string),
+			StartDate: _entry["start_date"].(string),
+			Time:      _entry["time"].(string),
+		})
+	}
+	return denyMaintenancePeriod
+
+}
+
 func expandSqlServerAuditConfig(configured interface{}) *sqladmin.SqlServerAuditConfig {
 	l := configured.([]interface{})
 	if len(l) == 0 {
@@ -1254,6 +1315,7 @@ func expandInsightsConfig(configured []interface{}) *sqladmin.InsightsConfig {
 		QueryStringLength:     int64(_insightsConfig["query_string_length"].(int)),
 		RecordApplicationTags: _insightsConfig["record_application_tags"].(bool),
 		RecordClientAddress:   _insightsConfig["record_client_address"].(bool),
+		QueryPlansPerMinute:   int64(_insightsConfig["query_plans_per_minute"].(int)),
 	}
 }
 
@@ -1567,6 +1629,7 @@ func flattenSettings(settings *sqladmin.Settings) []map[string]interface{} {
 		"activation_policy":          settings.ActivationPolicy,
 		"availability_type":          settings.AvailabilityType,
 		"collation":                  settings.Collation,
+		"connector_enforcement":      settings.ConnectorEnforcement,
 		"disk_type":                  settings.DataDiskType,
 		"disk_size":                  settings.DataDiskSizeGb,
 		"pricing_plan":               settings.PricingPlan,
@@ -1577,6 +1640,10 @@ func flattenSettings(settings *sqladmin.Settings) []map[string]interface{} {
 
 	if settings.ActiveDirectoryConfig != nil {
 		data["active_directory_config"] = flattenActiveDirectoryConfig(settings.ActiveDirectoryConfig)
+	}
+
+	if settings.DenyMaintenancePeriods != nil {
+		data["deny_maintenance_period"] = flattenDenyMaintenancePeriod(settings.DenyMaintenancePeriods)
 	}
 
 	if settings.SqlServerAuditConfig != nil {
@@ -1656,6 +1723,22 @@ func flattenActiveDirectoryConfig(sqlActiveDirectoryConfig *sqladmin.SqlActiveDi
 			"domain": sqlActiveDirectoryConfig.Domain,
 		},
 	}
+}
+
+func flattenDenyMaintenancePeriod(denyMaintenancePeriod []*sqladmin.DenyMaintenancePeriod) []map[string]interface{} {
+	flags := make([]map[string]interface{}, 0, len(denyMaintenancePeriod))
+
+	for _, flag := range denyMaintenancePeriod {
+		data := map[string]interface{}{
+			"end_date":   flag.EndDate,
+			"start_date": flag.StartDate,
+			"time":       flag.Time,
+		}
+
+		flags = append(flags, data)
+	}
+
+	return flags
 }
 
 func flattenSqlServerAuditConfig(sqlServerAuditConfig *sqladmin.SqlServerAuditConfig) []map[string]interface{} {
@@ -1807,6 +1890,7 @@ func flattenInsightsConfig(insightsConfig *sqladmin.InsightsConfig) interface{} 
 		"query_string_length":     insightsConfig.QueryStringLength,
 		"record_application_tags": insightsConfig.RecordApplicationTags,
 		"record_client_address":   insightsConfig.RecordClientAddress,
+		"query_plans_per_minute":  insightsConfig.QueryPlansPerMinute,
 	}
 
 	return []map[string]interface{}{data}

@@ -1574,6 +1574,32 @@ spec:
                 version: v1beta1
                 group: compute.cnrm.cloud.google.com
               targetField: self_link
+        - tfField: default_route_action.request_mirror_policy.backend_service
+          key: backendServiceRef
+          description: |-
+            The backend service resource being mirrored to.
+            The backend service configured for a mirroring policy must reference
+            backends that are of the same type as the original backend service
+            matched in the URL map.
+            Serverless NEG backends are not currently supported as a mirrored
+            backend service.
+          gvk:
+            group: compute.cnrm.cloud.google.com
+            version: v1beta1
+            kind: ComputeBackendService
+          targetField: self_link
+        - tfField: default_route_action.weighted_backend_services.backend_service
+          key: backendServiceRef
+          description: |-
+            The default backend service resource.
+            Before forwarding the request to backendService, the loadbalancer
+            applies any relevant headerActions specified as part of this
+            backendServiceWeight.
+          gvk:
+            group: compute.cnrm.cloud.google.com
+            version: v1beta1
+            kind: ComputeBackendService
+          targetField: self_link
         - tfField: path_matcher.default_service
           description: |-
             The default service to use if none of the pathRules defined by this
@@ -1810,6 +1836,28 @@ spec:
             kind: ComputeInterconnectAttachment
             version: v1beta1
             group: compute.cnrm.cloud.google.com
+        - tfField: private_ip_address
+          key: privateIpAddressRef
+          gvk:
+            kind: ComputeAddress
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: address
+        - tfField: redundant_interface
+          description: |-
+            The interface the BGP peer is associated with.
+          key: redundantInterfaceRef
+          gvk:
+            kind: ComputeRouterInterface
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+        - tfField: subnetwork
+          key: subnetworkRef
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
       containers:
         - type: project
           tfField: project
@@ -1940,6 +1988,23 @@ spec:
         name: name
       resourceID:
         targetField: name
+      resourceReferences:
+        - tfField: recaptcha_options_config.redirect_site_key
+          description: |-
+            Only `external` field is supported to configure the reference.
+
+            A field to supply a reCAPTCHA site key to be used for all the rules
+            using the redirect action with the type of GOOGLE_RECAPTCHA under
+            the security policy. The specified site key needs to be created from
+            the reCAPTCHA API. The user is responsible for the validity of the
+            specified site key. If not specified, a Google-managed site key is
+            used.
+          key: redirectSiteKeyRef
+          gvk:
+            kind: RecaptchaEnterpriseKey
+            version: v1beta1
+            group: recaptchaenterprise.cnrm.cloud.google.com
+          targetField: name
       containers:
         - type: project
           tfField: project
@@ -2299,12 +2364,12 @@ spec:
           targetField: self_link
         - tfField: certificate_map
           description: |-
+            Only `external` field is supported to configure the reference.
+
             A reference to the CertificateMap resource uri that identifies a
             certificate map associated with the given target proxy. This
             field can only be set for global target proxies. Accepted format is
             '//certificatemanager.googleapis.com/projects/{project}/locations/{location}/certificateMaps/{resourceName}'.
-
-            Only `external` field is supported to configure the reference.
           gvk:
             kind: CertificateManagerCertificateMap
             version: v1beta1
@@ -2378,7 +2443,12 @@ spec:
         - tfField: default_route_action.request_mirror_policy.backend_service
           key: backendServiceRef
           description: |-
-            Required. The backend service resource being mirrored to.
+            The backend service resource being mirrored to.
+            The backend service configured for a mirroring policy must reference
+            backends that are of the same type as the original backend service
+            matched in the URL map.
+            Serverless NEG backends are not currently supported as a mirrored
+            backend service.
           gvk:
             group: compute.cnrm.cloud.google.com
             version: v1beta1

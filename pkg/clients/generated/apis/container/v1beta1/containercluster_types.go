@@ -100,6 +100,10 @@ type ClusterAutoProvisioningDefaults struct {
 	// +optional
 	ImageType *string `json:"imageType,omitempty"`
 
+	/* NodeManagement configuration for this NodePool. */
+	// +optional
+	Management *ClusterManagement `json:"management,omitempty"`
+
 	/* Minimum CPU platform to be used by this instance. The instance may be scheduled on the specified or newer CPU platform. Applicable values are the friendly names of CPU platforms, such as Intel Haswell. */
 	// +optional
 	MinCpuPlatform *string `json:"minCpuPlatform,omitempty"`
@@ -111,6 +115,14 @@ type ClusterAutoProvisioningDefaults struct {
 	/*  */
 	// +optional
 	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+
+	/* Shielded Instance options. */
+	// +optional
+	ShieldedInstanceConfig *ClusterShieldedInstanceConfig `json:"shieldedInstanceConfig,omitempty"`
+
+	/* Specifies the upgrade settings for NAP created node pools. */
+	// +optional
+	UpgradeSettings *ClusterUpgradeSettings `json:"upgradeSettings,omitempty"`
 }
 
 type ClusterBigqueryDestination struct {
@@ -126,6 +138,18 @@ type ClusterBinaryAuthorization struct {
 	/* Mode of operation for Binary Authorization policy evaluation. */
 	// +optional
 	EvaluationMode *string `json:"evaluationMode,omitempty"`
+}
+
+type ClusterBlueGreenSettings struct {
+	/* Time needed after draining entire blue pool. After this period, blue pool will be cleaned up.
+
+	A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s". */
+	// +optional
+	NodePoolSoakDuration *string `json:"nodePoolSoakDuration,omitempty"`
+
+	/* Standard policy for the blue-green upgrade. */
+	// +optional
+	StandardRolloutPolicy *ClusterStandardRolloutPolicy `json:"standardRolloutPolicy,omitempty"`
 }
 
 type ClusterCidrBlocks struct {
@@ -161,7 +185,8 @@ type ClusterClusterAutoscaling struct {
 	AutoscalingProfile *string `json:"autoscalingProfile,omitempty"`
 
 	/* Whether node auto-provisioning is enabled. Resource limits for cpu and memory must be defined to enable node auto-provisioning. */
-	Enabled bool `json:"enabled"`
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
 
 	/* Global constraints for machine resources in the cluster. Configuring the cpu and memory types is required if node auto-provisioning is enabled. These limits will apply to node pool autoscaling in addition to node auto-provisioning. */
 	// +optional
@@ -243,6 +268,11 @@ type ClusterExclusionOptions struct {
 type ClusterFilter struct {
 	/* Can be used to filter what notifications are sent. Valid values include include UPGRADE_AVAILABLE_EVENT, UPGRADE_EVENT and SECURITY_BULLETIN_EVENT. */
 	EventType []string `json:"eventType"`
+}
+
+type ClusterGatewayApiConfig struct {
+	/* The Gateway API release channel to use for Gateway API. */
+	Channel string `json:"channel"`
 }
 
 type ClusterGcePersistentDiskCsiDriverConfig struct {
@@ -361,7 +391,7 @@ type ClusterLinuxNodeConfig struct {
 }
 
 type ClusterLoggingConfig struct {
-	/* GKE components exposing logs. Valid values include SYSTEM_COMPONENTS and WORKLOADS. */
+	/* GKE components exposing logs. Valid values include SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, and WORKLOADS. */
 	EnableComponents []string `json:"enableComponents"`
 }
 
@@ -399,6 +429,20 @@ type ClusterManagedPrometheus struct {
 	Enabled bool `json:"enabled"`
 }
 
+type ClusterManagement struct {
+	/* Specifies whether the node auto-repair is enabled for the node pool. If enabled, the nodes in this node pool will be monitored and, if they fail health checks too many times, an automatic repair action will be triggered. */
+	// +optional
+	AutoRepair *bool `json:"autoRepair,omitempty"`
+
+	/* Specifies whether node auto-upgrade is enabled for the node pool. If enabled, node auto-upgrade helps keep the nodes in your node pool up to date with the latest release version of Kubernetes. */
+	// +optional
+	AutoUpgrade *bool `json:"autoUpgrade,omitempty"`
+
+	/* Specifies the Auto Upgrade knobs for the node pool. */
+	// +optional
+	UpgradeOptions []ClusterUpgradeOptions `json:"upgradeOptions,omitempty"`
+}
+
 type ClusterMasterAuth struct {
 	/* Base64 encoded public certificate used by clients to authenticate to the cluster endpoint. */
 	// +optional
@@ -429,6 +473,10 @@ type ClusterMasterAuthorizedNetworksConfig struct {
 	/* External networks that can access the Kubernetes cluster master through HTTPS. */
 	// +optional
 	CidrBlocks []ClusterCidrBlocks `json:"cidrBlocks,omitempty"`
+
+	/* Whether master is accessbile via Google Compute Engine Public IP addresses. */
+	// +optional
+	GcpPublicCidrsAccessEnabled *bool `json:"gcpPublicCidrsAccessEnabled,omitempty"`
 }
 
 type ClusterMasterGlobalAccessConfig struct {
@@ -520,6 +568,10 @@ type ClusterNodeConfig struct {
 	// +optional
 	LocalSsdCount *int `json:"localSsdCount,omitempty"`
 
+	/* Type of logging agent that is used as the default value for node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT. */
+	// +optional
+	LoggingVariant *string `json:"loggingVariant,omitempty"`
+
 	/* Immutable. The name of a Google Compute Engine machine type. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
@@ -549,6 +601,10 @@ type ClusterNodeConfig struct {
 	/* Immutable. The reservation affinity configuration for the node pool. */
 	// +optional
 	ReservationAffinity *ClusterReservationAffinity `json:"reservationAffinity,omitempty"`
+
+	/* The GCE resource labels (a map of key/value pairs) to be applied to the node pool. */
+	// +optional
+	ResourceLabels map[string]string `json:"resourceLabels,omitempty"`
 
 	/* Immutable. Sandbox configuration for this node. */
 	// +optional
@@ -583,6 +639,10 @@ type ClusterNodeConfigDefaults struct {
 	/* GCFS configuration for this node. */
 	// +optional
 	GcfsConfig *ClusterGcfsConfig `json:"gcfsConfig,omitempty"`
+
+	/* Type of logging agent that is used as the default value for node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT. */
+	// +optional
+	LoggingVariant *string `json:"loggingVariant,omitempty"`
 }
 
 type ClusterNodePoolAutoConfig struct {
@@ -618,8 +678,9 @@ type ClusterPodSecurityPolicyConfig struct {
 }
 
 type ClusterPrivateClusterConfig struct {
-	/* Immutable. When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true. */
-	EnablePrivateEndpoint bool `json:"enablePrivateEndpoint"`
+	/* When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true. */
+	// +optional
+	EnablePrivateEndpoint *bool `json:"enablePrivateEndpoint,omitempty"`
 
 	/* Immutable. Enables the private cluster feature, creating a private endpoint on the cluster. In a private cluster, nodes only have RFC 1918 private addresses and communicate with the master's private endpoint via private networking. */
 	// +optional
@@ -640,6 +701,11 @@ type ClusterPrivateClusterConfig struct {
 	/* The internal IP address of this cluster's master endpoint. */
 	// +optional
 	PrivateEndpoint *string `json:"privateEndpoint,omitempty"`
+
+	/* Immutable. Subnetwork in cluster's network where master's endpoint
+	will be provisioned. */
+	// +optional
+	PrivateEndpointSubnetworkRef *v1alpha1.ResourceRef `json:"privateEndpointSubnetworkRef,omitempty"`
 
 	/* The external IP address of this cluster's master endpoint. */
 	// +optional
@@ -738,6 +804,22 @@ type ClusterShieldedInstanceConfig struct {
 	EnableSecureBoot *bool `json:"enableSecureBoot,omitempty"`
 }
 
+type ClusterStandardRolloutPolicy struct {
+	/* Number of blue nodes to drain in a batch. */
+	// +optional
+	BatchNodeCount *int `json:"batchNodeCount,omitempty"`
+
+	/* Percentage of the bool pool nodes to drain in a batch. The range of this field should be (0.0, 1.0]. */
+	// +optional
+	BatchPercentage *float64 `json:"batchPercentage,omitempty"`
+
+	/* Soak time after each batch gets drained.
+
+	A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s". */
+	// +optional
+	BatchSoakDuration *string `json:"batchSoakDuration,omitempty"`
+}
+
 type ClusterTaint struct {
 	/* Immutable. Effect for taint. */
 	Effect string `json:"effect"`
@@ -747,6 +829,34 @@ type ClusterTaint struct {
 
 	/* Immutable. Value for taint. */
 	Value string `json:"value"`
+}
+
+type ClusterUpgradeOptions struct {
+	/* This field is set when upgrades are about to commence with the approximate start time for the upgrades, in RFC3339 text format. */
+	// +optional
+	AutoUpgradeStartTime *string `json:"autoUpgradeStartTime,omitempty"`
+
+	/* This field is set when upgrades are about to commence with the description of the upgrade. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+}
+
+type ClusterUpgradeSettings struct {
+	/* Settings for blue-green upgrade strategy. */
+	// +optional
+	BlueGreenSettings *ClusterBlueGreenSettings `json:"blueGreenSettings,omitempty"`
+
+	/* The maximum number of nodes that can be created beyond the current size of the node pool during the upgrade process. */
+	// +optional
+	MaxSurge *int `json:"maxSurge,omitempty"`
+
+	/* The maximum number of nodes that can be simultaneously unavailable during the upgrade process. */
+	// +optional
+	MaxUnavailable *int `json:"maxUnavailable,omitempty"`
+
+	/* Update strategy of the node pool. */
+	// +optional
+	Strategy *string `json:"strategy,omitempty"`
 }
 
 type ClusterValueFrom struct {
@@ -869,6 +979,10 @@ type ContainerClusterSpec struct {
 	/* Immutable. Whether to enable Cloud TPU resources in this cluster. */
 	// +optional
 	EnableTpu *bool `json:"enableTpu,omitempty"`
+
+	/* Configuration for GKE Gateway API controller. */
+	// +optional
+	GatewayApiConfig *ClusterGatewayApiConfig `json:"gatewayApiConfig,omitempty"`
 
 	/* Configuration for Identity Service which allows customers to use external identity providers with the K8S API. */
 	// +optional

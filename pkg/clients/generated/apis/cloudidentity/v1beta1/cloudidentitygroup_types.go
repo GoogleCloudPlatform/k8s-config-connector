@@ -80,11 +80,15 @@ type CloudIdentityGroupSpec struct {
 	// +optional
 	InitialGroupConfig *string `json:"initialGroupConfig,omitempty"`
 
-	/* Immutable. The labels that apply to the Group.
+	/* One or more label entries that apply to the Group. Currently supported labels contain a key with an empty value.
 
-	Must not contain more than one entry. Must contain the entry
-	'cloudidentity.googleapis.com/groups.discussion_forum': '' if the Group is a Google Group or
-	'system/groups/external': '' if the Group is an external-identity-mapped group. */
+	Google Groups are the default type of group and have a label with a key of cloudidentity.googleapis.com/groups.discussion_forum and an empty value.
+
+	Existing Google Groups can have an additional label with a key of cloudidentity.googleapis.com/groups.security and an empty value added to them. This is an immutable change and the security label cannot be removed once added.
+
+	Dynamic groups have a label with a key of cloudidentity.googleapis.com/groups.dynamic.
+
+	Identity-mapped groups for Cloud Search have a label with a key of system/groups/external and an empty value. */
 	Labels map[string]string `json:"labels"`
 
 	/* Immutable. The resource name of the entity under which this Group resides in the

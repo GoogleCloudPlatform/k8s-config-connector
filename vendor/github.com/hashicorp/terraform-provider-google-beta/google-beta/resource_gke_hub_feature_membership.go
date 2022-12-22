@@ -45,14 +45,6 @@ func resourceGkeHubFeatureMembership() *schema.Resource {
 		},
 
 		Schema: map[string]*schema.Schema{
-			"configmanagement": {
-				Type:        schema.TypeList,
-				Required:    true,
-				Description: "Config Management-specific spec.",
-				MaxItems:    1,
-				Elem:        GkeHubFeatureMembershipConfigmanagementSchema(),
-			},
-
 			"feature": {
 				Type:             schema.TypeString,
 				Required:         true,
@@ -74,6 +66,22 @@ func resourceGkeHubFeatureMembership() *schema.Resource {
 				ForceNew:         true,
 				DiffSuppressFunc: compareSelfLinkOrResourceName,
 				Description:      "The name of the membership",
+			},
+
+			"configmanagement": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: "Config Management-specific spec.",
+				MaxItems:    1,
+				Elem:        GkeHubFeatureMembershipConfigmanagementSchema(),
+			},
+
+			"mesh": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: "Manage Mesh Features",
+				MaxItems:    1,
+				Elem:        GkeHubFeatureMembershipMeshSchema(),
 			},
 
 			"project": {
@@ -323,6 +331,24 @@ func GkeHubFeatureMembershipConfigmanagementPolicyControllerMonitoringSchema() *
 	}
 }
 
+func GkeHubFeatureMembershipMeshSchema() *schema.Resource {
+	return &schema.Resource{
+		Schema: map[string]*schema.Schema{
+			"control_plane": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "Whether to automatically manage Service Mesh control planes. Possible values: CONTROL_PLANE_MANAGEMENT_UNSPECIFIED, AUTOMATIC, MANUAL",
+			},
+
+			"management": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "Whether to automatically manage Service Mesh. Possible values: MANAGEMENT_UNSPECIFIED, MANAGEMENT_AUTOMATIC, MANAGEMENT_MANUAL",
+			},
+		},
+	}
+}
+
 func resourceGkeHubFeatureMembershipCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
 	project, err := getProject(d, config)
@@ -331,10 +357,11 @@ func resourceGkeHubFeatureMembershipCreate(d *schema.ResourceData, meta interfac
 	}
 
 	obj := &gkehub.FeatureMembership{
-		Configmanagement: expandGkeHubFeatureMembershipConfigmanagement(d.Get("configmanagement")),
 		Feature:          dcl.String(d.Get("feature").(string)),
 		Location:         dcl.String(d.Get("location").(string)),
 		Membership:       dcl.String(d.Get("membership").(string)),
+		Configmanagement: expandGkeHubFeatureMembershipConfigmanagement(d.Get("configmanagement")),
+		Mesh:             expandGkeHubFeatureMembershipMesh(d.Get("mesh")),
 		Project:          dcl.String(project),
 	}
 	lockName, err := replaceVarsForId(d, config, "{{project}}/{{location}}/{{feature}}")
@@ -389,10 +416,11 @@ func resourceGkeHubFeatureMembershipRead(d *schema.ResourceData, meta interface{
 	}
 
 	obj := &gkehub.FeatureMembership{
-		Configmanagement: expandGkeHubFeatureMembershipConfigmanagement(d.Get("configmanagement")),
 		Feature:          dcl.String(d.Get("feature").(string)),
 		Location:         dcl.String(d.Get("location").(string)),
 		Membership:       dcl.String(d.Get("membership").(string)),
+		Configmanagement: expandGkeHubFeatureMembershipConfigmanagement(d.Get("configmanagement")),
+		Mesh:             expandGkeHubFeatureMembershipMesh(d.Get("mesh")),
 		Project:          dcl.String(project),
 	}
 
@@ -418,9 +446,6 @@ func resourceGkeHubFeatureMembershipRead(d *schema.ResourceData, meta interface{
 		return handleNotFoundDCLError(err, d, resourceName)
 	}
 
-	if err = d.Set("configmanagement", flattenGkeHubFeatureMembershipConfigmanagement(res.Configmanagement)); err != nil {
-		return fmt.Errorf("error setting configmanagement in state: %s", err)
-	}
 	if err = d.Set("feature", res.Feature); err != nil {
 		return fmt.Errorf("error setting feature in state: %s", err)
 	}
@@ -429,6 +454,12 @@ func resourceGkeHubFeatureMembershipRead(d *schema.ResourceData, meta interface{
 	}
 	if err = d.Set("membership", res.Membership); err != nil {
 		return fmt.Errorf("error setting membership in state: %s", err)
+	}
+	if err = d.Set("configmanagement", flattenGkeHubFeatureMembershipConfigmanagement(res.Configmanagement)); err != nil {
+		return fmt.Errorf("error setting configmanagement in state: %s", err)
+	}
+	if err = d.Set("mesh", flattenGkeHubFeatureMembershipMesh(res.Mesh)); err != nil {
+		return fmt.Errorf("error setting mesh in state: %s", err)
 	}
 	if err = d.Set("project", res.Project); err != nil {
 		return fmt.Errorf("error setting project in state: %s", err)
@@ -444,10 +475,11 @@ func resourceGkeHubFeatureMembershipUpdate(d *schema.ResourceData, meta interfac
 	}
 
 	obj := &gkehub.FeatureMembership{
-		Configmanagement: expandGkeHubFeatureMembershipConfigmanagement(d.Get("configmanagement")),
 		Feature:          dcl.String(d.Get("feature").(string)),
 		Location:         dcl.String(d.Get("location").(string)),
 		Membership:       dcl.String(d.Get("membership").(string)),
+		Configmanagement: expandGkeHubFeatureMembershipConfigmanagement(d.Get("configmanagement")),
+		Mesh:             expandGkeHubFeatureMembershipMesh(d.Get("mesh")),
 		Project:          dcl.String(project),
 	}
 	lockName, err := replaceVarsForId(d, config, "{{project}}/{{location}}/{{feature}}")
@@ -498,10 +530,11 @@ func resourceGkeHubFeatureMembershipDelete(d *schema.ResourceData, meta interfac
 	}
 
 	obj := &gkehub.FeatureMembership{
-		Configmanagement: expandGkeHubFeatureMembershipConfigmanagement(d.Get("configmanagement")),
 		Feature:          dcl.String(d.Get("feature").(string)),
 		Location:         dcl.String(d.Get("location").(string)),
 		Membership:       dcl.String(d.Get("membership").(string)),
+		Configmanagement: expandGkeHubFeatureMembershipConfigmanagement(d.Get("configmanagement")),
+		Mesh:             expandGkeHubFeatureMembershipMesh(d.Get("mesh")),
 		Project:          dcl.String(project),
 	}
 	lockName, err := replaceVarsForId(d, config, "{{project}}/{{location}}/{{feature}}")
@@ -777,6 +810,34 @@ func flattenGkeHubFeatureMembershipConfigmanagementPolicyControllerMonitoring(ob
 	}
 	transformed := map[string]interface{}{
 		"backends": flattenGkeHubFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsArray(obj.Backends),
+	}
+
+	return []interface{}{transformed}
+
+}
+
+func expandGkeHubFeatureMembershipMesh(o interface{}) *gkehub.FeatureMembershipMesh {
+	if o == nil {
+		return gkehub.EmptyFeatureMembershipMesh
+	}
+	objArr := o.([]interface{})
+	if len(objArr) == 0 || objArr[0] == nil {
+		return gkehub.EmptyFeatureMembershipMesh
+	}
+	obj := objArr[0].(map[string]interface{})
+	return &gkehub.FeatureMembershipMesh{
+		ControlPlane: gkehub.FeatureMembershipMeshControlPlaneEnumRef(obj["control_plane"].(string)),
+		Management:   gkehub.FeatureMembershipMeshManagementEnumRef(obj["management"].(string)),
+	}
+}
+
+func flattenGkeHubFeatureMembershipMesh(obj *gkehub.FeatureMembershipMesh) interface{} {
+	if obj == nil || obj.Empty() {
+		return nil
+	}
+	transformed := map[string]interface{}{
+		"control_plane": obj.ControlPlane,
+		"management":    obj.Management,
 	}
 
 	return []interface{}{transformed}

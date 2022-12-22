@@ -100,10 +100,25 @@ type InstanceDatabaseFlags struct {
 	Value string `json:"value"`
 }
 
+type InstanceDenyMaintenancePeriod struct {
+	/* End date before which maintenance will not take place. The date is in format yyyy-mm-dd i.e., 2020-11-01, or mm-dd, i.e., 11-01. */
+	EndDate string `json:"endDate"`
+
+	/* Start date after which maintenance will not take place. The date is in format yyyy-mm-dd i.e., 2020-11-01, or mm-dd, i.e., 11-01. */
+	StartDate string `json:"startDate"`
+
+	/* Time in UTC when the "deny maintenance period" starts on start_date and ends on end_date. The time is in format: HH:mm:SS, i.e., 00:00:00. */
+	Time string `json:"time"`
+}
+
 type InstanceInsightsConfig struct {
 	/* True if Query Insights feature is enabled. */
 	// +optional
 	QueryInsightsEnabled *bool `json:"queryInsightsEnabled,omitempty"`
+
+	/* Number of query execution plans captured by Insights per minute for all queries combined. Between 0 and 20. Default to 5. */
+	// +optional
+	QueryPlansPerMinute *int `json:"queryPlansPerMinute,omitempty"`
 
 	/* Maximum query length stored in bytes. Between 256 and 4500. Default to 1024. */
 	// +optional
@@ -290,6 +305,10 @@ type InstanceSettings struct {
 	// +optional
 	Collation *string `json:"collation,omitempty"`
 
+	/* Specifies if connections must use Cloud SQL connectors. */
+	// +optional
+	ConnectorEnforcement *string `json:"connectorEnforcement,omitempty"`
+
 	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
 	Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
 	// +optional
@@ -298,6 +317,10 @@ type InstanceSettings struct {
 	/*  */
 	// +optional
 	DatabaseFlags []InstanceDatabaseFlags `json:"databaseFlags,omitempty"`
+
+	/*  */
+	// +optional
+	DenyMaintenancePeriod *InstanceDenyMaintenancePeriod `json:"denyMaintenancePeriod,omitempty"`
 
 	/* Enables auto-resizing of the storage size. Defaults to true. */
 	// +optional
@@ -351,7 +374,7 @@ type InstanceSettings struct {
 	/* The machine type to use. See tiers for more details and supported versions. Postgres supports only shared-core machine types, and custom machine types such as db-custom-2-13312. See the Custom Machine Type Documentation to learn about specifying custom machine types. */
 	Tier string `json:"tier"`
 
-	/* Immutable. The timezone to be used by the database engine (supported only for SQL Server), in SQL Server timezone format. */
+	/* Immutable. The time_zone to be used by the database engine (supported only for SQL Server), in SQL Server timezone format. */
 	// +optional
 	TimeZone *string `json:"timeZone,omitempty"`
 }

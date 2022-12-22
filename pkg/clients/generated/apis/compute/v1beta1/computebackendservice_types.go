@@ -160,6 +160,11 @@ type BackendserviceCacheKeyPolicy struct {
 	// +optional
 	IncludeHost *bool `json:"includeHost,omitempty"`
 
+	/* Allows HTTP request headers (by name) to be used in the
+	cache key. */
+	// +optional
+	IncludeHttpHeaders []string `json:"includeHttpHeaders,omitempty"`
+
 	/* Names of cookies to include in cache keys. */
 	// +optional
 	IncludeNamedCookies []string `json:"includeNamedCookies,omitempty"`

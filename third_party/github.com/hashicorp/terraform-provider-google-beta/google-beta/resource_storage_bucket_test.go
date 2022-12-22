@@ -53,6 +53,33 @@ func TestAccStorageBucket_basic(t *testing.T) {
 	})
 }
 
+func TestAccStorageBucket_basicWithAutoclass(t *testing.T) {
+	t.Parallel()
+
+	bucketName := testBucketName(t)
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccStorageBucketDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccStorageBucket_basicWithAutoclass(bucketName),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr(
+						"google_storage_bucket.bucket", "force_destroy", "false"),
+				),
+			},
+			{
+				ResourceName:            "google_storage_bucket.bucket",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"force_destroy"},
+			},
+		},
+	})
+}
+
 func TestAccStorageBucket_requesterPays(t *testing.T) {
 	t.Parallel()
 
@@ -1017,7 +1044,25 @@ func TestAccStorageBucket_website(t *testing.T) {
 				ImportStateVerifyIgnore: []string{"force_destroy"},
 			},
 			{
+				Config: testAccStorageBucket_websiteOneAttributeUpdate(bucketSuffix),
+			},
+			{
+				ResourceName:            "google_storage_bucket.website",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"force_destroy"},
+			},
+			{
 				Config: testAccStorageBucket_website(bucketSuffix),
+			},
+			{
+				ResourceName:            "google_storage_bucket.website",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"force_destroy"},
+			},
+			{
+				Config: testAccStorageBucket_websiteRemoved(bucketSuffix),
 			},
 			{
 				ResourceName:            "google_storage_bucket.website",
@@ -1307,6 +1352,18 @@ func testAccStorageBucket_basic(bucketName string) string {
 resource "google_storage_bucket" "bucket" {
   name     = "%s"
   location = "US"
+}
+`, bucketName)
+}
+
+func testAccStorageBucket_basicWithAutoclass(bucketName string) string {
+	return fmt.Sprintf(`
+resource "google_storage_bucket" "bucket" {
+  name     = "%s"
+  location = "US"
+  autoclass  {
+    enabled  = true
+  }
 }
 `, bucketName)
 }
@@ -1604,6 +1661,14 @@ resource "google_storage_bucket" "bucket" {
     condition {
       matches_suffix = ["test"]
       age            = 2
+    }
+  }
+  lifecycle_rule {
+    action {
+      type = "AbortIncompleteMultipartUpload"
+    }
+    condition {
+      age = 1
     }
   }
 }
@@ -1939,6 +2004,17 @@ resource "google_storage_bucket" "website" {
 `, bucketName)
 }
 
+func testAccStorageBucket_websiteRemoved(bucketName string) string {
+	return fmt.Sprintf(`
+resource "google_storage_bucket" "website" {
+  name          = "%s.gcp.tfacc.hashicorptest.com"
+  location      = "US"
+  storage_class = "STANDARD"
+  force_destroy = true
+}
+`, bucketName)
+}
+
 func testAccStorageBucket_websiteOneAttribute(bucketName string) string {
 	return fmt.Sprintf(`
 resource "google_storage_bucket" "website" {
@@ -1949,6 +2025,21 @@ resource "google_storage_bucket" "website" {
 
   website {
     main_page_suffix = "index.html"
+  }
+}
+`, bucketName)
+}
+
+func testAccStorageBucket_websiteOneAttributeUpdate(bucketName string) string {
+	return fmt.Sprintf(`
+resource "google_storage_bucket" "website" {
+  name          = "%s.gcp.tfacc.hashicorptest.com"
+  location      = "US"
+  storage_class = "STANDARD"
+  force_destroy = true
+
+  website {
+    main_page_suffix = "default.html"
   }
 }
 `, bucketName)

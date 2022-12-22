@@ -1,0 +1,48 @@
+package google
+
+import (
+	"fmt"
+	"regexp"
+	"testing"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+)
+
+func TestAccDataSourceGoogleCloudAssetResourcesSearchAll_basic(t *testing.T) {
+	t.Parallel()
+
+	project := getTestProjectFromEnv()
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProviders,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCheckGoogleCloudAssetProjectResources(project),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestMatchResourceAttr("data.google_cloud_asset_resources_search_all.resources",
+						"results.0.asset_type", regexp.MustCompile("cloudresourcemanager.googleapis.com/Project")),
+					resource.TestMatchResourceAttr("data.google_cloud_asset_resources_search_all.resources",
+						"results.0.display_name", regexp.MustCompile(project)),
+					resource.TestMatchResourceAttr("data.google_cloud_asset_resources_search_all.resources",
+						"results.0.name", regexp.MustCompile(fmt.Sprintf("//cloudresourcemanager.googleapis.com/projects/%s", project))),
+					resource.TestMatchResourceAttr("data.google_cloud_asset_resources_search_all.resources",
+						"results.0.additional_attributes.0", regexp.MustCompile(project)),
+					resource.TestCheckResourceAttrSet("data.google_cloud_asset_resources_search_all.resources", "results.0.location"),
+					resource.TestCheckResourceAttrSet("data.google_cloud_asset_resources_search_all.resources", "results.0.project"),
+				),
+			},
+		},
+	})
+}
+
+func testAccCheckGoogleCloudAssetProjectResources(project string) string {
+	return fmt.Sprintf(`
+data google_cloud_asset_resources_search_all resources {
+	scope = "projects/%s"
+	asset_types = [
+		"cloudresourcemanager.googleapis.com/Project"
+	]
+}
+`, project)
+}

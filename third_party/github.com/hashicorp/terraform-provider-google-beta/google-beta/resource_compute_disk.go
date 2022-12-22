@@ -151,6 +151,19 @@ func diskImageEquals(oldImageName, newImageName string) bool {
 func diskImageFamilyEquals(imageName, familyName string) bool {
 	// Handles the case when the image name includes the family name
 	// e.g. image name: debian-11-bullseye-v20220719, family name: debian-11
+
+	// First condition is to check if image contains arm64 because of case like:
+	// image name: opensuse-leap-15-4-v20220713-arm64, family name: opensuse-leap (should not be evaluated during handling of amd64 cases)
+	// In second condition, we have to check for amd64 because of cases like:
+	// image name: ubuntu-2210-kinetic-amd64-v20221022, family name: ubuntu-2210 (should not suppress)
+	if !strings.Contains(imageName, "-arm64") && strings.Contains(imageName, strings.TrimSuffix(familyName, "-amd64")) {
+		if strings.Contains(imageName, "-amd64") {
+			return strings.HasSuffix(familyName, "-amd64")
+		} else {
+			return !strings.HasSuffix(familyName, "-amd64")
+		}
+	}
+
 	// We have to check for arm64 because of cases like:
 	// image name: opensuse-leap-15-4-v20220713-arm64, family name: opensuse-leap (should not suppress)
 	if strings.Contains(imageName, strings.TrimSuffix(familyName, "-arm64")) {
@@ -414,7 +427,7 @@ the supported values for the caller's project.`,
 ~>**NOTE** This value does not support updating the
 resource policy, as resource policies can not be updated more than
 one at a time. Use
-['google_compute_disk_resource_policy_attachment'](https://www.terraform.io/docs/providers/google/r/compute_disk_resource_policy_attachment.html)
+['google_compute_disk_resource_policy_attachment'](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_disk_resource_policy_attachment)
 to allow for updating the resource policy attached to the disk.`,
 				Elem: &schema.Schema{
 					Type:             schema.TypeString,

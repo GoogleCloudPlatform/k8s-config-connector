@@ -75,6 +75,44 @@ func TestAccComputeSecurityPolicy_withRuleExpr(t *testing.T) {
 	})
 }
 
+func TestAccComputeSecurityPolicy_withPreconfiguredWafConfig(t *testing.T) {
+	t.Parallel()
+
+	spName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckComputeSecurityPolicyDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComputeSecurityPolicy_withPreconfiguredWafConfig(spName),
+			},
+			{
+				ResourceName:      "google_compute_security_policy.policy",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccComputeSecurityPolicy_withPreconfiguredWafConfig_update(spName),
+			},
+			{
+				ResourceName:      "google_compute_security_policy.policy",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccComputeSecurityPolicy_withPreconfiguredWafConfig_clear(spName),
+			},
+			{
+				ResourceName:      "google_compute_security_policy.policy",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
 func TestAccComputeSecurityPolicy_update(t *testing.T) {
 	t.Parallel()
 
@@ -230,6 +268,184 @@ func TestAccComputeSecurityPolicy_withRateLimitWithRedirectOptions(t *testing.T)
 			},
 		},
 	})
+}
+
+func TestAccComputeSecurityPolicy_withRecaptchaOptionsConfig(t *testing.T) {
+	t.Parallel()
+
+	project := getTestProjectFromEnv()
+	spName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckComputeSecurityPolicyDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComputeSecurityPolicy_basic(spName),
+			},
+			{
+				ResourceName:      "google_compute_security_policy.policy",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccComputeSecurityPolicy_withRecaptchaOptionsConfig(project, spName),
+			},
+			{
+				ResourceName:      "google_compute_security_policy.policy",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccComputeSecurityPolicy_withRedirectSiteKeyUpdate(project, spName),
+			},
+			{
+				ResourceName:      "google_compute_security_policy.policy",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccComputeSecurityPolicy_withEmptyRedirectSiteKey(spName),
+			},
+			{
+				ResourceName:      "google_compute_security_policy.policy",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func TestAccComputeSecurityPolicy_withHeadAction(t *testing.T) {
+	t.Parallel()
+
+	spName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	headerName := fmt.Sprintf("tf-test-header-name-%s", randString(t, 10))
+	headerNameUpdate := fmt.Sprintf("tf-test-header-name-update-%s", randString(t, 10))
+	headerValue := fmt.Sprintf("tf-test-header-value-%s", randString(t, 10))
+	headerValueUpdate := fmt.Sprintf("tf-test-header-value-update-%s", randString(t, 10))
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckComputeSecurityPolicyDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComputeSecurityPolicy_withoutHeadAction(spName),
+			},
+			{
+				ResourceName:      "google_compute_security_policy.policy",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccComputeSecurityPolicy_withHeadAction(spName, headerName, headerValue),
+			},
+			{
+				ResourceName:      "google_compute_security_policy.policy",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccComputeSecurityPolicy_withHeadAction(spName, headerNameUpdate, headerValueUpdate),
+			},
+			{
+				ResourceName:      "google_compute_security_policy.policy",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccComputeSecurityPolicy_withMultipleHeaders(spName),
+			},
+			{
+				ResourceName:      "google_compute_security_policy.policy",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccComputeSecurityPolicy_withoutHeadAction(spName),
+			},
+			{
+				ResourceName:      "google_compute_security_policy.policy",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+func testAccComputeSecurityPolicy_withRecaptchaOptionsConfig(project, spName string) string {
+	return fmt.Sprintf(`
+resource "google_recaptcha_enterprise_key" "primary" {
+  display_name = "test"
+
+  labels = {
+    label-one = "value-one"
+   }
+
+  project = "%s"
+
+  web_settings {
+    integration_type  = "INVISIBLE"
+    allow_all_domains = true
+    allowed_domains   = ["localhost"]
+  }
+}
+
+resource "google_compute_security_policy" "policy" {
+  name        = "%s"
+  description = "basic security policy"
+  type        = "CLOUD_ARMOR"
+
+  recaptcha_options_config {
+    redirect_site_key = google_recaptcha_enterprise_key.primary.name
+  }
+}
+`, project, spName)
+}
+
+func testAccComputeSecurityPolicy_withRedirectSiteKeyUpdate(project, spName string) string {
+	return fmt.Sprintf(`
+resource "google_recaptcha_enterprise_key" "primary1" {
+  display_name = "test"
+
+  labels = {
+    label-one = "value-one"
+   }
+
+  project = "%s"
+
+  web_settings {
+    integration_type  = "INVISIBLE"
+    allow_all_domains = true
+    allowed_domains   = ["localhost"]
+  }
+}
+
+resource "google_compute_security_policy" "policy" {
+  name        = "%s"
+  description = "basic security policy"
+  type        = "CLOUD_ARMOR"
+
+  recaptcha_options_config {
+    redirect_site_key = google_recaptcha_enterprise_key.primary1.name
+  }
+}
+`, project, spName)
+}
+
+func testAccComputeSecurityPolicy_withEmptyRedirectSiteKey(spName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_security_policy" "policy" {
+  name        = "%s"
+  description = "basic security policy"
+  type        = "CLOUD_ARMOR"
+
+  recaptcha_options_config {
+    redirect_site_key = ""
+  }
+}
+`, spName)
 }
 
 func testAccCheckComputeSecurityPolicyDestroyProducer(t *testing.T) func(s *terraform.State) error {
@@ -419,6 +635,279 @@ resource "google_compute_security_policy" "policy" {
 		}
 		preview = true
 	}
+}
+`, spName)
+}
+
+func testAccComputeSecurityPolicy_withPreconfiguredWafConfig(spName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_security_policy" "policy" {
+	name = "%s"
+
+	rule {
+		action   = "allow"
+		priority = "2147483647"
+		match {
+			versioned_expr = "SRC_IPS_V1"
+			config {
+				src_ip_ranges = ["*"]
+			}
+		}
+		description = "default rule"
+	}
+
+	rule {
+		action   = "deny"
+		priority = "1000"
+		match {
+			expr {
+				expression = "evaluatePreconfiguredWaf('sqli-stable')"
+			}
+		}
+		preconfigured_waf_config {
+			exclusion {
+				request_cookie {
+					operator = "EQUALS_ANY"
+				}
+				request_header {
+					operator = "EQUALS"
+					value    = "Referer"
+				}
+				request_uri {
+					operator = "STARTS_WITH"
+					value    = "/admin"
+				}
+				request_query_param {
+					operator = "EQUALS"
+					value    = "password"
+				}
+				request_query_param {
+					operator = "STARTS_WITH"
+					value    = "freeform"
+				}
+				target_rule_set = "sqli-stable"
+			}
+			exclusion {
+				request_query_param {
+					operator = "CONTAINS"
+					value    = "password"
+				}
+				request_query_param {
+					operator = "STARTS_WITH"
+					value    = "freeform"
+				}
+				target_rule_set = "xss-stable"
+			}
+		}
+		preview = false
+	}
+}
+`, spName)
+}
+
+func testAccComputeSecurityPolicy_withPreconfiguredWafConfig_update(spName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_security_policy" "policy" {
+	name = "%s"
+
+	rule {
+		action   = "allow"
+		priority = "2147483647"
+		match {
+			versioned_expr = "SRC_IPS_V1"
+			config {
+				src_ip_ranges = ["*"]
+			}
+		}
+		description = "default rule"
+	}
+
+	rule {
+		action   = "deny"
+		priority = "1000"
+		match {
+			expr {
+				expression = "evaluatePreconfiguredWaf('rce-stable') || evaluatePreconfiguredWaf('xss-stable')"
+			}
+		}
+		preconfigured_waf_config {
+			exclusion {
+				request_uri {
+					operator = "STARTS_WITH"
+					value    = "/admin"
+				}
+				target_rule_set = "rce-stable"
+			}
+			exclusion {
+				request_query_param {
+					operator = "CONTAINS"
+					value    = "password"
+				}
+				request_query_param {
+					operator = "STARTS_WITH"
+					value    = "freeform"
+				}
+				request_query_param {
+					operator = "EQUALS"
+					value    = "description"
+				}
+				target_rule_set = "xss-stable"
+				target_rule_ids = [
+					"owasp-crs-v030001-id941330-xss",
+					"owasp-crs-v030001-id941340-xss",
+				]
+			}
+		}
+		preview = false
+	}
+}
+`, spName)
+}
+
+func testAccComputeSecurityPolicy_withPreconfiguredWafConfig_clear(spName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_security_policy" "policy" {
+	name = "%s"
+
+	rule {
+		action   = "allow"
+		priority = "2147483647"
+		match {
+			versioned_expr = "SRC_IPS_V1"
+			config {
+				src_ip_ranges = ["*"]
+			}
+		}
+		description = "default rule"
+	}
+
+	rule {
+		action   = "deny"
+		priority = "1000"
+		match {
+			expr {
+				expression = "evaluatePreconfiguredWaf('rce-stable') || evaluatePreconfiguredWaf('xss-stable')"
+			}
+		}
+		preconfigured_waf_config {
+			// ensure empty waf config //
+		}
+		preview = false
+	}
+}
+`, spName)
+}
+
+func testAccComputeSecurityPolicy_withoutHeadAction(spName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_security_policy" "policy" {
+  name = "%s"
+
+  rule {
+    action   = "allow"
+    priority = "2147483647"
+    match {
+      versioned_expr = "SRC_IPS_V1"
+      config {
+        src_ip_ranges = ["*"]
+      }
+    }
+      description = "default rule"
+	}
+
+  rule {
+    action   = "allow"
+    priority = "1000"
+    match {
+      expr {
+        expression = "request.path.matches(\"/login.html\") && token.recaptcha_session.score < 0.2"
+      }
+    }
+  }
+}
+`, spName)
+}
+
+func testAccComputeSecurityPolicy_withHeadAction(spName, headerName, headerValue string) string {
+	return fmt.Sprintf(`
+resource "google_compute_security_policy" "policy" {
+  name = "%s"
+
+  rule {
+    action   = "allow"
+    priority = "2147483647"
+    match {
+      versioned_expr = "SRC_IPS_V1"
+      config {
+        src_ip_ranges = ["*"]
+      }
+    }
+    description = "default rule"
+  }
+
+  rule {
+    action   = "allow"
+    priority = "1000"
+    match {
+      expr {
+        expression = "request.path.matches(\"/login.html\") && token.recaptcha_session.score < 0.2"
+      }
+    }
+
+    header_action {
+      request_headers_to_adds {
+        header_name  = "%s"
+        header_value = "%s"
+      }
+    }
+  }
+}
+`, spName, headerName, headerValue)
+}
+
+func testAccComputeSecurityPolicy_withMultipleHeaders(spName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_security_policy" "policy" {
+  name = "%s"
+
+  rule {
+    action   = "allow"
+    priority = "2147483647"
+    match {
+      versioned_expr = "SRC_IPS_V1"
+      config {
+        src_ip_ranges = ["*"]
+      }
+    }
+    description = "default rule"
+  }
+
+  rule {
+    action   = "allow"
+    priority = "1000"
+    match {
+      expr {
+        expression = "request.path.matches(\"/login.html\") && token.recaptcha_session.score < 0.2"
+      }
+    }
+
+    header_action {
+      request_headers_to_adds {
+        header_name  = "reCAPTCHA-Warning"
+        header_value = "high"
+      }
+
+      request_headers_to_adds {
+        header_name  = "X-Hello"
+        header_value = "World"
+      }
+
+      request_headers_to_adds {
+        header_name  = "X-Resource"
+        header_value = "test"
+      }
+    }
+  }
 }
 `, spName)
 }

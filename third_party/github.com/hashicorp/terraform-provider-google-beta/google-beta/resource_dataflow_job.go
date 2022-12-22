@@ -373,16 +373,15 @@ func resourceDataflowJobRead(d *schema.ResourceData, meta interface{}) error {
 	if err := d.Set("network", optionsMap["network"]); err != nil {
 		return fmt.Errorf("Error setting network: %s", err)
 	}
-	if err := d.Set("service_account_email", optionsMap["serviceAccountEmail"]); err != nil {
-		return fmt.Errorf("Error setting service_account_email: %s", err)
-	}
 	if err := d.Set("additional_experiments", optionsMap["experiments"]); err != nil {
 		return fmt.Errorf("Error setting additional_experiments: %s", err)
+	}
+	if err := d.Set("service_account_email", optionsMap["serviceAccountEmail"]); err != nil {
+		return fmt.Errorf("Error setting service_account_email: %s", err)
 	}
 	if err := d.Set("enable_streaming_engine", optionsMap["enableStreamingEngine"]); err != nil {
 		return fmt.Errorf("Error setting enable_streaming_engine: %s", err)
 	}
-
 	if v, ok := optionsMap["subnetwork"]; ok && v != nil {
 		subnetwork, err := toSubnetworkSelfLink(v.(string), d, config)
 		if err != nil {
@@ -390,7 +389,6 @@ func resourceDataflowJobRead(d *schema.ResourceData, meta interface{}) error {
 		}
 		d.Set("subnetwork", subnetwork)
 	}
-
 	return nil
 }
 

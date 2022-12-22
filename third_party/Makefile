@@ -24,7 +24,7 @@ clone-terraform-google-provider-beta:
 	rm -rf github.com/hashicorp/terraform-provider-google-beta
 	mkdir -p github.com/hashicorp
 	cd github.com/hashicorp && git clone https://github.com/hashicorp/terraform-provider-google-beta
-	git -C github.com/hashicorp/terraform-provider-google-beta checkout v4.42.1
+	git -C github.com/hashicorp/terraform-provider-google-beta checkout v4.47.0
 	rm -rf github.com/hashicorp/terraform-provider-google-beta/.git
 
 .PHONY: apply-patches
@@ -72,6 +72,7 @@ apply-patches:
 	# 4) Don't remove resource on read just because the job is in a
 	# terminal state. Instead, wait for the user to explicitly remove it.
 	# 5) Allow for acquisition of active jobs by name.
+	# 6) Ensure field additional_experiments is readable.
 	git apply ../hack/terraform-overrides/dataflow_job.patch
 	# Don't remove resource on read just because the job is in a terminal
 	# state. Instead, wait for the user to explicitly remove it.

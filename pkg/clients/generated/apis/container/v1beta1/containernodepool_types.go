@@ -57,6 +57,15 @@ type NodepoolAutoscaling struct {
 	TotalMinNodeCount *int `json:"totalMinNodeCount,omitempty"`
 }
 
+type NodepoolBlueGreenSettings struct {
+	/* Time needed after draining entire blue pool. After this period, blue pool will be cleaned up. */
+	// +optional
+	NodePoolSoakDuration *string `json:"nodePoolSoakDuration,omitempty"`
+
+	/* Standard rollout policy is the default policy for blue-green. */
+	StandardRolloutPolicy NodepoolStandardRolloutPolicy `json:"standardRolloutPolicy"`
+}
+
 type NodepoolEphemeralStorageConfig struct {
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD is 375 GB in size. */
 	LocalSsdCount int `json:"localSsdCount"`
@@ -129,12 +138,17 @@ type NodepoolNetworkConfig struct {
 	// +optional
 	CreatePodRange *bool `json:"createPodRange,omitempty"`
 
+	/* Whether nodes have internal IP addresses only. */
+	// +optional
+	EnablePrivateNodes *bool `json:"enablePrivateNodes,omitempty"`
+
 	/* Immutable. The IP address range for pod IPs in this node pool. Only applicable if create_pod_range is true. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) to pick a specific range to use. */
 	// +optional
 	PodIpv4CidrBlock *string `json:"podIpv4CidrBlock,omitempty"`
 
 	/* Immutable. The ID of the secondary range for pod IPs. If create_pod_range is true, this ID is used for the new range. If create_pod_range is false, uses an existing secondary range with this ID. */
-	PodRange string `json:"podRange"`
+	// +optional
+	PodRange *string `json:"podRange,omitempty"`
 }
 
 type NodepoolNodeConfig struct {
@@ -186,6 +200,10 @@ type NodepoolNodeConfig struct {
 	// +optional
 	LocalSsdCount *int `json:"localSsdCount,omitempty"`
 
+	/* Type of logging agent that is used as the default value for node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT. */
+	// +optional
+	LoggingVariant *string `json:"loggingVariant,omitempty"`
+
 	/* Immutable. The name of a Google Compute Engine machine type. */
 	// +optional
 	MachineType *string `json:"machineType,omitempty"`
@@ -215,6 +233,10 @@ type NodepoolNodeConfig struct {
 	/* Immutable. The reservation affinity configuration for the node pool. */
 	// +optional
 	ReservationAffinity *NodepoolReservationAffinity `json:"reservationAffinity,omitempty"`
+
+	/* The GCE resource labels (a map of key/value pairs) to be applied to the node pool. */
+	// +optional
+	ResourceLabels map[string]string `json:"resourceLabels,omitempty"`
 
 	/* Immutable. Sandbox configuration for this node. */
 	// +optional
@@ -278,6 +300,20 @@ type NodepoolShieldedInstanceConfig struct {
 	EnableSecureBoot *bool `json:"enableSecureBoot,omitempty"`
 }
 
+type NodepoolStandardRolloutPolicy struct {
+	/* Number of blue nodes to drain in a batch. */
+	// +optional
+	BatchNodeCount *int `json:"batchNodeCount,omitempty"`
+
+	/* Percentage of the blue pool nodes to drain in a batch. */
+	// +optional
+	BatchPercentage *float64 `json:"batchPercentage,omitempty"`
+
+	/* Soak time after each batch gets drained. */
+	// +optional
+	BatchSoakDuration *string `json:"batchSoakDuration,omitempty"`
+}
+
 type NodepoolTaint struct {
 	/* Immutable. Effect for taint. */
 	Effect string `json:"effect"`
@@ -290,11 +326,21 @@ type NodepoolTaint struct {
 }
 
 type NodepoolUpgradeSettings struct {
+	/* Settings for BlueGreen node pool upgrade. */
+	// +optional
+	BlueGreenSettings *NodepoolBlueGreenSettings `json:"blueGreenSettings,omitempty"`
+
 	/* The number of additional nodes that can be added to the node pool during an upgrade. Increasing max_surge raises the number of nodes that can be upgraded simultaneously. Can be set to 0 or greater. */
-	MaxSurge int `json:"maxSurge"`
+	// +optional
+	MaxSurge *int `json:"maxSurge,omitempty"`
 
 	/* The number of nodes that can be simultaneously unavailable during an upgrade. Increasing max_unavailable raises the number of nodes that can be upgraded in parallel. Can be set to 0 or greater. */
-	MaxUnavailable int `json:"maxUnavailable"`
+	// +optional
+	MaxUnavailable *int `json:"maxUnavailable,omitempty"`
+
+	/* Update strategy for the given nodepool. */
+	// +optional
+	Strategy *string `json:"strategy,omitempty"`
 }
 
 type NodepoolWorkloadMetadataConfig struct {

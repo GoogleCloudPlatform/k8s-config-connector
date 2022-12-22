@@ -392,6 +392,7 @@ resource "google_container_aws_cluster" "primary" {
       enable_components = ["SYSTEM_COMPONENTS", "WORKLOADS"]
     }
   }
+
 }
 
 
@@ -461,7 +462,7 @@ resource "google_container_aws_cluster" "primary" {
     }
 
     tags = {
-      owner = "%{service_acct}"
+       owner = "updated-%{service_acct}"
     }
 
     instance_placement {
@@ -494,6 +495,7 @@ resource "google_container_aws_cluster" "primary" {
       enable_components = ["SYSTEM_COMPONENTS", "WORKLOADS"]
     }
   }
+
 }
 
 

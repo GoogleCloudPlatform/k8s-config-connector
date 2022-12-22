@@ -110,6 +110,8 @@ backend:
 cdnPolicy:
   cacheKeyPolicy:
     includeHost: boolean
+    includeHttpHeaders:
+    - string
     includeNamedCookies:
     - string
     includeProtocol: boolean
@@ -559,6 +561,27 @@ CPU utilization target for the group. Valid range is [0.0, 1.0].{% endverbatim %
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}If true requests to different hosts will be cached separately.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cdnPolicy.cacheKeyPolicy.includeHttpHeaders</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Allows HTTP request headers (by name) to be used in the
+cache key.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>cdnPolicy.cacheKeyPolicy.includeHttpHeaders[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

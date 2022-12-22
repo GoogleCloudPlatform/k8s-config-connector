@@ -95,6 +95,7 @@ maxPodsPerNode: integer
 namePrefix: string
 networkConfig:
   createPodRange: boolean
+  enablePrivateNodes: boolean
   podIpv4CidrBlock: string
   podRange: string
 nodeConfig:
@@ -128,6 +129,7 @@ nodeConfig:
     sysctls:
       string: string
   localSsdCount: integer
+  loggingVariant: string
   machineType: string
   metadata:
     string: string
@@ -144,6 +146,8 @@ nodeConfig:
     key: string
     values:
     - string
+  resourceLabels:
+    string: string
   sandboxConfig:
     sandboxType: string
   serviceAccountRef:
@@ -170,8 +174,15 @@ placementPolicy:
   type: string
 resourceID: string
 upgradeSettings:
+  blueGreenSettings:
+    nodePoolSoakDuration: string
+    standardRolloutPolicy:
+      batchNodeCount: integer
+      batchPercentage: float
+      batchSoakDuration: string
   maxSurge: integer
   maxUnavailable: integer
+  strategy: string
 version: string
 ```
 
@@ -374,6 +385,16 @@ version: string
     </tr>
     <tr>
         <td>
+            <p><code>networkConfig.enablePrivateNodes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Whether nodes have internal IP addresses only.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>networkConfig.podIpv4CidrBlock</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -385,7 +406,7 @@ version: string
     <tr>
         <td>
             <p><code>networkConfig.podRange</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -694,6 +715,16 @@ version: string
     </tr>
     <tr>
         <td>
+            <p><code>nodeConfig.loggingVariant</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Type of logging agent that is used as the default value for node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>nodeConfig.machineType</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -842,6 +873,16 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.resourceLabels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}The GCE resource labels (a map of key/value pairs) to be applied to the node pool.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1116,8 +1157,68 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
-            <p><code>upgradeSettings.maxSurge</code></p>
+            <p><code>upgradeSettings.blueGreenSettings</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Settings for BlueGreen node pool upgrade.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>upgradeSettings.blueGreenSettings.nodePoolSoakDuration</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Time needed after draining entire blue pool. After this period, blue pool will be cleaned up.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>upgradeSettings.blueGreenSettings.standardRolloutPolicy</code></p>
             <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Standard rollout policy is the default policy for blue-green.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>upgradeSettings.blueGreenSettings.standardRolloutPolicy.batchNodeCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Number of blue nodes to drain in a batch.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>upgradeSettings.blueGreenSettings.standardRolloutPolicy.batchPercentage</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">float</code></p>
+            <p>{% verbatim %}Percentage of the blue pool nodes to drain in a batch.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>upgradeSettings.blueGreenSettings.standardRolloutPolicy.batchSoakDuration</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Soak time after each batch gets drained.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>upgradeSettings.maxSurge</code></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -1127,11 +1228,21 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>upgradeSettings.maxUnavailable</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}The number of nodes that can be simultaneously unavailable during an upgrade. Increasing max_unavailable raises the number of nodes that can be upgraded in parallel. Can be set to 0 or greater.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>upgradeSettings.strategy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Update strategy for the given nodepool.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

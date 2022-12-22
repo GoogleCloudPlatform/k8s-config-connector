@@ -50,8 +50,7 @@ func resourceFirebaseWebApp() *schema.Resource {
 			"app_id": {
 				Type:     schema.TypeString,
 				Computed: true,
-				Description: `Immutable. The globally unique, Firebase-assigned identifier of the App.
-
+				Description: `The globally unique, Firebase-assigned identifier of the App.
 This identifier should be treated as an opaque token, as the data format is not specified.`,
 			},
 			"app_urls": {

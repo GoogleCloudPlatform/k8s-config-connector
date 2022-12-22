@@ -135,16 +135,22 @@ settings:
     startTime: string
     transactionLogRetentionDays: integer
   collation: string
+  connectorEnforcement: string
   crashSafeReplication: boolean
   databaseFlags:
   - name: string
     value: string
+  denyMaintenancePeriod:
+    endDate: string
+    startDate: string
+    time: string
   diskAutoresize: boolean
   diskAutoresizeLimit: integer
   diskSize: integer
   diskType: string
   insightsConfig:
     queryInsightsEnabled: boolean
+    queryPlansPerMinute: integer
     queryStringLength: integer
     recordApplicationTags: boolean
     recordClientAddress: boolean
@@ -733,6 +739,16 @@ is set to true. Defaults to ZONAL.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>settings.connectorEnforcement</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Specifies if connections must use Cloud SQL connectors.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>settings.crashSafeReplication</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -780,6 +796,46 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Value of the flag.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.denyMaintenancePeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.denyMaintenancePeriod.endDate</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}End date before which maintenance will not take place. The date is in format yyyy-mm-dd i.e., 2020-11-01, or mm-dd, i.e., 11-01.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.denyMaintenancePeriod.startDate</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Start date after which maintenance will not take place. The date is in format yyyy-mm-dd i.e., 2020-11-01, or mm-dd, i.e., 11-01.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.denyMaintenancePeriod.time</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Time in UTC when the "deny maintenance period" starts on start_date and ends on end_date. The time is in format: HH:mm:SS, i.e., 00:00:00.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -840,6 +896,16 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}True if Query Insights feature is enabled.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.insightsConfig.queryPlansPerMinute</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Number of query execution plans captured by Insights per minute for all queries combined. Between 0 and 20. Default to 5.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1260,7 +1326,7 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The timezone to be used by the database engine (supported only for SQL Server), in SQL Server timezone format.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The time_zone to be used by the database engine (supported only for SQL Server), in SQL Server timezone format.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

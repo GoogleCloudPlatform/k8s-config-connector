@@ -77,9 +77,39 @@ type SecuritypolicyExceedRedirectOptions struct {
 	Type string `json:"type"`
 }
 
+type SecuritypolicyExclusion struct {
+	/* Request cookie whose value will be excluded from inspection during preconfigured WAF evaluation. */
+	// +optional
+	RequestCookie []SecuritypolicyRequestCookie `json:"requestCookie,omitempty"`
+
+	/* Request header whose value will be excluded from inspection during preconfigured WAF evaluation. */
+	// +optional
+	RequestHeader []SecuritypolicyRequestHeader `json:"requestHeader,omitempty"`
+
+	/* Request query parameter whose value will be excluded from inspection during preconfigured WAF evaluation.  Note that the parameter can be in the query string or in the POST body. */
+	// +optional
+	RequestQueryParam []SecuritypolicyRequestQueryParam `json:"requestQueryParam,omitempty"`
+
+	/* Request URI from the request line to be excluded from inspection during preconfigured WAF evaluation. When specifying this field, the query or fragment part should be excluded. */
+	// +optional
+	RequestUri []SecuritypolicyRequestUri `json:"requestUri,omitempty"`
+
+	/* A list of target rule IDs under the WAF rule set to apply the preconfigured WAF exclusion. If omitted, it refers to all the rule IDs under the WAF rule set. */
+	// +optional
+	TargetRuleIds []string `json:"targetRuleIds,omitempty"`
+
+	/* Target WAF rule set to apply the preconfigured WAF exclusion. */
+	TargetRuleSet string `json:"targetRuleSet"`
+}
+
 type SecuritypolicyExpr struct {
 	/* Textual representation of an expression in Common Expression Language syntax. The application context of the containing message determines which well-known feature set of CEL is supported. */
 	Expression string `json:"expression"`
+}
+
+type SecuritypolicyHeaderAction struct {
+	/* The list of request headers to add or overwrite if they're already present. */
+	RequestHeadersToAdds []SecuritypolicyRequestHeadersToAdds `json:"requestHeadersToAdds"`
 }
 
 type SecuritypolicyJsonCustomConfig struct {
@@ -109,6 +139,12 @@ type SecuritypolicyMatch struct {
 	/* Predefined rule expression. If this field is specified, config must also be specified. Available options:   SRC_IPS_V1: Must specify the corresponding src_ip_ranges field in config. */
 	// +optional
 	VersionedExpr *string `json:"versionedExpr,omitempty"`
+}
+
+type SecuritypolicyPreconfiguredWafConfig struct {
+	/* An exclusion to apply during preconfigured WAF evaluation. */
+	// +optional
+	Exclusion []SecuritypolicyExclusion `json:"exclusion,omitempty"`
 }
 
 type SecuritypolicyRateLimitOptions struct {
@@ -150,6 +186,18 @@ type SecuritypolicyRateLimitThreshold struct {
 	IntervalSec int `json:"intervalSec"`
 }
 
+type SecuritypolicyRecaptchaOptionsConfig struct {
+	/* Only `external` field is supported to configure the reference.
+
+	A field to supply a reCAPTCHA site key to be used for all the rules
+	using the redirect action with the type of GOOGLE_RECAPTCHA under
+	the security policy. The specified site key needs to be created from
+	the reCAPTCHA API. The user is responsible for the validity of the
+	specified site key. If not specified, a Google-managed site key is
+	used. */
+	RedirectSiteKeyRef v1alpha1.ResourceRef `json:"redirectSiteKeyRef"`
+}
+
 type SecuritypolicyRedirectOptions struct {
 	/* Target for the redirect action. This is required if the type is EXTERNAL_302 and cannot be specified for GOOGLE_RECAPTCHA. */
 	// +optional
@@ -157,6 +205,51 @@ type SecuritypolicyRedirectOptions struct {
 
 	/* Type of the redirect action. Available options: EXTERNAL_302: Must specify the corresponding target field in config. GOOGLE_RECAPTCHA: Cannot specify target field in config. */
 	Type string `json:"type"`
+}
+
+type SecuritypolicyRequestCookie struct {
+	/* You can specify an exact match or a partial match by using a field operator and a field value. Available options: EQUALS: The operator matches if the field value equals the specified value. STARTS_WITH: The operator matches if the field value starts with the specified value. ENDS_WITH: The operator matches if the field value ends with the specified value. CONTAINS: The operator matches if the field value contains the specified value. EQUALS_ANY: The operator matches if the field value is any value. */
+	Operator string `json:"operator"`
+
+	/* A request field matching the specified value will be excluded from inspection during preconfigured WAF evaluation. The field value must be given if the field operator is not EQUALS_ANY, and cannot be given if the field operator is EQUALS_ANY. */
+	// +optional
+	Value *string `json:"value,omitempty"`
+}
+
+type SecuritypolicyRequestHeader struct {
+	/* You can specify an exact match or a partial match by using a field operator and a field value. Available options: EQUALS: The operator matches if the field value equals the specified value. STARTS_WITH: The operator matches if the field value starts with the specified value. ENDS_WITH: The operator matches if the field value ends with the specified value. CONTAINS: The operator matches if the field value contains the specified value. EQUALS_ANY: The operator matches if the field value is any value. */
+	Operator string `json:"operator"`
+
+	/* A request field matching the specified value will be excluded from inspection during preconfigured WAF evaluation. The field value must be given if the field operator is not EQUALS_ANY, and cannot be given if the field operator is EQUALS_ANY. */
+	// +optional
+	Value *string `json:"value,omitempty"`
+}
+
+type SecuritypolicyRequestHeadersToAdds struct {
+	/* The name of the header to set. */
+	HeaderName string `json:"headerName"`
+
+	/* The value to set the named header to. */
+	// +optional
+	HeaderValue *string `json:"headerValue,omitempty"`
+}
+
+type SecuritypolicyRequestQueryParam struct {
+	/* You can specify an exact match or a partial match by using a field operator and a field value. Available options: EQUALS: The operator matches if the field value equals the specified value. STARTS_WITH: The operator matches if the field value starts with the specified value. ENDS_WITH: The operator matches if the field value ends with the specified value. CONTAINS: The operator matches if the field value contains the specified value. EQUALS_ANY: The operator matches if the field value is any value. */
+	Operator string `json:"operator"`
+
+	/* A request field matching the specified value will be excluded from inspection during preconfigured WAF evaluation. The field value must be given if the field operator is not EQUALS_ANY, and cannot be given if the field operator is EQUALS_ANY. */
+	// +optional
+	Value *string `json:"value,omitempty"`
+}
+
+type SecuritypolicyRequestUri struct {
+	/* You can specify an exact match or a partial match by using a field operator and a field value. Available options: EQUALS: The operator matches if the field value equals the specified value. STARTS_WITH: The operator matches if the field value starts with the specified value. ENDS_WITH: The operator matches if the field value ends with the specified value. CONTAINS: The operator matches if the field value contains the specified value. EQUALS_ANY: The operator matches if the field value is any value. */
+	Operator string `json:"operator"`
+
+	/* A request field matching the specified value will be excluded from inspection during preconfigured WAF evaluation. The field value must be given if the field operator is not EQUALS_ANY, and cannot be given if the field operator is EQUALS_ANY. */
+	// +optional
+	Value *string `json:"value,omitempty"`
 }
 
 type SecuritypolicyRule struct {
@@ -167,8 +260,16 @@ type SecuritypolicyRule struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* Additional actions that are performed on headers. */
+	// +optional
+	HeaderAction *SecuritypolicyHeaderAction `json:"headerAction,omitempty"`
+
 	/* A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding action is enforced. */
 	Match SecuritypolicyMatch `json:"match"`
+
+	/* Preconfigured WAF configuration to be applied for the rule. If the rule does not evaluate preconfigured WAF rules, i.e., if evaluatePreconfiguredWaf() is not used, this field will have no effect. */
+	// +optional
+	PreconfiguredWafConfig *SecuritypolicyPreconfiguredWafConfig `json:"preconfiguredWafConfig,omitempty"`
 
 	/* When set to true, the action specified above is not enforced. Stackdriver logs for requests that trigger a preview action are annotated as such. */
 	// +optional
@@ -198,6 +299,10 @@ type ComputeSecurityPolicySpec struct {
 	/* An optional description of this security policy. Max size is 2048. */
 	// +optional
 	Description *string `json:"description,omitempty"`
+
+	/* reCAPTCHA configuration options to be applied for the security policy. */
+	// +optional
+	RecaptchaOptionsConfig *SecuritypolicyRecaptchaOptionsConfig `json:"recaptchaOptionsConfig,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional

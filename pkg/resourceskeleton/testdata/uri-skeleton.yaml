@@ -659,6 +659,7 @@
         cnrm.cloud.google.com/project-id: kcc-test
       name: sqldatabase-sample
     spec:
+      deletionPolicy: DELETE
       instanceRef:
         external: sqldatabase-dep
   ResourceConfigId: SQLDatabase

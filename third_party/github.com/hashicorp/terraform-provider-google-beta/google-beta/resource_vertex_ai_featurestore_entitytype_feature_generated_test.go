@@ -132,6 +132,14 @@ resource "google_vertex_ai_featurestore_entitytype" "entity" {
       disabled = false
       monitoring_interval = "86400s"
     }
+
+    categorical_threshold_config {
+      value = 0.3
+    }
+
+    numerical_threshold_config {
+      value = 0.3
+    }
   }
 }
 

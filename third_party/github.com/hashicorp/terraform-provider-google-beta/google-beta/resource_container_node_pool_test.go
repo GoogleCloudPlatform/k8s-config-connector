@@ -153,6 +153,45 @@ func TestAccContainerNodePool_noName(t *testing.T) {
 	})
 }
 
+func TestAccContainerNodePool_withLoggingVariantUpdates(t *testing.T) {
+	t.Parallel()
+
+	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
+	nodePool := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccContainerNodePool_withLoggingVariant(cluster, nodePool, "DEFAULT"),
+			},
+			{
+				ResourceName:      "google_container_node_pool.with_logging_variant",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerNodePool_withLoggingVariant(cluster, nodePool, "MAX_THROUGHPUT"),
+			},
+			{
+				ResourceName:      "google_container_node_pool.with_logging_variant",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerNodePool_withLoggingVariant(cluster, nodePool, "DEFAULT"),
+			},
+			{
+				ResourceName:      "google_container_node_pool.with_logging_variant",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
 func TestAccContainerNodePool_withNodeConfig(t *testing.T) {
 	t.Parallel()
 
@@ -471,6 +510,98 @@ func TestAccContainerNodePool_withNetworkConfig(t *testing.T) {
 	})
 }
 
+func TestAccContainerNodePool_withEnablePrivateNodesToggle(t *testing.T) {
+	t.Parallel()
+
+	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
+	np := fmt.Sprintf("tf-test-np-%s", randString(t, 10))
+	network := fmt.Sprintf("tf-test-net-%s", randString(t, 10))
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccContainerNodePool_withEnablePrivateNodesToggle(cluster, np, network, "true"),
+			},
+			{
+				ResourceName:            "google_container_node_pool.with_enable_private_nodes",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"min_master_version"},
+			},
+			{
+				Config: testAccContainerNodePool_withEnablePrivateNodesToggle(cluster, np, network, "false"),
+			},
+			{
+				ResourceName:            "google_container_node_pool.with_enable_private_nodes",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"min_master_version"},
+			},
+		},
+	})
+}
+
+func testAccContainerNodePool_withEnablePrivateNodesToggle(cluster, np, network, flag string) string {
+	return fmt.Sprintf(`
+resource "google_compute_network" "container_network" {
+  name                    = "%s"
+  auto_create_subnetworks = false
+}
+
+resource "google_compute_subnetwork" "container_subnetwork" {
+  name                     = google_compute_network.container_network.name
+  network                  = google_compute_network.container_network.name
+  ip_cidr_range            = "10.0.36.0/24"
+  region                   = "us-central1"
+  private_ip_google_access = true
+
+  secondary_ip_range {
+    range_name    = "pod"
+    ip_cidr_range = "10.0.0.0/19"
+  }
+
+  secondary_ip_range {
+    range_name    = "svc"
+    ip_cidr_range = "10.0.32.0/22"
+  }
+}
+
+resource "google_container_cluster" "cluster" {
+  name               = "%s"
+  location           = "us-central1-a"
+  min_master_version = "1.23"
+  initial_node_count = 1
+
+  network    = google_compute_network.container_network.name
+  subnetwork = google_compute_subnetwork.container_subnetwork.name
+  ip_allocation_policy {
+    cluster_secondary_range_name  = google_compute_subnetwork.container_subnetwork.secondary_ip_range[0].range_name
+    services_secondary_range_name = google_compute_subnetwork.container_subnetwork.secondary_ip_range[1].range_name
+  }
+}
+
+resource "google_container_node_pool" "with_enable_private_nodes" {
+  name               = "%s"
+  location           = "us-central1-a"
+  cluster            = google_container_cluster.cluster.name
+  node_count = 1
+  network_config {
+    create_pod_range = false
+    enable_private_nodes = %s
+    pod_range = google_compute_subnetwork.container_subnetwork.secondary_ip_range[0].range_name
+  }
+  node_config {
+	oauth_scopes = [
+	  "https://www.googleapis.com/auth/cloud-platform",
+	]
+  }
+}
+`, network, cluster, np, flag)
+}
+
 func TestAccContainerNodePool_withBootDiskKmsKey(t *testing.T) {
 	// Uses generated time-based rotation time
 	skipIfVcr(t)
@@ -508,7 +639,7 @@ func TestAccContainerNodePool_withUpgradeSettings(t *testing.T) {
 		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccContainerNodePool_withUpgradeSettings(cluster, np, 2, 3),
+				Config: testAccContainerNodePool_withUpgradeSettings(cluster, np, 2, 3, "SURGE", "", 0, 0.0, ""),
 			},
 			{
 				ResourceName:      "google_container_node_pool.with_upgrade_settings",
@@ -516,7 +647,31 @@ func TestAccContainerNodePool_withUpgradeSettings(t *testing.T) {
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccContainerNodePool_withUpgradeSettings(cluster, np, 1, 1),
+				Config: testAccContainerNodePool_withUpgradeSettings(cluster, np, 2, 1, "SURGE", "", 0, 0.0, ""),
+			},
+			{
+				ResourceName:      "google_container_node_pool.with_upgrade_settings",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerNodePool_withUpgradeSettings(cluster, np, 1, 1, "SURGE", "", 0, 0.0, ""),
+			},
+			{
+				ResourceName:      "google_container_node_pool.with_upgrade_settings",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerNodePool_withUpgradeSettings(cluster, np, 0, 0, "BLUE_GREEN", "100s", 1, 0.0, "0s"),
+			},
+			{
+				ResourceName:      "google_container_node_pool.with_upgrade_settings",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerNodePool_withUpgradeSettings(cluster, np, 0, 0, "BLUE_GREEN", "100s", 0, 0.5, "1s"),
 			},
 			{
 				ResourceName:      "google_container_node_pool.with_upgrade_settings",
@@ -989,6 +1144,48 @@ func TestAccContainerNodePool_shieldedInstanceConfig(t *testing.T) {
 	})
 }
 
+func TestAccContainerNodePool_concurrent(t *testing.T) {
+	t.Parallel()
+
+	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
+	np1 := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	np2 := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccContainerNodePool_concurrentCreate(cluster, np1, np2),
+			},
+			{
+				ResourceName:      "google_container_node_pool.np1",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				ResourceName:      "google_container_node_pool.np2",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccContainerNodePool_concurrentUpdate(cluster, np1, np2),
+			},
+			{
+				ResourceName:      "google_container_node_pool.np1",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				ResourceName:      "google_container_node_pool.np2",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
 func TestAccContainerNodePool_ephemeralStorageConfig(t *testing.T) {
 	t.Parallel()
 
@@ -1218,15 +1415,18 @@ func testAccCheckContainerNodePoolDestroyProducer(t *testing.T) func(s *terrafor
 func testAccContainerNodePool_basic(cluster, np string) string {
 	return fmt.Sprintf(`
 provider "google" {
+  alias                 = "user-project-override"
   user_project_override = true
 }
 resource "google_container_cluster" "cluster" {
+  provider           = google.user-project-override
   name               = "%s"
   location           = "us-central1-a"
   initial_node_count = 3
 }
 
 resource "google_container_node_pool" "np" {
+  provider           = google.user-project-override
   name               = "%s"
   location           = "us-central1-a"
   cluster            = google_container_cluster.cluster.name
@@ -1235,18 +1435,41 @@ resource "google_container_node_pool" "np" {
 `, cluster, np)
 }
 
+func testAccContainerNodePool_withLoggingVariant(cluster, np, loggingVariant string) string {
+	return fmt.Sprintf(`
+resource "google_container_cluster" "with_logging_variant" {
+  name               = "%s"
+  location           = "us-central1-a"
+  initial_node_count = 1
+}
+
+resource "google_container_node_pool" "with_logging_variant" {
+  name               = "%s"
+  location           = "us-central1-a"
+  cluster            = google_container_cluster.with_logging_variant.name
+  initial_node_count = 1
+  node_config {
+    logging_variant = "%s"
+  }
+}
+`, cluster, np, loggingVariant)
+}
+
 func testAccContainerNodePool_basicWithClusterId(cluster, np string) string {
 	return fmt.Sprintf(`
 provider "google" {
+  alias                 = "user-project-override"
   user_project_override = true
 }
 resource "google_container_cluster" "cluster" {
+  provider           = google.user-project-override
   name               = "%s"
   location           = "us-central1-a"
   initial_node_count = 3
 }
 
 resource "google_container_node_pool" "np" {
+  provider           = google.user-project-override
   name               = "%s"
   cluster            = google_container_cluster.cluster.id
   initial_node_count = 2
@@ -1489,9 +1712,11 @@ resource "google_container_node_pool" "np" {
 func testAccContainerNodePool_basicTotalSize(cluster, np string) string {
 	return fmt.Sprintf(`
 provider "google" {
+  alias                 = "user-project-override"
   user_project_override = true
 }
 resource "google_container_cluster" "cluster" {
+  provider           = google.user-project-override
   name               = "%s"
   location           = "us-central1"
   initial_node_count = 3
@@ -1499,6 +1724,7 @@ resource "google_container_cluster" "cluster" {
 }
 
 resource "google_container_node_pool" "np" {
+  provider           = google.user-project-override
   name               = "%s"
   location           = "us-central1"
   cluster            = google_container_cluster.cluster.name
@@ -1648,6 +1874,10 @@ resource "google_container_node_pool" "np_with_node_config" {
 	
     tags = ["ga"]
 
+	resource_labels = {
+      "key1" = "value"
+    }
+
     taint {
       key    = "taint_key"
       value  = "taint_value"
@@ -1693,6 +1923,11 @@ resource "google_container_node_pool" "np_with_node_config" {
     min_cpu_platform = "Intel Broadwell"
 
     tags = ["beta"]
+
+	resource_labels = {
+      "key1" = "value1"
+	  "key2" = "value2"
+    }
 
     taint {
       key    = "taint_key"
@@ -2183,7 +2418,32 @@ resource "google_container_node_pool" "with_boot_disk_kms_key" {
 `, project, cluster, cluster, cluster, np)
 }
 
-func testAccContainerNodePool_withUpgradeSettings(clusterName string, nodePoolName string, maxSurge int, maxUnavailable int) string {
+func makeUpgradeSettings(maxSurge int, maxUnavailable int, strategy string, nodePoolSoakDuration string, batchNodeCount int, batchPercentage float64, batchSoakDuration string) string {
+	if strategy == "BLUE_GREEN" {
+		return fmt.Sprintf(`
+upgrade_settings {
+	strategy = "%s"
+	blue_green_settings {
+		node_pool_soak_duration = "%s"
+		standard_rollout_policy {
+			batch_node_count = %d
+			batch_percentage = %f
+			batch_soak_duration = "%s"
+		}
+	}
+}
+`, strategy, nodePoolSoakDuration, batchNodeCount, batchPercentage, batchSoakDuration)
+	}
+	return fmt.Sprintf(`
+upgrade_settings {
+	max_surge = %d
+	max_unavailable = %d
+	strategy = "%s"
+}
+`, maxSurge, maxUnavailable, strategy)
+}
+
+func testAccContainerNodePool_withUpgradeSettings(clusterName string, nodePoolName string, maxSurge int, maxUnavailable int, strategy string, nodePoolSoakDuration string, batchNodeCount int, batchPercentage float64, batchSoakDuration string) string {
 	return fmt.Sprintf(`
 data "google_container_engine_versions" "central1" {
   location = "us-central1"
@@ -2201,12 +2461,9 @@ resource "google_container_node_pool" "with_upgrade_settings" {
   location = "us-central1"
   cluster = "${google_container_cluster.cluster.name}"
   initial_node_count = 1
-  upgrade_settings {
-    max_surge = %d
-    max_unavailable = %d
-  }
+  %s
 }
-`, clusterName, nodePoolName, maxSurge, maxUnavailable)
+`, clusterName, nodePoolName, makeUpgradeSettings(maxSurge, maxUnavailable, strategy, nodePoolSoakDuration, batchNodeCount, batchPercentage, batchSoakDuration))
 }
 
 func testAccContainerNodePool_withGPU(cluster, np string) string {
@@ -2487,4 +2744,54 @@ resource "google_container_node_pool" "np" {
   }
 }
 `, cluster, np)
+}
+
+func testAccContainerNodePool_concurrentCreate(cluster, np1, np2 string) string {
+	return fmt.Sprintf(`
+resource "google_container_cluster" "cluster" {
+  name               = "%s"
+  location           = "us-central1-a"
+  initial_node_count = 3
+}
+
+resource "google_container_node_pool" "np1" {
+  name               = "%s"
+  location           = "us-central1-a"
+  cluster            = google_container_cluster.cluster.name
+  initial_node_count = 2
+}
+
+resource "google_container_node_pool" "np2" {
+	name               = "%s"
+	location           = "us-central1-a"
+	cluster            = google_container_cluster.cluster.name
+	initial_node_count = 2
+  }
+`, cluster, np1, np2)
+}
+
+func testAccContainerNodePool_concurrentUpdate(cluster, np1, np2 string) string {
+	return fmt.Sprintf(`
+resource "google_container_cluster" "cluster" {
+  name               = "%s"
+  location           = "us-central1-a"
+  initial_node_count = 3
+}
+
+resource "google_container_node_pool" "np1" {
+  name               = "%s"
+  location           = "us-central1-a"
+  cluster            = google_container_cluster.cluster.name
+  initial_node_count = 2
+  version 		     = "1.23.13-gke.900"
+}
+
+resource "google_container_node_pool" "np2" {
+	name               = "%s"
+	location           = "us-central1-a"
+	cluster            = google_container_cluster.cluster.name
+	initial_node_count = 2
+	version 		   = "1.23.13-gke.900"
+  }
+`, cluster, np1, np2)
 }

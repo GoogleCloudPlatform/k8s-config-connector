@@ -103,6 +103,11 @@ peeringConfig:
       name: string
       namespace: string
 privateVisibilityConfig:
+  gkeClusters:
+  - gkeClusterNameRef:
+      external: string
+      name: string
+      namespace: string
   networks:
   - networkRef:
       external: string
@@ -398,6 +403,68 @@ zone. The value of this field contains the network to peer with.{% endverbatim %
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}For privately visible zones, the set of Virtual Private Cloud
 resources that the zone is visible from.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>privateVisibilityConfig.gkeClusters</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}The list of Google Kubernetes Engine clusters that can see this zone.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>privateVisibilityConfig.gkeClusters[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>privateVisibilityConfig.gkeClusters[].gkeClusterNameRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The resource name of the cluster to bind this ManagedZone to.
+This should be specified in the format like
+'projects/*/locations/*/clusters/*'.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>privateVisibilityConfig.gkeClusters[].gkeClusterNameRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ContainerCluster` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>privateVisibilityConfig.gkeClusters[].gkeClusterNameRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>privateVisibilityConfig.gkeClusters[].gkeClusterNameRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

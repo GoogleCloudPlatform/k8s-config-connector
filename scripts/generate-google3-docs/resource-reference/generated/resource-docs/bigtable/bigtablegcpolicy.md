@@ -89,6 +89,7 @@ Instead, you must first un-replicate the instance by updating the instance to ha
 #### Schema
 ```yaml
 columnFamily: string
+deletionPolicy: string
 gcRules: string
 instanceRef:
   external: string
@@ -121,6 +122,18 @@ tableRef:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The name of the column family.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>deletionPolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The deletion policy for the GC policy. Setting ABANDON allows the resource
+				to be abandoned rather than deleted. This is useful for GC policy as it cannot be deleted
+				in a replicated instance. Possible values are: "ABANDON".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -180,7 +193,7 @@ tableRef:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. GC policy that applies to all cells older than the given age.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. NOTE: 'gc_rules' is more flexible, and should be preferred over this field for new resources. This field may be deprecated in the future. GC policy that applies to all cells older than the given age.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -220,7 +233,7 @@ tableRef:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. GC policy that applies to all versions of a cell except for the most recent.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. NOTE: 'gc_rules' is more flexible, and should be preferred over this field for new resources. This field may be deprecated in the future. GC policy that applies to all versions of a cell except for the most recent.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -250,7 +263,7 @@ tableRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. If multiple policies are set, you should choose between UNION OR INTERSECTION.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. NOTE: 'gc_rules' is more flexible, and should be preferred over this field for new resources. This field may be deprecated in the future. If multiple policies are set, you should choose between UNION OR INTERSECTION.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

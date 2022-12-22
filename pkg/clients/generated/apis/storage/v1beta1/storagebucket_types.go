@@ -40,8 +40,13 @@ type BucketAction struct {
 	// +optional
 	StorageClass *string `json:"storageClass,omitempty"`
 
-	/* The type of the action of this Lifecycle Rule. Supported values include: Delete and SetStorageClass. */
+	/* The type of the action of this Lifecycle Rule. Supported values include: Delete, SetStorageClass and AbortIncompleteMultipartUpload. */
 	Type string `json:"type"`
+}
+
+type BucketAutoclass struct {
+	/* Immutable. While set to true, autoclass automatically transitions objects in your bucket to appropriate storage classes based on each object's access pattern. */
+	Enabled bool `json:"enabled"`
 }
 
 type BucketCondition struct {
@@ -161,6 +166,10 @@ type BucketWebsite struct {
 }
 
 type StorageBucketSpec struct {
+	/* Immutable. The bucket's autoclass configuration. */
+	// +optional
+	Autoclass *BucketAutoclass `json:"autoclass,omitempty"`
+
 	/* DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field.
 	Enables Bucket PolicyOnly access to a bucket. */
 	// +optional

@@ -27,7 +27,9 @@ func TestAccComputeAutoscaler_autoscalerSingleInstanceExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"provider_name":  "google-beta.us-central1",
+		"provider_alias": "alias  = \"us-central1\"",
+		"random_suffix":  randString(t, 10),
 	}
 
 	vcrTest(t, resource.TestCase{
@@ -51,7 +53,7 @@ func TestAccComputeAutoscaler_autoscalerSingleInstanceExample(t *testing.T) {
 func testAccComputeAutoscaler_autoscalerSingleInstanceExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_compute_autoscaler" "default" {
-  provider = google-beta
+  provider = %{provider_name}
 
   name   = "tf-test-my-autoscaler%{random_suffix}"
   zone   = "us-central1-f"
@@ -71,7 +73,7 @@ resource "google_compute_autoscaler" "default" {
 }
 
 resource "google_compute_instance_template" "default" {
-  provider = google-beta
+  provider = %{provider_name}
 
   name           = "tf-test-my-instance-template%{random_suffix}"
   machine_type   = "e2-medium"
@@ -97,13 +99,13 @@ resource "google_compute_instance_template" "default" {
 }
 
 resource "google_compute_target_pool" "default" {
-  provider = google-beta
+  provider = %{provider_name}
 
   name = "tf-test-my-target-pool%{random_suffix}"
 }
 
 resource "google_compute_instance_group_manager" "default" {
-  provider = google-beta
+  provider = %{provider_name}
 
   name = "tf-test-my-igm%{random_suffix}"
   zone = "us-central1-f"
@@ -118,7 +120,7 @@ resource "google_compute_instance_group_manager" "default" {
 }
 
 data "google_compute_image" "debian_9" {
-  provider = google-beta
+  provider = %{provider_name}
 
   family  = "debian-11"
   project = "debian-cloud"
@@ -127,6 +129,7 @@ data "google_compute_image" "debian_9" {
 provider "google-beta" {
   region = "us-central1"
   zone   = "us-central1-a"
+  %{provider_alias}
 }
 `, context)
 }

@@ -1258,9 +1258,10 @@ type Build struct {
 
 	// Timing: Output only. Stores timing information for phases of the
 	// build. Valid keys are: * BUILD: time to execute all build steps. *
-	// PUSH: time to push all specified images. * FETCHSOURCE: time to fetch
-	// source. * SETUPBUILD: time to set up build. If the build does not
-	// specify source or images, these keys will not be included.
+	// PUSH: time to push all artifacts including docker images and non
+	// docker artifacts. * FETCHSOURCE: time to fetch source. * SETUPBUILD:
+	// time to set up build. If the build does not specify source or images,
+	// these keys will not be included.
 	Timing map[string]TimeSpan `json:"timing,omitempty"`
 
 	// Warnings: Output only. Non-fatal problems encountered during the
@@ -2959,58 +2960,6 @@ func (s *GitRepoSource) MarshalJSON() ([]byte, error) {
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
 
-// GoogleDevtoolsCloudbuildV2OperationMetadata: Represents the metadata
-// of the long-running operation.
-type GoogleDevtoolsCloudbuildV2OperationMetadata struct {
-	// ApiVersion: Output only. API version used to start the operation.
-	ApiVersion string `json:"apiVersion,omitempty"`
-
-	// CreateTime: Output only. The time the operation was created.
-	CreateTime string `json:"createTime,omitempty"`
-
-	// EndTime: Output only. The time the operation finished running.
-	EndTime string `json:"endTime,omitempty"`
-
-	// RequestedCancellation: Output only. Identifies whether the user has
-	// requested cancellation of the operation. Operations that have
-	// successfully been cancelled have Operation.error value with a
-	// google.rpc.Status.code of 1, corresponding to `Code.CANCELLED`.
-	RequestedCancellation bool `json:"requestedCancellation,omitempty"`
-
-	// StatusMessage: Output only. Human-readable status of the operation,
-	// if any.
-	StatusMessage string `json:"statusMessage,omitempty"`
-
-	// Target: Output only. Server-defined resource path for the target of
-	// the operation.
-	Target string `json:"target,omitempty"`
-
-	// Verb: Output only. Name of the verb executed by the operation.
-	Verb string `json:"verb,omitempty"`
-
-	// ForceSendFields is a list of field names (e.g. "ApiVersion") to
-	// unconditionally include in API requests. By default, fields with
-	// empty or default values are omitted from API requests. However, any
-	// non-pointer, non-interface field appearing in ForceSendFields will be
-	// sent to the server regardless of whether the field is empty or not.
-	// This may be used to include empty fields in Patch requests.
-	ForceSendFields []string `json:"-"`
-
-	// NullFields is a list of field names (e.g. "ApiVersion") to include in
-	// API requests with the JSON null value. By default, fields with empty
-	// values are omitted from API requests. However, any field with an
-	// empty value appearing in NullFields will be sent to the server as
-	// null. It is an error if a field in this list has a non-empty value.
-	// This may be used to include null fields in Patch requests.
-	NullFields []string `json:"-"`
-}
-
-func (s *GoogleDevtoolsCloudbuildV2OperationMetadata) MarshalJSON() ([]byte, error) {
-	type NoMethod GoogleDevtoolsCloudbuildV2OperationMetadata
-	raw := NoMethod(*s)
-	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
-}
-
 // HTTPDelivery: HTTPDelivery is the delivery configuration for an HTTP
 // notification.
 type HTTPDelivery struct {
@@ -4307,11 +4256,13 @@ func (s *RepoSource) MarshalJSON() ([]byte, error) {
 
 // Results: Artifacts created by the build pipeline.
 type Results struct {
-	// ArtifactManifest: Path to the artifact manifest. Only populated when
-	// artifacts are uploaded.
+	// ArtifactManifest: Path to the artifact manifest for non-container
+	// artifacts uploaded to Cloud Storage. Only populated when artifacts
+	// are uploaded to Cloud Storage.
 	ArtifactManifest string `json:"artifactManifest,omitempty"`
 
-	// ArtifactTiming: Time to push all non-container artifacts.
+	// ArtifactTiming: Time to push all non-container artifacts to Cloud
+	// Storage.
 	ArtifactTiming *TimeSpan `json:"artifactTiming,omitempty"`
 
 	// BuildStepImages: List of build step digests, in the order
@@ -4332,8 +4283,8 @@ type Results struct {
 	// end of the build.
 	MavenArtifacts []*UploadedMavenArtifact `json:"mavenArtifacts,omitempty"`
 
-	// NumArtifacts: Number of artifacts uploaded. Only populated when
-	// artifacts are uploaded.
+	// NumArtifacts: Number of non-container artifacts uploaded to Cloud
+	// Storage. Only populated when artifacts are uploaded to Cloud Storage.
 	NumArtifacts int64 `json:"numArtifacts,omitempty,string"`
 
 	// PythonPackages: Python artifacts uploaded to Artifact Registry at the
@@ -4431,58 +4382,6 @@ type RunBuildTriggerRequest struct {
 
 func (s *RunBuildTriggerRequest) MarshalJSON() ([]byte, error) {
 	type NoMethod RunBuildTriggerRequest
-	raw := NoMethod(*s)
-	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
-}
-
-// RunWorkflowCustomOperationMetadata: Represents the custom metadata of
-// the RunWorkflow long-running operation.
-type RunWorkflowCustomOperationMetadata struct {
-	// ApiVersion: Output only. API version used to start the operation.
-	ApiVersion string `json:"apiVersion,omitempty"`
-
-	// CreateTime: Output only. The time the operation was created.
-	CreateTime string `json:"createTime,omitempty"`
-
-	// EndTime: Output only. The time the operation finished running.
-	EndTime string `json:"endTime,omitempty"`
-
-	// PipelineRunId: Output only. ID of the pipeline run created by
-	// RunWorkflow.
-	PipelineRunId string `json:"pipelineRunId,omitempty"`
-
-	// RequestedCancellation: Output only. Identifies whether the user has
-	// requested cancellation of the operation. Operations that have
-	// successfully been cancelled have Operation.error value with a
-	// google.rpc.Status.code of 1, corresponding to `Code.CANCELLED`.
-	RequestedCancellation bool `json:"requestedCancellation,omitempty"`
-
-	// Target: Output only. Server-defined resource path for the target of
-	// the operation.
-	Target string `json:"target,omitempty"`
-
-	// Verb: Output only. Name of the verb executed by the operation.
-	Verb string `json:"verb,omitempty"`
-
-	// ForceSendFields is a list of field names (e.g. "ApiVersion") to
-	// unconditionally include in API requests. By default, fields with
-	// empty or default values are omitted from API requests. However, any
-	// non-pointer, non-interface field appearing in ForceSendFields will be
-	// sent to the server regardless of whether the field is empty or not.
-	// This may be used to include empty fields in Patch requests.
-	ForceSendFields []string `json:"-"`
-
-	// NullFields is a list of field names (e.g. "ApiVersion") to include in
-	// API requests with the JSON null value. By default, fields with empty
-	// values are omitted from API requests. However, any field with an
-	// empty value appearing in NullFields will be sent to the server as
-	// null. It is an error if a field in this list has a non-empty value.
-	// This may be used to include null fields in Patch requests.
-	NullFields []string `json:"-"`
-}
-
-func (s *RunWorkflowCustomOperationMetadata) MarshalJSON() ([]byte, error) {
-	type NoMethod RunWorkflowCustomOperationMetadata
 	raw := NoMethod(*s)
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }

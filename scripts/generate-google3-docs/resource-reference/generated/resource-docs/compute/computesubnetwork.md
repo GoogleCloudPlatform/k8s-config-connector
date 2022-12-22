@@ -159,7 +159,7 @@ non-overlapping within a network. Only IPv4 is supported.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The access type of IPv6 address this subnet holds. It's immutable and can only be specified during creation
+            <p>{% verbatim %}The access type of IPv6 address this subnet holds. It's immutable and can only be specified during creation
 or the first time the subnet is updated into IPV4_IPV6 dual stack. If the ipv6_type is EXTERNAL then this subnet
 cannot enable direct path. Possible values: ["EXTERNAL", "INTERNAL"].{% endverbatim %}</p>
         </td>

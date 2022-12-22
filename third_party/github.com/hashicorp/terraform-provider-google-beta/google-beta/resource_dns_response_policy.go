@@ -54,6 +54,22 @@ func resourceDNSResponsePolicy() *schema.Resource {
 				Description: `The description of the response policy, such as 'My new response policy'.`,
 				Default:     "Managed by Terraform",
 			},
+			"gke_clusters": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: `The list of Google Kubernetes Engine clusters that can see this zone.`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"gke_cluster_name": {
+							Type:     schema.TypeString,
+							Required: true,
+							Description: `The resource name of the cluster to bind this ManagedZone to.  
+This should be specified in the format like  
+'projects/*/locations/*/clusters/*'`,
+						},
+					},
+				},
+			},
 			"networks": {
 				Type:        schema.TypeList,
 				Optional:    true,
@@ -107,6 +123,12 @@ func resourceDNSResponsePolicyCreate(d *schema.ResourceData, meta interface{}) e
 		return err
 	} else if v, ok := d.GetOkExists("networks"); !isEmptyValue(reflect.ValueOf(networksProp)) && (ok || !reflect.DeepEqual(v, networksProp)) {
 		obj["networks"] = networksProp
+	}
+	gkeClustersProp, err := expandDNSResponsePolicyGkeClusters(d.Get("gke_clusters"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("gke_clusters"); !isEmptyValue(reflect.ValueOf(gkeClustersProp)) && (ok || !reflect.DeepEqual(v, gkeClustersProp)) {
+		obj["gkeClusters"] = gkeClustersProp
 	}
 
 	url, err := replaceVars(d, config, "{{DNSBasePath}}projects/{{project}}/responsePolicies")
@@ -188,6 +210,9 @@ func resourceDNSResponsePolicyRead(d *schema.ResourceData, meta interface{}) err
 	if err := d.Set("networks", flattenDNSResponsePolicyNetworks(res["networks"], d, config)); err != nil {
 		return fmt.Errorf("Error reading ResponsePolicy: %s", err)
 	}
+	if err := d.Set("gke_clusters", flattenDNSResponsePolicyGkeClusters(res["gkeClusters"], d, config)); err != nil {
+		return fmt.Errorf("Error reading ResponsePolicy: %s", err)
+	}
 
 	return nil
 }
@@ -219,6 +244,12 @@ func resourceDNSResponsePolicyUpdate(d *schema.ResourceData, meta interface{}) e
 		return err
 	} else if v, ok := d.GetOkExists("networks"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, networksProp)) {
 		obj["networks"] = networksProp
+	}
+	gkeClustersProp, err := expandDNSResponsePolicyGkeClusters(d.Get("gke_clusters"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("gke_clusters"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, gkeClustersProp)) {
+		obj["gkeClusters"] = gkeClustersProp
 	}
 
 	url, err := replaceVars(d, config, "{{DNSBasePath}}projects/{{project}}/responsePolicies/{{response_policy_name}}")
@@ -265,6 +296,22 @@ func resourceDNSResponsePolicyDelete(d *schema.ResourceData, meta interface{}) e
 	}
 
 	var obj map[string]interface{}
+	// if gke clusters are attached, they need to be detached before the response policy can be deleted
+	if d.Get("gke_clusters.#").(int) > 0 {
+		patched := make(map[string]interface{})
+		patched["gkeClusters"] = nil
+
+		url, err := replaceVars(d, config, "{{DNSBasePath}}projects/{{project}}/responsePolicies/{{response_policy_name}}")
+		if err != nil {
+			return err
+		}
+
+		_, err = sendRequestWithTimeout(config, "PATCH", project, url, userAgent, patched, d.Timeout(schema.TimeoutUpdate))
+		if err != nil {
+			return fmt.Errorf("Error updating Policy %q: %s", d.Id(), err)
+		}
+	}
+
 	// if networks are attached, they need to be detached before the response policy can be deleted
 	if d.Get("networks.#").(int) > 0 {
 		patched := make(map[string]interface{})
@@ -346,6 +393,28 @@ func flattenDNSResponsePolicyNetworksNetworkUrl(v interface{}, d *schema.Resourc
 	return v
 }
 
+func flattenDNSResponsePolicyGkeClusters(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return v
+	}
+	l := v.([]interface{})
+	transformed := make([]interface{}, 0, len(l))
+	for _, raw := range l {
+		original := raw.(map[string]interface{})
+		if len(original) < 1 {
+			// Do not include empty json objects coming back from the api
+			continue
+		}
+		transformed = append(transformed, map[string]interface{}{
+			"gke_cluster_name": flattenDNSResponsePolicyGkeClustersGkeClusterName(original["gkeClusterName"], d, config),
+		})
+	}
+	return transformed
+}
+func flattenDNSResponsePolicyGkeClustersGkeClusterName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
 func expandDNSResponsePolicyResponsePolicyName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
@@ -387,4 +456,30 @@ func expandDNSResponsePolicyNetworksNetworkUrl(v interface{}, d TerraformResourc
 		return "", err
 	}
 	return ConvertSelfLinkToV1(url), nil
+}
+
+func expandDNSResponsePolicyGkeClusters(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	l := v.([]interface{})
+	req := make([]interface{}, 0, len(l))
+	for _, raw := range l {
+		if raw == nil {
+			continue
+		}
+		original := raw.(map[string]interface{})
+		transformed := make(map[string]interface{})
+
+		transformedGkeClusterName, err := expandDNSResponsePolicyGkeClustersGkeClusterName(original["gke_cluster_name"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedGkeClusterName); val.IsValid() && !isEmptyValue(val) {
+			transformed["gkeClusterName"] = transformedGkeClusterName
+		}
+
+		req = append(req, transformed)
+	}
+	return req, nil
+}
+
+func expandDNSResponsePolicyGkeClustersGkeClusterName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
 }

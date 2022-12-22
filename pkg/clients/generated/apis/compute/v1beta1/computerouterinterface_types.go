@@ -40,9 +40,17 @@ type ComputeRouterInterfaceSpec struct {
 	// +optional
 	InterconnectAttachmentRef *v1alpha1.ResourceRef `json:"interconnectAttachmentRef,omitempty"`
 
-	/* Immutable. IP address and range of the interface. The IP range must be in the RFC3927 link-local IP space. Changing this forces a new interface to be created. */
+	/* Immutable. The IP address and range of the interface. The IP range must be in the RFC3927 link-local IP space. Changing this forces a new interface to be created. */
 	// +optional
 	IpRange *string `json:"ipRange,omitempty"`
+
+	/*  */
+	// +optional
+	PrivateIpAddressRef *v1alpha1.ResourceRef `json:"privateIpAddressRef,omitempty"`
+
+	/* The interface the BGP peer is associated with. */
+	// +optional
+	RedundantInterfaceRef *v1alpha1.ResourceRef `json:"redundantInterfaceRef,omitempty"`
 
 	/* Immutable. The region this interface's router sits in. If not specified, the project region will be used. Changing this forces a new interface to be created. */
 	Region string `json:"region"`
@@ -53,6 +61,10 @@ type ComputeRouterInterfaceSpec struct {
 
 	/*  */
 	RouterRef v1alpha1.ResourceRef `json:"routerRef"`
+
+	/*  */
+	// +optional
+	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
 	/*  */
 	// +optional

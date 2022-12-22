@@ -58,6 +58,17 @@ spec:
             type: object
           spec:
             properties:
+              autoclass:
+                description: Immutable. The bucket's autoclass configuration.
+                properties:
+                  enabled:
+                    description: Immutable. While set to true, autoclass automatically
+                      transitions objects in your bucket to appropriate storage classes
+                      based on each object's access pattern.
+                    type: boolean
+                required:
+                - enabled
+                type: object
               bucketPolicyOnly:
                 description: |-
                   DEPRECATED. Please use the `uniformBucketLevelAccess` field as this field has been renamed by Google. The `uniformBucketLevelAccess` field will supersede this field.
@@ -163,7 +174,8 @@ spec:
                           type: string
                         type:
                           description: 'The type of the action of this Lifecycle Rule.
-                            Supported values include: Delete and SetStorageClass.'
+                            Supported values include: Delete, SetStorageClass and
+                            AbortIncompleteMultipartUpload.'
                           type: string
                       required:
                       - type

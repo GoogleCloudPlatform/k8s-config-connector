@@ -96,6 +96,7 @@
 ```yaml
 columnFamily:
 - family: string
+deletionProtection: string
 instanceRef:
   external: string
   name: string
@@ -140,6 +141,16 @@ splitKeys:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The name of the column family.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>deletionProtection</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A field to make the table protected against data loss i.e. when set to PROTECTED, deleting the table, the column families in the table, and the instance containing the table would be prohibited. If not provided, currently deletion protection will be set to UNPROTECTED as it is the API default value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

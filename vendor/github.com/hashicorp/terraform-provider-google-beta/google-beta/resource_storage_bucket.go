@@ -141,7 +141,7 @@ func resourceStorageBucket() *schema.Resource {
 									"type": {
 										Type:        schema.TypeString,
 										Required:    true,
-										Description: `The type of the action of this Lifecycle Rule. Supported values include: Delete and SetStorageClass.`,
+										Description: `The type of the action of this Lifecycle Rule. Supported values include: Delete, SetStorageClass and AbortIncompleteMultipartUpload.`,
 									},
 									"storage_class": {
 										Type:        schema.TypeString,
@@ -247,10 +247,29 @@ func resourceStorageBucket() *schema.Resource {
 				Description: `The bucket's Versioning configuration.`,
 			},
 
+			"autoclass": {
+				Type:     schema.TypeList,
+				Optional: true,
+				MaxItems: 1,
+				ForceNew: true,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"enabled": {
+							Type:        schema.TypeBool,
+							Required:    true,
+							ForceNew:    true,
+							Description: `While set to true, autoclass automatically transitions objects in your bucket to appropriate storage classes based on each object's access pattern.`,
+						},
+					},
+				},
+				Description: `The bucket's autoclass configuration.`,
+			},
+
 			"website": {
 				Type:     schema.TypeList,
 				Optional: true,
 				MaxItems: 1,
+				Computed: true,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"main_page_suffix": {
@@ -258,12 +277,18 @@ func resourceStorageBucket() *schema.Resource {
 							Optional:     true,
 							AtLeastOneOf: []string{"website.0.not_found_page", "website.0.main_page_suffix"},
 							Description:  `Behaves as the bucket's directory index where missing objects are treated as potential directories.`,
+							DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
+								return old != "" && new == ""
+							},
 						},
 						"not_found_page": {
 							Type:         schema.TypeString,
 							Optional:     true,
 							AtLeastOneOf: []string{"website.0.main_page_suffix", "website.0.not_found_page"},
 							Description:  `The custom object to return when a requested resource is not found.`,
+							DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
+								return old != "" && new == ""
+							},
 						},
 					},
 				},
@@ -468,6 +493,10 @@ func resourceStorageBucketCreate(d *schema.ResourceData, meta interface{}) error
 		sb.Versioning = expandBucketVersioning(v)
 	}
 
+	if v, ok := d.GetOk("autoclass"); ok {
+		sb.Autoclass = expandBucketAutoclass(v)
+	}
+
 	if v, ok := d.GetOk("website"); ok {
 		sb.Website = expandBucketWebsite(v.([]interface{}))
 	}
@@ -589,6 +618,12 @@ func resourceStorageBucketUpdate(d *schema.ResourceData, meta interface{}) error
 	if d.HasChange("versioning") {
 		if v, ok := d.GetOk("versioning"); ok {
 			sb.Versioning = expandBucketVersioning(v)
+		}
+	}
+
+	if d.HasChange("autoclass") {
+		if v, ok := d.GetOk("autoclass"); ok {
+			sb.Autoclass = expandBucketAutoclass(v)
 		}
 	}
 
@@ -956,7 +991,7 @@ func expandBucketDataLocations(configured interface{}) []string {
 
 func expandBucketLogging(configured interface{}) *storage.BucketLogging {
 	loggings := configured.([]interface{})
-	if len(loggings) == 0 {
+	if len(loggings) == 0 || loggings[0] == nil {
 		return nil
 	}
 
@@ -1033,6 +1068,22 @@ func expandBucketVersioning(configured interface{}) *storage.BucketVersioning {
 	return bucketVersioning
 }
 
+func expandBucketAutoclass(configured interface{}) *storage.BucketAutoclass {
+	autoclassList := configured.([]interface{})
+	if len(autoclassList) == 0 {
+		return nil
+	}
+
+	autoclass := autoclassList[0].(map[string]interface{})
+
+	bucketAutoclass := &storage.BucketAutoclass{}
+
+	bucketAutoclass.Enabled = autoclass["enabled"].(bool)
+	bucketAutoclass.ForceSendFields = append(bucketAutoclass.ForceSendFields, "Enabled")
+
+	return bucketAutoclass
+}
+
 func flattenBucketVersioning(bucketVersioning *storage.BucketVersioning) []map[string]interface{} {
 	versionings := make([]map[string]interface{}, 0, 1)
 
@@ -1045,6 +1096,20 @@ func flattenBucketVersioning(bucketVersioning *storage.BucketVersioning) []map[s
 	}
 	versionings = append(versionings, versioning)
 	return versionings
+}
+
+func flattenBucketAutoclass(bucketAutoclass *storage.BucketAutoclass) []map[string]interface{} {
+	autoclassList := make([]map[string]interface{}, 0, 1)
+
+	if bucketAutoclass == nil {
+		return autoclassList
+	}
+
+	autoclass := map[string]interface{}{
+		"enabled": bucketAutoclass.Enabled,
+	}
+	autoclassList = append(autoclassList, autoclass)
+	return autoclassList
 }
 
 func flattenBucketLifecycle(lifecycle *storage.BucketLifecycle) []map[string]interface{} {
@@ -1484,6 +1549,9 @@ func setStorageBucket(d *schema.ResourceData, config *Config, res *storage.Bucke
 	}
 	if err := d.Set("versioning", flattenBucketVersioning(res.Versioning)); err != nil {
 		return fmt.Errorf("Error setting versioning: %s", err)
+	}
+	if err := d.Set("autoclass", flattenBucketAutoclass(res.Autoclass)); err != nil {
+		return fmt.Errorf("Error setting autoclass: %s", err)
 	}
 	if err := d.Set("lifecycle_rule", flattenBucketLifecycle(res.Lifecycle)); err != nil {
 		return fmt.Errorf("Error setting lifecycle_rule: %s", err)

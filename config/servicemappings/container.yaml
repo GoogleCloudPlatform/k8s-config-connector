@@ -108,6 +108,16 @@ spec:
             version: v1beta1
             group: kms.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: private_cluster_config.private_endpoint_subnetwork
+          key: privateEndpointSubnetworkRef
+          description: |-
+            Immutable. Subnetwork in cluster's network where master's endpoint
+            will be provisioned.
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
     - name: google_container_node_pool
       kind: ContainerNodePool
       idTemplate: "{{project}}/{{location}}/{{cluster}}/{{name}}"

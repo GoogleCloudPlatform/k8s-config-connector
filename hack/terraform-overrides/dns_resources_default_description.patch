@@ -13,22 +13,22 @@
 # limitations under the License.
 
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dns_managed_zone.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dns_managed_zone.go
-index c277e4e1..6d3a5104 100644
+index 776475685..cf84f1f21 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dns_managed_zone.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dns_managed_zone.go
-@@ -62,8 +62,8 @@ Must be unique within the project.`,
- 			"description": {
- 				Type:        schema.TypeString,
- 				Optional:    true,
--				Description: `A textual description field. Defaults to 'Managed by Terraform'.`,
--				Default:     "Managed by Terraform",
-+				Description: `A textual description field. Defaults to 'Managed by Config Connector'.`,
-+				Default:     "Managed by Config Connector",
+@@ -78,8 +78,8 @@ Must be unique within the project.`,
+ 				Type:         schema.TypeString,
+ 				Optional:     true,
+ 				ValidateFunc: validation.StringIsNotEmpty,
+-				Description:  `A textual description field. Defaults to 'Managed by Terraform'.`,
+-				Default:      "Managed by Terraform",
++				Description:  `A textual description field. Defaults to 'Managed by Config Connector'.`,
++				Default:      "Managed by Config Connector",
  			},
  			"dnssec_config": {
  				Type:        schema.TypeList,
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dns_policy.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dns_policy.go
-index 5b9503e4..53e02f9d 100644
+index 37c83057f..f11ea6a36 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dns_policy.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dns_policy.go
 @@ -81,8 +81,8 @@ are not available when an alternative name server is specified.`,

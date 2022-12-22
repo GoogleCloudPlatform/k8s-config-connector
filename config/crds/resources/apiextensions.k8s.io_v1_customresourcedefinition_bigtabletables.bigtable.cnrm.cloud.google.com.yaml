@@ -70,6 +70,13 @@ spec:
                   - family
                   type: object
                 type: array
+              deletionProtection:
+                description: A field to make the table protected against data loss
+                  i.e. when set to PROTECTED, deleting the table, the column families
+                  in the table, and the instance containing the table would be prohibited.
+                  If not provided, currently deletion protection will be set to UNPROTECTED
+                  as it is the API default value.
+                type: string
               instanceRef:
                 description: The name of the Bigtable instance.
                 oneOf:

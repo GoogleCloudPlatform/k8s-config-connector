@@ -242,6 +242,12 @@ resource "google_project" "project" {
   provider        = google-beta
 }
 
+resource "google_project_service" "mesh" {
+  project = google_project.project.project_id
+  service = "meshconfig.googleapis.com"
+  provider = google-beta
+}
+
 resource "google_project_service" "mci" {
   project = google_project.project.project_id
   service = "multiclusteringress.googleapis.com"

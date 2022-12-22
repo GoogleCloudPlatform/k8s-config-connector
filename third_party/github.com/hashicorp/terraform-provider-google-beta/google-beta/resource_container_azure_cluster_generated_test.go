@@ -302,6 +302,7 @@ resource "google_container_azure_cluster" "primary" {
       enable_components = ["SYSTEM_COMPONENTS", "WORKLOADS"]
     }
   }
+
 }
 
 resource "google_container_azure_client" "basic" {
@@ -400,6 +401,7 @@ resource "google_container_azure_cluster" "primary" {
       enable_components = ["SYSTEM_COMPONENTS", "WORKLOADS"]
     }
   }
+
 }
 
 resource "google_container_azure_client" "basic" {

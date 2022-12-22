@@ -256,7 +256,7 @@ spec:
                 description: Redis memory size in GiB.
                 type: integer
               persistenceConfig:
-                description: Maintenance policy for an instance.
+                description: Persistence configuration for an instance.
                 properties:
                   persistenceMode:
                     description: "Optional. Controls whether Persistence features

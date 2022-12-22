@@ -216,7 +216,7 @@ type RedisInstanceSpec struct {
 	/* Redis memory size in GiB. */
 	MemorySizeGb int `json:"memorySizeGb"`
 
-	/* Maintenance policy for an instance. */
+	/* Persistence configuration for an instance. */
 	// +optional
 	PersistenceConfig *InstancePersistenceConfig `json:"persistenceConfig,omitempty"`
 

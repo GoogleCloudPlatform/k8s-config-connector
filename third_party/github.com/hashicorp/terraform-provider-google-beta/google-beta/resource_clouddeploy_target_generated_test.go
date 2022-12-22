@@ -26,6 +26,40 @@ import (
 	"testing"
 )
 
+func TestAccClouddeployTarget_RunTarget(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"project_name":  getTestProjectFromEnv(),
+		"region":        getTestRegionFromEnv(),
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck: func() { testAccPreCheck(t) },
+
+		Providers:    testAccProvidersOiCS,
+		CheckDestroy: testAccCheckClouddeployTargetDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccClouddeployTarget_RunTarget(context),
+			},
+			{
+				ResourceName:      "google_clouddeploy_target.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccClouddeployTarget_RunTargetUpdate0(context),
+			},
+			{
+				ResourceName:      "google_clouddeploy_target.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
 func TestAccClouddeployTarget_Target(t *testing.T) {
 	t.Parallel()
 
@@ -82,6 +116,77 @@ func TestAccClouddeployTarget_Target(t *testing.T) {
 			},
 		},
 	})
+}
+
+func testAccClouddeployTarget_RunTarget(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_clouddeploy_target" "primary" {
+  location = "%{region}"
+  name     = "tf-test-target%{random_suffix}"
+
+  annotations = {
+    my_first_annotation = "example-annotation-1"
+
+    my_second_annotation = "example-annotation-2"
+  }
+
+  description = "basic description"
+
+  execution_configs {
+    usages            = ["RENDER", "DEPLOY"]
+    execution_timeout = "3600s"
+  }
+
+  labels = {
+    my_first_label = "example-label-1"
+
+    my_second_label = "example-label-2"
+  }
+
+  project          = "%{project_name}"
+  require_approval = false
+
+  run {
+    location = "projects/%{project_name}/locations/%{region}"
+  }
+  provider = google-beta
+}
+
+`, context)
+}
+
+func testAccClouddeployTarget_RunTargetUpdate0(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_clouddeploy_target" "primary" {
+  location = "%{region}"
+  name     = "tf-test-target%{random_suffix}"
+
+  annotations = {
+    my_first_annotation = "example-annotation-1"
+
+    my_second_annotation = "example-annotation-2"
+
+    my_third_annotation = "example-annotation-3"
+  }
+
+  description = "basic description"
+
+  labels = {
+    my_first_label = "example-label-1"
+
+    my_second_label = "example-label-2"
+  }
+
+  project          = "%{project_name}"
+  require_approval = true
+
+  run {
+    location = "projects/%{project_name}/locations/%{region}"
+  }
+  provider = google-beta
+}
+
+`, context)
 }
 
 func testAccClouddeployTarget_Target(context map[string]interface{}) string {

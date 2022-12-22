@@ -254,6 +254,13 @@ spec:
                         description: If true requests to different hosts will be cached
                           separately.
                         type: boolean
+                      includeHttpHeaders:
+                        description: |-
+                          Allows HTTP request headers (by name) to be used in the
+                          cache key.
+                        items:
+                          type: string
+                        type: array
                       includeNamedCookies:
                         description: Names of cookies to include in cache keys.
                         items:

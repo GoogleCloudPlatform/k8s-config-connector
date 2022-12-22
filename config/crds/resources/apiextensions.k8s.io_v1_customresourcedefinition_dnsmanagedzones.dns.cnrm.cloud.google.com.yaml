@@ -198,6 +198,47 @@ spec:
                   For privately visible zones, the set of Virtual Private Cloud
                   resources that the zone is visible from.
                 properties:
+                  gkeClusters:
+                    description: The list of Google Kubernetes Engine clusters that
+                      can see this zone.
+                    items:
+                      properties:
+                        gkeClusterNameRef:
+                          description: |-
+                            The resource name of the cluster to bind this ManagedZone to.
+                            This should be specified in the format like
+                            'projects/*/locations/*/clusters/*'.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: 'Allowed value: The `selfLink` field of
+                                a `ContainerCluster` resource.'
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                              type: string
+                            namespace:
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              type: string
+                          type: object
+                      required:
+                      - gkeClusterNameRef
+                      type: object
+                    type: array
                   networks:
                     items:
                       properties:

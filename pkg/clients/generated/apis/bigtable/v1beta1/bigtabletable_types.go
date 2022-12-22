@@ -45,6 +45,10 @@ type BigtableTableSpec struct {
 	// +optional
 	ColumnFamily []TableColumnFamily `json:"columnFamily,omitempty"`
 
+	/* A field to make the table protected against data loss i.e. when set to PROTECTED, deleting the table, the column families in the table, and the instance containing the table would be prohibited. If not provided, currently deletion protection will be set to UNPROTECTED as it is the API default value. */
+	// +optional
+	DeletionProtection *string `json:"deletionProtection,omitempty"`
+
 	/* The name of the Bigtable instance. */
 	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
 

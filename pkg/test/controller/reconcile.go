@@ -150,6 +150,17 @@ func isTransientError(t *testing.T, err error) bool {
 		return true
 	}
 
+	// Internal errors are considered transient
+	// We don't know the exact error currently, use string matching for now...
+	//
+	// Example error:
+	// chain is [[*errors.errorString: Delete call failed: error deleting resource: [{0 Error when reading or editing Project Service projects/clienttls-244gvcgzxgegwhmfvqgq/services/: Error disabling service "networksecurity.googleapis.com" for project "clienttls-244gvcgzxgegwhmfvqgq": Error waiting for api to disable: Error code 13, message: [An internal exception occurred.  Help Token: AZWD64pDMtDdLt4XOiuQgfBiJS-s2K6hSHg4cKv6GBl2Wibfb_wEnkl8HZjT7unqZSibwlNEmXpHwJ3AFbmfidKSWtWc9CtNL15HcR53H0ETgtB8] with failed services [networksecurity.googleapis.com]  []}]]]
+	//testreconciler.go:96: reconcile returned unexpected error: Delete call failed: error deleting resource: [{0 Error when reading or editing Project Service projects/clienttls-244gvcgzxgegwhmfvqgq/services/: Error disabling service "networksecurity.googleapis.com" for project "clienttls-244gvcgzxgegwhmfvqgq": Error waiting for api to disable: Error code 13, message: [An internal exception occurred.
+	if strings.Contains(errorMessage, "An internal exception occurred") {
+		t.Logf("internal error found; considered transient; chain is %v", chain)
+		return true
+	}
+
 	t.Logf("error was not considered transient; chain is %v", chain)
 	return false
 }

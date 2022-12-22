@@ -61,6 +61,12 @@ spec:
               columnFamily:
                 description: Immutable. The name of the column family.
                 type: string
+              deletionPolicy:
+                description: "The deletion policy for the GC policy. Setting ABANDON
+                  allows the resource\n\t\t\t\tto be abandoned rather than deleted.
+                  This is useful for GC policy as it cannot be deleted\n\t\t\t\tin
+                  a replicated instance. Possible values are: \"ABANDON\"."
+                type: string
               gcRules:
                 description: Serialized JSON string for garbage collection policy.
                   Conflicts with "mode", "max_age" and "max_version".
@@ -94,8 +100,10 @@ spec:
                     type: string
                 type: object
               maxAge:
-                description: Immutable. GC policy that applies to all cells older
-                  than the given age.
+                description: 'Immutable. NOTE: ''gc_rules'' is more flexible, and
+                  should be preferred over this field for new resources. This field
+                  may be deprecated in the future. GC policy that applies to all cells
+                  older than the given age.'
                 items:
                   properties:
                     days:
@@ -108,8 +116,10 @@ spec:
                   type: object
                 type: array
               maxVersion:
-                description: Immutable. GC policy that applies to all versions of
-                  a cell except for the most recent.
+                description: 'Immutable. NOTE: ''gc_rules'' is more flexible, and
+                  should be preferred over this field for new resources. This field
+                  may be deprecated in the future. GC policy that applies to all versions
+                  of a cell except for the most recent.'
                 items:
                   properties:
                     number:
@@ -121,8 +131,10 @@ spec:
                   type: object
                 type: array
               mode:
-                description: Immutable. If multiple policies are set, you should choose
-                  between UNION OR INTERSECTION.
+                description: 'Immutable. NOTE: ''gc_rules'' is more flexible, and
+                  should be preferred over this field for new resources. This field
+                  may be deprecated in the future. If multiple policies are set, you
+                  should choose between UNION OR INTERSECTION.'
                 type: string
               tableRef:
                 description: The name of the table.

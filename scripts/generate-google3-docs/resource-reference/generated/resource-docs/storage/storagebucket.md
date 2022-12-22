@@ -103,6 +103,8 @@ the objects within a storage bucket before issuing the delete command.
 ### Spec
 #### Schema
 ```yaml
+autoclass:
+  enabled: boolean
 bucketPolicyOnly: boolean
 cors:
 - maxAgeSeconds: integer
@@ -166,6 +168,26 @@ website:
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td>
+            <p><code>autoclass</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. The bucket's autoclass configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>autoclass.enabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. While set to true, autoclass automatically transitions objects in your bucket to appropriate storage classes based on each object's access pattern.{% endverbatim %}</p>
+        </td>
+    </tr>
     <tr>
         <td>
             <p><code>bucketPolicyOnly</code></p>
@@ -404,7 +426,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The type of the action of this Lifecycle Rule. Supported values include: Delete and SetStorageClass.{% endverbatim %}</p>
+            <p>{% verbatim %}The type of the action of this Lifecycle Rule. Supported values include: Delete, SetStorageClass and AbortIncompleteMultipartUpload.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

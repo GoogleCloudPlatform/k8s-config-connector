@@ -252,6 +252,40 @@ spec:
                         description: The default image type used by NAP once a new
                           node pool is being created.
                         type: string
+                      management:
+                        description: NodeManagement configuration for this NodePool.
+                        properties:
+                          autoRepair:
+                            description: Specifies whether the node auto-repair is
+                              enabled for the node pool. If enabled, the nodes in
+                              this node pool will be monitored and, if they fail health
+                              checks too many times, an automatic repair action will
+                              be triggered.
+                            type: boolean
+                          autoUpgrade:
+                            description: Specifies whether node auto-upgrade is enabled
+                              for the node pool. If enabled, node auto-upgrade helps
+                              keep the nodes in your node pool up to date with the
+                              latest release version of Kubernetes.
+                            type: boolean
+                          upgradeOptions:
+                            description: Specifies the Auto Upgrade knobs for the
+                              node pool.
+                            items:
+                              properties:
+                                autoUpgradeStartTime:
+                                  description: This field is set when upgrades are
+                                    about to commence with the approximate start time
+                                    for the upgrades, in RFC3339 text format.
+                                  type: string
+                                description:
+                                  description: This field is set when upgrades are
+                                    about to commence with the description of the
+                                    upgrade.
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
                       minCpuPlatform:
                         description: Minimum CPU platform to be used by this instance.
                           The instance may be scheduled on the specified or newer
@@ -291,6 +325,65 @@ spec:
                             description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                             type: string
                         type: object
+                      shieldedInstanceConfig:
+                        description: Shielded Instance options.
+                        properties:
+                          enableIntegrityMonitoring:
+                            description: Defines whether the instance has integrity
+                              monitoring enabled.
+                            type: boolean
+                          enableSecureBoot:
+                            description: Defines whether the instance has Secure Boot
+                              enabled.
+                            type: boolean
+                        type: object
+                      upgradeSettings:
+                        description: Specifies the upgrade settings for NAP created
+                          node pools.
+                        properties:
+                          blueGreenSettings:
+                            description: Settings for blue-green upgrade strategy.
+                            properties:
+                              nodePoolSoakDuration:
+                                description: "Time needed after draining entire blue
+                                  pool. After this period, blue pool will be cleaned
+                                  up.\n\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tA duration
+                                  in seconds with up to nine fractional digits, ending
+                                  with 's'. Example: \"3.5s\"."
+                                type: string
+                              standardRolloutPolicy:
+                                description: Standard policy for the blue-green upgrade.
+                                properties:
+                                  batchNodeCount:
+                                    description: Number of blue nodes to drain in
+                                      a batch.
+                                    type: integer
+                                  batchPercentage:
+                                    description: Percentage of the bool pool nodes
+                                      to drain in a batch. The range of this field
+                                      should be (0.0, 1.0].
+                                    type: number
+                                  batchSoakDuration:
+                                    description: "Soak time after each batch gets
+                                      drained.\n\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tA
+                                      duration in seconds with up to nine fractional
+                                      digits, ending with 's'. Example: \"3.5s\"."
+                                    type: string
+                                type: object
+                            type: object
+                          maxSurge:
+                            description: The maximum number of nodes that can be created
+                              beyond the current size of the node pool during the
+                              upgrade process.
+                            type: integer
+                          maxUnavailable:
+                            description: The maximum number of nodes that can be simultaneously
+                              unavailable during the upgrade process.
+                            type: integer
+                          strategy:
+                            description: Update strategy of the node pool.
+                            type: string
+                        type: object
                     type: object
                   autoscalingProfile:
                     description: Configuration options for the Autoscaling profile
@@ -325,8 +418,6 @@ spec:
                       - resourceType
                       type: object
                     type: array
-                required:
-                - enabled
                 type: object
               clusterIpv4Cidr:
                 description: Immutable. The IP address range of the Kubernetes pods
@@ -457,6 +548,16 @@ spec:
                 description: Immutable. Whether to enable Cloud TPU resources in this
                   cluster.
                 type: boolean
+              gatewayApiConfig:
+                description: Configuration for GKE Gateway API controller.
+                properties:
+                  channel:
+                    description: The Gateway API release channel to use for Gateway
+                      API.
+                    type: string
+                required:
+                - channel
+                type: object
               identityServiceConfig:
                 description: Configuration for Identity Service which allows customers
                   to use external identity providers with the K8S API.
@@ -521,7 +622,8 @@ spec:
                 properties:
                   enableComponents:
                     description: GKE components exposing logs. Valid values include
-                      SYSTEM_COMPONENTS and WORKLOADS.
+                      SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER,
+                      and WORKLOADS.
                     items:
                       type: string
                     type: array
@@ -690,6 +792,10 @@ spec:
                       - cidrBlock
                       type: object
                     type: array
+                  gcpPublicCidrsAccessEnabled:
+                    description: Whether master is accessbile via Google Compute Engine
+                      Public IP addresses.
+                    type: boolean
                 type: object
               meshCertificates:
                 description: If set, and enable_certificates=true, the GKE Workload
@@ -932,6 +1038,11 @@ spec:
                     description: Immutable. The number of local SSD disks to be attached
                       to the node.
                     type: integer
+                  loggingVariant:
+                    description: Type of logging agent that is used as the default
+                      value for node pools in the cluster. Valid values include DEFAULT
+                      and MAX_THROUGHPUT.
+                    type: string
                   machineType:
                     description: Immutable. The name of a Google Compute Engine machine
                       type.
@@ -1007,6 +1118,12 @@ spec:
                         type: array
                     required:
                     - consumeReservationType
+                    type: object
+                  resourceLabels:
+                    additionalProperties:
+                      type: string
+                    description: The GCE resource labels (a map of key/value pairs)
+                      to be applied to the node pool.
                     type: object
                   sandboxConfig:
                     description: Immutable. Sandbox configuration for this node.
@@ -1141,6 +1258,11 @@ spec:
                         required:
                         - enabled
                         type: object
+                      loggingVariant:
+                        description: Type of logging agent that is used as the default
+                          value for node pools in the cluster. Valid values include
+                          DEFAULT and MAX_THROUGHPUT.
+                        type: string
                     type: object
                 type: object
               nodeVersion:
@@ -1222,10 +1344,10 @@ spec:
                   nodes.
                 properties:
                   enablePrivateEndpoint:
-                    description: Immutable. When true, the cluster's private endpoint
-                      is used as the cluster endpoint and access through the public
-                      endpoint is disabled. When false, either endpoint can be used.
-                      This field only applies to private clusters, when enable_private_nodes
+                    description: When true, the cluster's private endpoint is used
+                      as the cluster endpoint and access through the public endpoint
+                      is disabled. When false, either endpoint can be used. This field
+                      only applies to private clusters, when enable_private_nodes
                       is true.
                     type: boolean
                   enablePrivateNodes:
@@ -1261,12 +1383,40 @@ spec:
                     description: The internal IP address of this cluster's master
                       endpoint.
                     type: string
+                  privateEndpointSubnetworkRef:
+                    description: |-
+                      Immutable. Subnetwork in cluster's network where master's endpoint
+                      will be provisioned.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'Allowed value: The `selfLink` field of a `ComputeSubnetwork`
+                          resource.'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                   publicEndpoint:
                     description: The external IP address of this cluster's master
                       endpoint.
                     type: string
-                required:
-                - enablePrivateEndpoint
                 type: object
               privateIpv6GoogleAccess:
                 description: The desired state of IPv6 connectivity to Google Services.

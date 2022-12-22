@@ -53,6 +53,17 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: private_visibility_config.gke_clusters.gke_cluster_name
+          description: |-
+            The resource name of the cluster to bind this ManagedZone to.
+            This should be specified in the format like
+            'projects/*/locations/*/clusters/*'.
+          key: gkeClusterNameRef
+          gvk:
+            kind: ContainerCluster
+            version: v1beta1
+            group: container.cnrm.cloud.google.com
+          targetField: self_link
       containers:
         - type: project
           tfField: project

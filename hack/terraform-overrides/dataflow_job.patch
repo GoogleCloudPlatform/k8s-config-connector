@@ -1,19 +1,5 @@
-# Copyright 2022 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_job.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_job.go
-index dada1c0e9..24780eb4a 100644
+index d92919b0e..453744911 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_job.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_dataflow_job.go
 @@ -1,13 +1,13 @@
@@ -167,18 +153,24 @@ index dada1c0e9..24780eb4a 100644
  		return handleNotFoundError(err, d, fmt.Sprintf("Dataflow job %s", id))
  	}
  
-@@ -368,13 +379,17 @@ func resourceDataflowJobRead(d *schema.ResourceData, meta interface{}) error {
- 	if err := d.Set("additional_experiments", optionsMap["experiments"]); err != nil {
- 		return fmt.Errorf("Error setting additional_experiments: %s", err)
+@@ -362,17 +373,22 @@ func resourceDataflowJobRead(d *schema.ResourceData, meta interface{}) error {
+ 	if err := d.Set("network", optionsMap["network"]); err != nil {
+ 		return fmt.Errorf("Error setting network: %s", err)
  	}
-+	if err := d.Set("enable_streaming_engine", optionsMap["enableStreamingEngine"]); err != nil {
-+		return fmt.Errorf("Error setting enable_streaming_engine: %s", err)
++	if err := d.Set("additional_experiments", optionsMap["experiments"]); err != nil {
++		return fmt.Errorf("Error setting additional_experiments: %s", err)
 +	}
- 
+ 	if err := d.Set("service_account_email", optionsMap["serviceAccountEmail"]); err != nil {
+ 		return fmt.Errorf("Error setting service_account_email: %s", err)
+ 	}
+-
 -	if ok := shouldStopDataflowJobDeleteQuery(job.CurrentState, d.Get("skip_wait_on_job_termination").(bool)); ok {
 -		log.Printf("[DEBUG] Removing resource '%s' because it is in state %s.\n", job.Name, job.CurrentState)
 -		d.SetId("")
 -		return nil
++	if err := d.Set("enable_streaming_engine", optionsMap["enableStreamingEngine"]); err != nil {
++		return fmt.Errorf("Error setting enable_streaming_engine: %s", err)
++	}
 +	if v, ok := optionsMap["subnetwork"]; ok && v != nil {
 +		subnetwork, err := toSubnetworkSelfLink(v.(string), d, config)
 +		if err != nil {
@@ -187,10 +179,11 @@ index dada1c0e9..24780eb4a 100644
 +		d.Set("subnetwork", subnetwork)
  	}
 -	d.SetId(job.Id)
- 
+-
  	return nil
  }
-@@ -386,6 +401,10 @@ func resourceDataflowJobUpdateByReplacement(d *schema.ResourceData, meta interfa
+ 
+@@ -383,6 +399,10 @@ func resourceDataflowJobUpdateByReplacement(d *schema.ResourceData, meta interfa
  		return nil
  	}
  
@@ -201,7 +194,7 @@ index dada1c0e9..24780eb4a 100644
  	config := meta.(*Config)
  	userAgent, err := generateUserAgentString(d, config.userAgent)
  	if err != nil {
-@@ -428,10 +447,10 @@ func resourceDataflowJobUpdateByReplacement(d *schema.ResourceData, meta interfa
+@@ -425,10 +445,10 @@ func resourceDataflowJobUpdateByReplacement(d *schema.ResourceData, meta interfa
  	}
  
  	if err := waitForDataflowJobToBeUpdated(d, config, response.Job.Id, userAgent, d.Timeout(schema.TimeoutUpdate)); err != nil {
@@ -214,7 +207,7 @@ index dada1c0e9..24780eb4a 100644
  
  	return resourceDataflowJobRead(d, meta)
  }
-@@ -453,7 +472,12 @@ func resourceDataflowJobDelete(d *schema.ResourceData, meta interface{}) error {
+@@ -450,7 +470,12 @@ func resourceDataflowJobDelete(d *schema.ResourceData, meta interface{}) error {
  		return err
  	}
  
@@ -228,7 +221,7 @@ index dada1c0e9..24780eb4a 100644
  
  	requestedState, err := resourceDataflowJobMapRequestedState(d.Get("on_delete").(string))
  	if err != nil {
-@@ -515,7 +539,7 @@ func resourceDataflowJobDelete(d *schema.ResourceData, meta interface{}) error {
+@@ -512,7 +537,7 @@ func resourceDataflowJobDelete(d *schema.ResourceData, meta interface{}) error {
  		d.SetId("")
  		return nil
  	}
@@ -237,7 +230,7 @@ index dada1c0e9..24780eb4a 100644
  }
  
  func resourceDataflowJobMapRequestedState(policy string) (string, error) {
-@@ -536,6 +560,34 @@ func resourceDataflowJobCreateJob(config *Config, project, region, userAgent str
+@@ -533,6 +558,34 @@ func resourceDataflowJobCreateJob(config *Config, project, region, userAgent str
  	return config.NewDataflowClient(userAgent).Projects.Locations.Templates.Create(project, region, request).Do()
  }
  
@@ -272,7 +265,7 @@ index dada1c0e9..24780eb4a 100644
  func resourceDataflowJobGetJob(config *Config, project, region, userAgent string, id string) (*dataflow.Job, error) {
  	if region == "" {
  		return config.NewDataflowClient(userAgent).Projects.Jobs.Get(project, id).View("JOB_VIEW_ALL").Do()
-@@ -560,6 +612,11 @@ func resourceDataflowJobLaunchTemplate(config *Config, project, region, userAgen
+@@ -557,6 +610,11 @@ func resourceDataflowJobLaunchTemplate(config *Config, project, region, userAgen
  func resourceDataflowJobSetupEnv(d *schema.ResourceData, config *Config) (dataflow.RuntimeEnvironment, error) {
  	zone, _ := getZone(d, config)
  
@@ -284,7 +277,7 @@ index dada1c0e9..24780eb4a 100644
  	labels := expandStringMap(d, "labels")
  
  	additionalExperiments := convertStringSet(d.Get("additional_experiments").(*schema.Set))
-@@ -568,7 +625,7 @@ func resourceDataflowJobSetupEnv(d *schema.ResourceData, config *Config) (datafl
+@@ -565,7 +623,7 @@ func resourceDataflowJobSetupEnv(d *schema.ResourceData, config *Config) (datafl
  		MaxWorkers:            int64(d.Get("max_workers").(int)),
  		Network:               d.Get("network").(string),
  		ServiceAccountEmail:   d.Get("service_account_email").(string),
@@ -293,7 +286,7 @@ index dada1c0e9..24780eb4a 100644
  		TempLocation:          d.Get("temp_gcs_location").(string),
  		MachineType:           d.Get("machine_type").(string),
  		KmsKeyName:            d.Get("kms_key_name").(string),
-@@ -659,3 +716,29 @@ func waitForDataflowJobToBeUpdated(d *schema.ResourceData, config *Config, repla
+@@ -656,3 +714,29 @@ func waitForDataflowJobToBeUpdated(d *schema.ResourceData, config *Config, repla
  		}
  	})
  }

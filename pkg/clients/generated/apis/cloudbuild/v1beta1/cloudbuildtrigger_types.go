@@ -137,7 +137,7 @@ type TriggerGitFileSource struct {
 	Path string `json:"path"`
 
 	/* The type of the repo, since it may not be explicit from the repo field (e.g from a URL).
-	Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET"]. */
+	Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET_SERVER Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET_SERVER"]. */
 	RepoType string `json:"repoType"`
 
 	/* The branch, tag, arbitrary ref, or SHA version of the repo to use when resolving the
@@ -387,7 +387,7 @@ type TriggerSourceToBuild struct {
 	Ref string `json:"ref"`
 
 	/* The type of the repo, since it may not be explicit from the repo field (e.g from a URL).
-	Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET"]. */
+	Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET_SERVER Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET_SERVER"]. */
 	RepoType string `json:"repoType"`
 
 	/* The URI of the repo (required). */

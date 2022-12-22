@@ -405,6 +405,24 @@ func TestAccCloudRunService_probes(t *testing.T) {
 				ImportStateVerify:       true,
 				ImportStateVerifyIgnore: []string{"metadata.0.resource_version", "status.0.conditions"},
 			},
+			{
+				Config: testAccCloudRunService_cloudRunServiceUpdateWithEmptyGRPCLivenessProbe(name, project),
+			},
+			{
+				ResourceName:            "google_cloud_run_service.default",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"metadata.0.resource_version", "status.0.conditions"},
+			},
+			{
+				Config: testAccCloudRunService_cloudRunServiceUpdateWithGRPCLivenessProbe(name, project),
+			},
+			{
+				ResourceName:            "google_cloud_run_service.default",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"metadata.0.resource_version", "status.0.conditions"},
+			},
 		},
 	})
 }
@@ -570,6 +588,77 @@ resource "google_cloud_run_service" "default" {
             http_headers {
               name = "Some-Name"
             }
+          }
+        }
+      }
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      metadata.0.annotations,
+    ]
+  }
+}
+`, name, project)
+}
+
+func testAccCloudRunService_cloudRunServiceUpdateWithEmptyGRPCLivenessProbe(name, project string) string {
+	return fmt.Sprintf(`
+resource "google_cloud_run_service" "default" {
+  name     = "%s"
+  location = "us-central1"
+
+  metadata {
+    namespace = "%s"
+    annotations = {
+      generated-by = "magic-modules"
+      "run.googleapis.com/launch-stage" = "BETA"
+    }
+  }
+
+  template {
+    spec {
+      containers {
+        image = "gcr.io/cloudrun/hello"
+        liveness_probe {
+          grpc {}
+        }
+      }
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      metadata.0.annotations,
+    ]
+  }
+}
+`, name, project)
+}
+
+func testAccCloudRunService_cloudRunServiceUpdateWithGRPCLivenessProbe(name, project string) string {
+	return fmt.Sprintf(`
+resource "google_cloud_run_service" "default" {
+  name     = "%s"
+  location = "us-central1"
+
+  metadata {
+    namespace = "%s"
+    annotations = {
+      generated-by = "magic-modules"
+      "run.googleapis.com/launch-stage" = "BETA"
+    }
+  }
+
+  template {
+    spec {
+      containers {
+        image = "gcr.io/cloudrun/hello"
+        liveness_probe {
+          grpc {
+            port = 8080
+            service = "health"
           }
         }
       }

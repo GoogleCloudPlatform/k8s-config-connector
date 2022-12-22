@@ -115,7 +115,7 @@ func testAccCheckIAMWorkforcePoolWorkforcePoolDestroyProducer(t *testing.T) func
 
 			config := googleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{IAMBetaBasePath}}locations/{{location}}/workforcePools/{{workforce_pool_id}}")
+			url, err := replaceVarsForTest(config, rs, "{{IAMWorkforcePoolBasePath}}locations/{{location}}/workforcePools/{{workforce_pool_id}}")
 			if err != nil {
 				return err
 			}

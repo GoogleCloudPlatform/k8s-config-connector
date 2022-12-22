@@ -102,9 +102,25 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
 							Description: `A task to execute on the completion of a job.`,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
+									"pub_sub": {
+										Type:        schema.TypeList,
+										Optional:    true,
+										Description: `Publish a message into a given Pub/Sub topic when the job completes.`,
+										MaxItems:    1,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"topic": {
+													Type:        schema.TypeString,
+													Required:    true,
+													Description: `Cloud Pub/Sub topic to send notifications to.`,
+												},
+											},
+										},
+										ExactlyOneOf: []string{},
+									},
 									"save_findings": {
 										Type:        schema.TypeList,
-										Required:    true,
+										Optional:    true,
 										Description: `Schedule for triggered jobs`,
 										MaxItems:    1,
 										Elem: &schema.Resource{
@@ -160,6 +176,7 @@ Only for use with external storage. Possible values: ["BASIC_COLUMNS", "GCS_COLU
 												},
 											},
 										},
+										ExactlyOneOf: []string{},
 									},
 								},
 							},
@@ -207,6 +224,28 @@ Only for use with external storage. Possible values: ["BASIC_COLUMNS", "GCS_COLU
 															},
 														},
 													},
+												},
+												"rows_limit": {
+													Type:     schema.TypeInt,
+													Optional: true,
+													Description: `Max number of rows to scan. If the table has more rows than this value, the rest of the rows are omitted. 
+If not set, or if set to 0, all rows will be scanned. Only one of rowsLimit and rowsLimitPercent can be 
+specified. Cannot be used in conjunction with TimespanConfig.`,
+												},
+												"rows_limit_percent": {
+													Type:     schema.TypeInt,
+													Optional: true,
+													Description: `Max percentage of rows to scan. The rest are omitted. The number of rows scanned is rounded down. 
+Must be between 0 and 100, inclusively. Both 0 and 100 means no limit. Defaults to 0. Only one of 
+rowsLimit and rowsLimitPercent can be specified. Cannot be used in conjunction with TimespanConfig.`,
+												},
+												"sample_method": {
+													Type:         schema.TypeString,
+													Optional:     true,
+													ValidateFunc: validateEnum([]string{"TOP", "RANDOM_START", ""}),
+													Description: `How to sample rows if not all rows are scanned. Meaningful only when used in conjunction with either 
+rowsLimit or rowsLimitPercent. If not specified, rows are scanned in the order BigQuery reads them. Default value: "TOP" Possible values: ["TOP", "RANDOM_START"]`,
+													Default: "TOP",
 												},
 											},
 										},
@@ -1069,6 +1108,12 @@ func flattenDataLossPreventionJobTriggerInspectJobStorageConfigBigQueryOptions(v
 	transformed := make(map[string]interface{})
 	transformed["table_reference"] =
 		flattenDataLossPreventionJobTriggerInspectJobStorageConfigBigQueryOptionsTableReference(original["tableReference"], d, config)
+	transformed["rows_limit"] =
+		flattenDataLossPreventionJobTriggerInspectJobStorageConfigBigQueryOptionsRowsLimit(original["rowsLimit"], d, config)
+	transformed["rows_limit_percent"] =
+		flattenDataLossPreventionJobTriggerInspectJobStorageConfigBigQueryOptionsRowsLimitPercent(original["rowsLimitPercent"], d, config)
+	transformed["sample_method"] =
+		flattenDataLossPreventionJobTriggerInspectJobStorageConfigBigQueryOptionsSampleMethod(original["sampleMethod"], d, config)
 	return []interface{}{transformed}
 }
 func flattenDataLossPreventionJobTriggerInspectJobStorageConfigBigQueryOptionsTableReference(v interface{}, d *schema.ResourceData, config *Config) interface{} {
@@ -1100,6 +1145,44 @@ func flattenDataLossPreventionJobTriggerInspectJobStorageConfigBigQueryOptionsTa
 	return v
 }
 
+func flattenDataLossPreventionJobTriggerInspectJobStorageConfigBigQueryOptionsRowsLimit(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	// Handles the string fixed64 format
+	if strVal, ok := v.(string); ok {
+		if intVal, err := stringToFixed64(strVal); err == nil {
+			return intVal
+		}
+	}
+
+	// number values are represented as float64
+	if floatVal, ok := v.(float64); ok {
+		intVal := int(floatVal)
+		return intVal
+	}
+
+	return v // let terraform core handle it otherwise
+}
+
+func flattenDataLossPreventionJobTriggerInspectJobStorageConfigBigQueryOptionsRowsLimitPercent(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	// Handles the string fixed64 format
+	if strVal, ok := v.(string); ok {
+		if intVal, err := stringToFixed64(strVal); err == nil {
+			return intVal
+		}
+	}
+
+	// number values are represented as float64
+	if floatVal, ok := v.(float64); ok {
+		intVal := int(floatVal)
+		return intVal
+	}
+
+	return v // let terraform core handle it otherwise
+}
+
+func flattenDataLossPreventionJobTriggerInspectJobStorageConfigBigQueryOptionsSampleMethod(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
 func flattenDataLossPreventionJobTriggerInspectJobActions(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	if v == nil {
 		return v
@@ -1114,6 +1197,7 @@ func flattenDataLossPreventionJobTriggerInspectJobActions(v interface{}, d *sche
 		}
 		transformed = append(transformed, map[string]interface{}{
 			"save_findings": flattenDataLossPreventionJobTriggerInspectJobActionsSaveFindings(original["saveFindings"], d, config),
+			"pub_sub":       flattenDataLossPreventionJobTriggerInspectJobActionsPubSub(original["pubSub"], d, config),
 		})
 	}
 	return transformed
@@ -1176,6 +1260,23 @@ func flattenDataLossPreventionJobTriggerInspectJobActionsSaveFindingsOutputConfi
 }
 
 func flattenDataLossPreventionJobTriggerInspectJobActionsSaveFindingsOutputConfigOutputSchema(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenDataLossPreventionJobTriggerInspectJobActionsPubSub(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["topic"] =
+		flattenDataLossPreventionJobTriggerInspectJobActionsPubSubTopic(original["topic"], d, config)
+	return []interface{}{transformed}
+}
+func flattenDataLossPreventionJobTriggerInspectJobActionsPubSubTopic(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	return v
 }
 
@@ -1636,6 +1737,27 @@ func expandDataLossPreventionJobTriggerInspectJobStorageConfigBigQueryOptions(v 
 		transformed["tableReference"] = transformedTableReference
 	}
 
+	transformedRowsLimit, err := expandDataLossPreventionJobTriggerInspectJobStorageConfigBigQueryOptionsRowsLimit(original["rows_limit"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedRowsLimit); val.IsValid() && !isEmptyValue(val) {
+		transformed["rowsLimit"] = transformedRowsLimit
+	}
+
+	transformedRowsLimitPercent, err := expandDataLossPreventionJobTriggerInspectJobStorageConfigBigQueryOptionsRowsLimitPercent(original["rows_limit_percent"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedRowsLimitPercent); val.IsValid() && !isEmptyValue(val) {
+		transformed["rowsLimitPercent"] = transformedRowsLimitPercent
+	}
+
+	transformedSampleMethod, err := expandDataLossPreventionJobTriggerInspectJobStorageConfigBigQueryOptionsSampleMethod(original["sample_method"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedSampleMethod); val.IsValid() && !isEmptyValue(val) {
+		transformed["sampleMethod"] = transformedSampleMethod
+	}
+
 	return transformed, nil
 }
 
@@ -1684,6 +1806,18 @@ func expandDataLossPreventionJobTriggerInspectJobStorageConfigBigQueryOptionsTab
 	return v, nil
 }
 
+func expandDataLossPreventionJobTriggerInspectJobStorageConfigBigQueryOptionsRowsLimit(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandDataLossPreventionJobTriggerInspectJobStorageConfigBigQueryOptionsRowsLimitPercent(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandDataLossPreventionJobTriggerInspectJobStorageConfigBigQueryOptionsSampleMethod(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
 func expandDataLossPreventionJobTriggerInspectJobActions(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	l := v.([]interface{})
 	req := make([]interface{}, 0, len(l))
@@ -1699,6 +1833,13 @@ func expandDataLossPreventionJobTriggerInspectJobActions(v interface{}, d Terraf
 			return nil, err
 		} else if val := reflect.ValueOf(transformedSaveFindings); val.IsValid() && !isEmptyValue(val) {
 			transformed["saveFindings"] = transformedSaveFindings
+		}
+
+		transformedPubSub, err := expandDataLossPreventionJobTriggerInspectJobActionsPubSub(original["pub_sub"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedPubSub); val.IsValid() && !isEmptyValue(val) {
+			transformed["pubSub"] = transformedPubSub
 		}
 
 		req = append(req, transformed)
@@ -1797,6 +1938,29 @@ func expandDataLossPreventionJobTriggerInspectJobActionsSaveFindingsOutputConfig
 }
 
 func expandDataLossPreventionJobTriggerInspectJobActionsSaveFindingsOutputConfigOutputSchema(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandDataLossPreventionJobTriggerInspectJobActionsPubSub(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedTopic, err := expandDataLossPreventionJobTriggerInspectJobActionsPubSubTopic(original["topic"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedTopic); val.IsValid() && !isEmptyValue(val) {
+		transformed["topic"] = transformedTopic
+	}
+
+	return transformed, nil
+}
+
+func expandDataLossPreventionJobTriggerInspectJobActionsPubSubTopic(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
 

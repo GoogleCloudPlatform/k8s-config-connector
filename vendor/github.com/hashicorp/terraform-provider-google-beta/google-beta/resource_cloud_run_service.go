@@ -304,6 +304,30 @@ https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probe
 having succeeded. Defaults to 3. Minimum value is 1.`,
 																Default: 3,
 															},
+															"grpc": {
+																Type:        schema.TypeList,
+																Optional:    true,
+																Description: `GRPC specifies an action involving a GRPC port.`,
+																MaxItems:    1,
+																Elem: &schema.Resource{
+																	Schema: map[string]*schema.Schema{
+																		"port": {
+																			Type:        schema.TypeInt,
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `Port number to access on the container. Number must be in the range 1 to 65535.`,
+																		},
+																		"service": {
+																			Type:     schema.TypeString,
+																			Optional: true,
+																			Description: `The name of the service to place in the gRPC HealthCheckRequest
+(see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
+If this is not specified, the default behavior is defined by gRPC.`,
+																		},
+																	},
+																},
+																ExactlyOneOf: []string{},
+															},
 															"http_get": {
 																Type:        schema.TypeList,
 																Optional:    true,
@@ -339,6 +363,7 @@ having succeeded. Defaults to 3. Minimum value is 1.`,
 																		},
 																	},
 																},
+																ExactlyOneOf: []string{},
 															},
 															"initial_delay_seconds": {
 																Type:     schema.TypeInt,
@@ -378,13 +403,13 @@ https://cloud.google.com/run/docs/reference/rest/v1/RevisionSpec#ContainerPort`,
 															"container_port": {
 																Type:        schema.TypeInt,
 																Optional:    true,
-																Description: `Port number the container listens on. This must be a valid port number, 0 < x < 65536.`,
+																Description: `Port number the container listens on. This must be a valid port number (between 1 and 65535). Defaults to "8080".`,
 															},
 															"name": {
 																Type:        schema.TypeString,
 																Computed:    true,
 																Optional:    true,
-																Description: `If specified, used to specify which protocol to use. Allowed values are "http1" and "h2c".`,
+																Description: `If specified, used to specify which protocol to use. Allowed values are "http1" (HTTP/1) and "h2c" (HTTP/2 end-to-end). Defaults to "http1".`,
 															},
 															"protocol": {
 																Type:        schema.TypeString,
@@ -444,6 +469,30 @@ https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probe
 																Description: `Minimum consecutive failures for the probe to be considered failed after
 having succeeded. Defaults to 3. Minimum value is 1.`,
 																Default: 3,
+															},
+															"grpc": {
+																Type:        schema.TypeList,
+																Optional:    true,
+																Description: `GRPC specifies an action involving a GRPC port.`,
+																MaxItems:    1,
+																Elem: &schema.Resource{
+																	Schema: map[string]*schema.Schema{
+																		"port": {
+																			Type:        schema.TypeInt,
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `Port number to access on the container. Number must be in the range 1 to 65535.`,
+																		},
+																		"service": {
+																			Type:     schema.TypeString,
+																			Optional: true,
+																			Description: `The name of the service to place in the gRPC HealthCheckRequest
+(see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
+If this is not specified, the default behavior is defined by gRPC.`,
+																		},
+																	},
+																},
+																ExactlyOneOf: []string{},
 															},
 															"http_get": {
 																Type:        schema.TypeList,
@@ -1847,6 +1896,8 @@ func flattenCloudRunServiceSpecTemplateSpecContainersStartupProbe(v interface{},
 		flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeTcpSocket(original["tcpSocket"], d, config)
 	transformed["http_get"] =
 		flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGet(original["httpGet"], d, config)
+	transformed["grpc"] =
+		flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeGrpc(original["grpc"], d, config)
 	return []interface{}{transformed}
 }
 func flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeInitialDelaySeconds(v interface{}, d *schema.ResourceData, config *Config) interface{} {
@@ -1987,6 +2038,39 @@ func flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGetHttpHead
 	return v
 }
 
+func flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeGrpc(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	transformed := make(map[string]interface{})
+	transformed["port"] =
+		flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeGrpcPort(original["port"], d, config)
+	transformed["service"] =
+		flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeGrpcService(original["service"], d, config)
+	return []interface{}{transformed}
+}
+func flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeGrpcPort(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	// Handles the string fixed64 format
+	if strVal, ok := v.(string); ok {
+		if intVal, err := stringToFixed64(strVal); err == nil {
+			return intVal
+		}
+	}
+
+	// number values are represented as float64
+	if floatVal, ok := v.(float64); ok {
+		intVal := int(floatVal)
+		return intVal
+	}
+
+	return v // let terraform core handle it otherwise
+}
+
+func flattenCloudRunServiceSpecTemplateSpecContainersStartupProbeGrpcService(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
 func flattenCloudRunServiceSpecTemplateSpecContainersLivenessProbe(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	if v == nil {
 		return nil
@@ -2006,6 +2090,8 @@ func flattenCloudRunServiceSpecTemplateSpecContainersLivenessProbe(v interface{}
 		flattenCloudRunServiceSpecTemplateSpecContainersLivenessProbeFailureThreshold(original["failureThreshold"], d, config)
 	transformed["http_get"] =
 		flattenCloudRunServiceSpecTemplateSpecContainersLivenessProbeHttpGet(original["httpGet"], d, config)
+	transformed["grpc"] =
+		flattenCloudRunServiceSpecTemplateSpecContainersLivenessProbeGrpc(original["grpc"], d, config)
 	return []interface{}{transformed}
 }
 func flattenCloudRunServiceSpecTemplateSpecContainersLivenessProbeInitialDelaySeconds(v interface{}, d *schema.ResourceData, config *Config) interface{} {
@@ -2116,6 +2202,39 @@ func flattenCloudRunServiceSpecTemplateSpecContainersLivenessProbeHttpGetHttpHea
 }
 
 func flattenCloudRunServiceSpecTemplateSpecContainersLivenessProbeHttpGetHttpHeadersValue(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenCloudRunServiceSpecTemplateSpecContainersLivenessProbeGrpc(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	transformed := make(map[string]interface{})
+	transformed["port"] =
+		flattenCloudRunServiceSpecTemplateSpecContainersLivenessProbeGrpcPort(original["port"], d, config)
+	transformed["service"] =
+		flattenCloudRunServiceSpecTemplateSpecContainersLivenessProbeGrpcService(original["service"], d, config)
+	return []interface{}{transformed}
+}
+func flattenCloudRunServiceSpecTemplateSpecContainersLivenessProbeGrpcPort(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	// Handles the string fixed64 format
+	if strVal, ok := v.(string); ok {
+		if intVal, err := stringToFixed64(strVal); err == nil {
+			return intVal
+		}
+	}
+
+	// number values are represented as float64
+	if floatVal, ok := v.(float64); ok {
+		intVal := int(floatVal)
+		return intVal
+	}
+
+	return v // let terraform core handle it otherwise
+}
+
+func flattenCloudRunServiceSpecTemplateSpecContainersLivenessProbeGrpcService(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	return v
 }
 
@@ -3249,6 +3368,13 @@ func expandCloudRunServiceSpecTemplateSpecContainersStartupProbe(v interface{}, 
 		transformed["httpGet"] = transformedHttpGet
 	}
 
+	transformedGrpc, err := expandCloudRunServiceSpecTemplateSpecContainersStartupProbeGrpc(original["grpc"], d, config)
+	if err != nil {
+		return nil, err
+	} else {
+		transformed["grpc"] = transformedGrpc
+	}
+
 	return transformed, nil
 }
 
@@ -3368,6 +3494,45 @@ func expandCloudRunServiceSpecTemplateSpecContainersStartupProbeHttpGetHttpHeade
 	return v, nil
 }
 
+func expandCloudRunServiceSpecTemplateSpecContainersStartupProbeGrpc(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 {
+		return nil, nil
+	}
+
+	if l[0] == nil {
+		transformed := make(map[string]interface{})
+		return transformed, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedPort, err := expandCloudRunServiceSpecTemplateSpecContainersStartupProbeGrpcPort(original["port"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedPort); val.IsValid() && !isEmptyValue(val) {
+		transformed["port"] = transformedPort
+	}
+
+	transformedService, err := expandCloudRunServiceSpecTemplateSpecContainersStartupProbeGrpcService(original["service"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedService); val.IsValid() && !isEmptyValue(val) {
+		transformed["service"] = transformedService
+	}
+
+	return transformed, nil
+}
+
+func expandCloudRunServiceSpecTemplateSpecContainersStartupProbeGrpcPort(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunServiceSpecTemplateSpecContainersStartupProbeGrpcService(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
 func expandCloudRunServiceSpecTemplateSpecContainersLivenessProbe(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
@@ -3410,6 +3575,13 @@ func expandCloudRunServiceSpecTemplateSpecContainersLivenessProbe(v interface{},
 		return nil, err
 	} else {
 		transformed["httpGet"] = transformedHttpGet
+	}
+
+	transformedGrpc, err := expandCloudRunServiceSpecTemplateSpecContainersLivenessProbeGrpc(original["grpc"], d, config)
+	if err != nil {
+		return nil, err
+	} else {
+		transformed["grpc"] = transformedGrpc
 	}
 
 	return transformed, nil
@@ -3500,6 +3672,45 @@ func expandCloudRunServiceSpecTemplateSpecContainersLivenessProbeHttpGetHttpHead
 }
 
 func expandCloudRunServiceSpecTemplateSpecContainersLivenessProbeHttpGetHttpHeadersValue(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunServiceSpecTemplateSpecContainersLivenessProbeGrpc(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 {
+		return nil, nil
+	}
+
+	if l[0] == nil {
+		transformed := make(map[string]interface{})
+		return transformed, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedPort, err := expandCloudRunServiceSpecTemplateSpecContainersLivenessProbeGrpcPort(original["port"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedPort); val.IsValid() && !isEmptyValue(val) {
+		transformed["port"] = transformedPort
+	}
+
+	transformedService, err := expandCloudRunServiceSpecTemplateSpecContainersLivenessProbeGrpcService(original["service"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedService); val.IsValid() && !isEmptyValue(val) {
+		transformed["service"] = transformedService
+	}
+
+	return transformed, nil
+}
+
+func expandCloudRunServiceSpecTemplateSpecContainersLivenessProbeGrpcPort(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandCloudRunServiceSpecTemplateSpecContainersLivenessProbeGrpcService(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
 

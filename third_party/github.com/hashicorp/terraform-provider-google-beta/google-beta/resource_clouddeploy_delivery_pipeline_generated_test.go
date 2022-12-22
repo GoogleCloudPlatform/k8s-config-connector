@@ -59,6 +59,40 @@ func TestAccClouddeployDeliveryPipeline_DeliveryPipeline(t *testing.T) {
 		},
 	})
 }
+func TestAccClouddeployDeliveryPipeline_VerifyDeliveryPipeline(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"project_name":  getTestProjectFromEnv(),
+		"region":        getTestRegionFromEnv(),
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck: func() { testAccPreCheck(t) },
+
+		Providers:    testAccProvidersOiCS,
+		CheckDestroy: testAccCheckClouddeployDeliveryPipelineDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccClouddeployDeliveryPipeline_VerifyDeliveryPipeline(context),
+			},
+			{
+				ResourceName:      "google_clouddeploy_delivery_pipeline.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccClouddeployDeliveryPipeline_VerifyDeliveryPipelineUpdate0(context),
+			},
+			{
+				ResourceName:      "google_clouddeploy_delivery_pipeline.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
 
 func testAccClouddeployDeliveryPipeline_DeliveryPipeline(context map[string]interface{}) string {
 	return Nprintf(`
@@ -136,6 +170,91 @@ resource "google_clouddeploy_delivery_pipeline" "primary" {
   suspended = true
 }
 
+
+`, context)
+}
+
+func testAccClouddeployDeliveryPipeline_VerifyDeliveryPipeline(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_clouddeploy_delivery_pipeline" "primary" {
+  location = "%{region}"
+  name     = "tf-test-pipeline%{random_suffix}"
+
+  annotations = {
+    my_first_annotation = "example-annotation-1"
+
+    my_second_annotation = "example-annotation-2"
+  }
+
+  description = "basic description"
+
+  labels = {
+    my_first_label = "example-label-1"
+
+    my_second_label = "example-label-2"
+  }
+
+  project = "%{project_name}"
+
+  serial_pipeline {
+    stages {
+      profiles  = ["example-profile-one", "example-profile-two"]
+      target_id = "example-target-one"
+    }
+
+    stages {
+      profiles  = []
+      target_id = "example-target-two"
+    }
+  }
+  provider = google-beta
+}
+
+`, context)
+}
+
+func testAccClouddeployDeliveryPipeline_VerifyDeliveryPipelineUpdate0(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_clouddeploy_delivery_pipeline" "primary" {
+  location = "%{region}"
+  name     = "tf-test-pipeline%{random_suffix}"
+
+  annotations = {
+    my_second_annotation = "updated-example-annotation-2"
+
+    my_third_annotation = "example-annotation-3"
+  }
+
+  description = "updated description"
+
+  labels = {
+    my_second_label = "updated-example-label-2"
+
+    my_third_label = "example-label-3"
+  }
+
+  project = "%{project_name}"
+
+  serial_pipeline {
+    stages {
+      profiles = ["new-example-profile"]
+
+      strategy {
+        standard {
+          verify = true
+        }
+      }
+
+      target_id = "example-target-two"
+    }
+
+    stages {
+      profiles  = ["example-profile-four", "example-profile-five"]
+      target_id = "example-target-three"
+    }
+  }
+  provider = google-beta
+}
 
 `, context)
 }

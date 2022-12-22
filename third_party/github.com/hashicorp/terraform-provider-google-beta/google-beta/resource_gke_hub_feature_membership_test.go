@@ -571,6 +571,222 @@ resource "google_gke_hub_feature_membership" "feature_member" {
 `, context)
 }
 
+func TestAccGkeHubFeatureMembership_gkehubFeatureMesh(t *testing.T) {
+	// VCR fails to handle batched project services
+	skipIfVcr(t)
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix":   randString(t, 10),
+		"org_id":          getTestOrgFromEnv(t),
+		"billing_account": getTestBillingAccountFromEnv(t),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProvidersOiCS,
+		CheckDestroy: testAccCheckGKEHubFeatureDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccGkeHubFeatureMembership_meshStart(context),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckGkeHubFeatureMembershipPresent(t, fmt.Sprintf("tf-test-gkehub%s", context["random_suffix"]), "global", "servicemesh", fmt.Sprintf("tf-test1%s", context["random_suffix"])),
+				),
+			},
+			{
+				ResourceName:      "google_gke_hub_feature_membership.feature_member",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccGkeHubFeatureMembership_meshUpdateManagement(context),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckGkeHubFeatureMembershipPresent(t, fmt.Sprintf("tf-test-gkehub%s", context["random_suffix"]), "global", "servicemesh", fmt.Sprintf("tf-test1%s", context["random_suffix"])),
+				),
+			},
+			{
+				ResourceName:      "google_gke_hub_feature_membership.feature_member",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccGkeHubFeatureMembership_meshUpdateControlPlane(context),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckGkeHubFeatureMembershipPresent(t, fmt.Sprintf("tf-test-gkehub%s", context["random_suffix"]), "global", "servicemesh", fmt.Sprintf("tf-test1%s", context["random_suffix"])),
+				),
+			},
+			{
+				ResourceName:      "google_gke_hub_feature_membership.feature_member",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccGkeHubFeatureMembership_meshStart(context map[string]interface{}) string {
+	return gkeHubFeatureProjectSetup(context) + Nprintf(`
+resource "google_container_cluster" "primary" {
+  project = google_project.project.project_id
+  name               = "tf-test-cl%{random_suffix}"
+  location           = "us-central1-a"
+  initial_node_count = 1
+  provider = google-beta
+  depends_on = [google_project_service.container, google_project_service.gkehub]
+}
+
+resource "google_gke_hub_membership" "membership" {
+  project = google_project.project.project_id
+  membership_id = "tf-test1%{random_suffix}"
+  endpoint {
+    gke_cluster {
+      resource_link = "//container.googleapis.com/${google_container_cluster.primary.id}"
+    }
+  }
+  description = "test resource."
+  provider = google-beta
+}
+
+resource "google_gke_hub_feature" "feature" {
+  project = google_project.project.project_id
+  name = "servicemesh"
+  location = "global"
+
+  labels = {
+    foo = "bar"
+  }
+  provider = google-beta
+  depends_on = [google_project_service.container, google_project_service.gkehub, google_project_service.mesh]
+}
+
+resource "google_service_account" "feature_sa" {
+  project = google_project.project.project_id
+  account_id = "feature-sa"
+  provider = google-beta
+}
+
+resource "google_gke_hub_feature_membership" "feature_member" {
+  project = google_project.project.project_id
+  location = "global"
+  feature = google_gke_hub_feature.feature.name
+  membership = google_gke_hub_membership.membership.membership_id
+  mesh {
+    management = "MANAGEMENT_AUTOMATIC"
+    control_plane = "AUTOMATIC"
+  }
+  provider = google-beta
+}
+`, context)
+}
+
+func testAccGkeHubFeatureMembership_meshUpdateManagement(context map[string]interface{}) string {
+	return gkeHubFeatureProjectSetup(context) + Nprintf(`
+resource "google_container_cluster" "primary" {
+  project = google_project.project.project_id
+  name               = "tf-test-cl%{random_suffix}"
+  location           = "us-central1-a"
+  initial_node_count = 1
+  provider = google-beta
+  depends_on = [google_project_service.container, google_project_service.gkehub]
+}
+
+resource "google_gke_hub_membership" "membership" {
+  project = google_project.project.project_id
+  membership_id = "tf-test1%{random_suffix}"
+  endpoint {
+    gke_cluster {
+      resource_link = "//container.googleapis.com/${google_container_cluster.primary.id}"
+    }
+  }
+  description = "test resource."
+  provider = google-beta
+}
+
+resource "google_gke_hub_feature" "feature" {
+  project = google_project.project.project_id
+  name = "servicemesh"
+  location = "global"
+
+  labels = {
+    foo = "bar"
+  }
+  provider = google-beta
+  depends_on = [google_project_service.container, google_project_service.gkehub, google_project_service.mesh]
+}
+
+resource "google_service_account" "feature_sa" {
+  project = google_project.project.project_id
+  account_id = "feature-sa"
+  provider = google-beta
+}
+
+resource "google_gke_hub_feature_membership" "feature_member" {
+  project = google_project.project.project_id
+  location = "global"
+  feature = google_gke_hub_feature.feature.name
+  membership = google_gke_hub_membership.membership.membership_id
+  mesh {
+    management = "MANAGEMENT_MANUAL"
+  }
+  provider = google-beta
+}
+`, context)
+}
+
+func testAccGkeHubFeatureMembership_meshUpdateControlPlane(context map[string]interface{}) string {
+	return gkeHubFeatureProjectSetup(context) + Nprintf(`
+resource "google_container_cluster" "primary" {
+  project = google_project.project.project_id
+  name               = "tf-test-cl%{random_suffix}"
+  location           = "us-central1-a"
+  initial_node_count = 1
+  provider = google-beta
+  depends_on = [google_project_service.container, google_project_service.gkehub]
+}
+
+resource "google_gke_hub_membership" "membership" {
+  project = google_project.project.project_id
+  membership_id = "tf-test1%{random_suffix}"
+  endpoint {
+    gke_cluster {
+      resource_link = "//container.googleapis.com/${google_container_cluster.primary.id}"
+    }
+  }
+  description = "test resource."
+  provider = google-beta
+}
+
+resource "google_gke_hub_feature" "feature" {
+  project = google_project.project.project_id
+  name = "servicemesh"
+  location = "global"
+
+  labels = {
+    foo = "bar"
+  }
+  provider = google-beta
+  depends_on = [google_project_service.container, google_project_service.gkehub, google_project_service.mesh]
+}
+
+resource "google_service_account" "feature_sa" {
+  project = google_project.project.project_id
+  account_id = "feature-sa"
+  provider = google-beta
+}
+
+resource "google_gke_hub_feature_membership" "feature_member" {
+  project = google_project.project.project_id
+  location = "global"
+  feature = google_gke_hub_feature.feature.name
+  membership = google_gke_hub_membership.membership.membership_id
+  mesh {
+    control_plane = "MANUAL"
+  }
+  provider = google-beta
+}
+`, context)
+}
+
 func gkeHubClusterMembershipSetup(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_container_cluster" "primary" {

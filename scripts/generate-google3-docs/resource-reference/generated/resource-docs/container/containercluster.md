@@ -123,6 +123,12 @@ clusterAutoscaling:
       namespace: string
     diskSize: integer
     imageType: string
+    management:
+      autoRepair: boolean
+      autoUpgrade: boolean
+      upgradeOptions:
+      - autoUpgradeStartTime: string
+        description: string
     minCpuPlatform: string
     oauthScopes:
     - string
@@ -130,6 +136,19 @@ clusterAutoscaling:
       external: string
       name: string
       namespace: string
+    shieldedInstanceConfig:
+      enableIntegrityMonitoring: boolean
+      enableSecureBoot: boolean
+    upgradeSettings:
+      blueGreenSettings:
+        nodePoolSoakDuration: string
+        standardRolloutPolicy:
+          batchNodeCount: integer
+          batchPercentage: float
+          batchSoakDuration: string
+      maxSurge: integer
+      maxUnavailable: integer
+      strategy: string
   autoscalingProfile: string
   enabled: boolean
   resourceLimits:
@@ -163,6 +182,8 @@ enableL4IlbSubsetting: boolean
 enableLegacyAbac: boolean
 enableShieldedNodes: boolean
 enableTpu: boolean
+gatewayApiConfig:
+  channel: string
 identityServiceConfig:
   enabled: boolean
 initialNodeCount: integer
@@ -207,6 +228,7 @@ masterAuthorizedNetworksConfig:
   cidrBlocks:
   - cidrBlock: string
     displayName: string
+  gcpPublicCidrsAccessEnabled: boolean
 meshCertificates:
   enableCertificates: boolean
 minMasterVersion: string
@@ -255,6 +277,7 @@ nodeConfig:
     sysctls:
       string: string
   localSsdCount: integer
+  loggingVariant: string
   machineType: string
   metadata:
     string: string
@@ -271,6 +294,8 @@ nodeConfig:
     key: string
     values:
     - string
+  resourceLabels:
+    string: string
   sandboxConfig:
     sandboxType: string
   serviceAccountRef:
@@ -300,6 +325,7 @@ nodePoolDefaults:
   nodeConfigDefaults:
     gcfsConfig:
       enabled: boolean
+    loggingVariant: string
 nodeVersion: string
 notificationConfig:
   pubsub:
@@ -321,6 +347,10 @@ privateClusterConfig:
   masterIpv4CidrBlock: string
   peeringName: string
   privateEndpoint: string
+  privateEndpointSubnetworkRef:
+    external: string
+    name: string
+    namespace: string
   publicEndpoint: string
 privateIpv6GoogleAccess: string
 releaseChannel:
@@ -734,6 +764,76 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.management</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}NodeManagement configuration for this NodePool.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.management.autoRepair</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Specifies whether the node auto-repair is enabled for the node pool. If enabled, the nodes in this node pool will be monitored and, if they fail health checks too many times, an automatic repair action will be triggered.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.management.autoUpgrade</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Specifies whether node auto-upgrade is enabled for the node pool. If enabled, node auto-upgrade helps keep the nodes in your node pool up to date with the latest release version of Kubernetes.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Specifies the Auto Upgrade knobs for the node pool.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions[].autoUpgradeStartTime</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}This field is set when upgrades are about to commence with the approximate start time for the upgrades, in RFC3339 text format.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions[].description</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}This field is set when upgrades are about to commence with the description of the upgrade.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>clusterAutoscaling.autoProvisioningDefaults.minCpuPlatform</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -804,6 +904,140 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.shieldedInstanceConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Shielded Instance options.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.shieldedInstanceConfig.enableIntegrityMonitoring</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Defines whether the instance has integrity monitoring enabled.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.shieldedInstanceConfig.enableSecureBoot</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Defines whether the instance has Secure Boot enabled.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.upgradeSettings</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Specifies the upgrade settings for NAP created node pools.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.upgradeSettings.blueGreenSettings</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Settings for blue-green upgrade strategy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.upgradeSettings.blueGreenSettings.nodePoolSoakDuration</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Time needed after draining entire blue pool. After this period, blue pool will be cleaned up.
+
+																A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.upgradeSettings.blueGreenSettings.standardRolloutPolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Standard policy for the blue-green upgrade.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.upgradeSettings.blueGreenSettings.standardRolloutPolicy.batchNodeCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Number of blue nodes to drain in a batch.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.upgradeSettings.blueGreenSettings.standardRolloutPolicy.batchPercentage</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">float</code></p>
+            <p>{% verbatim %}Percentage of the bool pool nodes to drain in a batch. The range of this field should be (0.0, 1.0].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.upgradeSettings.blueGreenSettings.standardRolloutPolicy.batchSoakDuration</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Soak time after each batch gets drained.
+
+																			A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.upgradeSettings.maxSurge</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}The maximum number of nodes that can be created beyond the current size of the node pool during the upgrade process.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.upgradeSettings.maxUnavailable</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}The maximum number of nodes that can be simultaneously unavailable during the upgrade process.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterAutoscaling.autoProvisioningDefaults.upgradeSettings.strategy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Update strategy of the node pool.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>clusterAutoscaling.autoscalingProfile</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -815,7 +1049,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>clusterAutoscaling.enabled</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
@@ -1144,6 +1378,26 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>gatewayApiConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Configuration for GKE Gateway API controller.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gatewayApiConfig.channel</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The Gateway API release channel to use for Gateway API.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>identityServiceConfig</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1249,7 +1503,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}GKE components exposing logs. Valid values include SYSTEM_COMPONENTS and WORKLOADS.{% endverbatim %}</p>
+            <p>{% verbatim %}GKE components exposing logs. Valid values include SYSTEM_COMPONENTS, APISERVER, CONTROLLER_MANAGER, SCHEDULER, and WORKLOADS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1600,6 +1854,16 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Field for users to identify CIDR blocks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>masterAuthorizedNetworksConfig.gcpPublicCidrsAccessEnabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Whether master is accessbile via Google Compute Engine Public IP addresses.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2074,6 +2338,16 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>nodeConfig.loggingVariant</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Type of logging agent that is used as the default value for node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>nodeConfig.machineType</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -2222,6 +2496,16 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.resourceLabels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}The GCE resource labels (a map of key/value pairs) to be applied to the node pool.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2526,6 +2810,16 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>nodePoolDefaults.nodeConfigDefaults.loggingVariant</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Type of logging agent that is used as the default value for node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>nodeVersion</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -2667,11 +2961,11 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>privateClusterConfig.enablePrivateEndpoint</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true.{% endverbatim %}</p>
+            <p>{% verbatim %}When true, the cluster's private endpoint is used as the cluster endpoint and access through the public endpoint is disabled. When false, either endpoint can be used. This field only applies to private clusters, when enable_private_nodes is true.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2732,6 +3026,47 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The internal IP address of this cluster's master endpoint.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>privateClusterConfig.privateEndpointSubnetworkRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Subnetwork in cluster's network where master's endpoint
+will be provisioned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>privateClusterConfig.privateEndpointSubnetworkRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>privateClusterConfig.privateEndpointSubnetworkRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>privateClusterConfig.privateEndpointSubnetworkRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -23,6 +23,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"google.golang.org/api/dns/v1"
 )
 
@@ -74,10 +75,11 @@ Must be unique within the project.`,
 				},
 			},
 			"description": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: `A textual description field. Defaults to 'Managed by Config Connector'.`,
-				Default:     "Managed by Config Connector",
+				Type:         schema.TypeString,
+				Optional:     true,
+				ValidateFunc: validation.StringIsNotEmpty,
+				Description:  `A textual description field. Defaults to 'Managed by Config Connector'.`,
+				Default:      "Managed by Config Connector",
 			},
 			"dnssec_config": {
 				Type:        schema.TypeList,
@@ -246,6 +248,22 @@ blocks in an update and then apply another update adding all of them back simult
 								var buf bytes.Buffer
 								schema.SerializeResourceForHash(&buf, raw, dnsManagedZonePrivateVisibilityConfigNetworksSchema())
 								return hashcode(buf.String())
+							},
+						},
+						"gke_clusters": {
+							Type:        schema.TypeList,
+							Optional:    true,
+							Description: `The list of Google Kubernetes Engine clusters that can see this zone.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"gke_cluster_name": {
+										Type:     schema.TypeString,
+										Required: true,
+										Description: `The resource name of the cluster to bind this ManagedZone to.  
+This should be specified in the format like  
+'projects/*/locations/*/clusters/*'`,
+									},
+								},
 							},
 						},
 					},
@@ -753,7 +771,7 @@ func resourceDNSManagedZoneDelete(d *schema.ResourceData, meta interface{}) erro
 					domain := mz.DnsName
 
 					if domain == rr.Name {
-						log.Println("[DEBUG] NS records can't be deleted due to API restrictions, so they're being left in place. See https://www.terraform.io/docs/providers/google/r/dns_record_set.html for more information.")
+						log.Println("[DEBUG] NS records can't be deleted due to API restrictions, so they're being left in place. See https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/dns_record_set for more information.")
 						continue
 					}
 				}
@@ -965,10 +983,34 @@ func flattenDNSManagedZonePrivateVisibilityConfig(v interface{}, d *schema.Resou
 		return nil
 	}
 	transformed := make(map[string]interface{})
+	transformed["gke_clusters"] =
+		flattenDNSManagedZonePrivateVisibilityConfigGkeClusters(original["gkeClusters"], d, config)
 	transformed["networks"] =
 		flattenDNSManagedZonePrivateVisibilityConfigNetworks(original["networks"], d, config)
 	return []interface{}{transformed}
 }
+func flattenDNSManagedZonePrivateVisibilityConfigGkeClusters(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return v
+	}
+	l := v.([]interface{})
+	transformed := make([]interface{}, 0, len(l))
+	for _, raw := range l {
+		original := raw.(map[string]interface{})
+		if len(original) < 1 {
+			// Do not include empty json objects coming back from the api
+			continue
+		}
+		transformed = append(transformed, map[string]interface{}{
+			"gke_cluster_name": flattenDNSManagedZonePrivateVisibilityConfigGkeClustersGkeClusterName(original["gkeClusterName"], d, config),
+		})
+	}
+	return transformed
+}
+func flattenDNSManagedZonePrivateVisibilityConfigGkeClustersGkeClusterName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
 func flattenDNSManagedZonePrivateVisibilityConfigNetworks(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	if v == nil {
 		return v
@@ -1289,6 +1331,13 @@ func expandDNSManagedZonePrivateVisibilityConfig(v interface{}, d TerraformResou
 	original := raw.(map[string]interface{})
 	transformed := make(map[string]interface{})
 
+	transformedGkeClusters, err := expandDNSManagedZonePrivateVisibilityConfigGkeClusters(original["gke_clusters"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedGkeClusters); val.IsValid() && !isEmptyValue(val) {
+		transformed["gkeClusters"] = transformedGkeClusters
+	}
+
 	transformedNetworks, err := expandDNSManagedZonePrivateVisibilityConfigNetworks(original["networks"], d, config)
 	if err != nil {
 		return nil, err
@@ -1322,6 +1371,28 @@ func expandDNSManagedZonePrivateVisibilityConfigNetworks(v interface{}, d Terraf
 	return req, nil
 }
 
+func expandDNSManagedZonePrivateVisibilityConfigGkeClusters(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	l := v.([]interface{})
+	req := make([]interface{}, 0, len(l))
+	for _, raw := range l {
+		if raw == nil {
+			continue
+		}
+		original := raw.(map[string]interface{})
+		transformed := make(map[string]interface{})
+
+		transformedGkeClusterName, err := expandDNSManagedZonePrivateVisibilityConfigGkeClustersGkeClusterName(original["gke_cluster_name"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedGkeClusterName); val.IsValid() && !isEmptyValue(val) {
+			transformed["gkeClusterName"] = transformedGkeClusterName
+		}
+
+		req = append(req, transformed)
+	}
+	return req, nil
+}
+
 func expandDNSManagedZonePrivateVisibilityConfigNetworksNetworkUrl(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	if v == nil || v.(string) == "" {
 		return "", nil
@@ -1333,6 +1404,10 @@ func expandDNSManagedZonePrivateVisibilityConfigNetworksNetworkUrl(v interface{}
 		return "", err
 	}
 	return ConvertSelfLinkToV1(url), nil
+}
+
+func expandDNSManagedZonePrivateVisibilityConfigGkeClustersGkeClusterName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
 }
 
 func expandDNSManagedZoneForwardingConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {

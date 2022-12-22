@@ -13,13 +13,13 @@
 # limitations under the License.
 
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_gc_policy.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_gc_policy.go
-index ad08369e4..172af3372 100644
+index aa0de60bd..3499e2824 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_gc_policy.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_bigtable_gc_policy.go
-@@ -58,7 +58,6 @@ func resourceBigtableGCPolicy() *schema.Resource {
+@@ -113,7 +113,6 @@ func resourceBigtableGCPolicy() *schema.Resource {
  				Optional:    true,
  				ForceNew:    true,
- 				Description: `GC policy that applies to all cells older than the given age.`,
+ 				Description: `NOTE: 'gc_rules' is more flexible, and should be preferred over this field for new resources. This field may be deprecated in the future. GC policy that applies to all cells older than the given age.`,
 -				MaxItems:    1,
  				Elem: &schema.Resource{
  					Schema: map[string]*schema.Schema{

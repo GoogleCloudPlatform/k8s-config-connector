@@ -151,12 +151,12 @@ sslPolicyRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}A reference to the CertificateMap resource uri that identifies a
+            <p>{% verbatim %}Only `external` field is supported to configure the reference.
+
+A reference to the CertificateMap resource uri that identifies a
 certificate map associated with the given target proxy. This
 field can only be set for global target proxies. Accepted format is
-'//certificatemanager.googleapis.com/projects/{project}/locations/{location}/certificateMaps/{resourceName}'.
-
-Only `external` field is supported to configure the reference.{% endverbatim %}</p>
+'//certificatemanager.googleapis.com/projects/{project}/locations/{location}/certificateMaps/{resourceName}'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -500,7 +500,7 @@ resolution and up to nine fractional digits.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Maintenance policy for an instance.{% endverbatim %}</p>
+            <p>{% verbatim %}Persistence configuration for an instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -86,10 +86,65 @@ spec:
                     type: string
                 type: object
               ipRange:
-                description: Immutable. IP address and range of the interface. The
-                  IP range must be in the RFC3927 link-local IP space. Changing this
-                  forces a new interface to be created.
+                description: Immutable. The IP address and range of the interface.
+                  The IP range must be in the RFC3927 link-local IP space. Changing
+                  this forces a new interface to be created.
                 type: string
+              privateIpAddressRef:
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: The `address` field of a `ComputeAddress`
+                      resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              redundantInterfaceRef:
+                description: The interface the BGP peer is associated with.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: The `name` field of a `ComputeRouterInterface`
+                      resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
               region:
                 description: Immutable. The region this interface's router sits in.
                   If not specified, the project region will be used. Changing this
@@ -118,6 +173,33 @@ spec:
                 properties:
                   external:
                     description: 'Allowed value: The `name` field of a `ComputeRouter`
+                      resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              subnetworkRef:
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: The `selfLink` field of a `ComputeSubnetwork`
                       resource.'
                     type: string
                   name:

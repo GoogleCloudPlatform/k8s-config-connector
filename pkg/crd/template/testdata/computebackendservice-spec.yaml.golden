@@ -23,6 +23,8 @@ backend:
 cdnPolicy:
   cacheKeyPolicy:
     includeHost: boolean
+    includeHttpHeaders:
+    - string
     includeNamedCookies:
     - string
     includeProtocol: boolean

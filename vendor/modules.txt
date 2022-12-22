@@ -9,16 +9,19 @@ cloud.google.com/go/internal/trace
 cloud.google.com/go/internal/version
 cloud.google.com/go/longrunning
 cloud.google.com/go/longrunning/autogen
-# cloud.google.com/go/bigtable v1.16.0
-## explicit; go 1.18
+# cloud.google.com/go/bigtable v1.17.0
+## explicit; go 1.19
 cloud.google.com/go/bigtable
 cloud.google.com/go/bigtable/internal
 cloud.google.com/go/bigtable/internal/option
-# cloud.google.com/go/compute v1.10.0
-## explicit; go 1.17
+# cloud.google.com/go/compute v1.12.1
+## explicit; go 1.19
+cloud.google.com/go/compute/internal
+# cloud.google.com/go/compute/metadata v0.2.1
+## explicit; go 1.19
 cloud.google.com/go/compute/metadata
-# cloud.google.com/go/iam v0.3.0
-## explicit; go 1.15
+# cloud.google.com/go/iam v0.5.0
+## explicit; go 1.17
 cloud.google.com/go/iam
 # cloud.google.com/go/profiler v0.1.0
 ## explicit; go 1.16
@@ -537,7 +540,7 @@ github.com/hashicorp/hcl/hcl/printer
 github.com/hashicorp/hcl/hcl/scanner
 github.com/hashicorp/hcl/hcl/strconv
 github.com/hashicorp/hcl/hcl/token
-# github.com/hashicorp/hcl/v2 v2.13.0
+# github.com/hashicorp/hcl/v2 v2.14.1
 ## explicit; go 1.18
 github.com/hashicorp/hcl/v2
 github.com/hashicorp/hcl/v2/ext/customdecode
@@ -546,15 +549,15 @@ github.com/hashicorp/hcl/v2/hclwrite
 # github.com/hashicorp/logutils v1.0.0
 ## explicit
 github.com/hashicorp/logutils
-# github.com/hashicorp/terraform-exec v0.17.2
-## explicit; go 1.17
+# github.com/hashicorp/terraform-exec v0.17.3
+## explicit; go 1.18
 github.com/hashicorp/terraform-exec/internal/version
 github.com/hashicorp/terraform-exec/tfexec
 # github.com/hashicorp/terraform-json v0.14.0
 ## explicit; go 1.13
 github.com/hashicorp/terraform-json
-# github.com/hashicorp/terraform-plugin-go v0.10.0
-## explicit; go 1.17
+# github.com/hashicorp/terraform-plugin-go v0.14.0
+## explicit; go 1.18
 github.com/hashicorp/terraform-plugin-go/internal/logging
 github.com/hashicorp/terraform-plugin-go/tfprotov5
 github.com/hashicorp/terraform-plugin-go/tfprotov5/internal/diag
@@ -571,14 +574,15 @@ github.com/hashicorp/terraform-plugin-go/tfprotov6/internal/tfplugin6
 github.com/hashicorp/terraform-plugin-go/tfprotov6/internal/toproto
 github.com/hashicorp/terraform-plugin-go/tfprotov6/tf6server
 github.com/hashicorp/terraform-plugin-go/tftypes
-# github.com/hashicorp/terraform-plugin-log v0.4.1
+# github.com/hashicorp/terraform-plugin-log v0.7.0
 ## explicit; go 1.17
+github.com/hashicorp/terraform-plugin-log/internal/fieldutils
 github.com/hashicorp/terraform-plugin-log/internal/hclogutils
 github.com/hashicorp/terraform-plugin-log/internal/logging
 github.com/hashicorp/terraform-plugin-log/tflog
 github.com/hashicorp/terraform-plugin-log/tfsdklog
-# github.com/hashicorp/terraform-plugin-sdk/v2 v2.18.0
-## explicit; go 1.17
+# github.com/hashicorp/terraform-plugin-sdk/v2 v2.24.0
+## explicit; go 1.18
 github.com/hashicorp/terraform-plugin-sdk/v2/diag
 github.com/hashicorp/terraform-plugin-sdk/v2/helper/customdiff
 github.com/hashicorp/terraform-plugin-sdk/v2/helper/logging
@@ -793,8 +797,8 @@ github.com/xanzy/ssh-agent
 # github.com/xlab/treeprint v1.1.0
 ## explicit; go 1.13
 github.com/xlab/treeprint
-# github.com/zclconf/go-cty v1.10.0
-## explicit; go 1.12
+# github.com/zclconf/go-cty v1.11.0
+## explicit; go 1.18
 github.com/zclconf/go-cty/cty
 github.com/zclconf/go-cty/cty/convert
 github.com/zclconf/go-cty/cty/function
@@ -963,7 +967,7 @@ golang.org/x/xerrors/internal
 # gomodules.xyz/jsonpatch/v2 v2.2.0
 ## explicit; go 1.12
 gomodules.xyz/jsonpatch/v2
-# google.golang.org/api v0.100.0
+# google.golang.org/api v0.102.0
 ## explicit; go 1.19
 google.golang.org/api/appengine/v1
 google.golang.org/api/bigquery/v2
@@ -1033,7 +1037,7 @@ google.golang.org/appengine/internal/socket
 google.golang.org/appengine/internal/urlfetch
 google.golang.org/appengine/socket
 google.golang.org/appengine/urlfetch
-# google.golang.org/genproto v0.0.0-20221014213838-99cd37c6964a
+# google.golang.org/genproto v0.0.0-20221024183307-1bc688fe9f3e
 ## explicit; go 1.19
 google.golang.org/genproto/googleapis/api/annotations
 google.golang.org/genproto/googleapis/api/expr/v1alpha1
