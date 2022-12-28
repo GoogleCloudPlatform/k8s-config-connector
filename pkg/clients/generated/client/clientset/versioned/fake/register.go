@@ -62,6 +62,7 @@ import (
 	osconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/osconfig/v1beta1"
 	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/privateca/v1beta1"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/pubsub/v1beta1"
+	pubsublitev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/pubsublite/v1beta1"
 	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/recaptchaenterprise/v1beta1"
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/redis/v1beta1"
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/resourcemanager/v1beta1"
@@ -128,6 +129,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	osconfigv1beta1.AddToScheme,
 	privatecav1beta1.AddToScheme,
 	pubsubv1beta1.AddToScheme,
+	pubsublitev1beta1.AddToScheme,
 	recaptchaenterprisev1beta1.AddToScheme,
 	redisv1beta1.AddToScheme,
 	resourcemanagerv1beta1.AddToScheme,

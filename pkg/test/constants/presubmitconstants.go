@@ -67,6 +67,7 @@ var (
 		"osconfig":             {"osconfigguestpolicy"},
 		"privateca":            {"basiccertificate"},
 		"pubsub":               {"pubsubsubscription"},
+		"pubsublite":           {"pubsublitereservation"},
 		"recaptchaenterprise":  {"androidrecaptchaenterprisekey"},
 		"redis":                {"redisinstance"},
 		"resourcemanager":      {"resourcemanagerlien"},

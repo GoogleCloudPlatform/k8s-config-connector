@@ -773,6 +773,17 @@
       name: pubsubtopic-sample-sjbarmmcp9q4h9q0pmk4-154
   ResourceConfigId: PubSubTopic
   URI: "https://pubsub.googleapis.com/v1/projects/kcc-test/topics/pubsubtopic-sample-sjbarmmcp9q4h9q0pmk4-154?alt=json"
+- ExpectedSkeleton:
+    apiVersion:  pubsublite.cnrm.cloud.google.com/v1beta1
+    kind: PubSubLiteReservation
+    metadata:
+      name: pubsublitereservation-sample
+    spec:
+        projectRef:
+          external: kcc-test
+        region: us-central1
+  ResourceConfigId: PubSubLiteReservation
+  URI: "https://pubsublite.googleapis.com/v1/admin/projects/kcc-test/locations/us-central1/reservations/pubsublitereservation-sample?alt=json"
 - ExpectedSkeleton: null
   ResourceConfigId: IAMCustomRole
   URI: "https://iam.googleapis.com/v1/projects/kcc-test/roles/rolechh3ku2jrdtltfiocs00?alt=json"

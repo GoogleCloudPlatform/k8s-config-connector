@@ -476,6 +476,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - pubsublite.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - recaptchaenterprise.cnrm.cloud.google.com
   resources:
   - '*'

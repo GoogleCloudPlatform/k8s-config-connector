@@ -961,6 +961,8 @@
       name: pubsubtopic-23ud716o5e16ibc3j9kc
   resourceConfigId: PubSubTopic
 # not supported by asset inventory
+- resourceConfigId: PubSubLiteReservation
+# not supported by asset inventory
 - resourceConfigId: RedisInstance
 # not supported by asset Inventory
 - resourceConfigId: ResourceManagerLien

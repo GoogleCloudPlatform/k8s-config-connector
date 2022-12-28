@@ -428,6 +428,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/pubsub/pubsubsubscription.md
   - title: "PubSubTopic"
     path: /config-connector/docs/reference/resource-docs/pubsub/pubsubtopic.md
+- title: "Pub/Sub Lite"
+  section:
+  - title: "PubSubLiteReservation"
+    path: /config-connector/docs/reference/resource-docs/pubsub/lite/pubsublitereservation.md
 - title: "reCAPTCHA Enterprise"
   section:
   - title: "RecaptchaEnterpriseKey"

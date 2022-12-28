@@ -65,6 +65,7 @@ import (
 	osconfigv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/osconfig/v1beta1"
 	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/privateca/v1beta1"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsub/v1beta1"
+	pubsublitev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/pubsublite/v1beta1"
 	recaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/recaptchaenterprise/v1beta1"
 	redisv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/redis/v1beta1"
 	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/resourcemanager/v1beta1"
@@ -127,6 +128,7 @@ type Interface interface {
 	OsconfigV1beta1() osconfigv1beta1.OsconfigV1beta1Interface
 	PrivatecaV1beta1() privatecav1beta1.PrivatecaV1beta1Interface
 	PubsubV1beta1() pubsubv1beta1.PubsubV1beta1Interface
+	PubsubliteV1beta1() pubsublitev1beta1.PubsubliteV1beta1Interface
 	RecaptchaenterpriseV1beta1() recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Interface
 	RedisV1beta1() redisv1beta1.RedisV1beta1Interface
 	ResourcemanagerV1beta1() resourcemanagerv1beta1.ResourcemanagerV1beta1Interface
@@ -188,6 +190,7 @@ type Clientset struct {
 	osconfigV1beta1             *osconfigv1beta1.OsconfigV1beta1Client
 	privatecaV1beta1            *privatecav1beta1.PrivatecaV1beta1Client
 	pubsubV1beta1               *pubsubv1beta1.PubsubV1beta1Client
+	pubsubliteV1beta1           *pubsublitev1beta1.PubsubliteV1beta1Client
 	recaptchaenterpriseV1beta1  *recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Client
 	redisV1beta1                *redisv1beta1.RedisV1beta1Client
 	resourcemanagerV1beta1      *resourcemanagerv1beta1.ResourcemanagerV1beta1Client
@@ -403,6 +406,11 @@ func (c *Clientset) PrivatecaV1beta1() privatecav1beta1.PrivatecaV1beta1Interfac
 // PubsubV1beta1 retrieves the PubsubV1beta1Client
 func (c *Clientset) PubsubV1beta1() pubsubv1beta1.PubsubV1beta1Interface {
 	return c.pubsubV1beta1
+}
+
+// PubsubliteV1beta1 retrieves the PubsubliteV1beta1Client
+func (c *Clientset) PubsubliteV1beta1() pubsublitev1beta1.PubsubliteV1beta1Interface {
+	return c.pubsubliteV1beta1
 }
 
 // RecaptchaenterpriseV1beta1 retrieves the RecaptchaenterpriseV1beta1Client
@@ -684,6 +692,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.pubsubliteV1beta1, err = pubsublitev1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.recaptchaenterpriseV1beta1, err = recaptchaenterprisev1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -805,6 +817,7 @@ func New(c rest.Interface) *Clientset {
 	cs.osconfigV1beta1 = osconfigv1beta1.New(c)
 	cs.privatecaV1beta1 = privatecav1beta1.New(c)
 	cs.pubsubV1beta1 = pubsubv1beta1.New(c)
+	cs.pubsubliteV1beta1 = pubsublitev1beta1.New(c)
 	cs.recaptchaenterpriseV1beta1 = recaptchaenterprisev1beta1.New(c)
 	cs.redisV1beta1 = redisv1beta1.New(c)
 	cs.resourcemanagerV1beta1 = resourcemanagerv1beta1.New(c)

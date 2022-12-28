@@ -319,6 +319,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - pubsublite.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - recaptchaenterprise.cnrm.cloud.google.com
   resources:
   - '*'

@@ -1,0 +1,9 @@
+apiVersion: pubsublite.cnrm.cloud.google.com/v1beta1
+kind: PubSubLiteReservation
+metadata:
+  name: pubsublitereservation-${uniqueId}
+spec:
+ region: us-central1
+ throughputCapacity: 3
+ projectRef:
+    external: ${projectId}
