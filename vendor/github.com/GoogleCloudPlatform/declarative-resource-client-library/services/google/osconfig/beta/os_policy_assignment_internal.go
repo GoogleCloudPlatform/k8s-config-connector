@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
-	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl/operations"
 )
 
 func (r *OSPolicyAssignment) validate() error {
@@ -639,22 +638,8 @@ func newUpdateOSPolicyAssignmentUpdateOSPolicyAssignmentRequest(ctx context.Cont
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		req["rollout"] = v
 	}
-	b, err := c.getOSPolicyAssignmentRaw(ctx, f)
-	if err != nil {
-		return nil, err
-	}
-	var m map[string]interface{}
-	if err := json.Unmarshal(b, &m); err != nil {
-		return nil, err
-	}
-	rawEtag, err := dcl.GetMapEntry(
-		m,
-		[]string{"etag"},
-	)
-	if err != nil {
-		c.Config.Logger.WarningWithContextf(ctx, "Failed to fetch from JSON Path: %v", err)
-	} else {
-		req["etag"] = rawEtag.(string)
+	if v := f.SkipAwaitRollout; !dcl.IsEmptyValueIndirect(v) {
+		req["skipAwaitRollout"] = v
 	}
 	return req, nil
 }
@@ -663,6 +648,11 @@ func newUpdateOSPolicyAssignmentUpdateOSPolicyAssignmentRequest(ctx context.Cont
 // the final JSON request body.
 func marshalUpdateOSPolicyAssignmentUpdateOSPolicyAssignmentRequest(c *Client, m map[string]interface{}) ([]byte, error) {
 
+	dcl.MoveMapEntry(
+		m,
+		[]string{"skipAwaitRollout"},
+		[]string{},
+	)
 	return json.Marshal(m)
 }
 
@@ -677,50 +667,6 @@ type updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation struct {
 // do creates a request and sends it to the appropriate URL. In most operations,
 // do will transcribe a subset of the resource into a request object and send a
 // PUT request to a single URL.
-
-func (op *updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation) do(ctx context.Context, r *OSPolicyAssignment, c *Client) error {
-	_, err := c.GetOSPolicyAssignment(ctx, r)
-	if err != nil {
-		return err
-	}
-
-	u, err := r.updateURL(c.Config.BasePath, "UpdateOSPolicyAssignment")
-	if err != nil {
-		return err
-	}
-	mask := dcl.TopLevelUpdateMask(op.FieldDiffs)
-	u, err = dcl.AddQueryParams(u, map[string]string{"updateMask": mask})
-	if err != nil {
-		return err
-	}
-
-	req, err := newUpdateOSPolicyAssignmentUpdateOSPolicyAssignmentRequest(ctx, r, c)
-	if err != nil {
-		return err
-	}
-
-	c.Config.Logger.InfoWithContextf(ctx, "Created update: %#v", req)
-	body, err := marshalUpdateOSPolicyAssignmentUpdateOSPolicyAssignmentRequest(c, req)
-	if err != nil {
-		return err
-	}
-	resp, err := dcl.SendRequest(ctx, c.Config, "PATCH", u, bytes.NewBuffer(body), c.Config.RetryProvider)
-	if err != nil {
-		return err
-	}
-
-	var o operations.StandardGCPOperation
-	if err := dcl.ParseResponse(resp.Response, &o); err != nil {
-		return err
-	}
-	err = o.Wait(context.WithValue(ctx, dcl.DoNotLogRequestsKey, true), c.Config, r.basePath(), "GET")
-
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
 
 func (c *Client) listOSPolicyAssignmentRaw(ctx context.Context, r *OSPolicyAssignment, pageToken string, pageSize int32) ([]byte, error) {
 	u, err := r.urlNormalized().listURL(c.Config.BasePath)
@@ -799,59 +745,6 @@ func (c *Client) deleteAllOSPolicyAssignment(ctx context.Context, f func(*OSPoli
 
 type deleteOSPolicyAssignmentOperation struct{}
 
-func (op *deleteOSPolicyAssignmentOperation) do(ctx context.Context, r *OSPolicyAssignment, c *Client) error {
-	r, err := c.GetOSPolicyAssignment(ctx, r)
-	if err != nil {
-		if dcl.IsNotFound(err) {
-			c.Config.Logger.InfoWithContextf(ctx, "OSPolicyAssignment not found, returning. Original error: %v", err)
-			return nil
-		}
-		c.Config.Logger.WarningWithContextf(ctx, "GetOSPolicyAssignment checking for existence. error: %v", err)
-		return err
-	}
-
-	err = r.waitForNotReconciling(ctx, c)
-	if err != nil {
-		return err
-	}
-	u, err := r.deleteURL(c.Config.BasePath)
-	if err != nil {
-		return err
-	}
-
-	// Delete should never have a body
-	body := &bytes.Buffer{}
-	resp, err := dcl.SendRequest(ctx, c.Config, "DELETE", u, body, c.Config.RetryProvider)
-	if err != nil {
-		return err
-	}
-
-	// wait for object to be deleted.
-	var o operations.StandardGCPOperation
-	if err := dcl.ParseResponse(resp.Response, &o); err != nil {
-		return err
-	}
-	if err := o.Wait(context.WithValue(ctx, dcl.DoNotLogRequestsKey, true), c.Config, r.basePath(), "GET"); err != nil {
-		return err
-	}
-
-	// We saw a race condition where for some successful delete operation, the Get calls returned resources for a short duration.
-	// This is the reason we are adding retry to handle that case.
-	retriesRemaining := 10
-	dcl.Do(ctx, func(ctx context.Context) (*dcl.RetryDetails, error) {
-		_, err := c.GetOSPolicyAssignment(ctx, r)
-		if dcl.IsNotFound(err) {
-			return nil, nil
-		}
-		if retriesRemaining > 0 {
-			retriesRemaining--
-			return &dcl.RetryDetails{}, dcl.OperationNotDone{}
-		}
-		return nil, dcl.NotDeletedError{ExistingResource: r}
-	}, c.Config.RetryProvider)
-	return nil
-}
-
 // Create operations are similar to Update operations, although they do not have
 // specific request objects. The Create request object is the json encoding of
 // the resource, which is modified by res.marshal to form the base request body.
@@ -861,41 +754,6 @@ type createOSPolicyAssignmentOperation struct {
 
 func (op *createOSPolicyAssignmentOperation) FirstResponse() (map[string]interface{}, bool) {
 	return op.response, len(op.response) > 0
-}
-
-func (op *createOSPolicyAssignmentOperation) do(ctx context.Context, r *OSPolicyAssignment, c *Client) error {
-	c.Config.Logger.InfoWithContextf(ctx, "Attempting to create %v", r)
-	u, err := r.createURL(c.Config.BasePath)
-	if err != nil {
-		return err
-	}
-
-	req, err := r.marshal(c)
-	if err != nil {
-		return err
-	}
-	resp, err := dcl.SendRequest(ctx, c.Config, "POST", u, bytes.NewBuffer(req), c.Config.RetryProvider)
-	if err != nil {
-		return err
-	}
-	// wait for object to be created.
-	var o operations.StandardGCPOperation
-	if err := dcl.ParseResponse(resp.Response, &o); err != nil {
-		return err
-	}
-	if err := o.Wait(context.WithValue(ctx, dcl.DoNotLogRequestsKey, true), c.Config, r.basePath(), "GET"); err != nil {
-		c.Config.Logger.Warningf("Creation failed after waiting for operation: %v", err)
-		return err
-	}
-	c.Config.Logger.InfoWithContextf(ctx, "Successfully waited for operation")
-	op.response, _ = o.FirstResponse()
-
-	if _, err := c.GetOSPolicyAssignment(ctx, r); err != nil {
-		c.Config.Logger.WarningWithContextf(ctx, "get returned error: %v", err)
-		return err
-	}
-
-	return nil
 }
 
 func (c *Client) getOSPolicyAssignmentRaw(ctx context.Context, r *OSPolicyAssignment) ([]byte, error) {
@@ -1017,6 +875,11 @@ func canonicalizeOSPolicyAssignmentDesiredState(rawDesired, rawInitial *OSPolicy
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
+	if dcl.BoolCanonicalize(rawDesired.SkipAwaitRollout, rawInitial.SkipAwaitRollout) {
+		canonicalDesired.SkipAwaitRollout = rawInitial.SkipAwaitRollout
+	} else {
+		canonicalDesired.SkipAwaitRollout = rawDesired.SkipAwaitRollout
+	}
 
 	return canonicalDesired, nil
 }
@@ -1118,6 +981,12 @@ func canonicalizeOSPolicyAssignmentNewState(c *Client, rawNew, rawDesired *OSPol
 	rawNew.Project = rawDesired.Project
 
 	rawNew.Location = rawDesired.Location
+
+	if dcl.IsEmptyValueIndirect(rawNew.SkipAwaitRollout) && dcl.IsEmptyValueIndirect(rawDesired.SkipAwaitRollout) {
+		rawNew.SkipAwaitRollout = rawDesired.SkipAwaitRollout
+	} else {
+		rawNew.SkipAwaitRollout = rawDesired.SkipAwaitRollout
+	}
 
 	return rawNew, nil
 }
@@ -7250,6 +7119,13 @@ func diffOSPolicyAssignment(c *Client, desired, actual *OSPolicyAssignment, opts
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if ds, err := dcl.Diff(desired.SkipAwaitRollout, actual.SkipAwaitRollout, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateOSPolicyAssignmentUpdateOSPolicyAssignmentOperation")}, fn.AddNest("SkipAwaitRollout")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		newDiffs = append(newDiffs, ds...)
+	}
+
 	return newDiffs, nil
 }
 func compareOSPolicyAssignmentOSPoliciesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
@@ -9218,6 +9094,11 @@ func (r *OSPolicyAssignment) marshal(c *Client) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error marshalling OSPolicyAssignment: %w", err)
 	}
+	dcl.MoveMapEntry(
+		m,
+		[]string{"skipAwaitRollout"},
+		[]string{},
+	)
 
 	return json.Marshal(m)
 }
@@ -9278,6 +9159,9 @@ func expandOSPolicyAssignment(c *Client, f *OSPolicyAssignment) (map[string]inte
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		m["location"] = v
 	}
+	if v := f.SkipAwaitRollout; dcl.ValueShouldBeSent(v) {
+		m["skipAwaitRollout"] = v
+	}
 
 	return m, nil
 }
@@ -9309,6 +9193,7 @@ func flattenOSPolicyAssignment(c *Client, i interface{}, res *OSPolicyAssignment
 	resultRes.Uid = dcl.FlattenString(m["uid"])
 	resultRes.Project = dcl.FlattenString(m["project"])
 	resultRes.Location = dcl.FlattenString(m["location"])
+	resultRes.SkipAwaitRollout = dcl.FlattenBool(m["skipAwaitRollout"])
 
 	return resultRes
 }

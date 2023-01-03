@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC. All Rights Reserved.
+# Copyright 2023 Google LLC. All Rights Reserved.
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -144,6 +144,33 @@ components:
           - iamInstanceProfile
           - configEncryption
           properties:
+            autoscalingMetricsCollection:
+              type: object
+              x-dcl-go-name: AutoscalingMetricsCollection
+              x-dcl-go-type: NodePoolConfigAutoscalingMetricsCollection
+              description: Optional. Configuration related to CloudWatch metrics collection
+                on the Auto Scaling group of the node pool. When unspecified, metrics
+                collection is disabled.
+              required:
+              - granularity
+              properties:
+                granularity:
+                  type: string
+                  x-dcl-go-name: Granularity
+                  description: The frequency at which EC2 Auto Scaling sends aggregated
+                    data to AWS CloudWatch. The only valid value is "1Minute".
+                metrics:
+                  type: array
+                  x-dcl-go-name: Metrics
+                  description: The metrics to enable. For a list of valid metrics,
+                    see https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_EnableMetricsCollection.html.
+                    If you specify granularity and don't specify any metrics, all
+                    metrics are enabled.
+                  x-dcl-send-empty: true
+                  x-dcl-list-type: list
+                  items:
+                    type: string
+                    x-dcl-go-type: string
             configEncryption:
               type: object
               x-dcl-go-name: ConfigEncryption
@@ -300,7 +327,6 @@ components:
                 AWS resource. Specify at most 50 pairs containing alphanumerics, spaces,
                 and symbols (.+-=_:@/). Keys can be up to 127 Unicode characters.
                 Values can be up to 255 Unicode characters.
-              x-kubernetes-immutable: true
             taints:
               type: array
               x-dcl-go-name: Taints

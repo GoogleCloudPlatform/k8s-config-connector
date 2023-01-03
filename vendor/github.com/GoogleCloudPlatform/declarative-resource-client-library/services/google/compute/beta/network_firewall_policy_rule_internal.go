@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -65,9 +65,15 @@ func (r *NetworkFirewallPolicyRuleMatchLayer4Configs) validate() error {
 	return nil
 }
 func (r *NetworkFirewallPolicyRuleMatchSrcSecureTags) validate() error {
+	if err := dcl.Required(r, "name"); err != nil {
+		return err
+	}
 	return nil
 }
 func (r *NetworkFirewallPolicyRuleTargetSecureTags) validate() error {
+	if err := dcl.Required(r, "name"); err != nil {
+		return err
+	}
 	return nil
 }
 func (r *NetworkFirewallPolicyRule) basePath() string {
@@ -152,7 +158,7 @@ func newUpdateNetworkFirewallPolicyRulePatchRuleRequest(ctx context.Context, f *
 	if v := f.Description; !dcl.IsEmptyValueIndirect(v) {
 		req["description"] = v
 	}
-	if v := f.Name; !dcl.IsEmptyValueIndirect(v) {
+	if v := f.RuleName; !dcl.IsEmptyValueIndirect(v) {
 		req["ruleName"] = v
 	}
 	if v, err := expandNetworkFirewallPolicyRuleMatch(c, f.Match, res); err != nil {
@@ -514,10 +520,10 @@ func canonicalizeNetworkFirewallPolicyRuleDesiredState(rawDesired, rawInitial *N
 	} else {
 		canonicalDesired.Description = rawDesired.Description
 	}
-	if dcl.StringCanonicalize(rawDesired.Name, rawInitial.Name) {
-		canonicalDesired.Name = rawInitial.Name
+	if dcl.StringCanonicalize(rawDesired.RuleName, rawInitial.RuleName) {
+		canonicalDesired.RuleName = rawInitial.RuleName
 	} else {
-		canonicalDesired.Name = rawDesired.Name
+		canonicalDesired.RuleName = rawDesired.RuleName
 	}
 	if dcl.IsZeroValue(rawDesired.Priority) || (dcl.IsEmptyValueIndirect(rawDesired.Priority) && dcl.IsEmptyValueIndirect(rawInitial.Priority)) {
 		// Desired and initial values are equivalent, so set canonical desired value to initial value.
@@ -583,11 +589,11 @@ func canonicalizeNetworkFirewallPolicyRuleNewState(c *Client, rawNew, rawDesired
 		}
 	}
 
-	if dcl.IsEmptyValueIndirect(rawNew.Name) && dcl.IsEmptyValueIndirect(rawDesired.Name) {
-		rawNew.Name = rawDesired.Name
+	if dcl.IsEmptyValueIndirect(rawNew.RuleName) && dcl.IsEmptyValueIndirect(rawDesired.RuleName) {
+		rawNew.RuleName = rawDesired.RuleName
 	} else {
-		if dcl.StringCanonicalize(rawDesired.Name, rawNew.Name) {
-			rawNew.Name = rawDesired.Name
+		if dcl.StringCanonicalize(rawDesired.RuleName, rawNew.RuleName) {
+			rawNew.RuleName = rawDesired.RuleName
 		}
 	}
 
@@ -1169,7 +1175,7 @@ func diffNetworkFirewallPolicyRule(c *Client, desired, actual *NetworkFirewallPo
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Name, actual.Name, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNetworkFirewallPolicyRulePatchRuleOperation")}, fn.AddNest("RuleName")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.RuleName, actual.RuleName, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNetworkFirewallPolicyRulePatchRuleOperation")}, fn.AddNest("RuleName")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1433,7 +1439,7 @@ func compareNetworkFirewallPolicyRuleTargetSecureTagsNewStyle(d, a interface{}, 
 func (r *NetworkFirewallPolicyRule) urlNormalized() *NetworkFirewallPolicyRule {
 	normalized := dcl.Copy(*r).(NetworkFirewallPolicyRule)
 	normalized.Description = dcl.SelfLinkToName(r.Description)
-	normalized.Name = dcl.SelfLinkToName(r.Name)
+	normalized.RuleName = dcl.SelfLinkToName(r.RuleName)
 	normalized.Location = dcl.SelfLinkToName(r.Location)
 	normalized.Action = dcl.SelfLinkToName(r.Action)
 	normalized.Kind = dcl.SelfLinkToName(r.Kind)
@@ -1500,7 +1506,7 @@ func expandNetworkFirewallPolicyRule(c *Client, f *NetworkFirewallPolicyRule) (m
 	if v := f.Description; dcl.ValueShouldBeSent(v) {
 		m["description"] = v
 	}
-	if v := f.Name; dcl.ValueShouldBeSent(v) {
+	if v := f.RuleName; dcl.ValueShouldBeSent(v) {
 		m["ruleName"] = v
 	}
 	if v := f.Priority; dcl.ValueShouldBeSent(v) {
@@ -1561,7 +1567,7 @@ func flattenNetworkFirewallPolicyRule(c *Client, i interface{}, res *NetworkFire
 
 	resultRes := &NetworkFirewallPolicyRule{}
 	resultRes.Description = dcl.FlattenString(m["description"])
-	resultRes.Name = dcl.FlattenString(m["ruleName"])
+	resultRes.RuleName = dcl.FlattenString(m["ruleName"])
 	resultRes.Priority = dcl.FlattenInteger(m["priority"])
 	resultRes.Location = dcl.FlattenString(m["location"])
 	resultRes.Match = flattenNetworkFirewallPolicyRuleMatch(c, m["match"], res)

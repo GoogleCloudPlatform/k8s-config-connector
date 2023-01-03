@@ -40,10 +40,6 @@ type NetworkServicesGatewaySpec struct {
 	// +optional
 	Addresses []string `json:"addresses,omitempty"`
 
-	/*  */
-	// +optional
-	AuthorizationPolicyRef *v1alpha1.ResourceRef `json:"authorizationPolicyRef,omitempty"`
-
 	/* Optional. A free-text description of the resource. Max length 1024 characters. */
 	// +optional
 	Description *string `json:"description,omitempty"`

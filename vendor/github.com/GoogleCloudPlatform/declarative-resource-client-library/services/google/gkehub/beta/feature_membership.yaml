@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC. All Rights Reserved.
+# Copyright 2023 Google LLC. All Rights Reserved.
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -157,6 +157,40 @@ components:
                       x-dcl-go-name: SyncWaitSecs
                       description: 'Period in seconds between consecutive syncs. Default:
                         15.'
+                oci:
+                  type: object
+                  x-dcl-go-name: Oci
+                  x-dcl-go-type: FeatureMembershipConfigmanagementConfigSyncOci
+                  properties:
+                    gcpServiceAccountEmail:
+                      type: string
+                      x-dcl-go-name: GcpServiceAccountEmail
+                      description: 'The GCP Service Account Email used for auth when
+                        secret_type is gcpserviceaccount. '
+                      x-dcl-references:
+                      - resource: Iam/ServiceAccount
+                        field: email
+                    policyDir:
+                      type: string
+                      x-dcl-go-name: PolicyDir
+                      description: 'The absolute path of the directory that contains
+                        the local resources. Default: the root directory of the image.'
+                    secretType:
+                      type: string
+                      x-dcl-go-name: SecretType
+                      description: Type of secret configured for access to the OCI
+                        Image. Must be one of gcenode, gcpserviceaccount or none.
+                        The validation of this is case-sensitive.
+                    syncRepo:
+                      type: string
+                      x-dcl-go-name: SyncRepo
+                      description: The OCI image repository URL for the package to
+                        sync from. e.g. LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY_NAME/PACKAGE_NAME.
+                    syncWaitSecs:
+                      type: string
+                      x-dcl-go-name: SyncWaitSecs
+                      description: 'Period in seconds(int64 format) between consecutive
+                        syncs. Default: 15.'
                 preventDrift:
                   type: boolean
                   x-dcl-go-name: PreventDrift
@@ -296,6 +330,17 @@ components:
           x-dcl-go-type: FeatureMembershipMesh
           description: Manage Mesh Features
           properties:
+            controlPlane:
+              type: string
+              x-dcl-go-name: ControlPlane
+              x-dcl-go-type: FeatureMembershipMeshControlPlaneEnum
+              description: 'Whether to automatically manage Service Mesh control planes.
+                Possible values: CONTROL_PLANE_MANAGEMENT_UNSPECIFIED, AUTOMATIC,
+                MANUAL'
+              enum:
+              - CONTROL_PLANE_MANAGEMENT_UNSPECIFIED
+              - AUTOMATIC
+              - MANUAL
             management:
               type: string
               x-dcl-go-name: Management

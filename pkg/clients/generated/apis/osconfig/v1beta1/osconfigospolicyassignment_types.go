@@ -422,6 +422,10 @@ type OSConfigOSPolicyAssignmentSpec struct {
 
 	/* Required. Rollout to deploy the OS policy assignment. A rollout is triggered in the following situations: 1) OSPolicyAssignment is created. 2) OSPolicyAssignment is updated and the update contains changes to one of the following fields: - instance_filter - os_policies 3) OSPolicyAssignment is deleted. */
 	Rollout OspolicyassignmentRollout `json:"rollout"`
+
+	/* Set to true to skip awaiting rollout during resource creation and update. */
+	// +optional
+	SkipAwaitRollout *bool `json:"skipAwaitRollout,omitempty"`
 }
 
 type OSConfigOSPolicyAssignmentStatus struct {

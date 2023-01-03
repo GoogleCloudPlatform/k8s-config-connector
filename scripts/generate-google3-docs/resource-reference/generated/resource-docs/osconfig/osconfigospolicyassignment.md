@@ -225,6 +225,7 @@ rollout:
     fixed: integer
     percent: integer
   minWaitDuration: string
+skipAwaitRollout: boolean
 ```
 
 <table class="properties responsive">
@@ -1804,6 +1805,16 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Required. This determines the minimum duration of time to wait after the configuration changes are applied through the current rollout. A VM continues to count towards the `disruption_budget` at least until this duration of time has passed after configuration changes are applied.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>skipAwaitRollout</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Set to true to skip awaiting rollout during resource creation and update.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

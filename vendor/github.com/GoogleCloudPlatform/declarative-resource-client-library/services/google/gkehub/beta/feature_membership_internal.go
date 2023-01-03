@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -80,9 +80,17 @@ func (r *FeatureMembershipConfigmanagementConfigSync) validate() error {
 			return err
 		}
 	}
+	if !dcl.IsEmptyValueIndirect(r.Oci) {
+		if err := r.Oci.validate(); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 func (r *FeatureMembershipConfigmanagementConfigSyncGit) validate() error {
+	return nil
+}
+func (r *FeatureMembershipConfigmanagementConfigSyncOci) validate() error {
 	return nil
 }
 func (r *FeatureMembershipConfigmanagementPolicyController) validate() error {
@@ -374,6 +382,12 @@ func canonicalizeFeatureMembershipMesh(des, initial *FeatureMembershipMesh, opts
 	} else {
 		cDes.Management = des.Management
 	}
+	if dcl.IsZeroValue(des.ControlPlane) || (dcl.IsEmptyValueIndirect(des.ControlPlane) && dcl.IsEmptyValueIndirect(initial.ControlPlane)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.ControlPlane = initial.ControlPlane
+	} else {
+		cDes.ControlPlane = des.ControlPlane
+	}
 
 	return cDes
 }
@@ -614,6 +628,7 @@ func canonicalizeFeatureMembershipConfigmanagementConfigSync(des, initial *Featu
 	} else {
 		cDes.PreventDrift = des.PreventDrift
 	}
+	cDes.Oci = canonicalizeFeatureMembershipConfigmanagementConfigSyncOci(des.Oci, initial.Oci, opts...)
 
 	return cDes
 }
@@ -667,6 +682,7 @@ func canonicalizeNewFeatureMembershipConfigmanagementConfigSync(c *Client, des, 
 	if dcl.BoolCanonicalize(des.PreventDrift, nw.PreventDrift) {
 		nw.PreventDrift = des.PreventDrift
 	}
+	nw.Oci = canonicalizeNewFeatureMembershipConfigmanagementConfigSyncOci(c, des.Oci, nw.Oci)
 
 	return nw
 }
@@ -878,6 +894,151 @@ func canonicalizeNewFeatureMembershipConfigmanagementConfigSyncGitSlice(c *Clien
 	for i, d := range des {
 		n := nw[i]
 		items = append(items, *canonicalizeNewFeatureMembershipConfigmanagementConfigSyncGit(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeFeatureMembershipConfigmanagementConfigSyncOci(des, initial *FeatureMembershipConfigmanagementConfigSyncOci, opts ...dcl.ApplyOption) *FeatureMembershipConfigmanagementConfigSyncOci {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &FeatureMembershipConfigmanagementConfigSyncOci{}
+
+	if dcl.StringCanonicalize(des.SyncRepo, initial.SyncRepo) || dcl.IsZeroValue(des.SyncRepo) {
+		cDes.SyncRepo = initial.SyncRepo
+	} else {
+		cDes.SyncRepo = des.SyncRepo
+	}
+	if dcl.StringCanonicalize(des.PolicyDir, initial.PolicyDir) || dcl.IsZeroValue(des.PolicyDir) {
+		cDes.PolicyDir = initial.PolicyDir
+	} else {
+		cDes.PolicyDir = des.PolicyDir
+	}
+	if dcl.StringCanonicalize(des.SyncWaitSecs, initial.SyncWaitSecs) || dcl.IsZeroValue(des.SyncWaitSecs) {
+		cDes.SyncWaitSecs = initial.SyncWaitSecs
+	} else {
+		cDes.SyncWaitSecs = des.SyncWaitSecs
+	}
+	if dcl.StringCanonicalize(des.SecretType, initial.SecretType) || dcl.IsZeroValue(des.SecretType) {
+		cDes.SecretType = initial.SecretType
+	} else {
+		cDes.SecretType = des.SecretType
+	}
+	if dcl.IsZeroValue(des.GcpServiceAccountEmail) || (dcl.IsEmptyValueIndirect(des.GcpServiceAccountEmail) && dcl.IsEmptyValueIndirect(initial.GcpServiceAccountEmail)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.GcpServiceAccountEmail = initial.GcpServiceAccountEmail
+	} else {
+		cDes.GcpServiceAccountEmail = des.GcpServiceAccountEmail
+	}
+
+	return cDes
+}
+
+func canonicalizeFeatureMembershipConfigmanagementConfigSyncOciSlice(des, initial []FeatureMembershipConfigmanagementConfigSyncOci, opts ...dcl.ApplyOption) []FeatureMembershipConfigmanagementConfigSyncOci {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]FeatureMembershipConfigmanagementConfigSyncOci, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeFeatureMembershipConfigmanagementConfigSyncOci(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]FeatureMembershipConfigmanagementConfigSyncOci, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeFeatureMembershipConfigmanagementConfigSyncOci(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewFeatureMembershipConfigmanagementConfigSyncOci(c *Client, des, nw *FeatureMembershipConfigmanagementConfigSyncOci) *FeatureMembershipConfigmanagementConfigSyncOci {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for FeatureMembershipConfigmanagementConfigSyncOci while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	if dcl.StringCanonicalize(des.SyncRepo, nw.SyncRepo) {
+		nw.SyncRepo = des.SyncRepo
+	}
+	if dcl.StringCanonicalize(des.PolicyDir, nw.PolicyDir) {
+		nw.PolicyDir = des.PolicyDir
+	}
+	if dcl.StringCanonicalize(des.SyncWaitSecs, nw.SyncWaitSecs) {
+		nw.SyncWaitSecs = des.SyncWaitSecs
+	}
+	if dcl.StringCanonicalize(des.SecretType, nw.SecretType) {
+		nw.SecretType = des.SecretType
+	}
+
+	return nw
+}
+
+func canonicalizeNewFeatureMembershipConfigmanagementConfigSyncOciSet(c *Client, des, nw []FeatureMembershipConfigmanagementConfigSyncOci) []FeatureMembershipConfigmanagementConfigSyncOci {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []FeatureMembershipConfigmanagementConfigSyncOci
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareFeatureMembershipConfigmanagementConfigSyncOciNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewFeatureMembershipConfigmanagementConfigSyncOciSlice(c *Client, des, nw []FeatureMembershipConfigmanagementConfigSyncOci) []FeatureMembershipConfigmanagementConfigSyncOci {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []FeatureMembershipConfigmanagementConfigSyncOci
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewFeatureMembershipConfigmanagementConfigSyncOci(c, &d, &n))
 	}
 
 	return items
@@ -1494,6 +1655,13 @@ func compareFeatureMembershipMeshNewStyle(d, a interface{}, fn dcl.FieldName) ([
 		}
 		diffs = append(diffs, ds...)
 	}
+
+	if ds, err := dcl.Diff(desired.ControlPlane, actual.ControlPlane, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateFeatureMembershipUpdateFeatureMembershipOperation")}, fn.AddNest("ControlPlane")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
 	return diffs, nil
 }
 
@@ -1594,6 +1762,13 @@ func compareFeatureMembershipConfigmanagementConfigSyncNewStyle(d, a interface{}
 		}
 		diffs = append(diffs, ds...)
 	}
+
+	if ds, err := dcl.Diff(desired.Oci, actual.Oci, dcl.DiffInfo{ObjectFunction: compareFeatureMembershipConfigmanagementConfigSyncOciNewStyle, EmptyObject: EmptyFeatureMembershipConfigmanagementConfigSyncOci, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Oci")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
 	return diffs, nil
 }
 
@@ -1667,6 +1842,63 @@ func compareFeatureMembershipConfigmanagementConfigSyncGitNewStyle(d, a interfac
 	}
 
 	if ds, err := dcl.Diff(desired.GcpServiceAccountEmail, actual.GcpServiceAccountEmail, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("GcpServiceAccountEmail")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareFeatureMembershipConfigmanagementConfigSyncOciNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*FeatureMembershipConfigmanagementConfigSyncOci)
+	if !ok {
+		desiredNotPointer, ok := d.(FeatureMembershipConfigmanagementConfigSyncOci)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a FeatureMembershipConfigmanagementConfigSyncOci or *FeatureMembershipConfigmanagementConfigSyncOci", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*FeatureMembershipConfigmanagementConfigSyncOci)
+	if !ok {
+		actualNotPointer, ok := a.(FeatureMembershipConfigmanagementConfigSyncOci)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a FeatureMembershipConfigmanagementConfigSyncOci", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.SyncRepo, actual.SyncRepo, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateFeatureMembershipUpdateFeatureMembershipOperation")}, fn.AddNest("SyncRepo")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.PolicyDir, actual.PolicyDir, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateFeatureMembershipUpdateFeatureMembershipOperation")}, fn.AddNest("PolicyDir")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.SyncWaitSecs, actual.SyncWaitSecs, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateFeatureMembershipUpdateFeatureMembershipOperation")}, fn.AddNest("SyncWaitSecs")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.SecretType, actual.SecretType, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateFeatureMembershipUpdateFeatureMembershipOperation")}, fn.AddNest("SecretType")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.GcpServiceAccountEmail, actual.GcpServiceAccountEmail, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateFeatureMembershipUpdateFeatureMembershipOperation")}, fn.AddNest("GcpServiceAccountEmail")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2064,6 +2296,9 @@ func expandFeatureMembershipMesh(c *Client, f *FeatureMembershipMesh, res *Featu
 	if v := f.Management; !dcl.IsEmptyValueIndirect(v) {
 		m["management"] = v
 	}
+	if v := f.ControlPlane; !dcl.IsEmptyValueIndirect(v) {
+		m["controlPlane"] = v
+	}
 
 	return m, nil
 }
@@ -2082,6 +2317,7 @@ func flattenFeatureMembershipMesh(c *Client, i interface{}, res *FeatureMembersh
 		return EmptyFeatureMembershipMesh
 	}
 	r.Management = flattenFeatureMembershipMeshManagementEnum(m["management"])
+	r.ControlPlane = flattenFeatureMembershipMeshControlPlaneEnum(m["controlPlane"])
 
 	return r
 }
@@ -2324,6 +2560,11 @@ func expandFeatureMembershipConfigmanagementConfigSync(c *Client, f *FeatureMemb
 	if v := f.PreventDrift; !dcl.IsEmptyValueIndirect(v) {
 		m["preventDrift"] = v
 	}
+	if v, err := expandFeatureMembershipConfigmanagementConfigSyncOci(c, f.Oci, res); err != nil {
+		return nil, fmt.Errorf("error expanding Oci into oci: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["oci"] = v
+	}
 
 	return m, nil
 }
@@ -2344,6 +2585,7 @@ func flattenFeatureMembershipConfigmanagementConfigSync(c *Client, i interface{}
 	r.Git = flattenFeatureMembershipConfigmanagementConfigSyncGit(c, m["git"], res)
 	r.SourceFormat = dcl.FlattenString(m["sourceFormat"])
 	r.PreventDrift = dcl.FlattenBool(m["preventDrift"])
+	r.Oci = flattenFeatureMembershipConfigmanagementConfigSyncOci(c, m["oci"], res)
 
 	return r
 }
@@ -2485,6 +2727,136 @@ func flattenFeatureMembershipConfigmanagementConfigSyncGit(c *Client, i interfac
 	r.SyncRev = dcl.FlattenString(m["syncRev"])
 	r.SecretType = dcl.FlattenString(m["secretType"])
 	r.HttpsProxy = dcl.FlattenString(m["httpsProxy"])
+	r.GcpServiceAccountEmail = dcl.FlattenString(m["gcpServiceAccountEmail"])
+
+	return r
+}
+
+// expandFeatureMembershipConfigmanagementConfigSyncOciMap expands the contents of FeatureMembershipConfigmanagementConfigSyncOci into a JSON
+// request object.
+func expandFeatureMembershipConfigmanagementConfigSyncOciMap(c *Client, f map[string]FeatureMembershipConfigmanagementConfigSyncOci, res *FeatureMembership) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandFeatureMembershipConfigmanagementConfigSyncOci(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandFeatureMembershipConfigmanagementConfigSyncOciSlice expands the contents of FeatureMembershipConfigmanagementConfigSyncOci into a JSON
+// request object.
+func expandFeatureMembershipConfigmanagementConfigSyncOciSlice(c *Client, f []FeatureMembershipConfigmanagementConfigSyncOci, res *FeatureMembership) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandFeatureMembershipConfigmanagementConfigSyncOci(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenFeatureMembershipConfigmanagementConfigSyncOciMap flattens the contents of FeatureMembershipConfigmanagementConfigSyncOci from a JSON
+// response object.
+func flattenFeatureMembershipConfigmanagementConfigSyncOciMap(c *Client, i interface{}, res *FeatureMembership) map[string]FeatureMembershipConfigmanagementConfigSyncOci {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]FeatureMembershipConfigmanagementConfigSyncOci{}
+	}
+
+	if len(a) == 0 {
+		return map[string]FeatureMembershipConfigmanagementConfigSyncOci{}
+	}
+
+	items := make(map[string]FeatureMembershipConfigmanagementConfigSyncOci)
+	for k, item := range a {
+		items[k] = *flattenFeatureMembershipConfigmanagementConfigSyncOci(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenFeatureMembershipConfigmanagementConfigSyncOciSlice flattens the contents of FeatureMembershipConfigmanagementConfigSyncOci from a JSON
+// response object.
+func flattenFeatureMembershipConfigmanagementConfigSyncOciSlice(c *Client, i interface{}, res *FeatureMembership) []FeatureMembershipConfigmanagementConfigSyncOci {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []FeatureMembershipConfigmanagementConfigSyncOci{}
+	}
+
+	if len(a) == 0 {
+		return []FeatureMembershipConfigmanagementConfigSyncOci{}
+	}
+
+	items := make([]FeatureMembershipConfigmanagementConfigSyncOci, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenFeatureMembershipConfigmanagementConfigSyncOci(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandFeatureMembershipConfigmanagementConfigSyncOci expands an instance of FeatureMembershipConfigmanagementConfigSyncOci into a JSON
+// request object.
+func expandFeatureMembershipConfigmanagementConfigSyncOci(c *Client, f *FeatureMembershipConfigmanagementConfigSyncOci, res *FeatureMembership) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.SyncRepo; !dcl.IsEmptyValueIndirect(v) {
+		m["syncRepo"] = v
+	}
+	if v := f.PolicyDir; !dcl.IsEmptyValueIndirect(v) {
+		m["policyDir"] = v
+	}
+	if v := f.SyncWaitSecs; !dcl.IsEmptyValueIndirect(v) {
+		m["syncWaitSecs"] = v
+	}
+	if v := f.SecretType; !dcl.IsEmptyValueIndirect(v) {
+		m["secretType"] = v
+	}
+	if v := f.GcpServiceAccountEmail; !dcl.IsEmptyValueIndirect(v) {
+		m["gcpServiceAccountEmail"] = v
+	}
+
+	return m, nil
+}
+
+// flattenFeatureMembershipConfigmanagementConfigSyncOci flattens an instance of FeatureMembershipConfigmanagementConfigSyncOci from a JSON
+// response object.
+func flattenFeatureMembershipConfigmanagementConfigSyncOci(c *Client, i interface{}, res *FeatureMembership) *FeatureMembershipConfigmanagementConfigSyncOci {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &FeatureMembershipConfigmanagementConfigSyncOci{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyFeatureMembershipConfigmanagementConfigSyncOci
+	}
+	r.SyncRepo = dcl.FlattenString(m["syncRepo"])
+	r.PolicyDir = dcl.FlattenString(m["policyDir"])
+	r.SyncWaitSecs = dcl.FlattenString(m["syncWaitSecs"])
+	r.SecretType = dcl.FlattenString(m["secretType"])
 	r.GcpServiceAccountEmail = dcl.FlattenString(m["gcpServiceAccountEmail"])
 
 	return r
@@ -3035,6 +3407,57 @@ func flattenFeatureMembershipMeshManagementEnum(i interface{}) *FeatureMembershi
 	return FeatureMembershipMeshManagementEnumRef(s)
 }
 
+// flattenFeatureMembershipMeshControlPlaneEnumMap flattens the contents of FeatureMembershipMeshControlPlaneEnum from a JSON
+// response object.
+func flattenFeatureMembershipMeshControlPlaneEnumMap(c *Client, i interface{}, res *FeatureMembership) map[string]FeatureMembershipMeshControlPlaneEnum {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]FeatureMembershipMeshControlPlaneEnum{}
+	}
+
+	if len(a) == 0 {
+		return map[string]FeatureMembershipMeshControlPlaneEnum{}
+	}
+
+	items := make(map[string]FeatureMembershipMeshControlPlaneEnum)
+	for k, item := range a {
+		items[k] = *flattenFeatureMembershipMeshControlPlaneEnum(item.(interface{}))
+	}
+
+	return items
+}
+
+// flattenFeatureMembershipMeshControlPlaneEnumSlice flattens the contents of FeatureMembershipMeshControlPlaneEnum from a JSON
+// response object.
+func flattenFeatureMembershipMeshControlPlaneEnumSlice(c *Client, i interface{}, res *FeatureMembership) []FeatureMembershipMeshControlPlaneEnum {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []FeatureMembershipMeshControlPlaneEnum{}
+	}
+
+	if len(a) == 0 {
+		return []FeatureMembershipMeshControlPlaneEnum{}
+	}
+
+	items := make([]FeatureMembershipMeshControlPlaneEnum, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenFeatureMembershipMeshControlPlaneEnum(item.(interface{})))
+	}
+
+	return items
+}
+
+// flattenFeatureMembershipMeshControlPlaneEnum asserts that an interface is a string, and returns a
+// pointer to a *FeatureMembershipMeshControlPlaneEnum with the same value as that string.
+func flattenFeatureMembershipMeshControlPlaneEnum(i interface{}) *FeatureMembershipMeshControlPlaneEnum {
+	s, ok := i.(string)
+	if !ok {
+		return nil
+	}
+
+	return FeatureMembershipMeshControlPlaneEnumRef(s)
+}
+
 // flattenFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnumMap flattens the contents of FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum from a JSON
 // response object.
 func flattenFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnumMap(c *Client, i interface{}, res *FeatureMembership) map[string]FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum {
@@ -3266,9 +3689,23 @@ func extractFeatureMembershipConfigmanagementConfigSyncFields(r *FeatureMembersh
 	if !dcl.IsEmptyValueIndirect(vGit) {
 		o.Git = vGit
 	}
+	vOci := o.Oci
+	if vOci == nil {
+		// note: explicitly not the empty object.
+		vOci = &FeatureMembershipConfigmanagementConfigSyncOci{}
+	}
+	if err := extractFeatureMembershipConfigmanagementConfigSyncOciFields(r, vOci); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vOci) {
+		o.Oci = vOci
+	}
 	return nil
 }
 func extractFeatureMembershipConfigmanagementConfigSyncGitFields(r *FeatureMembership, o *FeatureMembershipConfigmanagementConfigSyncGit) error {
+	return nil
+}
+func extractFeatureMembershipConfigmanagementConfigSyncOciFields(r *FeatureMembership, o *FeatureMembershipConfigmanagementConfigSyncOci) error {
 	return nil
 }
 func extractFeatureMembershipConfigmanagementPolicyControllerFields(r *FeatureMembership, o *FeatureMembershipConfigmanagementPolicyController) error {
@@ -3382,9 +3819,23 @@ func postReadExtractFeatureMembershipConfigmanagementConfigSyncFields(r *Feature
 	if !dcl.IsEmptyValueIndirect(vGit) {
 		o.Git = vGit
 	}
+	vOci := o.Oci
+	if vOci == nil {
+		// note: explicitly not the empty object.
+		vOci = &FeatureMembershipConfigmanagementConfigSyncOci{}
+	}
+	if err := extractFeatureMembershipConfigmanagementConfigSyncOciFields(r, vOci); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vOci) {
+		o.Oci = vOci
+	}
 	return nil
 }
 func postReadExtractFeatureMembershipConfigmanagementConfigSyncGitFields(r *FeatureMembership, o *FeatureMembershipConfigmanagementConfigSyncGit) error {
+	return nil
+}
+func postReadExtractFeatureMembershipConfigmanagementConfigSyncOciFields(r *FeatureMembership, o *FeatureMembershipConfigmanagementConfigSyncOci) error {
 	return nil
 }
 func postReadExtractFeatureMembershipConfigmanagementPolicyControllerFields(r *FeatureMembership, o *FeatureMembershipConfigmanagementPolicyController) error {

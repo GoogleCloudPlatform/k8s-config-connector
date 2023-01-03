@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import (
 
 type NetworkFirewallPolicyRule struct {
 	Description           *string                                     `json:"description"`
-	Name                  *string                                     `json:"name"`
+	RuleName              *string                                     `json:"ruleName"`
 	Priority              *int64                                      `json:"priority"`
 	Location              *string                                     `json:"location"`
 	Match                 *NetworkFirewallPolicyRuleMatch             `json:"match"`
@@ -346,7 +346,7 @@ func (r *NetworkFirewallPolicyRule) ID() (string, error) {
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
 		"description":             dcl.ValueOrEmptyString(nr.Description),
-		"name":                    dcl.ValueOrEmptyString(nr.Name),
+		"rule_name":               dcl.ValueOrEmptyString(nr.RuleName),
 		"priority":                dcl.ValueOrEmptyString(nr.Priority),
 		"location":                dcl.ValueOrEmptyString(nr.Location),
 		"match":                   dcl.ValueOrEmptyString(nr.Match),

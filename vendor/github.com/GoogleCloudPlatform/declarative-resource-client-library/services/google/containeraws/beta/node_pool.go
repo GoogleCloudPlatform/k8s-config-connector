@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -156,19 +156,20 @@ func (v NodePoolStateEnum) Validate() error {
 }
 
 type NodePoolConfig struct {
-	empty              bool                             `json:"-"`
-	InstanceType       *string                          `json:"instanceType"`
-	RootVolume         *NodePoolConfigRootVolume        `json:"rootVolume"`
-	Taints             []NodePoolConfigTaints           `json:"taints"`
-	Labels             map[string]string                `json:"labels"`
-	Tags               map[string]string                `json:"tags"`
-	IamInstanceProfile *string                          `json:"iamInstanceProfile"`
-	ConfigEncryption   *NodePoolConfigConfigEncryption  `json:"configEncryption"`
-	SshConfig          *NodePoolConfigSshConfig         `json:"sshConfig"`
-	SecurityGroupIds   []string                         `json:"securityGroupIds"`
-	ProxyConfig        *NodePoolConfigProxyConfig       `json:"proxyConfig"`
-	InstancePlacement  *NodePoolConfigInstancePlacement `json:"instancePlacement"`
-	ImageType          *string                          `json:"imageType"`
+	empty                        bool                                        `json:"-"`
+	InstanceType                 *string                                     `json:"instanceType"`
+	RootVolume                   *NodePoolConfigRootVolume                   `json:"rootVolume"`
+	Taints                       []NodePoolConfigTaints                      `json:"taints"`
+	Labels                       map[string]string                           `json:"labels"`
+	Tags                         map[string]string                           `json:"tags"`
+	IamInstanceProfile           *string                                     `json:"iamInstanceProfile"`
+	ConfigEncryption             *NodePoolConfigConfigEncryption             `json:"configEncryption"`
+	SshConfig                    *NodePoolConfigSshConfig                    `json:"sshConfig"`
+	SecurityGroupIds             []string                                    `json:"securityGroupIds"`
+	ProxyConfig                  *NodePoolConfigProxyConfig                  `json:"proxyConfig"`
+	InstancePlacement            *NodePoolConfigInstancePlacement            `json:"instancePlacement"`
+	ImageType                    *string                                     `json:"imageType"`
+	AutoscalingMetricsCollection *NodePoolConfigAutoscalingMetricsCollection `json:"autoscalingMetricsCollection"`
 }
 
 type jsonNodePoolConfig NodePoolConfig
@@ -209,6 +210,8 @@ func (r *NodePoolConfig) UnmarshalJSON(data []byte) error {
 		r.InstancePlacement = res.InstancePlacement
 
 		r.ImageType = res.ImageType
+
+		r.AutoscalingMetricsCollection = res.AutoscalingMetricsCollection
 
 	}
 	return nil
@@ -522,6 +525,55 @@ func (r *NodePoolConfigInstancePlacement) String() string {
 }
 
 func (r *NodePoolConfigInstancePlacement) HashCode() string {
+	// Placeholder for a more complex hash method that handles ordering, etc
+	// Hash resource body for easy comparison later
+	hash := sha256.New().Sum([]byte(r.String()))
+	return fmt.Sprintf("%x", hash)
+}
+
+type NodePoolConfigAutoscalingMetricsCollection struct {
+	empty       bool     `json:"-"`
+	Granularity *string  `json:"granularity"`
+	Metrics     []string `json:"metrics"`
+}
+
+type jsonNodePoolConfigAutoscalingMetricsCollection NodePoolConfigAutoscalingMetricsCollection
+
+func (r *NodePoolConfigAutoscalingMetricsCollection) UnmarshalJSON(data []byte) error {
+	var res jsonNodePoolConfigAutoscalingMetricsCollection
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+
+	var m map[string]interface{}
+	json.Unmarshal(data, &m)
+
+	if len(m) == 0 {
+		*r = *EmptyNodePoolConfigAutoscalingMetricsCollection
+	} else {
+
+		r.Granularity = res.Granularity
+
+		r.Metrics = res.Metrics
+
+	}
+	return nil
+}
+
+// This object is used to assert a desired state where this NodePoolConfigAutoscalingMetricsCollection is
+// empty. Go lacks global const objects, but this object should be treated
+// as one. Modifying this object will have undesirable results.
+var EmptyNodePoolConfigAutoscalingMetricsCollection *NodePoolConfigAutoscalingMetricsCollection = &NodePoolConfigAutoscalingMetricsCollection{empty: true}
+
+func (r *NodePoolConfigAutoscalingMetricsCollection) Empty() bool {
+	return r.empty
+}
+
+func (r *NodePoolConfigAutoscalingMetricsCollection) String() string {
+	return dcl.SprintResource(r)
+}
+
+func (r *NodePoolConfigAutoscalingMetricsCollection) HashCode() string {
 	// Placeholder for a more complex hash method that handles ordering, etc
 	// Hash resource body for easy comparison later
 	hash := sha256.New().Sum([]byte(r.String()))

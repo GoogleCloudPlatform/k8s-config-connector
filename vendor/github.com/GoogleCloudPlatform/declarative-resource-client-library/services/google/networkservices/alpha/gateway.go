@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,20 +23,19 @@ import (
 )
 
 type Gateway struct {
-	Name                *string           `json:"name"`
-	CreateTime          *string           `json:"createTime"`
-	UpdateTime          *string           `json:"updateTime"`
-	Labels              map[string]string `json:"labels"`
-	Description         *string           `json:"description"`
-	Type                *GatewayTypeEnum  `json:"type"`
-	Addresses           []string          `json:"addresses"`
-	Ports               []int64           `json:"ports"`
-	Scope               *string           `json:"scope"`
-	ServerTlsPolicy     *string           `json:"serverTlsPolicy"`
-	AuthorizationPolicy *string           `json:"authorizationPolicy"`
-	Project             *string           `json:"project"`
-	Location            *string           `json:"location"`
-	SelfLink            *string           `json:"selfLink"`
+	Name            *string           `json:"name"`
+	CreateTime      *string           `json:"createTime"`
+	UpdateTime      *string           `json:"updateTime"`
+	Labels          map[string]string `json:"labels"`
+	Description     *string           `json:"description"`
+	Type            *GatewayTypeEnum  `json:"type"`
+	Addresses       []string          `json:"addresses"`
+	Ports           []int64           `json:"ports"`
+	Scope           *string           `json:"scope"`
+	ServerTlsPolicy *string           `json:"serverTlsPolicy"`
+	Project         *string           `json:"project"`
+	Location        *string           `json:"location"`
+	SelfLink        *string           `json:"selfLink"`
 }
 
 func (r *Gateway) String() string {
@@ -86,20 +85,19 @@ func (r *Gateway) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                 dcl.ValueOrEmptyString(nr.Name),
-		"create_time":          dcl.ValueOrEmptyString(nr.CreateTime),
-		"update_time":          dcl.ValueOrEmptyString(nr.UpdateTime),
-		"labels":               dcl.ValueOrEmptyString(nr.Labels),
-		"description":          dcl.ValueOrEmptyString(nr.Description),
-		"type":                 dcl.ValueOrEmptyString(nr.Type),
-		"addresses":            dcl.ValueOrEmptyString(nr.Addresses),
-		"ports":                dcl.ValueOrEmptyString(nr.Ports),
-		"scope":                dcl.ValueOrEmptyString(nr.Scope),
-		"server_tls_policy":    dcl.ValueOrEmptyString(nr.ServerTlsPolicy),
-		"authorization_policy": dcl.ValueOrEmptyString(nr.AuthorizationPolicy),
-		"project":              dcl.ValueOrEmptyString(nr.Project),
-		"location":             dcl.ValueOrEmptyString(nr.Location),
-		"self_link":            dcl.ValueOrEmptyString(nr.SelfLink),
+		"name":              dcl.ValueOrEmptyString(nr.Name),
+		"create_time":       dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":       dcl.ValueOrEmptyString(nr.UpdateTime),
+		"labels":            dcl.ValueOrEmptyString(nr.Labels),
+		"description":       dcl.ValueOrEmptyString(nr.Description),
+		"type":              dcl.ValueOrEmptyString(nr.Type),
+		"addresses":         dcl.ValueOrEmptyString(nr.Addresses),
+		"ports":             dcl.ValueOrEmptyString(nr.Ports),
+		"scope":             dcl.ValueOrEmptyString(nr.Scope),
+		"server_tls_policy": dcl.ValueOrEmptyString(nr.ServerTlsPolicy),
+		"project":           dcl.ValueOrEmptyString(nr.Project),
+		"location":          dcl.ValueOrEmptyString(nr.Location),
+		"self_link":         dcl.ValueOrEmptyString(nr.SelfLink),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/gateways/{{name}}", params), nil
 }

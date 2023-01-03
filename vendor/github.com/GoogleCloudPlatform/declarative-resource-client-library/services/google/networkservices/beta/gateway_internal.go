@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -123,9 +123,6 @@ func newUpdateGatewayUpdateGatewayRequest(ctx context.Context, f *Gateway, c *Cl
 	}
 	if v := f.ServerTlsPolicy; !dcl.IsEmptyValueIndirect(v) {
 		req["serverTlsPolicy"] = v
-	}
-	if v := f.AuthorizationPolicy; !dcl.IsEmptyValueIndirect(v) {
-		req["authorizationPolicy"] = v
 	}
 	req["name"] = fmt.Sprintf("projects/%s/locations/%s/gateways/%s", *f.Project, *f.Location, *f.Name)
 
@@ -505,12 +502,6 @@ func canonicalizeGatewayDesiredState(rawDesired, rawInitial *Gateway, opts ...dc
 	} else {
 		canonicalDesired.ServerTlsPolicy = rawDesired.ServerTlsPolicy
 	}
-	if dcl.IsZeroValue(rawDesired.AuthorizationPolicy) || (dcl.IsEmptyValueIndirect(rawDesired.AuthorizationPolicy) && dcl.IsEmptyValueIndirect(rawInitial.AuthorizationPolicy)) {
-		// Desired and initial values are equivalent, so set canonical desired value to initial value.
-		canonicalDesired.AuthorizationPolicy = rawInitial.AuthorizationPolicy
-	} else {
-		canonicalDesired.AuthorizationPolicy = rawDesired.AuthorizationPolicy
-	}
 	if dcl.NameToSelfLink(rawDesired.Project, rawInitial.Project) {
 		canonicalDesired.Project = rawInitial.Project
 	} else {
@@ -586,11 +577,6 @@ func canonicalizeGatewayNewState(c *Client, rawNew, rawDesired *Gateway) (*Gatew
 
 	if dcl.IsEmptyValueIndirect(rawNew.ServerTlsPolicy) && dcl.IsEmptyValueIndirect(rawDesired.ServerTlsPolicy) {
 		rawNew.ServerTlsPolicy = rawDesired.ServerTlsPolicy
-	} else {
-	}
-
-	if dcl.IsEmptyValueIndirect(rawNew.AuthorizationPolicy) && dcl.IsEmptyValueIndirect(rawDesired.AuthorizationPolicy) {
-		rawNew.AuthorizationPolicy = rawDesired.AuthorizationPolicy
 	} else {
 	}
 
@@ -697,13 +683,6 @@ func diffGateway(c *Client, desired, actual *Gateway, opts ...dcl.ApplyOption) (
 		newDiffs = append(newDiffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.AuthorizationPolicy, actual.AuthorizationPolicy, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateGatewayUpdateGatewayOperation")}, fn.AddNest("AuthorizationPolicy")); len(ds) != 0 || err != nil {
-		if err != nil {
-			return nil, err
-		}
-		newDiffs = append(newDiffs, ds...)
-	}
-
 	if ds, err := dcl.Diff(desired.Project, actual.Project, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Project")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
@@ -737,7 +716,6 @@ func (r *Gateway) urlNormalized() *Gateway {
 	normalized.Description = dcl.SelfLinkToName(r.Description)
 	normalized.Scope = dcl.SelfLinkToName(r.Scope)
 	normalized.ServerTlsPolicy = r.ServerTlsPolicy
-	normalized.AuthorizationPolicy = r.AuthorizationPolicy
 	normalized.Project = dcl.SelfLinkToName(r.Project)
 	normalized.Location = dcl.SelfLinkToName(r.Location)
 	normalized.SelfLink = dcl.SelfLinkToName(r.SelfLink)
@@ -820,9 +798,6 @@ func expandGateway(c *Client, f *Gateway) (map[string]interface{}, error) {
 	if v := f.ServerTlsPolicy; dcl.ValueShouldBeSent(v) {
 		m["serverTlsPolicy"] = v
 	}
-	if v := f.AuthorizationPolicy; dcl.ValueShouldBeSent(v) {
-		m["authorizationPolicy"] = v
-	}
 	if v, err := dcl.EmptyValue(); err != nil {
 		return nil, fmt.Errorf("error expanding Project into project: %w", err)
 	} else if !dcl.IsEmptyValueIndirect(v) {
@@ -859,7 +834,6 @@ func flattenGateway(c *Client, i interface{}, res *Gateway) *Gateway {
 	resultRes.Ports = dcl.FlattenIntSlice(m["ports"])
 	resultRes.Scope = dcl.FlattenString(m["scope"])
 	resultRes.ServerTlsPolicy = dcl.FlattenString(m["serverTlsPolicy"])
-	resultRes.AuthorizationPolicy = dcl.FlattenString(m["authorizationPolicy"])
 	resultRes.Project = dcl.FlattenString(m["project"])
 	resultRes.Location = dcl.FlattenString(m["location"])
 	resultRes.SelfLink = dcl.FlattenString(m["selfLink"])

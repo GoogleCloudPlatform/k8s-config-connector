@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -554,6 +554,9 @@ func OSPolicyAssignmentToUnstructured(r *dclService.OSPolicyAssignment) *unstruc
 	}
 	if r.RolloutState != nil {
 		u.Object["rolloutState"] = string(*r.RolloutState)
+	}
+	if r.SkipAwaitRollout != nil {
+		u.Object["skipAwaitRollout"] = *r.SkipAwaitRollout
 	}
 	if r.Uid != nil {
 		u.Object["uid"] = *r.Uid
@@ -1668,6 +1671,13 @@ func UnstructuredToOSPolicyAssignment(u *unstructured.Resource) (*dclService.OSP
 			r.RolloutState = dclService.OSPolicyAssignmentRolloutStateEnumRef(s)
 		} else {
 			return nil, fmt.Errorf("r.RolloutState: expected string")
+		}
+	}
+	if _, ok := u.Object["skipAwaitRollout"]; ok {
+		if b, ok := u.Object["skipAwaitRollout"].(bool); ok {
+			r.SkipAwaitRollout = dcl.Bool(b)
+		} else {
+			return nil, fmt.Errorf("r.SkipAwaitRollout: expected bool")
 		}
 	}
 	if _, ok := u.Object["uid"]; ok {

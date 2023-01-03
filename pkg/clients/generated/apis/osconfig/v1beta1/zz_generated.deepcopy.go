@@ -966,6 +966,11 @@ func (in *OSConfigOSPolicyAssignmentSpec) DeepCopyInto(out *OSConfigOSPolicyAssi
 		**out = **in
 	}
 	in.Rollout.DeepCopyInto(&out.Rollout)
+	if in.SkipAwaitRollout != nil {
+		in, out := &in.SkipAwaitRollout, &out.SkipAwaitRollout
+		*out = new(bool)
+		**out = **in
+	}
 	return
 }
 

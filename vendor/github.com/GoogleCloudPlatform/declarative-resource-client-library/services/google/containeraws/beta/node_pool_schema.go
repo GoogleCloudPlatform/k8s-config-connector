@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -194,6 +194,33 @@ func DCLNodePoolSchema() *dcl.Schema {
 									"configEncryption",
 								},
 								Properties: map[string]*dcl.Property{
+									"autoscalingMetricsCollection": &dcl.Property{
+										Type:        "object",
+										GoName:      "AutoscalingMetricsCollection",
+										GoType:      "NodePoolConfigAutoscalingMetricsCollection",
+										Description: "Optional. Configuration related to CloudWatch metrics collection on the Auto Scaling group of the node pool. When unspecified, metrics collection is disabled.",
+										Required: []string{
+											"granularity",
+										},
+										Properties: map[string]*dcl.Property{
+											"granularity": &dcl.Property{
+												Type:        "string",
+												GoName:      "Granularity",
+												Description: "The frequency at which EC2 Auto Scaling sends aggregated data to AWS CloudWatch. The only valid value is \"1Minute\".",
+											},
+											"metrics": &dcl.Property{
+												Type:        "array",
+												GoName:      "Metrics",
+												Description: "The metrics to enable. For a list of valid metrics, see https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_EnableMetricsCollection.html. If you specify granularity and don't specify any metrics, all metrics are enabled.",
+												SendEmpty:   true,
+												ListType:    "list",
+												Items: &dcl.Property{
+													Type:   "string",
+													GoType: "string",
+												},
+											},
+										},
+									},
 									"configEncryption": &dcl.Property{
 										Type:        "object",
 										GoName:      "ConfigEncryption",
@@ -358,7 +385,6 @@ func DCLNodePoolSchema() *dcl.Schema {
 										},
 										GoName:      "Tags",
 										Description: "Optional. Key/value metadata to assign to each underlying AWS resource. Specify at most 50 pairs containing alphanumerics, spaces, and symbols (.+-=_:@/). Keys can be up to 127 Unicode characters. Values can be up to 255 Unicode characters.",
-										Immutable:   true,
 									},
 									"taints": &dcl.Property{
 										Type:        "array",

@@ -1355,11 +1355,6 @@ func (in *NetworkServicesGatewaySpec) DeepCopyInto(out *NetworkServicesGatewaySp
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.AuthorizationPolicyRef != nil {
-		in, out := &in.AuthorizationPolicyRef, &out.AuthorizationPolicyRef
-		*out = new(v1alpha1.ResourceRef)
-		**out = **in
-	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)

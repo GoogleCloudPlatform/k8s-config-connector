@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -96,14 +96,14 @@ func NetworkFirewallPolicyRuleToUnstructured(r *dclService.NetworkFirewallPolicy
 		rMatch["srcSecureTags"] = rMatchSrcSecureTags
 		u.Object["match"] = rMatch
 	}
-	if r.Name != nil {
-		u.Object["name"] = *r.Name
-	}
 	if r.Priority != nil {
 		u.Object["priority"] = *r.Priority
 	}
 	if r.Project != nil {
 		u.Object["project"] = *r.Project
+	}
+	if r.RuleName != nil {
+		u.Object["ruleName"] = *r.RuleName
 	}
 	if r.RuleTupleCount != nil {
 		u.Object["ruleTupleCount"] = *r.RuleTupleCount
@@ -271,13 +271,6 @@ func UnstructuredToNetworkFirewallPolicyRule(u *unstructured.Resource) (*dclServ
 			return nil, fmt.Errorf("r.Match: expected map[string]interface{}")
 		}
 	}
-	if _, ok := u.Object["name"]; ok {
-		if s, ok := u.Object["name"].(string); ok {
-			r.Name = dcl.String(s)
-		} else {
-			return nil, fmt.Errorf("r.Name: expected string")
-		}
-	}
 	if _, ok := u.Object["priority"]; ok {
 		if i, ok := u.Object["priority"].(int64); ok {
 			r.Priority = dcl.Int64(i)
@@ -290,6 +283,13 @@ func UnstructuredToNetworkFirewallPolicyRule(u *unstructured.Resource) (*dclServ
 			r.Project = dcl.String(s)
 		} else {
 			return nil, fmt.Errorf("r.Project: expected string")
+		}
+	}
+	if _, ok := u.Object["ruleName"]; ok {
+		if s, ok := u.Object["ruleName"].(string); ok {
+			r.RuleName = dcl.String(s)
+		} else {
+			return nil, fmt.Errorf("r.RuleName: expected string")
 		}
 	}
 	if _, ok := u.Object["ruleTupleCount"]; ok {

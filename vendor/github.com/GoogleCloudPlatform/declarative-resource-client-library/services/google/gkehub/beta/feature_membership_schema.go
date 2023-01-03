@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -204,6 +204,44 @@ func DCLFeatureMembershipSchema() *dcl.Schema {
 													},
 												},
 											},
+											"oci": &dcl.Property{
+												Type:   "object",
+												GoName: "Oci",
+												GoType: "FeatureMembershipConfigmanagementConfigSyncOci",
+												Properties: map[string]*dcl.Property{
+													"gcpServiceAccountEmail": &dcl.Property{
+														Type:        "string",
+														GoName:      "GcpServiceAccountEmail",
+														Description: "The GCP Service Account Email used for auth when secret_type is gcpserviceaccount. ",
+														ResourceReferences: []*dcl.PropertyResourceReference{
+															&dcl.PropertyResourceReference{
+																Resource: "Iam/ServiceAccount",
+																Field:    "email",
+															},
+														},
+													},
+													"policyDir": &dcl.Property{
+														Type:        "string",
+														GoName:      "PolicyDir",
+														Description: "The absolute path of the directory that contains the local resources. Default: the root directory of the image.",
+													},
+													"secretType": &dcl.Property{
+														Type:        "string",
+														GoName:      "SecretType",
+														Description: "Type of secret configured for access to the OCI Image. Must be one of gcenode, gcpserviceaccount or none. The validation of this is case-sensitive.",
+													},
+													"syncRepo": &dcl.Property{
+														Type:        "string",
+														GoName:      "SyncRepo",
+														Description: "The OCI image repository URL for the package to sync from. e.g. LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY_NAME/PACKAGE_NAME.",
+													},
+													"syncWaitSecs": &dcl.Property{
+														Type:        "string",
+														GoName:      "SyncWaitSecs",
+														Description: "Period in seconds(int64 format) between consecutive syncs. Default: 15.",
+													},
+												},
+											},
 											"preventDrift": &dcl.Property{
 												Type:          "boolean",
 												GoName:        "PreventDrift",
@@ -360,6 +398,17 @@ func DCLFeatureMembershipSchema() *dcl.Schema {
 								GoType:      "FeatureMembershipMesh",
 								Description: "Manage Mesh Features",
 								Properties: map[string]*dcl.Property{
+									"controlPlane": &dcl.Property{
+										Type:        "string",
+										GoName:      "ControlPlane",
+										GoType:      "FeatureMembershipMeshControlPlaneEnum",
+										Description: "Whether to automatically manage Service Mesh control planes. Possible values: CONTROL_PLANE_MANAGEMENT_UNSPECIFIED, AUTOMATIC, MANUAL",
+										Enum: []string{
+											"CONTROL_PLANE_MANAGEMENT_UNSPECIFIED",
+											"AUTOMATIC",
+											"MANUAL",
+										},
+									},
 									"management": &dcl.Property{
 										Type:        "string",
 										GoName:      "Management",

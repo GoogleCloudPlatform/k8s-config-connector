@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -103,6 +103,7 @@ func DCLOSPolicyAssignmentSchema() *dcl.Schema {
 				"OSPolicyAssignment": &dcl.Component{
 					Title:           "OSPolicyAssignment",
 					ID:              "projects/{{project}}/locations/{{location}}/osPolicyAssignments/{{name}}",
+					UsesStateHint:   true,
 					ParentContainer: "project",
 					HasCreate:       true,
 					SchemaProperty: dcl.Property{
@@ -1460,6 +1461,12 @@ func DCLOSPolicyAssignmentSchema() *dcl.Schema {
 									"CANCELLED",
 									"SUCCEEDED",
 								},
+							},
+							"skipAwaitRollout": &dcl.Property{
+								Type:        "boolean",
+								GoName:      "SkipAwaitRollout",
+								Description: "Set to true to skip awaiting rollout during resource creation and update.",
+								Unreadable:  true,
 							},
 							"uid": &dcl.Property{
 								Type:        "string",

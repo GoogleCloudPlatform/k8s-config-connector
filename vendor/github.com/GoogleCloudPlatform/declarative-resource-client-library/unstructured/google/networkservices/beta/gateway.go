@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,9 +37,6 @@ func GatewayToUnstructured(r *dclService.Gateway) *unstructured.Resource {
 		rAddresses = append(rAddresses, rAddressesVal)
 	}
 	u.Object["addresses"] = rAddresses
-	if r.AuthorizationPolicy != nil {
-		u.Object["authorizationPolicy"] = *r.AuthorizationPolicy
-	}
 	if r.CreateTime != nil {
 		u.Object["createTime"] = *r.CreateTime
 	}
@@ -96,13 +93,6 @@ func UnstructuredToGateway(u *unstructured.Resource) (*dclService.Gateway, error
 			}
 		} else {
 			return nil, fmt.Errorf("r.Addresses: expected []interface{}")
-		}
-	}
-	if _, ok := u.Object["authorizationPolicy"]; ok {
-		if s, ok := u.Object["authorizationPolicy"].(string); ok {
-			r.AuthorizationPolicy = dcl.String(s)
-		} else {
-			return nil, fmt.Errorf("r.AuthorizationPolicy: expected string")
 		}
 	}
 	if _, ok := u.Object["createTime"]; ok {

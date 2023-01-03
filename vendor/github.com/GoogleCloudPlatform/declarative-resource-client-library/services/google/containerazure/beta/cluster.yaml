@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC. All Rights Reserved.
+# Copyright 2023 Google LLC. All Rights Reserved.
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -395,7 +395,6 @@ components:
           x-dcl-go-name: MonitoringConfig
           x-dcl-go-type: ClusterMonitoringConfig
           description: Monitoring configuration.
-          x-kubernetes-immutable: true
           x-dcl-server-default: true
           properties:
             managedPrometheusConfig:
@@ -403,14 +402,12 @@ components:
               x-dcl-go-name: ManagedPrometheusConfig
               x-dcl-go-type: ClusterMonitoringConfigManagedPrometheusConfig
               description: Configuration of the Google Cloud Managed Service for Prometheus.
-              x-kubernetes-immutable: true
               x-dcl-server-default: true
               properties:
                 enabled:
                   type: boolean
                   x-dcl-go-name: Enabled
                   description: Configuration of the enable Managed Collection.
-                  x-kubernetes-immutable: true
                   x-dcl-server-default: true
         name:
           type: string

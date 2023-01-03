@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -258,6 +258,9 @@ func DCLNetworkFirewallPolicyRuleSchema() *dcl.Schema {
 										Items: &dcl.Property{
 											Type:   "object",
 											GoType: "NetworkFirewallPolicyRuleMatchSrcSecureTags",
+											Required: []string{
+												"name",
+											},
 											Properties: map[string]*dcl.Property{
 												"name": &dcl.Property{
 													Type:        "string",
@@ -265,7 +268,7 @@ func DCLNetworkFirewallPolicyRuleSchema() *dcl.Schema {
 													Description: "Name of the secure tag, created with TagManager's TagValue API. @pattern tagValues/[0-9]+",
 													ResourceReferences: []*dcl.PropertyResourceReference{
 														&dcl.PropertyResourceReference{
-															Resource: "Cloudresourcemanager/TagKey",
+															Resource: "Cloudresourcemanager/TagValue",
 															Field:    "namespacedName",
 														},
 													},
@@ -285,11 +288,6 @@ func DCLNetworkFirewallPolicyRuleSchema() *dcl.Schema {
 										},
 									},
 								},
-							},
-							"name": &dcl.Property{
-								Type:        "string",
-								GoName:      "Name",
-								Description: "An optional description for this resource.",
 							},
 							"priority": &dcl.Property{
 								Type:        "integer",
@@ -311,6 +309,11 @@ func DCLNetworkFirewallPolicyRuleSchema() *dcl.Schema {
 									},
 								},
 							},
+							"ruleName": &dcl.Property{
+								Type:        "string",
+								GoName:      "RuleName",
+								Description: "An optional name for the rule. This field is not a unique identifier and can be updated.",
+							},
 							"ruleTupleCount": &dcl.Property{
 								Type:        "integer",
 								Format:      "int64",
@@ -328,6 +331,9 @@ func DCLNetworkFirewallPolicyRuleSchema() *dcl.Schema {
 								Items: &dcl.Property{
 									Type:   "object",
 									GoType: "NetworkFirewallPolicyRuleTargetSecureTags",
+									Required: []string{
+										"name",
+									},
 									Properties: map[string]*dcl.Property{
 										"name": &dcl.Property{
 											Type:        "string",
@@ -335,7 +341,7 @@ func DCLNetworkFirewallPolicyRuleSchema() *dcl.Schema {
 											Description: "Name of the secure tag, created with TagManager's TagValue API. @pattern tagValues/[0-9]+",
 											ResourceReferences: []*dcl.PropertyResourceReference{
 												&dcl.PropertyResourceReference{
-													Resource: "Cloudresourcemanager/TagKey",
+													Resource: "Cloudresourcemanager/TagValue",
 													Field:    "namespacedName",
 												},
 											},

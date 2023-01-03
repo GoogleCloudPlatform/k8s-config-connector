@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC. All Rights Reserved.
+# Copyright 2023 Google LLC. All Rights Reserved.
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -216,6 +216,8 @@ components:
               items:
                 type: object
                 x-dcl-go-type: NetworkFirewallPolicyRuleMatchSrcSecureTags
+                required:
+                - name
                 properties:
                   name:
                     type: string
@@ -223,7 +225,7 @@ components:
                     description: Name of the secure tag, created with TagManager's
                       TagValue API. @pattern tagValues/[0-9]+
                     x-dcl-references:
-                    - resource: Cloudresourcemanager/TagKey
+                    - resource: Cloudresourcemanager/TagValue
                       field: namespacedName
                   state:
                     type: string
@@ -236,10 +238,6 @@ components:
                     enum:
                     - EFFECTIVE
                     - INEFFECTIVE
-        name:
-          type: string
-          x-dcl-go-name: Name
-          description: An optional description for this resource.
         priority:
           type: integer
           format: int64
@@ -258,6 +256,11 @@ components:
           - resource: Cloudresourcemanager/Project
             field: name
             parent: true
+        ruleName:
+          type: string
+          x-dcl-go-name: RuleName
+          description: An optional name for the rule. This field is not a unique identifier
+            and can be updated.
         ruleTupleCount:
           type: integer
           format: int64
@@ -282,6 +285,8 @@ components:
           items:
             type: object
             x-dcl-go-type: NetworkFirewallPolicyRuleTargetSecureTags
+            required:
+            - name
             properties:
               name:
                 type: string
@@ -289,7 +294,7 @@ components:
                 description: Name of the secure tag, created with TagManager's TagValue
                   API. @pattern tagValues/[0-9]+
                 x-dcl-references:
-                - resource: Cloudresourcemanager/TagKey
+                - resource: Cloudresourcemanager/TagValue
                   field: namespacedName
               state:
                 type: string

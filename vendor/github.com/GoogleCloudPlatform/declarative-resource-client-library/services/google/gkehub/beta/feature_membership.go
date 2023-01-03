@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -63,6 +63,33 @@ func (v FeatureMembershipMeshManagementEnum) Validate() error {
 	}
 }
 
+// The enum FeatureMembershipMeshControlPlaneEnum.
+type FeatureMembershipMeshControlPlaneEnum string
+
+// FeatureMembershipMeshControlPlaneEnumRef returns a *FeatureMembershipMeshControlPlaneEnum with the value of string s
+// If the empty string is provided, nil is returned.
+func FeatureMembershipMeshControlPlaneEnumRef(s string) *FeatureMembershipMeshControlPlaneEnum {
+	v := FeatureMembershipMeshControlPlaneEnum(s)
+	return &v
+}
+
+func (v FeatureMembershipMeshControlPlaneEnum) Validate() error {
+	if string(v) == "" {
+		// Empty enum is okay.
+		return nil
+	}
+	for _, s := range []string{"CONTROL_PLANE_MANAGEMENT_UNSPECIFIED", "AUTOMATIC", "MANUAL"} {
+		if string(v) == s {
+			return nil
+		}
+	}
+	return &dcl.EnumInvalidError{
+		Enum:  "FeatureMembershipMeshControlPlaneEnum",
+		Value: string(v),
+		Valid: []string{},
+	}
+}
+
 // The enum FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum.
 type FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum string
 
@@ -91,8 +118,9 @@ func (v FeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum)
 }
 
 type FeatureMembershipMesh struct {
-	empty      bool                                 `json:"-"`
-	Management *FeatureMembershipMeshManagementEnum `json:"management"`
+	empty        bool                                   `json:"-"`
+	Management   *FeatureMembershipMeshManagementEnum   `json:"management"`
+	ControlPlane *FeatureMembershipMeshControlPlaneEnum `json:"controlPlane"`
 }
 
 type jsonFeatureMembershipMesh FeatureMembershipMesh
@@ -111,6 +139,8 @@ func (r *FeatureMembershipMesh) UnmarshalJSON(data []byte) error {
 	} else {
 
 		r.Management = res.Management
+
+		r.ControlPlane = res.ControlPlane
 
 	}
 	return nil
@@ -199,6 +229,7 @@ type FeatureMembershipConfigmanagementConfigSync struct {
 	Git          *FeatureMembershipConfigmanagementConfigSyncGit `json:"git"`
 	SourceFormat *string                                         `json:"sourceFormat"`
 	PreventDrift *bool                                           `json:"preventDrift"`
+	Oci          *FeatureMembershipConfigmanagementConfigSyncOci `json:"oci"`
 }
 
 type jsonFeatureMembershipConfigmanagementConfigSync FeatureMembershipConfigmanagementConfigSync
@@ -221,6 +252,8 @@ func (r *FeatureMembershipConfigmanagementConfigSync) UnmarshalJSON(data []byte)
 		r.SourceFormat = res.SourceFormat
 
 		r.PreventDrift = res.PreventDrift
+
+		r.Oci = res.Oci
 
 	}
 	return nil
@@ -307,6 +340,64 @@ func (r *FeatureMembershipConfigmanagementConfigSyncGit) String() string {
 }
 
 func (r *FeatureMembershipConfigmanagementConfigSyncGit) HashCode() string {
+	// Placeholder for a more complex hash method that handles ordering, etc
+	// Hash resource body for easy comparison later
+	hash := sha256.New().Sum([]byte(r.String()))
+	return fmt.Sprintf("%x", hash)
+}
+
+type FeatureMembershipConfigmanagementConfigSyncOci struct {
+	empty                  bool    `json:"-"`
+	SyncRepo               *string `json:"syncRepo"`
+	PolicyDir              *string `json:"policyDir"`
+	SyncWaitSecs           *string `json:"syncWaitSecs"`
+	SecretType             *string `json:"secretType"`
+	GcpServiceAccountEmail *string `json:"gcpServiceAccountEmail"`
+}
+
+type jsonFeatureMembershipConfigmanagementConfigSyncOci FeatureMembershipConfigmanagementConfigSyncOci
+
+func (r *FeatureMembershipConfigmanagementConfigSyncOci) UnmarshalJSON(data []byte) error {
+	var res jsonFeatureMembershipConfigmanagementConfigSyncOci
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+
+	var m map[string]interface{}
+	json.Unmarshal(data, &m)
+
+	if len(m) == 0 {
+		*r = *EmptyFeatureMembershipConfigmanagementConfigSyncOci
+	} else {
+
+		r.SyncRepo = res.SyncRepo
+
+		r.PolicyDir = res.PolicyDir
+
+		r.SyncWaitSecs = res.SyncWaitSecs
+
+		r.SecretType = res.SecretType
+
+		r.GcpServiceAccountEmail = res.GcpServiceAccountEmail
+
+	}
+	return nil
+}
+
+// This object is used to assert a desired state where this FeatureMembershipConfigmanagementConfigSyncOci is
+// empty. Go lacks global const objects, but this object should be treated
+// as one. Modifying this object will have undesirable results.
+var EmptyFeatureMembershipConfigmanagementConfigSyncOci *FeatureMembershipConfigmanagementConfigSyncOci = &FeatureMembershipConfigmanagementConfigSyncOci{empty: true}
+
+func (r *FeatureMembershipConfigmanagementConfigSyncOci) Empty() bool {
+	return r.empty
+}
+
+func (r *FeatureMembershipConfigmanagementConfigSyncOci) String() string {
+	return dcl.SprintResource(r)
+}
+
+func (r *FeatureMembershipConfigmanagementConfigSyncOci) HashCode() string {
 	// Placeholder for a more complex hash method that handles ordering, etc
 	// Hash resource body for easy comparison later
 	hash := sha256.New().Sum([]byte(r.String()))

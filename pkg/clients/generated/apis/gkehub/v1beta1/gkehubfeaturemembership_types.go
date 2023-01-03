@@ -46,6 +46,10 @@ type FeaturemembershipConfigSync struct {
 	// +optional
 	Git *FeaturemembershipGit `json:"git,omitempty"`
 
+	/*  */
+	// +optional
+	Oci *FeaturemembershipOci `json:"oci,omitempty"`
+
 	/* Set to true to enable the Config Sync admission webhook to prevent drifts. If set to `false`, disables the Config Sync admission webhook and does not prevent drifts. */
 	// +optional
 	PreventDrift *bool `json:"preventDrift,omitempty"`
@@ -126,6 +130,10 @@ type FeaturemembershipHierarchyController struct {
 }
 
 type FeaturemembershipMesh struct {
+	/* Whether to automatically manage Service Mesh control planes. Possible values: CONTROL_PLANE_MANAGEMENT_UNSPECIFIED, AUTOMATIC, MANUAL */
+	// +optional
+	ControlPlane *string `json:"controlPlane,omitempty"`
+
 	/* Whether to automatically manage Service Mesh. Possible values: MANAGEMENT_UNSPECIFIED, MANAGEMENT_AUTOMATIC, MANAGEMENT_MANUAL */
 	// +optional
 	Management *string `json:"management,omitempty"`
@@ -135,6 +143,28 @@ type FeaturemembershipMonitoring struct {
 	/*  Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export. */
 	// +optional
 	Backends []string `json:"backends,omitempty"`
+}
+
+type FeaturemembershipOci struct {
+	/*  */
+	// +optional
+	GcpServiceAccountRef *v1alpha1.ResourceRef `json:"gcpServiceAccountRef,omitempty"`
+
+	/* The absolute path of the directory that contains the local resources. Default: the root directory of the image. */
+	// +optional
+	PolicyDir *string `json:"policyDir,omitempty"`
+
+	/* Type of secret configured for access to the OCI Image. Must be one of gcenode, gcpserviceaccount or none. The validation of this is case-sensitive. */
+	// +optional
+	SecretType *string `json:"secretType,omitempty"`
+
+	/* The OCI image repository URL for the package to sync from. e.g. LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY_NAME/PACKAGE_NAME. */
+	// +optional
+	SyncRepo *string `json:"syncRepo,omitempty"`
+
+	/* Period in seconds(int64 format) between consecutive syncs. Default: 15. */
+	// +optional
+	SyncWaitSecs *string `json:"syncWaitSecs,omitempty"`
 }
 
 type FeaturemembershipPolicyController struct {

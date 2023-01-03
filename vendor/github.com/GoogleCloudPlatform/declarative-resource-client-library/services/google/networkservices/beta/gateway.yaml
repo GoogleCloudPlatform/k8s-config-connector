@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC. All Rights Reserved.
+# Copyright 2023 Google LLC. All Rights Reserved.
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -89,16 +89,6 @@ components:
           items:
             type: string
             x-dcl-go-type: string
-        authorizationPolicy:
-          type: string
-          x-dcl-go-name: AuthorizationPolicy
-          description: Optional. A fully-qualified AuthorizationPolicy URL reference.
-            Specifies how traffic is authorized. If empty, authorization checks are
-            disabled.
-          x-dcl-references:
-          - resource: Networksecurity/AuthorizationPolicy
-            field: name
-            format: projects/{{project}}/locations/global/authorizationPolicies/{{name}}
         createTime:
           type: string
           format: date-time

@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC. All Rights Reserved.
+// Copyright 2023 Google LLC. All Rights Reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -103,6 +103,11 @@ func (r *NodePoolConfig) validate() error {
 			return err
 		}
 	}
+	if !dcl.IsEmptyValueIndirect(r.AutoscalingMetricsCollection) {
+		if err := r.AutoscalingMetricsCollection.validate(); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 func (r *NodePoolConfigRootVolume) validate() error {
@@ -142,6 +147,12 @@ func (r *NodePoolConfigProxyConfig) validate() error {
 	return nil
 }
 func (r *NodePoolConfigInstancePlacement) validate() error {
+	return nil
+}
+func (r *NodePoolConfigAutoscalingMetricsCollection) validate() error {
+	if err := dcl.Required(r, "granularity"); err != nil {
+		return err
+	}
 	return nil
 }
 func (r *NodePoolAutoscaling) validate() error {
@@ -786,6 +797,7 @@ func canonicalizeNodePoolConfig(des, initial *NodePoolConfig, opts ...dcl.ApplyO
 	} else {
 		cDes.ImageType = des.ImageType
 	}
+	cDes.AutoscalingMetricsCollection = canonicalizeNodePoolConfigAutoscalingMetricsCollection(des.AutoscalingMetricsCollection, initial.AutoscalingMetricsCollection, opts...)
 
 	return cDes
 }
@@ -850,6 +862,7 @@ func canonicalizeNewNodePoolConfig(c *Client, des, nw *NodePoolConfig) *NodePool
 	if dcl.StringCanonicalize(des.ImageType, nw.ImageType) {
 		nw.ImageType = des.ImageType
 	}
+	nw.AutoscalingMetricsCollection = canonicalizeNewNodePoolConfigAutoscalingMetricsCollection(c, des.AutoscalingMetricsCollection, nw.AutoscalingMetricsCollection)
 
 	return nw
 }
@@ -1624,6 +1637,129 @@ func canonicalizeNewNodePoolConfigInstancePlacementSlice(c *Client, des, nw []No
 	return items
 }
 
+func canonicalizeNodePoolConfigAutoscalingMetricsCollection(des, initial *NodePoolConfigAutoscalingMetricsCollection, opts ...dcl.ApplyOption) *NodePoolConfigAutoscalingMetricsCollection {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &NodePoolConfigAutoscalingMetricsCollection{}
+
+	if dcl.StringCanonicalize(des.Granularity, initial.Granularity) || dcl.IsZeroValue(des.Granularity) {
+		cDes.Granularity = initial.Granularity
+	} else {
+		cDes.Granularity = des.Granularity
+	}
+	if dcl.StringArrayCanonicalize(des.Metrics, initial.Metrics) {
+		cDes.Metrics = initial.Metrics
+	} else {
+		cDes.Metrics = des.Metrics
+	}
+
+	return cDes
+}
+
+func canonicalizeNodePoolConfigAutoscalingMetricsCollectionSlice(des, initial []NodePoolConfigAutoscalingMetricsCollection, opts ...dcl.ApplyOption) []NodePoolConfigAutoscalingMetricsCollection {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]NodePoolConfigAutoscalingMetricsCollection, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeNodePoolConfigAutoscalingMetricsCollection(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]NodePoolConfigAutoscalingMetricsCollection, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeNodePoolConfigAutoscalingMetricsCollection(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewNodePoolConfigAutoscalingMetricsCollection(c *Client, des, nw *NodePoolConfigAutoscalingMetricsCollection) *NodePoolConfigAutoscalingMetricsCollection {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for NodePoolConfigAutoscalingMetricsCollection while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	if dcl.StringCanonicalize(des.Granularity, nw.Granularity) {
+		nw.Granularity = des.Granularity
+	}
+	if dcl.StringArrayCanonicalize(des.Metrics, nw.Metrics) {
+		nw.Metrics = des.Metrics
+	}
+
+	return nw
+}
+
+func canonicalizeNewNodePoolConfigAutoscalingMetricsCollectionSet(c *Client, des, nw []NodePoolConfigAutoscalingMetricsCollection) []NodePoolConfigAutoscalingMetricsCollection {
+	if des == nil {
+		return nw
+	}
+	var reorderedNew []NodePoolConfigAutoscalingMetricsCollection
+	for _, d := range des {
+		matchedNew := -1
+		for idx, n := range nw {
+			if diffs, _ := compareNodePoolConfigAutoscalingMetricsCollectionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedNew = idx
+				break
+			}
+		}
+		if matchedNew != -1 {
+			reorderedNew = append(reorderedNew, nw[matchedNew])
+			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		}
+	}
+	reorderedNew = append(reorderedNew, nw...)
+
+	return reorderedNew
+}
+
+func canonicalizeNewNodePoolConfigAutoscalingMetricsCollectionSlice(c *Client, des, nw []NodePoolConfigAutoscalingMetricsCollection) []NodePoolConfigAutoscalingMetricsCollection {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []NodePoolConfigAutoscalingMetricsCollection
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewNodePoolConfigAutoscalingMetricsCollection(c, &d, &n))
+	}
+
+	return items
+}
+
 func canonicalizeNodePoolAutoscaling(des, initial *NodePoolAutoscaling, opts ...dcl.ApplyOption) *NodePoolAutoscaling {
 	if des == nil {
 		return initial
@@ -2034,7 +2170,7 @@ func compareNodePoolConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.F
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Tags, actual.Tags, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Tags")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Tags, actual.Tags, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNodePoolUpdateAwsNodePoolOperation")}, fn.AddNest("Tags")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2084,6 +2220,13 @@ func compareNodePoolConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.F
 	}
 
 	if ds, err := dcl.Diff(desired.ImageType, actual.ImageType, dcl.DiffInfo{ServerDefault: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("ImageType")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.AutoscalingMetricsCollection, actual.AutoscalingMetricsCollection, dcl.DiffInfo{ObjectFunction: compareNodePoolConfigAutoscalingMetricsCollectionNewStyle, EmptyObject: EmptyNodePoolConfigAutoscalingMetricsCollection, OperationSelector: dcl.TriggersOperation("updateNodePoolUpdateAwsNodePoolOperation")}, fn.AddNest("AutoscalingMetricsCollection")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2300,6 +2443,42 @@ func compareNodePoolConfigInstancePlacementNewStyle(d, a interface{}, fn dcl.Fie
 	}
 
 	if ds, err := dcl.Diff(desired.Tenancy, actual.Tenancy, dcl.DiffInfo{ServerDefault: true, Type: "EnumType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("Tenancy")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareNodePoolConfigAutoscalingMetricsCollectionNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*NodePoolConfigAutoscalingMetricsCollection)
+	if !ok {
+		desiredNotPointer, ok := d.(NodePoolConfigAutoscalingMetricsCollection)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a NodePoolConfigAutoscalingMetricsCollection or *NodePoolConfigAutoscalingMetricsCollection", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*NodePoolConfigAutoscalingMetricsCollection)
+	if !ok {
+		actualNotPointer, ok := a.(NodePoolConfigAutoscalingMetricsCollection)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a NodePoolConfigAutoscalingMetricsCollection", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.Granularity, actual.Granularity, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNodePoolUpdateAwsNodePoolOperation")}, fn.AddNest("Granularity")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.Metrics, actual.Metrics, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateNodePoolUpdateAwsNodePoolOperation")}, fn.AddNest("Metrics")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2657,6 +2836,11 @@ func expandNodePoolConfig(c *Client, f *NodePoolConfig, res *NodePool) (map[stri
 	if v := f.ImageType; !dcl.IsEmptyValueIndirect(v) {
 		m["imageType"] = v
 	}
+	if v, err := expandNodePoolConfigAutoscalingMetricsCollection(c, f.AutoscalingMetricsCollection, res); err != nil {
+		return nil, fmt.Errorf("error expanding AutoscalingMetricsCollection into autoscalingMetricsCollection: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["autoscalingMetricsCollection"] = v
+	}
 
 	return m, nil
 }
@@ -2686,6 +2870,7 @@ func flattenNodePoolConfig(c *Client, i interface{}, res *NodePool) *NodePoolCon
 	r.ProxyConfig = flattenNodePoolConfigProxyConfig(c, m["proxyConfig"], res)
 	r.InstancePlacement = flattenNodePoolConfigInstancePlacement(c, m["instancePlacement"], res)
 	r.ImageType = dcl.FlattenString(m["imageType"])
+	r.AutoscalingMetricsCollection = flattenNodePoolConfigAutoscalingMetricsCollection(c, m["autoscalingMetricsCollection"], res)
 
 	return r
 }
@@ -3398,6 +3583,124 @@ func flattenNodePoolConfigInstancePlacement(c *Client, i interface{}, res *NodeP
 	return r
 }
 
+// expandNodePoolConfigAutoscalingMetricsCollectionMap expands the contents of NodePoolConfigAutoscalingMetricsCollection into a JSON
+// request object.
+func expandNodePoolConfigAutoscalingMetricsCollectionMap(c *Client, f map[string]NodePoolConfigAutoscalingMetricsCollection, res *NodePool) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandNodePoolConfigAutoscalingMetricsCollection(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandNodePoolConfigAutoscalingMetricsCollectionSlice expands the contents of NodePoolConfigAutoscalingMetricsCollection into a JSON
+// request object.
+func expandNodePoolConfigAutoscalingMetricsCollectionSlice(c *Client, f []NodePoolConfigAutoscalingMetricsCollection, res *NodePool) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandNodePoolConfigAutoscalingMetricsCollection(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenNodePoolConfigAutoscalingMetricsCollectionMap flattens the contents of NodePoolConfigAutoscalingMetricsCollection from a JSON
+// response object.
+func flattenNodePoolConfigAutoscalingMetricsCollectionMap(c *Client, i interface{}, res *NodePool) map[string]NodePoolConfigAutoscalingMetricsCollection {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]NodePoolConfigAutoscalingMetricsCollection{}
+	}
+
+	if len(a) == 0 {
+		return map[string]NodePoolConfigAutoscalingMetricsCollection{}
+	}
+
+	items := make(map[string]NodePoolConfigAutoscalingMetricsCollection)
+	for k, item := range a {
+		items[k] = *flattenNodePoolConfigAutoscalingMetricsCollection(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenNodePoolConfigAutoscalingMetricsCollectionSlice flattens the contents of NodePoolConfigAutoscalingMetricsCollection from a JSON
+// response object.
+func flattenNodePoolConfigAutoscalingMetricsCollectionSlice(c *Client, i interface{}, res *NodePool) []NodePoolConfigAutoscalingMetricsCollection {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []NodePoolConfigAutoscalingMetricsCollection{}
+	}
+
+	if len(a) == 0 {
+		return []NodePoolConfigAutoscalingMetricsCollection{}
+	}
+
+	items := make([]NodePoolConfigAutoscalingMetricsCollection, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenNodePoolConfigAutoscalingMetricsCollection(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandNodePoolConfigAutoscalingMetricsCollection expands an instance of NodePoolConfigAutoscalingMetricsCollection into a JSON
+// request object.
+func expandNodePoolConfigAutoscalingMetricsCollection(c *Client, f *NodePoolConfigAutoscalingMetricsCollection, res *NodePool) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.Granularity; !dcl.IsEmptyValueIndirect(v) {
+		m["granularity"] = v
+	}
+	if v := f.Metrics; v != nil {
+		m["metrics"] = v
+	}
+
+	return m, nil
+}
+
+// flattenNodePoolConfigAutoscalingMetricsCollection flattens an instance of NodePoolConfigAutoscalingMetricsCollection from a JSON
+// response object.
+func flattenNodePoolConfigAutoscalingMetricsCollection(c *Client, i interface{}, res *NodePool) *NodePoolConfigAutoscalingMetricsCollection {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &NodePoolConfigAutoscalingMetricsCollection{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyNodePoolConfigAutoscalingMetricsCollection
+	}
+	r.Granularity = dcl.FlattenString(m["granularity"])
+	r.Metrics = dcl.FlattenStringSlice(m["metrics"])
+
+	return r
+}
+
 // expandNodePoolAutoscalingMap expands the contents of NodePoolAutoscaling into a JSON
 // request object.
 func expandNodePoolAutoscalingMap(c *Client, f map[string]NodePoolAutoscaling, res *NodePool) (map[string]interface{}, error) {
@@ -4027,6 +4330,17 @@ func extractNodePoolConfigFields(r *NodePool, o *NodePoolConfig) error {
 	if !dcl.IsEmptyValueIndirect(vInstancePlacement) {
 		o.InstancePlacement = vInstancePlacement
 	}
+	vAutoscalingMetricsCollection := o.AutoscalingMetricsCollection
+	if vAutoscalingMetricsCollection == nil {
+		// note: explicitly not the empty object.
+		vAutoscalingMetricsCollection = &NodePoolConfigAutoscalingMetricsCollection{}
+	}
+	if err := extractNodePoolConfigAutoscalingMetricsCollectionFields(r, vAutoscalingMetricsCollection); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vAutoscalingMetricsCollection) {
+		o.AutoscalingMetricsCollection = vAutoscalingMetricsCollection
+	}
 	return nil
 }
 func extractNodePoolConfigRootVolumeFields(r *NodePool, o *NodePoolConfigRootVolume) error {
@@ -4045,6 +4359,9 @@ func extractNodePoolConfigProxyConfigFields(r *NodePool, o *NodePoolConfigProxyC
 	return nil
 }
 func extractNodePoolConfigInstancePlacementFields(r *NodePool, o *NodePoolConfigInstancePlacement) error {
+	return nil
+}
+func extractNodePoolConfigAutoscalingMetricsCollectionFields(r *NodePool, o *NodePoolConfigAutoscalingMetricsCollection) error {
 	return nil
 }
 func extractNodePoolAutoscalingFields(r *NodePool, o *NodePoolAutoscaling) error {
@@ -4146,6 +4463,17 @@ func postReadExtractNodePoolConfigFields(r *NodePool, o *NodePoolConfig) error {
 	if !dcl.IsEmptyValueIndirect(vInstancePlacement) {
 		o.InstancePlacement = vInstancePlacement
 	}
+	vAutoscalingMetricsCollection := o.AutoscalingMetricsCollection
+	if vAutoscalingMetricsCollection == nil {
+		// note: explicitly not the empty object.
+		vAutoscalingMetricsCollection = &NodePoolConfigAutoscalingMetricsCollection{}
+	}
+	if err := extractNodePoolConfigAutoscalingMetricsCollectionFields(r, vAutoscalingMetricsCollection); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vAutoscalingMetricsCollection) {
+		o.AutoscalingMetricsCollection = vAutoscalingMetricsCollection
+	}
 	return nil
 }
 func postReadExtractNodePoolConfigRootVolumeFields(r *NodePool, o *NodePoolConfigRootVolume) error {
@@ -4164,6 +4492,9 @@ func postReadExtractNodePoolConfigProxyConfigFields(r *NodePool, o *NodePoolConf
 	return nil
 }
 func postReadExtractNodePoolConfigInstancePlacementFields(r *NodePool, o *NodePoolConfigInstancePlacement) error {
+	return nil
+}
+func postReadExtractNodePoolConfigAutoscalingMetricsCollectionFields(r *NodePool, o *NodePoolConfigAutoscalingMetricsCollection) error {
 	return nil
 }
 func postReadExtractNodePoolAutoscalingFields(r *NodePool, o *NodePoolAutoscaling) error {
