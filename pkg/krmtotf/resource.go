@@ -289,6 +289,21 @@ func (r *Resource) GetResourceID() (string, error) {
 	return resourceID, nil
 }
 
+func (r *Resource) Unreadable() bool {
+	return r.ResourceConfig.Unreadable != nil && *r.ResourceConfig.Unreadable
+}
+
+// AllTopLevelFieldsAreImmutableOrComputed returns true if the resource schema only
+// contains top level fields that are immutable and/or computed.
+func (r *Resource) AllTopLevelFieldsAreImmutableOrComputed() bool {
+	for _, schema := range r.TFResource.Schema {
+		if !schema.Computed && !schema.ForceNew {
+			return false
+		}
+	}
+	return true
+}
+
 func SupportsResourceIDField(rc *corekccv1alpha1.ResourceConfig) bool {
 	return rc.ResourceID.TargetField != ""
 }

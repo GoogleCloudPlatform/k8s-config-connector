@@ -158,6 +158,15 @@ type ResourceConfig struct {
 	// Providing the value in servicemapping config is optional. If not explicity configured a global
 	// default value of 600 will be used
 	ReconciliationIntervalInSeconds *uint32 `json:"reconciliationIntervalInSeconds,omitempty"`
+
+	// Unreadable indicates whether the resource can be read from the underlying API.
+	// This field should be set to true if the underlying API does not support read,
+	// or if the read is no-op.
+	// This field is optional. If unset, the default value of nil indicates the
+	// underlying API does support read.
+	// If set to true, ReconciliationIntervalInSeconds should also be set to 0 to avoid
+	// repeated creation of the resource.
+	Unreadable *bool `json:"unreadable,omitempty"`
 }
 
 type IAMConfig struct {

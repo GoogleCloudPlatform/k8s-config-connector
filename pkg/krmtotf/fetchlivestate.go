@@ -78,6 +78,31 @@ func FetchLiveState(ctx context.Context, resource *Resource, provider *tfschema.
 	return state, nil
 }
 
+// FetchLiveStateForCreateAndUpdate is the same as FetchLiveState except for added special
+// handling for certain types of resources during resource creation and update.
+func FetchLiveStateForCreateAndUpdate(ctx context.Context, resource *Resource, provider *tfschema.Provider, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (*terraform.InstanceState, error) {
+	// Special handling for resource which cannot be imported or read, has user-specified resource ID,
+	// and only contains top level fields that are immutable and/or computed.
+	// For such resource, its fetched live state will always be identical to the user config,
+	// regardless of the existence of the underlying GCP resource.
+	// We need to set the live state to empty so that the controller can retrieve the
+	// computed values via an explicit TF Apply() call.
+	//
+	// For example, ServiceIdentity is an unreadable resource with the user-specified
+	// resource ID, and all of its `spec` fields are immutable. An empty InstanceState
+	// ensures there can be a diff during the first reconciliation, so that TF
+	// controller can retrieve the computed value of the `status.email` field (the
+	// service identity) via the response of a TF Apply().
+	if resource.Unreadable() &&
+		resource.ResourceConfig.SkipImport &&
+		!resource.HasServerGeneratedIDField() &&
+		resource.AllTopLevelFieldsAreImmutableOrComputed() {
+		return &terraform.InstanceState{}, nil
+	}
+
+	return FetchLiveState(ctx, resource, provider, kubeClient, smLoader)
+}
+
 // ImportState parses the given id into a TF state. Note that this function
 // does not make any network calls; it simply does a best effort to determine
 // TF state by parsing the id.

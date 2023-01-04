@@ -1005,3 +1005,28 @@ func testServerGeneratedResourceID(t *testing.T, rc v1alpha1.ResourceConfig) {
 			"serverGeneratedIDField", rc.Name)
 	}
 }
+
+// TestUnreadableResourcesShouldHaveZeroReconciliationInterval ensures that all resources that are
+// unreadable have set ReconciliationIntervalInSeconds to 0.
+func TestUnreadableResourcesShouldHaveZeroReconciliationInterval(t *testing.T) {
+	t.Parallel()
+	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
+	for _, sm := range serviceMappings {
+		sm := sm
+		t.Run(sm.Name, func(t *testing.T) {
+			t.Parallel()
+			for _, rc := range sm.Spec.Resources {
+				rc := rc
+				t.Run(rc.Kind, func(t *testing.T) {
+					t.Parallel()
+					if rc.Unreadable == nil || *rc.Unreadable == false {
+						return
+					}
+					if rc.ReconciliationIntervalInSeconds == nil || *rc.ReconciliationIntervalInSeconds != 0 {
+						t.Fatalf("resource config '%v' is marked 'Unreadable', but field 'ReconciliationIntervalInSeconds' is not set to 0", rc.Name)
+					}
+				})
+			}
+		})
+	}
+}

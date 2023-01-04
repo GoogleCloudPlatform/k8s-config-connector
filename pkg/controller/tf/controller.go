@@ -233,7 +233,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 		}
 		return false, r.handleDeleted(ctx, krmResource)
 	}
-	liveState, err := krmtotf.FetchLiveState(ctx, krmResource, r.provider, r, r.smLoader)
+	liveState, err := krmtotf.FetchLiveStateForCreateAndUpdate(ctx, krmResource, r.provider, r, r.smLoader)
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			r.logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(krmResource))
