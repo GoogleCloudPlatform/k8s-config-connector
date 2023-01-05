@@ -25,4 +25,6 @@ type BigQueryDatasetExpansion interface{}
 
 type BigQueryJobExpansion interface{}
 
+type BigQueryRoutineExpansion interface{}
+
 type BigQueryTableExpansion interface{}

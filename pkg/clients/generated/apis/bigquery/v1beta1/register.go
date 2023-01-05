@@ -65,6 +65,12 @@ var (
 		Kind:    reflect.TypeOf(BigQueryJob{}).Name(),
 	}
 
+	BigQueryRoutineGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(BigQueryRoutine{}).Name(),
+	}
+
 	BigQueryTableGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

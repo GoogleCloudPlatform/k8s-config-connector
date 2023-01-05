@@ -33,6 +33,7 @@ type BigqueryV1beta1Interface interface {
 	RESTClient() rest.Interface
 	BigQueryDatasetsGetter
 	BigQueryJobsGetter
+	BigQueryRoutinesGetter
 	BigQueryTablesGetter
 }
 
@@ -47,6 +48,10 @@ func (c *BigqueryV1beta1Client) BigQueryDatasets(namespace string) BigQueryDatas
 
 func (c *BigqueryV1beta1Client) BigQueryJobs(namespace string) BigQueryJobInterface {
 	return newBigQueryJobs(c, namespace)
+}
+
+func (c *BigqueryV1beta1Client) BigQueryRoutines(namespace string) BigQueryRoutineInterface {
+	return newBigQueryRoutines(c, namespace)
 }
 
 func (c *BigqueryV1beta1Client) BigQueryTables(namespace string) BigQueryTableInterface {

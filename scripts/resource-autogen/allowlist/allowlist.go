@@ -23,13 +23,16 @@ import (
 
 var (
 	allowlist = []string{
+		"BigQuery/Routine",
 		"DataCatalog/PolicyTag",
 		"DataCatalog/Taxonomy",
 		"Tags/TagBinding",
 		"Tags/TagKey",
 		"Tags/TagValue",
 	}
-	legacyServiceNames = map[string]string{}
+	legacyServiceNames = map[string]string{
+		"BigQuery": "bigquery",
+	}
 )
 
 type AutoGenType struct {

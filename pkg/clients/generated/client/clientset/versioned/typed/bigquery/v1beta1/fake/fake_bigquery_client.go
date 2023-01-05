@@ -39,6 +39,10 @@ func (c *FakeBigqueryV1beta1) BigQueryJobs(namespace string) v1beta1.BigQueryJob
 	return &FakeBigQueryJobs{c, namespace}
 }
 
+func (c *FakeBigqueryV1beta1) BigQueryRoutines(namespace string) v1beta1.BigQueryRoutineInterface {
+	return &FakeBigQueryRoutines{c, namespace}
+}
+
 func (c *FakeBigqueryV1beta1) BigQueryTables(namespace string) v1beta1.BigQueryTableInterface {
 	return &FakeBigQueryTables{c, namespace}
 }

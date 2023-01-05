@@ -1,0 +1,16 @@
+diff --git a/scripts/resource-autogen/generated/servicemappings/bigquery.yaml b/scripts/resource-autogen/generated/servicemappings/bigquery.yaml
+index 0853eb425..e060a42e3 100644
+--- a/scripts/resource-autogen/generated/servicemappings/bigquery.yaml
++++ b/scripts/resource-autogen/generated/servicemappings/bigquery.yaml
+@@ -141,3 +141,11 @@ spec:
+             kind: Project
+             version: v1beta1
+             group: resourcemanager.cnrm.cloud.google.com
++        - key: datasetRef
++          tfField: dataset_id
++          description: |-
++            The ID of the dataset containing this routine.
++          gvk:
++            kind: BigQueryDataset
++            version: v1beta1
++            group: bigquery.cnrm.cloud.google.com
