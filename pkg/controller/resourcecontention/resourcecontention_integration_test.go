@@ -55,7 +55,7 @@ func TestResourceContentionIsPreventedForTwoNamespacesMappingToSameProjectInDiff
 		if err := systemContext.Manager.GetClient().Create(context.TODO(), testContext.CreateUnstruct); err != nil {
 			t.Fatalf("error creating resource: %v", err)
 		}
-		systemContext.Reconciler.Reconcile(testContext.UpdateUnstruct, testcontroller.ExpectedSuccessfulReconcileResult, nil)
+		systemContext.Reconciler.Reconcile(testContext.UpdateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, testContext.UpdateUnstruct.GroupVersionKind()), nil)
 		assertLeaseLabelsAreNotPresent(t, systemContext.Manager, testContext.CreateUnstruct)
 		projectId := testgcp.GetDefaultProjectID(t)
 		testcontroller.EnsureNamespaceExistsT(t, mgr2.GetClient(), testContext.UniqueId)
@@ -65,7 +65,7 @@ func TestResourceContentionIsPreventedForTwoNamespacesMappingToSameProjectInDiff
 		if err := mgr2.GetClient().Create(context.TODO(), testContext.UpdateUnstruct); err != nil {
 			t.Fatalf("error creating resource: %v", err)
 		}
-		reconciler2.Reconcile(testContext.UpdateUnstruct, testcontroller.ExpectedUnsuccessfulReconcileResult, regexp.MustCompile("error obtaining lease"))
+		reconciler2.Reconcile(testContext.UpdateUnstruct, testreconciler.ExpectedUnsuccessfulReconcileResult, regexp.MustCompile("error obtaining lease"))
 		events := testcontroller.CollectEvents(t, mgr2.GetConfig(), testContext.UpdateUnstruct.GetNamespace(), 1, 10*time.Second)
 		event := events[0]
 		expectedReason := k8s.ManagementConflict
@@ -78,7 +78,7 @@ func TestResourceContentionIsPreventedForTwoNamespacesMappingToSameProjectInDiff
 		if err := mgr2.GetClient().Delete(context.TODO(), testContext.CreateUnstruct); err != nil {
 			t.Fatalf("error deleting resource: %v", err)
 		}
-		reconciler2.Reconcile(testContext.CreateUnstruct, testcontroller.ExpectedUnsuccessfulReconcileResult, regexp.MustCompile("error obtaining lease"))
+		reconciler2.Reconcile(testContext.CreateUnstruct, testreconciler.ExpectedUnsuccessfulReconcileResult, regexp.MustCompile("error obtaining lease"))
 		events = testcontroller.CollectEvents(t, mgr2.GetConfig(), testContext.CreateUnstruct.GetNamespace(), 3, 10*time.Second)
 		nextEvent := events[2]
 		if nextEvent.Reason != expectedReason {

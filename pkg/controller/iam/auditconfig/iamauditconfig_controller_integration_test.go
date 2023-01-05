@@ -350,7 +350,7 @@ func testReconcileResourceLevelDelete(t *testing.T, mgr manager.Manager, k8sAudi
 	if err := kubeClient.Delete(context.TODO(), k8sAuditConfig); err != nil {
 		t.Fatalf("error deleting k8s resource: %v", err)
 	}
-	reconciler.ReconcileObjectMeta(k8sAuditConfig.ObjectMeta, iamv1beta1.IAMAuditConfigGVK.Kind, testcontroller.ExpectedRequeueReconcileStruct, nil)
+	reconciler.ReconcileObjectMeta(k8sAuditConfig.ObjectMeta, iamv1beta1.IAMAuditConfigGVK.Kind, testreconciler.ExpectedRequeueReconcileStruct, nil)
 	_, err = tfIamClient.GetAuditConfig(context.TODO(), k8sAuditConfig)
 	if err != nil {
 		t.Fatalf("expected audit config to exist in GCP, but got error: %v", err)

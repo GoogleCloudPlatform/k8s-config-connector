@@ -20,12 +20,14 @@ import (
 	"log"
 	"regexp"
 	"testing"
+	"time"
 
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
 	partialpolicy "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policymember"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/reconciliationinterval"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
@@ -44,6 +46,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
@@ -57,6 +60,12 @@ const (
 	// Clean up resources on test success or while a test is successful, once the test enters a FAILed state do not
 	// clean up any more resources.
 	CleanupPolicyOnSuccess ResourceCleanupPolicy = "OnSuccess"
+)
+
+var (
+	ExpectedSuccessfulReconcileResultFor = expectedSuccessfulReconcileResultFor
+	ExpectedUnsuccessfulReconcileResult  = reconcile.Result{Requeue: false, RequeueAfter: 0 * time.Minute}
+	ExpectedRequeueReconcileStruct       = reconcile.Result{Requeue: true}
 )
 
 type TestReconciler struct {
@@ -126,7 +135,7 @@ func (r *TestReconciler) CreateAndReconcile(unstructs []*unstructured.Unstructur
 			r.t.Fatalf("error creating resource '%v': %v", u.GetKind(), err)
 		}
 		cleanupFuncs = append(cleanupFuncs, r.BuildCleanupFunc(u, cleanupPolicy))
-		r.ReconcileIfManagedByKCC(u, reconcile.Result{RequeueAfter: k8s.MeanReconcileReenqueuePeriod}, nil)
+		r.ReconcileIfManagedByKCC(u, ExpectedSuccessfulReconcileResultFor(r, u.GroupVersionKind()), nil)
 	}
 	return func() {
 		for i := len(cleanupFuncs) - 1; i >= 0; i-- {
@@ -159,7 +168,7 @@ func (r *TestReconciler) BuildCleanupFunc(unstruct *unstructured.Unstructured, c
 			}
 			r.t.Errorf("error deleting %v: %v", unstruct, err)
 		}
-		r.ReconcileIfManagedByKCC(unstruct, reconcile.Result{RequeueAfter: k8s.MeanReconcileReenqueuePeriod}, nil)
+		r.ReconcileIfManagedByKCC(unstruct, ExpectedSuccessfulReconcileResultFor(r, unstruct.GroupVersionKind()), nil)
 	}
 }
 
@@ -216,4 +225,8 @@ func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDe
 		}
 	}
 	return nil, fmt.Errorf("CRD format not recognized")
+}
+
+func expectedSuccessfulReconcileResultFor(r *TestReconciler, gvk schema.GroupVersionKind) reconcile.Result {
+	return reconcile.Result{RequeueAfter: reconciliationinterval.MeanReconcileReenqueuePeriod(gvk, r.smLoader, r.dclConverter.MetadataLoader)}
 }

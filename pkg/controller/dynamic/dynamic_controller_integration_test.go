@@ -187,7 +187,7 @@ func testCreate(t *testing.T, testContext testrunner.TestContext, systemContext 
 	if err := kubeClient.Create(context.TODO(), initialUnstruct); err != nil {
 		t.Fatalf("error creating %v resource %v: %v", initialUnstruct.GetKind(), initialUnstruct.GetName(), err)
 	}
-	systemContext.Reconciler.Reconcile(initialUnstruct, testcontroller.ExpectedSuccessfulReconcileResult, nil)
+	systemContext.Reconciler.Reconcile(initialUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, initialUnstruct.GroupVersionKind()), nil)
 	validateCreate(t, testContext, systemContext, resourceContext, initialUnstruct.GetGeneration())
 }
 
@@ -259,7 +259,7 @@ func testNoChange(t *testing.T, testContext testrunner.TestContext, systemContex
 			"apiVersion": initialUnstruct.GetAPIVersion(),
 		},
 	}
-	systemContext.Reconciler.Reconcile(initialUnstruct, testcontroller.ExpectedSuccessfulReconcileResult, nil)
+	systemContext.Reconciler.Reconcile(initialUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, initialUnstruct.GroupVersionKind()), nil)
 	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, reconciledUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
@@ -315,7 +315,7 @@ func testUpdate(t *testing.T, testContext testrunner.TestContext, systemContext 
 		t.Fatalf("unexpected error when updating '%v': %v", initialUnstruct.GetName(), err)
 	}
 	preReconcileGeneration := updateUnstruct.GetGeneration()
-	systemContext.Reconciler.Reconcile(updateUnstruct, testcontroller.ExpectedSuccessfulReconcileResult, nil)
+	systemContext.Reconciler.Reconcile(updateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, updateUnstruct.GroupVersionKind()), nil)
 
 	reconciledUnstruct := &unstructured.Unstructured{
 		Object: map[string]interface{}{
@@ -412,7 +412,7 @@ func testDriftCorrection(t *testing.T, testContext testrunner.TestContext, syste
 	time.Sleep(time.Second * 10)
 
 	// get the current state
-	systemContext.Reconciler.Reconcile(testContext.CreateUnstruct, testcontroller.ExpectedSuccessfulReconcileResult, nil)
+	systemContext.Reconciler.Reconcile(testContext.CreateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, testContext.CreateUnstruct.GroupVersionKind()), nil)
 	validateCreate(t, testContext, systemContext, resourceContext, u.GetGeneration())
 }
 
@@ -462,7 +462,7 @@ func testDelete(t *testing.T, testContext testrunner.TestContext, systemContext 
 	// Test that the deletion defender finalizer causes the resource to requeue
 	// and still exist on the underlying API
 	reconciledUnstruct := testContext.CreateUnstruct.DeepCopy()
-	testReconciler.Reconcile(reconciledUnstruct, testcontroller.ExpectedRequeueReconcileStruct, nil)
+	testReconciler.Reconcile(reconciledUnstruct, testreconciler.ExpectedRequeueReconcileStruct, nil)
 	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, reconciledUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
@@ -473,7 +473,7 @@ func testDelete(t *testing.T, testContext testrunner.TestContext, systemContext 
 
 	// Perform the deletion on the underlying API
 	testk8s.RemoveDeletionDefenderFinalizerForUnstructured(t, reconciledUnstruct, kubeClient)
-	testReconciler.Reconcile(reconciledUnstruct, testcontroller.ExpectedSuccessfulReconcileResult, nil)
+	testReconciler.Reconcile(reconciledUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, reconciledUnstruct.GroupVersionKind()), nil)
 
 	if !testgcp.ResourceSupportsDeletion(testContext.ResourceFixture.GVK.Kind) {
 		_, err := resourceContext.Get(t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter)
@@ -601,7 +601,7 @@ func testReconcileAcquire(t *testing.T, testContext testrunner.TestContext, syst
 	preReconcileGeneration := initialUnstruct.GetGeneration()
 	resourceCleanup := systemContext.Reconciler.BuildCleanupFunc(initialUnstruct, getResourceCleanupPolicy())
 	defer resourceCleanup()
-	systemContext.Reconciler.Reconcile(initialUnstruct, testcontroller.ExpectedSuccessfulReconcileResult, nil)
+	systemContext.Reconciler.Reconcile(initialUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, initialUnstruct.GroupVersionKind()), nil)
 
 	// Check labels match
 	if resourceContext.SupportsLabels(systemContext.SMLoader) {

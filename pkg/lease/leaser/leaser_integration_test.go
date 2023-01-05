@@ -25,7 +25,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leaser"
-	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testreconciler "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller/reconciler"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
@@ -92,7 +91,7 @@ func TestAll(t *testing.T) {
 		}
 		resourceCleanup := systemContext.Reconciler.BuildCleanupFunc(testContext.CreateUnstruct, testreconciler.CleanupPolicyAlways)
 		defer resourceCleanup()
-		systemContext.Reconciler.Reconcile(testContext.CreateUnstruct, testcontroller.ExpectedSuccessfulReconcileResult, nil)
+		systemContext.Reconciler.Reconcile(testContext.CreateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, testContext.CreateUnstruct.GroupVersionKind()), nil)
 		leaser := leaser.NewLeaser(systemContext.TFProvider, systemContext.SMLoader, systemContext.Manager.GetClient())
 		uniqueId1 := fmt.Sprintf("l1-%v", testContext.UniqueId)
 		uniqueId2 := fmt.Sprintf("l2-%v", testContext.UniqueId)

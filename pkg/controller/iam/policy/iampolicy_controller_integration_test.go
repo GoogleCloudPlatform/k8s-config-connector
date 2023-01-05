@@ -262,7 +262,7 @@ func testReconcileResourceLevelDelete(t *testing.T, kubeClient client.Client, k8
 	if err := kubeClient.Delete(context.TODO(), k8sPolicy); err != nil {
 		t.Fatalf("error deleting k8sPolicy: %v", err)
 	}
-	reconciler.ReconcileObjectMeta(k8sPolicy.ObjectMeta, iamv1beta1.IAMPolicyGVK.Kind, testcontroller.ExpectedRequeueReconcileStruct, nil)
+	reconciler.ReconcileObjectMeta(k8sPolicy.ObjectMeta, iamv1beta1.IAMPolicyGVK.Kind, testreconciler.ExpectedRequeueReconcileStruct, nil)
 	gcpPolicy, err := iamClient.GetPolicy(context.TODO(), k8sPolicy)
 	if err != nil {
 		t.Fatalf("error retrieving GCP policy: %v", err)

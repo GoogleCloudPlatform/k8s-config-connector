@@ -135,7 +135,7 @@ func testPolicyMemberCreateDelete(t *testing.T, mgr manager.Manager, k8sPolicyMe
 	}
 	preReconcileGeneration := k8sPolicyMember.GetGeneration()
 	reconciler := testreconciler.New(t, mgr, tfprovider.NewOrLogFatal(tfprovider.DefaultConfig))
-	reconciler.ReconcileObjectMeta(k8sPolicyMember.ObjectMeta, v1beta1.IAMPolicyMemberGVK.Kind, testcontroller.ExpectedSuccessfulReconcileResult, nil)
+	reconciler.ReconcileObjectMeta(k8sPolicyMember.ObjectMeta, v1beta1.IAMPolicyMemberGVK.Kind, testreconciler.ExpectedSuccessfulReconcileResultFor(reconciler, k8sPolicyMember.GroupVersionKind()), nil)
 	gcpPolicyMember, err := iamClient.GetPolicyMember(context.TODO(), k8sPolicyMember)
 	if err != nil {
 		t.Fatalf("unexpected error getting policy member: %v", err)
@@ -155,12 +155,12 @@ func testPolicyMemberCreateDelete(t *testing.T, mgr manager.Manager, k8sPolicyMe
 		t.Fatalf("error deleting policy member: %v", err)
 	}
 	assertObservedGenerationEquals(t, k8sPolicyMember, preReconcileGeneration)
-	reconciler.ReconcileObjectMeta(k8sPolicyMember.ObjectMeta, v1beta1.IAMPolicyMemberGVK.Kind, testcontroller.ExpectedRequeueReconcileStruct, nil)
+	reconciler.ReconcileObjectMeta(k8sPolicyMember.ObjectMeta, v1beta1.IAMPolicyMemberGVK.Kind, testreconciler.ExpectedRequeueReconcileStruct, nil)
 	if _, err := iamClient.GetPolicyMember(context.TODO(), k8sPolicyMember); err != nil {
 		t.Fatalf("expected policy member to exist in GCP, but got error: %v", err)
 	}
 	testk8s.RemoveDeletionDefenderFinalizer(t, k8sPolicyMember, v1beta1.IAMPolicyMemberGVK, kubeClient)
-	reconciler.ReconcileObjectMeta(k8sPolicyMember.ObjectMeta, v1beta1.IAMPolicyMemberGVK.Kind, testcontroller.ExpectedSuccessfulReconcileResult, nil)
+	reconciler.ReconcileObjectMeta(k8sPolicyMember.ObjectMeta, v1beta1.IAMPolicyMemberGVK.Kind, testreconciler.ExpectedSuccessfulReconcileResultFor(reconciler, k8sPolicyMember.GroupVersionKind()), nil)
 	gcpPolicyMember, err = iamClient.GetPolicyMember(context.TODO(), k8sPolicyMember)
 	if !errors.Is(err, kcciamclient.NotFoundError) {
 		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.NotFoundError)

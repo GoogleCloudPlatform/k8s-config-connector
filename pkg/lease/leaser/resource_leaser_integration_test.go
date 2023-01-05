@@ -25,12 +25,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leaser"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
-	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testreconciler "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller/reconciler"
 	testkrmtotf "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	testrunner "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/runner"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -51,7 +51,7 @@ func TestObtainAndReleaseResourceLease(t *testing.T) {
 		}
 		resourceCleanup := systemContext.Reconciler.BuildCleanupFunc(testContext.CreateUnstruct, testreconciler.CleanupPolicyAlways)
 		defer resourceCleanup()
-		systemContext.Reconciler.Reconcile(u, testcontroller.ExpectedSuccessfulReconcileResult, nil)
+		systemContext.Reconciler.Reconcile(u, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, u.GroupVersionKind()), nil)
 		sm, err := systemContext.SMLoader.GetServiceMapping(u.GroupVersionKind().Group)
 		if err != nil {
 			t.Fatalf("error getting service mapping: %v", err)

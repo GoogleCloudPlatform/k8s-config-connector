@@ -22,6 +22,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
@@ -1028,5 +1029,36 @@ func TestUnreadableResourcesShouldHaveZeroReconciliationInterval(t *testing.T) {
 				})
 			}
 		})
+	}
+}
+
+// TestReconciliationIntervalConsistency makes sure the configured reconciliation intervals have
+// the same value for all resource configs mapped to the same GVK.
+func TestReconciliationIntervalConsistency(t *testing.T) {
+	smLoader := testservicemappingloader.New(t)
+	for _, gvk := range supportedgvks.BasedOnAllServiceMappings(smLoader) {
+		rcs, err := smLoader.GetResourceConfigs(gvk)
+		if err != nil || len(rcs) < 2 {
+			// only check for GVKs mapped to multiple resource configs
+			continue
+		}
+		var ri *uint32
+		for _, rc := range rcs {
+			if rc.ReconciliationIntervalInSeconds == nil {
+				// ReconciliationIntervalInSeconds not configured
+				continue
+			}
+			if ri == nil {
+				// first time seeing ReconciliationIntervalInSeconds for this GVK
+				ri = new(uint32)
+				*ri = *rc.ReconciliationIntervalInSeconds
+				continue
+			}
+			if *ri != *rc.ReconciliationIntervalInSeconds {
+				t.Errorf("the configured reconciliation intervals "+
+					"should have the same value for all resource configs "+
+					"mapped to GVK %v", gvk)
+			}
+		}
 	}
 }

@@ -407,7 +407,7 @@ func testReconcileResourceLevelDelete(t *testing.T, kubeClient client.Client, k8
 	if err := kubeClient.Delete(context.TODO(), k8sPartialPolicy); err != nil {
 		t.Fatalf("error deleting k8sPartialPolicy: %v", err)
 	}
-	reconciler.ReconcileObjectMeta(k8sPartialPolicy.ObjectMeta, iamv1beta1.IAMPartialPolicyGVK.Kind, testcontroller.ExpectedRequeueReconcileStruct, nil)
+	reconciler.ReconcileObjectMeta(k8sPartialPolicy.ObjectMeta, iamv1beta1.IAMPartialPolicyGVK.Kind, testreconciler.ExpectedRequeueReconcileStruct, nil)
 	k8sPolicy := partialpolicy.ToIAMPolicySkeleton(k8sPartialPolicy)
 	gcpPolicy, err := iamClient.GetPolicy(context.TODO(), k8sPolicy)
 	if err != nil {

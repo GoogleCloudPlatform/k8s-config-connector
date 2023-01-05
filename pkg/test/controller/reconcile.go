@@ -46,12 +46,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 )
 
-var (
-	ExpectedSuccessfulReconcileResult   = reconcile.Result{RequeueAfter: k8s.MeanReconcileReenqueuePeriod}
-	ExpectedUnsuccessfulReconcileResult = reconcile.Result{Requeue: false, RequeueAfter: 0 * time.Minute}
-	ExpectedRequeueReconcileStruct      = reconcile.Result{Requeue: true}
-)
-
 const (
 	// transientErrorsMaxRetries sets the max number of retries on a transient error
 	transientErrorsMaxRetries = 5
