@@ -326,7 +326,7 @@ func (r *reconcileContext) handleUnresolvableDeps(policy *iamv1beta1.IAMPartialP
 		// Decrement the count of active resource watches after
 		// the watch finishes
 		defer r.Reconciler.resourceWatcherRoutines.Release(1)
-		timeoutPeriod := jitter.GenerateJitteredReenqueuePeriod()
+		timeoutPeriod := jitter.GenerateWatchJitteredTimeoutPeriod()
 		ctx, cancel := context.WithTimeout(context.TODO(), timeoutPeriod)
 		defer cancel()
 		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
