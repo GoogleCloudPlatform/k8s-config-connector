@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.98.0
+    cnrm.cloud.google.com/version: 1.99.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -167,6 +167,9 @@ spec:
                       IPs in this node pool. Defaults are provided for pod_range and
                       pod_ipv4_cidr_block if they are not specified.
                     type: boolean
+                  enablePrivateNodes:
+                    description: Whether nodes have internal IP addresses only.
+                    type: boolean
                   podIpv4CidrBlock:
                     description: Immutable. The IP address range for pod IPs in this
                       node pool. Only applicable if create_pod_range is true. Set
@@ -181,8 +184,6 @@ spec:
                       range. If create_pod_range is false, uses an existing secondary
                       range with this ID.
                     type: string
-                required:
-                - podRange
                 type: object
               nodeConfig:
                 description: Immutable. The configuration of the nodepool.
@@ -332,6 +333,11 @@ spec:
                     description: Immutable. The number of local SSD disks to be attached
                       to the node.
                     type: integer
+                  loggingVariant:
+                    description: Type of logging agent that is used as the default
+                      value for node pools in the cluster. Valid values include DEFAULT
+                      and MAX_THROUGHPUT.
+                    type: string
                   machineType:
                     description: Immutable. The name of a Google Compute Engine machine
                       type.
@@ -407,6 +413,12 @@ spec:
                         type: array
                     required:
                     - consumeReservationType
+                    type: object
+                  resourceLabels:
+                    additionalProperties:
+                      type: string
+                    description: The GCE resource labels (a map of key/value pairs)
+                      to be applied to the node pool.
                     type: object
                   sandboxConfig:
                     description: Immutable. Sandbox configuration for this node.
@@ -533,6 +545,31 @@ spec:
                   is the sum of max_surge and max_unavailable. The maximum number
                   of nodes upgraded simultaneously is limited to 20.
                 properties:
+                  blueGreenSettings:
+                    description: Settings for BlueGreen node pool upgrade.
+                    properties:
+                      nodePoolSoakDuration:
+                        description: Time needed after draining entire blue pool.
+                          After this period, blue pool will be cleaned up.
+                        type: string
+                      standardRolloutPolicy:
+                        description: Standard rollout policy is the default policy
+                          for blue-green.
+                        properties:
+                          batchNodeCount:
+                            description: Number of blue nodes to drain in a batch.
+                            type: integer
+                          batchPercentage:
+                            description: Percentage of the blue pool nodes to drain
+                              in a batch.
+                            type: number
+                          batchSoakDuration:
+                            description: Soak time after each batch gets drained.
+                            type: string
+                        type: object
+                    required:
+                    - standardRolloutPolicy
+                    type: object
                   maxSurge:
                     description: The number of additional nodes that can be added
                       to the node pool during an upgrade. Increasing max_surge raises
@@ -545,9 +582,9 @@ spec:
                       of nodes that can be upgraded in parallel. Can be set to 0 or
                       greater.
                     type: integer
-                required:
-                - maxSurge
-                - maxUnavailable
+                  strategy:
+                    description: Update strategy for the given nodepool.
+                    type: string
                 type: object
               version:
                 type: string

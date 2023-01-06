@@ -19,22 +19,22 @@ metadata:
     cnrm.cloud.google.com/version: 1.99.0
   creationTimestamp: null
   labels:
-    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: stable
+    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-  name: gameservicesrealms.gameservices.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true"
+  name: tagstagkeys.tags.cnrm.cloud.google.com
 spec:
-  group: gameservices.cnrm.cloud.google.com
+  group: tags.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: GameServicesRealm
-    plural: gameservicesrealms
+    kind: TagsTagKey
+    plural: tagstagkeys
     shortNames:
-    - gcpgameservicesrealm
-    - gcpgameservicesrealms
-    singular: gameservicesrealm
+    - gcptagstagkey
+    - gcptagstagkeys
+    singular: tagstagkey
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -72,24 +72,41 @@ spec:
           spec:
             properties:
               description:
-                description: Human readable description of the realm.
+                description: User-assigned description of the TagKey. Must not exceed
+                  256 characters.
                 type: string
-              location:
-                description: Immutable. The location for this realm.
+              parent:
+                description: Immutable. Input only. The resource name of the new TagKey's
+                  parent. Must be of the form organizations/{org_id}.
                 type: string
+              purpose:
+                description: |-
+                  Immutable. Optional. A purpose cannot be changed once set.
+
+                  A purpose denotes that this Tag is intended for use in policies of a specific policy engine, and will involve that policy engine in management operations involving this Tag. Possible values: ["GCE_FIREWALL"].
+                type: string
+              purposeData:
+                additionalProperties:
+                  type: string
+                description: |-
+                  Immutable. Optional. Purpose data cannot be changed once set.
+
+                  Purpose data corresponds to the policy system that the tag is intended for. For example, the GCE_FIREWALL purpose expects data in the following format: 'network = "<project-name>/<vpc-name>"'.
+                type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: Immutable. Optional. The service-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
                 type: string
-              timeZone:
-                description: 'Required. Time zone where all policies targeting this
-                  realm are evaluated. The value of this field must be from the IANA
-                  time zone database: https://www.iana.org/time-zones.'
+              shortName:
+                description: |-
+                  Immutable. Input only. The user friendly name for a TagKey. The short name should be unique for TagKeys within the same tag namespace.
+
+                  The short name must be 1-63 characters, beginning and ending with an alphanumeric character ([a-z0-9A-Z]) with dashes (-), underscores (_), dots (.), and alphanumerics between.
                 type: string
             required:
-            - location
-            - timeZone
+            - parent
+            - shortName
             type: object
           status:
             properties:
@@ -120,8 +137,16 @@ spec:
                   type: object
                 type: array
               createTime:
-                description: Output only. The creation time.
-                format: date-time
+                description: |-
+                  Output only. Creation time.
+
+                  A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".
+                type: string
+              name:
+                description: The generated numeric id for the TagKey.
+                type: string
+              namespacedName:
+                description: Output only. Namespaced name of the TagKey.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -131,8 +156,10 @@ spec:
                   the resource.
                 type: integer
               updateTime:
-                description: Output only. The last-modified time.
-                format: date-time
+                description: |-
+                  Output only. Update time.
+
+                  A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".
                 type: string
             type: object
         required:

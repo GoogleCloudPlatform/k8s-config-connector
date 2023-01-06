@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.98.0
+    cnrm.cloud.google.com/version: 1.99.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -344,6 +344,9 @@ spec:
                   collation:
                     description: Immutable. The name of server instance collation.
                     type: string
+                  connectorEnforcement:
+                    description: Specifies if connections must use Cloud SQL connectors.
+                    type: string
                   crashSafeReplication:
                     description: |-
                       DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
@@ -363,6 +366,28 @@ spec:
                       - value
                       type: object
                     type: array
+                  denyMaintenancePeriod:
+                    properties:
+                      endDate:
+                        description: End date before which maintenance will not take
+                          place. The date is in format yyyy-mm-dd i.e., 2020-11-01,
+                          or mm-dd, i.e., 11-01.
+                        type: string
+                      startDate:
+                        description: Start date after which maintenance will not take
+                          place. The date is in format yyyy-mm-dd i.e., 2020-11-01,
+                          or mm-dd, i.e., 11-01.
+                        type: string
+                      time:
+                        description: 'Time in UTC when the "deny maintenance period"
+                          starts on start_date and ends on end_date. The time is in
+                          format: HH:mm:SS, i.e., 00:00:00.'
+                        type: string
+                    required:
+                    - endDate
+                    - startDate
+                    - time
+                    type: object
                   diskAutoresize:
                     description: Enables auto-resizing of the storage size. Defaults
                       to true.
@@ -387,6 +412,11 @@ spec:
                       queryInsightsEnabled:
                         description: True if Query Insights feature is enabled.
                         type: boolean
+                      queryPlansPerMinute:
+                        description: Number of query execution plans captured by Insights
+                          per minute for all queries combined. Between 0 and 20. Default
+                          to 5.
+                        type: integer
                       queryStringLength:
                         description: Maximum query length stored in bytes. Between
                           256 and 4500. Default to 1024.
@@ -569,7 +599,7 @@ spec:
                       custom machine types.
                     type: string
                   timeZone:
-                    description: Immutable. The timezone to be used by the database
+                    description: Immutable. The time_zone to be used by the database
                       engine (supported only for SQL Server), in SQL Server timezone
                       format.
                     type: string

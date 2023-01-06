@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.98.0
+    cnrm.cloud.google.com/version: 1.99.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -73,12 +73,10 @@ spec:
             properties:
               defaultRouteAction:
                 description: |-
-                  defaultRouteAction takes effect when none of the hostRules match. The load balancer performs advanced routing actions
-                  like URL rewrites, header transformations, etc. prior to forwarding the request to the selected backend.
-                  If defaultRouteAction specifies any weightedBackendServices, defaultService must not be set. Conversely if defaultService
-                  is set, defaultRouteAction cannot contain any weightedBackendServices.
-
+                  defaultRouteAction takes effect when none of the hostRules match. The load balancer performs advanced routing actions, such as URL rewrites and header transformations, before forwarding the request to the selected backend. If defaultRouteAction specifies any weightedBackendServices, defaultService must not be set. Conversely if defaultService is set, defaultRouteAction cannot contain any weightedBackendServices.
                   Only one of defaultRouteAction or defaultUrlRedirect must be set.
+                  URL maps for Classic external HTTP(S) load balancers only support the urlRewrite action within defaultRouteAction.
+                  defaultRouteAction has no effect when the URL map is bound to a target gRPC proxy that has the validateForProxyless field set to true.
                 properties:
                   corsPolicy:
                     description: |-
@@ -87,8 +85,8 @@ spec:
                     properties:
                       allowCredentials:
                         description: |-
-                          In response to a preflight request, setting this to true indicates that the actual request can include user credentials.
-                          This translates to the Access-Control-Allow-Credentials header.
+                          In response to a preflight request, setting this to true indicates that the actual request can include user credentials. This field translates to the Access-Control-Allow-Credentials header.
+                          Default is false.
                         type: boolean
                       allowHeaders:
                         description: Specifies the content for the Access-Control-Allow-Headers
@@ -104,7 +102,7 @@ spec:
                         type: array
                       allowOriginRegexes:
                         description: |-
-                          Specifies the regular expression patterns that match allowed origins. For regular expression grammar
+                          Specifies the regualar expression patterns that match allowed origins. For regular expression grammar
                           please see en.cppreference.com/w/cpp/regex/ecmascript
                           An origin is allowed if it matches either an item in allowOrigins or an item in allowOriginRegexes.
                         items:
@@ -118,9 +116,9 @@ spec:
                           type: string
                         type: array
                       disabled:
-                        description: If true, specifies the CORS policy is disabled.
-                          The default value is false, which indicates that the CORS
-                          policy is in effect.
+                        description: If true, the setting specifies the CORS policy
+                          is disabled. The default value of false, which indicates
+                          that the CORS policy is in effect.
                         type: boolean
                       exposeHeaders:
                         description: Specifies the content for the Access-Control-Expose-Headers
@@ -137,11 +135,10 @@ spec:
                   faultInjectionPolicy:
                     description: |-
                       The specification for fault injection introduced into traffic to test the resiliency of clients to backend service failure.
-                      As part of fault injection, when clients send requests to a backend service, delays can be introduced by Loadbalancer on a
-                      percentage of requests before sending those request to the backend service. Similarly requests from clients can be aborted
-                      by the Loadbalancer for a percentage of requests.
-
-                      timeout and retryPolicy will be ignored by clients that are configured with a faultInjectionPolicy.
+                      As part of fault injection, when clients send requests to a backend service, delays can be introduced by a load balancer on a percentage of requests before sending those requests to the backend service.
+                      Similarly requests from clients can be aborted by the load balancer for a percentage of requests.
+                      timeout and retryPolicy is ignored by clients that are configured with a faultInjectionPolicy if: 1. The traffic is generated by fault injection AND 2. The fault injection is not a delay fault injection.
+                      Fault injection is not supported with the global external HTTP(S) load balancer (classic). To see which load balancers support fault injection, see Load balancing: [Routing and traffic management features](https://cloud.google.com/load-balancing/docs/features#routing-traffic-management).
                     properties:
                       abort:
                         description: The specification for how client requests are
@@ -187,12 +184,17 @@ spec:
                   requestMirrorPolicy:
                     description: |-
                       Specifies the policy on how requests intended for the route's backends are shadowed to a separate mirrored backend service.
-                      Loadbalancer does not wait for responses from the shadow service. Prior to sending traffic to the shadow service,
-                      the host / authority header is suffixed with -shadow.
+                      The load balancer does not wait for responses from the shadow service. Before sending traffic to the shadow service, the host / authority header is suffixed with -shadow.
+                      Not supported when the URL map is bound to a target gRPC proxy that has the validateForProxyless field set to true.
                     properties:
                       backendServiceRef:
-                        description: Required. The backend service resource being
-                          mirrored to.
+                        description: |-
+                          The backend service resource being mirrored to.
+                          The backend service configured for a mirroring policy must reference
+                          backends that are of the same type as the original backend service
+                          matched in the URL map.
+                          Serverless NEG backends are not currently supported as a mirrored
+                          backend service.
                         oneOf:
                         - not:
                             required:
@@ -209,8 +211,8 @@ spec:
                           - external
                         properties:
                           external:
-                            description: 'Allowed value: The `name` field of a `ComputeBackendService`
-                              resource.'
+                            description: 'Allowed value: The `selfLink` field of a
+                              `ComputeBackendService` resource.'
                             type: string
                           name:
                             description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -219,8 +221,6 @@ spec:
                             description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                             type: string
                         type: object
-                    required:
-                    - backendServiceRef
                     type: object
                   retryPolicy:
                     description: Specifies the retry policy associated with this route.
@@ -249,73 +249,62 @@ spec:
                         type: object
                       retryConditions:
                         description: |-
-                          Specfies one or more conditions when this retry rule applies. Valid values are:
-
-                          * 5xx: Loadbalancer will attempt a retry if the backend service responds with any 5xx response code,
-                            or if the backend service does not respond at all, example: disconnects, reset, read timeout,
-                          * connection failure, and refused streams.
-                          * gateway-error: Similar to 5xx, but only applies to response codes 502, 503 or 504.
-                          * connect-failure: Loadbalancer will retry on failures connecting to backend services,
-                            for example due to connection timeouts.
-                          * retriable-4xx: Loadbalancer will retry for retriable 4xx response codes.
-                            Currently the only retriable error supported is 409.
-                          * refused-stream:Loadbalancer will retry if the backend service resets the stream with a REFUSED_STREAM error code.
-                            This reset type indicates that it is safe to retry.
-                          * cancelled: Loadbalancer will retry if the gRPC status code in the response header is set to cancelled
-                          * deadline-exceeded: Loadbalancer will retry if the gRPC status code in the response header is set to deadline-exceeded
-                          * resource-exhausted: Loadbalancer will retry if the gRPC status code in the response header is set to resource-exhausted
-                          * unavailable: Loadbalancer will retry if the gRPC status code in the response header is set to unavailable.
+                          Specifies one or more conditions when this retry policy applies.
+                          Valid values are listed below. Only the following codes are supported when the URL map is bound to target gRPC proxy that has validateForProxyless field set to true: cancelled, deadline-exceeded, internal, resource-exhausted, unavailable.
+                            - 5xx : retry is attempted if the instance or endpoint responds with any 5xx response code, or if the instance or endpoint does not respond at all. For example, disconnects, reset, read timeout, connection failure, and refused streams.
+                            - gateway-error : Similar to 5xx, but only applies to response codes 502, 503 or 504.
+                            - connect-failure : a retry is attempted on failures connecting to the instance or endpoint. For example, connection timeouts.
+                            - retriable-4xx : a retry is attempted if the instance or endpoint responds with a 4xx response code. The only error that you can retry is error code 409.
+                            - refused-stream : a retry is attempted if the instance or endpoint resets the stream with a REFUSED_STREAM error code. This reset type indicates that it is safe to retry.
+                            - cancelled : a retry is attempted if the gRPC status code in the response header is set to cancelled.
+                            - deadline-exceeded : a retry is attempted if the gRPC status code in the response header is set to deadline-exceeded.
+                            - internal :  a retry is attempted if the gRPC status code in the response header is set to internal.
+                            - resource-exhausted : a retry is attempted if the gRPC status code in the response header is set to resource-exhausted.
+                            - unavailable : a retry is attempted if the gRPC status code in the response header is set to unavailable.
                         items:
                           type: string
                         type: array
                     type: object
                   timeout:
                     description: |-
-                      Specifies the timeout for the selected route. Timeout is computed from the time the request has been
-                      fully processed (i.e. end-of-stream) up until the response has been completely processed. Timeout includes all retries.
-
-                      If not specified, will use the largest timeout among all backend services associated with the route.
+                      Specifies the timeout for the selected route. Timeout is computed from the time the request has been fully processed (known as end-of-stream) up until the response has been processed. Timeout includes all retries.
+                      If not specified, this field uses the largest timeout among all backend services associated with the route.
+                      Not supported when the URL map is bound to a target gRPC proxy that has validateForProxyless field set to true.
                     properties:
                       nanos:
-                        description: |-
-                          Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented
-                          with a 0 seconds field and a positive nanos field. Must be from 0 to 999,999,999 inclusive.
+                        description: Span of time that's a fraction of a second at
+                          nanosecond resolution. Durations less than one second are
+                          represented with a 0 seconds field and a positive nanos
+                          field. Must be from 0 to 999,999,999 inclusive.
                         type: integer
                       seconds:
-                        description: |-
-                          Span of time at a resolution of a second. Must be from 0 to 315,576,000,000 inclusive.
-                          Note: these bounds are computed from: 60 sec/min * 60 min/hr * 24 hr/day * 365.25 days/year * 10000 years.
+                        description: 'Span of time at a resolution of a second. Must
+                          be from 0 to 315,576,000,000 inclusive. Note: these bounds
+                          are computed from: 60 sec/min * 60 min/hr * 24 hr/day *
+                          365.25 days/year * 10000 years.'
                         type: string
                     type: object
                   urlRewrite:
-                    description: The spec to modify the URL of the request, prior
-                      to forwarding the request to the matched service.
+                    description: |-
+                      The spec to modify the URL of the request, before forwarding the request to the matched service.
+                      urlRewrite is the only action supported in UrlMaps for external HTTP(S) load balancers.
+                      Not supported when the URL map is bound to a target gRPC proxy that has the validateForProxyless field set to true.
                     properties:
                       hostRewrite:
                         description: |-
-                          Prior to forwarding the request to the selected service, the request's host header is replaced
-                          with contents of hostRewrite.
-
-                          The value must be between 1 and 255 characters.
+                          Before forwarding the request to the selected service, the request's host header is replaced with contents of hostRewrite.
+                          The value must be from 1 to 255 characters.
                         type: string
                       pathPrefixRewrite:
                         description: |-
-                          Prior to forwarding the request to the selected backend service, the matching portion of the
-                          request's path is replaced by pathPrefixRewrite.
-
-                          The value must be between 1 and 1024 characters.
+                          Before forwarding the request to the selected backend service, the matching portion of the request's path is replaced by pathPrefixRewrite.
+                          The value must be from 1 to 1024 characters.
                         type: string
                     type: object
                   weightedBackendServices:
                     description: |-
-                      A list of weighted backend services to send traffic to when a route match occurs.
-                      The weights determine the fraction of traffic that flows to their corresponding backend service.
-                      If all traffic needs to go to a single backend service, there must be one weightedBackendService
-                      with weight set to a non 0 number.
-
-                      Once a backendService is identified and before forwarding the request to the backend service,
-                      advanced routing actions like Url rewrites and header transformations are applied depending on
-                      additional settings specified in this HttpRouteAction.
+                      A list of weighted backend services to send traffic to when a route match occurs. The weights determine the fraction of traffic that flows to their corresponding backend service. If all traffic needs to go to a single backend service, there must be one weightedBackendService with weight set to a non-zero number.
+                      After a backend service is identified and before forwarding the request to the backend service, advanced routing actions such as URL rewrites and header transformations are applied depending on additional settings specified in this HttpRouteAction.
                     items:
                       properties:
                         backendServiceRef:
@@ -340,8 +329,8 @@ spec:
                             - external
                           properties:
                             external:
-                              description: 'Allowed value: The `name` field of a `ComputeBackendService`
-                                resource.'
+                              description: 'Allowed value: The `selfLink` field of
+                                a `ComputeBackendService` resource.'
                               type: string
                             name:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -353,73 +342,67 @@ spec:
                           type: object
                         headerAction:
                           description: |-
-                            Specifies changes to request and response headers that need to take effect for
-                            the selected backendService.
-
-                            headerAction specified here take effect before headerAction in the enclosing
-                            HttpRouteRule, PathMatcher and UrlMap.
+                            Specifies changes to request and response headers that need to take effect for the selected backendService.
+                            headerAction specified here take effect before headerAction in the enclosing HttpRouteRule, PathMatcher and UrlMap.
+                            headerAction is not supported for load balancers that have their loadBalancingScheme set to EXTERNAL.
+                            Not supported when the URL map is bound to a target gRPC proxy that has validateForProxyless field set to true.
                           properties:
                             requestHeadersToAdd:
-                              description: Headers to add to a matching request prior
-                                to forwarding the request to the backendService.
+                              description: Headers to add to a matching request before
+                                forwarding the request to the backendService.
                               items:
                                 properties:
                                   headerName:
-                                    description: The name of the header to add.
+                                    description: The name of the header.
                                     type: string
                                   headerValue:
                                     description: The value of the header to add.
                                     type: string
                                   replace:
                                     description: |-
-                                      If false, headerValue is appended to any values that already exist for the header.
-                                      If true, headerValue is set for the header, discarding any values that were set for that header.
+                                      If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header.
+                                      The default value is false.
                                     type: boolean
                                 type: object
                               type: array
                             requestHeadersToRemove:
-                              description: |-
-                                A list of header names for headers that need to be removed from the request prior to
-                                forwarding the request to the backendService.
+                              description: A list of header names for headers that
+                                need to be removed from the request before forwarding
+                                the request to the backendService.
                               items:
                                 type: string
                               type: array
                             responseHeadersToAdd:
-                              description: Headers to add the response prior to sending
+                              description: Headers to add the response before sending
                                 the response back to the client.
                               items:
                                 properties:
                                   headerName:
-                                    description: The name of the header to add.
+                                    description: The name of the header.
                                     type: string
                                   headerValue:
                                     description: The value of the header to add.
                                     type: string
                                   replace:
                                     description: |-
-                                      If false, headerValue is appended to any values that already exist for the header.
-                                      If true, headerValue is set for the header, discarding any values that were set for that header.
+                                      If false, headerValue is appended to any values that already exist for the header. If true, headerValue is set for the header, discarding any values that were set for that header.
+                                      The default value is false.
                                     type: boolean
                                 type: object
                               type: array
                             responseHeadersToRemove:
-                              description: |-
-                                A list of header names for headers that need to be removed from the response prior to sending the
-                                response back to the client.
+                              description: A list of header names for headers that
+                                need to be removed from the response before sending
+                                the response back to the client.
                               items:
                                 type: string
                               type: array
                           type: object
                         weight:
                           description: |-
-                            Specifies the fraction of traffic sent to backendService, computed as
-                            weight / (sum of all weightedBackendService weights in routeAction) .
-
-                            The selection of a backend service is determined only for new traffic. Once a user's request
-                            has been directed to a backendService, subsequent requests will be sent to the same backendService
-                            as determined by the BackendService's session affinity policy.
-
-                            The value must be between 0 and 1000.
+                            Specifies the fraction of traffic sent to a backend service, computed as weight / (sum of all weightedBackendService weights in routeAction) .
+                            The selection of a backend service is determined only for new traffic. Once a user's request has been directed to a backend service, subsequent requests are sent to the same backend service as determined by the backend service's session affinity policy.
+                            The value must be from 0 to 1000.
                           type: integer
                       type: object
                     type: array
@@ -810,8 +793,8 @@ spec:
                                 - external
                               properties:
                                 external:
-                                  description: 'Allowed value: The `name` field of
-                                    a `ComputeBackendService` resource.'
+                                  description: 'Allowed value: The `selfLink` field
+                                    of a `ComputeBackendService` resource.'
                                   type: string
                                 name:
                                   description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -944,7 +927,7 @@ spec:
                                   - external
                                 properties:
                                   external:
-                                    description: 'Allowed value: The `name` field
+                                    description: 'Allowed value: The `selfLink` field
                                       of a `ComputeBackendService` resource.'
                                     type: string
                                   name:

@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.98.0
+    cnrm.cloud.google.com/version: 1.99.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -916,6 +916,10 @@ spec:
                 - disruptionBudget
                 - minWaitDuration
                 type: object
+              skipAwaitRollout:
+                description: Set to true to skip awaiting rollout during resource
+                  creation and update.
+                type: boolean
             required:
             - instanceFilter
             - location

@@ -19,22 +19,22 @@ metadata:
     cnrm.cloud.google.com/version: 1.99.0
   creationTimestamp: null
   labels:
-    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: stable
+    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-  name: logginglogbuckets.logging.cnrm.cloud.google.com
+    cnrm.cloud.google.com/tf2crd: "true"
+  name: datacatalogpolicytags.datacatalog.cnrm.cloud.google.com
 spec:
-  group: logging.cnrm.cloud.google.com
+  group: datacatalog.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: LoggingLogBucket
-    plural: logginglogbuckets
+    kind: DataCatalogPolicyTag
+    plural: datacatalogpolicytags
     shortNames:
-    - gcplogginglogbucket
-    - gcplogginglogbuckets
-    singular: logginglogbucket
+    - gcpdatacatalogpolicytag
+    - gcpdatacatalogpolicytags
+    singular: datacatalogpolicytag
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -70,95 +70,21 @@ spec:
           metadata:
             type: object
           spec:
-            oneOf:
-            - required:
-              - billingAccountRef
-            - required:
-              - folderRef
-            - required:
-              - organizationRef
-            - required:
-              - projectRef
             properties:
-              billingAccountRef:
-                description: Immutable. The BillingAccount that this resource belongs
-                  to. Only one of [billingAccountRef, folderRef, organizationRef,
-                  projectRef] may be specified.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: 'Allowed value: The Google Cloud resource name of
-                      a Google Cloud Billing Account (format: `billingAccounts/{{name}}`).'
-                    type: string
-                  name:
-                    description: |-
-                      [WARNING] BillingAccount not yet supported in Config Connector, use 'external' field to reference existing resources.
-                      Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                    type: string
-                  namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                    type: string
-                type: object
               description:
-                description: Describes this bucket.
+                description: |-
+                  Description of this policy tag. It must: contain only unicode characters, tabs,
+                  newlines, carriage returns and page breaks; and be at most 2000 bytes long when
+                  encoded in UTF-8. If not set, defaults to an empty description.
+                  If not set, defaults to an empty description.
                 type: string
-              folderRef:
-                description: Immutable. The Folder that this resource belongs to.
-                  Only one of [billingAccountRef, folderRef, organizationRef, projectRef]
-                  may be specified.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: 'Allowed value: The Google Cloud resource name of
-                      a `Folder` resource (format: `folders/{{name}}`).'
-                    type: string
-                  name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                    type: string
-                  namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                    type: string
-                type: object
-              location:
-                description: 'Immutable. The location of the resource. The supported
-                  locations are: global, us-central1, us-east1, us-west1, asia-east1,
-                  europe-west1.'
+              displayName:
+                description: |-
+                  User defined name of this policy tag. It must: be unique within the parent
+                  taxonomy; contain only unicode letters, numbers, underscores, dashes and spaces;
+                  not start or end with spaces; and be at most 200 bytes long when encoded in UTF-8.
                 type: string
-              locked:
-                description: Whether the bucket has been locked. The retention period
-                  on a locked bucket may not be changed. Locked buckets may only be
-                  deleted if they are empty.
-                type: boolean
-              organizationRef:
-                description: Immutable. The Organization that this resource belongs
-                  to. Only one of [billingAccountRef, folderRef, organizationRef,
-                  projectRef] may be specified.
+              parentPolicyTagRef:
                 oneOf:
                 - not:
                     required:
@@ -175,40 +101,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The Google Cloud resource name of
-                      a Google Cloud Organization (format: `organizations/{{name}}`).'
-                    type: string
-                  name:
-                    description: |-
-                      [WARNING] Organization not yet supported in Config Connector, use 'external' field to reference existing resources.
-                      Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                    type: string
-                  namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                    type: string
-                type: object
-              projectRef:
-                description: Immutable. The Project that this resource belongs to.
-                  Only one of [billingAccountRef, folderRef, organizationRef, projectRef]
-                  may be specified.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: 'Allowed value: The Google Cloud resource name of
-                      a `Project` resource (format: `projects/{{name}}`).'
+                    description: 'Allowed value: The `name` field of a `DataCatalogPolicyTag`
+                      resource.'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -218,22 +112,48 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: Immutable. Optional. The service-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
                 type: string
-              retentionDays:
-                description: Logs will be retained by default for this amount of time,
-                  after which they will automatically be deleted. The minimum retention
-                  period is 1 day. If this value is set to zero at bucket creation
-                  time, the default time of 30 days will be used.
-                format: int64
-                type: integer
+              taxonomyRef:
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: The `name` field of a `DataCatalogTaxonomy`
+                      resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
             required:
-            - location
+            - displayName
+            - taxonomyRef
             type: object
           status:
             properties:
+              childPolicyTags:
+                description: Resource names of child policy tags of this policy tag.
+                items:
+                  type: string
+                type: array
               conditions:
                 description: Conditions represent the latest available observation
                   of the resource's current state.
@@ -260,14 +180,10 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: Output only. The creation timestamp of the bucket. This
-                  is not set for any of the default buckets.
-                format: date-time
-                type: string
-              lifecycleState:
-                description: 'Output only. The bucket lifecycle state. Possible values:
-                  LIFECYCLE_STATE_UNSPECIFIED, ACTIVE, DELETE_REQUESTED'
+              name:
+                description: |-
+                  Resource name of this policy tag, whose format is:
+                  "projects/{project}/locations/{region}/taxonomies/{taxonomy}/policyTags/{policytag}".
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -276,10 +192,6 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              updateTime:
-                description: Output only. The last update timestamp of the bucket.
-                format: date-time
-                type: string
             type: object
         required:
         - spec

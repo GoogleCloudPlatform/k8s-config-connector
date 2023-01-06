@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.98.0
+    cnrm.cloud.google.com/version: 1.99.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -715,8 +715,9 @@ spec:
                   repoType:
                     description: "The type of the repo, since it may not be explicit
                       from the repo field (e.g from a URL). \nValues can be UNKNOWN,
-                      CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET Possible values:
-                      [\"UNKNOWN\", \"CLOUD_SOURCE_REPOSITORIES\", \"GITHUB\", \"BITBUCKET\"]."
+                      CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET_SERVER Possible
+                      values: [\"UNKNOWN\", \"CLOUD_SOURCE_REPOSITORIES\", \"GITHUB\",
+                      \"BITBUCKET_SERVER\"]."
                     type: string
                   revision:
                     description: "The branch, tag, arbitrary ref, or SHA version of
@@ -957,7 +958,7 @@ spec:
                   repoType:
                     description: |-
                       The type of the repo, since it may not be explicit from the repo field (e.g from a URL).
-                      Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET"].
+                      Values can be UNKNOWN, CLOUD_SOURCE_REPOSITORIES, GITHUB, BITBUCKET_SERVER Possible values: ["UNKNOWN", "CLOUD_SOURCE_REPOSITORIES", "GITHUB", "BITBUCKET_SERVER"].
                     type: string
                   uri:
                     description: The URI of the repo (required).

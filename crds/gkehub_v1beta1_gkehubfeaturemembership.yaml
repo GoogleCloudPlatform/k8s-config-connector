@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.98.0
+    cnrm.cloud.google.com/version: 1.99.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -146,6 +146,57 @@ spec:
                           syncWaitSecs:
                             description: 'Period in seconds between consecutive syncs.
                               Default: 15.'
+                            type: string
+                        type: object
+                      oci:
+                        properties:
+                          gcpServiceAccountRef:
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: "The GCP Service Account Email used for
+                                  auth when secret_type is gcpserviceaccount. \n\nAllowed
+                                  value: The `email` field of an `IAMServiceAccount`
+                                  resource."
+                                type: string
+                              name:
+                                description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                type: string
+                              namespace:
+                                description: 'Namespace of the referent. More info:
+                                  https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                type: string
+                            type: object
+                          policyDir:
+                            description: 'The absolute path of the directory that
+                              contains the local resources. Default: the root directory
+                              of the image.'
+                            type: string
+                          secretType:
+                            description: Type of secret configured for access to the
+                              OCI Image. Must be one of gcenode, gcpserviceaccount
+                              or none. The validation of this is case-sensitive.
+                            type: string
+                          syncRepo:
+                            description: The OCI image repository URL for the package
+                              to sync from. e.g. LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY_NAME/PACKAGE_NAME.
+                            type: string
+                          syncWaitSecs:
+                            description: 'Period in seconds(int64 format) between
+                              consecutive syncs. Default: 15.'
                             type: string
                         type: object
                       preventDrift:
@@ -296,6 +347,11 @@ spec:
               mesh:
                 description: Manage Mesh Features
                 properties:
+                  controlPlane:
+                    description: 'Whether to automatically manage Service Mesh control
+                      planes. Possible values: CONTROL_PLANE_MANAGEMENT_UNSPECIFIED,
+                      AUTOMATIC, MANUAL'
+                    type: string
                   management:
                     description: 'Whether to automatically manage Service Mesh. Possible
                       values: MANAGEMENT_UNSPECIFIED, MANAGEMENT_AUTOMATIC, MANAGEMENT_MANUAL'
