@@ -5,4 +5,4 @@ metadata:
 spec:
   description: For keyname resources.
   parent: organizations/${TEST_ORG_ID}
-  shortName: keyname
+  shortName: keyname${uniqueId}
