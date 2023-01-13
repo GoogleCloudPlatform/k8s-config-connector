@@ -46,7 +46,6 @@ import (
 	eventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/eventarc/v1beta1"
 	filestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/filestore/v1beta1"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/firestore/v1beta1"
-	gameservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gameservices/v1beta1"
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1beta1"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1beta1"
 	iapv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iap/v1beta1"
@@ -113,7 +112,6 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	eventarcv1beta1.AddToScheme,
 	filestorev1beta1.AddToScheme,
 	firestorev1beta1.AddToScheme,
-	gameservicesv1beta1.AddToScheme,
 	gkehubv1beta1.AddToScheme,
 	iamv1beta1.AddToScheme,
 	iapv1beta1.AddToScheme,

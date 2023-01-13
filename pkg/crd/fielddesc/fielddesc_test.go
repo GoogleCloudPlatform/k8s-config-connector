@@ -33,9 +33,6 @@ func TestAllCRDsGetSpecAndStatusDescription(t *testing.T) {
 		t.Fatalf("error loading crds: %v", err)
 	}
 	for _, crd := range crds {
-		if crd.Spec.Names.Kind == "ServiceMapping" {
-			continue
-		}
 		fd := fielddesc.GetSpecDescription(&crd)
 		expectedType := "object"
 		if fd.Type != expectedType {

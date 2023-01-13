@@ -157,6 +157,9 @@ func isServiceAccountKeyCRD(crd *apiextensions.CustomResourceDefinition) bool {
 }
 
 func RegisterDefaultController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
+	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
+		return nil, nil
+	}
 	// Depending on which resource it is, we need to register a different controller.
 	var schemaUpdater k8s.SchemaReferenceUpdater
 	switch gvk.Kind {
@@ -207,8 +210,7 @@ func RegisterDefaultController(r *ReconcileRegistration, crd *apiextensions.Cust
 }
 
 func RegisterDeletionDefenderController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, _ schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
-	if crd.Spec.Names.Kind == "ServiceMapping" {
-		// ServiceMapping is a special resource type that does not make a call to an underlying GCP API
+	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
 	if err := deletiondefender.Add(r.mgr, crd); err != nil {
@@ -218,8 +220,7 @@ func RegisterDeletionDefenderController(r *ReconcileRegistration, crd *apiextens
 }
 
 func RegisterUnmanagedDetectorController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, _ schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
-	if crd.Spec.Names.Kind == "ServiceMapping" {
-		// ServiceMapping is a special resource type that does not make a call to an underlying GCP API
+	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
 	if err := unmanageddetector.Add(r.mgr, crd); err != nil {

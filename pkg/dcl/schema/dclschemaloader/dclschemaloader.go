@@ -45,7 +45,6 @@ import (
 	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/dlp/beta"
 	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/eventarc/beta"
 	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/filestore/beta"
-	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/gameservices"
 	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/gkehub/beta"
 	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/iam"
 	_ "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured/google/iap"

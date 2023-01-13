@@ -296,18 +296,6 @@ rules:
   - patch
   - delete
 - apiGroups:
-  - gameservices.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
   - gkehub.cnrm.cloud.google.com
   resources:
   - '*'

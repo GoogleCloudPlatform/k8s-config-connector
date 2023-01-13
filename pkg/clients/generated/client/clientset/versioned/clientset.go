@@ -49,7 +49,6 @@ import (
 	eventarcv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/eventarc/v1beta1"
 	filestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/filestore/v1beta1"
 	firestorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/firestore/v1beta1"
-	gameservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gameservices/v1beta1"
 	gkehubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkehub/v1beta1"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1beta1"
 	iapv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iap/v1beta1"
@@ -112,7 +111,6 @@ type Interface interface {
 	EventarcV1beta1() eventarcv1beta1.EventarcV1beta1Interface
 	FilestoreV1beta1() filestorev1beta1.FilestoreV1beta1Interface
 	FirestoreV1beta1() firestorev1beta1.FirestoreV1beta1Interface
-	GameservicesV1beta1() gameservicesv1beta1.GameservicesV1beta1Interface
 	GkehubV1beta1() gkehubv1beta1.GkehubV1beta1Interface
 	IamV1beta1() iamv1beta1.IamV1beta1Interface
 	IapV1beta1() iapv1beta1.IapV1beta1Interface
@@ -174,7 +172,6 @@ type Clientset struct {
 	eventarcV1beta1             *eventarcv1beta1.EventarcV1beta1Client
 	filestoreV1beta1            *filestorev1beta1.FilestoreV1beta1Client
 	firestoreV1beta1            *firestorev1beta1.FirestoreV1beta1Client
-	gameservicesV1beta1         *gameservicesv1beta1.GameservicesV1beta1Client
 	gkehubV1beta1               *gkehubv1beta1.GkehubV1beta1Client
 	iamV1beta1                  *iamv1beta1.IamV1beta1Client
 	iapV1beta1                  *iapv1beta1.IapV1beta1Client
@@ -326,11 +323,6 @@ func (c *Clientset) FilestoreV1beta1() filestorev1beta1.FilestoreV1beta1Interfac
 // FirestoreV1beta1 retrieves the FirestoreV1beta1Client
 func (c *Clientset) FirestoreV1beta1() firestorev1beta1.FirestoreV1beta1Interface {
 	return c.firestoreV1beta1
-}
-
-// GameservicesV1beta1 retrieves the GameservicesV1beta1Client
-func (c *Clientset) GameservicesV1beta1() gameservicesv1beta1.GameservicesV1beta1Interface {
-	return c.gameservicesV1beta1
 }
 
 // GkehubV1beta1 retrieves the GkehubV1beta1Client
@@ -628,10 +620,6 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
-	cs.gameservicesV1beta1, err = gameservicesv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
-	if err != nil {
-		return nil, err
-	}
 	cs.gkehubV1beta1, err = gkehubv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -801,7 +789,6 @@ func New(c rest.Interface) *Clientset {
 	cs.eventarcV1beta1 = eventarcv1beta1.New(c)
 	cs.filestoreV1beta1 = filestorev1beta1.New(c)
 	cs.firestoreV1beta1 = firestorev1beta1.New(c)
-	cs.gameservicesV1beta1 = gameservicesv1beta1.New(c)
 	cs.gkehubV1beta1 = gkehubv1beta1.New(c)
 	cs.iamV1beta1 = iamv1beta1.New(c)
 	cs.iapV1beta1 = iapv1beta1.New(c)

@@ -144,6 +144,17 @@ var (
 		Namespace: SystemNamespace,
 		Name:      "namespace-id",
 	}
+
+	// IgnoredKindList contains special or deprecated Kinds that should be
+	// ignored by the controllers.
+	IgnoredKindList = map[string]bool{
+		// ServiceMapping is a special resource type that does not make a call
+		// to an underlying GCP API.
+		// In addition, KCC no longer supports ServiceMapping CRD as of v1.50.0.
+		"ServiceMapping": true,
+		// KCC no longer supports GameServicesRealm CRD as of v1.101.0.
+		"GameServicesRealm": true,
+	}
 )
 
 func FormatAnnotation(annotationName string) string {

@@ -408,18 +408,6 @@ var serviceList = []ServiceMetadata{
 		},
 	},
 	{
-		Name:       "GameServices",
-		APIVersion: k8s.KCCAPIVersion,
-		DCLVersion: "ga",
-		Resources: []Resource{
-			{
-				Kind:                         "GameServicesRealm",
-				Releasable:                   true,
-				SupportsContainerAnnotations: true,
-			},
-		},
-	},
-	{
 		Name:       "IAM",
 		APIVersion: k8s.KCCAPIVersion,
 		DCLVersion: "ga",

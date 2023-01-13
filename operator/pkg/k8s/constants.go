@@ -64,11 +64,14 @@ var (
 
 	// IgnoredCRDList contains CRDs that should be ignored by the operator.
 	IgnoredCRDList = map[string]bool{
-		// KCC no longer supports the ServiceMapping CRD as of KCC 1.50.0, but customer
+		// KCC no longer supports the ServiceMapping CRD as of v1.50.0, but customer
 		// clusters may still contain a copy of the CRD and its CRs.
 		// Ignore this CRD and its CRs to avoid blocking deletions of ConfigConnectorContext
 		// objects on their existence (b/195157239).
 		"servicemappings.core.cnrm.cloud.google.com": true,
+		// GameServicesRealm CRD is removed from the install bundle as of
+		// v1.101.0.
+		"gameservicesrealms.gameservices.cnrm.cloud.google.com": true,
 	}
 
 	OperatorNamespaceIDConfigMapNN = types.NamespacedName{

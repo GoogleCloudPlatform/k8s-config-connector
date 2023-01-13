@@ -36,9 +36,9 @@ func TestDCLSchemaLoader_GetDCLSchema(t *testing.T) {
 			name:          "valid ServiceTypeVersion",
 			shouldSucceed: true,
 			stv: dclunstruct.ServiceTypeVersion{
-				Service: "gameservices",
-				Type:    "Realm",
-				Version: "ga",
+				Service: "billingbudgets",
+				Type:    "Budget",
+				Version: "beta",
 			},
 		},
 		{

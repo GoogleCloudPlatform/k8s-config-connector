@@ -93,9 +93,6 @@ var testDisabledList = map[string]bool{
 	"namespace-policy":        true,
 	"service-account-policy":  true,
 	"service-identity-policy": true,
-	// Disable the sample for GameServicesRealm due to service deprecation.
-	// Context can be found at b/240747818.
-	"gameservicesrealm": true,
 
 	// The below tests should stay denylisted until underlying issues are fixed
 	//

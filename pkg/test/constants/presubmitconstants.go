@@ -52,7 +52,6 @@ var (
 		"eventarc":             {"eventarctrigger"},
 		"filestore":            {"filestorebackup"},
 		"firestore":            {"firestoreindex"},
-		"gameservices":         {"gameservicesrealm"},
 		"gkehub":               {"gkehubfeaturemembership"},
 		"iam":                  {"oidcworkloadidentitypoolprovider"},
 		"iap":                  {"iapidentityawareproxyclient"},

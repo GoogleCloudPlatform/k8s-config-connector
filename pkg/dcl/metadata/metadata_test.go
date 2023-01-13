@@ -186,7 +186,6 @@ var kindsThatPrecededHierarchicalRefs = map[string]bool{
 	"DataprocCluster":                      true,
 	"DataprocWorkflowTemplate":             true,
 	"GKEHubMembership":                     true,
-	"GameServicesRealm":                    true,
 	"IAPBrand":                             true,
 	"IAPIdentityAwareProxyClient":          true,
 	"IdentityPlatformOAuthIDPConfig":       true,

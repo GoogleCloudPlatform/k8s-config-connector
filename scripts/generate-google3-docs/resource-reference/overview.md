@@ -393,10 +393,6 @@
   <td><a href="/config-connector/docs/reference/resource-docs/firestore/firestoreindex.md">FirestoreIndex</a></td>
 </tr>
 <tr>
-  <td><a href="/game-servers/docs/">{{game_servers_name}}</a></td>
-  <td><a href="/config-connector/docs/reference/resource-docs/gameservices/gameservicesrealm.md">GameServicesRealm</a></td>
-</tr>
-<tr>
   <td><a class="external" href="https://gkehub.googleapis.com/$discovery/rest?version=v1beta1">GKE Hub</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/gkehub/gkehubmembership.md">GKEHubMembership</a></td>
 </tr>
@@ -755,6 +751,26 @@
 </tbody>
 </table>
 </devsite-filter>
+</div>
+
+{{product_name_short}} stops supporting the following resources starting from
+the corresponding version.
+
+<div>
+<table>
+<thead>
+<tr>
+  <th><strong>{{product_name_short}} Resource Name</strong></th>
+  <th><strong>Deprecation Version</strong></th>
+</tr>
+</thead>
+<tbody class="list">
+<tr>
+  <td>GameServicesRealm</td>
+  <td>1.101.0</td>
+</tr>
+</tbody>
+</table>
 </div>
 
 {% endblock %}
