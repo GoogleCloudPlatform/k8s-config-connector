@@ -22,6 +22,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
+	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
@@ -1135,4 +1136,37 @@ func isAutogenAlphaResource(sm *v1alpha1.ServiceMapping, rc *v1alpha1.ResourceCo
 		return true
 	}
 	return false
+}
+
+func TestDCLBasedResourceIsTrueIFFIsDCLBasedResource(t *testing.T) {
+	t.Parallel()
+	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
+	referencedDCLResources := make([]k8sschema.GroupVersionKind, 0)
+	referencedTFResources := make([]k8sschema.GroupVersionKind, 0)
+	for _, sm := range serviceMappings {
+		for _, r := range sm.Spec.Resources {
+			for _, rr := range r.ResourceReferences {
+				if rr.DCLBasedResource {
+					referencedDCLResources = append(referencedDCLResources, rr.GVK)
+				} else {
+					referencedTFResources = append(referencedTFResources, rr.GVK)
+				}
+			}
+		}
+	}
+	smLoader := dclmetadata.New()
+	for _, gvk := range referencedDCLResources {
+		r, found := smLoader.GetResourceWithGVK(gvk)
+		if !found || !r.Releasable {
+			t.Errorf("%v is listed in servicemappings as a resource reference with "+
+				"`DCLBasedResource: true`, but it is not a DCL-based resource", gvk)
+		}
+	}
+	for _, gvk := range referencedTFResources {
+		r, found := smLoader.GetResourceWithGVK(gvk)
+		if found && r.Releasable {
+			t.Errorf("%v is listed in servicemappings as a resource reference with "+
+				"`DCLBasedResource: false`, but it is a DCL-based resource", gvk)
+		}
+	}
 }

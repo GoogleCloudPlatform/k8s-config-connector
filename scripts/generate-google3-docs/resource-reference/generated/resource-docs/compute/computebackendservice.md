@@ -1407,9 +1407,7 @@ specified, and a health check is required.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Only `external` field is supported to configure the reference.
-
-OAuth2 Client ID for IAP.{% endverbatim %}</p>
+            <p>{% verbatim %}OAuth2 Client ID for IAP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2088,8 +2086,7 @@ load_balancing_scheme set to INTERNAL_SELF_MANAGED.{% endverbatim %}</p>
             <p>{% verbatim %}ClientTlsPolicy is a resource that specifies how a client should
 authenticate connections to backends of a service. This resource itself
 does not affect configuration unless it is attached to a backend
-service resource. *ConfigConnector only supports `external`
-references for this field.*{% endverbatim %}</p>
+service resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

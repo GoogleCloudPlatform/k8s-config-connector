@@ -26,16 +26,15 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func GetReferencedResource(r *Resource, gvk schema.GroupVersionKind,
+func GetReferencedResource(r *Resource, typeConfig corekccv1alpha1.TypeConfig,
 	resourceRef *v1alpha1.ResourceReference, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (rsrc *Resource, err error) {
 	if resourceRef.External != "" {
 		return nil, fmt.Errorf("reference is external: %v", resourceRef.External)
 	}
-	u, err := k8s.GetReferencedResourceAsUnstruct(resourceRef, gvk, r.GetNamespace(), kubeClient)
+	u, err := k8s.GetReferencedResourceAsUnstruct(resourceRef, typeConfig.GVK, r.GetNamespace(), kubeClient)
 	if err != nil {
 		return nil, err
 	}
@@ -43,6 +42,10 @@ func GetReferencedResource(r *Resource, gvk schema.GroupVersionKind,
 	if err := util.Marshal(u, rsrc); err != nil {
 		return nil, fmt.Errorf("error parsing %v", u.GetName())
 	}
+	if typeConfig.DCLBasedResource {
+		return rsrc, nil
+	}
+
 	rc, err := smLoader.GetResourceConfig(u)
 	if err != nil {
 		return nil, fmt.Errorf("error getting ResourceConfig for referenced resource %v: %w", r.GetName(), err)
@@ -176,7 +179,7 @@ func ResolveReferenceObject(resourceRefValRaw map[string]interface{},
 	// (due to, say, the reference having been deleted before) will be learned as a result of the read.
 	deleting := k8s.IsDeleted(&r.ObjectMeta)
 
-	refResource, err := GetReferencedResource(r, typeConfig.GVK, resourceRef, kubeClient, smLoader)
+	refResource, err := GetReferencedResource(r, typeConfig, resourceRef, kubeClient, smLoader)
 	if err != nil {
 		if k8s.IsReferenceNotFoundError(err) {
 			if deleting {
@@ -209,7 +212,7 @@ func resolveTargetFieldValue(r *Resource, tc corekccv1alpha1.TypeConfig) (interf
 	key := text.SnakeCaseToLowerCamelCase(tc.TargetField)
 	switch key {
 	case "":
-		return resolveDefaultTargetFieldValue(r)
+		return resolveDefaultTargetFieldValue(r, tc)
 	default:
 		if val, exists, _ := unstructured.NestedString(r.Spec, strings.Split(key, ".")...); exists {
 			return val, nil
@@ -224,8 +227,8 @@ func resolveTargetFieldValue(r *Resource, tc corekccv1alpha1.TypeConfig) (interf
 	}
 }
 
-func resolveDefaultTargetFieldValue(r *Resource) (interface{}, error) {
-	if !SupportsResourceIDField(&r.ResourceConfig) {
+func resolveDefaultTargetFieldValue(r *Resource, tc corekccv1alpha1.TypeConfig) (interface{}, error) {
+	if !tc.DCLBasedResource && !SupportsResourceIDField(&r.ResourceConfig) {
 		return r.GetName(), nil
 	}
 

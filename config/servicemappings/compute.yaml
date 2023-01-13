@@ -164,24 +164,21 @@ spec:
             ClientTlsPolicy is a resource that specifies how a client should
             authenticate connections to backends of a service. This resource itself
             does not affect configuration unless it is attached to a backend
-            service resource. *ConfigConnector only supports `external`
-            references for this field.*
+            service resource.
           key: clientTLSPolicyRef
           gvk:
             kind: NetworkSecurityClientTLSPolicy
             version: v1beta1
             group: networksecurity.cnrm.cloud.google.com
+          dclBasedResource: true
         - tfField: iap.oauth2_client_id
-          description: |-
-            Only `external` field is supported to configure the reference.
-
-            OAuth2 Client ID for IAP.
+          description: OAuth2 Client ID for IAP.
           key: oauth2ClientIdRef
           gvk:
             kind: IAPIdentityAwareProxyClient
             version: v1beta1
             group: iap.cnrm.cloud.google.com
-          targetField: name
+          dclBasedResource: true
         - tfField: edge_security_policy
           description: |-
             The resource URL for the edge security policy associated with this
@@ -1403,16 +1400,13 @@ spec:
                 group: compute.cnrm.cloud.google.com
               targetField: self_link
         - tfField: iap.oauth2_client_id
-          description: |-
-            Only `external` field is supported to configure the reference.
-
-            OAuth2 Client ID for IAP.
+          description: OAuth2 Client ID for IAP.
           key: oauth2ClientIdRef
           gvk:
             kind: IAPIdentityAwareProxyClient
             version: v1beta1
             group: iap.cnrm.cloud.google.com
-          targetField: name
+          dclBasedResource: true
       containers:
         - type: project
           tfField: project
@@ -1511,8 +1505,6 @@ spec:
       - key: serviceRef
         tfField: cloud_run.service
         description: |-
-          Only `external` field is supported to configure the reference.
-
           Immutable. Cloud Run service is the main resource of Cloud Run.
           The service must be 1-63 characters long, and comply with RFC1035.
           Example value: "run-service".
@@ -1520,12 +1512,10 @@ spec:
           kind: RunService
           version: v1beta1
           group: run.cnrm.cloud.google.com
-        targetField: name
+        dclBasedResource: true
       - key: functionRef
         tfField: cloud_function.function
         description: |-
-          Only `external` field is supported to configure the reference.
-
           Immutable. A user-defined name of the Cloud Function.
           The function name is case-sensitive and must be 1-63 characters long.
           Example value: "func1".
@@ -1533,7 +1523,7 @@ spec:
           kind: CloudFunctionsFunction
           version: v1beta1
           group: cloudfunctions.cnrm.cloud.google.com
-        targetField: name
+        dclBasedResource: true
       - key: networkRef
         tfField: network
         description: |-
@@ -2116,8 +2106,6 @@ spec:
       resourceReferences:
         - tfField: recaptcha_options_config.redirect_site_key
           description: |-
-            Only `external` field is supported to configure the reference.
-
             A field to supply a reCAPTCHA site key to be used for all the rules
             using the redirect action with the type of GOOGLE_RECAPTCHA under
             the security policy. The specified site key needs to be created from
@@ -2130,6 +2118,7 @@ spec:
             version: v1beta1
             group: recaptchaenterprise.cnrm.cloud.google.com
           targetField: name
+          dclBasedResource: true
       containers:
         - type: project
           tfField: project

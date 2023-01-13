@@ -311,6 +311,12 @@ type TypeConfig struct {
 	// e.g. If the template is "projects/{{project}}/topics/{{value}}", the project value
 	// will be sourced from the referenced resource.
 	ValueTemplate string `json:"valueTemplate,omitempty"`
+
+	// DCLBasedResource specifies whether or not the referenced resource is a DCL-based
+	// resource. If this value is omitted, it is assumed to be false, and will only be
+	// included with a value of `true` in the case that the referenced resource is a
+	// DCL-based resource.
+	DCLBasedResource bool `json:"dclBasedResource,omitempty"`
 }
 
 type IAMMemberReferenceConfig struct {
