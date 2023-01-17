@@ -294,6 +294,24 @@ There must be at least one IP address available in the subnet's primary range. T
 				Description:  `The release channel of the service. If unspecified, defaults to 'STABLE'. Default value: "STABLE" Possible values: ["CANARY", "STABLE"]`,
 				Default:      "STABLE",
 			},
+			"telemetry_config": {
+				Type:        schema.TypeList,
+				Computed:    true,
+				Optional:    true,
+				Description: `The configuration specifying telemetry settings for the Dataproc Metastore service. If unspecified defaults to JSON.`,
+				MaxItems:    1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"log_format": {
+							Type:         schema.TypeString,
+							Optional:     true,
+							ValidateFunc: validateEnum([]string{"LEGACY", "JSON", ""}),
+							Description:  `The output format of the Dataproc Metastore service's logs. Default value: "JSON" Possible values: ["LEGACY", "JSON"]`,
+							Default:      "JSON",
+						},
+					},
+				},
+			},
 			"tier": {
 				Type:         schema.TypeString,
 				Computed:     true,
@@ -415,6 +433,12 @@ func resourceDataprocMetastoreServiceCreate(d *schema.ResourceData, meta interfa
 		return err
 	} else if v, ok := d.GetOkExists("metadata_integration"); !isEmptyValue(reflect.ValueOf(metadataIntegrationProp)) && (ok || !reflect.DeepEqual(v, metadataIntegrationProp)) {
 		obj["metadataIntegration"] = metadataIntegrationProp
+	}
+	telemetryConfigProp, err := expandDataprocMetastoreServiceTelemetryConfig(d.Get("telemetry_config"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("telemetry_config"); !isEmptyValue(reflect.ValueOf(telemetryConfigProp)) && (ok || !reflect.DeepEqual(v, telemetryConfigProp)) {
+		obj["telemetryConfig"] = telemetryConfigProp
 	}
 
 	url, err := replaceVars(d, config, "{{DataprocMetastoreBasePath}}projects/{{project}}/locations/{{location}}/services?serviceId={{service_id}}")
@@ -548,6 +572,9 @@ func resourceDataprocMetastoreServiceRead(d *schema.ResourceData, meta interface
 	if err := d.Set("metadata_integration", flattenDataprocMetastoreServiceMetadataIntegration(res["metadataIntegration"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Service: %s", err)
 	}
+	if err := d.Set("telemetry_config", flattenDataprocMetastoreServiceTelemetryConfig(res["telemetryConfig"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Service: %s", err)
+	}
 
 	return nil
 }
@@ -610,6 +637,12 @@ func resourceDataprocMetastoreServiceUpdate(d *schema.ResourceData, meta interfa
 	} else if v, ok := d.GetOkExists("metadata_integration"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, metadataIntegrationProp)) {
 		obj["metadataIntegration"] = metadataIntegrationProp
 	}
+	telemetryConfigProp, err := expandDataprocMetastoreServiceTelemetryConfig(d.Get("telemetry_config"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("telemetry_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, telemetryConfigProp)) {
+		obj["telemetryConfig"] = telemetryConfigProp
+	}
 
 	url, err := replaceVars(d, config, "{{DataprocMetastoreBasePath}}projects/{{project}}/locations/{{location}}/services/{{service_id}}")
 	if err != nil {
@@ -645,6 +678,10 @@ func resourceDataprocMetastoreServiceUpdate(d *schema.ResourceData, meta interfa
 
 	if d.HasChange("metadata_integration") {
 		updateMask = append(updateMask, "metadataIntegration")
+	}
+
+	if d.HasChange("telemetry_config") {
+		updateMask = append(updateMask, "telemetryConfig")
 	}
 	// updateMask is a URL parameter but not present in the schema, so replaceVars
 	// won't set it
@@ -1025,6 +1062,23 @@ func flattenDataprocMetastoreServiceMetadataIntegrationDataCatalogConfigEnabled(
 	return v
 }
 
+func flattenDataprocMetastoreServiceTelemetryConfig(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["log_format"] =
+		flattenDataprocMetastoreServiceTelemetryConfigLogFormat(original["logFormat"], d, config)
+	return []interface{}{transformed}
+}
+func flattenDataprocMetastoreServiceTelemetryConfigLogFormat(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
 func expandDataprocMetastoreServiceLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
@@ -1385,5 +1439,28 @@ func expandDataprocMetastoreServiceMetadataIntegrationDataCatalogConfig(v interf
 }
 
 func expandDataprocMetastoreServiceMetadataIntegrationDataCatalogConfigEnabled(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandDataprocMetastoreServiceTelemetryConfig(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedLogFormat, err := expandDataprocMetastoreServiceTelemetryConfigLogFormat(original["log_format"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedLogFormat); val.IsValid() && !isEmptyValue(val) {
+		transformed["logFormat"] = transformedLogFormat
+	}
+
+	return transformed, nil
+}
+
+func expandDataprocMetastoreServiceTelemetryConfigLogFormat(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }

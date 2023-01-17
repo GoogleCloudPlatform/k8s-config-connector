@@ -61,6 +61,13 @@ var (
 		"config.0.master_authorized_networks_config",
 	}
 
+	workloadsConfigKeys = []string{
+		"config.0.workloads_config.0.scheduler",
+		"config.0.workloads_config.0.triggerer",
+		"config.0.workloads_config.0.web_server",
+		"config.0.workloads_config.0.worker",
+	}
+
 	composerPrivateEnvironmentConfig = []string{
 		"config.0.private_environment_config.0.enable_private_endpoint",
 		"config.0.private_environment_config.0.master_ipv4_cidr_block",
@@ -556,11 +563,12 @@ func resourceComposerEnvironment() *schema.Resource {
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"scheduler": {
-										Type:        schema.TypeList,
-										Optional:    true,
-										ForceNew:    false,
-										Description: `Configuration for resources used by Airflow schedulers.`,
-										MaxItems:    1,
+										Type:         schema.TypeList,
+										Optional:     true,
+										AtLeastOneOf: workloadsConfigKeys,
+										ForceNew:     false,
+										Description:  `Configuration for resources used by Airflow schedulers.`,
+										MaxItems:     1,
 										Elem: &schema.Resource{
 											Schema: map[string]*schema.Schema{
 												"cpu": {
@@ -594,12 +602,42 @@ func resourceComposerEnvironment() *schema.Resource {
 											},
 										},
 									},
+									"triggerer": {
+										Type:         schema.TypeList,
+										Optional:     true,
+										AtLeastOneOf: workloadsConfigKeys,
+										Description:  `Configuration for resources used by Airflow triggerers.`,
+										MaxItems:     1,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"cpu": {
+													Type:         schema.TypeFloat,
+													Required:     true,
+													ValidateFunc: validation.FloatAtLeast(0),
+													Description:  `CPU request and limit for a single Airflow triggerer replica.`,
+												},
+												"memory_gb": {
+													Type:         schema.TypeFloat,
+													Required:     true,
+													ValidateFunc: validation.FloatAtLeast(0),
+													Description:  `Memory (GB) request and limit for a single Airflow triggerer replica.`,
+												},
+												"count": {
+													Type:         schema.TypeInt,
+													Required:     true,
+													ValidateFunc: validation.IntAtLeast(0),
+													Description:  `The number of triggerers.`,
+												},
+											},
+										},
+									},
 									"web_server": {
-										Type:        schema.TypeList,
-										Optional:    true,
-										ForceNew:    false,
-										Description: `Configuration for resources used by Airflow web server.`,
-										MaxItems:    1,
+										Type:         schema.TypeList,
+										Optional:     true,
+										AtLeastOneOf: workloadsConfigKeys,
+										ForceNew:     false,
+										Description:  `Configuration for resources used by Airflow web server.`,
+										MaxItems:     1,
 										Elem: &schema.Resource{
 											Schema: map[string]*schema.Schema{
 												"cpu": {
@@ -627,11 +665,12 @@ func resourceComposerEnvironment() *schema.Resource {
 										},
 									},
 									"worker": {
-										Type:        schema.TypeList,
-										Optional:    true,
-										ForceNew:    false,
-										Description: `Configuration for resources used by Airflow workers.`,
-										MaxItems:    1,
+										Type:         schema.TypeList,
+										Optional:     true,
+										AtLeastOneOf: workloadsConfigKeys,
+										ForceNew:     false,
+										Description:  `Configuration for resources used by Airflow workers.`,
+										MaxItems:     1,
 										Elem: &schema.Resource{
 											Schema: map[string]*schema.Schema{
 												"cpu": {
@@ -1232,10 +1271,12 @@ func flattenComposerEnvironmentConfigWorkloadsConfig(workloadsConfig *composer.W
 
 	transformed := make(map[string]interface{})
 	transformedScheduler := make(map[string]interface{})
+	transformedTriggerer := make(map[string]interface{})
 	transformedWebServer := make(map[string]interface{})
 	transformedWorker := make(map[string]interface{})
 
 	wlCfgScheduler := workloadsConfig.Scheduler
+	wlCfgTriggerer := workloadsConfig.Triggerer
 	wlCfgWebServer := workloadsConfig.WebServer
 	wlCfgWorker := workloadsConfig.Worker
 
@@ -1246,6 +1287,14 @@ func flattenComposerEnvironmentConfigWorkloadsConfig(workloadsConfig *composer.W
 		transformedScheduler["memory_gb"] = wlCfgScheduler.MemoryGb
 		transformedScheduler["storage_gb"] = wlCfgScheduler.StorageGb
 		transformedScheduler["count"] = wlCfgScheduler.Count
+	}
+
+	if wlCfgTriggerer == nil {
+		transformedTriggerer = nil
+	} else {
+		transformedTriggerer["cpu"] = wlCfgTriggerer.Cpu
+		transformedTriggerer["memory_gb"] = wlCfgTriggerer.MemoryGb
+		transformedTriggerer["count"] = wlCfgTriggerer.Count
 	}
 
 	if wlCfgWebServer == nil {
@@ -1267,6 +1316,9 @@ func flattenComposerEnvironmentConfigWorkloadsConfig(workloadsConfig *composer.W
 	}
 
 	transformed["scheduler"] = []interface{}{transformedScheduler}
+	if transformedTriggerer != nil {
+		transformed["triggerer"] = []interface{}{transformedTriggerer}
+	}
 	transformed["web_server"] = []interface{}{transformedWebServer}
 	transformed["worker"] = []interface{}{transformedWorker}
 
@@ -1601,6 +1653,17 @@ func expandComposerEnvironmentConfigWorkloadsConfig(v interface{}, d *schema.Res
 			transformedScheduler.MemoryGb = originalSchedulerRaw["memory_gb"].(float64)
 			transformedScheduler.StorageGb = originalSchedulerRaw["storage_gb"].(float64)
 			transformed.Scheduler = transformedScheduler
+		}
+	}
+
+	if v, ok := original["triggerer"]; ok {
+		if len(v.([]interface{})) > 0 && v.([]interface{})[0] != nil {
+			transformedTriggerer := &composer.TriggererResource{}
+			originalTriggererRaw := v.([]interface{})[0].(map[string]interface{})
+			transformedTriggerer.Count = int64(originalTriggererRaw["count"].(int))
+			transformedTriggerer.Cpu = originalTriggererRaw["cpu"].(float64)
+			transformedTriggerer.MemoryGb = originalTriggererRaw["memory_gb"].(float64)
+			transformed.Triggerer = transformedTriggerer
 		}
 	}
 

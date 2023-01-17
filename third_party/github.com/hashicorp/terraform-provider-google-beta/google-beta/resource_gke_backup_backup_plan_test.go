@@ -16,7 +16,7 @@ func TestAccGKEBackupBackupPlan_update(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckGKEBackupBackupPlanDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -42,7 +42,6 @@ func TestAccGKEBackupBackupPlan_update(t *testing.T) {
 func testAccGKEBackupBackupPlan_basic(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_container_cluster" "primary" {
-  provider = google-beta
   name               = "tf-test-testcluster%{random_suffix}"
   location           = "us-central1"
   initial_node_count = 1
@@ -57,7 +56,6 @@ resource "google_container_cluster" "primary" {
 }
 	
 resource "google_gke_backup_backup_plan" "backupplan" {
-  provider = google-beta
   name = "tf-test-testplan%{random_suffix}"
   cluster = google_container_cluster.primary.id
   location = "us-central1"
@@ -73,7 +71,6 @@ resource "google_gke_backup_backup_plan" "backupplan" {
 func testAccGKEBackupBackupPlan_full(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_container_cluster" "primary" {
-  provider = google-beta
   name               = "tf-test-testcluster%{random_suffix}"
   location           = "us-central1"
   initial_node_count = 1
@@ -88,7 +85,6 @@ resource "google_container_cluster" "primary" {
 }
 	
 resource "google_gke_backup_backup_plan" "backupplan" {
-  provider = google-beta
   name = "tf-test-testplan%{random_suffix}"
   cluster = google_container_cluster.primary.id
   location = "us-central1"

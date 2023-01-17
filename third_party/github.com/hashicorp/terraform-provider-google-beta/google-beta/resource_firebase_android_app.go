@@ -45,7 +45,7 @@ func resourceFirebaseAndroidApp() *schema.Resource {
 			"display_name": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: `The user-assigned display name of the App.`,
+				Description: `The user-assigned display name of the AndroidApp.`,
 			},
 			"deletion_policy": {
 				Type:     schema.TypeString,
@@ -62,16 +62,38 @@ serving traffic. Set to 'DELETE' to delete the AndroidApp. Default to 'DELETE'.`
 				Description: `Immutable. The canonical package name of the Android app as would appear in the Google Play
 Developer Console.`,
 			},
+			"sha1_hashes": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: `The SHA1 certificate hashes for the AndroidApp.`,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+			},
+			"sha256_hashes": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: `The SHA256 certificate hashes for the AndroidApp.`,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+			},
 			"app_id": {
 				Type:     schema.TypeString,
 				Computed: true,
-				Description: `The globally unique, Firebase-assigned identifier of the App.
+				Description: `The globally unique, Firebase-assigned identifier of the AndroidApp.
 This identifier should be treated as an opaque token, as the data format is not specified.`,
+			},
+			"etag": {
+				Type:     schema.TypeString,
+				Computed: true,
+				Description: `This checksum is computed by the server based on the value of other fields, and it may be sent
+with update requests to ensure the client has an up-to-date value before proceeding.`,
 			},
 			"name": {
 				Type:     schema.TypeString,
 				Computed: true,
-				Description: `The fully qualified resource name of the App, for example:
+				Description: `The fully qualified resource name of the AndroidApp, for example:
 projects/projectId/androidApps/appId`,
 			},
 			"project": {
@@ -104,6 +126,24 @@ func resourceFirebaseAndroidAppCreate(d *schema.ResourceData, meta interface{}) 
 		return err
 	} else if v, ok := d.GetOkExists("package_name"); !isEmptyValue(reflect.ValueOf(packageNameProp)) && (ok || !reflect.DeepEqual(v, packageNameProp)) {
 		obj["packageName"] = packageNameProp
+	}
+	sha1HashesProp, err := expandFirebaseAndroidAppSha1Hashes(d.Get("sha1_hashes"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("sha1_hashes"); !isEmptyValue(reflect.ValueOf(sha1HashesProp)) && (ok || !reflect.DeepEqual(v, sha1HashesProp)) {
+		obj["sha1Hashes"] = sha1HashesProp
+	}
+	sha256HashesProp, err := expandFirebaseAndroidAppSha256Hashes(d.Get("sha256_hashes"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("sha256_hashes"); !isEmptyValue(reflect.ValueOf(sha256HashesProp)) && (ok || !reflect.DeepEqual(v, sha256HashesProp)) {
+		obj["sha256Hashes"] = sha256HashesProp
+	}
+	etagProp, err := expandFirebaseAndroidAppEtag(d.Get("etag"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("etag"); !isEmptyValue(reflect.ValueOf(etagProp)) && (ok || !reflect.DeepEqual(v, etagProp)) {
+		obj["etag"] = etagProp
 	}
 
 	url, err := replaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}/androidApps")
@@ -212,6 +252,15 @@ func resourceFirebaseAndroidAppRead(d *schema.ResourceData, meta interface{}) er
 	if err := d.Set("package_name", flattenFirebaseAndroidAppPackageName(res["packageName"], d, config)); err != nil {
 		return fmt.Errorf("Error reading AndroidApp: %s", err)
 	}
+	if err := d.Set("sha1_hashes", flattenFirebaseAndroidAppSha1Hashes(res["sha1Hashes"], d, config)); err != nil {
+		return fmt.Errorf("Error reading AndroidApp: %s", err)
+	}
+	if err := d.Set("sha256_hashes", flattenFirebaseAndroidAppSha256Hashes(res["sha256Hashes"], d, config)); err != nil {
+		return fmt.Errorf("Error reading AndroidApp: %s", err)
+	}
+	if err := d.Set("etag", flattenFirebaseAndroidAppEtag(res["etag"], d, config)); err != nil {
+		return fmt.Errorf("Error reading AndroidApp: %s", err)
+	}
 
 	return nil
 }
@@ -244,6 +293,24 @@ func resourceFirebaseAndroidAppUpdate(d *schema.ResourceData, meta interface{}) 
 	} else if v, ok := d.GetOkExists("package_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, packageNameProp)) {
 		obj["packageName"] = packageNameProp
 	}
+	sha1HashesProp, err := expandFirebaseAndroidAppSha1Hashes(d.Get("sha1_hashes"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("sha1_hashes"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, sha1HashesProp)) {
+		obj["sha1Hashes"] = sha1HashesProp
+	}
+	sha256HashesProp, err := expandFirebaseAndroidAppSha256Hashes(d.Get("sha256_hashes"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("sha256_hashes"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, sha256HashesProp)) {
+		obj["sha256Hashes"] = sha256HashesProp
+	}
+	etagProp, err := expandFirebaseAndroidAppEtag(d.Get("etag"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("etag"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, etagProp)) {
+		obj["etag"] = etagProp
+	}
 
 	url, err := replaceVars(d, config, "{{FirebaseBasePath}}{{name}}")
 	if err != nil {
@@ -259,6 +326,18 @@ func resourceFirebaseAndroidAppUpdate(d *schema.ResourceData, meta interface{}) 
 
 	if d.HasChange("package_name") {
 		updateMask = append(updateMask, "packageName")
+	}
+
+	if d.HasChange("sha1_hashes") {
+		updateMask = append(updateMask, "sha1Hashes")
+	}
+
+	if d.HasChange("sha256_hashes") {
+		updateMask = append(updateMask, "sha256Hashes")
+	}
+
+	if d.HasChange("etag") {
+		updateMask = append(updateMask, "etag")
 	}
 	// updateMask is a URL parameter but not present in the schema, so replaceVars
 	// won't set it
@@ -369,10 +448,34 @@ func flattenFirebaseAndroidAppPackageName(v interface{}, d *schema.ResourceData,
 	return v
 }
 
+func flattenFirebaseAndroidAppSha1Hashes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenFirebaseAndroidAppSha256Hashes(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenFirebaseAndroidAppEtag(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
 func expandFirebaseAndroidAppDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
 
 func expandFirebaseAndroidAppPackageName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandFirebaseAndroidAppSha1Hashes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandFirebaseAndroidAppSha256Hashes(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandFirebaseAndroidAppEtag(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }

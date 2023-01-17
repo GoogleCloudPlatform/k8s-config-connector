@@ -164,37 +164,37 @@ type JobSchedule struct {
 	// +optional
 	RepeatInterval *string `json:"repeatInterval,omitempty"`
 
-	/* Immutable. The last day the recurring transfer will be run. If schedule_end_date is the same as schedule_start_date, the transfer will be executed only once. */
+	/* The last day the recurring transfer will be run. If schedule_end_date is the same as schedule_start_date, the transfer will be executed only once. */
 	// +optional
 	ScheduleEndDate *JobScheduleEndDate `json:"scheduleEndDate,omitempty"`
 
-	/* Immutable. The first day the recurring transfer is scheduled to run. If schedule_start_date is in the past, the transfer will run for the first time on the following day. */
+	/* The first day the recurring transfer is scheduled to run. If schedule_start_date is in the past, the transfer will run for the first time on the following day. */
 	ScheduleStartDate JobScheduleStartDate `json:"scheduleStartDate"`
 
-	/* Immutable. The time in UTC at which the transfer will be scheduled to start in a day. Transfers may start later than this time. If not specified, recurring and one-time transfers that are scheduled to run today will run immediately; recurring transfers that are scheduled to run on a future date will start at approximately midnight UTC on that date. Note that when configuring a transfer with the Cloud Platform Console, the transfer's start time in a day is specified in your local timezone. */
+	/* The time in UTC at which the transfer will be scheduled to start in a day. Transfers may start later than this time. If not specified, recurring and one-time transfers that are scheduled to run today will run immediately; recurring transfers that are scheduled to run on a future date will start at approximately midnight UTC on that date. Note that when configuring a transfer with the Cloud Platform Console, the transfer's start time in a day is specified in your local timezone. */
 	// +optional
 	StartTimeOfDay *JobStartTimeOfDay `json:"startTimeOfDay,omitempty"`
 }
 
 type JobScheduleEndDate struct {
-	/* Immutable. Day of month. Must be from 1 to 31 and valid for the year and month. */
+	/* Day of month. Must be from 1 to 31 and valid for the year and month. */
 	Day int `json:"day"`
 
-	/* Immutable. Month of year. Must be from 1 to 12. */
+	/* Month of year. Must be from 1 to 12. */
 	Month int `json:"month"`
 
-	/* Immutable. Year of date. Must be from 1 to 9999. */
+	/* Year of date. Must be from 1 to 9999. */
 	Year int `json:"year"`
 }
 
 type JobScheduleStartDate struct {
-	/* Immutable. Day of month. Must be from 1 to 31 and valid for the year and month. */
+	/* Day of month. Must be from 1 to 31 and valid for the year and month. */
 	Day int `json:"day"`
 
-	/* Immutable. Month of year. Must be from 1 to 12. */
+	/* Month of year. Must be from 1 to 12. */
 	Month int `json:"month"`
 
-	/* Immutable. Year of date. Must be from 1 to 9999. */
+	/* Year of date. Must be from 1 to 9999. */
 	Year int `json:"year"`
 }
 
@@ -209,16 +209,16 @@ type JobSecretAccessKey struct {
 }
 
 type JobStartTimeOfDay struct {
-	/* Immutable. Hours of day in 24 hour format. Should be from 0 to 23. */
+	/* Hours of day in 24 hour format. Should be from 0 to 23. */
 	Hours int `json:"hours"`
 
-	/* Immutable. Minutes of hour of day. Must be from 0 to 59. */
+	/* Minutes of hour of day. Must be from 0 to 59. */
 	Minutes int `json:"minutes"`
 
-	/* Immutable. Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
+	/* Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
 	Nanos int `json:"nanos"`
 
-	/* Immutable. Seconds of minutes of the time. Must normally be from 0 to 59. */
+	/* Seconds of minutes of the time. Must normally be from 0 to 59. */
 	Seconds int `json:"seconds"`
 }
 

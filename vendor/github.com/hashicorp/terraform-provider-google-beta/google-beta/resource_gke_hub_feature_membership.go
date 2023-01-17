@@ -164,6 +164,14 @@ func GkeHubFeatureMembershipConfigmanagementConfigSyncSchema() *schema.Resource 
 				Elem:        GkeHubFeatureMembershipConfigmanagementConfigSyncGitSchema(),
 			},
 
+			"oci": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: "",
+				MaxItems:    1,
+				Elem:        GkeHubFeatureMembershipConfigmanagementConfigSyncOciSchema(),
+			},
+
 			"prevent_drift": {
 				Type:        schema.TypeBool,
 				Computed:    true,
@@ -230,6 +238,43 @@ func GkeHubFeatureMembershipConfigmanagementConfigSyncGitSchema() *schema.Resour
 				Type:        schema.TypeString,
 				Optional:    true,
 				Description: "Period in seconds between consecutive syncs. Default: 15.",
+			},
+		},
+	}
+}
+
+func GkeHubFeatureMembershipConfigmanagementConfigSyncOciSchema() *schema.Resource {
+	return &schema.Resource{
+		Schema: map[string]*schema.Schema{
+			"gcp_service_account_email": {
+				Type:             schema.TypeString,
+				Optional:         true,
+				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				Description:      "The GCP Service Account Email used for auth when secret_type is gcpserviceaccount. ",
+			},
+
+			"policy_dir": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "The absolute path of the directory that contains the local resources. Default: the root directory of the image.",
+			},
+
+			"secret_type": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "Type of secret configured for access to the OCI Image. Must be one of gcenode, gcpserviceaccount or none. The validation of this is case-sensitive.",
+			},
+
+			"sync_repo": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "The OCI image repository URL for the package to sync from. e.g. LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY_NAME/PACKAGE_NAME.",
+			},
+
+			"sync_wait_secs": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "Period in seconds(int64 format) between consecutive syncs. Default: 15.",
 			},
 		},
 	}
@@ -661,6 +706,7 @@ func expandGkeHubFeatureMembershipConfigmanagementConfigSync(o interface{}) *gke
 	obj := objArr[0].(map[string]interface{})
 	return &gkehub.FeatureMembershipConfigmanagementConfigSync{
 		Git:          expandGkeHubFeatureMembershipConfigmanagementConfigSyncGit(obj["git"]),
+		Oci:          expandGkeHubFeatureMembershipConfigmanagementConfigSyncOci(obj["oci"]),
 		PreventDrift: dcl.Bool(obj["prevent_drift"].(bool)),
 		SourceFormat: dcl.String(obj["source_format"].(string)),
 	}
@@ -672,6 +718,7 @@ func flattenGkeHubFeatureMembershipConfigmanagementConfigSync(obj *gkehub.Featur
 	}
 	transformed := map[string]interface{}{
 		"git":           flattenGkeHubFeatureMembershipConfigmanagementConfigSyncGit(obj.Git),
+		"oci":           flattenGkeHubFeatureMembershipConfigmanagementConfigSyncOci(obj.Oci),
 		"prevent_drift": obj.PreventDrift,
 		"source_format": obj.SourceFormat,
 	}
@@ -713,6 +760,40 @@ func flattenGkeHubFeatureMembershipConfigmanagementConfigSyncGit(obj *gkehub.Fea
 		"sync_branch":               obj.SyncBranch,
 		"sync_repo":                 obj.SyncRepo,
 		"sync_rev":                  obj.SyncRev,
+		"sync_wait_secs":            obj.SyncWaitSecs,
+	}
+
+	return []interface{}{transformed}
+
+}
+
+func expandGkeHubFeatureMembershipConfigmanagementConfigSyncOci(o interface{}) *gkehub.FeatureMembershipConfigmanagementConfigSyncOci {
+	if o == nil {
+		return gkehub.EmptyFeatureMembershipConfigmanagementConfigSyncOci
+	}
+	objArr := o.([]interface{})
+	if len(objArr) == 0 || objArr[0] == nil {
+		return gkehub.EmptyFeatureMembershipConfigmanagementConfigSyncOci
+	}
+	obj := objArr[0].(map[string]interface{})
+	return &gkehub.FeatureMembershipConfigmanagementConfigSyncOci{
+		GcpServiceAccountEmail: dcl.String(obj["gcp_service_account_email"].(string)),
+		PolicyDir:              dcl.String(obj["policy_dir"].(string)),
+		SecretType:             dcl.String(obj["secret_type"].(string)),
+		SyncRepo:               dcl.String(obj["sync_repo"].(string)),
+		SyncWaitSecs:           dcl.String(obj["sync_wait_secs"].(string)),
+	}
+}
+
+func flattenGkeHubFeatureMembershipConfigmanagementConfigSyncOci(obj *gkehub.FeatureMembershipConfigmanagementConfigSyncOci) interface{} {
+	if obj == nil || obj.Empty() {
+		return nil
+	}
+	transformed := map[string]interface{}{
+		"gcp_service_account_email": obj.GcpServiceAccountEmail,
+		"policy_dir":                obj.PolicyDir,
+		"secret_type":               obj.SecretType,
+		"sync_repo":                 obj.SyncRepo,
 		"sync_wait_secs":            obj.SyncWaitSecs,
 	}
 

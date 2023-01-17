@@ -507,6 +507,42 @@ func TestAccComposerEnvironment_ComposerV2(t *testing.T) {
 	})
 }
 
+func TestAccComposerEnvironment_UpdateComposerV2WithTriggerer(t *testing.T) {
+	t.Parallel()
+
+	envName := fmt.Sprintf("%s-%d", testComposerEnvironmentPrefix, randInt(t))
+	network := fmt.Sprintf("%s-%d", testComposerNetworkPrefix, randInt(t))
+	subnetwork := network + "-1"
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccComposerEnvironmentDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComposerEnvironment_composerV2(envName, network, subnetwork),
+			},
+			{
+				Config: testAccComposerEnvironment_composerV2WithDisabledTriggerer(envName, network, subnetwork),
+			},
+			{
+				ResourceName:      "google_composer_environment.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			// This is a terrible clean-up step in order to get destroy to succeed,
+			// due to dangling firewall rules left by the Composer Environment blocking network deletion.
+			// TODO(dzarmola): Remove this check if firewall rules bug gets fixed by Composer.
+			{
+				PlanOnly:           true,
+				ExpectNonEmptyPlan: false,
+				Config:             testAccComposerEnvironment_composerV2WithDisabledTriggerer(envName, network, subnetwork),
+				Check:              testAccCheckClearComposerEnvironmentFirewalls(t, network),
+			},
+		},
+	})
+}
+
 func TestAccComposerEnvironment_UpdateComposerV2(t *testing.T) {
 	t.Parallel()
 
@@ -1366,6 +1402,72 @@ resource "google_compute_subnetwork" "test" {
 `, envName, network, subnetwork)
 }
 
+func testAccComposerEnvironment_composerV2WithDisabledTriggerer(envName, network, subnetwork string) string {
+	return fmt.Sprintf(`
+resource "google_composer_environment" "test" {
+  name   = "%s"
+  region = "us-east1"
+
+  config {
+    node_config {
+      network          = google_compute_network.test.self_link
+      subnetwork       = google_compute_subnetwork.test.self_link
+      ip_allocation_policy {
+        cluster_ipv4_cidr_block = "10.0.0.0/16"
+      }
+    }
+
+    software_config {
+      image_version = "composer-2-airflow-2"
+    }
+
+    workloads_config {
+      scheduler {
+        cpu          = 1.25
+        memory_gb    = 2.5
+        storage_gb   = 5.4
+        count        = 2
+      }
+      web_server {
+        cpu          = 1.75
+        memory_gb    = 3.0
+        storage_gb   = 4.4
+      }
+      worker {
+        cpu          = 0.5
+        memory_gb    = 2.0
+        storage_gb   = 3.4
+        min_count    = 2
+        max_count    = 5
+      }
+    }
+    environment_size = "ENVIRONMENT_SIZE_MEDIUM"
+    private_environment_config {
+      enable_private_endpoint                 = true
+      cloud_composer_network_ipv4_cidr_block   = "10.3.192.0/24"
+      master_ipv4_cidr_block                   = "172.16.194.0/23"
+      cloud_sql_ipv4_cidr_block               = "10.3.224.0/20"
+    }
+  }
+
+}
+
+resource "google_compute_network" "test" {
+  name                    = "%s"
+  auto_create_subnetworks = false
+}
+
+resource "google_compute_subnetwork" "test" {
+  name          = "%s"
+  ip_cidr_range = "10.2.0.0/16"
+  region        = "us-east1"
+   network       = google_compute_network.test.self_link
+  private_ip_google_access = true
+}
+
+`, envName, network, subnetwork)
+}
+
 func testAccComposerEnvironment_composerV2(envName, network, subnetwork string) string {
 	return fmt.Sprintf(`
 resource "google_composer_environment" "test" {
@@ -1404,7 +1506,12 @@ resource "google_composer_environment" "test" {
           min_count   = 2
           max_count   = 5
         }
-      }
+								triggerer {
+					cpu         = 0.5
+					memory_gb   = 2.0
+					count   		= 1
+				}
+				      }
       environment_size = "ENVIRONMENT_SIZE_MEDIUM"
       private_environment_config {
         enable_private_endpoint                 = true
@@ -1658,7 +1765,12 @@ resource "google_composer_environment" "test" {
           min_count   = 3
           max_count   = 6
         }
-      }
+								triggerer {
+					cpu         = 2.25
+					memory_gb   = 4
+					count   		= 1
+				}
+				      }
       environment_size = "ENVIRONMENT_SIZE_LARGE"
       private_environment_config {
         enable_private_endpoint                 = true
@@ -1887,22 +1999,27 @@ func testSweepComposerResources(region string) error {
 		log.Fatalf("error loading: %s", err)
 	}
 
-	// Environments need to be cleaned up because the service is flaky.
-	if err := testSweepComposerEnvironments(config); err != nil {
-		log.Printf("[WARNING] unable to clean up all environments: %s", err)
-	}
+	// us-central is passed as the region for our sweepers, but there are also
+	// many tests that use the us-east1 region
+	regions := []string{"us-central1", "us-east1"}
+	for _, r := range regions {
+		// Environments need to be cleaned up because the service is flaky.
+		if err := testSweepComposerEnvironments(config, r); err != nil {
+			log.Printf("[WARNING] unable to clean up all environments: %s", err)
+		}
 
-	// Buckets need to be cleaned up because they just don't get deleted on purpose.
-	if err := testSweepComposerEnvironmentBuckets(config); err != nil {
-		log.Printf("[WARNING] unable to clean up all environment storage buckets: %s", err)
+		// Buckets need to be cleaned up because they just don't get deleted on purpose.
+		if err := testSweepComposerEnvironmentBuckets(config, r); err != nil {
+			log.Printf("[WARNING] unable to clean up all environment storage buckets: %s", err)
+		}
 	}
 
 	return nil
 }
 
-func testSweepComposerEnvironments(config *Config) error {
+func testSweepComposerEnvironments(config *Config, region string) error {
 	found, err := config.NewComposerClient(config.userAgent).Projects.Locations.Environments.List(
-		fmt.Sprintf("projects/%s/locations/%s", config.Project, config.Region)).Do()
+		fmt.Sprintf("projects/%s/locations/%s", config.Project, region)).Do()
 	if err != nil {
 		return fmt.Errorf("error listing storage buckets for composer environment: %s", err)
 	}
@@ -1953,7 +2070,7 @@ func testSweepComposerEnvironments(config *Config) error {
 	return allErrors
 }
 
-func testSweepComposerEnvironmentBuckets(config *Config) error {
+func testSweepComposerEnvironmentBuckets(config *Config, region string) error {
 	artifactsBName := fmt.Sprintf("artifacts.%s.appspot.com", config.Project)
 	artifactBucket, err := config.NewStorageClient(config.userAgent).Buckets.Get(artifactsBName).Do()
 	if err != nil {
@@ -1966,7 +2083,7 @@ func testSweepComposerEnvironmentBuckets(config *Config) error {
 		return err
 	}
 
-	found, err := config.NewStorageClient(config.userAgent).Buckets.List(config.Project).Prefix(config.Region).Do()
+	found, err := config.NewStorageClient(config.userAgent).Buckets.List(config.Project).Prefix(region).Do()
 	if err != nil {
 		return fmt.Errorf("error listing storage buckets created when testing composer environment: %s", err)
 	}

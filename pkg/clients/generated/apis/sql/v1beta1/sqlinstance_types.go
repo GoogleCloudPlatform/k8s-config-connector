@@ -318,6 +318,10 @@ type InstanceSettings struct {
 	// +optional
 	DatabaseFlags []InstanceDatabaseFlags `json:"databaseFlags,omitempty"`
 
+	/* Configuration to protect against accidental instance deletion. */
+	// +optional
+	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
+
 	/*  */
 	// +optional
 	DenyMaintenancePeriod *InstanceDenyMaintenancePeriod `json:"denyMaintenancePeriod,omitempty"`
@@ -381,7 +385,8 @@ type InstanceSettings struct {
 
 type InstanceSqlServerAuditConfig struct {
 	/* The name of the destination bucket (e.g., gs://mybucket). */
-	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
+	// +optional
+	BucketRef *v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
 
 	/* How long to keep generated audit files. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".. */
 	// +optional
@@ -473,6 +478,8 @@ type SQLInstanceStatus struct {
 	ConnectionName string `json:"connectionName,omitempty"`
 	/*  */
 	FirstIpAddress string `json:"firstIpAddress,omitempty"`
+	/* The type of the instance. The valid values are:- 'SQL_INSTANCE_TYPE_UNSPECIFIED', 'CLOUD_SQL_INSTANCE', 'ON_PREMISES_INSTANCE' and 'READ_REPLICA_INSTANCE'. */
+	InstanceType string `json:"instanceType,omitempty"`
 	/*  */
 	IpAddress []InstanceIpAddressStatus `json:"ipAddress,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */

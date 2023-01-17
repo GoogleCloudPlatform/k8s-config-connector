@@ -72,6 +72,9 @@ func TestAccSqlDatabaseInstance_basicInferredName(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testGoogleSqlDatabaseInstance_basic2,
+				Check: resource.ComposeTestCheckFunc(
+					checkInstanceTypeIsPresent("google_sql_database_instance.instance"),
+				),
 			},
 			{
 				ResourceName:            "google_sql_database_instance.instance",
@@ -192,6 +195,74 @@ func TestAccSqlDatabaseInstance_dontDeleteDefaultUserOnReplica(t *testing.T) {
 	})
 }
 
+// This test requires an arbitrary error to occur during the SQL instance creation. Currently, we
+// are relying on an error that occurs when settings are used on a MySQL clone. Note that this is
+// somewhat brittle, and the test could begin failing if that error no longer behaves the same way.
+// If this test begins failing, we will want to be sure that the root user is removed as early as
+// possible, and we should attempt to find any other scenarios where the root user could otherwise
+// be left on the instance.
+func TestAccSqlDatabaseInstance_deleteDefaultUserBeforeSubsequentApiCalls(t *testing.T) {
+	// Service Networking
+	skipIfVcr(t)
+	t.Parallel()
+
+	databaseName := "tf-test-" + randString(t, 10)
+	addressName := "tf-test-" + randString(t, 10)
+	networkName := "tf-bootstrap-net-sql-instance-private-clone"
+	// networkName := BootstrapSharedTestNetwork(t, "sql-instance-private-clone")
+
+	// 1. Create an instance.
+	// 2. Add a root@'%' user.
+	// 3. Create a clone with settings and assert it fails after the instance creation API call.
+	// 4. Check root user was deleted.
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccSqlDatabaseInstance_withPrivateNetwork_withoutAllocatedIpRange(databaseName, networkName, addressName),
+			},
+			{
+				PreConfig: func() {
+					// Add a root user
+					config := googleProviderConfig(t)
+					user := sqladmin.User{
+						Name:     "root",
+						Host:     "%",
+						Password: randString(t, 26),
+					}
+					op, err := config.NewSqlAdminClient(config.userAgent).Users.Insert(config.Project, databaseName, &user).Do()
+					if err != nil {
+						t.Errorf("Error while inserting root@%% user: %s", err)
+						return
+					}
+					err = sqlAdminOperationWaitTime(config, op, config.Project, "Waiting for user to insert", config.userAgent, 10*time.Minute)
+					if err != nil {
+						t.Errorf("Error while waiting for user insert operation to complete: %s", err.Error())
+					}
+				},
+				Config:      testAccSqlDatabaseInstance_withPrivateNetwork_withAllocatedIpRangeClone_withSettings(databaseName, networkName, addressName),
+				ExpectError: regexp.MustCompile("Error, failed to update instance settings"),
+			},
+			{
+				// This PreConfig does a check on the previous step. It is needed because the
+				// previous step expects an error, so it cannot perform a check of its own.
+				PreConfig: func() {
+					var s *terraform.State
+					err := testAccCheckGoogleSqlDatabaseRootUserDoesNotExist(t, databaseName+"-clone1")(s)
+					if err != nil {
+						t.Errorf("Failed to verify that root user was removed: %s", err)
+					}
+				},
+				Config:             testAccSqlDatabaseInstance_withPrivateNetwork_withAllocatedIpRangeClone_withSettings(databaseName, networkName, addressName),
+				PlanOnly:           true,
+				ExpectNonEmptyPlan: true,
+			},
+		},
+	})
+}
+
 func TestAccSqlDatabaseInstance_settings_basic(t *testing.T) {
 	t.Parallel()
 
@@ -303,6 +374,46 @@ func TestAccSqlDatabaseInstance_maintenanceVersion(t *testing.T) {
 			{
 				Config: fmt.Sprintf(
 					testGoogleSqlDatabaseInstance_maintenanceVersionWithOldVersion, databaseName),
+			},
+			{
+				ResourceName:            "google_sql_database_instance.instance",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"deletion_protection"},
+			},
+		},
+	})
+}
+
+func TestAccSqlDatabaseInstance_settings_deletionProtectionEnabled(t *testing.T) {
+	t.Parallel()
+
+	databaseName := "tf-test-" + randString(t, 10)
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: fmt.Sprintf(
+					testGoogleSqlDatabaseInstance_settings_deletionProtectionEnabled, databaseName, "true"),
+			},
+			{
+				ResourceName:            "google_sql_database_instance.instance",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"deletion_protection"},
+			},
+			{
+				Config: fmt.Sprintf(
+					testGoogleSqlDatabaseInstance_settings_deletionProtectionEnabled, databaseName, "true"),
+				Destroy:     true,
+				ExpectError: regexp.MustCompile(fmt.Sprintf("Error, failed to delete instance %s: googleapi: Error 400: The instance is protected. Please disable the deletion protection and try again. To disable deletion protection, update the instance settings with deletionProtectionEnabled set to false.", databaseName)),
+			},
+			{
+				Config: fmt.Sprintf(
+					testGoogleSqlDatabaseInstance_settings_deletionProtectionEnabled, databaseName, "false"),
 			},
 			{
 				ResourceName:            "google_sql_database_instance.instance",
@@ -974,22 +1085,54 @@ func TestAccSqlDatabaseInstance_PointInTimeRecoveryEnabled(t *testing.T) {
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testGoogleSqlDatabaseInstance_PointInTimeRecoveryEnabled(masterID, true),
+				Config: testGoogleSqlDatabaseInstance_PointInTimeRecoveryEnabled(masterID, true, "POSTGRES_9_6"),
 			},
 			{
 				ResourceName:            "google_sql_database_instance.instance",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"deletion_protection"},
+				ImportStateVerifyIgnore: []string{"deletion_protection", "root_password"},
 			},
 			{
-				Config: testGoogleSqlDatabaseInstance_PointInTimeRecoveryEnabled(masterID, false),
+				Config: testGoogleSqlDatabaseInstance_PointInTimeRecoveryEnabled(masterID, false, "POSTGRES_9_6"),
 			},
 			{
 				ResourceName:            "google_sql_database_instance.instance",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"deletion_protection"},
+				ImportStateVerifyIgnore: []string{"deletion_protection", "root_password"},
+			},
+		},
+	})
+}
+
+func TestAccSqlDatabaseInstance_PointInTimeRecoveryEnabledForSqlServer(t *testing.T) {
+	t.Parallel()
+
+	masterID := randInt(t)
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testGoogleSqlDatabaseInstance_PointInTimeRecoveryEnabled(masterID, true, "SQLSERVER_2017_STANDARD"),
+			},
+			{
+				ResourceName:            "google_sql_database_instance.instance",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"deletion_protection", "root_password"},
+			},
+			{
+				Config: testGoogleSqlDatabaseInstance_PointInTimeRecoveryEnabled(masterID, false, "SQLSERVER_2017_STANDARD"),
+			},
+			{
+				ResourceName:            "google_sql_database_instance.instance",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"deletion_protection", "root_password"},
 			},
 		},
 	})
@@ -1179,6 +1322,31 @@ func TestAccSqlDatabaseInstance_SqlServerAuditConfig(t *testing.T) {
 	})
 }
 
+func TestAccSqlDatabaseInstance_SqlServerAuditOptionalBucket(t *testing.T) {
+	t.Parallel()
+	databaseName := "tf-test-" + randString(t, 10)
+	rootPassword := randString(t, 15)
+	uploadInterval := "900s"
+	retentionInterval := "86400s"
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testGoogleSqlDatabaseInstance_SqlServerAuditOptionalBucket(databaseName, rootPassword, uploadInterval, retentionInterval),
+			},
+			{
+				ResourceName:            "google_sql_database_instance.instance",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"root_password", "deletion_protection"},
+			},
+		},
+	})
+}
+
 func TestAccSqlDatabaseInstance_Timezone(t *testing.T) {
 	t.Parallel()
 
@@ -1259,6 +1427,38 @@ func TestAccSqlDatabaseInstance_sqlMysqlInstancePvpExample(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateVerifyIgnore: []string{"deletion_protection", "root_password"},
+			},
+		},
+	})
+}
+
+func TestAccSqlDatabaseInstance_updateReadReplicaWithBinaryLogEnabled(t *testing.T) {
+	t.Parallel()
+
+	instance := "tf-test-" + randString(t, 10)
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testGoogleSqlDatabaseInstance_readReplica(instance),
+			},
+			{
+				ResourceName:            "google_sql_database_instance.replica",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"deletion_protection"},
+			},
+			{
+				Config: testGoogleSqlDatabaseInstance_updateReadReplica(instance),
+			},
+			{
+				ResourceName:            "google_sql_database_instance.replica",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"deletion_protection"},
 			},
 		},
 	})
@@ -1458,6 +1658,25 @@ resource "google_sql_database_instance" "instance" {
   }
 }
 `, bucketName, networkName, addressName, databaseName, rootPassword, bucketName, retentionInterval, uploadInterval)
+}
+
+func testGoogleSqlDatabaseInstance_SqlServerAuditOptionalBucket(databaseName, rootPassword, uploadInterval, retentionInterval string) string {
+	return fmt.Sprintf(`
+resource "google_sql_database_instance" "instance" {
+  name             = "%s"
+  region           = "us-central1"
+  database_version = "SQLSERVER_2017_STANDARD"
+  root_password    = "%s"
+  deletion_protection = false
+  settings {
+    tier = "db-custom-1-3840"
+    sql_server_audit_config {
+      retention_interval = "%s"
+      upload_interval = "%s"
+    }
+  }
+}
+`, databaseName, rootPassword, retentionInterval, uploadInterval)
 }
 
 func testGoogleSqlDatabaseInstance_Timezone(networkName, addressName, databaseName, rootPassword, timezone string) string {
@@ -1754,6 +1973,67 @@ resource "google_sql_database_instance" "clone1" {
 `, networkName, addressRangeName, databaseName, databaseName)
 }
 
+func testAccSqlDatabaseInstance_withPrivateNetwork_withAllocatedIpRangeClone_withSettings(databaseName, networkName, addressRangeName string) string {
+	return fmt.Sprintf(`
+data "google_compute_network" "servicenet" {
+  name                    = "%s"
+}
+
+resource "google_compute_global_address" "foobar" {
+  name          = "%s"
+  purpose       = "VPC_PEERING"
+  address_type  = "INTERNAL"
+  prefix_length = 16
+  network       = data.google_compute_network.servicenet.self_link
+}
+
+resource "google_service_networking_connection" "foobar" {
+  network                 = data.google_compute_network.servicenet.self_link
+  service                 = "servicenetworking.googleapis.com"
+  reserved_peering_ranges = [google_compute_global_address.foobar.name]
+}
+
+resource "google_sql_database_instance" "instance" {
+  depends_on = [google_service_networking_connection.foobar]
+  name                = "%s"
+  region              = "us-central1"
+  database_version    = "MYSQL_5_7"
+  deletion_protection = false
+  settings {
+    tier = "db-f1-micro"
+    ip_configuration {
+      ipv4_enabled       = "false"
+      private_network    = data.google_compute_network.servicenet.self_link
+    }
+    backup_configuration {
+      enabled            = true
+      start_time         = "00:00"
+      binary_log_enabled = true
+    }
+  }
+}
+
+resource "google_sql_database_instance" "clone1" {
+  name                = "%s-clone1"
+  region              = "us-central1"
+  database_version    = "MYSQL_5_7"
+  deletion_protection = false
+
+  clone {
+    source_instance_name = google_sql_database_instance.instance.name
+    allocated_ip_range   = google_compute_global_address.foobar.name
+  }
+
+  settings {
+    tier = "db-f1-micro"
+    backup_configuration {
+      enabled = false
+    }
+  }
+}
+`, networkName, addressRangeName, databaseName, databaseName)
+}
+
 var testGoogleSqlDatabaseInstance_settings = `
 resource "google_sql_database_instance" "instance" {
   name                = "%s"
@@ -1848,6 +2128,7 @@ resource "google_sql_database_instance" "instance" {
   }
 }
 `
+
 var testGoogleSqlDatabaseInstance_maintenanceVersionWithOldVersion = `
 resource "google_sql_database_instance" "instance" {
   name                = "%s"
@@ -1857,6 +2138,19 @@ resource "google_sql_database_instance" "instance" {
   maintenance_version = "MYSQL_5_7_37.R20210508.01_03"
   settings {
     tier = "db-f1-micro"
+  }
+}
+`
+
+var testGoogleSqlDatabaseInstance_settings_deletionProtectionEnabled = `
+resource "google_sql_database_instance" "instance" {
+  name                        = "%s"
+  region                      = "us-central1"
+  database_version            = "MYSQL_5_7"
+  deletion_protection         = false
+  settings {
+	deletion_protection_enabled = %s
+    tier                        = "db-f1-micro"
   }
 }
 `
@@ -2285,15 +2579,16 @@ resource "google_sql_database_instance" "replica" {
 }
 `
 
-func testGoogleSqlDatabaseInstance_PointInTimeRecoveryEnabled(masterID int, pointInTimeRecoveryEnabled bool) string {
+func testGoogleSqlDatabaseInstance_PointInTimeRecoveryEnabled(masterID int, pointInTimeRecoveryEnabled bool, dbVersion string) string {
 	return fmt.Sprintf(`
 resource "google_sql_database_instance" "instance" {
   name                = "tf-test-%d"
   region              = "us-central1"
-  database_version    = "POSTGRES_9_6"
+  database_version    = "%s"
   deletion_protection = false
+  root_password		  = "rand-pwd-%d"
   settings {
-    tier = "db-f1-micro"
+    tier = "db-custom-2-13312"
     backup_configuration {
       enabled                        = true
       start_time                     = "00:00"
@@ -2301,7 +2596,7 @@ resource "google_sql_database_instance" "instance" {
     }
   }
 }
-`, masterID, pointInTimeRecoveryEnabled)
+`, masterID, dbVersion, masterID, pointInTimeRecoveryEnabled)
 }
 
 func testGoogleSqlDatabaseInstance_BackupRetention(masterID int) string {
@@ -2439,4 +2734,161 @@ data "google_sql_backup_run" "backup" {
 	most_recent = true
 }
 `, context)
+}
+
+func checkInstanceTypeIsPresent(resourceName string) func(*terraform.State) error {
+	return func(s *terraform.State) error {
+		rs, ok := s.RootModule().Resources[resourceName]
+		if !ok {
+			return fmt.Errorf("can't find %s in state", resourceName)
+		}
+		rsAttr := rs.Primary.Attributes
+		_, ok = rsAttr["instance_type"]
+		if !ok {
+			return fmt.Errorf("Instance type is not computed for %s", resourceName)
+		}
+		return nil
+	}
+}
+
+func testGoogleSqlDatabaseInstance_readReplica(instance string) string {
+	return fmt.Sprintf(`
+resource "google_sql_database_instance" "master" {
+  region           = "asia-northeast1"
+  name             = "%s-master"
+  database_version = "MYSQL_5_7"
+  deletion_protection  = false
+  settings {
+    availability_type = "ZONAL"
+    disk_autoresize   = true
+    disk_size         = 10
+    disk_type         = "PD_SSD"
+    tier              = "db-f1-micro"
+
+    activation_policy = "ALWAYS"
+    pricing_plan      = "PER_USE"
+
+    backup_configuration {
+      binary_log_enabled = true
+      enabled            = true
+      location           = "asia"
+      start_time         = "18:00"
+    }
+
+    database_flags {
+      name  = "character_set_server"
+      value = "utf8mb4"
+    }
+  }
+}
+
+
+resource "google_sql_database_instance" "replica" {
+  depends_on           = [google_sql_database_instance.master]
+  name                 = "%s-replica"
+  master_instance_name = google_sql_database_instance.master.name
+  region               = "asia-northeast1"
+  database_version     = "MYSQL_5_7"
+  deletion_protection  = false
+  replica_configuration {
+    failover_target = false
+  }
+  settings {
+    tier              = "db-f1-micro"
+    availability_type = "ZONAL"
+    pricing_plan      = "PER_USE"
+    disk_autoresize   = true
+    disk_size         = 10
+
+    backup_configuration {
+      binary_log_enabled = true
+    }
+
+    database_flags {
+      name  = "slave_parallel_workers"
+      value = "3"
+    }
+
+    database_flags {
+      name  = "slave_parallel_type"
+      value = "LOGICAL_CLOCK"
+    }
+
+    database_flags {
+      name  = "slave_pending_jobs_size_max"
+      value = "536870912" # 512MB
+    }
+  }
+}`, instance, instance)
+}
+
+func testGoogleSqlDatabaseInstance_updateReadReplica(instance string) string {
+	return fmt.Sprintf(`
+resource "google_sql_database_instance" "master" {
+  region           = "asia-northeast1"
+  name             = "%s-master"
+  database_version = "MYSQL_5_7"
+  deletion_protection  = false
+  settings {
+    availability_type = "ZONAL"
+    disk_autoresize   = true
+    disk_size         = 10
+    disk_type         = "PD_SSD"
+    tier              = "db-f1-micro"
+
+    activation_policy = "ALWAYS"
+    pricing_plan      = "PER_USE"
+
+    backup_configuration {
+      binary_log_enabled = true
+      enabled            = true
+      location           = "asia"
+      start_time         = "18:00"
+    }
+
+    database_flags {
+      name  = "character_set_server"
+      value = "utf8mb4"
+    }
+  }
+}
+
+
+resource "google_sql_database_instance" "replica" {
+  depends_on           = [google_sql_database_instance.master]
+  name                 = "%s-replica"
+  master_instance_name = google_sql_database_instance.master.name
+  region               = "asia-northeast1"
+  database_version     = "MYSQL_5_7"
+  deletion_protection  = false
+  replica_configuration {
+    failover_target = false
+  }
+  settings {
+    tier              = "db-f1-micro"
+    availability_type = "ZONAL"
+    pricing_plan      = "PER_USE"
+    disk_autoresize   = true
+    disk_size         = 10
+
+    backup_configuration {
+      binary_log_enabled = true
+    }
+
+    database_flags {
+      name  = "slave_parallel_workers"
+      value = "2"
+    }
+
+    database_flags {
+      name  = "slave_parallel_type"
+      value = "LOGICAL_CLOCK"
+    }
+
+    database_flags {
+      name  = "slave_pending_jobs_size_max"
+      value = "536870912" # 512MB
+    }
+  }
+}`, instance, instance)
 }

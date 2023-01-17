@@ -662,6 +662,11 @@ type EnvironmentConfig struct {
 	// Cloud Composer environment.
 	PrivateEnvironmentConfig *PrivateEnvironmentConfig `json:"privateEnvironmentConfig,omitempty"`
 
+	// RecoveryConfig: Optional. The Recovery settings configuration of an
+	// environment. This field is supported for Cloud Composer environments
+	// in versions composer-2.*.*-airflow-*.*.* and newer.
+	RecoveryConfig *RecoveryConfig `json:"recoveryConfig,omitempty"`
+
 	// SoftwareConfig: The configuration settings for software inside the
 	// environment.
 	SoftwareConfig *SoftwareConfig `json:"softwareConfig,omitempty"`
@@ -702,6 +707,75 @@ type EnvironmentConfig struct {
 
 func (s *EnvironmentConfig) MarshalJSON() ([]byte, error) {
 	type NoMethod EnvironmentConfig
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// ExecuteAirflowCommandResponse: Response to
+// ExecuteAirflowCommandRequest.
+type ExecuteAirflowCommandResponse struct {
+	// Error: Error message. Empty if there was no error.
+	Error string `json:"error,omitempty"`
+
+	// ExecutionId: The unique ID of the command execution for polling.
+	ExecutionId string `json:"executionId,omitempty"`
+
+	// Pod: The name of the pod where the command is executed.
+	Pod string `json:"pod,omitempty"`
+
+	// PodNamespace: The namespace of the pod where the command is executed.
+	PodNamespace string `json:"podNamespace,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "Error") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "Error") to include in API
+	// requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *ExecuteAirflowCommandResponse) MarshalJSON() ([]byte, error) {
+	type NoMethod ExecuteAirflowCommandResponse
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// ExitInfo: Information about how a command ended.
+type ExitInfo struct {
+	// Error: Error message. Empty if there was no error.
+	Error string `json:"error,omitempty"`
+
+	// ExitCode: The exit code from the command execution.
+	ExitCode int64 `json:"exitCode,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "Error") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "Error") to include in API
+	// requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *ExitInfo) MarshalJSON() ([]byte, error) {
+	type NoMethod ExitInfo
 	raw := NoMethod(*s)
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
@@ -827,6 +901,37 @@ type ImageVersion struct {
 
 func (s *ImageVersion) MarshalJSON() ([]byte, error) {
 	type NoMethod ImageVersion
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// Line: Contains information about a single line from logs.
+type Line struct {
+	// Content: Text content of the log line.
+	Content string `json:"content,omitempty"`
+
+	// LineNumber: Number of the line.
+	LineNumber int64 `json:"lineNumber,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "Content") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "Content") to include in
+	// API requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *Line) MarshalJSON() ([]byte, error) {
+	type NoMethod Line
 	raw := NoMethod(*s)
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
@@ -1378,6 +1483,42 @@ func (s *OperationMetadata) MarshalJSON() ([]byte, error) {
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
 
+// PollAirflowCommandResponse: Response to PollAirflowCommandRequest.
+type PollAirflowCommandResponse struct {
+	// ExitInfo: The result exit status of the command.
+	ExitInfo *ExitInfo `json:"exitInfo,omitempty"`
+
+	// Output: Output from the command execution. It may not contain the
+	// full output and the caller may need to poll for more lines.
+	Output []*Line `json:"output,omitempty"`
+
+	// OutputEnd: Whether the command execution has finished and there is no
+	// more output.
+	OutputEnd bool `json:"outputEnd,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "ExitInfo") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "ExitInfo") to include in
+	// API requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *PollAirflowCommandResponse) MarshalJSON() ([]byte, error) {
+	type NoMethod PollAirflowCommandResponse
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
 // PrivateClusterConfig: Configuration options for the private GKE
 // cluster in a Cloud Composer environment.
 type PrivateClusterConfig struct {
@@ -1508,6 +1649,37 @@ func (s *PrivateEnvironmentConfig) MarshalJSON() ([]byte, error) {
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
 
+// RecoveryConfig: The Recovery settings of an environment.
+type RecoveryConfig struct {
+	// ScheduledSnapshotsConfig: Optional. The configuration for scheduled
+	// snapshot creation mechanism.
+	ScheduledSnapshotsConfig *ScheduledSnapshotsConfig `json:"scheduledSnapshotsConfig,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g.
+	// "ScheduledSnapshotsConfig") to unconditionally include in API
+	// requests. By default, fields with empty or default values are omitted
+	// from API requests. However, any non-pointer, non-interface field
+	// appearing in ForceSendFields will be sent to the server regardless of
+	// whether the field is empty or not. This may be used to include empty
+	// fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "ScheduledSnapshotsConfig")
+	// to include in API requests with the JSON null value. By default,
+	// fields with empty values are omitted from API requests. However, any
+	// field with an empty value appearing in NullFields will be sent to the
+	// server as null. It is an error if a field in this list has a
+	// non-empty value. This may be used to include null fields in Patch
+	// requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *RecoveryConfig) MarshalJSON() ([]byte, error) {
+	type NoMethod RecoveryConfig
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
 // RestartWebServerRequest: Restart Airflow web server.
 type RestartWebServerRequest struct {
 }
@@ -1570,6 +1742,48 @@ type SaveSnapshotResponse struct {
 
 func (s *SaveSnapshotResponse) MarshalJSON() ([]byte, error) {
 	type NoMethod SaveSnapshotResponse
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// ScheduledSnapshotsConfig: The configuration for scheduled snapshot
+// creation mechanism.
+type ScheduledSnapshotsConfig struct {
+	// Enabled: Optional. Whether scheduled snapshots creation is enabled.
+	Enabled bool `json:"enabled,omitempty"`
+
+	// SnapshotCreationSchedule: Optional. The cron expression representing
+	// the time when snapshots creation mechanism runs. This field is
+	// subject to additional validation around frequency of execution.
+	SnapshotCreationSchedule string `json:"snapshotCreationSchedule,omitempty"`
+
+	// SnapshotLocation: Optional. The Cloud Storage location for storing
+	// automatically created snapshots.
+	SnapshotLocation string `json:"snapshotLocation,omitempty"`
+
+	// TimeZone: Optional. Time zone that sets the context to interpret
+	// snapshot_creation_schedule.
+	TimeZone string `json:"timeZone,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "Enabled") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "Enabled") to include in
+	// API requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *ScheduledSnapshotsConfig) MarshalJSON() ([]byte, error) {
+	type NoMethod ScheduledSnapshotsConfig
 	raw := NoMethod(*s)
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
@@ -1782,6 +1996,59 @@ func (s *Status) MarshalJSON() ([]byte, error) {
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
 
+// TriggererResource: Configuration for resources used by Airflow
+// triggerers.
+type TriggererResource struct {
+	// Count: Optional. The number of triggerers.
+	Count int64 `json:"count,omitempty"`
+
+	// Cpu: Optional. CPU request and limit for a single Airflow triggerer
+	// replica.
+	Cpu float64 `json:"cpu,omitempty"`
+
+	// MemoryGb: Optional. Memory (GB) request and limit for a single
+	// Airflow triggerer replica.
+	MemoryGb float64 `json:"memoryGb,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "Count") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "Count") to include in API
+	// requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *TriggererResource) MarshalJSON() ([]byte, error) {
+	type NoMethod TriggererResource
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+func (s *TriggererResource) UnmarshalJSON(data []byte) error {
+	type NoMethod TriggererResource
+	var s1 struct {
+		Cpu      gensupport.JSONFloat64 `json:"cpu"`
+		MemoryGb gensupport.JSONFloat64 `json:"memoryGb"`
+		*NoMethod
+	}
+	s1.NoMethod = (*NoMethod)(s)
+	if err := json.Unmarshal(data, &s1); err != nil {
+		return err
+	}
+	s.Cpu = float64(s1.Cpu)
+	s.MemoryGb = float64(s1.MemoryGb)
+	return nil
+}
+
 // WebServerConfig: The configuration settings for the Airflow web
 // server App Engine instance. Supported for Cloud Composer environments
 // in versions composer-1.*.*-airflow-*.*.*.
@@ -1971,6 +2238,9 @@ type WorkloadsConfig struct {
 	// Scheduler: Optional. Resources used by Airflow schedulers.
 	Scheduler *SchedulerResource `json:"scheduler,omitempty"`
 
+	// Triggerer: Optional. Resources used by Airflow triggerers.
+	Triggerer *TriggererResource `json:"triggerer,omitempty"`
+
 	// WebServer: Optional. Resources used by Airflow web server.
 	WebServer *WebServerResource `json:"webServer,omitempty"`
 
@@ -2093,17 +2363,17 @@ func (c *ProjectsLocationsEnvironmentsCheckUpgradeCall) Do(opts ...googleapi.Cal
 		if res.Body != nil {
 			res.Body.Close()
 		}
-		return nil, &googleapi.Error{
+		return nil, gensupport.WrapError(&googleapi.Error{
 			Code:   res.StatusCode,
 			Header: res.Header,
-		}
+		})
 	}
 	if err != nil {
 		return nil, err
 	}
 	defer googleapi.CloseBody(res)
 	if err := googleapi.CheckResponse(res); err != nil {
-		return nil, err
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &Operation{
 		ServerResponse: googleapi.ServerResponse{
@@ -2236,17 +2506,17 @@ func (c *ProjectsLocationsEnvironmentsCreateCall) Do(opts ...googleapi.CallOptio
 		if res.Body != nil {
 			res.Body.Close()
 		}
-		return nil, &googleapi.Error{
+		return nil, gensupport.WrapError(&googleapi.Error{
 			Code:   res.StatusCode,
 			Header: res.Header,
-		}
+		})
 	}
 	if err != nil {
 		return nil, err
 	}
 	defer googleapi.CloseBody(res)
 	if err := googleapi.CheckResponse(res); err != nil {
-		return nil, err
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &Operation{
 		ServerResponse: googleapi.ServerResponse{
@@ -2373,17 +2643,17 @@ func (c *ProjectsLocationsEnvironmentsDeleteCall) Do(opts ...googleapi.CallOptio
 		if res.Body != nil {
 			res.Body.Close()
 		}
-		return nil, &googleapi.Error{
+		return nil, gensupport.WrapError(&googleapi.Error{
 			Code:   res.StatusCode,
 			Header: res.Header,
-		}
+		})
 	}
 	if err != nil {
 		return nil, err
 	}
 	defer googleapi.CloseBody(res)
 	if err := googleapi.CheckResponse(res); err != nil {
-		return nil, err
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &Operation{
 		ServerResponse: googleapi.ServerResponse{
@@ -2521,17 +2791,17 @@ func (c *ProjectsLocationsEnvironmentsGetCall) Do(opts ...googleapi.CallOption) 
 		if res.Body != nil {
 			res.Body.Close()
 		}
-		return nil, &googleapi.Error{
+		return nil, gensupport.WrapError(&googleapi.Error{
 			Code:   res.StatusCode,
 			Header: res.Header,
-		}
+		})
 	}
 	if err != nil {
 		return nil, err
 	}
 	defer googleapi.CloseBody(res)
 	if err := googleapi.CheckResponse(res); err != nil {
-		return nil, err
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &Environment{
 		ServerResponse: googleapi.ServerResponse{
@@ -2682,17 +2952,17 @@ func (c *ProjectsLocationsEnvironmentsListCall) Do(opts ...googleapi.CallOption)
 		if res.Body != nil {
 			res.Body.Close()
 		}
-		return nil, &googleapi.Error{
+		return nil, gensupport.WrapError(&googleapi.Error{
 			Code:   res.StatusCode,
 			Header: res.Header,
-		}
+		})
 	}
 	if err != nil {
 		return nil, err
 	}
 	defer googleapi.CloseBody(res)
 	if err := googleapi.CheckResponse(res); err != nil {
-		return nil, err
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &ListEnvironmentsResponse{
 		ServerResponse: googleapi.ServerResponse{
@@ -2858,17 +3128,17 @@ func (c *ProjectsLocationsEnvironmentsLoadSnapshotCall) Do(opts ...googleapi.Cal
 		if res.Body != nil {
 			res.Body.Close()
 		}
-		return nil, &googleapi.Error{
+		return nil, gensupport.WrapError(&googleapi.Error{
 			Code:   res.StatusCode,
 			Header: res.Header,
-		}
+		})
 	}
 	if err != nil {
 		return nil, err
 	}
 	defer googleapi.CloseBody(res)
 	if err := googleapi.CheckResponse(res); err != nil {
-		return nil, err
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &Operation{
 		ServerResponse: googleapi.ServerResponse{
@@ -3108,17 +3378,17 @@ func (c *ProjectsLocationsEnvironmentsPatchCall) Do(opts ...googleapi.CallOption
 		if res.Body != nil {
 			res.Body.Close()
 		}
-		return nil, &googleapi.Error{
+		return nil, gensupport.WrapError(&googleapi.Error{
 			Code:   res.StatusCode,
 			Header: res.Header,
-		}
+		})
 	}
 	if err != nil {
 		return nil, err
 	}
 	defer googleapi.CloseBody(res)
 	if err := googleapi.CheckResponse(res); err != nil {
-		return nil, err
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &Operation{
 		ServerResponse: googleapi.ServerResponse{
@@ -3259,17 +3529,17 @@ func (c *ProjectsLocationsEnvironmentsRestartWebServerCall) Do(opts ...googleapi
 		if res.Body != nil {
 			res.Body.Close()
 		}
-		return nil, &googleapi.Error{
+		return nil, gensupport.WrapError(&googleapi.Error{
 			Code:   res.StatusCode,
 			Header: res.Header,
-		}
+		})
 	}
 	if err != nil {
 		return nil, err
 	}
 	defer googleapi.CloseBody(res)
 	if err := googleapi.CheckResponse(res); err != nil {
-		return nil, err
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &Operation{
 		ServerResponse: googleapi.ServerResponse{
@@ -3406,17 +3676,17 @@ func (c *ProjectsLocationsEnvironmentsSaveSnapshotCall) Do(opts ...googleapi.Cal
 		if res.Body != nil {
 			res.Body.Close()
 		}
-		return nil, &googleapi.Error{
+		return nil, gensupport.WrapError(&googleapi.Error{
 			Code:   res.StatusCode,
 			Header: res.Header,
-		}
+		})
 	}
 	if err != nil {
 		return nil, err
 	}
 	defer googleapi.CloseBody(res)
 	if err := googleapi.CheckResponse(res); err != nil {
-		return nil, err
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &Operation{
 		ServerResponse: googleapi.ServerResponse{
@@ -3578,17 +3848,17 @@ func (c *ProjectsLocationsImageVersionsListCall) Do(opts ...googleapi.CallOption
 		if res.Body != nil {
 			res.Body.Close()
 		}
-		return nil, &googleapi.Error{
+		return nil, gensupport.WrapError(&googleapi.Error{
 			Code:   res.StatusCode,
 			Header: res.Header,
-		}
+		})
 	}
 	if err != nil {
 		return nil, err
 	}
 	defer googleapi.CloseBody(res)
 	if err := googleapi.CheckResponse(res); err != nil {
-		return nil, err
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &ListImageVersionsResponse{
 		ServerResponse: googleapi.ServerResponse{
@@ -3750,17 +4020,17 @@ func (c *ProjectsLocationsOperationsDeleteCall) Do(opts ...googleapi.CallOption)
 		if res.Body != nil {
 			res.Body.Close()
 		}
-		return nil, &googleapi.Error{
+		return nil, gensupport.WrapError(&googleapi.Error{
 			Code:   res.StatusCode,
 			Header: res.Header,
-		}
+		})
 	}
 	if err != nil {
 		return nil, err
 	}
 	defer googleapi.CloseBody(res)
 	if err := googleapi.CheckResponse(res); err != nil {
-		return nil, err
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &Empty{
 		ServerResponse: googleapi.ServerResponse{
@@ -3898,17 +4168,17 @@ func (c *ProjectsLocationsOperationsGetCall) Do(opts ...googleapi.CallOption) (*
 		if res.Body != nil {
 			res.Body.Close()
 		}
-		return nil, &googleapi.Error{
+		return nil, gensupport.WrapError(&googleapi.Error{
 			Code:   res.StatusCode,
 			Header: res.Header,
-		}
+		})
 	}
 	if err != nil {
 		return nil, err
 	}
 	defer googleapi.CloseBody(res)
 	if err := googleapi.CheckResponse(res); err != nil {
-		return nil, err
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &Operation{
 		ServerResponse: googleapi.ServerResponse{
@@ -4074,17 +4344,17 @@ func (c *ProjectsLocationsOperationsListCall) Do(opts ...googleapi.CallOption) (
 		if res.Body != nil {
 			res.Body.Close()
 		}
-		return nil, &googleapi.Error{
+		return nil, gensupport.WrapError(&googleapi.Error{
 			Code:   res.StatusCode,
 			Header: res.Header,
-		}
+		})
 	}
 	if err != nil {
 		return nil, err
 	}
 	defer googleapi.CloseBody(res)
 	if err := googleapi.CheckResponse(res); err != nil {
-		return nil, err
+		return nil, gensupport.WrapError(err)
 	}
 	ret := &ListOperationsResponse{
 		ServerResponse: googleapi.ServerResponse{

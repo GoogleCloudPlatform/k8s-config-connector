@@ -29,7 +29,7 @@ func TestAccFirebaseAndroidApp_firebaseAndroidAppBasicExample(t *testing.T) {
 	context := map[string]interface{}{
 		"org_id":        getTestOrgFromEnv(t),
 		"project_id":    getTestProjectFromEnv(),
-		"package_name":  "android.package." + randString(t, 5),
+		"package_name":  "android.package.app" + randString(t, 4),
 		"random_suffix": randString(t, 10),
 	}
 
@@ -58,6 +58,8 @@ resource "google_firebase_android_app" "basic" {
   project = "%{project_id}"
   display_name = "Display Name Basic%{random_suffix}"
   package_name = "%{package_name}"
+  sha1_hashes = ["2145bdf698b8715039bd0e83f2069bed435ac21c"]
+  sha256_hashes = ["2145bdf698b8715039bd0e83f2069bed435ac21ca1b2c3d4e5f6123456789abc"]
 }
 `, context)
 }

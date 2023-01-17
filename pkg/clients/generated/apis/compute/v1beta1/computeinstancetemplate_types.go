@@ -126,9 +126,31 @@ type InstancetemplateDisk struct {
 	// +optional
 	SourceDiskRef *v1alpha1.ResourceRef `json:"sourceDiskRef,omitempty"`
 
+	/* Immutable. The customer-supplied encryption key of the source
+	image. Required if the source image is protected by a
+	customer-supplied encryption key.
+
+	Instance templates do not store customer-supplied
+	encryption keys, so you cannot create disks for
+	instances in a managed instance group if the source
+	images are encrypted with your own keys. */
+	// +optional
+	SourceImageEncryptionKey *InstancetemplateSourceImageEncryptionKey `json:"sourceImageEncryptionKey,omitempty"`
+
 	/*  */
 	// +optional
 	SourceImageRef *v1alpha1.ResourceRef `json:"sourceImageRef,omitempty"`
+
+	/* Immutable. The customer-supplied encryption key of the source snapshot. */
+	// +optional
+	SourceSnapshotEncryptionKey *InstancetemplateSourceSnapshotEncryptionKey `json:"sourceSnapshotEncryptionKey,omitempty"`
+
+	/* The source snapshot to create this disk. When creating a new
+	instance, one of initializeParams.sourceSnapshot,
+	initializeParams.sourceImage, or disks.source is required except for
+	local SSD. */
+	// +optional
+	SourceSnapshotRef *v1alpha1.ResourceRef `json:"sourceSnapshotRef,omitempty"`
 
 	/* Immutable. The type of Google Compute Engine disk, can be either "SCRATCH" or "PERSISTENT". */
 	// +optional
@@ -294,6 +316,30 @@ type InstancetemplateShieldedInstanceConfig struct {
 	/* Immutable. Use a virtualized trusted platform module, which is a specialized computer chip you can use to encrypt objects like keys and certificates. Defaults to true. */
 	// +optional
 	EnableVtpm *bool `json:"enableVtpm,omitempty"`
+}
+
+type InstancetemplateSourceImageEncryptionKey struct {
+	/* The self link of the encryption key that is stored in Google Cloud
+	KMS. */
+	KmsKeySelfLinkRef v1alpha1.ResourceRef `json:"kmsKeySelfLinkRef"`
+
+	/* The service account being used for the encryption request for the
+	given KMS key. If absent, the Compute Engine default service account
+	is used. */
+	// +optional
+	KmsKeyServiceAccountRef *v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
+}
+
+type InstancetemplateSourceSnapshotEncryptionKey struct {
+	/* The self link of the encryption key that is stored in Google Cloud
+	KMS. */
+	KmsKeySelfLinkRef v1alpha1.ResourceRef `json:"kmsKeySelfLinkRef"`
+
+	/* The service account being used for the encryption request for the
+	given KMS key. If absent, the Compute Engine default service account
+	is used. */
+	// +optional
+	KmsKeyServiceAccountRef *v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
 }
 
 type InstancetemplateSpecificReservation struct {

@@ -160,6 +160,7 @@ var schemaNodePool = map[string]*schema.Schema{
 				"location_policy": {
 					Type:         schema.TypeString,
 					Optional:     true,
+					Computed:     true,
 					ValidateFunc: validation.StringInSlice([]string{"BALANCED", "ANY"}, false),
 					Description:  `Location policy specifies the algorithm used when scaling-up the node pool. "BALANCED" - Is a best effort policy that aims to balance the sizes of available zones. "ANY" - Instructs the cluster autoscaler to prioritize utilization of unused reservations, and reduces preemption risk for Spot VMs.`,
 				},
@@ -1288,6 +1289,44 @@ func nodePoolUpdate(d *schema.ResourceData, meta interface{}, nodePoolInfo *Node
 			}
 
 			log.Printf("[INFO] Updated resource labels for node pool %s", name)
+		}
+
+		if d.HasChange(prefix + "node_config.0.labels") {
+			req := &container.UpdateNodePoolRequest{
+				Name: name,
+			}
+
+			if v, ok := d.GetOk(prefix + "node_config.0.labels"); ok {
+				labels := v.(map[string]interface{})
+				req.Labels = &container.NodeLabels{
+					Labels: convertStringMap(labels),
+				}
+			}
+
+			updateF := func() error {
+				clusterNodePoolsUpdateCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.NodePools.Update(nodePoolInfo.fullyQualifiedName(name), req)
+				if config.UserProjectOverride {
+					clusterNodePoolsUpdateCall.Header().Add("X-Goog-User-Project", nodePoolInfo.project)
+				}
+				op, err := clusterNodePoolsUpdateCall.Do()
+				if err != nil {
+					return err
+				}
+
+				// Wait until it's updated
+				return containerOperationWait(config, op,
+					nodePoolInfo.project,
+					nodePoolInfo.location,
+					"updating GKE node pool labels", userAgent,
+					timeout)
+			}
+
+			// Call update serially.
+			if err := retryWhileIncompatibleOperation(timeout, npLockKey, updateF); err != nil {
+				return err
+			}
+
+			log.Printf("[INFO] Updated labels for node pool %s", name)
 		}
 
 		if d.HasChange(prefix + "node_config.0.image_type") {

@@ -137,7 +137,7 @@ locals {
 }
 
 resource "google_service_account" "account" {
-  account_id = "sa%{random_suffix}"
+  account_id = "tf-test-gcf-sa%{random_suffix}"
   display_name = "Test Service Account"
 }
 
@@ -158,7 +158,7 @@ resource "google_storage_bucket_object" "object" {
 }
  
 resource "google_cloudfunctions2_function" "function" {
-  name = "function%{random_suffix}"
+  name = "tf-test-gcf-function%{random_suffix}"
   location = "us-central1"
   description = "a new function"
  
@@ -179,8 +179,10 @@ resource "google_cloudfunctions2_function" "function" {
   service_config {
     max_instance_count  = 3
     min_instance_count = 1
-    available_memory    = "256M"
+    available_memory    = "4Gi"
     timeout_seconds     = 60
+    max_instance_request_concurrency = 80
+    available_cpu = "4"
     environment_variables = {
         SERVICE_CONFIG_TEST = "config_test"
     }
@@ -262,7 +264,7 @@ resource "google_project_iam_member" "gcs-pubsub-publishing" {
 }
 
 resource "google_service_account" "account" {
-  account_id   = "sa%{random_suffix}"
+  account_id   = "tf-test-gcf-sa%{random_suffix}"
   display_name = "Test Service Account - used for both the cloud function and eventarc trigger in the test"
 }
 
@@ -293,7 +295,7 @@ resource "google_cloudfunctions2_function" "function" {
     google_project_iam_member.event-receiving,
     google_project_iam_member.artifactregistry-reader,
   ]
-  name = "function%{random_suffix}"
+  name = "tf-test-gcf-function%{random_suffix}"
   location = "us-central1"
   description = "a new function"
  

@@ -45,7 +45,25 @@
 
 <tr>
     <td>Can Be Referenced by IAMPolicy/IAMPolicyMember</td>
+    <td>Yes</td>
+</tr>
+
+<tr>
+    <td>Supports IAM Conditions</td>
     <td>No</td>
+</tr>
+
+<tr>
+    <td>Supports IAM Audit Configs</td>
+    <td>No</td>
+</tr>
+<tr>
+    <td>IAM External Reference Format</td>
+    <td>
+        
+        <p>{% verbatim %}projects/{{project}}/managedZones/{{name}}{% endverbatim %}</p>
+        
+    </td>
 </tr>
 
 

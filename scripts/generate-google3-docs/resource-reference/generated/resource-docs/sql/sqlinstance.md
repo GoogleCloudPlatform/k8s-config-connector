@@ -140,6 +140,7 @@ settings:
   databaseFlags:
   - name: string
     value: string
+  deletionProtectionEnabled: boolean
   denyMaintenancePeriod:
     endDate: string
     startDate: string
@@ -800,6 +801,16 @@ Specifying this field has no-ops; it's recommended to remove this field from you
     </tr>
     <tr>
         <td>
+            <p><code>settings.deletionProtectionEnabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Configuration to protect against accidental instance deletion.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>settings.denyMaintenancePeriod</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1252,7 +1263,7 @@ Specifying this field has no-ops; it's recommended to remove this field from you
     <tr>
         <td>
             <p><code>settings.sqlServerAuditConfig.bucketRef</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -1349,6 +1360,7 @@ conditions:
   type: string
 connectionName: string
 firstIpAddress: string
+instanceType: string
 ipAddress:
 - ipAddress: string
   timeToRetire: string
@@ -1448,6 +1460,13 @@ serviceAccountEmailAddress: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>instanceType</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The type of the instance. The valid values are:- 'SQL_INSTANCE_TYPE_UNSPECIFIED', 'CLOUD_SQL_INSTANCE', 'ON_PREMISES_INSTANCE' and 'READ_REPLICA_INSTANCE'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

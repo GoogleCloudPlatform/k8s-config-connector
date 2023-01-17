@@ -35,7 +35,7 @@ import (
 	compute "google.golang.org/api/compute/v0.beta"
 	container "google.golang.org/api/container/v1beta1"
 	dataflow "google.golang.org/api/dataflow/v1b3"
-	dataproc "google.golang.org/api/dataproc/v1beta2"
+	"google.golang.org/api/dataproc/v1"
 	"google.golang.org/api/dns/v1"
 	healthcare "google.golang.org/api/healthcare/v1"
 	"google.golang.org/api/iam/v1"
@@ -204,6 +204,7 @@ type Config struct {
 	CloudTasksBasePath           string
 	ComputeBasePath              string
 	ContainerAnalysisBasePath    string
+	ContainerAttachedBasePath    string
 	DataCatalogBasePath          string
 	DataformBasePath             string
 	DataFusionBasePath           string
@@ -220,6 +221,7 @@ type Config struct {
 	EssentialContactsBasePath    string
 	FilestoreBasePath            string
 	FirebaseBasePath             string
+	FirebaseDatabaseBasePath     string
 	FirebaseHostingBasePath      string
 	FirebaseStorageBasePath      string
 	FirestoreBasePath            string
@@ -317,6 +319,7 @@ const CloudSchedulerBasePathKey = "CloudScheduler"
 const CloudTasksBasePathKey = "CloudTasks"
 const ComputeBasePathKey = "Compute"
 const ContainerAnalysisBasePathKey = "ContainerAnalysis"
+const ContainerAttachedBasePathKey = "ContainerAttached"
 const DataCatalogBasePathKey = "DataCatalog"
 const DataformBasePathKey = "Dataform"
 const DataFusionBasePathKey = "DataFusion"
@@ -333,6 +336,7 @@ const DocumentAIBasePathKey = "DocumentAI"
 const EssentialContactsBasePathKey = "EssentialContacts"
 const FilestoreBasePathKey = "Filestore"
 const FirebaseBasePathKey = "Firebase"
+const FirebaseDatabaseBasePathKey = "FirebaseDatabase"
 const FirebaseHostingBasePathKey = "FirebaseHosting"
 const FirebaseStorageBasePathKey = "FirebaseStorage"
 const FirestoreBasePathKey = "Firestore"
@@ -424,6 +428,7 @@ var DefaultBasePaths = map[string]string{
 	CloudTasksBasePathKey:           "https://cloudtasks.googleapis.com/v2/",
 	ComputeBasePathKey:              "https://compute.googleapis.com/compute/beta/",
 	ContainerAnalysisBasePathKey:    "https://containeranalysis.googleapis.com/v1beta1/",
+	ContainerAttachedBasePathKey:    "https://{{location}}-gkemulticloud.googleapis.com/v1/",
 	DataCatalogBasePathKey:          "https://datacatalog.googleapis.com/v1beta1/",
 	DataformBasePathKey:             "https://dataform.googleapis.com/v1beta1/",
 	DataFusionBasePathKey:           "https://datafusion.googleapis.com/v1beta1/",
@@ -440,6 +445,7 @@ var DefaultBasePaths = map[string]string{
 	EssentialContactsBasePathKey:    "https://essentialcontacts.googleapis.com/v1/",
 	FilestoreBasePathKey:            "https://file.googleapis.com/v1beta1/",
 	FirebaseBasePathKey:             "https://firebase.googleapis.com/v1beta1/",
+	FirebaseDatabaseBasePathKey:     "https://firebasedatabase.googleapis.com/v1beta/",
 	FirebaseHostingBasePathKey:      "https://firebasehosting.googleapis.com/v1beta1/",
 	FirebaseStorageBasePathKey:      "https://firebasestorage.googleapis.com/v1beta/",
 	FirestoreBasePathKey:            "https://firestore.googleapis.com/v1/",
@@ -1322,6 +1328,7 @@ func ConfigureBasePaths(c *Config) {
 	c.CloudTasksBasePath = DefaultBasePaths[CloudTasksBasePathKey]
 	c.ComputeBasePath = DefaultBasePaths[ComputeBasePathKey]
 	c.ContainerAnalysisBasePath = DefaultBasePaths[ContainerAnalysisBasePathKey]
+	c.ContainerAttachedBasePath = DefaultBasePaths[ContainerAttachedBasePathKey]
 	c.DataCatalogBasePath = DefaultBasePaths[DataCatalogBasePathKey]
 	c.DataformBasePath = DefaultBasePaths[DataformBasePathKey]
 	c.DataFusionBasePath = DefaultBasePaths[DataFusionBasePathKey]
@@ -1338,6 +1345,7 @@ func ConfigureBasePaths(c *Config) {
 	c.EssentialContactsBasePath = DefaultBasePaths[EssentialContactsBasePathKey]
 	c.FilestoreBasePath = DefaultBasePaths[FilestoreBasePathKey]
 	c.FirebaseBasePath = DefaultBasePaths[FirebaseBasePathKey]
+	c.FirebaseDatabaseBasePath = DefaultBasePaths[FirebaseDatabaseBasePathKey]
 	c.FirebaseHostingBasePath = DefaultBasePaths[FirebaseHostingBasePathKey]
 	c.FirebaseStorageBasePath = DefaultBasePaths[FirebaseStorageBasePathKey]
 	c.FirestoreBasePath = DefaultBasePaths[FirestoreBasePathKey]

@@ -189,6 +189,9 @@ spec:
               creationTimestamp:
                 description: Creation timestamp in RFC3339 text format.
                 type: string
+              expireTime:
+                description: Expire time of the certificate in RFC3339 text format.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.

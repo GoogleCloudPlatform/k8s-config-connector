@@ -2013,6 +2013,7 @@ conditions:
   type: string
 creationTimestamp: string
 fingerprint: string
+generatedId: integer
 observedGeneration: integer
 selfLink: string
 ```
@@ -2086,6 +2087,13 @@ selfLink: string
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Fingerprint of this resource. A hash of the contents stored in this
 object. This field is used in optimistic locking.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>generatedId</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}The unique identifier for the resource. This identifier is defined by the server.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

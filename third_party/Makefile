@@ -24,7 +24,7 @@ clone-terraform-google-provider-beta:
 	rm -rf github.com/hashicorp/terraform-provider-google-beta
 	mkdir -p github.com/hashicorp
 	cd github.com/hashicorp && git clone https://github.com/hashicorp/terraform-provider-google-beta
-	git -C github.com/hashicorp/terraform-provider-google-beta checkout v4.47.0
+	git -C github.com/hashicorp/terraform-provider-google-beta checkout v4.49.0
 	rm -rf github.com/hashicorp/terraform-provider-google-beta/.git
 
 .PHONY: apply-patches
@@ -127,9 +127,6 @@ apply-patches:
 	# that is inconsistent with other resources whose identifiers cannot be
 	# changed.
 	git apply ../hack/terraform-overrides/iam_audit_config.patch
-	# Adds description to BigtableInstance.numNodes to explain it can be set to none
-	# for externally managed numNodes.
-	git apply ../hack/terraform-overrides/bigtable_instance_numnodes_description.patch
 	# Update the default description from "Managed by Terraform" to "Managed by
 	# Config Connector" in dns_managed_zone and dns_policy.
 	git apply ../hack/terraform-overrides/dns_resources_default_description.patch

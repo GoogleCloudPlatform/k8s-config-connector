@@ -105,7 +105,8 @@ resource "google_gke_hub_feature_membership" "feature_member_1" {
     config_sync {
       source_format = "hierarchy"
       git {
-        sync_repo = "https://github.com/GoogleCloudPlatform/magic-modules"
+        sync_repo   = "https://github.com/GoogleCloudPlatform/magic-modules"
+        secret_type = "none"
       }
     }
   }
@@ -122,7 +123,8 @@ resource "google_gke_hub_feature_membership" "feature_member_2" {
     config_sync {
       source_format = "hierarchy"
       git {
-        sync_repo = "https://github.com/terraform-providers/terraform-provider-google"
+        sync_repo   = "https://github.com/terraform-providers/terraform-provider-google"
+        secret_type = "none"
       }
     }
   }
@@ -155,7 +157,8 @@ resource "google_gke_hub_feature_membership" "feature_member_1" {
     config_sync {
       source_format = "hierarchy"
       git {
-        sync_repo = "https://github.com/GoogleCloudPlatform/magic-modules"
+        sync_repo   = "https://github.com/GoogleCloudPlatform/magic-modules"
+        secret_type = "none"
       }
     }
   }
@@ -172,7 +175,8 @@ resource "google_gke_hub_feature_membership" "feature_member_2" {
     config_sync {
       source_format = "hierarchy"
       git {
-        sync_repo = "https://github.com/terraform-providers/terraform-provider-google-beta"
+        sync_repo   = "https://github.com/terraform-providers/terraform-provider-google-beta"
+        secret_type = "none"
       }
     }
     policy_controller {
@@ -211,7 +215,8 @@ resource "google_gke_hub_feature_membership" "feature_member_2" {
     config_sync {
       source_format = "unstructured"
       git {
-        sync_repo = "https://github.com/terraform-providers/terraform-provider-google-beta"
+        sync_repo   = "https://github.com/terraform-providers/terraform-provider-google-beta"
+        secret_type = "none"
       }
     }
     policy_controller {
@@ -239,7 +244,8 @@ resource "google_gke_hub_feature_membership" "feature_member_3" {
     config_sync {
       source_format = "hierarchy"
       git {
-        sync_repo = "https://github.com/hashicorp/terraform"
+        sync_repo   = "https://github.com/hashicorp/terraform"
+        secret_type = "none"
       }
     }
     policy_controller {
@@ -423,11 +429,12 @@ resource "google_gke_hub_feature_membership" "feature_member" {
     version = "1.12.0"
     config_sync {
       git {
-        sync_repo = "https://github.com/hashicorp/terraform"
-        https_proxy = "https://example.com"
-        policy_dir = "google/"
-        sync_branch = "some-branch"
-        sync_rev = "v3.60.0"
+        sync_repo      = "https://github.com/hashicorp/terraform"
+        https_proxy    = "https://example.com"
+        policy_dir     = "google/"
+        secret_type    = "none"
+        sync_branch    = "some-branch"
+        sync_rev       = "v3.60.0"
         sync_wait_secs = "30"
       }
     }
@@ -489,11 +496,12 @@ resource "google_gke_hub_feature_membership" "feature_member" {
     version = "1.12.0"
     config_sync {
       git {
-        sync_repo = "https://github.com/hashicorp/terraform"
-        https_proxy = "https://example.com"
-        policy_dir = "google/"
-        sync_branch = "some-branch"
-        sync_rev = "v3.60.0"
+        sync_repo      = "https://github.com/hashicorp/terraform"
+        https_proxy    = "https://example.com"
+        policy_dir     = "google/"
+        secret_type    = "none"
+        sync_branch    = "some-branch"
+        sync_rev       = "v3.60.0"
         sync_wait_secs = "30"
       }
       prevent_drift = true
@@ -562,8 +570,207 @@ resource "google_gke_hub_feature_membership" "feature_member" {
     version = "1.12.0"
     config_sync {
       git {
-        sync_repo = "https://github.com/hashicorp/terraform"
+        sync_repo   = "https://github.com/hashicorp/terraform"
+        secret_type = "none"
       }
+    }
+  }
+  provider = google-beta
+}
+`, context)
+}
+
+func TestAccGkeHubFeatureMembership_gkehubFeatureAcmOci(t *testing.T) {
+	// Multiple fine-grained resources cause VCR to fail
+	skipIfVcr(t)
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix":   randString(t, 10),
+		"org_id":          getTestOrgFromEnv(t),
+		"billing_account": getTestBillingAccountFromEnv(t),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProvidersOiCS,
+		CheckDestroy: testAccCheckGKEHubFeatureDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccGkeHubFeatureMembership_gkehubFeatureAcmOciStart(context),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckGkeHubFeatureMembershipPresent(t, fmt.Sprintf("tf-test-gkehub%s", context["random_suffix"]), "global", "configmanagement", fmt.Sprintf("tf-test1%s", context["random_suffix"])),
+				),
+			},
+			{
+				ResourceName:      "google_gke_hub_feature_membership.feature_member",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccGkeHubFeatureMembership_gkehubFeatureAcmOciUpdate(context),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckGkeHubFeatureMembershipPresent(t, fmt.Sprintf("tf-test-gkehub%s", context["random_suffix"]), "global", "configmanagement", fmt.Sprintf("tf-test1%s", context["random_suffix"])),
+				),
+			},
+			{
+				ResourceName:      "google_gke_hub_feature_membership.feature_member",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccGkeHubFeatureMembership_gkehubFeatureAcmOciRemoveFields(context),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckGkeHubFeatureMembershipPresent(t, fmt.Sprintf("tf-test-gkehub%s", context["random_suffix"]), "global", "configmanagement", fmt.Sprintf("tf-test1%s", context["random_suffix"])),
+				),
+			},
+			{
+				ResourceName:      "google_gke_hub_feature_membership.feature_member",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccGkeHubFeatureMembership_gkehubFeatureAcmOciStart(context map[string]interface{}) string {
+	return gkeHubFeatureProjectSetup(context) + gkeHubClusterMembershipSetup_ACMOCI(context) + Nprintf(`
+resource "google_gke_hub_feature" "feature" {
+  project = google_project.project.project_id
+  name = "configmanagement"
+  location = "global"
+
+  labels = {
+    foo = "bar"
+  }
+  provider = google-beta
+  depends_on = [google_project_service.container, google_project_service.gkehub]
+}
+
+resource "google_service_account" "feature_sa" {
+  project = google_project.project.project_id
+  account_id = "feature-sa"
+  provider = google-beta
+}
+
+resource "google_gke_hub_feature_membership" "feature_member" {
+  project = google_project.project.project_id
+  location = "global"
+  feature = google_gke_hub_feature.feature.name
+  membership = google_gke_hub_membership.membership_acmoci.membership_id
+  configmanagement {
+    version = "1.12.0"
+    config_sync {
+      source_format = "unstructured"
+      oci {
+        sync_repo = "us-central1-docker.pkg.dev/sample-project/config-repo/config-sync-gke:latest"
+        policy_dir = "config-connector"
+        sync_wait_secs = "20"
+        secret_type = "gcpserviceaccount"
+        gcp_service_account_email = google_service_account.feature_sa.email
+      }
+      prevent_drift = true
+    }
+    policy_controller {
+      enabled = true
+      audit_interval_seconds = "100"
+      exemptable_namespaces = ["onetwothree", "fourfive"]
+      template_library_installed = true
+      referential_rules_enabled = true
+      log_denies_enabled = true
+    }
+  }
+  provider = google-beta
+}
+`, context)
+}
+
+func testAccGkeHubFeatureMembership_gkehubFeatureAcmOciUpdate(context map[string]interface{}) string {
+	return gkeHubFeatureProjectSetup(context) + gkeHubClusterMembershipSetup_ACMOCI(context) + Nprintf(`
+resource "google_gke_hub_feature" "feature" {
+  project = google_project.project.project_id
+  name = "configmanagement"
+  location = "global"
+
+  labels = {
+    foo = "bar"
+  }
+  provider = google-beta
+  depends_on = [google_project_service.container, google_project_service.gkehub]
+}
+
+resource "google_service_account" "feature_sa" {
+  project = google_project.project.project_id
+  account_id = "feature-sa"
+  provider = google-beta
+}
+
+resource "google_gke_hub_feature_membership" "feature_member" {
+  project = google_project.project.project_id
+  location = "global"
+  feature = google_gke_hub_feature.feature.name
+  membership = google_gke_hub_membership.membership_acmoci.membership_id
+  configmanagement {
+    version = "1.12.0"
+    config_sync {
+      source_format = "hierarchy"
+      oci {
+        sync_repo = "us-central1-docker.pkg.dev/sample-project/config-repo/config-sync-gke:latest"
+        policy_dir = "config-sync"
+        sync_wait_secs = "15"
+        secret_type = "gcenode"
+        gcp_service_account_email = google_service_account.feature_sa.email
+      }
+      prevent_drift = true
+    }
+    policy_controller {
+      enabled = true
+      audit_interval_seconds = "100"
+      exemptable_namespaces = ["onetwothree", "fourfive"]
+      template_library_installed = true
+      referential_rules_enabled = true
+      log_denies_enabled = true
+    }
+  }
+  provider = google-beta
+}
+`, context)
+}
+
+func testAccGkeHubFeatureMembership_gkehubFeatureAcmOciRemoveFields(context map[string]interface{}) string {
+	return gkeHubFeatureProjectSetup(context) + gkeHubClusterMembershipSetup_ACMOCI(context) + Nprintf(`
+resource "google_gke_hub_feature" "feature" {
+  project = google_project.project.project_id
+  name = "configmanagement"
+  location = "global"
+
+  labels = {
+    foo = "bar"
+  }
+  provider = google-beta
+  depends_on = [google_project_service.container, google_project_service.gkehub]
+}
+
+resource "google_service_account" "feature_sa" {
+  project = google_project.project.project_id
+  account_id = "feature-sa"
+  provider = google-beta
+}
+
+resource "google_gke_hub_feature_membership" "feature_member" {
+  project = google_project.project.project_id
+  location = "global"
+  feature = google_gke_hub_feature.feature.name
+  membership = google_gke_hub_membership.membership_acmoci.membership_id
+  configmanagement {
+    version = "1.12.0"
+    policy_controller {
+      enabled = true
+      audit_interval_seconds = "100"
+      exemptable_namespaces = ["onetwothree", "fourfive"]
+      template_library_installed = true
+      referential_rules_enabled = true
+      log_denies_enabled = true
     }
   }
   provider = google-beta
@@ -868,6 +1075,41 @@ resource "google_gke_hub_membership" "membership_fourth" {
   endpoint {
     gke_cluster {
       resource_link = "//container.googleapis.com/${google_container_cluster.quarternary.id}"
+    }
+  }
+  description = "test resource."
+  provider = google-beta
+}
+`, context)
+}
+
+func gkeHubClusterMembershipSetup_ACMOCI(context map[string]interface{}) string {
+	return Nprintf(`
+
+resource "google_compute_network" "testnetwork" {
+    project                 = google_project.project.project_id
+    name                    = "testnetwork"
+    auto_create_subnetworks = true
+    provider = google-beta
+    depends_on = [google_project_service.compute]
+}
+
+resource "google_container_cluster" "container_acmoci" {
+  name               = "tf-test-cl%{random_suffix}"
+  location           = "us-central1-a"
+  initial_node_count = 1
+  network = google_compute_network.testnetwork.self_link
+  project = google_project.project.project_id
+  provider = google-beta
+  depends_on = [google_project_service.container, google_project_service.container, google_project_service.gkehub]
+}
+
+resource "google_gke_hub_membership" "membership_acmoci" {
+  project = google_project.project.project_id
+  membership_id = "tf-test1%{random_suffix}"
+  endpoint {
+    gke_cluster {
+      resource_link = "//container.googleapis.com/${google_container_cluster.container_acmoci.id}"
     }
   }
   description = "test resource."

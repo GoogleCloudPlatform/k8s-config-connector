@@ -34,6 +34,13 @@ spec:
       resourceAvailableInAssetInventory: true
       directives:
       - force_destroy
+      iamConfig:
+        policyName: google_dns_managed_zone_iam_policy
+        policyMemberName: google_dns_managed_zone_iam_member
+        referenceField:
+          name: managed_zone
+          type: name
+        supportsConditions: false
       resourceReferences:
         - tfField: private_visibility_config.networks.network_url
           description: |-

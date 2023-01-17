@@ -803,6 +803,8 @@ type ComputeBackendServiceStatus struct {
 	/* Fingerprint of this resource. A hash of the contents stored in this
 	object. This field is used in optimistic locking. */
 	Fingerprint string `json:"fingerprint,omitempty"`
+	/* The unique identifier for the resource. This identifier is defined by the server. */
+	GeneratedId int `json:"generatedId,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	ObservedGeneration int `json:"observedGeneration,omitempty"`
 	/*  */

@@ -40,6 +40,19 @@ type ImageGuestOsFeatures struct {
 	Type string `json:"type"`
 }
 
+type ImageImageEncryptionKey struct {
+	/* The self link of the encryption key that is stored in Google Cloud
+	KMS. */
+	// +optional
+	KmsKeySelfLinkRef *v1alpha1.ResourceRef `json:"kmsKeySelfLinkRef,omitempty"`
+
+	/* The service account being used for the encryption request for the
+	given KMS key. If absent, the Compute Engine default service account
+	is used. */
+	// +optional
+	KmsKeyServiceAccountRef *v1alpha1.ResourceRef `json:"kmsKeyServiceAccountRef,omitempty"`
+}
+
 type ImageRawDisk struct {
 	/* Immutable. The format used to encode and transmit the block device, which
 	should be TAR. This is just a container and transmission format
@@ -87,6 +100,14 @@ type ComputeImageSpec struct {
 	Applicable only for bootable images. */
 	// +optional
 	GuestOsFeatures []ImageGuestOsFeatures `json:"guestOsFeatures,omitempty"`
+
+	/* Immutable. Encrypts the image using a customer-supplied encryption key.
+
+	After you encrypt an image with a customer-supplied key, you must
+	provide the same key if you use the image later (e.g. to create a
+	disk from the image). */
+	// +optional
+	ImageEncryptionKey *ImageImageEncryptionKey `json:"imageEncryptionKey,omitempty"`
 
 	/* Immutable. Any applicable license URI. */
 	// +optional

@@ -188,7 +188,7 @@ type NodepoolNodeConfig struct {
 	// +optional
 	KubeletConfig *NodepoolKubeletConfig `json:"kubeletConfig,omitempty"`
 
-	/* Immutable. The map of Kubernetes labels (key/value pairs) to be applied to each node. These will added in addition to any default label(s) that Kubernetes may apply to the node. */
+	/* The map of Kubernetes labels (key/value pairs) to be applied to each node. These will added in addition to any default label(s) that Kubernetes may apply to the node. */
 	// +optional
 	Labels map[string]string `json:"labels,omitempty"`
 

@@ -41,7 +41,7 @@ func resourceBigtableInstance() *schema.Resource {
 				Type:        schema.TypeString,
 				Required:    true,
 				ForceNew:    true,
-				Description: `The name (also called Instance Id in the Cloud Console) of the Cloud Bigtable instance.`,
+				Description: `The name (also called Instance Id in the Cloud Console) of the Cloud Bigtable instance. Must be 6-33 characters and must only contain hyphens, lowercase letters and numbers.`,
 			},
 
 			"cluster": {
@@ -54,7 +54,7 @@ func resourceBigtableInstance() *schema.Resource {
 						"cluster_id": {
 							Type:        schema.TypeString,
 							Required:    true,
-							Description: `The ID of the Cloud Bigtable cluster.`,
+							Description: `The ID of the Cloud Bigtable cluster. Must be 6-30 characters and must only contain hyphens, lowercase letters and numbers.`,
 						},
 						"zone": {
 							Type:        schema.TypeString,
@@ -70,7 +70,7 @@ func resourceBigtableInstance() *schema.Resource {
 							// so mark as computed.
 							Computed:     true,
 							ValidateFunc: validation.IntAtLeast(1),
-							Description:  `The number of nodes in your Cloud Bigtable cluster. For PRODUCTION instances where the numNodes will be managed by Config Connector, this field is required with a minimum of 1. For a DEVELOPMENT instance or for an existing instance where the numNodes is managed outside of Config Connector, this field must be left unset.`,
+							Description:  `The number of nodes in your Cloud Bigtable cluster. Required, with a minimum of 1 for each cluster in an instance.`,
 						},
 						"storage_type": {
 							Type:         schema.TypeString,

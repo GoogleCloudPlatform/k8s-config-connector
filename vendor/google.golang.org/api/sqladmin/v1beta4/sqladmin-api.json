@@ -1921,7 +1921,7 @@
       }
     }
   },
-  "revision": "20221017",
+  "revision": "20221116",
   "rootUrl": "https://sqladmin.googleapis.com/",
   "schemas": {
     "AclEntry": {
@@ -2863,12 +2863,15 @@
       "id": "ExportContext",
       "properties": {
         "bakExportOptions": {
+          "description": "Options for exporting BAK files (SQL Server-only)",
           "properties": {
             "stripeCount": {
+              "description": "Option for specifying how many stripes to use for the export. If blank, and the value of the striped field is true, the number of stripes is automatically chosen.",
               "format": "int32",
               "type": "integer"
             },
             "striped": {
+              "description": "Whether or not the export should be striped.",
               "type": "boolean"
             }
           },
@@ -3196,6 +3199,7 @@
               "type": "object"
             },
             "striped": {
+              "description": "Whether or not the backup set being restored is striped. Applies only to Cloud SQL for SQL Server.",
               "type": "boolean"
             }
           },
@@ -3959,7 +3963,7 @@
           "type": "integer"
         },
         "passwordChangeInterval": {
-          "description": "Minimum interval after which the password can be changed. This flag is only supported for PostgresSQL.",
+          "description": "Minimum interval after which the password can be changed. This flag is only supported for PostgreSQL.",
           "format": "google-duration",
           "type": "string"
         },

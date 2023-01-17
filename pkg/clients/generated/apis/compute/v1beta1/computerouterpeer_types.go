@@ -149,6 +149,14 @@ type ComputeRouterPeerSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	/* The URI of the VM instance that is used as third-party router
+	appliances such as Next Gen Firewalls, Virtual Routers, or Router
+	Appliances. The VM instance must be located in zones contained in
+	the same region as this Cloud Router. The VM instance is the peer
+	side of the BGP session. */
+	// +optional
+	RouterApplianceInstanceRef *v1alpha1.ResourceRef `json:"routerApplianceInstanceRef,omitempty"`
+
 	/* The interface the BGP peer is associated with. */
 	RouterInterfaceRef v1alpha1.ResourceRef `json:"routerInterfaceRef"`
 

@@ -33,7 +33,7 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderSamlBa
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckIAMWorkforcePoolWorkforcePoolProviderDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -52,16 +52,12 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderSamlBa
 func testAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderSamlBasicExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_iam_workforce_pool" "pool" {
-  provider = google-beta
-
   workforce_pool_id = "tf-test-example-pool%{random_suffix}"
   parent            = "organizations/%{org_id}"
   location          = "global"
 }
 
 resource "google_iam_workforce_pool_provider" "example" {
-  provider = google-beta
-
   workforce_pool_id  = google_iam_workforce_pool.pool.workforce_pool_id
   location           = google_iam_workforce_pool.pool.location
   provider_id        = "tf-test-example-prvdr%{random_suffix}"
@@ -85,7 +81,7 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderSamlFu
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckIAMWorkforcePoolWorkforcePoolProviderDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -104,16 +100,12 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderSamlFu
 func testAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderSamlFullExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_iam_workforce_pool" "pool" {
-  provider = google-beta
-
   workforce_pool_id = "tf-test-example-pool%{random_suffix}"
   parent            = "organizations/%{org_id}"
   location          = "global"
 }
 
 resource "google_iam_workforce_pool_provider" "example" {
-  provider = google-beta
-
   workforce_pool_id   = google_iam_workforce_pool.pool.workforce_pool_id
   location            = google_iam_workforce_pool.pool.location
   provider_id         = "tf-test-example-prvdr%{random_suffix}"
@@ -141,7 +133,7 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderOidcBa
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckIAMWorkforcePoolWorkforcePoolProviderDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -160,16 +152,12 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderOidcBa
 func testAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderOidcBasicExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_iam_workforce_pool" "pool" {
-  provider = google-beta
-
   workforce_pool_id = "tf-test-example-pool%{random_suffix}"
   parent            = "organizations/%{org_id}"
   location          = "global"
 }
 
 resource "google_iam_workforce_pool_provider" "example" {
-  provider = google-beta
-
   workforce_pool_id  = google_iam_workforce_pool.pool.workforce_pool_id
   location           = google_iam_workforce_pool.pool.location
   provider_id        = "tf-test-example-prvdr%{random_suffix}"
@@ -194,7 +182,7 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderOidcFu
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckIAMWorkforcePoolWorkforcePoolProviderDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -213,16 +201,12 @@ func TestAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderOidcFu
 func testAccIAMWorkforcePoolWorkforcePoolProvider_iamWorkforcePoolProviderOidcFullExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_iam_workforce_pool" "pool" {
-  provider = google-beta
-
   workforce_pool_id = "tf-test-example-pool%{random_suffix}"
   parent            = "organizations/%{org_id}"
   location          = "global"
 }
 
 resource "google_iam_workforce_pool_provider" "example" {
-  provider = google-beta
-
   workforce_pool_id   = google_iam_workforce_pool.pool.workforce_pool_id
   location            = google_iam_workforce_pool.pool.location
   provider_id         = "tf-test-example-prvdr%{random_suffix}"

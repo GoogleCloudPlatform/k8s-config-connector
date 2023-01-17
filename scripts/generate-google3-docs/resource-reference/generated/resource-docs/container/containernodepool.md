@@ -680,7 +680,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. The map of Kubernetes labels (key/value pairs) to be applied to each node. These will added in addition to any default label(s) that Kubernetes may apply to the node.{% endverbatim %}</p>
+            <p>{% verbatim %}The map of Kubernetes labels (key/value pairs) to be applied to each node. These will added in addition to any default label(s) that Kubernetes may apply to the node.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

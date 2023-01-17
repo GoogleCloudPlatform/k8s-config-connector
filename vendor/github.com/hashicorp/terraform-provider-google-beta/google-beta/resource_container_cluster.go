@@ -83,6 +83,7 @@ var (
 	}
 
 	forceNewClusterNodeConfigFields = []string{
+		"labels",
 		"workload_metadata_config",
 	}
 
@@ -2557,6 +2558,26 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		log.Printf("[INFO] GKE cluster %s's enable private endpoint has been updated to %v", d.Id(), enabled)
 	}
 
+	if d.HasChange("private_cluster_config") && d.HasChange("private_cluster_config.0.master_global_access_config") {
+		config := d.Get("private_cluster_config.0.master_global_access_config")
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredPrivateClusterConfig: &container.PrivateClusterConfig{
+					MasterGlobalAccessConfig: expandPrivateClusterConfigMasterGlobalAccessConfig(config),
+					ForceSendFields:          []string{"MasterGlobalAccessConfig"},
+				},
+			},
+		}
+
+		updateF := updateFunc(req, "updating master global access config")
+		// Call update serially.
+		if err := lockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s's master global access config has been updated to %v", d.Id(), config)
+	}
+
 	if d.HasChange("binary_authorization") {
 		req := &container.UpdateClusterRequest{
 			Update: &container.ClusterUpdate{
@@ -3781,6 +3802,13 @@ func expandClusterAddonsConfig(configured interface{}) *container.AddonsConfig {
 			ForceSendFields: []string{"Enabled"},
 		}
 	}
+	if v, ok := config["config_connector_config"]; ok && len(v.([]interface{})) > 0 {
+		addon := v.([]interface{})[0].(map[string]interface{})
+		ac.ConfigConnectorConfig = &container.ConfigConnectorConfig{
+			Enabled:         addon["enabled"].(bool),
+			ForceSendFields: []string{"Enabled"},
+		}
+	}
 
 	if v, ok := config["istio_config"]; ok && len(v.([]interface{})) > 0 {
 		addon := v.([]interface{})[0].(map[string]interface{})
@@ -3794,13 +3822,6 @@ func expandClusterAddonsConfig(configured interface{}) *container.AddonsConfig {
 	if v, ok := config["kalm_config"]; ok && len(v.([]interface{})) > 0 {
 		addon := v.([]interface{})[0].(map[string]interface{})
 		ac.KalmConfig = &container.KalmConfig{
-			Enabled:         addon["enabled"].(bool),
-			ForceSendFields: []string{"Enabled"},
-		}
-	}
-	if v, ok := config["config_connector_config"]; ok && len(v.([]interface{})) > 0 {
-		addon := v.([]interface{})[0].(map[string]interface{})
-		ac.ConfigConnectorConfig = &container.ConfigConnectorConfig{
 			Enabled:         addon["enabled"].(bool),
 			ForceSendFields: []string{"Enabled"},
 		}
@@ -4738,6 +4759,13 @@ func flattenClusterAddonsConfig(c *container.AddonsConfig) []map[string]interfac
 			},
 		}
 	}
+	if c.ConfigConnectorConfig != nil {
+		result["config_connector_config"] = []map[string]interface{}{
+			{
+				"enabled": c.ConfigConnectorConfig.Enabled,
+			},
+		}
+	}
 
 	if c.IstioConfig != nil {
 		result["istio_config"] = []map[string]interface{}{
@@ -4752,13 +4780,6 @@ func flattenClusterAddonsConfig(c *container.AddonsConfig) []map[string]interfac
 		result["kalm_config"] = []map[string]interface{}{
 			{
 				"enabled": c.KalmConfig.Enabled,
-			},
-		}
-	}
-	if c.ConfigConnectorConfig != nil {
-		result["config_connector_config"] = []map[string]interface{}{
-			{
-				"enabled": c.ConfigConnectorConfig.Enabled,
 			},
 		}
 	}

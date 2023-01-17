@@ -1,31 +1,41 @@
 # bitbucket.org/creachadair/stringset v0.0.8
 ## explicit; go 1.12
 bitbucket.org/creachadair/stringset
-# cloud.google.com/go v0.104.0
-## explicit; go 1.17
+# cloud.google.com/go v0.105.0
+## explicit; go 1.19
 cloud.google.com/go
 cloud.google.com/go/internal/optional
 cloud.google.com/go/internal/trace
 cloud.google.com/go/internal/version
-cloud.google.com/go/longrunning
-cloud.google.com/go/longrunning/autogen
 # cloud.google.com/go/bigtable v1.17.0
 ## explicit; go 1.19
 cloud.google.com/go/bigtable
 cloud.google.com/go/bigtable/internal
 cloud.google.com/go/bigtable/internal/option
-# cloud.google.com/go/compute v1.12.1
+# cloud.google.com/go/compute v1.13.0
 ## explicit; go 1.19
 cloud.google.com/go/compute/internal
-# cloud.google.com/go/compute/metadata v0.2.1
+# cloud.google.com/go/compute/metadata v0.2.2
 ## explicit; go 1.19
 cloud.google.com/go/compute/metadata
-# cloud.google.com/go/iam v0.5.0
-## explicit; go 1.17
+# cloud.google.com/go/iam v0.8.0
+## explicit; go 1.19
 cloud.google.com/go/iam
+cloud.google.com/go/iam/apiv1/iampb
+# cloud.google.com/go/longrunning v0.3.0
+## explicit; go 1.19
+cloud.google.com/go/longrunning
+cloud.google.com/go/longrunning/autogen
+cloud.google.com/go/longrunning/autogen/longrunningpb
 # cloud.google.com/go/profiler v0.1.0
 ## explicit; go 1.16
 cloud.google.com/go/profiler
+# cloud.google.com/go/secretmanager v1.9.0
+## explicit; go 1.19
+cloud.google.com/go/secretmanager/apiv1/secretmanagerpb
+# cloud.google.com/go/security v1.10.0
+## explicit; go 1.19
+cloud.google.com/go/security/privateca/apiv1/privatecapb
 # github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp v0.0.0-00010101000000-000000000000 => ./mockgcp
 ## explicit; go 1.19
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp
@@ -463,7 +473,7 @@ github.com/google/uuid
 ## explicit; go 1.18
 github.com/googleapis/enterprise-certificate-proxy/client
 github.com/googleapis/enterprise-certificate-proxy/client/util
-# github.com/googleapis/gax-go/v2 v2.6.0
+# github.com/googleapis/gax-go/v2 v2.7.0
 ## explicit; go 1.19
 github.com/googleapis/gax-go/v2
 github.com/googleapis/gax-go/v2/apierror
@@ -810,7 +820,7 @@ github.com/zclconf/go-cty/cty/function/stdlib
 github.com/zclconf/go-cty/cty/gocty
 github.com/zclconf/go-cty/cty/json
 github.com/zclconf/go-cty/cty/set
-# go.opencensus.io v0.23.0
+# go.opencensus.io v0.24.0
 ## explicit; go 1.13
 go.opencensus.io
 go.opencensus.io/internal
@@ -917,7 +927,7 @@ golang.org/x/sys/windows
 # golang.org/x/term v0.2.0
 ## explicit; go 1.17
 golang.org/x/term
-# golang.org/x/text v0.4.0
+# golang.org/x/text v0.5.0
 ## explicit; go 1.17
 golang.org/x/text/encoding
 golang.org/x/text/encoding/charmap
@@ -971,7 +981,7 @@ golang.org/x/xerrors/internal
 # gomodules.xyz/jsonpatch/v2 v2.2.0
 ## explicit; go 1.12
 gomodules.xyz/jsonpatch/v2
-# google.golang.org/api v0.102.0
+# google.golang.org/api v0.105.0
 ## explicit; go 1.19
 google.golang.org/api/appengine/v1
 google.golang.org/api/bigquery/v2
@@ -990,7 +1000,7 @@ google.golang.org/api/compute/v0.beta
 google.golang.org/api/compute/v1
 google.golang.org/api/container/v1beta1
 google.golang.org/api/dataflow/v1b3
-google.golang.org/api/dataproc/v1beta2
+google.golang.org/api/dataproc/v1
 google.golang.org/api/datastream/v1
 google.golang.org/api/dns/v1
 google.golang.org/api/googleapi
@@ -1041,8 +1051,9 @@ google.golang.org/appengine/internal/socket
 google.golang.org/appengine/internal/urlfetch
 google.golang.org/appengine/socket
 google.golang.org/appengine/urlfetch
-# google.golang.org/genproto v0.0.0-20221024183307-1bc688fe9f3e
+# google.golang.org/genproto v0.0.0-20221206210731-b1a01be3a5f6
 ## explicit; go 1.19
+google.golang.org/genproto/googleapis/api
 google.golang.org/genproto/googleapis/api/annotations
 google.golang.org/genproto/googleapis/api/expr/v1alpha1
 google.golang.org/genproto/googleapis/api/httpbody
@@ -1058,7 +1069,7 @@ google.golang.org/genproto/googleapis/rpc/errdetails
 google.golang.org/genproto/googleapis/rpc/status
 google.golang.org/genproto/googleapis/type/expr
 google.golang.org/genproto/protobuf/field_mask
-# google.golang.org/grpc v1.50.1
+# google.golang.org/grpc v1.51.0
 ## explicit; go 1.17
 google.golang.org/grpc
 google.golang.org/grpc/attributes

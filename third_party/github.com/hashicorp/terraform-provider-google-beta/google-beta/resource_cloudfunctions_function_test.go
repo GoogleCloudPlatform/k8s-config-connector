@@ -1241,6 +1241,9 @@ resource "google_artifact_registry_repository" "encoded-ar-repo" {
   kms_key_name = "%s"
   location = "us-central1"
   format = "DOCKER"
+  depends_on = [
+    google_kms_crypto_key_iam_binding.gcf_cmek_keyuser
+  ]
 }
 
 resource "google_storage_bucket" "bucket" {

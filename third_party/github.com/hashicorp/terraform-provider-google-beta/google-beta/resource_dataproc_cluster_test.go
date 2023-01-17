@@ -15,7 +15,7 @@ import (
 
 	"google.golang.org/api/googleapi"
 
-	dataproc "google.golang.org/api/dataproc/v1beta2"
+	"google.golang.org/api/dataproc/v1"
 )
 
 func TestDataprocExtractInitTimeout(t *testing.T) {
@@ -328,6 +328,52 @@ func TestAccDataprocCluster_withMetadataAndTags(t *testing.T) {
 	})
 }
 
+func TestAccDataprocCluster_withReservationAffinity(t *testing.T) {
+	t.Parallel()
+
+	var cluster dataproc.Cluster
+	rnd := randString(t, 10)
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckDataprocClusterDestroy(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccDataprocCluster_withReservationAffinity(rnd),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckDataprocClusterExists(t, "google_dataproc_cluster.basic", &cluster),
+
+					resource.TestCheckResourceAttr("google_dataproc_cluster.basic", "cluster_config.0.gce_cluster_config.0.reservation_affinity.0.consume_reservation_type", "SPECIFIC_RESERVATION"),
+					resource.TestCheckResourceAttr("google_dataproc_cluster.basic", "cluster_config.0.gce_cluster_config.0.reservation_affinity.0.key", "compute.googleapis.com/reservation-name"),
+					resource.TestCheckResourceAttr("google_dataproc_cluster.basic", "cluster_config.0.gce_cluster_config.0.reservation_affinity.0.values.#", "1"),
+				),
+			},
+		},
+	})
+}
+
+func TestAccDataprocCluster_withNodeGroupAffinity(t *testing.T) {
+	t.Parallel()
+
+	var cluster dataproc.Cluster
+	rnd := randString(t, 10)
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckDataprocClusterDestroy(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccDataprocCluster_withNodeGroupAffinity(rnd),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckDataprocClusterExists(t, "google_dataproc_cluster.basic", &cluster),
+
+					resource.TestMatchResourceAttr("google_dataproc_cluster.basic", "cluster_config.0.gce_cluster_config.0.node_group_affinity.0.node_group_uri", regexp.MustCompile("test-nodegroup")),
+				),
+			},
+		},
+	})
+}
+
 func TestAccDataprocCluster_singleNodeCluster(t *testing.T) {
 	t.Parallel()
 
@@ -407,6 +453,27 @@ func TestAccDataprocCluster_nonPreemptibleSecondary(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckDataprocClusterExists(t, "google_dataproc_cluster.non_preemptible_secondary", &cluster),
 					resource.TestCheckResourceAttr("google_dataproc_cluster.non_preemptible_secondary", "cluster_config.0.preemptible_worker_config.0.preemptibility", "NON_PREEMPTIBLE"),
+				),
+			},
+		},
+	})
+}
+
+func TestAccDataprocCluster_spotSecondary(t *testing.T) {
+	t.Parallel()
+
+	rnd := randString(t, 10)
+	var cluster dataproc.Cluster
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckDataprocClusterDestroy(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccDataprocCluster_spotSecondary(rnd),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckDataprocClusterExists(t, "google_dataproc_cluster.spot_secondary", &cluster),
+					resource.TestCheckResourceAttr("google_dataproc_cluster.spot_secondary", "cluster_config.0.preemptible_worker_config.0.preemptibility", "SPOT"),
 				),
 			},
 		},
@@ -670,8 +737,8 @@ func TestAccDataprocCluster_withLabels(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckDataprocClusterExists(t, "google_dataproc_cluster.with_labels", &cluster),
 
-					// We only provide one, but GCP adds three, so expect 4.
-					resource.TestCheckResourceAttr("google_dataproc_cluster.with_labels", "labels.%", "4"),
+					// We only provide one, but GCP adds three and we added goog-dataproc-autozone internally, so expect 5.
+					resource.TestCheckResourceAttr("google_dataproc_cluster.with_labels", "labels.%", "5"),
 					resource.TestCheckResourceAttr("google_dataproc_cluster.with_labels", "labels.key1", "value1"),
 				),
 			},
@@ -803,25 +870,27 @@ func TestAccDataprocCluster_withMetastoreConfig(t *testing.T) {
 	t.Parallel()
 
 	pid := getTestProjectFromEnv()
-	msName_basic := fmt.Sprintf("projects/%s/locations/us-central1/services/metastore-srv", pid)
-	msName_update := fmt.Sprintf("projects/%s/locations/us-central1/services/metastore-srv-update", pid)
+	basicServiceId := "tf-test-metastore-srv-" + randString(t, 10)
+	updateServiceId := "tf-test-metastore-srv-update-" + randString(t, 10)
+	msName_basic := fmt.Sprintf("projects/%s/locations/us-central1/services/%s", pid, basicServiceId)
+	msName_update := fmt.Sprintf("projects/%s/locations/us-central1/services/%s", pid, updateServiceId)
 
 	var cluster dataproc.Cluster
-	rnd := randString(t, 10)
+	clusterName := "tf-test-" + randString(t, 10)
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckDataprocClusterDestroy(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataprocCluster_withMetastoreConfig(rnd),
+				Config: testAccDataprocCluster_withMetastoreConfig(clusterName, basicServiceId),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckDataprocClusterExists(t, "google_dataproc_cluster.with_metastore_config", &cluster),
 					resource.TestCheckResourceAttr("google_dataproc_cluster.with_metastore_config", "cluster_config.0.metastore_config.0.dataproc_metastore_service", msName_basic),
 				),
 			},
 			{
-				Config: testAccDataprocCluster_withMetastoreConfig_update(rnd),
+				Config: testAccDataprocCluster_withMetastoreConfig_update(clusterName, updateServiceId),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckDataprocClusterExists(t, "google_dataproc_cluster.with_metastore_config", &cluster),
 					resource.TestCheckResourceAttr("google_dataproc_cluster.with_metastore_config", "cluster_config.0.metastore_config.0.dataproc_metastore_service", msName_update),
@@ -1089,6 +1158,19 @@ resource "google_dataproc_cluster" "basic" {
 `, rnd)
 }
 
+func testAccCheckDataprocGkeClusterNodePoolsHaveRoles(cluster *dataproc.Cluster, roles ...string) func(s *terraform.State) error {
+	return func(s *terraform.State) error {
+
+		for _, nodePool := range cluster.VirtualClusterConfig.KubernetesClusterConfig.GkeClusterConfig.NodePoolTarget {
+			if reflect.DeepEqual(roles, nodePool.Roles) {
+				return nil
+			}
+		}
+
+		return fmt.Errorf("Cluster NodePools does not contain expected roles : %v", roles)
+	}
+}
+
 func testAccDataprocCluster_withAccelerators(rnd, acceleratorType, zone string) string {
 	return fmt.Sprintf(`
 resource "google_dataproc_cluster" "accelerated_cluster" {
@@ -1207,6 +1289,89 @@ resource "google_dataproc_cluster" "basic" {
   }
 }
 `, rnd)
+}
+
+func testAccDataprocCluster_withReservationAffinity(rnd string) string {
+	return fmt.Sprintf(`
+
+resource "google_compute_reservation" "reservation" {
+  name = "tf-test-dproc-reservation-%s"
+  zone = "us-central1-f"
+
+  specific_reservation {
+    count = 10
+    instance_properties {
+      machine_type = "n1-standard-2"
+    }
+  }
+  specific_reservation_required = true
+}
+
+resource "google_dataproc_cluster" "basic" {
+  name   = "tf-test-dproc-%s"
+  region = "us-central1"
+
+  cluster_config {
+
+    master_config {
+      machine_type  = "n1-standard-2"
+    }
+
+    worker_config {
+      machine_type  = "n1-standard-2"
+    }
+
+    gce_cluster_config {
+      zone = "us-central1-f"
+      reservation_affinity {
+        consume_reservation_type = "SPECIFIC_RESERVATION"
+        key = "compute.googleapis.com/reservation-name"
+        values = [google_compute_reservation.reservation.name]
+      }
+    }
+  }
+}
+`, rnd, rnd)
+}
+
+func testAccDataprocCluster_withNodeGroupAffinity(rnd string) string {
+	return fmt.Sprintf(`
+
+resource "google_compute_node_template" "nodetmpl" {
+  name   = "test-nodetmpl-%s"
+  region = "us-central1"
+
+  node_affinity_labels = {
+    tfacc = "test"
+  }
+
+  node_type = "n1-node-96-624"
+
+  cpu_overcommit_type = "ENABLED"
+}
+
+resource "google_compute_node_group" "nodes" {
+  name = "test-nodegroup-%s"
+  zone = "us-central1-f"
+
+  size          = 3
+  node_template = google_compute_node_template.nodetmpl.self_link
+}
+
+resource "google_dataproc_cluster" "basic" {
+  name   = "tf-test-dproc-%s"
+  region = "us-central1"
+
+  cluster_config {
+    gce_cluster_config {
+      zone = "us-central1-f"
+      node_group_affinity {
+        node_group_uri = google_compute_node_group.nodes.name
+      }
+    }
+  }
+}
+`, rnd, rnd, rnd)
 }
 
 func testAccDataprocCluster_singleNodeCluster(rnd string) string {
@@ -1384,6 +1549,41 @@ resource "google_dataproc_cluster" "non_preemptible_secondary" {
 		boot_disk_size_gb = 35
 	  }
 	}
+  }
+}
+	`, rnd)
+}
+
+func testAccDataprocCluster_spotSecondary(rnd string) string {
+	return fmt.Sprintf(`
+resource "google_dataproc_cluster" "spot_secondary" {
+  name   = "tf-test-dproc-%s"
+  region = "us-central1"
+
+  cluster_config {
+    master_config {
+      num_instances = "1"
+      machine_type  = "e2-medium"
+      disk_config {
+        boot_disk_size_gb = 35
+      }
+    }
+
+    worker_config {
+      num_instances = "2"
+      machine_type  = "e2-medium"
+      disk_config {
+        boot_disk_size_gb = 35
+      }
+    }
+
+    preemptible_worker_config {
+      num_instances = "1"
+      preemptibility = "SPOT"
+      disk_config {
+        boot_disk_size_gb = 35
+      }
+    }
   }
 }
 	`, rnd)
@@ -1818,10 +2018,10 @@ resource "google_dataproc_autoscaling_policy" "asp" {
 `, rnd, rnd)
 }
 
-func testAccDataprocCluster_withMetastoreConfig(rnd string) string {
+func testAccDataprocCluster_withMetastoreConfig(clusterName, serviceId string) string {
 	return fmt.Sprintf(`
 resource "google_dataproc_cluster" "with_metastore_config" {
-	name                  = "tf-test-%s"
+	name                  = "%s"
 	region                = "us-central1"
 
 	cluster_config {
@@ -1832,7 +2032,7 @@ resource "google_dataproc_cluster" "with_metastore_config" {
 }
 
 resource "google_dataproc_metastore_service" "ms" {
-	service_id = "metastore-srv"
+	service_id = "%s"
 	location   = "us-central1"
 	port       = 9080
 	tier       = "DEVELOPER"
@@ -1846,13 +2046,13 @@ resource "google_dataproc_metastore_service" "ms" {
 		version = "3.1.2"
 	}
 }
-`, rnd)
+`, clusterName, serviceId)
 }
 
-func testAccDataprocCluster_withMetastoreConfig_update(rnd string) string {
+func testAccDataprocCluster_withMetastoreConfig_update(clusterName, serviceId string) string {
 	return fmt.Sprintf(`
 resource "google_dataproc_cluster" "with_metastore_config" {
-	name                  = "tf-test-%s"
+	name                  = "%s"
 	region                = "us-central1"
 
 	cluster_config {
@@ -1863,7 +2063,7 @@ resource "google_dataproc_cluster" "with_metastore_config" {
 }
 
 resource "google_dataproc_metastore_service" "ms" {
-	service_id = "metastore-srv-update"
+	service_id = "%s"
 	location   = "us-central1"
 	port       = 9080
 	tier       = "DEVELOPER"
@@ -1877,5 +2077,5 @@ resource "google_dataproc_metastore_service" "ms" {
 		version = "3.1.2"
 	}
 }
-`, rnd)
+`, clusterName, serviceId)
 }

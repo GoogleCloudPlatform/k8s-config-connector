@@ -93,7 +93,9 @@ spec:
                       - minNodes
                       type: object
                     clusterId:
-                      description: The ID of the Cloud Bigtable cluster.
+                      description: The ID of the Cloud Bigtable cluster. Must be 6-30
+                        characters and must only contain hyphens, lowercase letters
+                        and numbers.
                       type: string
                     kmsKeyRef:
                       description: |-
@@ -130,11 +132,7 @@ spec:
                       type: object
                     numNodes:
                       description: The number of nodes in your Cloud Bigtable cluster.
-                        For PRODUCTION instances where the numNodes will be managed
-                        by Config Connector, this field is required with a minimum
-                        of 1. For a DEVELOPMENT instance or for an existing instance
-                        where the numNodes is managed outside of Config Connector,
-                        this field must be left unset.
+                        Required, with a minimum of 1 for each cluster in an instance.
                       type: integer
                     storageType:
                       description: The storage type to use. One of "SSD" or "HDD".

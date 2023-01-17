@@ -55,7 +55,7 @@ type InstanceCluster struct {
 	// +optional
 	AutoscalingConfig *InstanceAutoscalingConfig `json:"autoscalingConfig,omitempty"`
 
-	/* The ID of the Cloud Bigtable cluster. */
+	/* The ID of the Cloud Bigtable cluster. Must be 6-30 characters and must only contain hyphens, lowercase letters and numbers. */
 	ClusterId string `json:"clusterId"`
 
 	/* Describes the Cloud KMS encryption key that will be used to protect the destination Bigtable
@@ -66,7 +66,7 @@ type InstanceCluster struct {
 	// +optional
 	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
-	/* The number of nodes in your Cloud Bigtable cluster. For PRODUCTION instances where the numNodes will be managed by Config Connector, this field is required with a minimum of 1. For a DEVELOPMENT instance or for an existing instance where the numNodes is managed outside of Config Connector, this field must be left unset. */
+	/* The number of nodes in your Cloud Bigtable cluster. Required, with a minimum of 1 for each cluster in an instance. */
 	// +optional
 	NumNodes *int `json:"numNodes,omitempty"`
 

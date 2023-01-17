@@ -753,6 +753,27 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: image_encryption_key.kms_key_self_link
+          key: kmsKeySelfLinkRef
+          description: |-
+            The self link of the encryption key that is stored in Google Cloud
+            KMS.
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: image_encryption_key.kms_key_service_account
+          key: kmsKeyServiceAccountRef
+          description: |-
+            The service account being used for the encryption request for the
+            given KMS key. If absent, the Compute Engine default service account
+            is used.
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
       idTemplate: "projects/{{project}}/global/images/{{name}}"
       idTemplateCanBeUsedToMatchResourceName: true
       resourceAvailableInAssetInventory: true
@@ -1052,6 +1073,60 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: disk.source_image_encryption_key.kms_key_self_link
+          key: kmsKeySelfLinkRef
+          description: |-
+            The self link of the encryption key that is stored in Google Cloud
+            KMS.
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: disk.source_image_encryption_key.kms_key_service_account
+          key: kmsKeyServiceAccountRef
+          description: |-
+            The service account being used for the encryption request for the
+            given KMS key. If absent, the Compute Engine default service account
+            is used.
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
+        - tfField: disk.source_snapshot
+          description: |-
+            The source snapshot to create this disk. When creating a new
+            instance, one of initializeParams.sourceSnapshot,
+            initializeParams.sourceImage, or disks.source is required except for
+            local SSD.
+          key: sourceSnapshotRef
+          gvk:
+            kind: ComputeSnapshot
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: disk.source_snapshot_encryption_key.kms_key_self_link
+          key: kmsKeySelfLinkRef
+          description: |-
+            The self link of the encryption key that is stored in Google Cloud
+            KMS.
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: disk.source_snapshot_encryption_key.kms_key_service_account
+          key: kmsKeyServiceAccountRef
+          description: |-
+            The service account being used for the encryption request for the
+            given KMS key. If absent, the Compute Engine default service account
+            is used.
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
       idTemplate: "projects/{{project}}/global/instanceTemplates/{{name}}"
       idTemplateCanBeUsedToMatchResourceName: true
       resourceAvailableInAssetInventory: true
@@ -1976,6 +2051,19 @@ spec:
           description: |-
             IP address of the interface inside Google Cloud Platform.
             Only IPv4 is supported.
+        - key: routerApplianceInstanceRef
+          tfField: router_appliance_instance
+          description: |-
+            The URI of the VM instance that is used as third-party router
+            appliances such as Next Gen Firewalls, Virtual Routers, or Router
+            Appliances. The VM instance must be located in zones contained in
+            the same region as this Cloud Router. The VM instance is the peer
+            side of the BGP session.
+          gvk:
+            kind: ComputeInstance
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
       containers:
         - type: project
           tfField: project

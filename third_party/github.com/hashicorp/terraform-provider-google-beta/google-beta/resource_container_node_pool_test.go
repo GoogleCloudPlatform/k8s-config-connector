@@ -1871,12 +1871,6 @@ resource "google_container_node_pool" "np_with_node_config" {
     ]
     preemptible      = true
     min_cpu_platform = "Intel Broadwell"
-	
-    tags = ["ga"]
-
-	resource_labels = {
-      "key1" = "value"
-    }
 
     taint {
       key    = "taint_key"
@@ -1892,6 +1886,16 @@ resource "google_container_node_pool" "np_with_node_config" {
 
     // Updatable fields
     image_type = "COS_CONTAINERD"
+
+    tags = ["foo"]
+
+    labels = {
+      "test.terraform.io/key1" = "foo"
+    }
+
+    resource_labels = {
+      "key1" = "foo"
+    }
   }
 }
 `, cluster, nodePool)
@@ -1922,13 +1926,6 @@ resource "google_container_node_pool" "np_with_node_config" {
     preemptible      = true
     min_cpu_platform = "Intel Broadwell"
 
-    tags = ["beta"]
-
-	resource_labels = {
-      "key1" = "value1"
-	  "key2" = "value2"
-    }
-
     taint {
       key    = "taint_key"
       value  = "taint_value"
@@ -1943,6 +1940,18 @@ resource "google_container_node_pool" "np_with_node_config" {
 
     // Updatable fields
     image_type = "UBUNTU_CONTAINERD"
+
+    tags = ["bar", "foobar"]
+
+    labels = {
+      "test.terraform.io/key1" = "bar"
+      "test.terraform.io/key2" = "foo"
+    }
+
+    resource_labels = {
+      "key1" = "bar"
+      "key2" = "foo"
+    }
   }
 }
 `, cluster, nodePool)

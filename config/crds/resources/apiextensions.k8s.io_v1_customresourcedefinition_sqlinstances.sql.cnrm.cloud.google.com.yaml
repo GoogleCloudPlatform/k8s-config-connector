@@ -353,6 +353,10 @@ spec:
                       - value
                       type: object
                     type: array
+                  deletionProtectionEnabled:
+                    description: Configuration to protect against accidental instance
+                      deletion.
+                    type: boolean
                   denyMaintenancePeriod:
                     properties:
                       endDate:
@@ -575,8 +579,6 @@ spec:
                           duration in seconds with up to nine fractional digits, terminated
                           by ''s''. Example: "3.5s".'
                         type: string
-                    required:
-                    - bucketRef
                     type: object
                   tier:
                     description: The machine type to use. See tiers for more details
@@ -634,6 +636,10 @@ spec:
                   strings. For example, when connecting with Cloud SQL Proxy.
                 type: string
               firstIpAddress:
+                type: string
+              instanceType:
+                description: The type of the instance. The valid values are:- 'SQL_INSTANCE_TYPE_UNSPECIFIED',
+                  'CLOUD_SQL_INSTANCE', 'ON_PREMISES_INSTANCE' and 'READ_REPLICA_INSTANCE'.
                 type: string
               ipAddress:
                 items:

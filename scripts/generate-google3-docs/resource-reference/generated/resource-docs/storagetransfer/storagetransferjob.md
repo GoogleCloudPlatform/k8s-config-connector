@@ -296,7 +296,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The last day the recurring transfer will be run. If schedule_end_date is the same as schedule_start_date, the transfer will be executed only once.{% endverbatim %}</p>
+            <p>{% verbatim %}The last day the recurring transfer will be run. If schedule_end_date is the same as schedule_start_date, the transfer will be executed only once.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -306,7 +306,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Day of month. Must be from 1 to 31 and valid for the year and month.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of month. Must be from 1 to 31 and valid for the year and month.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -316,7 +316,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Month of year. Must be from 1 to 12.{% endverbatim %}</p>
+            <p>{% verbatim %}Month of year. Must be from 1 to 12.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -326,7 +326,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Year of date. Must be from 1 to 9999.{% endverbatim %}</p>
+            <p>{% verbatim %}Year of date. Must be from 1 to 9999.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -336,7 +336,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The first day the recurring transfer is scheduled to run. If schedule_start_date is in the past, the transfer will run for the first time on the following day.{% endverbatim %}</p>
+            <p>{% verbatim %}The first day the recurring transfer is scheduled to run. If schedule_start_date is in the past, the transfer will run for the first time on the following day.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -346,7 +346,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Day of month. Must be from 1 to 31 and valid for the year and month.{% endverbatim %}</p>
+            <p>{% verbatim %}Day of month. Must be from 1 to 31 and valid for the year and month.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -356,7 +356,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Month of year. Must be from 1 to 12.{% endverbatim %}</p>
+            <p>{% verbatim %}Month of year. Must be from 1 to 12.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -366,7 +366,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Year of date. Must be from 1 to 9999.{% endverbatim %}</p>
+            <p>{% verbatim %}Year of date. Must be from 1 to 9999.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -376,7 +376,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The time in UTC at which the transfer will be scheduled to start in a day. Transfers may start later than this time. If not specified, recurring and one-time transfers that are scheduled to run today will run immediately; recurring transfers that are scheduled to run on a future date will start at approximately midnight UTC on that date. Note that when configuring a transfer with the Cloud Platform Console, the transfer's start time in a day is specified in your local timezone.{% endverbatim %}</p>
+            <p>{% verbatim %}The time in UTC at which the transfer will be scheduled to start in a day. Transfers may start later than this time. If not specified, recurring and one-time transfers that are scheduled to run today will run immediately; recurring transfers that are scheduled to run on a future date will start at approximately midnight UTC on that date. Note that when configuring a transfer with the Cloud Platform Console, the transfer's start time in a day is specified in your local timezone.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -386,7 +386,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Hours of day in 24 hour format. Should be from 0 to 23.{% endverbatim %}</p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -396,7 +396,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Minutes of hour of day. Must be from 0 to 59.{% endverbatim %}</p>
+            <p>{% verbatim %}Minutes of hour of day. Must be from 0 to 59.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -406,7 +406,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.{% endverbatim %}</p>
+            <p>{% verbatim %}Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -416,7 +416,7 @@ transferSpec:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Seconds of minutes of the time. Must normally be from 0 to 59.{% endverbatim %}</p>
+            <p>{% verbatim %}Seconds of minutes of the time. Must normally be from 0 to 59.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

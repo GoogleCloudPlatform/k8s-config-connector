@@ -1,4 +1,86 @@
-## 4.47.0 (Unreleased)
+## 4.49.0 (Unreleased)
+
+FEATURES:
+* **New Data Source:** `google_project_service` ([#5067](https://github.com/hashicorp/terraform-provider-google-beta/pull/5067))
+* **New Data Source:** `google_sql_database_instances` ([#5066](https://github.com/hashicorp/terraform-provider-google-beta/pull/5066))
+* **New Data Source:** `google_container_attached_install_manifest` ([#5073](https://github.com/hashicorp/terraform-provider-google-beta/pull/5073))
+* **New Data Source:** `google_container_attached_install_manifest` ([#5080](https://github.com/hashicorp/terraform-provider-google-beta/pull/5080))
+* **New Data Source:** `google_container_attached_versions` ([#5073](https://github.com/hashicorp/terraform-provider-google-beta/pull/5073))
+* **New Resource:** `google_datastream_stream` ([#5045](https://github.com/hashicorp/terraform-provider-google-beta/pull/5045))
+
+IMPROVEMENTS:
+* android_app: added general fields `sha1_hashes`, `sha256_hashes` and `etag` to `google_firebase_android_app`. ([#5074](https://github.com/hashicorp/terraform-provider-google-beta/pull/5074))
+* cloudids: added `threat_exception` field to `google_cloud_ids_endpoint` ([#5072](https://github.com/hashicorp/terraform-provider-google-beta/pull/5072))
+* composer: added `triggerer` field in `google_composer_environment` ([#5055](https://github.com/hashicorp/terraform-provider-google-beta/pull/5055))
+* compute: enabled deletion for `stateful_ips` fields in `instance_group_manager` and `region_instance_group_manager`. ([#5064](https://github.com/hashicorp/terraform-provider-google-beta/pull/5064))
+* compute: added field `expire_time` to resource `google_compute_region_ssl_certificate` ([#5049](https://github.com/hashicorp/terraform-provider-google-beta/pull/5049))
+* compute: added field `expire_time` to resource `google_compute_ssl_certificate` ([#5049](https://github.com/hashicorp/terraform-provider-google-beta/pull/5049))
+* container: added `release_channel_latest_version` in `google_container_engine_versions` datasource ([#5044](https://github.com/hashicorp/terraform-provider-google-beta/pull/5044))
+* container: added `google_container_aws_node_pool` `autoscaling_metrics_collection` field ([#5084](https://github.com/hashicorp/terraform-provider-google-beta/pull/5084))
+* container: added update support for `google_container_aws_node_pool` `tags` field ([#5084](https://github.com/hashicorp/terraform-provider-google-beta/pull/5084))
+* dataproc: added support for `node_group_affinity.` in `google_dataproc_cluster` ([#5053](https://github.com/hashicorp/terraform-provider-google-beta/pull/5053))
+* dataproc: added support for `reservation_affinity` in `google_dataproc_cluster` ([#5050](https://github.com/hashicorp/terraform-provider-google-beta/pull/5050))
+* dlp: added field 'identifyingFields' to 'bigQueryOptions' for creating DLP jobs. ([#5085](https://github.com/hashicorp/terraform-provider-google-beta/pull/5085))
+* metastore: added `telemetry_config` field to `google_dataproc_metastore_service` ([#5065](https://github.com/hashicorp/terraform-provider-google-beta/pull/5065))
+* sql: added the ability to set `point_in_time_recovery_enabled` flag in `google_sql_database_instance` for `SQLSERVER` instance, since the API supports it now. ([#5079](https://github.com/hashicorp/terraform-provider-google-beta/pull/5079))
+* sql: added `instance_type` field to `google_sql_database_instance` resource ([#5057](https://github.com/hashicorp/terraform-provider-google-beta/pull/5057))
+* vertexai: added `scaling` field in `google_vertex_ai_featurestore` ([#5081](https://github.com/hashicorp/terraform-provider-google-beta/pull/5081))
+
+BUG FIXES:
+* android_app: modified the `package_name` field suffix to always start with a letter in `google_firebase_android_app`. ([#5074](https://github.com/hashicorp/terraform-provider-google-beta/pull/5074))
+* bigqueryconnection: fixed a bug where `aws.access_role.iam_role_id` cannot be updated on `google_bigquery_connection` ([#5083](https://github.com/hashicorp/terraform-provider-google-beta/pull/5083))
+* container: fixed a bug preventing updates to `master_global_access_config` in `google_container_cluster` ([#5043](https://github.com/hashicorp/terraform-provider-google-beta/pull/5043))
+* container: fixed perma-diff based on a server set taint `kubernetes.io/arch` on `google_container_node_pool` ([#5054](https://github.com/hashicorp/terraform-provider-google-beta/pull/5054))
+* spanner: fixed crash when `google_spanner_database.ddl` item was nil ([#5071](https://github.com/hashicorp/terraform-provider-google-beta/pull/5071))
+
+## 4.48.0 (January 9, 2023)
+
+FEATURES:
+* **New Data Source:** `google_beyondcorp_app_connection` ([#5025](https://github.com/hashicorp/terraform-provider-google-beta/pull/5025))
+* **New Data Source:** `google_beyondcorp_app_connector` ([#5008](https://github.com/hashicorp/terraform-provider-google-beta/pull/5008))
+* **New Data Source:** `google_beyondcorp_app_gateway` ([#5008](https://github.com/hashicorp/terraform-provider-google-beta/pull/5008))
+* **New Data Source:** `google_cloudbuild_trigger` ([#5017](https://github.com/hashicorp/terraform-provider-google-beta/pull/5017))
+* **New Data Source:** `google_compute_instance_group_manager` ([#5002](https://github.com/hashicorp/terraform-provider-google-beta/pull/5002))
+* **New Data Source:** `google_firebase_apple_app_config` ([#5031](https://github.com/hashicorp/terraform-provider-google-beta/pull/5031))
+* **New Data Source:** `google_firebase_apple_app` ([#4978](https://github.com/hashicorp/terraform-provider-google-beta/pull/4978))
+* **New Data Source:** `google_pubsub_subscription` ([#5001](https://github.com/hashicorp/terraform-provider-google-beta/pull/5001))
+* **New Data Source:** `google_sql_database` ([#5038](https://github.com/hashicorp/terraform-provider-google-beta/pull/5038))
+* **New Resource:** `google_apigee_sync_authorization` ([#5015](https://github.com/hashicorp/terraform-provider-google-beta/pull/5015))
+* **New Resource:** `google_beyondcorp_app_connection` ([#5012](https://github.com/hashicorp/terraform-provider-google-beta/pull/5012))
+* **New Resource:** `google_container_attached_cluster` ([#5037](https://github.com/hashicorp/terraform-provider-google-beta/pull/5037))
+* **New Resource:** `google_dns_managed_zone_iam_*` ([#5007](https://github.com/hashicorp/terraform-provider-google-beta/pull/5007))
+* **New Resource:** `google_firebase_database_instance`([#5019](https://github.com/hashicorp/terraform-provider-google-beta/pull/5019))
+
+IMPROVEMENTS:
+* cloudfunctions2: added `available_cpu` and `max_instance_request_concurrency` to support concurrency in `google_cloudfunctions2_function` ([#5011](https://github.com/hashicorp/terraform-provider-google-beta/pull/5011))
+* gkehub: added support for `configmanagement.config_sync.oci` field to `google_gke_hub_feature_membership` resource([#5013](https://github.com/hashicorp/terraform-provider-google-beta/pull/5013))
+* compute: added support for local IP ranges in `google_compute_firewall` ([#4979](https://github.com/hashicorp/terraform-provider-google-beta/pull/4979))
+* compute: added `router_appliance_instance` field to `google_compute_router_bgp_peer` ([#5035](https://github.com/hashicorp/terraform-provider-google-beta/pull/5035))
+* compute: added support for `generated_id` field in `google_compute_backend_service` to get the value of `id` defined by the server ([#4981](https://github.com/hashicorp/terraform-provider-google-beta/pull/4981))
+* compute: added support for `image_encryption_key` to `google_compute_image` ([#4989](https://github.com/hashicorp/terraform-provider-google-beta/pull/4989))
+* compute: added support for `source_snapshot`, `source_snapshot_encyption_key`, and `source_image_encryption_key` to `google_compute_instance_template` ([#4989](https://github.com/hashicorp/terraform-provider-google-beta/pull/4989))
+* compute: added stateful ip fields `stateful_internal_ip` and `stateful_external_ip` to `google_compute_instance_group_manager` ([#4992](https://github.com/hashicorp/terraform-provider-google-beta/pull/4992))
+* container: added `gateway_api_config` block to `google_container_cluster` resource for supporting the gke gateway api controller ([#4976](https://github.com/hashicorp/terraform-provider-google-beta/pull/4976))
+* container: supported in-place update for `labels` in `google_container_node_pool` ([#4998](https://github.com/hashicorp/terraform-provider-google-beta/pull/4998))
+* dataproc: added support for `SPOT` option for `preemptibility` in `google_dataproc_cluster` ([#5024](https://github.com/hashicorp/terraform-provider-google-beta/pull/5024))
+* dlp: added field `deidentify_config.record_transformations.field_transformations` to `google_data_loss_prevention_deidentify_template` ([#4996](https://github.com/hashicorp/terraform-provider-google-beta/pull/4996))
+* dlp: added field `deidentify_config.record_transformations.record_suppressions` to `google_data_loss_prevention_deidentify_template` ([#5004](https://github.com/hashicorp/terraform-provider-google-beta/pull/5004))
+* dlp: added `version` field to `google_data_loss_prevention_inspect_template` resource ([#5032](https://github.com/hashicorp/terraform-provider-google-beta/pull/5032))
+* osconfig: added support for `skip_await_rollout` in `google_os_config_os_policy_assignment` ([#5026](https://github.com/hashicorp/terraform-provider-google-beta/pull/5026))
+* sql: added [new deletion protection](https://cloud.google.com/sql/docs/mysql/deletion-protection) feature `deletion_protection_enabled` in `google_sql_database_instance` to guard against deletion from all surfaces ([#4987](https://github.com/hashicorp/terraform-provider-google-beta/pull/4987))
+* sql: made `settings.sql_server_audit_config.bucket` field in `google_sql_database_instance` to be optional. ([#4988](https://github.com/hashicorp/terraform-provider-google-beta/pull/4988))
+* storagetransfer: supported in-place update for `schedule` in `google_storage_transfer_job` ([#4993](https://github.com/hashicorp/terraform-provider-google-beta/pull/4993))
+
+BUG FIXES:
+* bigquery: fixed a permadiff on `labels` of `google_bigquery_dataset` when it is referenced in `google_dataplex_asset` ([#5022](https://github.com/hashicorp/terraform-provider-google-beta/pull/5022))
+* compute: fixed a permadiff on `private_ip_google_access` of `google_compute_subnetwork` ([#4983](https://github.com/hashicorp/terraform-provider-google-beta/pull/4983))
+* compute: fixed an issue where `enable_dynamic_port_allocation` was not able to set to `false` in `google_compute_router_nat` ([#4982](https://github.com/hashicorp/terraform-provider-google-beta/pull/4982))
+* container: fixed a permadiff on `location_policy` of `google_container_cluster` and `google_container_node_pool` ([#4997](https://github.com/hashicorp/terraform-provider-google-beta/pull/4997))
+* identityplatform: fixed issues with `google_identity_platform_config` creation  ([#5005](https://github.com/hashicorp/terraform-provider-google-beta/pull/5005))
+* resourcemanager: fixed the `google_project` datasource silently returning empty results when the project was not found or not in the ACTIVE state. Now, an error will be surfaced instead. ([#5029](https://github.com/hashicorp/terraform-provider-google-beta/pull/5029))
+* sql: fixed `sql_database_instance` leaking root users ([#4991](https://github.com/hashicorp/terraform-provider-google-beta/pull/4991))
+
+## 4.47.0 (December 21, 2022)
 
 NOTES:
 * sql: fixed an issue where `google_sql_database` was abandoned by default as of version `4.45.0`. Users who have upgraded to `4.45.0` or `4.46.0` will see a diff when running their next `terraform apply` after upgrading this version, indicating the `deletion_policy` field's value has changed from `"ABANDON"` to `"DELETE"`. This will create a no-op call against the API, but can otherwise be safely applied. ([#4972](https://github.com/hashicorp/terraform-provider-google-beta/pull/4972))

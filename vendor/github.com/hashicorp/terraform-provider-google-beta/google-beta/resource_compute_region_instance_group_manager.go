@@ -345,6 +345,48 @@ func resourceComputeRegionInstanceGroupManager() *schema.Resource {
 					},
 				},
 			},
+			"stateful_internal_ip": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: `External IPs considered stateful by the instance group. `,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"interface_name": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: `The network interface name`,
+						},
+						"delete_rule": {
+							Type:         schema.TypeString,
+							Default:      "NEVER",
+							Optional:     true,
+							ValidateFunc: validation.StringInSlice([]string{"NEVER", "ON_PERMANENT_INSTANCE_DELETION"}, true),
+							Description:  `A value that prescribes what should happen to an associated static Address resource when a VM instance is permanently deleted. The available options are NEVER and ON_PERMANENT_INSTANCE_DELETION. NEVER - detach the IP when the VM is deleted, but do not delete the address resource. ON_PERMANENT_INSTANCE_DELETION will delete the stateful address when the VM is permanently deleted from the instance group. The default is NEVER.`,
+						},
+					},
+				},
+			},
+			"stateful_external_ip": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Description: `External IPs considered stateful by the instance group. `,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"interface_name": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: `The network interface name`,
+						},
+						"delete_rule": {
+							Type:         schema.TypeString,
+							Default:      "NEVER",
+							Optional:     true,
+							ValidateFunc: validation.StringInSlice([]string{"NEVER", "ON_PERMANENT_INSTANCE_DELETION"}, true),
+							Description:  `A value that prescribes what should happen to an associated static Address resource when a VM instance is permanently deleted. The available options are NEVER and ON_PERMANENT_INSTANCE_DELETION. NEVER - detach the IP when the VM is deleted, but do not delete the address resource. ON_PERMANENT_INSTANCE_DELETION will delete the stateful address when the VM is permanently deleted from the instance group. The default is NEVER.`,
+						},
+					},
+				},
+			},
 			"stateful_disk": {
 				Type:        schema.TypeSet,
 				Optional:    true,
@@ -473,7 +515,7 @@ func resourceComputeRegionInstanceGroupManagerCreate(d *schema.ResourceData, met
 		UpdatePolicy:                expandRegionUpdatePolicy(d.Get("update_policy").([]interface{})),
 		AllInstancesConfig:          expandAllInstancesConfig(nil, d.Get("all_instances_config").([]interface{})),
 		DistributionPolicy:          expandDistributionPolicy(d),
-		StatefulPolicy:              expandStatefulPolicy(d.Get("stateful_disk").(*schema.Set).List()),
+		StatefulPolicy:              expandStatefulPolicy(d),
 		// Force send TargetSize to allow size of 0.
 		ForceSendFields: []string{"TargetSize"},
 	}
@@ -663,7 +705,12 @@ func resourceComputeRegionInstanceGroupManagerRead(d *schema.ResourceData, meta 
 	if err = d.Set("status", flattenStatus(manager.Status)); err != nil {
 		return fmt.Errorf("Error setting status in state: %s", err.Error())
 	}
-
+	if err = d.Set("stateful_internal_ip", flattenStatefulPolicyStatefulInternalIps(manager.StatefulPolicy)); err != nil {
+		return fmt.Errorf("Error setting stateful_internal_ip in state: %s", err.Error())
+	}
+	if err = d.Set("stateful_external_ip", flattenStatefulPolicyStatefulExternalIps(manager.StatefulPolicy)); err != nil {
+		return fmt.Errorf("Error setting stateful_external_ip in state: %s", err.Error())
+	}
 	// If unset in state set to default value
 	if d.Get("wait_for_instances_status").(string) == "" {
 		if err = d.Set("wait_for_instances_status", "STABLE"); err != nil {
@@ -719,6 +766,11 @@ func resourceComputeRegionInstanceGroupManagerUpdate(d *schema.ResourceData, met
 		change = true
 	}
 
+	if d.HasChange("stateful_internal_ip") || d.HasChange("stateful_external_ip") || d.HasChange("stateful_disk") {
+		updatedManager.StatefulPolicy = expandStatefulPolicy(d)
+		change = true
+	}
+
 	if d.HasChange("all_instances_config") {
 		oldAic, newAic := d.GetChange("all_instances_config")
 		if newAic == nil || len(newAic.([]interface{})) == 0 {
@@ -726,11 +778,6 @@ func resourceComputeRegionInstanceGroupManagerUpdate(d *schema.ResourceData, met
 		} else {
 			updatedManager.AllInstancesConfig = expandAllInstancesConfig(oldAic.([]interface{}), newAic.([]interface{}))
 		}
-		change = true
-	}
-
-	if d.HasChange("stateful_disk") {
-		updatedManager.StatefulPolicy = expandStatefulPolicy(d.Get("stateful_disk").(*schema.Set).List())
 		change = true
 	}
 

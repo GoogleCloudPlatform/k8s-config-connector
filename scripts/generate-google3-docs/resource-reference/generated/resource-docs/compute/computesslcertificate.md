@@ -270,6 +270,7 @@ conditions:
   status: string
   type: string
 creationTimestamp: string
+expireTime: string
 observedGeneration: integer
 selfLink: string
 ```
@@ -342,6 +343,13 @@ selfLink: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Creation timestamp in RFC3339 text format.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>expireTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Expire time of the certificate in RFC3339 text format.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

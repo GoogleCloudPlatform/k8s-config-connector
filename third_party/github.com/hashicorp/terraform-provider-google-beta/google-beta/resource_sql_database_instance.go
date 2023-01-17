@@ -83,6 +83,12 @@ var (
 		"settings.0.insights_config.0.record_client_address",
 		"settings.0.insights_config.0.query_plans_per_minute",
 	}
+
+	sqlServerAuditConfigurationKeys = []string{
+		"settings.0.sql_server_audit_config.0.bucket",
+		"settings.0.sql_server_audit_config.0.retention_interval",
+		"settings.0.sql_server_audit_config.0.upload_interval",
+	}
 )
 
 func resourceSqlDatabaseInstance() *schema.Resource {
@@ -190,19 +196,22 @@ func resourceSqlDatabaseInstance() *schema.Resource {
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"bucket": {
-										Type:        schema.TypeString,
-										Required:    true,
-										Description: `The name of the destination bucket (e.g., gs://mybucket).`,
+										Type:         schema.TypeString,
+										Optional:     true,
+										AtLeastOneOf: sqlServerAuditConfigurationKeys,
+										Description:  `The name of the destination bucket (e.g., gs://mybucket).`,
 									},
 									"retention_interval": {
-										Type:        schema.TypeString,
-										Optional:    true,
-										Description: `How long to keep generated audit files. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s"..`,
+										Type:         schema.TypeString,
+										Optional:     true,
+										AtLeastOneOf: sqlServerAuditConfigurationKeys,
+										Description:  `How long to keep generated audit files. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s"..`,
 									},
 									"upload_interval": {
-										Type:        schema.TypeString,
-										Optional:    true,
-										Description: `How often to upload generated audit files. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".`,
+										Type:         schema.TypeString,
+										Optional:     true,
+										AtLeastOneOf: sqlServerAuditConfigurationKeys,
+										Description:  `How often to upload generated audit files. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".`,
 									},
 								},
 							},
@@ -552,6 +561,11 @@ is set to true. Defaults to ZONAL.`,
 							ValidateFunc: validation.StringInSlice([]string{"NOT_REQUIRED", "REQUIRED"}, false),
 							Description:  `Specifies if connections must use Cloud SQL connectors.`,
 						},
+						"deletion_protection_enabled": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Description: `Configuration to protect against accidental instance deletion.`,
+						},
 					},
 				},
 				Description: `The settings to use for the database. The configuration is detailed below.`,
@@ -658,6 +672,12 @@ is set to true. Defaults to ZONAL.`,
 				Computed:    true,
 				ForceNew:    true,
 				Description: `The ID of the project in which the resource belongs. If it is not provided, the provider project is used.`,
+			},
+
+			"instance_type": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: `The type of the instance. The valid values are:- 'SQL_INSTANCE_TYPE_UNSPECIFIED', 'CLOUD_SQL_INSTANCE', 'ON_PREMISES_INSTANCE' and 'READ_REPLICA_INSTANCE'.`,
 			},
 
 			"replica_configuration": {
@@ -872,8 +892,8 @@ func privateNetworkCustomizeDiff(_ context.Context, d *schema.ResourceDiff, meta
 func pitrPostgresOnlyCustomizeDiff(_ context.Context, diff *schema.ResourceDiff, v interface{}) error {
 	pitr := diff.Get("settings.0.backup_configuration.0.point_in_time_recovery_enabled").(bool)
 	dbVersion := diff.Get("database_version").(string)
-	if pitr && !strings.Contains(dbVersion, "POSTGRES") {
-		return fmt.Errorf("point_in_time_recovery_enabled is only available for Postgres. You may want to consider using binary_log_enabled instead.")
+	if pitr && (!strings.Contains(dbVersion, "POSTGRES") && !strings.Contains(dbVersion, "SQLSERVER")) {
+		return fmt.Errorf("point_in_time_recovery_enabled is only available for Postgres and SQL Server. You may want to consider using binary_log_enabled instead.")
 	}
 	return nil
 }
@@ -936,6 +956,10 @@ func resourceSqlDatabaseInstanceCreate(d *schema.ResourceData, meta interface{})
 		instance.MaintenanceVersion = d.Get("maintenance_version").(string)
 	}
 
+	if _, ok := d.GetOk("instance_type"); ok {
+		instance.InstanceType = d.Get("instance_type").(string)
+	}
+
 	instance.RootPassword = d.Get("root_password").(string)
 
 	// Modifying a replica during Create can cause problems if the master is
@@ -990,6 +1014,36 @@ func resourceSqlDatabaseInstanceCreate(d *schema.ResourceData, meta interface{})
 		return err
 	}
 
+	// If a default root user was created with a wildcard ('%') hostname, delete it. Note it
+	// appears to only be created for certain types of databases, like MySQL.
+	// Users in a replica instance are inherited from the master instance and should be left alone.
+	// This deletion is done immediately after the instance is created, in order to minimize the
+	// risk of it being left on the instance, which would present a security concern.
+	if sqlDatabaseIsMaster(d) {
+		var users *sqladmin.UsersListResponse
+		err = retryTimeDuration(func() error {
+			users, err = config.NewSqlAdminClient(userAgent).Users.List(project, instance.Name).Do()
+			return err
+		}, d.Timeout(schema.TimeoutRead), isSqlOperationInProgressError)
+		if err != nil {
+			return fmt.Errorf("Error, attempting to list users associated with instance %s: %s", instance.Name, err)
+		}
+		for _, u := range users.Items {
+			if u.Name == "root" && u.Host == "%" {
+				err = retry(func() error {
+					op, err = config.NewSqlAdminClient(userAgent).Users.Delete(project, instance.Name).Host(u.Host).Name(u.Name).Do()
+					if err == nil {
+						err = sqlAdminOperationWaitTime(config, op, project, "Delete default root User", userAgent, d.Timeout(schema.TimeoutCreate))
+					}
+					return err
+				})
+				if err != nil {
+					return fmt.Errorf("Error, failed to delete default 'root'@'*' user, but the database was created successfully: %s", err)
+				}
+			}
+		}
+	}
+
 	// patch any fields that need to be sent postcreation
 	if patchData != nil {
 		err = retryTimeDuration(func() (rerr error) {
@@ -1040,33 +1094,6 @@ func resourceSqlDatabaseInstanceCreate(d *schema.ResourceData, meta interface{})
 		}
 	}
 
-	// If a default root user was created with a wildcard ('%') hostname, delete it.
-	// Users in a replica instance are inherited from the master instance and should be left alone.
-	if sqlDatabaseIsMaster(d) {
-		var users *sqladmin.UsersListResponse
-		err = retryTimeDuration(func() error {
-			users, err = config.NewSqlAdminClient(userAgent).Users.List(project, instance.Name).Do()
-			return err
-		}, d.Timeout(schema.TimeoutRead), isSqlOperationInProgressError)
-		if err != nil {
-			return fmt.Errorf("Error, attempting to list users associated with instance %s: %s", instance.Name, err)
-		}
-		for _, u := range users.Items {
-			if u.Name == "root" && u.Host == "%" {
-				err = retry(func() error {
-					op, err = config.NewSqlAdminClient(userAgent).Users.Delete(project, instance.Name).Host(u.Host).Name(u.Name).Do()
-					if err == nil {
-						err = sqlAdminOperationWaitTime(config, op, project, "Delete default root User", userAgent, d.Timeout(schema.TimeoutCreate))
-					}
-					return err
-				})
-				if err != nil {
-					return fmt.Errorf("Error, failed to delete default 'root'@'*' user, but the database was created successfully: %s", err)
-				}
-			}
-		}
-	}
-
 	// Perform a backup restore if the backup context exists
 	if r, ok := d.GetOk("restore_backup_context"); ok {
 		err = sqlDatabaseInstanceRestoreFromBackup(d, config, userAgent, project, name, r)
@@ -1086,28 +1113,29 @@ func expandSqlDatabaseInstanceSettings(configured []interface{}) *sqladmin.Setti
 	_settings := configured[0].(map[string]interface{})
 	settings := &sqladmin.Settings{
 		// Version is unset in Create but is set during update
-		SettingsVersion:          int64(_settings["version"].(int)),
-		Tier:                     _settings["tier"].(string),
-		ForceSendFields:          []string{"StorageAutoResize"},
-		ActivationPolicy:         _settings["activation_policy"].(string),
-		ActiveDirectoryConfig:    expandActiveDirectoryConfig(_settings["active_directory_config"].([]interface{})),
-		DenyMaintenancePeriods:   expandDenyMaintenancePeriod(_settings["deny_maintenance_period"].([]interface{})),
-		SqlServerAuditConfig:     expandSqlServerAuditConfig(_settings["sql_server_audit_config"].([]interface{})),
-		TimeZone:                 _settings["time_zone"].(string),
-		AvailabilityType:         _settings["availability_type"].(string),
-		ConnectorEnforcement:     _settings["connector_enforcement"].(string),
-		Collation:                _settings["collation"].(string),
-		DataDiskSizeGb:           int64(_settings["disk_size"].(int)),
-		DataDiskType:             _settings["disk_type"].(string),
-		PricingPlan:              _settings["pricing_plan"].(string),
-		UserLabels:               convertStringMap(_settings["user_labels"].(map[string]interface{})),
-		BackupConfiguration:      expandBackupConfiguration(_settings["backup_configuration"].([]interface{})),
-		DatabaseFlags:            expandDatabaseFlags(_settings["database_flags"].([]interface{})),
-		IpConfiguration:          expandIpConfiguration(_settings["ip_configuration"].([]interface{})),
-		LocationPreference:       expandLocationPreference(_settings["location_preference"].([]interface{})),
-		MaintenanceWindow:        expandMaintenanceWindow(_settings["maintenance_window"].([]interface{})),
-		InsightsConfig:           expandInsightsConfig(_settings["insights_config"].([]interface{})),
-		PasswordValidationPolicy: expandPasswordValidationPolicy(_settings["password_validation_policy"].([]interface{})),
+		SettingsVersion:           int64(_settings["version"].(int)),
+		Tier:                      _settings["tier"].(string),
+		ForceSendFields:           []string{"StorageAutoResize"},
+		ActivationPolicy:          _settings["activation_policy"].(string),
+		ActiveDirectoryConfig:     expandActiveDirectoryConfig(_settings["active_directory_config"].([]interface{})),
+		DenyMaintenancePeriods:    expandDenyMaintenancePeriod(_settings["deny_maintenance_period"].([]interface{})),
+		SqlServerAuditConfig:      expandSqlServerAuditConfig(_settings["sql_server_audit_config"].([]interface{})),
+		TimeZone:                  _settings["time_zone"].(string),
+		AvailabilityType:          _settings["availability_type"].(string),
+		ConnectorEnforcement:      _settings["connector_enforcement"].(string),
+		Collation:                 _settings["collation"].(string),
+		DataDiskSizeGb:            int64(_settings["disk_size"].(int)),
+		DataDiskType:              _settings["disk_type"].(string),
+		PricingPlan:               _settings["pricing_plan"].(string),
+		DeletionProtectionEnabled: _settings["deletion_protection_enabled"].(bool),
+		UserLabels:                convertStringMap(_settings["user_labels"].(map[string]interface{})),
+		BackupConfiguration:       expandBackupConfiguration(_settings["backup_configuration"].([]interface{})),
+		DatabaseFlags:             expandDatabaseFlags(_settings["database_flags"].([]interface{})),
+		IpConfiguration:           expandIpConfiguration(_settings["ip_configuration"].([]interface{})),
+		LocationPreference:        expandLocationPreference(_settings["location_preference"].([]interface{})),
+		MaintenanceWindow:         expandMaintenanceWindow(_settings["maintenance_window"].([]interface{})),
+		InsightsConfig:            expandInsightsConfig(_settings["insights_config"].([]interface{})),
+		PasswordValidationPolicy:  expandPasswordValidationPolicy(_settings["password_validation_policy"].([]interface{})),
 	}
 
 	resize := _settings["disk_autoresize"].(bool)
@@ -1377,7 +1405,9 @@ func resourceSqlDatabaseInstanceRead(d *schema.ResourceData, meta interface{}) e
 	if err := d.Set("service_account_email_address", instance.ServiceAccountEmailAddress); err != nil {
 		return fmt.Errorf("Error setting service_account_email_address: %s", err)
 	}
-
+	if err := d.Set("instance_type", instance.InstanceType); err != nil {
+		return fmt.Errorf("Error setting instance_type: %s", err)
+	}
 	if err := d.Set("settings", flattenSettings(instance.Settings)); err != nil {
 		log.Printf("[WARN] Failed to set SQL Database Instance Settings")
 	}
@@ -1520,6 +1550,10 @@ func resourceSqlDatabaseInstanceUpdate(d *schema.ResourceData, meta interface{})
 		defer mutexKV.Unlock(instanceMutexKey(project, v.(string)))
 	}
 
+	if _, ok := d.GetOk("instance_type"); ok {
+		instance.InstanceType = d.Get("instance_type").(string)
+	}
+
 	err = retryTimeDuration(func() (rerr error) {
 		op, rerr = config.NewSqlAdminClient(userAgent).Instances.Update(project, d.Get("name").(string), instance).Do()
 		return rerr
@@ -1624,18 +1658,19 @@ func resourceSqlDatabaseInstanceImport(d *schema.ResourceData, meta interface{})
 
 func flattenSettings(settings *sqladmin.Settings) []map[string]interface{} {
 	data := map[string]interface{}{
-		"version":                    settings.SettingsVersion,
-		"tier":                       settings.Tier,
-		"activation_policy":          settings.ActivationPolicy,
-		"availability_type":          settings.AvailabilityType,
-		"collation":                  settings.Collation,
-		"connector_enforcement":      settings.ConnectorEnforcement,
-		"disk_type":                  settings.DataDiskType,
-		"disk_size":                  settings.DataDiskSizeGb,
-		"pricing_plan":               settings.PricingPlan,
-		"user_labels":                settings.UserLabels,
-		"password_validation_policy": settings.PasswordValidationPolicy,
-		"time_zone":                  settings.TimeZone,
+		"version":                     settings.SettingsVersion,
+		"tier":                        settings.Tier,
+		"activation_policy":           settings.ActivationPolicy,
+		"availability_type":           settings.AvailabilityType,
+		"collation":                   settings.Collation,
+		"connector_enforcement":       settings.ConnectorEnforcement,
+		"disk_type":                   settings.DataDiskType,
+		"disk_size":                   settings.DataDiskSizeGb,
+		"pricing_plan":                settings.PricingPlan,
+		"user_labels":                 settings.UserLabels,
+		"password_validation_policy":  settings.PasswordValidationPolicy,
+		"time_zone":                   settings.TimeZone,
+		"deletion_protection_enabled": settings.DeletionProtectionEnabled,
 	}
 
 	if settings.ActiveDirectoryConfig != nil {

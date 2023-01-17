@@ -146,7 +146,6 @@ func schemaNodeConfig() *schema.Schema {
 					Optional: true,
 					// Computed=true because GKE Sandbox will automatically add labels to nodes that can/cannot run sandboxed pods.
 					Computed:         true,
-					ForceNew:         true,
 					Elem:             &schema.Schema{Type: schema.TypeString},
 					Description:      `The map of Kubernetes labels (key/value pairs) to be applied to each node. These will added in addition to any default label(s) that Kubernetes may apply to the node.`,
 					DiffSuppressFunc: containerNodePoolLabelsSuppress,
@@ -1061,7 +1060,7 @@ func containerNodePoolTaintSuppress(k, old, new string, d *schema.ResourceData) 
 		}
 		if _, ok := taintSet[taint]; ok {
 			delete(taintSet, taint)
-		} else if !strings.HasPrefix(taint.Key, "sandbox.gke.io/") {
+		} else if !strings.HasPrefix(taint.Key, "sandbox.gke.io/") && taint.Key != "kubernetes.io/arch" {
 			// User-provided taint removed in new configuration.
 			return false
 		}

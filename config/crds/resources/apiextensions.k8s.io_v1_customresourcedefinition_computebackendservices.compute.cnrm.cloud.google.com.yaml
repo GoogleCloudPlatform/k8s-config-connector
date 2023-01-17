@@ -1101,6 +1101,10 @@ spec:
                   Fingerprint of this resource. A hash of the contents stored in this
                   object. This field is used in optimistic locking.
                 type: string
+              generatedId:
+                description: The unique identifier for the resource. This identifier
+                  is defined by the server.
+                type: integer
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.

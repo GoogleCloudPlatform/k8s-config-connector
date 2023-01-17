@@ -98,6 +98,12 @@ func resourceOsConfigOsPolicyAssignment() *schema.Resource {
 				Description:      "The project for the resource",
 			},
 
+			"skip_await_rollout": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Description: "Set to true to skip awaiting rollout during resource creation and update.",
+			},
+
 			"baseline": {
 				Type:        schema.TypeBool,
 				Computed:    true,
@@ -1317,13 +1323,14 @@ func resourceOsConfigOsPolicyAssignmentCreate(d *schema.ResourceData, meta inter
 	}
 
 	obj := &osconfig.OSPolicyAssignment{
-		InstanceFilter: expandOsConfigOsPolicyAssignmentInstanceFilter(d.Get("instance_filter")),
-		Location:       dcl.String(d.Get("location").(string)),
-		Name:           dcl.String(d.Get("name").(string)),
-		OSPolicies:     expandOsConfigOsPolicyAssignmentOSPoliciesArray(d.Get("os_policies")),
-		Rollout:        expandOsConfigOsPolicyAssignmentRollout(d.Get("rollout")),
-		Description:    dcl.String(d.Get("description").(string)),
-		Project:        dcl.String(project),
+		InstanceFilter:   expandOsConfigOsPolicyAssignmentInstanceFilter(d.Get("instance_filter")),
+		Location:         dcl.String(d.Get("location").(string)),
+		Name:             dcl.String(d.Get("name").(string)),
+		OSPolicies:       expandOsConfigOsPolicyAssignmentOSPoliciesArray(d.Get("os_policies")),
+		Rollout:          expandOsConfigOsPolicyAssignmentRollout(d.Get("rollout")),
+		Description:      dcl.String(d.Get("description").(string)),
+		Project:          dcl.String(project),
+		SkipAwaitRollout: dcl.Bool(d.Get("skip_await_rollout").(bool)),
 	}
 
 	id, err := obj.ID()
@@ -1372,13 +1379,14 @@ func resourceOsConfigOsPolicyAssignmentRead(d *schema.ResourceData, meta interfa
 	}
 
 	obj := &osconfig.OSPolicyAssignment{
-		InstanceFilter: expandOsConfigOsPolicyAssignmentInstanceFilter(d.Get("instance_filter")),
-		Location:       dcl.String(d.Get("location").(string)),
-		Name:           dcl.String(d.Get("name").(string)),
-		OSPolicies:     expandOsConfigOsPolicyAssignmentOSPoliciesArray(d.Get("os_policies")),
-		Rollout:        expandOsConfigOsPolicyAssignmentRollout(d.Get("rollout")),
-		Description:    dcl.String(d.Get("description").(string)),
-		Project:        dcl.String(project),
+		InstanceFilter:   expandOsConfigOsPolicyAssignmentInstanceFilter(d.Get("instance_filter")),
+		Location:         dcl.String(d.Get("location").(string)),
+		Name:             dcl.String(d.Get("name").(string)),
+		OSPolicies:       expandOsConfigOsPolicyAssignmentOSPoliciesArray(d.Get("os_policies")),
+		Rollout:          expandOsConfigOsPolicyAssignmentRollout(d.Get("rollout")),
+		Description:      dcl.String(d.Get("description").(string)),
+		Project:          dcl.String(project),
+		SkipAwaitRollout: dcl.Bool(d.Get("skip_await_rollout").(bool)),
 	}
 
 	userAgent, err := generateUserAgentString(d, config.userAgent)
@@ -1425,6 +1433,9 @@ func resourceOsConfigOsPolicyAssignmentRead(d *schema.ResourceData, meta interfa
 	if err = d.Set("project", res.Project); err != nil {
 		return fmt.Errorf("error setting project in state: %s", err)
 	}
+	if err = d.Set("skip_await_rollout", res.SkipAwaitRollout); err != nil {
+		return fmt.Errorf("error setting skip_await_rollout in state: %s", err)
+	}
 	if err = d.Set("baseline", res.Baseline); err != nil {
 		return fmt.Errorf("error setting baseline in state: %s", err)
 	}
@@ -1460,15 +1471,28 @@ func resourceOsConfigOsPolicyAssignmentUpdate(d *schema.ResourceData, meta inter
 	}
 
 	obj := &osconfig.OSPolicyAssignment{
-		InstanceFilter: expandOsConfigOsPolicyAssignmentInstanceFilter(d.Get("instance_filter")),
-		Location:       dcl.String(d.Get("location").(string)),
-		Name:           dcl.String(d.Get("name").(string)),
-		OSPolicies:     expandOsConfigOsPolicyAssignmentOSPoliciesArray(d.Get("os_policies")),
-		Rollout:        expandOsConfigOsPolicyAssignmentRollout(d.Get("rollout")),
-		Description:    dcl.String(d.Get("description").(string)),
-		Project:        dcl.String(project),
+		InstanceFilter:   expandOsConfigOsPolicyAssignmentInstanceFilter(d.Get("instance_filter")),
+		Location:         dcl.String(d.Get("location").(string)),
+		Name:             dcl.String(d.Get("name").(string)),
+		OSPolicies:       expandOsConfigOsPolicyAssignmentOSPoliciesArray(d.Get("os_policies")),
+		Rollout:          expandOsConfigOsPolicyAssignmentRollout(d.Get("rollout")),
+		Description:      dcl.String(d.Get("description").(string)),
+		Project:          dcl.String(project),
+		SkipAwaitRollout: dcl.Bool(d.Get("skip_await_rollout").(bool)),
+	}
+	// Construct state hint from old values
+	old := &osconfig.OSPolicyAssignment{
+		InstanceFilter:   expandOsConfigOsPolicyAssignmentInstanceFilter(oldValue(d.GetChange("instance_filter"))),
+		Location:         dcl.String(oldValue(d.GetChange("location")).(string)),
+		Name:             dcl.String(oldValue(d.GetChange("name")).(string)),
+		OSPolicies:       expandOsConfigOsPolicyAssignmentOSPoliciesArray(oldValue(d.GetChange("os_policies"))),
+		Rollout:          expandOsConfigOsPolicyAssignmentRollout(oldValue(d.GetChange("rollout"))),
+		Description:      dcl.String(oldValue(d.GetChange("description")).(string)),
+		Project:          dcl.StringOrNil(oldValue(d.GetChange("project")).(string)),
+		SkipAwaitRollout: dcl.Bool(oldValue(d.GetChange("skip_await_rollout")).(bool)),
 	}
 	directive := UpdateDirective
+	directive = append(directive, dcl.WithStateHint(old))
 	userAgent, err := generateUserAgentString(d, config.userAgent)
 	if err != nil {
 		return err
@@ -1510,13 +1534,14 @@ func resourceOsConfigOsPolicyAssignmentDelete(d *schema.ResourceData, meta inter
 	}
 
 	obj := &osconfig.OSPolicyAssignment{
-		InstanceFilter: expandOsConfigOsPolicyAssignmentInstanceFilter(d.Get("instance_filter")),
-		Location:       dcl.String(d.Get("location").(string)),
-		Name:           dcl.String(d.Get("name").(string)),
-		OSPolicies:     expandOsConfigOsPolicyAssignmentOSPoliciesArray(d.Get("os_policies")),
-		Rollout:        expandOsConfigOsPolicyAssignmentRollout(d.Get("rollout")),
-		Description:    dcl.String(d.Get("description").(string)),
-		Project:        dcl.String(project),
+		InstanceFilter:   expandOsConfigOsPolicyAssignmentInstanceFilter(d.Get("instance_filter")),
+		Location:         dcl.String(d.Get("location").(string)),
+		Name:             dcl.String(d.Get("name").(string)),
+		OSPolicies:       expandOsConfigOsPolicyAssignmentOSPoliciesArray(d.Get("os_policies")),
+		Rollout:          expandOsConfigOsPolicyAssignmentRollout(d.Get("rollout")),
+		Description:      dcl.String(d.Get("description").(string)),
+		Project:          dcl.String(project),
+		SkipAwaitRollout: dcl.Bool(d.Get("skip_await_rollout").(bool)),
 	}
 
 	log.Printf("[DEBUG] Deleting OSPolicyAssignment %q", d.Id())

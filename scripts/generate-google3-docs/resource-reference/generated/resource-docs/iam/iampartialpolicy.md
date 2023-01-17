@@ -164,6 +164,10 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td>Y</td>
     </tr>
     <tr>
+        <td><code>DNSManagedZone</code></td>
+        <td></td>
+    </tr>
+    <tr>
         <td><code>DataprocCluster</code></td>
         <td>Y</td>
     </tr>
@@ -377,6 +381,14 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td>
             
             <p><code>{% verbatim %}projects/{{project}}/regions/{{region}}/subnetworks/{{name}}{% endverbatim %}</code></p>
+            
+        </td>
+    </tr>
+    <tr>
+        <td><code>DNSManagedZone</code></td>
+        <td>
+            
+            <p><code>{% verbatim %}projects/{{project}}/managedZones/{{name}}{% endverbatim %}</code></p>
             
         </td>
     </tr>

@@ -33,7 +33,7 @@ func TestAccGKEBackupBackupPlan_gkebackupBackupplanBasicExample(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckGKEBackupBackupPlanDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -52,7 +52,6 @@ func TestAccGKEBackupBackupPlan_gkebackupBackupplanBasicExample(t *testing.T) {
 func testAccGKEBackupBackupPlan_gkebackupBackupplanBasicExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_container_cluster" "primary" {
-  provider = google-beta
   name               = "tf-test-basic-cluster%{random_suffix}"
   location           = "us-central1"
   initial_node_count = 1
@@ -67,7 +66,6 @@ resource "google_container_cluster" "primary" {
 }
 
 resource "google_gke_backup_backup_plan" "basic" {
-  provider = google-beta
   name = "tf-test-basic-plan%{random_suffix}"
   cluster = google_container_cluster.primary.id
   location = "us-central1"
@@ -89,7 +87,7 @@ func TestAccGKEBackupBackupPlan_gkebackupBackupplanAutopilotExample(t *testing.T
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckGKEBackupBackupPlanDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -108,7 +106,6 @@ func TestAccGKEBackupBackupPlan_gkebackupBackupplanAutopilotExample(t *testing.T
 func testAccGKEBackupBackupPlan_gkebackupBackupplanAutopilotExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_container_cluster" "primary" {
-  provider = google-beta
   name               = "tf-test-autopilot-cluster%{random_suffix}"
   location           = "us-central1"
   enable_autopilot = true
@@ -125,7 +122,6 @@ resource "google_container_cluster" "primary" {
 }
 
 resource "google_gke_backup_backup_plan" "autopilot" {
-  provider = google-beta
   name = "tf-test-autopilot-plan%{random_suffix}"
   cluster = google_container_cluster.primary.id
   location = "us-central1"
@@ -148,7 +144,7 @@ func TestAccGKEBackupBackupPlan_gkebackupBackupplanCmekExample(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckGKEBackupBackupPlanDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -167,7 +163,6 @@ func TestAccGKEBackupBackupPlan_gkebackupBackupplanCmekExample(t *testing.T) {
 func testAccGKEBackupBackupPlan_gkebackupBackupplanCmekExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_container_cluster" "primary" {
-  provider = google-beta
   name               = "tf-test-cmek-cluster%{random_suffix}"
   location           = "us-central1"
   initial_node_count = 1
@@ -182,7 +177,6 @@ resource "google_container_cluster" "primary" {
 }
 
 resource "google_gke_backup_backup_plan" "cmek" {
-  provider = google-beta
   name = "tf-test-cmek-plan%{random_suffix}"
   cluster = google_container_cluster.primary.id
   location = "us-central1"
@@ -199,13 +193,11 @@ resource "google_gke_backup_backup_plan" "cmek" {
 }
 
 resource "google_kms_crypto_key" "crypto_key" {
-  provider = google-beta
   name     = "tf-test-backup-key%{random_suffix}"
   key_ring = google_kms_key_ring.key_ring.id
 }
 
 resource "google_kms_key_ring" "key_ring" {
-  provider = google-beta
   name     = "tf-test-backup-key%{random_suffix}"
   location = "us-central1"
 }
@@ -222,7 +214,7 @@ func TestAccGKEBackupBackupPlan_gkebackupBackupplanFullExample(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckGKEBackupBackupPlanDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -241,7 +233,6 @@ func TestAccGKEBackupBackupPlan_gkebackupBackupplanFullExample(t *testing.T) {
 func testAccGKEBackupBackupPlan_gkebackupBackupplanFullExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_container_cluster" "primary" {
-  provider = google-beta
   name               = "tf-test-full-cluster%{random_suffix}"
   location           = "us-central1"
   initial_node_count = 1
@@ -256,7 +247,6 @@ resource "google_container_cluster" "primary" {
 }
 
 resource "google_gke_backup_backup_plan" "full" {
-  provider = google-beta
   name = "tf-test-full-plan%{random_suffix}"
   cluster = google_container_cluster.primary.id
   location = "us-central1"

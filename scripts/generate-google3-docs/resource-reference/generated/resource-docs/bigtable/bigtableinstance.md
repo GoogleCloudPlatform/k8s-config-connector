@@ -198,7 +198,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ID of the Cloud Bigtable cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}The ID of the Cloud Bigtable cluster. Must be 6-30 characters and must only contain hyphens, lowercase letters and numbers.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -252,7 +252,7 @@ this cluster must be granted the cloudkms.cryptoKeyEncrypterDecrypter role on th
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The number of nodes in your Cloud Bigtable cluster. For PRODUCTION instances where the numNodes will be managed by Config Connector, this field is required with a minimum of 1. For a DEVELOPMENT instance or for an existing instance where the numNodes is managed outside of Config Connector, this field must be left unset.{% endverbatim %}</p>
+            <p>{% verbatim %}The number of nodes in your Cloud Bigtable cluster. Required, with a minimum of 1 for each cluster in an instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

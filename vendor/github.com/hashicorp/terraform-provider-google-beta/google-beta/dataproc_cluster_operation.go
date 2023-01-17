@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	dataproc "google.golang.org/api/dataproc/v1beta2"
+	"google.golang.org/api/dataproc/v1"
 )
 
 type DataprocClusterOperationWaiter struct {
