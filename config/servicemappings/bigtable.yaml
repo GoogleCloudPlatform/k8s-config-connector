@@ -85,6 +85,7 @@ spec:
     idTemplate: "projects/{{project}}/instances/{{name}}"
     idTemplateCanBeUsedToMatchResourceName: true
     resourceAvailableInAssetInventory: true
+    reconciliationIntervalInSeconds: 3600
     metadataMapping:
       name: name
       labels: labels
@@ -114,6 +115,7 @@ spec:
     idTemplate: "projects/{{project}}/instances/{{instance_name}}/tables/{{name}}"
     idTemplateCanBeUsedToMatchResourceName: true
     resourceAvailableInAssetInventory: true
+    reconciliationIntervalInSeconds: 3600
     metadataMapping:
       name: name
     resourceID:

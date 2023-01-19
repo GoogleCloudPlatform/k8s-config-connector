@@ -1538,6 +1538,7 @@ spec:
       idTemplateCanBeUsedToMatchResourceName: true
       resourceAvailableInAssetInventory: true
       locationality: regional
+      reconciliationIntervalInSeconds: 0
       ignoredFields:
         - name_prefix
       containers:
@@ -2189,6 +2190,7 @@ spec:
       idTemplateCanBeUsedToMatchResourceName: true
       resourceAvailableInAssetInventory: true
       locationality: global
+      reconciliationIntervalInSeconds: 0
       ignoredFields:
         - name_prefix
       containers:

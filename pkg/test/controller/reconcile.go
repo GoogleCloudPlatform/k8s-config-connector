@@ -307,7 +307,7 @@ tryAgain:
 
 func requeueEqualAndRequeueAfterWithinBoundsOfMean(result reconcile.Result, expectedResult reconcile.Result) bool {
 	requeueEqual := result.Requeue == expectedResult.Requeue
-	lowerBound := expectedResult.RequeueAfter - k8s.MeanReconcileReenqueuePeriod/2
-	upperBound := expectedResult.RequeueAfter + k8s.MeanReconcileReenqueuePeriod/2
-	return requeueEqual && result.RequeueAfter >= lowerBound && result.RequeueAfter < upperBound
+	lowerBound := expectedResult.RequeueAfter / 2
+	upperBound := expectedResult.RequeueAfter / 2 * 3
+	return requeueEqual && (result.RequeueAfter >= lowerBound && result.RequeueAfter < upperBound || result.RequeueAfter == 0 && expectedResult.RequeueAfter == 0)
 }

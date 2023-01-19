@@ -27,6 +27,7 @@ spec:
       idTemplate: "{{project}}/{{service}}"
       idTemplateCanBeUsedToMatchResourceName: true
       resourceAvailableInAssetInventory: true
+      reconciliationIntervalInSeconds: 3600
       metadataMapping:
         name: service
       resourceID:
