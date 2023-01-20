@@ -21,6 +21,7 @@ import (
 	"path"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
@@ -36,6 +37,7 @@ import (
 	admissionregistration "k8s.io/api/admissionregistration/v1"
 	corev1 "k8s.io/api/core/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
@@ -187,10 +189,15 @@ func GetCommonWebhookConfigs() ([]WebhookConfig, error) {
 func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client.Client) error {
 	whCfgs := []WebhookConfig{
 		{
-			Name:          "abandon-on-uninstall.cnrm.cloud.google.com",
-			Path:          "/abandon-on-uninstall",
-			Type:          Validating,
-			Handler:       &abandonOnCRDUninstallWebhook{},
+			Name:    "abandon-on-uninstall.cnrm.cloud.google.com",
+			Path:    "/abandon-on-uninstall",
+			Type:    Validating,
+			Handler: &abandonOnCRDUninstallWebhook{},
+			ObjectSelector: &metav1.LabelSelector{
+				MatchLabels: map[string]string{
+					crdgeneration.ManagedByKCCLabel: "true",
+				},
+			},
 			FailurePolicy: admissionregistration.Fail,
 			Rules: getRulesForOperationTypes(
 				getRulesFromResources([]schema.GroupVersionKind{

@@ -16,17 +16,19 @@ package webhook
 
 import (
 	admissionregistration "k8s.io/api/admissionregistration/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
 type WebhookConfig struct {
-	Type          webhookType
-	Name          string
-	Path          string
-	Handler       admission.Handler
-	FailurePolicy admissionregistration.FailurePolicyType
-	Rules         []admissionregistration.RuleWithOperations
-	SideEffects   admissionregistration.SideEffectClass
+	Type           webhookType
+	Name           string
+	Path           string
+	Handler        admission.Handler
+	FailurePolicy  admissionregistration.FailurePolicyType
+	ObjectSelector *metav1.LabelSelector
+	Rules          []admissionregistration.RuleWithOperations
+	SideEffects    admissionregistration.SideEffectClass
 }
 
 type webhookType string

@@ -63,6 +63,7 @@ func mutatingWebhooksForWebhookConfigs(whCfgs []WebhookConfig, svcName string, w
 		wh := &admissionregistration.MutatingWebhook{
 			Name:                    whCfg.Name,
 			Rules:                   whCfg.Rules,
+			ObjectSelector:          whCfg.ObjectSelector,
 			FailurePolicy:           &whCfg.FailurePolicy,
 			SideEffects:             &whCfg.SideEffects,
 			AdmissionReviewVersions: admissionReviewVersions,
@@ -87,6 +88,7 @@ func validatingWebhooksForWebhookConfigs(whCfgs []WebhookConfig, svcName string,
 		wh := &admissionregistration.ValidatingWebhook{
 			Name:                    whCfg.Name,
 			Rules:                   whCfg.Rules,
+			ObjectSelector:          whCfg.ObjectSelector,
 			FailurePolicy:           &whCfg.FailurePolicy,
 			SideEffects:             &whCfg.SideEffects,
 			AdmissionReviewVersions: admissionReviewVersions,
