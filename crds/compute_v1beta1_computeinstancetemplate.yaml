@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.99.0
+    cnrm.cloud.google.com/version: 1.100.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -251,6 +251,83 @@ spec:
                           description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                           type: string
                       type: object
+                    sourceImageEncryptionKey:
+                      description: |-
+                        Immutable. The customer-supplied encryption key of the source
+                        image. Required if the source image is protected by a
+                        customer-supplied encryption key.
+
+                        Instance templates do not store customer-supplied
+                        encryption keys, so you cannot create disks for
+                        instances in a managed instance group if the source
+                        images are encrypted with your own keys.
+                      properties:
+                        kmsKeySelfLinkRef:
+                          description: |-
+                            The self link of the encryption key that is stored in Google Cloud
+                            KMS.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: 'Allowed value: The `selfLink` field of
+                                a `KMSCryptoKey` resource.'
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                              type: string
+                            namespace:
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              type: string
+                          type: object
+                        kmsKeyServiceAccountRef:
+                          description: |-
+                            The service account being used for the encryption request for the
+                            given KMS key. If absent, the Compute Engine default service account
+                            is used.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: 'Allowed value: The `email` field of an
+                                `IAMServiceAccount` resource.'
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                              type: string
+                            namespace:
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              type: string
+                          type: object
+                      required:
+                      - kmsKeySelfLinkRef
+                      type: object
                     sourceImageRef:
                       oneOf:
                       - not:
@@ -269,6 +346,108 @@ spec:
                       properties:
                         external:
                           description: 'Allowed value: The `selfLink` field of a `ComputeImage`
+                            resource.'
+                          type: string
+                        name:
+                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          type: string
+                        namespace:
+                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          type: string
+                      type: object
+                    sourceSnapshotEncryptionKey:
+                      description: Immutable. The customer-supplied encryption key
+                        of the source snapshot.
+                      properties:
+                        kmsKeySelfLinkRef:
+                          description: |-
+                            The self link of the encryption key that is stored in Google Cloud
+                            KMS.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: 'Allowed value: The `selfLink` field of
+                                a `KMSCryptoKey` resource.'
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                              type: string
+                            namespace:
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              type: string
+                          type: object
+                        kmsKeyServiceAccountRef:
+                          description: |-
+                            The service account being used for the encryption request for the
+                            given KMS key. If absent, the Compute Engine default service account
+                            is used.
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: 'Allowed value: The `email` field of an
+                                `IAMServiceAccount` resource.'
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                              type: string
+                            namespace:
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              type: string
+                          type: object
+                      required:
+                      - kmsKeySelfLinkRef
+                      type: object
+                    sourceSnapshotRef:
+                      description: |-
+                        The source snapshot to create this disk. When creating a new
+                        instance, one of initializeParams.sourceSnapshot,
+                        initializeParams.sourceImage, or disks.source is required except for
+                        local SSD.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: 'Allowed value: The `selfLink` field of a `ComputeSnapshot`
                             resource.'
                           type: string
                         name:
