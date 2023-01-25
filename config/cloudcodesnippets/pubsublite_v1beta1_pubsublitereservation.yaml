@@ -1,0 +1,12 @@
+label: Config Connector PubSubLiteReservation
+markdownDescription: Creates yaml for a PubSubLiteReservation resource
+insertText: |
+  apiVersion: pubsublite.cnrm.cloud.google.com/v1beta1
+  kind: PubSubLiteReservation
+  metadata:
+    name: \${1:pubsublitereservation-name}
+  spec:
+    region: \${2:us-central1}
+    throughputCapacity: \${3:4}
+    projectRef:
+      external: \${4:[PROJECT_ID?]}
