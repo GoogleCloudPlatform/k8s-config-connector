@@ -30,3 +30,13 @@ apply-autogen-patches:
 	# during the integration test (i.e. one-step application), we need to use
 	# the resource reference feature.
 	git apply ./hack/servicemappings/tags_tagvalue_parent.patch
+	# The patch is used to add resource references for the 'parent' field and
+	# 'tagValue' field of TagsTagBinding.
+	# Both fields are required fields that need the server-generated resource
+	# IDs of resources in the values. To properly inject the server-generated
+	# resource IDs during the integration test (i.e. one-step application), we
+	# need to use the resource reference feature.
+	git apply ./hack/servicemappings/tags_tagbinding_reference_fields.patch
+	# The patch is used to add resource references for the 'datasetId' field of
+	# BigQueryRoutine.
+	git apply ./hack/servicemappings/bigquery_routine_reference_field.patch
