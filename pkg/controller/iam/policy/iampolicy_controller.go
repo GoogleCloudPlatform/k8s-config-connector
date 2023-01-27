@@ -184,7 +184,12 @@ func (r *reconcileContext) doReconcile(policy *iamv1beta1.IAMPolicy) (requeue bo
 				if !errors.Is(err, kcciamclient.NotFoundError) && !k8s.IsReferenceNotFoundError(err) {
 					if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 						logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policy))
-						return r.handleUnresolvableDeps(policy, unwrappedErr)
+						resource, err := toK8sResource(policy)
+						if err != nil {
+							return false, fmt.Errorf("error converting IAMPolicy to k8s resource while handling unresolvable dependencies event: %w", err)
+						}
+						// Requeue resource for reconciliation with exponential backoff applied
+						return true, r.Reconciler.HandleUnresolvableDeps(r.Ctx, resource, unwrappedErr)
 					}
 					return false, r.handleDeleteFailed(policy, err)
 				}

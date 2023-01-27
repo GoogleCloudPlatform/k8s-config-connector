@@ -173,7 +173,12 @@ func (r *reconcileContext) doReconcile(auditConfig *iamv1beta1.IAMAuditConfig) (
 				if !errors.Is(err, kcciamclient.NotFoundError) && !k8s.IsReferenceNotFoundError(err) {
 					if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 						logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(auditConfig))
-						return r.handleUnresolvableDeps(auditConfig, unwrappedErr)
+						resource, err := toK8sResource(auditConfig)
+						if err != nil {
+							return false, fmt.Errorf("error converting IAMAuditConfig to k8s resource while handling unresolvable dependencies event: %w", err)
+						}
+						// Requeue resource for reconciliation with exponential backoff applied
+						return true, r.Reconciler.HandleUnresolvableDeps(r.Ctx, resource, unwrappedErr)
 					}
 					return false, r.handleDeleteFailed(auditConfig, err)
 				}

@@ -525,8 +525,8 @@ func (r *Reconciler) finalizeResourceDeletion(ctx context.Context, resource *dcl
 	if parent != nil && !k8s.IsResourceReady(parent) {
 		// If this resource has a parent and is not orphaned, ensure its parent
 		// is ready before attempting deletion.
-		return r.handleUnresolvableDeps(
-			ctx, &resource.Resource, k8s.NewReferenceNotReadyErrorForResource(parent))
+		// Requeue resource for reconciliation with exponential backoff applied
+		return true, r.HandleUnresolvableDeps(ctx, &resource.Resource, k8s.NewReferenceNotReadyErrorForResource(parent))
 	}
 
 	// check if the underlying resource exists

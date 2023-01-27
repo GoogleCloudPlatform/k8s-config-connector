@@ -214,7 +214,8 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 		if parent != nil && !k8s.IsResourceReady(parent) {
 			// If this resource has a parent and is not orphaned, ensure its parent
 			// is ready before attempting deletion.
-			return r.handleUnresolvableDeps(ctx, &krmResource.Resource, k8s.NewReferenceNotReadyErrorForResource(parent))
+			// Requeue resource for reconciliation with exponential backoff applied
+			return true, r.HandleUnresolvableDeps(ctx, &krmResource.Resource, k8s.NewReferenceNotReadyErrorForResource(parent))
 		}
 		liveState, err := krmtotf.FetchLiveState(ctx, krmResource, r.provider, r, r.smLoader)
 		if err != nil {
