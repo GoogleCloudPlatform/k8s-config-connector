@@ -50,6 +50,10 @@ type MemberSource struct {
 	// The SQLInstance whose service account (i.e. its
 	// 'status.serviceAccountEmailAddress') is to be bound to the role.
 	SQLInstanceRef *MemberReference `json:"sqlInstanceRef,omitempty"`
+
+	// The ServiceIdentity whose service account (i.e., its
+	// 'status.email') is to be bound to the role.
+	ServiceIdentityRef *MemberReference `json:"serviceIdentityRef,omitempty"`
 }
 
 // MemberReference represents a resource with an IAM identity

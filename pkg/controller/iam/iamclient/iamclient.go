@@ -47,6 +47,10 @@ const (
 	IAMServiceAccountKind = "IAMServiceAccount"
 	IAMGroup              = "iam.cnrm.cloud.google.com"
 	IAMVersion            = "v1beta1"
+
+	SerivceIdentityKind = "ServiceIdentity"
+	ServiceUsageGroup   = "serviceusage.cnrm.cloud.google.com"
+	ServiceUsageVersion = "v1beta1"
 )
 
 var (
@@ -72,6 +76,11 @@ var (
 		Group:   IAMGroup,
 		Version: IAMVersion,
 		Kind:    IAMServiceAccountKind,
+	}
+	ServiceIdentityGVK = schema.GroupVersionKind{
+		Group:   ServiceUsageGroup,
+		Version: ServiceUsageVersion,
+		Kind:    SerivceIdentityKind,
 	}
 )
 

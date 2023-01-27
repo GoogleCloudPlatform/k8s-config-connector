@@ -63,6 +63,9 @@ spec:
         name: service
       resourceID:
         targetField: service
+      iamMemberReferenceConfig:
+        targetField: email
+        valueTemplate: "serviceAccount:{{value}}"
       resourceReferences:
         - tfField: project
           key: projectRef

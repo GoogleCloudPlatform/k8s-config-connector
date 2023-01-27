@@ -587,6 +587,9 @@ memberFrom:
   serviceAccountRef:
     name: string
     namespace: string
+  serviceIdentityRef:
+    name: string
+    namespace: string
   sqlInstanceRef:
     name: string
     namespace: string
@@ -719,6 +722,36 @@ role: string
     <tr>
         <td>
             <p><code>memberFrom.serviceAccountRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>memberFrom.serviceIdentityRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The ServiceIdentity whose service account (i.e., its 'status.email') is to be bound to the role.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>memberFrom.serviceIdentityRef.name</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>memberFrom.serviceIdentityRef.namespace</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>

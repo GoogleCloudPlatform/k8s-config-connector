@@ -640,6 +640,11 @@ func (in *MemberSource) DeepCopyInto(out *MemberSource) {
 		*out = new(MemberReference)
 		**out = **in
 	}
+	if in.ServiceIdentityRef != nil {
+		in, out := &in.ServiceIdentityRef, &out.ServiceIdentityRef
+		*out = new(MemberReference)
+		**out = **in
+	}
 	return
 }
 

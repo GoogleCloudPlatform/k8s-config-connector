@@ -69,6 +69,10 @@ type PartialpolicyMemberFrom struct {
 	// +optional
 	ServiceAccountRef *v1alpha1.IAMResourceRef `json:"serviceAccountRef,omitempty"`
 
+	/* The ServiceIdentity whose service account (i.e., its 'status.email') is to be bound to the role. */
+	// +optional
+	ServiceIdentityRef *v1alpha1.IAMResourceRef `json:"serviceIdentityRef,omitempty"`
+
 	/* The SQLInstance whose service account (i.e. its 'status.serviceAccountEmailAddress') is to be bound to the role. */
 	// +optional
 	SqlInstanceRef *v1alpha1.IAMResourceRef `json:"sqlInstanceRef,omitempty"`

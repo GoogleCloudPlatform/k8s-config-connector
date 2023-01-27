@@ -90,6 +90,8 @@ spec:
                 - required:
                   - serviceAccountRef
                 - required:
+                  - serviceIdentityRef
+                - required:
                   - sqlInstanceRef
                 properties:
                   logSinkRef:
@@ -105,6 +107,17 @@ spec:
                     type: object
                   serviceAccountRef:
                     description: The IAMServiceAccount to be bound to the role.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  serviceIdentityRef:
+                    description: The ServiceIdentity whose service account (i.e.,
+                      its 'status.email') is to be bound to the role.
                     properties:
                       name:
                         type: string
