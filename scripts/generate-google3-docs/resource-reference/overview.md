@@ -598,7 +598,7 @@
 </tr>
 <tr>
   <td><a href="/pubsub/lite/docs/">{{pubsub_lite_name}}</a></td>
-  <td><a href="/config-connector/docs/reference/resource-docs/pubsub/lite/pubsublitereservation.md">PubSubLiteReservation</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/pubsublite/pubsublitereservation.md">PubSubLiteReservation</a></td>
 </tr>
 <tr>
   <td><a href="/memorystore/docs/">{{memorystore_name}}</a></td>
@@ -658,7 +658,7 @@
 </tr>
 <tr>
   <td><a href="/service-usage/docs/">{{usage_name}}</a></td>
-  <td><a href="/config-connector/docs/reference/resource-docs/serviceusage/serviceidentity.md">Service</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/serviceusage/serviceidentity.md">ServiceIdentity</a></td>
 </tr>
 <tr>
   <td><a href="/source-repositories/docs/">{{source_repos_name}}</a></td>

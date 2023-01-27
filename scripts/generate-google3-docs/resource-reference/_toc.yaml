@@ -431,7 +431,7 @@ toc:
 - title: "Pub/Sub Lite"
   section:
   - title: "PubSubLiteReservation"
-    path: /config-connector/docs/reference/resource-docs/pubsub/lite/pubsublitereservation.md
+    path: /config-connector/docs/reference/resource-docs/pubsublite/pubsublitereservation.md
 - title: "reCAPTCHA Enterprise"
   section:
   - title: "RecaptchaEnterpriseKey"
