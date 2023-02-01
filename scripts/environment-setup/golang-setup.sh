@@ -27,8 +27,6 @@ echo PATH=/usr/local/go/bin:$PATH >> ~/.profile
 source ~/.profile
 go version
 
-go install golang.org/x/tools/cmd/goimports@latest
-
 sudo apt install jq
 
 echo "export GOPATH=${HOME}/go" >> ~/.profile

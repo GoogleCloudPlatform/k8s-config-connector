@@ -75,7 +75,7 @@ manifests: generate
 .PHONY: fmt
 fmt:
 	make -C operator fmt
-	goimports -w pkg cmd scripts config/tests
+	go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w pkg cmd scripts config/tests
 	# 04bfe4ee9ca5764577b029acc6a1957fd1997153 includes fix to not log "Skipped" for each skipped file
 	GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache \
 	-ignore "vendor/**" -ignore "third_party/**" \
