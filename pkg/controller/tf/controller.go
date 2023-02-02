@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"sync"
 	"time"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -63,9 +64,8 @@ type Reconciler struct {
 	metrics.ReconcilerMetrics
 	resourceLeaser *leaser.ResourceLeaser
 	mgr            manager.Manager
-	crd            *apiextensions.CustomResourceDefinition
-	jsonSchema     *apiextensions.JSONSchemaProps
-	gvk            schema.GroupVersionKind
+	schemaRef      *k8s.SchemaReference
+	schemaRefMu    sync.RWMutex
 	provider       *tfschema.Provider
 	smLoader       *servicemappingloader.ServiceMappingLoader
 	logger         logr.Logger
@@ -74,7 +74,7 @@ type Reconciler struct {
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
 }
 
-func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader) error {
+func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader) (k8s.SchemaReferenceUpdater, error) {
 	kind := crd.Spec.Names.Kind
 	apiVersion := k8s.GetAPIVersionFromCRD(crd)
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(kind))
@@ -82,7 +82,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
 	r, err := NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests, resourceWatcherRoutines)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	obj := &unstructured.Unstructured{
 		Object: map[string]interface{}{
@@ -98,10 +98,10 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
 		Build(r)
 	if err != nil {
-		return fmt.Errorf("error creating new controller: %v", err)
+		return nil, fmt.Errorf("error creating new controller: %v", err)
 	}
 	logger.Info("Registered controller", "kind", kind, "apiVersion", apiVersion)
-	return nil
+	return r, nil
 }
 
 func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, p *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted) (*Reconciler, error) {
@@ -113,12 +113,14 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 		),
 		resourceLeaser: leaser.NewResourceLeaser(p, smLoader, mgr.GetClient()),
 		mgr:            mgr,
-		crd:            crd,
-		jsonSchema:     k8s.GetOpenAPIV3SchemaFromCRD(crd),
-		gvk: schema.GroupVersionKind{
-			Group:   crd.Spec.Group,
-			Version: k8s.GetVersionFromCRD(crd),
-			Kind:    crd.Spec.Names.Kind,
+		schemaRef: &k8s.SchemaReference{
+			CRD:        crd,
+			JsonSchema: k8s.GetOpenAPIV3SchemaFromCRD(crd),
+			GVK: schema.GroupVersionKind{
+				Group:   crd.Spec.Group,
+				Version: k8s.GetVersionFromCRD(crd),
+				Kind:    crd.Spec.Names.Kind,
+			},
 		},
 		ReconcilerMetrics: metrics.ReconcilerMetrics{
 			ResourceNameLabel: metrics.ResourceNameLabel,
@@ -132,14 +134,16 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 }
 
 func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res reconcile.Result, err error) {
+	r.schemaRefMu.RLock()
+	defer r.schemaRefMu.RUnlock()
 	r.logger.Info("starting reconcile", "resource", req.NamespacedName)
 	startTime := time.Now()
-	r.RecordReconcileWorkers(ctx, r.gvk)
+	r.RecordReconcileWorkers(ctx, r.schemaRef.GVK)
 	defer r.AfterReconcile()
-	defer r.RecordReconcileMetrics(ctx, r.gvk, req.Namespace, req.Name, startTime, &err)
+	defer r.RecordReconcileMetrics(ctx, r.schemaRef.GVK, req.Namespace, req.Name, startTime, &err)
 
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(r.gvk)
+	u.SetGroupVersionKind(r.schemaRef.GVK)
 
 	if err := r.Get(ctx, req.NamespacedName, u); err != nil {
 		if apierrors.IsNotFound(err) {
@@ -175,7 +179,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
 	}
-	jitteredPeriod := jitter.GenerateJitteredReenqueuePeriod(r.gvk, r.smLoader, nil)
+	jitteredPeriod := jitter.GenerateJitteredReenqueuePeriod(r.schemaRef.GVK, r.smLoader, nil)
 	r.logger.Info("successfully finished reconcile", "resource", k8s.GetNamespacedName(resource), "time to next reconciliation", jitteredPeriod)
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }
@@ -258,7 +262,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 			fmt.Errorf("underlying resource no longer exists and can't be recreated without creating a brand new resource"))
 	}
 	config, secretVersions, err := krmtotf.KRMResourceToTFResourceConfigFull(
-		krmResource, r, r.smLoader, liveState, r.jsonSchema, true, label.GetDefaultLabels(),
+		krmResource, r, r.smLoader, liveState, r.schemaRef.JsonSchema, true, label.GetDefaultLabels(),
 	)
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
@@ -481,6 +485,14 @@ func (r *Reconciler) hasServerGeneratedIDAndHadBeenCreatedOnceAlready(resource *
 		return false, err
 	}
 	return val != "", nil
+}
+
+var _ k8s.SchemaReferenceUpdater = &Reconciler{}
+
+func (r *Reconciler) UpdateSchema(crd *apiextensions.CustomResourceDefinition) error {
+	r.schemaRefMu.Lock()
+	defer r.schemaRefMu.Unlock()
+	return k8s.UpdateSchema(r.schemaRef, crd)
 }
 
 func updateMutableButUnreadableFieldsAnnotationFor(resource *krmtotf.Resource) error {

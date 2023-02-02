@@ -64,7 +64,7 @@ func Add(mgr manager.Manager, p *tfschema.Provider, smLoader *servicemappingload
 		dclConfig:        dclConfig,
 		dclConverter:     dclConverter,
 		mgr:              mgr,
-		controllers:      make(map[string]map[string]bool),
+		controllers:      make(map[string]map[string]controllerContext),
 		registrationFunc: regFunc,
 	}
 	c, err := controller.New(controllerName, mgr,
@@ -88,13 +88,18 @@ type ReconcileRegistration struct {
 	dclConfig        *dcl.Config
 	dclConverter     *conversion.Converter
 	mgr              manager.Manager
-	controllers      map[string]map[string]bool
+	controllers      map[string]map[string]controllerContext
 	registrationFunc registrationFunc
 	mu               sync.Mutex
 }
 
-// RegistrationFunc is the function that handles the registration of a controller for the given CRD
-type registrationFunc func(*ReconcileRegistration, *apiextensions.CustomResourceDefinition, schema.GroupVersionKind) error
+type controllerContext struct {
+	registered    bool
+	schemaUpdater k8s.SchemaReferenceUpdater
+}
+
+// registrationFunc is the function that handles the registration of a controller for the given CRD and returns an interface to update its schema reference.
+type registrationFunc func(*ReconcileRegistration, *apiextensions.CustomResourceDefinition, schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error)
 
 func (r *ReconcileRegistration) Reconcile(ctx context.Context, request reconcile.Request) (reconcile.Result, error) {
 	// Fetch the TypeProvider tp
@@ -124,19 +129,26 @@ func (r *ReconcileRegistration) Reconcile(ctx context.Context, request reconcile
 		Kind:    crd.Spec.Names.Kind,
 	}
 	if kindMapForGroup, exists := r.controllers[gvk.Group]; exists {
-		if kindMapForGroup[gvk.Kind] {
+		if kindMapForGroup[gvk.Kind].registered {
 			logger.Info("controller already registered for kind in API group", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
+			if kindMapForGroup[gvk.Kind].schemaUpdater != nil {
+				logger.Info("updating schema for controller", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
+				if err := kindMapForGroup[gvk.Kind].schemaUpdater.UpdateSchema(crd); err != nil {
+					logger.Info("error updating schema for controller", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
+				}
+			}
 			return reconcile.Result{}, nil
 		}
 	} else {
-		r.controllers[gvk.Group] = make(map[string]bool)
+		r.controllers[gvk.Group] = make(map[string]controllerContext)
 	}
 
-	if err := r.registrationFunc(r, crd, gvk); err != nil {
+	schemaUpdater, err := r.registrationFunc(r, crd, gvk)
+	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("error registering controller: %w", err)
 	}
 
-	r.controllers[gvk.Group][gvk.Kind] = true
+	r.controllers[gvk.Group][gvk.Kind] = controllerContext{registered: true, schemaUpdater: schemaUpdater}
 	return reconcile.Result{}, nil
 }
 
@@ -144,70 +156,74 @@ func isServiceAccountKeyCRD(crd *apiextensions.CustomResourceDefinition) bool {
 	return crd.Spec.Group == serviceAccountKeyAPIGroup && crd.Spec.Names.Kind == serviceAccountKeyKind
 }
 
-func RegisterDefaultController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) error {
+func RegisterDefaultController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
 	// Depending on which resource it is, we need to register a different controller.
+	var schemaUpdater k8s.SchemaReferenceUpdater
 	switch gvk.Kind {
 	case "IAMPolicy":
 		if err := policy.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig); err != nil {
-			return err
+			return nil, err
 		}
 	case "IAMPartialPolicy":
 		if err := partialpolicy.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig); err != nil {
-			return err
+			return nil, err
 		}
 	case "IAMPolicyMember":
 		if err := policymember.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig); err != nil {
-			return err
+			return nil, err
 		}
 	case "IAMAuditConfig":
 		if err := auditconfig.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig); err != nil {
-			return err
+			return nil, err
 		}
 	default:
 		// register controllers for dcl-based CRDs
 		if val, ok := crd.Labels[k8s.DCL2CRDLabel]; ok && val == "true" {
-			if err := dclcontroller.Add(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader); err != nil {
-				return fmt.Errorf("error adding dcl controller for %v to a manager: %v", crd.Spec.Names.Kind, err)
+			su, err := dclcontroller.Add(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader)
+			if err != nil {
+				return nil, fmt.Errorf("error adding dcl controller for %v to a manager: %v", crd.Spec.Names.Kind, err)
 			}
-			return nil
+			return su, nil
 		}
 		// register controllers for tf-based CRDs
 		if val, ok := crd.Labels[crdgeneration.TF2CRDLabel]; !ok || val != "true" {
 			logger.Info("unrecognized CRD; skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
-			return nil
+			return nil, nil
 		}
-		if err := tf.Add(r.mgr, crd, r.provider, r.smLoader); err != nil {
-			return fmt.Errorf("error adding terraform controller for %v to a manager: %v", crd.Spec.Names.Kind, err)
+		su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader)
+		if err != nil {
+			return nil, fmt.Errorf("error adding terraform controller for %v to a manager: %v", crd.Spec.Names.Kind, err)
 		}
+		schemaUpdater = su
 		// register the controller to automatically create secrets for GSA keys
 		if isServiceAccountKeyCRD(crd) {
 			logger.Info("registering the GSA-Key-to-Secret generation controller")
 			if err := gsakeysecretgenerator.Add(r.mgr, crd); err != nil {
-				return fmt.Errorf("error adding the gsa-to-secret generator for %v to a manager: %v", crd.Spec.Names.Kind, err)
+				return nil, fmt.Errorf("error adding the gsa-to-secret generator for %v to a manager: %v", crd.Spec.Names.Kind, err)
 			}
 		}
 	}
-	return nil
+	return schemaUpdater, nil
 }
 
-func RegisterDeletionDefenderController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) error {
+func RegisterDeletionDefenderController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, _ schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
 	if crd.Spec.Names.Kind == "ServiceMapping" {
 		// ServiceMapping is a special resource type that does not make a call to an underlying GCP API
-		return nil
+		return nil, nil
 	}
 	if err := deletiondefender.Add(r.mgr, crd); err != nil {
-		return fmt.Errorf("error registering deletion defender controller for '%v': %w", crd.GetName(), err)
+		return nil, fmt.Errorf("error registering deletion defender controller for '%v': %w", crd.GetName(), err)
 	}
-	return nil
+	return nil, nil
 }
 
-func RegisterUnmanagedDetectorController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) error {
+func RegisterUnmanagedDetectorController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, _ schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
 	if crd.Spec.Names.Kind == "ServiceMapping" {
 		// ServiceMapping is a special resource type that does not make a call to an underlying GCP API
-		return nil
+		return nil, nil
 	}
 	if err := unmanageddetector.Add(r.mgr, crd); err != nil {
-		return fmt.Errorf("error registering unmanaged detector controller for '%v': %w", crd.GetName(), err)
+		return nil, fmt.Errorf("error registering unmanaged detector controller for '%v': %w", crd.GetName(), err)
 	}
-	return nil
+	return nil, nil
 }

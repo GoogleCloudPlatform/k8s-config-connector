@@ -32,11 +32,11 @@ func (ManagedByKCCPredicate) Create(e event.CreateEvent) bool {
 	return isManagedByKCC(e.Object)
 }
 
-// Update always returns false, as there is nothing to do should the CRD be changed.
-// Periodic syncs will trigger Create, so in the event we miss an event, we will
-// eventually still register a controller.
+// Update returns true if the given resource has the KCC management label.
+// When CRD is changed, the controller should reload its jsonSchema from the
+// newly updated CRD.
 func (ManagedByKCCPredicate) Update(e event.UpdateEvent) bool {
-	return false
+	return isManagedByKCC(e.ObjectNew)
 }
 
 // Delete always returns false, as currently there is no support for removing controllers
