@@ -16,14 +16,13 @@
 # from source (manager, webhook, etc.)
 FROM golang:1.19 AS builder
 
-ENV GOFLAGS "-mod=vendor"
-
 # Copy in the Go source code
 WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
 COPY pkg/    pkg/
 COPY cmd/    cmd/
 COPY config/ config/
-COPY vendor/ vendor/
+COPY mockgcp/ mockgcp/
+COPY third_party/ third_party/
 COPY scripts/generate-third-party-licenses scripts/generate-third-party-licenses
 COPY scripts/resource-autogen scripts/resource-autogen
 COPY go.mod go.mod
@@ -37,4 +36,6 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o recorder 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o unmanageddetector github.com/GoogleCloudPlatform/k8s-config-connector/cmd/unmanageddetector
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager
 
+RUN go mod vendor -o temp-vendor # So we can load license files
 RUN go run scripts/generate-third-party-licenses/main.go
+RUN rm -rf temp-vendor

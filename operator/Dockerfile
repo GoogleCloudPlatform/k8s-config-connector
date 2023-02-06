@@ -17,18 +17,17 @@
 # Build the manager binary
 FROM golang:1.19 AS builder
 
-ENV GOFLAGS "-mod=vendor"
-
 # Copy in the Go source code
 WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
 COPY operator/pkg/      operator/pkg/
 COPY operator/cmd/      operator/cmd/
 COPY operator/channels/ operator/channels/
 COPY operator/autopilot-channels/ operator/autopilot-channels/
+COPY mockgcp/ mockgcp/
 COPY pkg/ pkg/
+COPY third_party/ third_party/
 COPY config/servicemappings/ config/servicemappings/
 COPY scripts/resource-autogen/ scripts/resource-autogen/
-COPY vendor/ vendor/
 COPY scripts/generate-third-party-licenses scripts/generate-third-party-licenses
 COPY go.mod  go.mod
 COPY go.sum  go.sum
@@ -36,7 +35,11 @@ COPY go.sum  go.sum
 # Build the binary from source
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o manager github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/manager
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o gke_addon_poststart github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/gke_addon_poststart
+
+# Generate licenses
+RUN go mod vendor -o temp-vendor # So we can load license files
 RUN go run scripts/generate-third-party-licenses/main.go
+RUN rm -rf temp-vendor
 
 # Build a specific version of kubectl to be used by the
 # kubebuilder-declarative-pattern library.

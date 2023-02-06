@@ -45,7 +45,7 @@ func GetServiceMappingsPathOrLogFatal() string {
 }
 
 func GetDCLSchemasPathOrLogFatal() string {
-	return filepath.Join(GetRootOrLogFatal(), "vendor/github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google")
+	return filepath.Join(GetRootOrLogFatal(), "temp-vendor/github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google")
 }
 
 func GetServiceAccountCRDPath() string {

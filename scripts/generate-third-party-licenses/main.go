@@ -27,7 +27,7 @@ import (
 )
 
 const (
-	inputDir                 = "vendor"
+	inputDir                 = "temp-vendor"
 	thirdPartyNoticeDir      = "THIRD_PARTY_NOTICES"
 	mirroredLibrarySourceDir = "MIRRORED_LIBRARY_SOURCE"
 	dirMode                  = 0700
@@ -53,7 +53,7 @@ func main() {
 	}
 
 	for _, file := range files {
-		licensePath := strings.TrimLeft(file, "vendor/")
+		licensePath := strings.TrimLeft(file, "temp-vendor/")
 		repo, licenseFilename := splitLicensePath(licensePath)
 		licenseURL := repoToLicenseURL(repo, licenseFilename)
 		fmt.Println(licenseURL)
@@ -87,7 +87,7 @@ func main() {
 			// need to remove the actual dir so 'cp' works
 			os.Remove(outputSourceDir)
 
-			sourceDir := "vendor/" + repo
+			sourceDir := "temp-vendor/" + repo
 			cmd := exec.Command("cp", "-r", sourceDir, outputSourceDir)
 			if output, err := cmd.CombinedOutput(); err != nil {
 				fmt.Printf("error copying source code for '%v': %v", sourceDir, string(output))
