@@ -22,6 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/wait"
 )
@@ -35,8 +36,16 @@ func GenerateWatchJitteredTimeoutPeriod() time.Duration {
 
 // GenerateJitteredReenqueuePeriod returns a wait duration to reenqueue the request based
 // on configured reconcile interval in TF servicemapping, DCL metadata, IAM resource config.
+// The wait duration can be overridden with the reconcile interval configured as the object's annotation.
 func GenerateJitteredReenqueuePeriod(gvk schema.GroupVersionKind,
 	smLoader *servicemappingloader.ServiceMappingLoader,
-	serviceMetadataLoader dclmetadata.ServiceMetadataLoader) time.Duration {
-	return wait.Jitter(reconciliationinterval.MeanReconcileReenqueuePeriod(gvk, smLoader, serviceMetadataLoader)/2, k8s.JitterFactor)
+	serviceMetadataLoader dclmetadata.ServiceMetadataLoader, obj metav1.Object) (time.Duration, error) {
+	if val, ok := k8s.GetAnnotation(k8s.ReconcileIntervalInSecondsAnnotation, obj); ok {
+		reconcileInterval, err := reconciliationinterval.MeanReconcileReenqueuePeriodFromAnnotation(val)
+		if err != nil {
+			return 0, err
+		}
+		return wait.Jitter(reconcileInterval/2, k8s.JitterFactor), nil
+	}
+	return wait.Jitter(reconciliationinterval.MeanReconcileReenqueuePeriod(gvk, smLoader, serviceMetadataLoader)/2, k8s.JitterFactor), nil
 }

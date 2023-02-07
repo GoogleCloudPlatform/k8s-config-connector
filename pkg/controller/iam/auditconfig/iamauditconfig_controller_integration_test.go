@@ -26,6 +26,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
@@ -101,7 +102,15 @@ func testReconcileResourceLevelCreate(t *testing.T, mgr manager.Manager, k8sAudi
 		t.Fatalf("error creating k8s resource: %v", err)
 	}
 	preReconcileGeneration := k8sAuditConfig.GetGeneration()
-	reconciler.ReconcileObjectMeta(k8sAuditConfig.ObjectMeta, iamv1beta1.IAMAuditConfigGVK.Kind, expectedReconcileResult, nil)
+	resource, err := auditconfig.ToK8sResource(k8sAuditConfig)
+	if err != nil {
+		t.Fatalf("error converting object %v to k8sResource: %v", k8sAuditConfig, err)
+	}
+	u, err := resource.MarshalAsUnstructured()
+	if err != nil {
+		t.Fatalf("error marshalling %v as unstructured: %v", k8sAuditConfig, err)
+	}
+	reconciler.ReconcileObjectMeta(k8sAuditConfig.ObjectMeta, iamv1beta1.IAMAuditConfigGVK.Kind, testreconciler.ExpectedSuccessfulReconcileResultFor(reconciler, u), nil)
 	gcpAuditConfig, err := tfIamClient.GetAuditConfig(context.TODO(), k8sAuditConfig)
 	if err != nil {
 		t.Fatalf("error retrieving GCP audit config: %v", err)

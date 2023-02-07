@@ -34,17 +34,18 @@ import (
 type TestType string
 
 const (
-	Unknown              TestType = "unknown"
-	Basic                TestType = "basic"
-	ContainerAnnotations TestType = "containerannotations"
-	Directives           TestType = "directives"
-	ExternalRef          TestType = "externalref"
-	SensitiveField       TestType = "sensitivefield"
-	IAMExternalOnlyRef   TestType = "iamexternalonlyref"
-	IAMMemberReferences  TestType = "iammemberreferences"
-	ResourceID           TestType = "resourceid"
-	StateAbsentInSpec    TestType = "stateabsentinspec"
-	ResourceOverrides    TestType = "resourceoverrides"
+	Unknown                     TestType = "unknown"
+	Basic                       TestType = "basic"
+	ContainerAnnotations        TestType = "containerannotations"
+	Directives                  TestType = "directives"
+	ExternalRef                 TestType = "externalref"
+	SensitiveField              TestType = "sensitivefield"
+	IAMExternalOnlyRef          TestType = "iamexternalonlyref"
+	IAMMemberReferences         TestType = "iammemberreferences"
+	ResourceID                  TestType = "resourceid"
+	StateAbsentInSpec           TestType = "stateabsentinspec"
+	ResourceOverrides           TestType = "resourceoverrides"
+	ReconcileIntervalAnnotation TestType = "reconcileintervalannotations"
 )
 
 type ResourceFixture struct {
@@ -180,6 +181,8 @@ func parseTestTypeFromPath(t *testing.T, path string) TestType {
 		return StateAbsentInSpec
 	case "resourceoverrides":
 		return ResourceOverrides
+	case "reconcileintervalannotations":
+		return ReconcileIntervalAnnotation
 	default:
 		t.Fatalf("failed to parse test type for path %v", path)
 		return Unknown

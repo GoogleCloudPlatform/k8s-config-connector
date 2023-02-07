@@ -202,7 +202,10 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
 	}
-	jitteredPeriod := jitter.GenerateJitteredReenqueuePeriod(r.schemaRef.GVK, nil, r.converter.MetadataLoader)
+	jitteredPeriod, err := jitter.GenerateJitteredReenqueuePeriod(r.schemaRef.GVK, nil, r.converter.MetadataLoader, u)
+	if err != nil {
+		return reconcile.Result{}, fmt.Errorf("error generating reconcile interval for resource %v", resource.GetNamespacedName())
+	}
 	r.logger.Info("successfully finished reconcile", "resource", resource.GetNamespacedName(), "time to next reconciliation", jitteredPeriod)
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }

@@ -155,7 +155,10 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
 	}
-	jitteredPeriod := jitter.GenerateJitteredReenqueuePeriod(iamv1beta1.IAMPolicyMemberGVK, nil, nil)
+	jitteredPeriod, err := jitter.GenerateJitteredReenqueuePeriod(iamv1beta1.IAMPolicyMemberGVK, nil, nil, &memberPolicy)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
 	logger.Info("successfully finished reconcile", "resource", request.NamespacedName, "time to next reconciliation", jitteredPeriod)
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }
@@ -177,7 +180,7 @@ func (r *reconcileContext) doReconcile(policyMember *iamv1beta1.IAMPolicyMember)
 				if !errors.Is(err, kcciamclient.NotFoundError) && !k8s.IsReferenceNotFoundError(err) {
 					if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 						logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policyMember))
-						resource, err := toK8sResource(policyMember)
+						resource, err := ToK8sResource(policyMember)
 						if err != nil {
 							return false, fmt.Errorf("error converting IAMPolicyMember to k8s resource while handling unresolvable dependencies event: %w", err)
 						}
@@ -225,7 +228,7 @@ func (r *reconcileContext) update(policyMember *iamv1beta1.IAMPolicyMember) erro
 }
 
 func (r *reconcileContext) handleUpToDate(policyMember *iamv1beta1.IAMPolicyMember) error {
-	resource, err := toK8sResource(policyMember)
+	resource, err := ToK8sResource(policyMember)
 	if err != nil {
 		return fmt.Errorf("error converting IAMPolicyMember to k8s resource while handling %v event: %w", k8s.UpToDate, err)
 	}
@@ -233,7 +236,7 @@ func (r *reconcileContext) handleUpToDate(policyMember *iamv1beta1.IAMPolicyMemb
 }
 
 func (r *reconcileContext) handleUpdateFailed(policyMember *iamv1beta1.IAMPolicyMember, origErr error) error {
-	resource, err := toK8sResource(policyMember)
+	resource, err := ToK8sResource(policyMember)
 	if err != nil {
 		logger.Error(err, "error converting IAMPolicyMember to k8s resource while handling event",
 			"resource", k8s.GetNamespacedName(policyMember), "event", k8s.UpdateFailed)
@@ -243,7 +246,7 @@ func (r *reconcileContext) handleUpdateFailed(policyMember *iamv1beta1.IAMPolicy
 }
 
 func (r *reconcileContext) handleDeleted(policyMember *iamv1beta1.IAMPolicyMember) error {
-	resource, err := toK8sResource(policyMember)
+	resource, err := ToK8sResource(policyMember)
 	if err != nil {
 		return fmt.Errorf("error converting IAMPolicyMember to k8s resource while handling %v event: %w", k8s.Deleted, err)
 	}
@@ -251,7 +254,7 @@ func (r *reconcileContext) handleDeleted(policyMember *iamv1beta1.IAMPolicyMembe
 }
 
 func (r *reconcileContext) handleDeleteFailed(policyMember *iamv1beta1.IAMPolicyMember, origErr error) error {
-	resource, err := toK8sResource(policyMember)
+	resource, err := ToK8sResource(policyMember)
 	if err != nil {
 		logger.Error(err, "error converting IAMPolicyMember to k8s resource while handling event",
 			"resource", k8s.GetNamespacedName(policyMember), "event", k8s.DeleteFailed)
@@ -265,7 +268,7 @@ func (r *Reconciler) supportsImmediateReconciliations() bool {
 }
 
 func (r *reconcileContext) handleUnresolvableDeps(policyMember *v1beta1.IAMPolicyMember, origErr error) (requeue bool, err error) {
-	resource, err := toK8sResource(policyMember)
+	resource, err := ToK8sResource(policyMember)
 	if err != nil {
 		return false, fmt.Errorf("error converting IAMPolicyMember to k8s resource while handling unresolvable dependencies event: %w", err)
 	}
@@ -349,7 +352,7 @@ func isAPIServerUpdateRequired(policyMember *iamv1beta1.IAMPolicyMember) bool {
 	return false
 }
 
-func toK8sResource(policyMember *iamv1beta1.IAMPolicyMember) (*k8s.Resource, error) {
+func ToK8sResource(policyMember *iamv1beta1.IAMPolicyMember) (*k8s.Resource, error) {
 	kcciamclient.SetGVK(policyMember)
 	resource := k8s.Resource{}
 	if err := util.Marshal(policyMember, &resource); err != nil {

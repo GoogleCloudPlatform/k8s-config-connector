@@ -163,7 +163,10 @@ func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request recon
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
 	}
-	jitteredPeriod := jitter.GenerateJitteredReenqueuePeriod(iamv1beta1.IAMPartialPolicyGVK, nil, nil)
+	jitteredPeriod, err := jitter.GenerateJitteredReenqueuePeriod(iamv1beta1.IAMPartialPolicyGVK, nil, nil, policy)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
 	logger.Info("successfully finished reconcile", "resource", request.NamespacedName, "time to next reconciliation", jitteredPeriod)
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }

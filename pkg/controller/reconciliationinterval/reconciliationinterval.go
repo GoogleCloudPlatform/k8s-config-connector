@@ -15,6 +15,8 @@
 package reconciliationinterval
 
 import (
+	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
@@ -60,4 +62,15 @@ func MeanReconcileReenqueuePeriod(gvk schema.GroupVersionKind,
 	}
 	// If no GVK specific reconcile interval configured, return default value.
 	return k8s.MeanReconcileReenqueuePeriod
+}
+
+func MeanReconcileReenqueuePeriodFromAnnotation(val string) (time.Duration, error) {
+	reconcileIntervalInSeconds, err := strconv.ParseInt(val, 10, 32)
+	if err != nil {
+		return 0, fmt.Errorf("error converting the annotation %s's value %s to int32", k8s.ReconcileIntervalInSecondsAnnotation, val)
+	}
+	if reconcileIntervalInSeconds < 0 {
+		return 0, fmt.Errorf("a negative val %d is set in the annotation %s", reconcileIntervalInSeconds, k8s.ReconcileIntervalInSecondsAnnotation)
+	}
+	return time.Duration(reconcileIntervalInSeconds) * time.Second, nil
 }

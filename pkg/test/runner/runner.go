@@ -69,7 +69,7 @@ func RunAllWithObjectCreated(t *testing.T, mgr manager.Manager, shouldRunFunc Sh
 		}
 		resourceCleanup := sysContext.Reconciler.BuildCleanupFunc(testContext.CreateUnstruct, testreconciler.CleanupPolicyAlways)
 		defer resourceCleanup()
-		sysContext.Reconciler.Reconcile(testContext.CreateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(sysContext.Reconciler, testContext.CreateUnstruct.GroupVersionKind()), nil)
+		sysContext.Reconciler.Reconcile(testContext.CreateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(sysContext.Reconciler, testContext.CreateUnstruct), nil)
 		testCaseFunc(t, testContext, sysContext)
 	}
 	RunAllWithDependenciesCreatedButNotObject(t, mgr, shouldRunFunc, testFunc)

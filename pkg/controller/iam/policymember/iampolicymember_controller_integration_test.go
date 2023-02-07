@@ -27,6 +27,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policymember"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
@@ -60,6 +61,18 @@ func TestReconcileIAMPolicyMemberResourceLevelCreateDelete(t *testing.T) {
 		testPolicyMemberCreateDelete(t, mgr, k8sPolicyMember)
 	}
 	testiam.RunResourceLevelTest(t, mgr, testFunc, testiam.ShouldRunWithTFResourcesOnly)
+}
+
+func TestReconcileIAMPolicyMemberResourceLevelCreateDeleteWithReconcileInterval(t *testing.T) {
+	shouldRun := func(fixture resourcefixture.ResourceFixture) bool {
+		return fixture.GVK.Kind == "PubSubTopic"
+	}
+	testFunc := func(t *testing.T, testId string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+		k8sPolicyMember := newIAMPolicyMemberFixture(t, refResource, resourceRef, rc.CreateBindingRole, testgcp.GetIAMPolicyBindingMember(t))
+		k8sPolicyMember.SetAnnotations(map[string]string{k8s.ReconcileIntervalInSecondsAnnotation: "5"})
+		testPolicyMemberCreateDelete(t, mgr, k8sPolicyMember)
+	}
+	testiam.RunResourceLevelTest(t, mgr, testFunc, shouldRun)
 }
 
 func TestReconcileIAMPolicyMemberResourceLevelCreateDeleteWithExternalRef(t *testing.T) {
@@ -135,7 +148,15 @@ func testPolicyMemberCreateDelete(t *testing.T, mgr manager.Manager, k8sPolicyMe
 	}
 	preReconcileGeneration := k8sPolicyMember.GetGeneration()
 	reconciler := testreconciler.New(t, mgr, tfprovider.NewOrLogFatal(tfprovider.DefaultConfig))
-	reconciler.ReconcileObjectMeta(k8sPolicyMember.ObjectMeta, v1beta1.IAMPolicyMemberGVK.Kind, testreconciler.ExpectedSuccessfulReconcileResultFor(reconciler, k8sPolicyMember.GroupVersionKind()), nil)
+	resource, err := policymember.ToK8sResource(k8sPolicyMember)
+	if err != nil {
+		t.Fatalf("error converting object %v to k8sResource: %v", k8sPolicyMember, err)
+	}
+	u, err := resource.MarshalAsUnstructured()
+	if err != nil {
+		t.Fatalf("error marshalling object %v as unstructured: %v", k8sPolicyMember, err)
+	}
+	reconciler.ReconcileObjectMeta(k8sPolicyMember.ObjectMeta, v1beta1.IAMPolicyMemberGVK.Kind, testreconciler.ExpectedSuccessfulReconcileResultFor(reconciler, u), nil)
 	gcpPolicyMember, err := iamClient.GetPolicyMember(context.TODO(), k8sPolicyMember)
 	if err != nil {
 		t.Fatalf("unexpected error getting policy member: %v", err)
@@ -160,7 +181,7 @@ func testPolicyMemberCreateDelete(t *testing.T, mgr manager.Manager, k8sPolicyMe
 		t.Fatalf("expected policy member to exist in GCP, but got error: %v", err)
 	}
 	testk8s.RemoveDeletionDefenderFinalizer(t, k8sPolicyMember, v1beta1.IAMPolicyMemberGVK, kubeClient)
-	reconciler.ReconcileObjectMeta(k8sPolicyMember.ObjectMeta, v1beta1.IAMPolicyMemberGVK.Kind, testreconciler.ExpectedSuccessfulReconcileResultFor(reconciler, k8sPolicyMember.GroupVersionKind()), nil)
+	reconciler.ReconcileObjectMeta(k8sPolicyMember.ObjectMeta, v1beta1.IAMPolicyMemberGVK.Kind, testreconciler.ExpectedSuccessfulReconcileResultFor(reconciler, u), nil)
 	gcpPolicyMember, err = iamClient.GetPolicyMember(context.TODO(), k8sPolicyMember)
 	if !errors.Is(err, kcciamclient.NotFoundError) {
 		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.NotFoundError)

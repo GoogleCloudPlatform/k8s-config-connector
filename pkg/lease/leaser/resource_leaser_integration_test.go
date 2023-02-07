@@ -40,7 +40,7 @@ import (
 func TestObtainAndReleaseResourceLease(t *testing.T) {
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		// only need to test contention for a single resource since the logic will apply to all resources
-		return fixture.GVK.Kind == "BigQueryDataset"
+		return fixture.GVK.Kind == "BigQueryDataset" && fixture.Type == resourcefixture.Basic
 	}
 	testFunc := func(t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext) {
 		u := testContext.CreateUnstruct
@@ -51,7 +51,7 @@ func TestObtainAndReleaseResourceLease(t *testing.T) {
 		}
 		resourceCleanup := systemContext.Reconciler.BuildCleanupFunc(testContext.CreateUnstruct, testreconciler.CleanupPolicyAlways)
 		defer resourceCleanup()
-		systemContext.Reconciler.Reconcile(u, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, u.GroupVersionKind()), nil)
+		systemContext.Reconciler.Reconcile(u, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, u), nil)
 		sm, err := systemContext.SMLoader.GetServiceMapping(u.GroupVersionKind().Group)
 		if err != nil {
 			t.Fatalf("error getting service mapping: %v", err)

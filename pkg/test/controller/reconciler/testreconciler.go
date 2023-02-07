@@ -46,7 +46,6 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
@@ -135,7 +134,7 @@ func (r *TestReconciler) CreateAndReconcile(unstructs []*unstructured.Unstructur
 			r.t.Fatalf("error creating resource '%v': %v", u.GetKind(), err)
 		}
 		cleanupFuncs = append(cleanupFuncs, r.BuildCleanupFunc(u, cleanupPolicy))
-		r.ReconcileIfManagedByKCC(u, ExpectedSuccessfulReconcileResultFor(r, u.GroupVersionKind()), nil)
+		r.ReconcileIfManagedByKCC(u, ExpectedSuccessfulReconcileResultFor(r, u), nil)
 	}
 	return func() {
 		for i := len(cleanupFuncs) - 1; i >= 0; i-- {
@@ -168,7 +167,7 @@ func (r *TestReconciler) BuildCleanupFunc(unstruct *unstructured.Unstructured, c
 			}
 			r.t.Errorf("error deleting %v: %v", unstruct, err)
 		}
-		r.ReconcileIfManagedByKCC(unstruct, ExpectedSuccessfulReconcileResultFor(r, unstruct.GroupVersionKind()), nil)
+		r.ReconcileIfManagedByKCC(unstruct, ExpectedSuccessfulReconcileResultFor(r, unstruct), nil)
 	}
 }
 
@@ -227,6 +226,13 @@ func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDe
 	return nil, fmt.Errorf("CRD format not recognized")
 }
 
-func expectedSuccessfulReconcileResultFor(r *TestReconciler, gvk schema.GroupVersionKind) reconcile.Result {
-	return reconcile.Result{RequeueAfter: reconciliationinterval.MeanReconcileReenqueuePeriod(gvk, r.smLoader, r.dclConverter.MetadataLoader)}
+func expectedSuccessfulReconcileResultFor(r *TestReconciler, u *unstructured.Unstructured) reconcile.Result {
+	if val, ok := k8s.GetAnnotation(k8s.ReconcileIntervalInSecondsAnnotation, u); ok {
+		reconcileInterval, err := reconciliationinterval.MeanReconcileReenqueuePeriodFromAnnotation(val)
+		if err != nil {
+			return reconcile.Result{}
+		}
+		return reconcile.Result{RequeueAfter: reconcileInterval}
+	}
+	return reconcile.Result{RequeueAfter: reconciliationinterval.MeanReconcileReenqueuePeriod(u.GroupVersionKind(), r.smLoader, r.dclConverter.MetadataLoader)}
 }
