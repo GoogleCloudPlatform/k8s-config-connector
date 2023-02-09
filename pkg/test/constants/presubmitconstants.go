@@ -34,7 +34,7 @@ var (
 		"artifactregistry":     {"artifactregistryrepository"},
 		"bigquery":             {"bigqueryjob"},
 		"bigtable":             {"bigtablegcpolicy"},
-		"billingbudgets":       {"calendarbudget"},
+		"billingbudgets":       {"custombudget"},
 		"binaryauthorization":  {"namespacepolicytoclusterpolicy"},
 		"cloudbuild":           {"cloudbuildtrigger"},
 		"cloudfunctions":       {"httpsfunction"},

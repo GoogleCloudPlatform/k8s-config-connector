@@ -33,6 +33,8 @@ var TestNameRegexesToSkip = []string{
 	".*(gkehubfeaturemembership|mcifeature).*",
 	// TODO(b/228525841): re-enable streamingdataflowjobupdateparameters test.
 	".*(streamingdataflowjobupdateparameters).*",
+	// TODO(b/267510222): re-enable calendarbudget test when test GCP org configconnector.net is allowlisted.
+	".*(calendarbudget).*",
 }
 
 // TestNameRegexToSkipForTestCRUD is similar to

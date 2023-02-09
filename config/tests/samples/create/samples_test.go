@@ -200,6 +200,9 @@ var testDisabledList = map[string]bool{
 	// Disable the test for now while we are figuring out the long term fix with the
 	// service team (b/260214463).
 	"private-service-connection-region-network-endpoint-group": true,
+	// This sample test is failing because configconnector.net GCP org is not allowlisted.
+	// Disable the test until we have fixed b/267510222.
+	"calendar-budget": true,
 }
 
 func TestAll(t *testing.T) {
