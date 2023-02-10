@@ -17,6 +17,7 @@ package certclient
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook/cert/provisioner"
@@ -26,6 +27,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/util/wait"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -107,6 +109,17 @@ func (c *CertClient) Start(ctx context.Context) error {
 			if err := c.RefreshCertsAndInstall(); err != nil {
 				return fmt.Errorf("error refreshing certs: %w", err)
 			}
+
+			// We force-exit to reload the certs.
+			// We are missing logic to apply the new certs here;
+			// it's also possible that another pod rotated this cert.
+			// Because we want to move this to the operator anyway,
+			// we simply exit here (relying on kubelet to restart us)
+			// rather than trying to add update logic.
+			// b/267353534
+			klog.Warningf("forcing process exit after ~%v to reload webhook certificates", defaultCertRefreshInterval)
+			os.Exit(1)
+
 		case <-ctx.Done():
 			return nil
 		}
