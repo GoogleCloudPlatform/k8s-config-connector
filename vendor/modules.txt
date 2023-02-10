@@ -41,8 +41,10 @@ cloud.google.com/go/security/privateca/apiv1/privatecapb
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects
+github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/networkservices/v1
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/secretmanager/v1
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/security/privateca/v1
+github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecretmanager
 github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage
@@ -1118,6 +1120,7 @@ google.golang.org/genproto/googleapis/api/expr/v1alpha1
 google.golang.org/genproto/googleapis/api/httpbody
 google.golang.org/genproto/googleapis/bigtable/admin/v2
 google.golang.org/genproto/googleapis/bigtable/v2
+google.golang.org/genproto/googleapis/cloud/networkservices/v1
 google.golang.org/genproto/googleapis/cloud/secretmanager/v1
 google.golang.org/genproto/googleapis/cloud/security/privateca/v1
 google.golang.org/genproto/googleapis/devtools/cloudprofiler/v2

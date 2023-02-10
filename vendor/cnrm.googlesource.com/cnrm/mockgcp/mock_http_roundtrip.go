@@ -26,6 +26,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecretmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -36,13 +37,24 @@ import (
 )
 
 type mockRoundTripper struct {
-	secretmanager *mocksecretmanager.MockService
-	privateca     *mockprivateca.MockService
+	services map[string]MockService
 
 	grpcConnection *grpc.ClientConn
 	grpcListener   net.Listener
 
 	hosts map[string]*runtime.ServeMux
+}
+
+// MockService is the interface implemented by all services
+type MockService interface {
+	// Register initializes the service, normally registering the GRPC service.
+	Register(grpcServer *grpc.Server)
+
+	// NewHTTPMux creates an HTTP mux for serving http traffic
+	NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error)
+
+	// ExpectedHost is the hostname we serve on e.g. foo.googleapis.com
+	ExpectedHost() string
 }
 
 func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.Storage) *mockRoundTripper {
@@ -54,11 +66,15 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	rt := &mockRoundTripper{}
 	rt.hosts = make(map[string]*runtime.ServeMux)
 
-	rt.secretmanager = mocksecretmanager.NewMockService(k8sClient, storage)
-	rt.secretmanager.Register(server)
+	var services []MockService
 
-	rt.privateca = mockprivateca.New(k8sClient, storage)
-	rt.privateca.Register(server)
+	services = append(services, mocksecretmanager.New(k8sClient, storage))
+	services = append(services, mockprivateca.New(k8sClient, storage))
+	services = append(services, mocknetworkservices.New(k8sClient, storage))
+
+	for _, service := range services {
+		service.Register(server)
+	}
 
 	listener, err := net.Listen("tcp", "localhost:0")
 	if err != nil {
@@ -86,20 +102,12 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	}
 	rt.grpcConnection = conn
 
-	{
-		mux, err := rt.secretmanager.NewMux(ctx, conn)
+	for _, service := range services {
+		mux, err := service.NewHTTPMux(ctx, conn)
 		if err != nil {
 			t.Fatalf("error building mux: %v", err)
 		}
-		rt.hosts[mocksecretmanager.ExpectedHost] = mux
-	}
-
-	{
-		mux, err := rt.privateca.NewMux(ctx, conn)
-		if err != nil {
-			t.Fatalf("error building mux: %v", err)
-		}
-		rt.hosts[mockprivateca.ExpectedHost] = mux
+		rt.hosts[service.ExpectedHost()] = mux
 	}
 
 	return rt

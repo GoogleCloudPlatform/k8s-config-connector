@@ -12,50 +12,56 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mocksecretmanager
+package mocknetworkservices
 
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	secretmanager_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/secretmanager/v1"
+	pb_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/networkservices/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	secretmanager "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
+	pb "google.golang.org/genproto/googleapis/cloud/networkservices/v1"
 	"google.golang.org/grpc"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// MockService represents a mocked secret manager service.
+// MockService represents a mocked networkservices service.
 type MockService struct {
 	kube    client.Client
 	storage storage.Storage
 
-	projects *projects.ProjectStore
+	projects   *projects.ProjectStore
+	operations *operations.Operations
+
+	v1 *NetworkServicesServer
 }
 
-// New creates a mockSecretManager
+// New creates a MockService.
 func New(kube client.Client, storage storage.Storage) *MockService {
 	s := &MockService{
-		kube:     kube,
-		storage:  storage,
-		projects: projects.NewProjectStore(),
+		kube:       kube,
+		storage:    storage,
+		projects:   projects.NewProjectStore(),
+		operations: operations.NewOperationsService(storage),
 	}
+	s.v1 = &NetworkServicesServer{MockService: s}
 	return s
 }
 
 func (s *MockService) ExpectedHost() string {
-	return "secretmanager.googleapis.com"
+	return "networkservices.googleapis.com"
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	secretmanager.RegisterSecretManagerServiceServer(grpcServer, s)
-	// longrunning.RegisterOperationsServer(grpcServer, s)
+	pb.RegisterNetworkServicesServer(grpcServer, s.v1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error) {
 	mux := runtime.NewServeMux()
-	if err := secretmanager_http.RegisterSecretManagerServiceHandler(ctx, mux, conn); err != nil {
+
+	if err := pb_http.RegisterNetworkServicesHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 

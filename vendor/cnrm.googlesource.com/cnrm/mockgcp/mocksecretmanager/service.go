@@ -26,8 +26,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-const ExpectedHost = "secretmanager.googleapis.com"
-
 // MockService represents a mocked secret manager service.
 type MockService struct {
 	kube    client.Client
@@ -36,8 +34,8 @@ type MockService struct {
 	projects *projects.ProjectStore
 }
 
-// NewMockService creates a mockSecretManager
-func NewMockService(kube client.Client, storage storage.Storage) *MockService {
+// New creates a mockSecretManager
+func New(kube client.Client, storage storage.Storage) *MockService {
 	s := &MockService{
 		kube:     kube,
 		storage:  storage,
@@ -46,12 +44,16 @@ func NewMockService(kube client.Client, storage storage.Storage) *MockService {
 	return s
 }
 
+func (s *MockService) ExpectedHost() string {
+	return "secretmanager.googleapis.com"
+}
+
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	secretmanager.RegisterSecretManagerServiceServer(grpcServer, s)
 	// longrunning.RegisterOperationsServer(grpcServer, s)
 }
 
-func (s *MockService) NewMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error) {
+func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error) {
 	mux := runtime.NewServeMux()
 	if err := secretmanager_http.RegisterSecretManagerServiceHandler(ctx, mux, conn); err != nil {
 		return nil, err

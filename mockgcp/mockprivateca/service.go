@@ -27,8 +27,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-const ExpectedHost = "privateca.googleapis.com"
-
 // MockService represents a mocked privateca service.
 type MockService struct {
 	kube    client.Client
@@ -52,11 +50,15 @@ func New(kube client.Client, storage storage.Storage) *MockService {
 	return s
 }
 
+func (s *MockService) ExpectedHost() string {
+	return "privateca.googleapis.com"
+}
+
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterCertificateAuthorityServiceServer(grpcServer, s.v1)
 }
 
-func (s *MockService) NewMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error) {
+func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error) {
 	mux := runtime.NewServeMux()
 
 	if err := pb_http.RegisterCertificateAuthorityServiceHandler(ctx, mux, conn); err != nil {

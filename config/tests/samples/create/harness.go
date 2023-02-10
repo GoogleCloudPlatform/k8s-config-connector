@@ -246,6 +246,9 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			switch gvk.GroupKind() {
 			case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACAPool"}:
 				// ok
+			case schema.GroupKind{Group: "networkservices.cnrm.cloud.google.com", Kind: "NetworkServicesMesh"}:
+				// ok
+
 			default:
 				t.Skipf("gk %v not suppported by mock gcp; skipping", gvk.GroupKind())
 			}
