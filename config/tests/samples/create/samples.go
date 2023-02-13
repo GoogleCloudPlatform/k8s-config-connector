@@ -134,18 +134,16 @@ func waitForReadySingleResource(t *Harness, wg *sync.WaitGroup, u *unstructured.
 			logger.Info("resource does not yet have status or conditions", "kind", u.GetKind(), "name", u.GetName())
 			return false, nil
 		}
-		cond := dynamic.GetConditions(t.T, u)
-		if len(cond) == 0 {
-			return false, nil
-		}
-		c := cond[0]
-		if c.Reason == "UpToDate" || c.Status == "True" {
-			logger.Info("resource is ready", "kind", u.GetKind(), "name", u.GetName())
-			return true, nil
+		conditions := dynamic.GetConditions(t.T, u)
+		for _, c := range conditions {
+			if c.Type == "Ready" && c.Status == "True" {
+				logger.Info("resource is ready", "kind", u.GetKind(), "name", u.GetName())
+				return true, nil
+			}
 		}
 		// This resource is not completely ready. Let's keep polling.
 		logger.Info("resource is not ready", "kind", u.GetKind(), "name", u.GetName(),
-			"status", c.Status, "reason", c.Reason, "message", c.Message)
+			"conditions", conditions)
 		return false, nil
 	})
 	if err == nil {
@@ -165,8 +163,7 @@ func waitForReadySingleResource(t *Harness, wg *sync.WaitGroup, u *unstructured.
 		t.Errorf("%v, no conditions on resource", baseMsg)
 		return
 	}
-	c := conditions[0]
-	t.Errorf("%v, final status.conditions[0] status '%v' and reason '%v': %v", baseMsg, c.Status, c.Reason, c.Message)
+	t.Errorf("%v, final status.conditions: %v", baseMsg, conditions)
 }
 
 func cleanup(t *Harness, unstructs []*unstructured.Unstructured) {
