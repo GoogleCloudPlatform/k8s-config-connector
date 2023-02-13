@@ -32,6 +32,8 @@ type MockService struct {
 	storage storage.Storage
 
 	projects *projects.ProjectStore
+
+	v1 *SecretsV1
 }
 
 // New creates a mockSecretManager
@@ -41,6 +43,7 @@ func New(kube client.Client, storage storage.Storage) *MockService {
 		storage:  storage,
 		projects: projects.NewProjectStore(),
 	}
+	s.v1 = &SecretsV1{MockService: s}
 	return s
 }
 
@@ -49,7 +52,7 @@ func (s *MockService) ExpectedHost() string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	secretmanager.RegisterSecretManagerServiceServer(grpcServer, s)
+	secretmanager.RegisterSecretManagerServiceServer(grpcServer, s.v1)
 	// longrunning.RegisterOperationsServer(grpcServer, s)
 }
 
