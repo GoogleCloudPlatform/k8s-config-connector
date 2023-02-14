@@ -237,6 +237,25 @@ func resourceComputeRegionInstanceGroupManager() *schema.Resource {
 				Description: `The shape to which the group converges either proactively or on resize events (depending on the value set in updatePolicy.instanceRedistributionType).`,
 			},
 
+			"instance_lifecycle_policy": {
+				Computed:    true,
+				Type:        schema.TypeList,
+				Optional:    true,
+				MaxItems:    1,
+				Description: `The instance lifecycle policy for this managed instance group.`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"force_update_on_repair": {
+							Type:         schema.TypeString,
+							Default:      "NO",
+							Optional:     true,
+							ValidateFunc: validation.StringInSlice([]string{"YES", "NO"}, false),
+							Description:  `Specifies whether to apply the group's latest configuration when repairing a VM. Valid options are: YES, NO. If YES and you updated the group's instance template or per-instance configurations after the VM was created, then these changes are applied when VM is repaired. If NO (default), then updates are applied in accordance with the group's update policy type.`,
+						},
+					},
+				},
+			},
+
 			"update_policy": {
 				Type:        schema.TypeList,
 				Computed:    true,
@@ -513,6 +532,7 @@ func resourceComputeRegionInstanceGroupManagerCreate(d *schema.ResourceData, met
 		AutoHealingPolicies:         expandAutoHealingPolicies(d.Get("auto_healing_policies").([]interface{})),
 		Versions:                    expandVersions(d.Get("version").([]interface{})),
 		UpdatePolicy:                expandRegionUpdatePolicy(d.Get("update_policy").([]interface{})),
+		InstanceLifecyclePolicy:     expandInstanceLifecyclePolicy(d.Get("instance_lifecycle_policy").([]interface{})),
 		AllInstancesConfig:          expandAllInstancesConfig(nil, d.Get("all_instances_config").([]interface{})),
 		DistributionPolicy:          expandDistributionPolicy(d),
 		StatefulPolicy:              expandStatefulPolicy(d),
@@ -694,6 +714,9 @@ func resourceComputeRegionInstanceGroupManagerRead(d *schema.ResourceData, meta 
 	if err := d.Set("update_policy", flattenRegionUpdatePolicy(manager.UpdatePolicy)); err != nil {
 		return fmt.Errorf("Error setting update_policy in state: %s", err.Error())
 	}
+	if err = d.Set("instance_lifecycle_policy", flattenInstanceLifecyclePolicy(manager.InstanceLifecyclePolicy)); err != nil {
+		return fmt.Errorf("Error setting instance lifecycle policy in state: %s", err.Error())
+	}
 	if manager.AllInstancesConfig != nil {
 		if err = d.Set("all_instances_config", flattenAllInstancesConfig(manager.AllInstancesConfig)); err != nil {
 			return fmt.Errorf("Error setting all_instances_config in state: %s", err.Error())
@@ -763,6 +786,11 @@ func resourceComputeRegionInstanceGroupManagerUpdate(d *schema.ResourceData, met
 
 	if d.HasChange("update_policy") {
 		updatedManager.UpdatePolicy = expandRegionUpdatePolicy(d.Get("update_policy").([]interface{}))
+		change = true
+	}
+
+	if d.HasChange("instance_lifecycle_policy") {
+		updatedManager.InstanceLifecyclePolicy = expandInstanceLifecyclePolicy(d.Get("instance_lifecycle_policy").([]interface{}))
 		change = true
 	}
 

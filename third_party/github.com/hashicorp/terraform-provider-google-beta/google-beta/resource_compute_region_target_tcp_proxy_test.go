@@ -17,7 +17,7 @@ func TestAccComputeRegionTargetTcpProxy_update(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckComputeRegionTargetTcpProxyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -85,7 +85,6 @@ func testAccCheckComputeRegionTargetTcpProxyExists(t *testing.T, n string) resou
 func testAccComputeRegionTargetTcpProxy_basic1(target, backend, hc string) string {
 	return fmt.Sprintf(`
 resource "google_compute_region_target_tcp_proxy" "foobar" {
-  provider        = google-beta
   description     = "Resource created for Terraform acceptance testing"
   name            = "%s"
   backend_service = google_compute_region_backend_service.foobar.self_link
@@ -94,7 +93,6 @@ resource "google_compute_region_target_tcp_proxy" "foobar" {
 }
 
 resource "google_compute_region_backend_service" "foobar" {
-  provider      = google-beta
   name          = "%s"
   protocol      = "TCP"
   health_checks = [google_compute_region_health_check.zero.self_link]
@@ -104,7 +102,6 @@ resource "google_compute_region_backend_service" "foobar" {
 }
 
 resource "google_compute_region_health_check" "zero" {
-  provider           = google-beta
   name               = "%s"
   check_interval_sec = 1
   timeout_sec        = 1
@@ -119,7 +116,6 @@ resource "google_compute_region_health_check" "zero" {
 func testAccComputeRegionTargetTcpProxy_update2(target, backend, hc string) string {
 	return fmt.Sprintf(`
 resource "google_compute_region_target_tcp_proxy" "foobar" {
-  provider        = google-beta
   description     = "Resource created for Terraform acceptance testing"
   name            = "%s"
   backend_service = google_compute_region_backend_service.foobar2.self_link
@@ -128,7 +124,6 @@ resource "google_compute_region_target_tcp_proxy" "foobar" {
 }
 
 resource "google_compute_region_backend_service" "foobar" { 
-  provider      = google-beta
   name          = "%s"
   protocol      = "TCP"
   health_checks = [google_compute_region_health_check.zero.self_link]
@@ -138,7 +133,6 @@ resource "google_compute_region_backend_service" "foobar" {
 }
 
 resource "google_compute_region_backend_service" "foobar2" { 
-  provider      = google-beta
   name          = "%s-2"
   protocol      = "TCP"
   health_checks = [google_compute_region_health_check.zero.self_link]
@@ -148,7 +142,6 @@ resource "google_compute_region_backend_service" "foobar2" {
 }
 
 resource "google_compute_region_health_check" "zero" {
-  provider           = google-beta
   name               = "%s"
   check_interval_sec = 1
   timeout_sec        = 1

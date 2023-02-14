@@ -178,6 +178,10 @@ disabled: boolean
 filename: string
 filter: string
 gitFileSource:
+  githubEnterpriseConfigRef:
+    external: string
+    name: string
+    namespace: string
   path: string
   repoType: string
   revision: string
@@ -210,11 +214,25 @@ pubsubConfig:
     external: string
     name: string
     namespace: string
+repositoryEventConfig:
+  pullRequest:
+    branch: string
+    commentControl: string
+    invertRegex: boolean
+  push:
+    branch: string
+    invertRegex: boolean
+    tag: string
+  repository: string
 serviceAccountRef:
   external: string
   name: string
   namespace: string
 sourceToBuild:
+  githubEnterpriseConfigRef:
+    external: string
+    name: string
+    namespace: string
   ref: string
   repoType: string
   uri: string
@@ -1447,6 +1465,49 @@ When using Pub/Sub, Webhook or Manual set the file name using git_file_source in
     </tr>
     <tr>
         <td>
+            <p><code>gitFileSource.githubEnterpriseConfigRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Only `external` field is supported to configure the reference.
+
+The full resource name of the github enterprise config. Format:
+projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gitFileSource.githubEnterpriseConfigRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `name` field of a `CloudBuildGithubEnterpriseConfig` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gitFileSource.githubEnterpriseConfigRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gitFileSource.githubEnterpriseConfigRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>gitFileSource.path</code></p>
             <p><i>Required*</i></p>
         </td>
@@ -1801,6 +1862,115 @@ is receiving messages.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>repositoryEventConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The configuration of a trigger that creates a build whenever an event from Repo API is received.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>repositoryEventConfig.pullRequest</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Contains filter properties for matching Pull Requests.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>repositoryEventConfig.pullRequest.branch</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Regex of branches to match.
+
+The syntax of the regular expressions accepted is the syntax accepted by
+RE2 and described at https://github.com/google/re2/wiki/Syntax.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>repositoryEventConfig.pullRequest.commentControl</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Configure builds to run whether a repository owner or collaborator need to comment '/gcbrun'. Possible values: ["COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>repositoryEventConfig.pullRequest.invertRegex</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}If true, branches that do NOT match the git_ref will trigger a build.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>repositoryEventConfig.push</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Contains filter properties for matching git pushes.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>repositoryEventConfig.push.branch</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Regex of branches to match.
+
+The syntax of the regular expressions accepted is the syntax accepted by
+RE2 and described at https://github.com/google/re2/wiki/Syntax.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>repositoryEventConfig.push.invertRegex</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}If true, only trigger a build if the revision regex does NOT match the git_ref regex.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>repositoryEventConfig.push.tag</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Regex of tags to match.
+
+The syntax of the regular expressions accepted is the syntax accepted by
+RE2 and described at https://github.com/google/re2/wiki/Syntax.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>repositoryEventConfig.repository</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The resource name of the Repo API resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>serviceAccountRef</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1859,6 +2029,49 @@ Triggers that respond to such events build source at whatever commit caused the 
 This field is currently only used by Webhook, Pub/Sub, Manual, and Cron triggers.
 
 One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceToBuild.githubEnterpriseConfigRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Only `external` field is supported to configure the reference.
+
+The full resource name of the github enterprise config. Format:
+projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceToBuild.githubEnterpriseConfigRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `name` field of a `CloudBuildGithubEnterpriseConfig` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceToBuild.githubEnterpriseConfigRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>sourceToBuild.githubEnterpriseConfigRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -186,6 +186,19 @@ type InstanceIpv6AccessConfig struct {
 type InstanceLabels struct {
 }
 
+type InstanceMaxRunDuration struct {
+	/* Immutable. Span of time that's a fraction of a second at nanosecond
+	resolution. Durations less than one second are represented
+	with a 0 seconds field and a positive nanos field. Must
+	be from 0 to 999,999,999 inclusive. */
+	// +optional
+	Nanos *int `json:"nanos,omitempty"`
+
+	/* Immutable. Span of time at a resolution of a second.
+	Must be from 0 to 315,576,000,000 inclusive. */
+	Seconds int `json:"seconds"`
+}
+
 type InstanceMetadata struct {
 	Key string `json:"key"`
 
@@ -270,6 +283,10 @@ type InstanceScheduling struct {
 	/* Specifies the action GCE should take when SPOT VM is preempted. */
 	// +optional
 	InstanceTerminationAction *string `json:"instanceTerminationAction,omitempty"`
+
+	/* Immutable. The timeout for new network connections to hosts. */
+	// +optional
+	MaxRunDuration *InstanceMaxRunDuration `json:"maxRunDuration,omitempty"`
 
 	// +optional
 	MinNodeCpus *int `json:"minNodeCpus,omitempty"`

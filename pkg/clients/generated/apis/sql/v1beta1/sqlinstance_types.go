@@ -137,6 +137,10 @@ type InstanceIpConfiguration struct {
 	// +optional
 	AuthorizedNetworks []InstanceAuthorizedNetworks `json:"authorizedNetworks,omitempty"`
 
+	/* Whether Google Cloud services such as BigQuery are allowed to access data in this Cloud SQL instance over a private IP connection. SQLSERVER database type is not supported. */
+	// +optional
+	EnablePrivatePathForGoogleCloudServices *bool `json:"enablePrivatePathForGoogleCloudServices,omitempty"`
+
 	/* Whether this Cloud SQL instance should be assigned a public IPV4 address. At least ipv4_enabled must be enabled or a private_network must be configured. */
 	// +optional
 	Ipv4Enabled *bool `json:"ipv4Enabled,omitempty"`
@@ -327,7 +331,7 @@ type InstanceSettings struct {
 	// +optional
 	DiskSize *int `json:"diskSize,omitempty"`
 
-	/* The type of data disk: PD_SSD or PD_HDD. Defaults to PD_SSD. */
+	/* Immutable. The type of data disk: PD_SSD or PD_HDD. Defaults to PD_SSD. */
 	// +optional
 	DiskType *string `json:"diskType,omitempty"`
 
@@ -415,7 +419,7 @@ type SQLInstanceSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Immutable. Initial root password. Required for MS SQL Server. */
+	/* Initial root password. Required for MS SQL Server. */
 	// +optional
 	RootPassword *InstanceRootPassword `json:"rootPassword,omitempty"`
 

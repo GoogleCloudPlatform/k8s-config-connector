@@ -25,6 +25,7 @@ var (
 		"scheduling.0.min_node_cpus",
 		"scheduling.0.provisioning_model",
 		"scheduling.0.instance_termination_action",
+		"scheduling.0.max_run_duration",
 	}
 
 	shieldedInstanceTemplateConfigKeys = []string{
@@ -611,6 +612,33 @@ Google Cloud KMS.`,
 							AtLeastOneOf: schedulingInstTemplateKeys,
 							Description:  `Specifies the action GCE should take when SPOT VM is preempted.`,
 						},
+						"max_run_duration": {
+							Type:        schema.TypeList,
+							Optional:    true,
+							Description: `The timeout for new network connections to hosts.`,
+							MaxItems:    1,
+							ForceNew:    true,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"seconds": {
+										Type:     schema.TypeInt,
+										Required: true,
+										ForceNew: true,
+										Description: `Span of time at a resolution of a second.
+Must be from 0 to 315,576,000,000 inclusive.`,
+									},
+									"nanos": {
+										Type:     schema.TypeInt,
+										Optional: true,
+										ForceNew: true,
+										Description: `Span of time that's a fraction of a second at nanosecond
+resolution. Durations less than one second are represented
+with a 0 seconds field and a positive nanos field. Must
+be from 0 to 999,999,999 inclusive.`,
+									},
+								},
+							},
+						},
 					},
 				},
 			},
@@ -796,6 +824,18 @@ Google Cloud KMS.`,
 				Elem:        &schema.Schema{Type: schema.TypeString},
 				Set:         schema.HashString,
 				Description: `A set of key/value label pairs to assign to instances created from this template,`,
+			},
+
+			"resource_policies": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				ForceNew:    true,
+				MaxItems:    1,
+				Description: `A list of self_links of resource policies to attach to the instance. Currently a max of 1 resource policy is supported.`,
+				Elem: &schema.Schema{
+					Type:             schema.TypeString,
+					DiffSuppressFunc: compareResourceNames,
+				},
 			},
 
 			"reservation_affinity": {
@@ -1037,7 +1077,7 @@ func buildDisks(d *schema.ResourceData, config *Config) ([]*compute.AttachedDisk
 
 			if _, ok := d.GetOk(prefix + ".resource_policies"); ok {
 				// instance template only supports a resource name here (not uri)
-				disk.InitializeParams.ResourcePolicies = convertAndMapStringArr(d.Get(prefix+".resource_policies").([]interface{}), GetResourceNameFromSelfLink)
+				disk.InitializeParams.ResourcePolicies = expandInstanceTemplateResourcePolicies(d, prefix+".resource_policies")
 			}
 		}
 
@@ -1091,6 +1131,10 @@ func expandInstanceTemplateGuestAccelerators(d TerraformResourceData, config *Co
 	return guestAccelerators
 }
 
+func expandInstanceTemplateResourcePolicies(d TerraformResourceData, dataKey string) []string {
+	return convertAndMapStringArr(d.Get(dataKey).([]interface{}), GetResourceNameFromSelfLink)
+}
+
 func resourceComputeInstanceTemplateCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
 	userAgent, err := generateUserAgentString(d, config.userAgent)
@@ -1130,6 +1174,7 @@ func resourceComputeInstanceTemplateCreate(d *schema.ResourceData, meta interfac
 	if err != nil {
 		return err
 	}
+	resourcePolicies := expandInstanceTemplateResourcePolicies(d, "resource_policies")
 
 	instanceProperties := &compute.InstanceProperties{
 		CanIpForward:               d.Get("can_ip_forward").(bool),
@@ -1148,6 +1193,7 @@ func resourceComputeInstanceTemplateCreate(d *schema.ResourceData, meta interfac
 		ShieldedInstanceConfig:     expandShieldedVmConfigs(d),
 		AdvancedMachineFeatures:    expandAdvancedMachineFeatures(d),
 		DisplayDevice:              expandDisplayDevice(d),
+		ResourcePolicies:           resourcePolicies,
 		ReservationAffinity:        reservationAffinity,
 	}
 
@@ -1558,6 +1604,12 @@ func resourceComputeInstanceTemplateRead(d *schema.ResourceData, meta interface{
 	if instanceTemplate.Properties.DisplayDevice != nil {
 		if err = d.Set("enable_display", flattenEnableDisplay(instanceTemplate.Properties.DisplayDevice)); err != nil {
 			return fmt.Errorf("Error setting enable_display: %s", err)
+		}
+	}
+
+	if instanceTemplate.Properties.ResourcePolicies != nil {
+		if err = d.Set("resource_policies", instanceTemplate.Properties.ResourcePolicies); err != nil {
+			return fmt.Errorf("Error setting resource_policies: %s", err)
 		}
 	}
 

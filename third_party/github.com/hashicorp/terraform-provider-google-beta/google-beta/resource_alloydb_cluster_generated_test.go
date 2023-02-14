@@ -32,7 +32,7 @@ func TestAccAlloydbCluster_alloydbClusterBasicExample(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckAlloydbClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -51,18 +51,14 @@ func TestAccAlloydbCluster_alloydbClusterBasicExample(t *testing.T) {
 func testAccAlloydbCluster_alloydbClusterBasicExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_alloydb_cluster" "default" {
-  provider   = google-beta
   cluster_id = "tf-test-alloydb-cluster%{random_suffix}"
   location   = "us-central1"
   network    = "projects/${data.google_project.project.number}/global/networks/${google_compute_network.default.name}"
 }
 
-data "google_project" "project" {
-  provider = google-beta
-}
+data "google_project" "project" {}
 
 resource "google_compute_network" "default" {
-  provider = google-beta
   name = "tf-test-alloydb-cluster%{random_suffix}"
 }
 `, context)
@@ -77,7 +73,7 @@ func TestAccAlloydbCluster_alloydbClusterFullExample(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckAlloydbClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -96,7 +92,6 @@ func TestAccAlloydbCluster_alloydbClusterFullExample(t *testing.T) {
 func testAccAlloydbCluster_alloydbClusterFullExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_alloydb_cluster" "full" {
-  provider     = google-beta
   cluster_id   = "tf-test-alloydb-cluster-full%{random_suffix}"
   location     = "us-central1"
   network      = "projects/${data.google_project.project.number}/global/networks/${google_compute_network.default.name}"
@@ -136,12 +131,9 @@ resource "google_alloydb_cluster" "full" {
   }
 }
 
-data "google_project" "project" {
-  provider = google-beta
-}
+data "google_project" "project" {}
 
 resource "google_compute_network" "default" {
-  provider = google-beta
   name = "tf-test-alloydb-cluster-full%{random_suffix}"
 }
 `, context)

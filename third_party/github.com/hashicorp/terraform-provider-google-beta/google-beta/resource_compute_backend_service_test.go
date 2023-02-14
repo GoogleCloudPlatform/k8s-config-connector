@@ -292,6 +292,7 @@ func TestAccComputeBackendService_withSecurityPolicy(t *testing.T) {
 	serviceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
 	checkName := fmt.Sprintf("tf-test-%s", randString(t, 10))
 	polName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	edgePolName := fmt.Sprintf("tf-test-%s", randString(t, 10))
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
@@ -299,7 +300,7 @@ func TestAccComputeBackendService_withSecurityPolicy(t *testing.T) {
 		CheckDestroy: testAccCheckComputeBackendServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccComputeBackendService_withSecurityPolicy(serviceName, checkName, polName, "google_compute_security_policy.policy.self_link"),
+				Config: testAccComputeBackendService_withSecurityPolicy(serviceName, checkName, polName, edgePolName, "google_compute_security_policy.policy.self_link", "google_compute_security_policy.edgePolicy.self_link"),
 			},
 			{
 				ResourceName:      "google_compute_backend_service.foobar",
@@ -307,7 +308,7 @@ func TestAccComputeBackendService_withSecurityPolicy(t *testing.T) {
 				ImportStateVerify: true,
 			},
 			{
-				Config: testAccComputeBackendService_withSecurityPolicy(serviceName, checkName, polName, "\"\""),
+				Config: testAccComputeBackendService_withSecurityPolicy(serviceName, checkName, polName, edgePolName, "\"\"", "\"\""),
 			},
 			{
 				ResourceName:      "google_compute_backend_service.foobar",
@@ -727,6 +728,37 @@ func TestAccComputeBackendService_withCompressionMode(t *testing.T) {
 	})
 }
 
+func TestAccComputeBackendService_trafficDirectorUpdateLbPolicies(t *testing.T) {
+	t.Parallel()
+
+	backendName := fmt.Sprintf("foo-%s", randString(t, 10))
+	checkName := fmt.Sprintf("bar-%s", randString(t, 10))
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckComputeBackendServiceDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComputeBackendService_trafficDirectorLbPolicies(backendName, checkName),
+			},
+			{
+				ResourceName:      "google_compute_backend_service.foobar",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccComputeBackendService_trafficDirectorUpdateLbPolicies(backendName, checkName),
+			},
+			{
+				ResourceName:      "google_compute_backend_service.foobar",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
 func TestAccComputeBackendService_trafficDirectorUpdateFull(t *testing.T) {
 	t.Parallel()
 
@@ -820,6 +852,80 @@ resource "google_compute_backend_service" "foobar" {
   health_checks         = [google_compute_health_check.health_check.self_link]
   load_balancing_scheme = "INTERNAL_SELF_MANAGED"
   locality_lb_policy    = "RANDOM"
+  circuit_breakers {
+    max_connections = 10
+  }
+  outlier_detection {
+    consecutive_errors = 2
+  }
+}
+
+resource "google_compute_health_check" "health_check" {
+  name = "%s"
+  http_health_check {
+    port = 80
+  }
+}
+`, serviceName, checkName)
+}
+
+func testAccComputeBackendService_trafficDirectorLbPolicies(serviceName, checkName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_backend_service" "foobar" {
+  name                   = "%s"
+  health_checks          = [google_compute_health_check.health_check.self_link]
+  load_balancing_scheme  = "INTERNAL_SELF_MANAGED"
+  locality_lb_policies {
+    custom_policy {
+      name = "myorg.CustomPolicy"
+      data = "{\"foo\": \"bar\"}"
+    }
+  }
+  locality_lb_policies {
+    policy {
+      name = "ROUND_ROBIN"
+    }
+  }
+  circuit_breakers {
+    max_connections = 10
+  }
+  outlier_detection {
+    consecutive_errors = 2
+  }
+}
+
+resource "google_compute_health_check" "health_check" {
+  name = "%s"
+  http_health_check {
+    port = 80
+  }
+}
+`, serviceName, checkName)
+}
+
+func testAccComputeBackendService_trafficDirectorUpdateLbPolicies(serviceName, checkName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_backend_service" "foobar" {
+  name                   = "%s"
+  health_checks          = [google_compute_health_check.health_check.self_link]
+  load_balancing_scheme  = "INTERNAL_SELF_MANAGED"
+  locality_lb_policies {
+    custom_policy {
+      name = "myorg.AnotherCustomPolicy"
+      data = "{\"foo\": \"bar\"}"
+    }
+  }
+  locality_lb_policies {
+    custom_policy {
+      name = "myorg.CustomPolicy"
+      data = "{\"foo\": \"bar\"}"
+    }
+  }
+  locality_lb_policies {
+    policy {
+      name = "ROUND_ROBIN"
+    }
+  }
   circuit_breakers {
     max_connections = 10
   }
@@ -1283,12 +1389,13 @@ resource "google_compute_http_health_check" "zero" {
 `, serviceName, checkName)
 }
 
-func testAccComputeBackendService_withSecurityPolicy(serviceName, checkName, polName, polLink string) string {
+func testAccComputeBackendService_withSecurityPolicy(serviceName, checkName, polName, edgePolName, polLink string, edgePolLink string) string {
 	return fmt.Sprintf(`
 resource "google_compute_backend_service" "foobar" {
   name            = "%s"
   health_checks   = [google_compute_http_health_check.zero.self_link]
   security_policy = %s
+  edge_security_policy = %s
 }
 
 resource "google_compute_http_health_check" "zero" {
@@ -1302,7 +1409,13 @@ resource "google_compute_security_policy" "policy" {
   name        = "%s"
   description = "basic security policy"
 }
-`, serviceName, polLink, checkName, polName)
+
+resource "google_compute_security_policy" "edgePolicy" {
+  name        = "%s"
+  description = "edge security policy"
+  type = "CLOUD_ARMOR_EDGE"
+}
+`, serviceName, polLink, edgePolLink, checkName, polName, edgePolName)
 }
 
 func testAccComputeBackendService_withMaxConnections(

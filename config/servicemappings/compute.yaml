@@ -182,6 +182,16 @@ spec:
             version: v1beta1
             group: iap.cnrm.cloud.google.com
           targetField: name
+        - tfField: edge_security_policy
+          description: |-
+            The resource URL for the edge security policy associated with this
+            backend service.
+          key: edgeSecurityPolicyRef
+          gvk:
+            kind: ComputeSecurityPolicy
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
       containers:
         - type: project
           tfField: project
@@ -339,6 +349,9 @@ spec:
       containers:
         - type: project
           tfField: project
+      ignoredFields:
+        # TODO(b/269499072): Map it to `metadata.labels`.
+        - labels
     - name: google_compute_firewall
       kind: ComputeFirewall
       metadataMapping:
@@ -1127,6 +1140,12 @@ spec:
             version: v1beta1
             group: iam.cnrm.cloud.google.com
           targetField: email
+        - tfField: resource_policies
+          gvk:
+            kind: ComputeResourcePolicy
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
       idTemplate: "projects/{{project}}/global/instanceTemplates/{{name}}"
       idTemplateCanBeUsedToMatchResourceName: true
       resourceAvailableInAssetInventory: true
@@ -1273,6 +1292,23 @@ spec:
             kind: ComputeNodeTemplate
             version: v1beta1
             group: compute.cnrm.cloud.google.com
+        - tfField: share_settings.project_map.id
+          key: idRef
+          description: |-
+            The key of this project config in the parent map.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+        - tfField: share_settings.project_map.project_id
+          key: projectIdRef
+          description: |-
+            The project id/number should be the same as the key of this project
+            config in the project map.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
       idTemplate: "projects/{{project}}/zones/{{zone}}/nodeGroups/{{name}}"
       idTemplateCanBeUsedToMatchResourceName: true
       resourceAvailableInAssetInventory: true

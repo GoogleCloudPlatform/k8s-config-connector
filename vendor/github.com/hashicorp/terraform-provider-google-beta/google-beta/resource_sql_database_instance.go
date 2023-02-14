@@ -54,6 +54,7 @@ var (
 		"settings.0.ip_configuration.0.require_ssl",
 		"settings.0.ip_configuration.0.private_network",
 		"settings.0.ip_configuration.0.allocated_ip_range",
+		"settings.0.ip_configuration.0.enable_private_path_for_google_cloud_services",
 	}
 
 	maintenanceWindowKeys = []string{
@@ -102,7 +103,7 @@ func resourceSqlDatabaseInstance() *schema.Resource {
 		},
 
 		Timeouts: &schema.ResourceTimeout{
-			Create: schema.DefaultTimeout(30 * time.Minute),
+			Create: schema.DefaultTimeout(40 * time.Minute),
 			Update: schema.DefaultTimeout(30 * time.Minute),
 			Delete: schema.DefaultTimeout(30 * time.Minute),
 		},
@@ -110,7 +111,7 @@ func resourceSqlDatabaseInstance() *schema.Resource {
 		CustomizeDiff: customdiff.All(
 			customdiff.ForceNewIfChange("settings.0.disk_size", isDiskShrinkage),
 			privateNetworkCustomizeDiff,
-			pitrPostgresOnlyCustomizeDiff,
+			pitrSupportDbCustomizeDiff,
 		),
 
 		Schema: map[string]*schema.Schema{
@@ -352,6 +353,7 @@ is set to true. Defaults to ZONAL.`,
 							Type:             schema.TypeString,
 							Optional:         true,
 							Default:          "PD_SSD",
+							ForceNew:         true,
 							DiffSuppressFunc: caseDiffDashSuppress,
 							Description:      `The type of data disk: PD_SSD or PD_HDD. Defaults to PD_SSD.`,
 						},
@@ -394,6 +396,12 @@ is set to true. Defaults to ZONAL.`,
 										Optional:     true,
 										AtLeastOneOf: ipConfigurationKeys,
 										Description:  `The name of the allocated ip range for the private ip CloudSQL instance. For example: "google-managed-services-default". If set, the instance ip will be created in the allocated range. The range name must comply with RFC 1035. Specifically, the name must be 1-63 characters long and match the regular expression [a-z]([-a-z0-9]*[a-z0-9])?.`,
+									},
+									"enable_private_path_for_google_cloud_services": {
+										Type:         schema.TypeBool,
+										Optional:     true,
+										AtLeastOneOf: ipConfigurationKeys,
+										Description:  `Whether Google Cloud services such as BigQuery are allowed to access data in this Cloud SQL instance over a private IP connection. SQLSERVER database type is not supported.`,
 									},
 								},
 							},
@@ -607,7 +615,6 @@ is set to true. Defaults to ZONAL.`,
 			"root_password": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				ForceNew:    true,
 				Sensitive:   true,
 				Description: `Initial root password. Required for MS SQL Server.`,
 			},
@@ -885,15 +892,26 @@ func privateNetworkCustomizeDiff(_ context.Context, d *schema.ResourceDiff, meta
 	return nil
 }
 
+// helper function to see if string within list contains a particular substring
+func stringContainsSlice(arr []string, str string) bool {
+	for _, i := range arr {
+		if strings.Contains(str, i) {
+			return true
+		}
+	}
+	return false
+}
+
 // Point in time recovery for MySQL database instances needs binary_log_enabled set to true and
 // not point_in_time_recovery_enabled, which is confusing to users. This checks for
-// point_in_time_recovery_enabled being set to a non-PostgreSQL database instance and suggests
+// point_in_time_recovery_enabled being set to a non-PostgreSQL and non-SQLServer database instances and suggests
 // binary_log_enabled.
-func pitrPostgresOnlyCustomizeDiff(_ context.Context, diff *schema.ResourceDiff, v interface{}) error {
+func pitrSupportDbCustomizeDiff(_ context.Context, diff *schema.ResourceDiff, v interface{}) error {
 	pitr := diff.Get("settings.0.backup_configuration.0.point_in_time_recovery_enabled").(bool)
 	dbVersion := diff.Get("database_version").(string)
-	if pitr && (!strings.Contains(dbVersion, "POSTGRES") && !strings.Contains(dbVersion, "SQLSERVER")) {
-		return fmt.Errorf("point_in_time_recovery_enabled is only available for Postgres and SQL Server. You may want to consider using binary_log_enabled instead.")
+	dbVersionPitrValid := []string{"POSTGRES", "SQLSERVER"}
+	if pitr && !stringContainsSlice(dbVersionPitrValid, dbVersion) {
+		return fmt.Errorf("point_in_time_recovery_enabled is only available for the following %v. You may want to consider using binary_log_enabled instead and remove point_in_time_recovery_enabled (removing point_in_time_recovery_enabled and adding binary_log_enabled will enable pitr for MYSQL)", dbVersionPitrValid)
 	}
 	return nil
 }
@@ -1219,14 +1237,16 @@ func expandIpConfiguration(configured []interface{}) *sqladmin.IpConfiguration {
 	_ipConfiguration := configured[0].(map[string]interface{})
 
 	return &sqladmin.IpConfiguration{
-		Ipv4Enabled:        _ipConfiguration["ipv4_enabled"].(bool),
-		RequireSsl:         _ipConfiguration["require_ssl"].(bool),
-		PrivateNetwork:     _ipConfiguration["private_network"].(string),
-		AllocatedIpRange:   _ipConfiguration["allocated_ip_range"].(string),
-		AuthorizedNetworks: expandAuthorizedNetworks(_ipConfiguration["authorized_networks"].(*schema.Set).List()),
-		ForceSendFields:    []string{"Ipv4Enabled", "RequireSsl"},
+		Ipv4Enabled:                             _ipConfiguration["ipv4_enabled"].(bool),
+		RequireSsl:                              _ipConfiguration["require_ssl"].(bool),
+		PrivateNetwork:                          _ipConfiguration["private_network"].(string),
+		AllocatedIpRange:                        _ipConfiguration["allocated_ip_range"].(string),
+		AuthorizedNetworks:                      expandAuthorizedNetworks(_ipConfiguration["authorized_networks"].(*schema.Set).List()),
+		EnablePrivatePathForGoogleCloudServices: _ipConfiguration["enable_private_path_for_google_cloud_services"].(bool),
+		ForceSendFields:                         []string{"Ipv4Enabled", "RequireSsl"},
 	}
 }
+
 func expandAuthorizedNetworks(configured []interface{}) []*sqladmin.AclEntry {
 	an := make([]*sqladmin.AclEntry, 0, len(configured))
 	for _, _acl := range configured {
@@ -1507,6 +1527,67 @@ func resourceSqlDatabaseInstanceUpdate(d *schema.ResourceData, meta interface{})
 		err = resourceSqlDatabaseInstanceRead(d, meta)
 		if err != nil {
 			return err
+		}
+	}
+
+	// Check if the root_password is being updated, because updating root_password is an atomic operation and can not be
+	// performed with other fields, we first update root password before updating the rest of the fields.
+	if d.HasChange("root_password") {
+		oldPwd, newPwd := d.GetChange("root_password")
+		password := newPwd.(string)
+		dv := d.Get("database_version").(string)
+		name := ""
+		host := ""
+		if strings.Contains(dv, "MYSQL") {
+			name = "root"
+			host = "%"
+		} else if strings.Contains(dv, "POSTGRES") {
+			name = "postgres"
+		} else if strings.Contains(dv, "SQLSERVER") {
+			name = "sqlserver"
+			if len(password) == 0 {
+				if err := d.Set("root_password", oldPwd.(string)); err != nil {
+					return fmt.Errorf("Error re-setting root_password: %s", err)
+				}
+				return fmt.Errorf("Error, root password cannot be empty for SQL Server instance.")
+			}
+		} else {
+			if err := d.Set("root_password", oldPwd.(string)); err != nil {
+				return fmt.Errorf("Error re-setting root_password: %s", err)
+			}
+			return fmt.Errorf("Error, invalid database version")
+		}
+		instance := d.Get("name").(string)
+
+		user := &sqladmin.User{
+			Name:     name,
+			Instance: instance,
+			Password: password,
+		}
+
+		mutexKV.Lock(instanceMutexKey(project, instance))
+		defer mutexKV.Unlock(instanceMutexKey(project, instance))
+		var op *sqladmin.Operation
+		updateFunc := func() error {
+			op, err = config.NewSqlAdminClient(userAgent).Users.Update(project, instance, user).Host(host).Name(name).Do()
+			return err
+		}
+		err = retryTimeDuration(updateFunc, d.Timeout(schema.TimeoutUpdate))
+
+		if err != nil {
+			if err := d.Set("root_password", oldPwd.(string)); err != nil {
+				return fmt.Errorf("Error re-setting root_password: %s", err)
+			}
+			return fmt.Errorf("Error, failed to update root_password : %s", err)
+		}
+
+		err = sqlAdminOperationWaitTime(config, op, project, "Insert User", userAgent, d.Timeout(schema.TimeoutUpdate))
+
+		if err != nil {
+			if err := d.Set("root_password", oldPwd.(string)); err != nil {
+				return fmt.Errorf("Error re-setting root_password: %s", err)
+			}
+			return fmt.Errorf("Error, failed to update root_password : %s", err)
 		}
 	}
 
@@ -1810,6 +1891,7 @@ func flattenIpConfiguration(ipConfiguration *sqladmin.IpConfiguration) interface
 		"private_network":    ipConfiguration.PrivateNetwork,
 		"allocated_ip_range": ipConfiguration.AllocatedIpRange,
 		"require_ssl":        ipConfiguration.RequireSsl,
+		"enable_private_path_for_google_cloud_services": ipConfiguration.EnablePrivatePathForGoogleCloudServices,
 	}
 
 	if ipConfiguration.AuthorizedNetworks != nil {

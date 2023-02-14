@@ -458,6 +458,36 @@ func resourceComputeSecurityPolicy() *schema.Resource {
 								},
 							},
 						},
+						"auto_deploy_config": {
+							Type:        schema.TypeList,
+							Description: `Auto Deploy Config of this security policy`,
+							Optional:    true,
+							MaxItems:    1,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"load_threshold": {
+										Type:        schema.TypeFloat,
+										Optional:    true,
+										Description: `Identifies new attackers only when the load to the backend service that is under attack exceeds this threshold.`,
+									},
+									"confidence_threshold": {
+										Type:        schema.TypeFloat,
+										Optional:    true,
+										Description: `Rules are only automatically deployed for alerts on potential attacks with confidence scores greater than this threshold.`,
+									},
+									"impacted_baseline_threshold": {
+										Type:        schema.TypeFloat,
+										Optional:    true,
+										Description: `Rules are only automatically deployed when the estimated impact to baseline traffic from the suggested mitigation is below this threshold.`,
+									},
+									"expiration_sec": {
+										Type:        schema.TypeInt,
+										Optional:    true,
+										Description: `Google Cloud Armor stops applying the action in the automatically deployed rule to an identified attacker after this duration. The rule continues to operate against new requests.`,
+									},
+								},
+							},
+						},
 					},
 				},
 			},
@@ -676,6 +706,7 @@ func resourceComputeSecurityPolicyUpdate(d *schema.ResourceData, meta interface{
 	if d.HasChange("adaptive_protection_config") {
 		securityPolicy.AdaptiveProtectionConfig = expandSecurityPolicyAdaptiveProtectionConfig(d.Get("adaptive_protection_config").([]interface{}))
 		securityPolicy.ForceSendFields = append(securityPolicy.ForceSendFields, "AdaptiveProtectionConfig", "adaptiveProtectionConfig.layer7DdosDefenseConfig.enable", "adaptiveProtectionConfig.layer7DdosDefenseConfig.ruleVisibility")
+		securityPolicy.ForceSendFields = append(securityPolicy.ForceSendFields, "adaptiveProtectionConfig.autoDeployConfig.loadThreshold", "adaptiveProtectionConfig.autoDeployConfig.confidenceThreshold", "adaptiveProtectionConfig.autoDeployConfig.impactedBaselineThreshold", "adaptiveProtectionConfig.autoDeployConfig.expirationSec")
 	}
 
 	if d.HasChange("recaptcha_options_config") {
@@ -1066,6 +1097,7 @@ func expandSecurityPolicyAdaptiveProtectionConfig(configured []interface{}) *com
 	data := configured[0].(map[string]interface{})
 	return &compute.SecurityPolicyAdaptiveProtectionConfig{
 		Layer7DdosDefenseConfig: expandLayer7DdosDefenseConfig(data["layer7_ddos_defense_config"].([]interface{})),
+		AutoDeployConfig:        expandAutoDeployConfig(data["auto_deploy_config"].([]interface{})),
 	}
 }
 
@@ -1082,6 +1114,20 @@ func expandLayer7DdosDefenseConfig(configured []interface{}) *compute.SecurityPo
 	}
 }
 
+func expandAutoDeployConfig(configured []interface{}) *compute.SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig {
+	if len(configured) == 0 || configured[0] == nil {
+		return nil
+	}
+
+	data := configured[0].(map[string]interface{})
+	return &compute.SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig{
+		LoadThreshold:             data["load_threshold"].(float64),
+		ConfidenceThreshold:       data["confidence_threshold"].(float64),
+		ImpactedBaselineThreshold: data["impacted_baseline_threshold"].(float64),
+		ExpirationSec:             int64(data["expiration_sec"].(int)),
+	}
+}
+
 func flattenSecurityPolicyAdaptiveProtectionConfig(conf *compute.SecurityPolicyAdaptiveProtectionConfig) []map[string]interface{} {
 	if conf == nil {
 		return nil
@@ -1089,6 +1135,7 @@ func flattenSecurityPolicyAdaptiveProtectionConfig(conf *compute.SecurityPolicyA
 
 	data := map[string]interface{}{
 		"layer7_ddos_defense_config": flattenLayer7DdosDefenseConfig(conf.Layer7DdosDefenseConfig),
+		"auto_deploy_config":         flattenAutoDeployConfig(conf.AutoDeployConfig),
 	}
 
 	return []map[string]interface{}{data}
@@ -1102,6 +1149,21 @@ func flattenLayer7DdosDefenseConfig(conf *compute.SecurityPolicyAdaptiveProtecti
 	data := map[string]interface{}{
 		"enable":          conf.Enable,
 		"rule_visibility": conf.RuleVisibility,
+	}
+
+	return []map[string]interface{}{data}
+}
+
+func flattenAutoDeployConfig(conf *compute.SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig) []map[string]interface{} {
+	if conf == nil {
+		return nil
+	}
+
+	data := map[string]interface{}{
+		"load_threshold":              conf.LoadThreshold,
+		"confidence_threshold":        conf.ConfidenceThreshold,
+		"impacted_baseline_threshold": conf.ImpactedBaselineThreshold,
+		"expiration_sec":              conf.ExpirationSec,
 	}
 
 	return []map[string]interface{}{data}

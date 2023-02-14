@@ -32,7 +32,7 @@ func TestAccComputeRegionTargetTcpProxy_regionTargetTcpProxyBasicExample(t *test
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckComputeRegionTargetTcpProxyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -51,14 +51,12 @@ func TestAccComputeRegionTargetTcpProxy_regionTargetTcpProxyBasicExample(t *test
 func testAccComputeRegionTargetTcpProxy_regionTargetTcpProxyBasicExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_compute_region_target_tcp_proxy" "default" {
-  provider        = google-beta
   name            = "tf-test-test-proxy%{random_suffix}"
   region          = "europe-west4"
   backend_service = google_compute_region_backend_service.default.id
 }
 
 resource "google_compute_region_backend_service" "default" {
-  provider    = google-beta
   name        = "tf-test-backend-service%{random_suffix}"
   protocol    = "TCP"
   timeout_sec = 10
@@ -69,7 +67,6 @@ resource "google_compute_region_backend_service" "default" {
 }
 
 resource "google_compute_region_health_check" "default" {
-  provider           = google-beta
   name               = "tf-test-health-check%{random_suffix}"
   region             = "europe-west4"
   timeout_sec        = 1

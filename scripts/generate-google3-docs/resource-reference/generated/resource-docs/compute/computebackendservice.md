@@ -159,6 +159,10 @@ customRequestHeaders:
 customResponseHeaders:
 - string
 description: string
+edgeSecurityPolicyRef:
+  external: string
+  name: string
+  namespace: string
 enableCdn: boolean
 failoverPolicy:
   disableConnectionDrainOnFailover: boolean
@@ -187,6 +191,12 @@ iap:
         name: string
   oauth2ClientSecretSha256: string
 loadBalancingScheme: string
+localityLbPolicies:
+- customPolicy:
+    data: string
+    name: string
+  policy:
+    name: string
 localityLbPolicy: string
 location: string
 logConfig:
@@ -1158,6 +1168,47 @@ responses.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>edgeSecurityPolicyRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The resource URL for the edge security policy associated with this
+backend service.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>edgeSecurityPolicyRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeSecurityPolicy` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>edgeSecurityPolicyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>edgeSecurityPolicyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>enableCdn</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1468,6 +1519,126 @@ OAuth2 Client ID for IAP.{% endverbatim %}</p>
 external load balancing. A backend service created for one type of
 load balancing cannot be used with the other. For more information, refer to
 [Choosing a load balancer](https://cloud.google.com/load-balancing/docs/backend-service). Default value: "EXTERNAL" Possible values: ["EXTERNAL", "INTERNAL_SELF_MANAGED", "EXTERNAL_MANAGED"].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>localityLbPolicies</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}A list of locality load balancing policies to be used in order of
+preference. Either the policy or the customPolicy field should be set.
+Overrides any value set in the localityLbPolicy field.
+
+localityLbPolicies is only supported when the BackendService is referenced
+by a URL Map that is referenced by a target gRPC proxy that has the
+validateForProxyless field set to true.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>localityLbPolicies[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>localityLbPolicies[].customPolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The configuration for a custom policy implemented by the user and
+deployed with the client.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>localityLbPolicies[].customPolicy.data</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An optional, arbitrary JSON object with configuration data, understood
+by a locally installed custom policy implementation.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>localityLbPolicies[].customPolicy.name</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Identifies the custom policy.
+
+The value should match the type the custom implementation is registered
+with on the gRPC clients. It should follow protocol buffer
+message naming conventions and include the full path (e.g.
+myorg.CustomLbPolicy). The maximum length is 256 characters.
+
+Note that specifying the same custom policy more than once for a
+backend is not a valid configuration and will be rejected.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>localityLbPolicies[].policy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The configuration for a built-in load balancing policy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>localityLbPolicies[].policy.name</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The name of a locality load balancer policy to be used. The value
+should be one of the predefined ones as supported by localityLbPolicy,
+although at the moment only ROUND_ROBIN is supported.
+
+This field should only be populated when the customPolicy field is not
+used.
+
+Note that specifying the same policy more than once for a backend is
+not a valid configuration and will be rejected.
+
+The possible values are:
+
+* 'ROUND_ROBIN': This is a simple policy in which each healthy backend
+                is selected in round robin order.
+
+* 'LEAST_REQUEST': An O(1) algorithm which selects two random healthy
+                  hosts and picks the host which has fewer active requests.
+
+* 'RING_HASH': The ring/modulo hash load balancer implements consistent
+              hashing to backends. The algorithm has the property that the
+              addition/removal of a host from a set of N hosts only affects
+              1/N of the requests.
+
+* 'RANDOM': The load balancer selects a random healthy host.
+
+* 'ORIGINAL_DESTINATION': Backend host is selected based on the client
+                          connection metadata, i.e., connections are opened
+                          to the same address as the destination address of
+                          the incoming connection before the connection
+                          was redirected to the load balancer.
+
+* 'MAGLEV': used as a drop in replacement for the ring hash load balancer.
+            Maglev is not as stable as ring hash but has faster table lookup
+            build times and host selection times. For more information about
+            Maglev, refer to https://ai.google/research/pubs/pub44824 Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "ORIGINAL_DESTINATION", "MAGLEV"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

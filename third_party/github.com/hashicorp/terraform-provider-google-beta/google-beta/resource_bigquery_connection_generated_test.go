@@ -302,6 +302,7 @@ resource "google_bigquery_connection" "connection" {
    description   = "a riveting description"
    azure {
       customer_tenant_id = "tf-test-customer-tenant-id%{random_suffix}"
+      federated_application_client_id = "tf-test-b43eeeee-eeee-eeee-eeee-a480155501ce%{random_suffix}"
    }
 }
 `, context)
@@ -345,6 +346,51 @@ resource "google_bigquery_connection" "connection" {
    description   = "a riveting description"
    cloud_spanner { 
       database = "projects/project/instances/instance/databases/database%{random_suffix}"
+   }
+}
+`, context)
+}
+
+func TestAccBigqueryConnectionConnection_bigqueryConnectionCloudspannerAnalyticsExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProviders,
+		ExternalProviders: map[string]resource.ExternalProvider{
+			"random": {},
+			"time":   {},
+		},
+		CheckDestroy: testAccCheckBigqueryConnectionConnectionDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccBigqueryConnectionConnection_bigqueryConnectionCloudspannerAnalyticsExample(context),
+			},
+			{
+				ResourceName:            "google_bigquery_connection.connection",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"location"},
+			},
+		},
+	})
+}
+
+func testAccBigqueryConnectionConnection_bigqueryConnectionCloudspannerAnalyticsExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_bigquery_connection" "connection" {
+   connection_id = "tf-test-my-connection%{random_suffix}"
+   location      = "US"
+   friendly_name = "👋"
+   description   = "a riveting description"
+   cloud_spanner { 
+      database                 = "projects/project/instances/instance/databases/database%{random_suffix}"
+      use_serverless_analytics = true
+      use_parallelism          = true
    }
 }
 `, context)

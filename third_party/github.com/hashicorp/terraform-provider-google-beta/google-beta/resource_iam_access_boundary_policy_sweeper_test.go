@@ -24,15 +24,15 @@ import (
 )
 
 func init() {
-	resource.AddTestSweepers("ContainerAttachedCluster", &resource.Sweeper{
-		Name: "ContainerAttachedCluster",
-		F:    testSweepContainerAttachedCluster,
+	resource.AddTestSweepers("IAM2AccessBoundaryPolicy", &resource.Sweeper{
+		Name: "IAM2AccessBoundaryPolicy",
+		F:    testSweepIAM2AccessBoundaryPolicy,
 	})
 }
 
 // At the time of writing, the CI only passes us-central1 as the region
-func testSweepContainerAttachedCluster(region string) error {
-	resourceName := "ContainerAttachedCluster"
+func testSweepIAM2AccessBoundaryPolicy(region string) error {
+	resourceName := "IAM2AccessBoundaryPolicy"
 	log.Printf("[INFO][SWEEPER_LOG] Starting sweeper for %s", resourceName)
 
 	config, err := sharedConfigForRegion(region)
@@ -61,7 +61,7 @@ func testSweepContainerAttachedCluster(region string) error {
 		},
 	}
 
-	listTemplate := strings.Split("https://{{location}}-gkemulticloud.googleapis.com/v1/projects/{{project}}/locations/{{location}}/attachedClusters", "?")[0]
+	listTemplate := strings.Split("https://iam.googleapis.com/v2beta/policies/{{parent}}/accessboundarypolicies", "?")[0]
 	listUrl, err := replaceVars(d, config, listTemplate)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error preparing sweeper list url: %s", err)
@@ -74,7 +74,7 @@ func testSweepContainerAttachedCluster(region string) error {
 		return nil
 	}
 
-	resourceList, ok := res["clusters"]
+	resourceList, ok := res["accessBoundaryPolicies"]
 	if !ok {
 		log.Printf("[INFO][SWEEPER_LOG] Nothing found in response.")
 		return nil
@@ -99,7 +99,7 @@ func testSweepContainerAttachedCluster(region string) error {
 			continue
 		}
 
-		deleteTemplate := "https://{{location}}-gkemulticloud.googleapis.com/v1/projects/{{project}}/locations/{{location}}/attachedClusters/{{name}}"
+		deleteTemplate := "https://iam.googleapis.com/v2beta/policies/{{parent}}/accessboundarypolicies/{{name}}"
 		deleteUrl, err := replaceVars(d, config, deleteTemplate)
 		if err != nil {
 			log.Printf("[INFO][SWEEPER_LOG] error preparing delete url: %s", err)

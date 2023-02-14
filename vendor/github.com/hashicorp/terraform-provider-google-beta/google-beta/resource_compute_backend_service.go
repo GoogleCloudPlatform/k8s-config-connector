@@ -599,6 +599,12 @@ responses.`,
 				Optional:    true,
 				Description: `An optional description of this resource.`,
 			},
+			"edge_security_policy": {
+				Type:             schema.TypeString,
+				Optional:         true,
+				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				Description:      `The resource URL for the edge security policy associated with this backend service.`,
+			},
 			"enable_cdn": {
 				Type:        schema.TypeBool,
 				Optional:    true,
@@ -659,6 +665,103 @@ external load balancing. A backend service created for one type of
 load balancing cannot be used with the other. For more information, refer to
 [Choosing a load balancer](https://cloud.google.com/load-balancing/docs/backend-service). Default value: "EXTERNAL" Possible values: ["EXTERNAL", "INTERNAL_SELF_MANAGED", "EXTERNAL_MANAGED"]`,
 				Default: "EXTERNAL",
+			},
+			"locality_lb_policies": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Description: `A list of locality load balancing policies to be used in order of
+preference. Either the policy or the customPolicy field should be set.
+Overrides any value set in the localityLbPolicy field.
+
+localityLbPolicies is only supported when the BackendService is referenced
+by a URL Map that is referenced by a target gRPC proxy that has the
+validateForProxyless field set to true.`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"custom_policy": {
+							Type:     schema.TypeList,
+							Optional: true,
+							Description: `The configuration for a custom policy implemented by the user and
+deployed with the client.`,
+							MaxItems: 1,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"name": {
+										Type:     schema.TypeString,
+										Required: true,
+										Description: `Identifies the custom policy.
+
+The value should match the type the custom implementation is registered
+with on the gRPC clients. It should follow protocol buffer
+message naming conventions and include the full path (e.g.
+myorg.CustomLbPolicy). The maximum length is 256 characters.
+
+Note that specifying the same custom policy more than once for a
+backend is not a valid configuration and will be rejected.`,
+									},
+									"data": {
+										Type:     schema.TypeString,
+										Optional: true,
+										Description: `An optional, arbitrary JSON object with configuration data, understood
+by a locally installed custom policy implementation.`,
+									},
+								},
+							},
+							ExactlyOneOf: []string{},
+						},
+						"policy": {
+							Type:        schema.TypeList,
+							Optional:    true,
+							Description: `The configuration for a built-in load balancing policy.`,
+							MaxItems:    1,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"name": {
+										Type:         schema.TypeString,
+										Required:     true,
+										ValidateFunc: validateEnum([]string{"ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "ORIGINAL_DESTINATION", "MAGLEV"}),
+										Description: `The name of a locality load balancer policy to be used. The value
+should be one of the predefined ones as supported by localityLbPolicy,
+although at the moment only ROUND_ROBIN is supported.
+
+This field should only be populated when the customPolicy field is not
+used.
+
+Note that specifying the same policy more than once for a backend is
+not a valid configuration and will be rejected.
+
+The possible values are:
+
+* 'ROUND_ROBIN': This is a simple policy in which each healthy backend
+                is selected in round robin order.
+
+* 'LEAST_REQUEST': An O(1) algorithm which selects two random healthy
+                  hosts and picks the host which has fewer active requests.
+
+* 'RING_HASH': The ring/modulo hash load balancer implements consistent
+              hashing to backends. The algorithm has the property that the
+              addition/removal of a host from a set of N hosts only affects
+              1/N of the requests.
+
+* 'RANDOM': The load balancer selects a random healthy host.
+
+* 'ORIGINAL_DESTINATION': Backend host is selected based on the client
+                          connection metadata, i.e., connections are opened
+                          to the same address as the destination address of
+                          the incoming connection before the connection
+                          was redirected to the load balancer.
+
+* 'MAGLEV': used as a drop in replacement for the ring hash load balancer.
+            Maglev is not as stable as ring hash but has faster table lookup
+            build times and host selection times. For more information about
+            Maglev, refer to https://ai.google/research/pubs/pub44824 Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "ORIGINAL_DESTINATION", "MAGLEV"]`,
+									},
+								},
+							},
+							ExactlyOneOf: []string{},
+						},
+					},
+				},
 			},
 			"locality_lb_policy": {
 				Type:         schema.TypeString,
@@ -1219,6 +1322,12 @@ func resourceComputeBackendServiceCreate(d *schema.ResourceData, meta interface{
 	} else if v, ok := d.GetOkExists("locality_lb_policy"); !isEmptyValue(reflect.ValueOf(localityLbPolicyProp)) && (ok || !reflect.DeepEqual(v, localityLbPolicyProp)) {
 		obj["localityLbPolicy"] = localityLbPolicyProp
 	}
+	localityLbPoliciesProp, err := expandComputeBackendServiceLocalityLbPolicies(d.Get("locality_lb_policies"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("locality_lb_policies"); !isEmptyValue(reflect.ValueOf(localityLbPoliciesProp)) && (ok || !reflect.DeepEqual(v, localityLbPoliciesProp)) {
+		obj["localityLbPolicies"] = localityLbPoliciesProp
+	}
 	nameProp, err := expandComputeBackendServiceName(d.Get("name"), d, config)
 	if err != nil {
 		return err
@@ -1248,6 +1357,12 @@ func resourceComputeBackendServiceCreate(d *schema.ResourceData, meta interface{
 		return err
 	} else if v, ok := d.GetOkExists("security_policy"); !isEmptyValue(reflect.ValueOf(securityPolicyProp)) && (ok || !reflect.DeepEqual(v, securityPolicyProp)) {
 		obj["securityPolicy"] = securityPolicyProp
+	}
+	edgeSecurityPolicyProp, err := expandComputeBackendServiceEdgeSecurityPolicy(d.Get("edge_security_policy"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("edge_security_policy"); !isEmptyValue(reflect.ValueOf(edgeSecurityPolicyProp)) && (ok || !reflect.DeepEqual(v, edgeSecurityPolicyProp)) {
+		obj["edgeSecurityPolicy"] = edgeSecurityPolicyProp
 	}
 	securitySettingsProp, err := expandComputeBackendServiceSecuritySettings(d.Get("security_settings"), d, config)
 	if err != nil {
@@ -1335,6 +1450,25 @@ func resourceComputeBackendServiceCreate(d *schema.ResourceData, meta interface{
 		}
 		// This uses the create timeout for simplicity, though technically this code appears in both create and update
 		waitErr := computeOperationWaitTime(config, op, project, "Setting Backend Service Security Policy", userAgent, d.Timeout(schema.TimeoutCreate))
+		if waitErr != nil {
+			return waitErr
+		}
+	}
+	// edge security_policy isn't set by Create / Update
+	if o, n := d.GetChange("edge_security_policy"); o.(string) != n.(string) {
+		pol, err := ParseSecurityPolicyFieldValue(n.(string), d, config)
+		if err != nil {
+			return errwrap.Wrapf("Error parsing Backend Service edge security policy: {{err}}", err)
+		}
+
+		spr := emptySecurityPolicyReference()
+		spr.SecurityPolicy = pol.RelativeLink()
+		op, err := config.NewComputeClient(userAgent).BackendServices.SetEdgeSecurityPolicy(project, obj["name"].(string), spr).Do()
+		if err != nil {
+			return errwrap.Wrapf("Error setting Backend Service edge security policy: {{err}}", err)
+		}
+		// This uses the create timeout for simplicity, though technically this code appears in both create and update
+		waitErr := computeOperationWaitTime(config, op, project, "Setting Backend Service Edge Security Policy", userAgent, d.Timeout(schema.TimeoutCreate))
 		if waitErr != nil {
 			return waitErr
 		}
@@ -1457,6 +1591,9 @@ func resourceComputeBackendServiceRead(d *schema.ResourceData, meta interface{})
 	if err := d.Set("locality_lb_policy", flattenComputeBackendServiceLocalityLbPolicy(res["localityLbPolicy"], d, config)); err != nil {
 		return fmt.Errorf("Error reading BackendService: %s", err)
 	}
+	if err := d.Set("locality_lb_policies", flattenComputeBackendServiceLocalityLbPolicies(res["localityLbPolicies"], d, config)); err != nil {
+		return fmt.Errorf("Error reading BackendService: %s", err)
+	}
 	if err := d.Set("name", flattenComputeBackendServiceName(res["name"], d, config)); err != nil {
 		return fmt.Errorf("Error reading BackendService: %s", err)
 	}
@@ -1470,6 +1607,9 @@ func resourceComputeBackendServiceRead(d *schema.ResourceData, meta interface{})
 		return fmt.Errorf("Error reading BackendService: %s", err)
 	}
 	if err := d.Set("security_policy", flattenComputeBackendServiceSecurityPolicy(res["securityPolicy"], d, config)); err != nil {
+		return fmt.Errorf("Error reading BackendService: %s", err)
+	}
+	if err := d.Set("edge_security_policy", flattenComputeBackendServiceEdgeSecurityPolicy(res["edgeSecurityPolicy"], d, config)); err != nil {
 		return fmt.Errorf("Error reading BackendService: %s", err)
 	}
 	if err := d.Set("security_settings", flattenComputeBackendServiceSecuritySettings(res["securitySettings"], d, config)); err != nil {
@@ -1603,6 +1743,12 @@ func resourceComputeBackendServiceUpdate(d *schema.ResourceData, meta interface{
 	} else if v, ok := d.GetOkExists("locality_lb_policy"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, localityLbPolicyProp)) {
 		obj["localityLbPolicy"] = localityLbPolicyProp
 	}
+	localityLbPoliciesProp, err := expandComputeBackendServiceLocalityLbPolicies(d.Get("locality_lb_policies"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("locality_lb_policies"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, localityLbPoliciesProp)) {
+		obj["localityLbPolicies"] = localityLbPoliciesProp
+	}
 	nameProp, err := expandComputeBackendServiceName(d.Get("name"), d, config)
 	if err != nil {
 		return err
@@ -1632,6 +1778,12 @@ func resourceComputeBackendServiceUpdate(d *schema.ResourceData, meta interface{
 		return err
 	} else if v, ok := d.GetOkExists("security_policy"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, securityPolicyProp)) {
 		obj["securityPolicy"] = securityPolicyProp
+	}
+	edgeSecurityPolicyProp, err := expandComputeBackendServiceEdgeSecurityPolicy(d.Get("edge_security_policy"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("edge_security_policy"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, edgeSecurityPolicyProp)) {
+		obj["edgeSecurityPolicy"] = edgeSecurityPolicyProp
 	}
 	securitySettingsProp, err := expandComputeBackendServiceSecuritySettings(d.Get("security_settings"), d, config)
 	if err != nil {
@@ -1706,6 +1858,25 @@ func resourceComputeBackendServiceUpdate(d *schema.ResourceData, meta interface{
 		}
 		// This uses the create timeout for simplicity, though technically this code appears in both create and update
 		waitErr := computeOperationWaitTime(config, op, project, "Setting Backend Service Security Policy", userAgent, d.Timeout(schema.TimeoutCreate))
+		if waitErr != nil {
+			return waitErr
+		}
+	}
+	// edge security_policy isn't set by Create / Update
+	if o, n := d.GetChange("edge_security_policy"); o.(string) != n.(string) {
+		pol, err := ParseSecurityPolicyFieldValue(n.(string), d, config)
+		if err != nil {
+			return errwrap.Wrapf("Error parsing Backend Service edge security policy: {{err}}", err)
+		}
+
+		spr := emptySecurityPolicyReference()
+		spr.SecurityPolicy = pol.RelativeLink()
+		op, err := config.NewComputeClient(userAgent).BackendServices.SetEdgeSecurityPolicy(project, obj["name"].(string), spr).Do()
+		if err != nil {
+			return errwrap.Wrapf("Error setting Backend Service edge security policy: {{err}}", err)
+		}
+		// This uses the create timeout for simplicity, though technically this code appears in both create and update
+		waitErr := computeOperationWaitTime(config, op, project, "Setting Backend Service Edge Security Policy", userAgent, d.Timeout(schema.TimeoutCreate))
 		if waitErr != nil {
 			return waitErr
 		}
@@ -2550,6 +2721,65 @@ func flattenComputeBackendServiceLocalityLbPolicy(v interface{}, d *schema.Resou
 	return v
 }
 
+func flattenComputeBackendServiceLocalityLbPolicies(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return v
+	}
+	l := v.([]interface{})
+	transformed := make([]interface{}, 0, len(l))
+	for _, raw := range l {
+		original := raw.(map[string]interface{})
+		if len(original) < 1 {
+			// Do not include empty json objects coming back from the api
+			continue
+		}
+		transformed = append(transformed, map[string]interface{}{
+			"policy":        flattenComputeBackendServiceLocalityLbPoliciesPolicy(original["policy"], d, config),
+			"custom_policy": flattenComputeBackendServiceLocalityLbPoliciesCustomPolicy(original["customPolicy"], d, config),
+		})
+	}
+	return transformed
+}
+func flattenComputeBackendServiceLocalityLbPoliciesPolicy(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["name"] =
+		flattenComputeBackendServiceLocalityLbPoliciesPolicyName(original["name"], d, config)
+	return []interface{}{transformed}
+}
+func flattenComputeBackendServiceLocalityLbPoliciesPolicyName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenComputeBackendServiceLocalityLbPoliciesCustomPolicy(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["name"] =
+		flattenComputeBackendServiceLocalityLbPoliciesCustomPolicyName(original["name"], d, config)
+	transformed["data"] =
+		flattenComputeBackendServiceLocalityLbPoliciesCustomPolicyData(original["data"], d, config)
+	return []interface{}{transformed}
+}
+func flattenComputeBackendServiceLocalityLbPoliciesCustomPolicyName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenComputeBackendServiceLocalityLbPoliciesCustomPolicyData(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
 func flattenComputeBackendServiceName(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	return v
 }
@@ -2847,6 +3077,10 @@ func flattenComputeBackendServiceProtocol(v interface{}, d *schema.ResourceData,
 }
 
 func flattenComputeBackendServiceSecurityPolicy(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenComputeBackendServiceEdgeSecurityPolicy(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	return v
 }
 
@@ -3616,6 +3850,92 @@ func expandComputeBackendServiceLocalityLbPolicy(v interface{}, d TerraformResou
 	return v, nil
 }
 
+func expandComputeBackendServiceLocalityLbPolicies(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	l := v.([]interface{})
+	req := make([]interface{}, 0, len(l))
+	for _, raw := range l {
+		if raw == nil {
+			continue
+		}
+		original := raw.(map[string]interface{})
+		transformed := make(map[string]interface{})
+
+		transformedPolicy, err := expandComputeBackendServiceLocalityLbPoliciesPolicy(original["policy"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedPolicy); val.IsValid() && !isEmptyValue(val) {
+			transformed["policy"] = transformedPolicy
+		}
+
+		transformedCustomPolicy, err := expandComputeBackendServiceLocalityLbPoliciesCustomPolicy(original["custom_policy"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedCustomPolicy); val.IsValid() && !isEmptyValue(val) {
+			transformed["customPolicy"] = transformedCustomPolicy
+		}
+
+		req = append(req, transformed)
+	}
+	return req, nil
+}
+
+func expandComputeBackendServiceLocalityLbPoliciesPolicy(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedName, err := expandComputeBackendServiceLocalityLbPoliciesPolicyName(original["name"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+		transformed["name"] = transformedName
+	}
+
+	return transformed, nil
+}
+
+func expandComputeBackendServiceLocalityLbPoliciesPolicyName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandComputeBackendServiceLocalityLbPoliciesCustomPolicy(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedName, err := expandComputeBackendServiceLocalityLbPoliciesCustomPolicyName(original["name"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedName); val.IsValid() && !isEmptyValue(val) {
+		transformed["name"] = transformedName
+	}
+
+	transformedData, err := expandComputeBackendServiceLocalityLbPoliciesCustomPolicyData(original["data"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedData); val.IsValid() && !isEmptyValue(val) {
+		transformed["data"] = transformedData
+	}
+
+	return transformed, nil
+}
+
+func expandComputeBackendServiceLocalityLbPoliciesCustomPolicyName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandComputeBackendServiceLocalityLbPoliciesCustomPolicyData(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
 func expandComputeBackendServiceName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
@@ -3822,6 +4142,10 @@ func expandComputeBackendServiceProtocol(v interface{}, d TerraformResourceData,
 }
 
 func expandComputeBackendServiceSecurityPolicy(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandComputeBackendServiceEdgeSecurityPolicy(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
 

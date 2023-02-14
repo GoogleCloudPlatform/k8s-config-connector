@@ -75,7 +75,6 @@ type TagsTagValueStatus struct {
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
 	/* Output only. Update time.
-
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`

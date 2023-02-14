@@ -106,6 +106,12 @@ func resourceVertexAIFeaturestore() *schema.Resource {
 					},
 				},
 			},
+			"online_storage_ttl_days": {
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Description: `TTL in days for feature values that will be stored in online serving storage. The Feature Store online storage periodically removes obsolete feature values older than onlineStorageTtlDays since the feature generation time. Note that onlineStorageTtlDays should be less than or equal to offlineStorageTtlDays for each EntityType under a featurestore. If not set, default to 4000 days`,
+				Default:     4000,
+			},
 			"region": {
 				Type:        schema.TypeString,
 				Computed:    true,
@@ -164,6 +170,12 @@ func resourceVertexAIFeaturestoreCreate(d *schema.ResourceData, meta interface{}
 		return err
 	} else if v, ok := d.GetOkExists("online_serving_config"); !isEmptyValue(reflect.ValueOf(onlineServingConfigProp)) && (ok || !reflect.DeepEqual(v, onlineServingConfigProp)) {
 		obj["onlineServingConfig"] = onlineServingConfigProp
+	}
+	onlineStorageTtlDaysProp, err := expandVertexAIFeaturestoreOnlineStorageTtlDays(d.Get("online_storage_ttl_days"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("online_storage_ttl_days"); !isEmptyValue(reflect.ValueOf(onlineStorageTtlDaysProp)) && (ok || !reflect.DeepEqual(v, onlineStorageTtlDaysProp)) {
+		obj["onlineStorageTtlDays"] = onlineStorageTtlDaysProp
 	}
 	encryptionSpecProp, err := expandVertexAIFeaturestoreEncryptionSpec(d.Get("encryption_spec"), d, config)
 	if err != nil {
@@ -280,6 +292,9 @@ func resourceVertexAIFeaturestoreRead(d *schema.ResourceData, meta interface{}) 
 	if err := d.Set("online_serving_config", flattenVertexAIFeaturestoreOnlineServingConfig(res["onlineServingConfig"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Featurestore: %s", err)
 	}
+	if err := d.Set("online_storage_ttl_days", flattenVertexAIFeaturestoreOnlineStorageTtlDays(res["onlineStorageTtlDays"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Featurestore: %s", err)
+	}
 	if err := d.Set("encryption_spec", flattenVertexAIFeaturestoreEncryptionSpec(res["encryptionSpec"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Featurestore: %s", err)
 	}
@@ -315,6 +330,12 @@ func resourceVertexAIFeaturestoreUpdate(d *schema.ResourceData, meta interface{}
 	} else if v, ok := d.GetOkExists("online_serving_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, onlineServingConfigProp)) {
 		obj["onlineServingConfig"] = onlineServingConfigProp
 	}
+	onlineStorageTtlDaysProp, err := expandVertexAIFeaturestoreOnlineStorageTtlDays(d.Get("online_storage_ttl_days"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("online_storage_ttl_days"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, onlineStorageTtlDaysProp)) {
+		obj["onlineStorageTtlDays"] = onlineStorageTtlDaysProp
+	}
 	encryptionSpecProp, err := expandVertexAIFeaturestoreEncryptionSpec(d.Get("encryption_spec"), d, config)
 	if err != nil {
 		return err
@@ -336,6 +357,10 @@ func resourceVertexAIFeaturestoreUpdate(d *schema.ResourceData, meta interface{}
 
 	if d.HasChange("online_serving_config") {
 		updateMask = append(updateMask, "onlineServingConfig")
+	}
+
+	if d.HasChange("online_storage_ttl_days") {
+		updateMask = append(updateMask, "onlineStorageTtlDays")
 	}
 
 	if d.HasChange("encryption_spec") {
@@ -543,6 +568,23 @@ func flattenVertexAIFeaturestoreOnlineServingConfigScalingMaxNodeCount(v interfa
 	return v // let terraform core handle it otherwise
 }
 
+func flattenVertexAIFeaturestoreOnlineStorageTtlDays(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	// Handles the string fixed64 format
+	if strVal, ok := v.(string); ok {
+		if intVal, err := stringToFixed64(strVal); err == nil {
+			return intVal
+		}
+	}
+
+	// number values are represented as float64
+	if floatVal, ok := v.(float64); ok {
+		intVal := int(floatVal)
+		return intVal
+	}
+
+	return v // let terraform core handle it otherwise
+}
+
 func flattenVertexAIFeaturestoreEncryptionSpec(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	if v == nil {
 		return nil
@@ -632,6 +674,10 @@ func expandVertexAIFeaturestoreOnlineServingConfigScalingMinNodeCount(v interfac
 }
 
 func expandVertexAIFeaturestoreOnlineServingConfigScalingMaxNodeCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandVertexAIFeaturestoreOnlineStorageTtlDays(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
 

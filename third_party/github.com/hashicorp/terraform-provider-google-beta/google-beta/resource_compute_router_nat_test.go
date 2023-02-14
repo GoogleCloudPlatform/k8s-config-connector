@@ -594,6 +594,7 @@ resource "google_compute_router_nat" "foobar" {
   icmp_idle_timeout_sec            = 60
   tcp_established_idle_timeout_sec = 1600
   tcp_transitory_idle_timeout_sec  = 60
+  tcp_time_wait_timeout_sec        = 60
 
   log_config {
     enable = true
@@ -645,6 +646,7 @@ resource "google_compute_router_nat" "foobar" {
   icmp_idle_timeout_sec            = 60
   tcp_established_idle_timeout_sec = 1600
   tcp_transitory_idle_timeout_sec  = 60
+  tcp_time_wait_timeout_sec        = 60
 
   log_config {
     enable = true
@@ -696,6 +698,7 @@ resource "google_compute_router_nat" "foobar" {
   icmp_idle_timeout_sec            = 60
   tcp_established_idle_timeout_sec = 1600
   tcp_transitory_idle_timeout_sec  = 60
+  tcp_time_wait_timeout_sec        = 60
 
   log_config {
     enable = true

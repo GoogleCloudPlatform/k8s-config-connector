@@ -149,6 +149,7 @@ resource "google_vertex_ai_featurestore_entitytype" "entity" {
   labels = {
     foo = "bar"
   }
+  description = "test description"
   featurestore = google_vertex_ai_featurestore.featurestore.id
   monitoring_config {
     snapshot_analysis {
@@ -199,6 +200,7 @@ resource "google_vertex_ai_featurestore_entitytype" "entity" {
   labels = {
     foo = "bar"
   }
+  description = "test description"
   featurestore = google_vertex_ai_featurestore.featurestore.id
   monitoring_config {
     snapshot_analysis {
@@ -255,6 +257,7 @@ resource "google_vertex_ai_featurestore_entitytype" "entity" {
   labels = {
     foo = "bar"
   }
+  description = "test description"
   featurestore = google_vertex_ai_featurestore.featurestore.id
   monitoring_config {
     snapshot_analysis {
@@ -307,6 +310,7 @@ resource "google_vertex_ai_featurestore_entitytype" "entity" {
   labels = {
     foo = "bar"
   }
+  description = "test description"
   featurestore = google_vertex_ai_featurestore.featurestore.id
   monitoring_config {
     snapshot_analysis {
@@ -357,6 +361,7 @@ resource "google_vertex_ai_featurestore_entitytype" "entity" {
   labels = {
     foo = "bar"
   }
+  description = "test description"
   featurestore = google_vertex_ai_featurestore.featurestore.id
   monitoring_config {
     snapshot_analysis {

@@ -49,6 +49,11 @@ func resourceVertexAIFeaturestoreEntitytype() *schema.Resource {
 				ForceNew:    true,
 				Description: `The name of the Featurestore to use, in the format projects/{project}/locations/{location}/featurestores/{featurestore}.`,
 			},
+			"description": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: `Optional. Description of the EntityType.`,
+			},
 			"labels": {
 				Type:        schema.TypeMap,
 				Optional:    true,
@@ -167,6 +172,12 @@ If both FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval_days a
 				ForceNew:    true,
 				Description: `The name of the EntityType. This value may be up to 60 characters, and valid characters are [a-z0-9_]. The first character cannot be a number.`,
 			},
+			"offline_storage_ttl_days": {
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Description: `Config for data retention policy in offline storage. TTL in days for feature values that will be stored in offline storage. The Feature Store offline storage periodically removes obsolete feature values older than offlineStorageTtlDays since the feature generation time. If unset (or explicitly set to 0), default to 4000 days TTL.`,
+				Default:     4000,
+			},
 			"create_time": {
 				Type:        schema.TypeString,
 				Computed:    true,
@@ -201,6 +212,12 @@ func resourceVertexAIFeaturestoreEntitytypeCreate(d *schema.ResourceData, meta i
 	}
 
 	obj := make(map[string]interface{})
+	descriptionProp, err := expandVertexAIFeaturestoreEntitytypeDescription(d.Get("description"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(descriptionProp)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+		obj["description"] = descriptionProp
+	}
 	labelsProp, err := expandVertexAIFeaturestoreEntitytypeLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
@@ -212,6 +229,12 @@ func resourceVertexAIFeaturestoreEntitytypeCreate(d *schema.ResourceData, meta i
 		return err
 	} else if v, ok := d.GetOkExists("monitoring_config"); !isEmptyValue(reflect.ValueOf(monitoringConfigProp)) && (ok || !reflect.DeepEqual(v, monitoringConfigProp)) {
 		obj["monitoringConfig"] = monitoringConfigProp
+	}
+	offlineStorageTtlDaysProp, err := expandVertexAIFeaturestoreEntitytypeOfflineStorageTtlDays(d.Get("offline_storage_ttl_days"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("offline_storage_ttl_days"); !isEmptyValue(reflect.ValueOf(offlineStorageTtlDaysProp)) && (ok || !reflect.DeepEqual(v, offlineStorageTtlDaysProp)) {
+		obj["offlineStorageTtlDays"] = offlineStorageTtlDaysProp
 	}
 
 	obj, err = resourceVertexAIFeaturestoreEntitytypeEncoder(d, meta, obj)
@@ -302,6 +325,9 @@ func resourceVertexAIFeaturestoreEntitytypeRead(d *schema.ResourceData, meta int
 		return handleNotFoundError(err, d, fmt.Sprintf("VertexAIFeaturestoreEntitytype %q", d.Id()))
 	}
 
+	if err := d.Set("description", flattenVertexAIFeaturestoreEntitytypeDescription(res["description"], d, config)); err != nil {
+		return fmt.Errorf("Error reading FeaturestoreEntitytype: %s", err)
+	}
 	if err := d.Set("create_time", flattenVertexAIFeaturestoreEntitytypeCreateTime(res["createTime"], d, config)); err != nil {
 		return fmt.Errorf("Error reading FeaturestoreEntitytype: %s", err)
 	}
@@ -312,6 +338,9 @@ func resourceVertexAIFeaturestoreEntitytypeRead(d *schema.ResourceData, meta int
 		return fmt.Errorf("Error reading FeaturestoreEntitytype: %s", err)
 	}
 	if err := d.Set("monitoring_config", flattenVertexAIFeaturestoreEntitytypeMonitoringConfig(res["monitoringConfig"], d, config)); err != nil {
+		return fmt.Errorf("Error reading FeaturestoreEntitytype: %s", err)
+	}
+	if err := d.Set("offline_storage_ttl_days", flattenVertexAIFeaturestoreEntitytypeOfflineStorageTtlDays(res["offlineStorageTtlDays"], d, config)); err != nil {
 		return fmt.Errorf("Error reading FeaturestoreEntitytype: %s", err)
 	}
 
@@ -328,6 +357,12 @@ func resourceVertexAIFeaturestoreEntitytypeUpdate(d *schema.ResourceData, meta i
 	billingProject := ""
 
 	obj := make(map[string]interface{})
+	descriptionProp, err := expandVertexAIFeaturestoreEntitytypeDescription(d.Get("description"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("description"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, descriptionProp)) {
+		obj["description"] = descriptionProp
+	}
 	labelsProp, err := expandVertexAIFeaturestoreEntitytypeLabels(d.Get("labels"), d, config)
 	if err != nil {
 		return err
@@ -339,6 +374,12 @@ func resourceVertexAIFeaturestoreEntitytypeUpdate(d *schema.ResourceData, meta i
 		return err
 	} else if v, ok := d.GetOkExists("monitoring_config"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, monitoringConfigProp)) {
 		obj["monitoringConfig"] = monitoringConfigProp
+	}
+	offlineStorageTtlDaysProp, err := expandVertexAIFeaturestoreEntitytypeOfflineStorageTtlDays(d.Get("offline_storage_ttl_days"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("offline_storage_ttl_days"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, offlineStorageTtlDaysProp)) {
+		obj["offlineStorageTtlDays"] = offlineStorageTtlDaysProp
 	}
 
 	obj, err = resourceVertexAIFeaturestoreEntitytypeEncoder(d, meta, obj)
@@ -354,12 +395,20 @@ func resourceVertexAIFeaturestoreEntitytypeUpdate(d *schema.ResourceData, meta i
 	log.Printf("[DEBUG] Updating FeaturestoreEntitytype %q: %#v", d.Id(), obj)
 	updateMask := []string{}
 
+	if d.HasChange("description") {
+		updateMask = append(updateMask, "description")
+	}
+
 	if d.HasChange("labels") {
 		updateMask = append(updateMask, "labels")
 	}
 
 	if d.HasChange("monitoring_config") {
 		updateMask = append(updateMask, "monitoringConfig")
+	}
+
+	if d.HasChange("offline_storage_ttl_days") {
+		updateMask = append(updateMask, "offlineStorageTtlDays")
 	}
 	// updateMask is a URL parameter but not present in the schema, so replaceVars
 	// won't set it
@@ -456,6 +505,10 @@ func resourceVertexAIFeaturestoreEntitytypeImport(d *schema.ResourceData, meta i
 	}
 
 	return []*schema.ResourceData{d}, nil
+}
+
+func flattenVertexAIFeaturestoreEntitytypeDescription(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
 }
 
 func flattenVertexAIFeaturestoreEntitytypeCreateTime(v interface{}, d *schema.ResourceData, config *Config) interface{} {
@@ -605,6 +658,27 @@ func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigCategoricalThresholdCo
 }
 func flattenVertexAIFeaturestoreEntitytypeMonitoringConfigCategoricalThresholdConfigValue(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	return v
+}
+
+func flattenVertexAIFeaturestoreEntitytypeOfflineStorageTtlDays(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	// Handles the string fixed64 format
+	if strVal, ok := v.(string); ok {
+		if intVal, err := stringToFixed64(strVal); err == nil {
+			return intVal
+		}
+	}
+
+	// number values are represented as float64
+	if floatVal, ok := v.(float64); ok {
+		intVal := int(floatVal)
+		return intVal
+	}
+
+	return v // let terraform core handle it otherwise
+}
+
+func expandVertexAIFeaturestoreEntitytypeDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
 }
 
 func expandVertexAIFeaturestoreEntitytypeLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
@@ -791,6 +865,10 @@ func expandVertexAIFeaturestoreEntitytypeMonitoringConfigCategoricalThresholdCon
 }
 
 func expandVertexAIFeaturestoreEntitytypeMonitoringConfigCategoricalThresholdConfigValue(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandVertexAIFeaturestoreEntitytypeOfflineStorageTtlDays(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
 

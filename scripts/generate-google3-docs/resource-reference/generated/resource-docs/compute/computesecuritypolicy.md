@@ -77,6 +77,11 @@
 #### Schema
 ```yaml
 adaptiveProtectionConfig:
+  autoDeployConfig:
+    confidenceThreshold: float
+    expirationSec: integer
+    impactedBaselineThreshold: float
+    loadThreshold: float
   layer7DdosDefenseConfig:
     enable: boolean
     ruleVisibility: string
@@ -162,6 +167,56 @@ type: string
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Adaptive Protection Config of this security policy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>adaptiveProtectionConfig.autoDeployConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Auto Deploy Config of this security policy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>adaptiveProtectionConfig.autoDeployConfig.confidenceThreshold</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">float</code></p>
+            <p>{% verbatim %}Rules are only automatically deployed for alerts on potential attacks with confidence scores greater than this threshold.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>adaptiveProtectionConfig.autoDeployConfig.expirationSec</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Google Cloud Armor stops applying the action in the automatically deployed rule to an identified attacker after this duration. The rule continues to operate against new requests.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>adaptiveProtectionConfig.autoDeployConfig.impactedBaselineThreshold</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">float</code></p>
+            <p>{% verbatim %}Rules are only automatically deployed when the estimated impact to baseline traffic from the suggested mitigation is below this threshold.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>adaptiveProtectionConfig.autoDeployConfig.loadThreshold</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">float</code></p>
+            <p>{% verbatim %}Identifies new attackers only when the load to the backend service that is under attack exceeds this threshold.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

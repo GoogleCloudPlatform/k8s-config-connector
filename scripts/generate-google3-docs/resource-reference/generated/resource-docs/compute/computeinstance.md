@@ -219,6 +219,9 @@ resourcePolicies:
 scheduling:
   automaticRestart: boolean
   instanceTerminationAction: string
+  maxRunDuration:
+    nanos: integer
+    seconds: integer
   minNodeCpus: integer
   nodeAffinities:
   - value: {}
@@ -1548,6 +1551,40 @@ zone: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Specifies the action GCE should take when SPOT VM is preempted.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduling.maxRunDuration</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. The timeout for new network connections to hosts.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduling.maxRunDuration.nanos</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Span of time that's a fraction of a second at nanosecond
+resolution. Durations less than one second are represented
+with a 0 seconds field and a positive nanos field. Must
+be from 0 to 999,999,999 inclusive.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduling.maxRunDuration.seconds</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Span of time at a resolution of a second.
+Must be from 0 to 315,576,000,000 inclusive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

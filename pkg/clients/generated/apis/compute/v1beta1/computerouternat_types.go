@@ -177,6 +177,11 @@ type ComputeRouterNATSpec struct {
 	// +optional
 	TcpEstablishedIdleTimeoutSec *int `json:"tcpEstablishedIdleTimeoutSec,omitempty"`
 
+	/* Timeout (in seconds) for TCP connections that are in TIME_WAIT state.
+	Defaults to 120s if not set. */
+	// +optional
+	TcpTimeWaitTimeoutSec *int `json:"tcpTimeWaitTimeoutSec,omitempty"`
+
 	/* Timeout (in seconds) for TCP transitory connections.
 	Defaults to 30s if not set. */
 	// +optional

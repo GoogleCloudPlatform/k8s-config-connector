@@ -45,7 +45,7 @@ func TestAccFirebaseAndroidApp_firebaseAndroidAppBasicExample(t *testing.T) {
 				ResourceName:            "google_firebase_android_app.basic",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"deletion_policy", "project"},
+				ImportStateVerifyIgnore: []string{"project", "deletion_policy"},
 			},
 		},
 	})

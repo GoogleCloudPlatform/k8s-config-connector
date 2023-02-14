@@ -55,6 +55,12 @@ func resourceCloudRunV2Service() *schema.Resource {
 				MaxItems:    1,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
+						"annotations": {
+							Type:        schema.TypeMap,
+							Optional:    true,
+							Description: `KRM-style annotations for the resource.`,
+							Elem:        &schema.Schema{Type: schema.TypeString},
+						},
 						"containers": {
 							Type:        schema.TypeList,
 							Optional:    true,
@@ -147,7 +153,7 @@ func resourceCloudRunV2Service() *schema.Resource {
 												"http_get": {
 													Type:        schema.TypeList,
 													Optional:    true,
-													Description: `HTTPGet specifies the http request to perform. Exactly one of HTTPGet or TCPSocket must be specified.`,
+													Description: `HTTPGet specifies the http request to perform.`,
 													MaxItems:    1,
 													Elem: &schema.Resource{
 														Schema: map[string]*schema.Schema{
@@ -195,7 +201,8 @@ func resourceCloudRunV2Service() *schema.Resource {
 												"tcp_socket": {
 													Type:        schema.TypeList,
 													Optional:    true,
-													Description: `TCPSocket specifies an action involving a TCP port. Exactly one of HTTPGet or TCPSocket must be specified.`,
+													Deprecated:  "Cloud Run does not support tcp socket in liveness probe and `liveness_probe.tcp_socket` field will be removed in a future major release.",
+													Description: `TCPSocket specifies an action involving a TCP port. This field is not supported in liveness probe currently.`,
 													MaxItems:    1,
 													Elem: &schema.Resource{
 														Schema: map[string]*schema.Schema{
@@ -544,6 +551,12 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
 					},
 				},
 			},
+			"annotations": {
+				Type:        schema.TypeMap,
+				Optional:    true,
+				Description: `Unstructured key value map that may be set by external tools to store and arbitrary metadata. They are not queryable and should be preserved when modifying objects. Cloud Run will populate some annotations using 'run.googleapis.com' or 'serving.knative.dev' namespaces. This field follows Kubernetes annotations' namespacing, limits, and rules. More info: https://kubernetes.io/docs/user-guide/annotations`,
+				Elem:        &schema.Schema{Type: schema.TypeString},
+			},
 			"binary_authorization": {
 				Type:        schema.TypeList,
 				Optional:    true,
@@ -848,6 +861,12 @@ func resourceCloudRunV2ServiceCreate(d *schema.ResourceData, meta interface{}) e
 	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(labelsProp)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
 	}
+	annotationsProp, err := expandCloudRunV2ServiceAnnotations(d.Get("annotations"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("annotations"); !isEmptyValue(reflect.ValueOf(annotationsProp)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
+		obj["annotations"] = annotationsProp
+	}
 	clientProp, err := expandCloudRunV2ServiceClient(d.Get("client"), d, config)
 	if err != nil {
 		return err
@@ -993,6 +1012,9 @@ func resourceCloudRunV2ServiceRead(d *schema.ResourceData, meta interface{}) err
 	if err := d.Set("labels", flattenCloudRunV2ServiceLabels(res["labels"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Service: %s", err)
 	}
+	if err := d.Set("annotations", flattenCloudRunV2ServiceAnnotations(res["annotations"], d, config)); err != nil {
+		return fmt.Errorf("Error reading Service: %s", err)
+	}
 	if err := d.Set("client", flattenCloudRunV2ServiceClient(res["client"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Service: %s", err)
 	}
@@ -1072,6 +1094,12 @@ func resourceCloudRunV2ServiceUpdate(d *schema.ResourceData, meta interface{}) e
 		return err
 	} else if v, ok := d.GetOkExists("labels"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, labelsProp)) {
 		obj["labels"] = labelsProp
+	}
+	annotationsProp, err := expandCloudRunV2ServiceAnnotations(d.Get("annotations"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("annotations"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, annotationsProp)) {
+		obj["annotations"] = annotationsProp
 	}
 	clientProp, err := expandCloudRunV2ServiceClient(d.Get("client"), d, config)
 	if err != nil {
@@ -1228,6 +1256,10 @@ func flattenCloudRunV2ServiceLabels(v interface{}, d *schema.ResourceData, confi
 	return v
 }
 
+func flattenCloudRunV2ServiceAnnotations(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
 func flattenCloudRunV2ServiceClient(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	return v
 }
@@ -1280,6 +1312,8 @@ func flattenCloudRunV2ServiceTemplate(v interface{}, d *schema.ResourceData, con
 		flattenCloudRunV2ServiceTemplateRevision(original["revision"], d, config)
 	transformed["labels"] =
 		flattenCloudRunV2ServiceTemplateLabels(original["labels"], d, config)
+	transformed["annotations"] =
+		flattenCloudRunV2ServiceTemplateAnnotations(original["annotations"], d, config)
 	transformed["scaling"] =
 		flattenCloudRunV2ServiceTemplateScaling(original["scaling"], d, config)
 	transformed["vpc_access"] =
@@ -1305,6 +1339,10 @@ func flattenCloudRunV2ServiceTemplateRevision(v interface{}, d *schema.ResourceD
 }
 
 func flattenCloudRunV2ServiceTemplateLabels(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenCloudRunV2ServiceTemplateAnnotations(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	return v
 }
 
@@ -2321,6 +2359,17 @@ func expandCloudRunV2ServiceLabels(v interface{}, d TerraformResourceData, confi
 	return m, nil
 }
 
+func expandCloudRunV2ServiceAnnotations(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+	if v == nil {
+		return map[string]string{}, nil
+	}
+	m := make(map[string]string)
+	for k, val := range v.(map[string]interface{}) {
+		m[k] = val.(string)
+	}
+	return m, nil
+}
+
 func expandCloudRunV2ServiceClient(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
@@ -2394,6 +2443,13 @@ func expandCloudRunV2ServiceTemplate(v interface{}, d TerraformResourceData, con
 		transformed["labels"] = transformedLabels
 	}
 
+	transformedAnnotations, err := expandCloudRunV2ServiceTemplateAnnotations(original["annotations"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedAnnotations); val.IsValid() && !isEmptyValue(val) {
+		transformed["annotations"] = transformedAnnotations
+	}
+
 	transformedScaling, err := expandCloudRunV2ServiceTemplateScaling(original["scaling"], d, config)
 	if err != nil {
 		return nil, err
@@ -2465,6 +2521,17 @@ func expandCloudRunV2ServiceTemplateRevision(v interface{}, d TerraformResourceD
 }
 
 func expandCloudRunV2ServiceTemplateLabels(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
+	if v == nil {
+		return map[string]string{}, nil
+	}
+	m := make(map[string]string)
+	for k, val := range v.(map[string]interface{}) {
+		m[k] = val.(string)
+	}
+	return m, nil
+}
+
+func expandCloudRunV2ServiceTemplateAnnotations(v interface{}, d TerraformResourceData, config *Config) (map[string]string, error) {
 	if v == nil {
 		return map[string]string{}, nil
 	}

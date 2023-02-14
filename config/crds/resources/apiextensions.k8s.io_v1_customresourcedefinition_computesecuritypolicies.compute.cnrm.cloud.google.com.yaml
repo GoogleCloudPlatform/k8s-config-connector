@@ -61,6 +61,30 @@ spec:
               adaptiveProtectionConfig:
                 description: Adaptive Protection Config of this security policy.
                 properties:
+                  autoDeployConfig:
+                    description: Auto Deploy Config of this security policy.
+                    properties:
+                      confidenceThreshold:
+                        description: Rules are only automatically deployed for alerts
+                          on potential attacks with confidence scores greater than
+                          this threshold.
+                        type: number
+                      expirationSec:
+                        description: Google Cloud Armor stops applying the action
+                          in the automatically deployed rule to an identified attacker
+                          after this duration. The rule continues to operate against
+                          new requests.
+                        type: integer
+                      impactedBaselineThreshold:
+                        description: Rules are only automatically deployed when the
+                          estimated impact to baseline traffic from the suggested
+                          mitigation is below this threshold.
+                        type: number
+                      loadThreshold:
+                        description: Identifies new attackers only when the load to
+                          the backend service that is under attack exceeds this threshold.
+                        type: number
+                    type: object
                   layer7DdosDefenseConfig:
                     description: Layer 7 DDoS Defense Config of this security policy.
                     properties:

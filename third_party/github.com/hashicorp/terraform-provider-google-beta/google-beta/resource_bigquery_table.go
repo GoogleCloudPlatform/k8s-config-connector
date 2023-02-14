@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"reflect"
 	"regexp"
 	"sort"
 	"strconv"
@@ -170,6 +171,23 @@ func bigQueryTableSchemaDiffSuppress(name, old, new string, _ *schema.ResourceDa
 	}
 
 	return eq
+}
+
+func bigQueryTableConnectionIdSuppress(name, old, new string, _ *schema.ResourceData) bool {
+	// API accepts connectionId in below two formats
+	// "{{project}}.{{location}}.{{connection_id}}" or
+	// "projects/{{project}}/locations/{{location}}/connections/{{connection_id}}".
+	// but always returns "{{project}}.{{location}}.{{connection_id}}"
+
+	if isEmptyValue(reflect.ValueOf(old)) || isEmptyValue(reflect.ValueOf(new)) {
+		return false
+	}
+
+	re := regexp.MustCompile("projects/(.+)/(?:locations|regions)/(.+)/connections/(.+)")
+	if matches := re.FindStringSubmatch(new); matches != nil {
+		return old == matches[1]+"."+matches[2]+"."+matches[3]
+	}
+	return false
 }
 
 func bigQueryTableTypeEq(old, new string) bool {
@@ -627,9 +645,15 @@ func resourceBigQueryTable() *schema.Resource {
 						// "{{project}}.{{location}}.{{connection_id}}" or
 						// "projects/{{project}}/locations/{{location}}/connections/{{connection_id}}".
 						"connection_id": {
+							Type:             schema.TypeString,
+							Optional:         true,
+							DiffSuppressFunc: bigQueryTableConnectionIdSuppress,
+							Description:      `The connection specifying the credentials to be used to read external storage, such as Azure Blob, Cloud Storage, or S3. The connectionId can have the form "{{project}}.{{location}}.{{connection_id}}" or "projects/{{project}}/locations/{{location}}/connections/{{connection_id}}".`,
+						},
+						"reference_file_schema_uri": {
 							Type:        schema.TypeString,
 							Optional:    true,
-							Description: `The connection specifying the credentials to be used to read external storage, such as Azure Blob, Cloud Storage, or S3. The connectionId can have the form "{{project}}.{{location}}.{{connection_id}}" or "projects/{{project}}/locations/{{location}}/connections/{{connection_id}}".`,
+							Description: `When creating an external table, the user can provide a reference file with the table schema. This is enabled for the following formats: AVRO, PARQUET, ORC.`,
 						},
 					},
 				},
@@ -1362,6 +1386,9 @@ func expandExternalDataConfiguration(cfg interface{}) (*bigquery.ExternalDataCon
 	if v, ok := raw["connection_id"]; ok {
 		edc.ConnectionId = v.(string)
 	}
+	if v, ok := raw["reference_file_schema_uri"]; ok {
+		edc.ReferenceFileSchemaUri = v.(string)
+	}
 
 	return edc, nil
 
@@ -1406,6 +1433,10 @@ func flattenExternalDataConfiguration(edc *bigquery.ExternalDataConfiguration) (
 
 	if edc.ConnectionId != "" {
 		result["connection_id"] = edc.ConnectionId
+	}
+
+	if edc.ReferenceFileSchemaUri != "" {
+		result["reference_file_schema_uri"] = edc.ReferenceFileSchemaUri
 	}
 
 	return []map[string]interface{}{result}, nil

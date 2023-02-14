@@ -182,6 +182,19 @@ type InstancetemplateIpv6AccessConfig struct {
 	PublicPtrDomainName *string `json:"publicPtrDomainName,omitempty"`
 }
 
+type InstancetemplateMaxRunDuration struct {
+	/* Immutable. Span of time that's a fraction of a second at nanosecond
+	resolution. Durations less than one second are represented
+	with a 0 seconds field and a positive nanos field. Must
+	be from 0 to 999,999,999 inclusive. */
+	// +optional
+	Nanos *int `json:"nanos,omitempty"`
+
+	/* Immutable. Span of time at a resolution of a second.
+	Must be from 0 to 315,576,000,000 inclusive. */
+	Seconds int `json:"seconds"`
+}
+
 type InstancetemplateMetadata struct {
 	Key string `json:"key"`
 
@@ -262,6 +275,10 @@ type InstancetemplateScheduling struct {
 	/* Immutable. Specifies the action GCE should take when SPOT VM is preempted. */
 	// +optional
 	InstanceTerminationAction *string `json:"instanceTerminationAction,omitempty"`
+
+	/* Immutable. The timeout for new network connections to hosts. */
+	// +optional
+	MaxRunDuration *InstancetemplateMaxRunDuration `json:"maxRunDuration,omitempty"`
 
 	/* Minimum number of cpus for the instance. */
 	// +optional
@@ -409,6 +426,9 @@ type ComputeInstanceTemplateSpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// +optional
+	ResourcePolicies []v1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
 
 	/* Immutable. The scheduling strategy to use. */
 	// +optional

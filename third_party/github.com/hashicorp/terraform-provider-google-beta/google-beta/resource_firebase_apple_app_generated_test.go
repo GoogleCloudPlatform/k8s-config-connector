@@ -41,10 +41,9 @@ func TestAccFirebaseAppleApp_firebaseAppleAppBasicExample(t *testing.T) {
 				Config: testAccFirebaseAppleApp_firebaseAppleAppBasicExample(context),
 			},
 			{
-				ResourceName:            "google_firebase_apple_app.default",
-				ImportState:             true,
-				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"deletion_policy"},
+				ResourceName:      "google_firebase_apple_app.default",
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})
@@ -84,7 +83,7 @@ func TestAccFirebaseAppleApp_firebaseAppleAppFullExample(t *testing.T) {
 				ResourceName:            "google_firebase_apple_app.full",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"deletion_policy", "project"},
+				ImportStateVerifyIgnore: []string{"project", "deletion_policy"},
 			},
 		},
 	})

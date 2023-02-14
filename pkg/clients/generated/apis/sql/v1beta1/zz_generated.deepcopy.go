@@ -262,6 +262,11 @@ func (in *InstanceIpConfiguration) DeepCopyInto(out *InstanceIpConfiguration) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.EnablePrivatePathForGoogleCloudServices != nil {
+		in, out := &in.EnablePrivatePathForGoogleCloudServices, &out.EnablePrivatePathForGoogleCloudServices
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Ipv4Enabled != nil {
 		in, out := &in.Ipv4Enabled, &out.Ipv4Enabled
 		*out = new(bool)

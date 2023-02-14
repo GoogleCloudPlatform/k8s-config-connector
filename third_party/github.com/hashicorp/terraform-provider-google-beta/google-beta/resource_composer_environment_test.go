@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"log"
+	"regexp"
 	"strings"
 	"time"
 
@@ -780,6 +781,46 @@ func TestAccComposerEnvironment_withNodeConfig(t *testing.T) {
 	})
 }
 
+func TestAccComposerEnvironmentAirflow2_withRecoveryConfig(t *testing.T) {
+	t.Parallel()
+	envName := fmt.Sprintf("%s-%d", testComposerEnvironmentPrefix, randInt(t))
+	network := fmt.Sprintf("%s-%d", testComposerNetworkPrefix, randInt(t))
+	subnetwork := network + "-1"
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccComposerEnvironmentDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComposerEnvironment_airflow2RecoveryCfg(envName, network, subnetwork),
+			},
+			{
+				ResourceName:      "google_composer_environment.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccComposerEnvironmentUpdate_airflow2RecoveryCfg(envName, network, subnetwork),
+			},
+			{
+				ResourceName:      "google_composer_environment.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			// This is a terrible clean-up step in order to get destroy to succeed,
+			// due to dangling firewall rules left by the Composer Environment blocking network deletion.
+			// TODO: Remove this check if firewall rules bug gets fixed by Composer.
+			{
+				PlanOnly:           true,
+				ExpectNonEmptyPlan: false,
+				Config:             testAccComposerEnvironmentUpdate_airflow2RecoveryCfg(envName, network, subnetwork),
+				Check:              testAccCheckClearComposerEnvironmentFirewalls(t, network),
+			},
+		},
+	})
+}
+
 func TestAccComposerEnvironment_withSoftwareConfig(t *testing.T) {
 	t.Parallel()
 	envName := fmt.Sprintf("%s-%d", testComposerEnvironmentPrefix, randInt(t))
@@ -882,6 +923,35 @@ func TestAccComposerEnvironment_withUpdateOnCreate(t *testing.T) {
 				ExpectNonEmptyPlan: false,
 				Config:             testAccComposerEnvironment_updateOnlyFields(envName, network, subnetwork),
 				Check:              testAccCheckClearComposerEnvironmentFirewalls(t, network),
+			},
+		},
+	})
+}
+
+func TestAccComposerEnvironment_fixPyPiPackages(t *testing.T) {
+	t.Parallel()
+
+	envName := fmt.Sprintf("%s-%d", testComposerEnvironmentPrefix, randInt(t))
+	network := fmt.Sprintf("%s-%d", testComposerNetworkPrefix, randInt(t))
+	subnetwork := network + "-1"
+	serviceAccount := fmt.Sprintf("tf-test-%d", randInt(t))
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccComposerEnvironmentDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config:      testAccComposerEnvironment_fixPyPiPackages(envName, network, subnetwork, serviceAccount),
+				ExpectError: regexp.MustCompile("Failed to install pypi packages"),
+			},
+			{
+				Config: testAccComposerEnvironment_fixPyPiPackagesUpdate(envName, network, subnetwork, serviceAccount),
+			},
+			{
+				ResourceName:      "google_composer_environment.test",
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})
@@ -1485,6 +1555,9 @@ resource "google_composer_environment" "test" {
 
       software_config {
         image_version = "composer-2-airflow-2"
+        cloud_data_lineage_integration {
+          enabled = true
+        }
       }
 
       workloads_config {
@@ -1744,6 +1817,9 @@ resource "google_composer_environment" "test" {
 
       software_config {
         image_version = "composer-2-airflow-2"
+        cloud_data_lineage_integration {
+          enabled = false
+        }
       }
 
       workloads_config {
@@ -1844,6 +1920,98 @@ resource "google_project_iam_member" "composer-worker" {
   member = "serviceAccount:${google_service_account.test.email}"
 }
 `, environment, network, subnetwork, serviceAccount)
+}
+
+func testAccComposerEnvironment_airflow2RecoveryCfg(name, network, subnetwork string) string {
+	return fmt.Sprintf(`
+resource "google_composer_environment" "test" {
+  name   = "%s"
+  region = "us-central1"
+
+  config {
+    node_config {
+      network          = google_compute_network.test.self_link
+      subnetwork       = google_compute_subnetwork.test.self_link
+      ip_allocation_policy {
+        cluster_ipv4_cidr_block = "10.0.0.0/16"
+      }
+    }
+
+    software_config {
+      image_version = "composer-2-airflow-2"
+    }
+
+    recovery_config {
+      scheduled_snapshots_config {
+        enabled =                    true
+        snapshot_location =          "gs://example-bucket/environment_snapshots"
+        snapshot_creation_schedule = "0 4 * * *"
+        time_zone =                  "UTC+01"
+      }
+    }
+  }
+
+}
+
+resource "google_compute_network" "test" {
+  name                    = "%s"
+  auto_create_subnetworks = false
+}
+
+resource "google_compute_subnetwork" "test" {
+  name          = "%s"
+  ip_cidr_range = "10.2.0.0/16"
+  region        = "us-central1"
+  network       = google_compute_network.test.self_link
+  private_ip_google_access = true
+}
+`, name, network, subnetwork)
+}
+
+func testAccComposerEnvironmentUpdate_airflow2RecoveryCfg(name, network, subnetwork string) string {
+	return fmt.Sprintf(`
+resource "google_composer_environment" "test" {
+  name   = "%s"
+  region = "us-central1"
+
+  config {
+    node_config {
+      network          = google_compute_network.test.self_link
+      subnetwork       = google_compute_subnetwork.test.self_link
+      ip_allocation_policy {
+        cluster_ipv4_cidr_block = "10.0.0.0/16"
+      }
+    }
+
+    software_config {
+      image_version = "composer-2-airflow-2"
+    }
+
+    recovery_config {
+		  scheduled_snapshots_config {
+			  enabled =                    true
+			  snapshot_location =          "gs://example-bucket/environment_snapshots2"
+			  snapshot_creation_schedule = "1 2 * * *"
+			  time_zone =                  "UTC+02"
+      }
+    }
+  }
+
+}
+
+resource "google_compute_network" "test" {
+  name                    = "%s"
+  auto_create_subnetworks = false
+}
+
+resource "google_compute_subnetwork" "test" {
+  name          = "%s"
+  ip_cidr_range = "10.2.0.0/16"
+  region        = "us-central1"
+  network       = google_compute_network.test.self_link
+  private_ip_google_access = true
+}
+`, name, network, subnetwork)
 }
 
 func testAccComposerEnvironment_softwareCfg(name, network, subnetwork string) string {
@@ -1981,6 +2149,161 @@ resource "google_compute_subnetwork" "test" {
   network       = google_compute_network.test.self_link
 }
 `, name, network, subnetwork)
+}
+
+func testAccComposerEnvironment_fixPyPiPackages(environment, network, subnetwork, serviceAccount string) string {
+	return fmt.Sprintf(`
+resource "google_composer_environment" "test" {
+  name   = "%s"
+  region = "us-central1"
+  config {
+
+    software_config {
+      image_version = "composer-2-airflow-2"
+
+      pypi_packages = {
+        "google-cloud-bigquery" = "==1"
+      }
+    }
+
+    private_environment_config {
+      enable_private_endpoint = true
+      master_ipv4_cidr_block  = "10.10.0.0/28"
+    }
+
+    workloads_config {
+      scheduler {
+        cpu        = 0.5
+        memory_gb  = 1.875
+        storage_gb = 1
+        count      = 1
+      }
+      web_server {
+        cpu        = 0.5
+        memory_gb  = 1.875
+        storage_gb = 1
+      }
+      worker {
+        cpu = 0.5
+        memory_gb  = 1.875
+        storage_gb = 1
+        min_count  = 1
+        max_count  = 3
+      }
+    }
+
+    environment_size = "ENVIRONMENT_SIZE_SMALL"
+
+    node_config {
+      network    = google_compute_network.test.id
+      subnetwork = google_compute_subnetwork.test.id
+      service_account = google_service_account.test.name
+    }
+  }
+}
+
+// use a separate network to avoid conflicts with other tests running in parallel
+// that use the default network/subnet
+resource "google_compute_network" "test" {
+  name                    = "%s"
+  auto_create_subnetworks = false
+}
+
+resource "google_compute_subnetwork" "test" {
+  name          = "%s"
+  ip_cidr_range = "10.2.0.0/16"
+  region        = "us-central1"
+  network       = google_compute_network.test.self_link
+}
+
+resource "google_service_account" "test" {
+  account_id   = "%s"
+  display_name = "Test Service Account for Composer Environment"
+}
+
+data "google_project" "project" {}
+
+resource "google_project_iam_member" "composer-worker" {
+  project = data.google_project.project.project_id
+  role    = "roles/composer.worker"
+  member  = "serviceAccount:${google_service_account.test.email}"
+}`, environment, network, subnetwork, serviceAccount)
+}
+
+func testAccComposerEnvironment_fixPyPiPackagesUpdate(environment, network, subnetwork, serviceAccount string) string {
+	return fmt.Sprintf(`
+resource "google_composer_environment" "test" {
+  name   = "%s"
+  region = "us-central1"
+  config {
+
+    software_config {
+      image_version = "composer-2-airflow-2"
+    }
+
+    private_environment_config {
+      enable_private_endpoint = true
+      master_ipv4_cidr_block  = "10.10.0.0/28"
+    }
+
+    workloads_config {
+      scheduler {
+        cpu        = 0.5
+        memory_gb  = 1.875
+        storage_gb = 1
+        count      = 1
+      }
+      web_server {
+        cpu        = 0.5
+        memory_gb  = 1.875
+        storage_gb = 1
+      }
+      worker {
+        cpu = 0.5
+        memory_gb  = 1.875
+        storage_gb = 1
+        min_count  = 1
+        max_count  = 3
+      }
+    }
+
+    environment_size = "ENVIRONMENT_SIZE_SMALL"
+
+    node_config {
+      network    = google_compute_network.test.id
+      subnetwork = google_compute_subnetwork.test.id
+      service_account = google_service_account.test.name
+    }
+  }
+}
+
+// use a separate network to avoid conflicts with other tests running in parallel
+// that use the default network/subnet
+resource "google_compute_network" "test" {
+  name                    = "%s"
+  auto_create_subnetworks = false
+}
+
+resource "google_compute_subnetwork" "test" {
+  name          = "%s"
+  ip_cidr_range = "10.2.0.0/16"
+  region        = "us-central1"
+  network       = google_compute_network.test.self_link
+}
+
+resource "google_service_account" "test" {
+  account_id   = "%s"
+  display_name = "Test Service Account for Composer Environment"
+}
+
+data "google_project" "project" {}
+
+resource "google_project_iam_member" "composer-worker" {
+  project = data.google_project.project.project_id
+  role    = "roles/composer.worker"
+  member  = "serviceAccount:${google_service_account.test.email}"
+}
+`, environment, network, subnetwork, serviceAccount)
 }
 
 /**

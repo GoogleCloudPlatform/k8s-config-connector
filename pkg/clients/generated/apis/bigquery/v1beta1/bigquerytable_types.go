@@ -108,6 +108,10 @@ type TableExternalDataConfiguration struct {
 	// +optional
 	MaxBadRecords *int `json:"maxBadRecords,omitempty"`
 
+	/* When creating an external table, the user can provide a reference file with the table schema. This is enabled for the following formats: AVRO, PARQUET, ORC. */
+	// +optional
+	ReferenceFileSchemaUri *string `json:"referenceFileSchemaUri,omitempty"`
+
 	/* Immutable. A JSON schema for the external table. Schema is required for CSV and JSON formats and is disallowed for Google Cloud Bigtable, Cloud Datastore backups, and Avro formats when using external tables. */
 	// +optional
 	Schema *string `json:"schema,omitempty"`

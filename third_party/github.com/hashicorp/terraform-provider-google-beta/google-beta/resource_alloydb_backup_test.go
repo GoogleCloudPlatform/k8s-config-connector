@@ -16,7 +16,7 @@ func TestAccAlloydbBackup_update(t *testing.T) {
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckAlloydbBackupDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -45,7 +45,6 @@ func TestAccAlloydbBackup_update(t *testing.T) {
 func testAccAlloydbBackup_update(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_alloydb_backup" "default" {
-  provider     = google-beta
   location     = "us-central1"
   backup_id    = "tf-test-alloydb-backup%{random_suffix}"
   cluster_name = google_alloydb_cluster.default.name
@@ -59,14 +58,12 @@ resource "google_alloydb_backup" "default" {
 }
 
 resource "google_alloydb_cluster" "default" {
-  provider   = google-beta
   cluster_id = "tf-test-alloydb-cluster%{random_suffix}"
   location   = "us-central1"
   network    = data.google_compute_network.default.id
 }
 
 resource "google_alloydb_instance" "default" {
-  provider      = google-beta
   cluster       = google_alloydb_cluster.default.name
   instance_id   = "tf-test-alloydb-instance%{random_suffix}"
   instance_type = "PRIMARY"
@@ -75,7 +72,6 @@ resource "google_alloydb_instance" "default" {
 }
 
 resource "google_compute_global_address" "private_ip_alloc" {
-  provider = google-beta
   name          =  "tf-test-alloydb-cluster%{random_suffix}"
   address_type  = "INTERNAL"
   purpose       = "VPC_PEERING"
@@ -84,14 +80,12 @@ resource "google_compute_global_address" "private_ip_alloc" {
 }
 
 resource "google_service_networking_connection" "vpc_connection" {
-  provider   = google-beta
   network                 = data.google_compute_network.default.id
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.private_ip_alloc.name]
 }
 
 data "google_compute_network" "default" {
-  provider = google-beta
   name = "%{network_name}"
 }
 `, context)

@@ -47,6 +47,7 @@ var (
 		"scheduling.0.min_node_cpus",
 		"scheduling.0.provisioning_model",
 		"scheduling.0.instance_termination_action",
+		"scheduling.0.max_run_duration",
 	}
 
 	shieldedInstanceConfigKeys = []string{
@@ -635,6 +636,33 @@ func resourceComputeInstance() *schema.Resource {
 							Optional:     true,
 							AtLeastOneOf: schedulingKeys,
 							Description:  `Specifies the action GCE should take when SPOT VM is preempted.`,
+						},
+						"max_run_duration": {
+							Type:        schema.TypeList,
+							Optional:    true,
+							Description: `The timeout for new network connections to hosts.`,
+							MaxItems:    1,
+							ForceNew:    true,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"seconds": {
+										Type:     schema.TypeInt,
+										Required: true,
+										ForceNew: true,
+										Description: `Span of time at a resolution of a second.
+Must be from 0 to 315,576,000,000 inclusive.`,
+									},
+									"nanos": {
+										Type:     schema.TypeInt,
+										Optional: true,
+										ForceNew: true,
+										Description: `Span of time that's a fraction of a second at nanosecond
+resolution. Durations less than one second are represented
+with a 0 seconds field and a positive nanos field. Must
+be from 0 to 999,999,999 inclusive.`,
+									},
+								},
+							},
 						},
 					},
 				},
@@ -1347,6 +1375,14 @@ func resourceComputeInstanceRead(d *schema.ResourceData, meta interface{}) error
 	}
 	if err := d.Set("scratch_disk", scratchDisks); err != nil {
 		return fmt.Errorf("Error setting scratch_disk: %s", err)
+	}
+	// Add extra check on Scheduling to prevent STOP instance setting MaxRunDuration.
+	// When Instance being stopped, GCE will wipe out the MaxRunDuration field.
+	// And Terraform has no visiblity on this field after then. Given the infrastructure
+	// constraint, MaxRunDuration will only be supported with instance has
+	// DELETE InstanceTerminationAction
+	if instance.Scheduling.MaxRunDuration != nil && instance.Scheduling.InstanceTerminationAction == "STOP" {
+		return fmt.Errorf("Can not set MaxRunDuration on instance with STOP InstanceTerminationAction, it is not supported by terraform.")
 	}
 	if err := d.Set("scheduling", flattenScheduling(instance.Scheduling)); err != nil {
 		return fmt.Errorf("Error setting scheduling: %s", err)

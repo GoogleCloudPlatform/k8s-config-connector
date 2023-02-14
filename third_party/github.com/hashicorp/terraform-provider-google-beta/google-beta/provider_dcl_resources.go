@@ -24,6 +24,8 @@ var dclResources = map[string]*schema.Resource{
 	"google_assured_workloads_workload":                         resourceAssuredWorkloadsWorkload(),
 	"google_bigquery_reservation_assignment":                    resourceBigqueryReservationAssignment(),
 	"google_cloudbuild_worker_pool":                             resourceCloudbuildWorkerPool(),
+	"google_cloudbuildv2_connection":                            resourceCloudbuildv2Connection(),
+	"google_cloudbuildv2_repository":                            resourceCloudbuildv2Repository(),
 	"google_clouddeploy_delivery_pipeline":                      resourceClouddeployDeliveryPipeline(),
 	"google_clouddeploy_target":                                 resourceClouddeployTarget(),
 	"google_compute_firewall_policy":                            resourceComputeFirewallPolicy(),

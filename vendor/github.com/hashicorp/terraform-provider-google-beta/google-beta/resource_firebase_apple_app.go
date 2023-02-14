@@ -57,16 +57,6 @@ func resourceFirebaseAppleApp() *schema.Resource {
 				Optional:    true,
 				Description: `The canonical bundle ID of the Apple app as it would appear in the Apple AppStore.`,
 			},
-			"deletion_policy": {
-				Type:             schema.TypeString,
-				Optional:         true,
-				ForceNew:         true,
-				DiffSuppressFunc: emptyOrDefaultStringSuppress("DELETE"),
-				Description: `(Optional) Set to 'ABANDON' to allow the AppleApp to be untracked from terraform state
-rather than deleted upon 'terraform destroy'. This is useful because the AppleApp may be
-serving traffic. Set to 'DELETE' to delete the AppleApp. Default to 'DELETE'.`,
-				Default: "DELETE",
-			},
 			"team_id": {
 				Type:        schema.TypeString,
 				Optional:    true,
@@ -83,6 +73,14 @@ This identifier should be treated as an opaque token, as the data format is not 
 				Computed: true,
 				Description: `The fully qualified resource name of the App, for example:
 projects/projectId/iosApps/appId`,
+			},
+			"deletion_policy": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Default:  "DELETE",
+				Description: `(Optional) Set to 'ABANDON' to allow the Apple to be untracked from terraform state
+rather than deleted upon 'terraform destroy'. This is useful because the Apple may be
+serving traffic. Set to 'DELETE' to delete the Apple. Defaults to 'DELETE'.`,
 			},
 			"project": {
 				Type:     schema.TypeString,
@@ -218,6 +216,12 @@ func resourceFirebaseAppleAppRead(d *schema.ResourceData, meta interface{}) erro
 		return handleNotFoundError(err, d, fmt.Sprintf("FirebaseAppleApp %q", d.Id()))
 	}
 
+	// Explicitly set virtual fields to default values if unset
+	if _, ok := d.GetOkExists("deletion_policy"); !ok {
+		if err := d.Set("deletion_policy", "DELETE"); err != nil {
+			return fmt.Errorf("Error setting deletion_policy: %s", err)
+		}
+	}
 	if err := d.Set("project", project); err != nil {
 		return fmt.Errorf("Error reading AppleApp: %s", err)
 	}

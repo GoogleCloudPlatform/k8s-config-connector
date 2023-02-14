@@ -79,10 +79,11 @@ func resourceFirebaseDatabaseInstance() *schema.Resource {
 Instance IDs cannot be reused after deletion.`,
 			},
 			"region": {
-				Type:        schema.TypeString,
-				Required:    true,
-				ForceNew:    true,
-				Description: `A reference to the region where the Firebase Realtime database resides.`,
+				Type:     schema.TypeString,
+				Required: true,
+				ForceNew: true,
+				Description: `A reference to the region where the Firebase Realtime database resides.
+Check all [available regions](https://firebase.google.com/docs/projects/locations#rtdb-locations)`,
 			},
 			"type": {
 				Type:         schema.TypeString,

@@ -125,7 +125,52 @@ func expandScheduling(v interface{}) (*compute.Scheduling, error) {
 		scheduling.InstanceTerminationAction = v.(string)
 		scheduling.ForceSendFields = append(scheduling.ForceSendFields, "InstanceTerminationAction")
 	}
+	if v, ok := original["max_run_duration"]; ok {
+		transformedMaxRunDuration, err := expandComputeMaxRunDuration(v)
+		if scheduling.InstanceTerminationAction == "STOP" && transformedMaxRunDuration != nil {
+			return nil, fmt.Errorf("Can not set MaxRunDuration on instance with STOP InstanceTerminationAction, it is not supported by terraform.")
+		}
+		if err != nil {
+			return nil, err
+		}
+		scheduling.MaxRunDuration = transformedMaxRunDuration
+		scheduling.ForceSendFields = append(scheduling.ForceSendFields, "MaxRunDuration")
+	}
 	return scheduling, nil
+}
+
+func expandComputeMaxRunDuration(v interface{}) (*compute.Duration, error) {
+	l := v.([]interface{})
+	duration := compute.Duration{}
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+
+	transformedNanos, err := expandComputeMaxRunDurationNanos(original["nanos"])
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedNanos); val.IsValid() && !isEmptyValue(val) {
+		duration.Nanos = int64(transformedNanos.(int))
+	}
+
+	transformedSeconds, err := expandComputeMaxRunDurationSeconds(original["seconds"])
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedSeconds); val.IsValid() && !isEmptyValue(val) {
+		duration.Seconds = int64(transformedSeconds.(int))
+	}
+
+	return &duration, nil
+}
+
+func expandComputeMaxRunDurationNanos(v interface{}) (interface{}, error) {
+	return v, nil
+}
+
+func expandComputeMaxRunDurationSeconds(v interface{}) (interface{}, error) {
+	return v, nil
 }
 
 func flattenScheduling(resp *compute.Scheduling) []map[string]interface{} {
@@ -141,6 +186,10 @@ func flattenScheduling(resp *compute.Scheduling) []map[string]interface{} {
 		schedulingMap["automatic_restart"] = *resp.AutomaticRestart
 	}
 
+	if resp.MaxRunDuration != nil {
+		schedulingMap["max_run_duration"] = flattenComputeMaxRunDuration(resp.MaxRunDuration)
+	}
+
 	nodeAffinities := schema.NewSet(schema.HashResource(instanceSchedulingNodeAffinitiesElemSchema()), nil)
 	for _, na := range resp.NodeAffinities {
 		nodeAffinities.Add(map[string]interface{}{
@@ -152,6 +201,16 @@ func flattenScheduling(resp *compute.Scheduling) []map[string]interface{} {
 	schedulingMap["node_affinities"] = nodeAffinities
 
 	return []map[string]interface{}{schedulingMap}
+}
+
+func flattenComputeMaxRunDuration(v *compute.Duration) []interface{} {
+	if v == nil {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["nanos"] = v.Nanos
+	transformed["seconds"] = v.Seconds
+	return []interface{}{transformed}
 }
 
 func flattenAccessConfigs(accessConfigs []*compute.AccessConfig) ([]map[string]interface{}, string) {

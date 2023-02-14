@@ -70,6 +70,55 @@ resource "google_vertex_ai_featurestore" "featurestore" {
 `, context)
 }
 
+func TestAccVertexAIFeaturestore_vertexAiFeaturestoreWithBetaFieldsExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"org_id":          getTestOrgFromEnv(t),
+		"billing_account": getTestBillingAccountFromEnv(t),
+		"kms_key_name":    BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
+		"random_suffix":   randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProvidersOiCS,
+		CheckDestroy: testAccCheckVertexAIFeaturestoreDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccVertexAIFeaturestore_vertexAiFeaturestoreWithBetaFieldsExample(context),
+			},
+			{
+				ResourceName:            "google_vertex_ai_featurestore.featurestore",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"name", "etag", "region", "force_destroy"},
+			},
+		},
+	})
+}
+
+func testAccVertexAIFeaturestore_vertexAiFeaturestoreWithBetaFieldsExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_vertex_ai_featurestore" "featurestore" {
+  provider = google-beta
+  name     = "terraform2%{random_suffix}"
+  labels = {
+    foo = "bar"
+  }
+  region   = "us-central1"
+  online_serving_config {
+    fixed_node_count = 2
+  }
+  encryption_spec {
+    kms_key_name = "%{kms_key_name}"
+  }
+  online_storage_ttl_days = 30
+  force_destroy = true
+}
+`, context)
+}
+
 func TestAccVertexAIFeaturestore_vertexAiFeaturestoreScalingExample(t *testing.T) {
 	t.Parallel()
 
@@ -101,7 +150,7 @@ func TestAccVertexAIFeaturestore_vertexAiFeaturestoreScalingExample(t *testing.T
 func testAccVertexAIFeaturestore_vertexAiFeaturestoreScalingExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_vertex_ai_featurestore" "featurestore" {
-  name     = "terraform%{random_suffix}"
+  name     = "terraform3%{random_suffix}"
   labels = {
     foo = "bar"
   }

@@ -1,8 +1,8 @@
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
-index 71c274130..1176ea0eb 100644
+index d8fcd0465..66e468555 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
-@@ -554,43 +554,11 @@ func resourceContainerCluster() *schema.Resource {
+@@ -784,43 +784,11 @@ func resourceContainerCluster() *schema.Resource {
  			},
  
  			"enable_tpu": {
@@ -50,7 +50,7 @@ index 71c274130..1176ea0eb 100644
  			},
  
  			"enable_legacy_abac": {
-@@ -1736,10 +1704,6 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
+@@ -2065,10 +2033,6 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
  		cluster.IdentityServiceConfig = expandIdentityServiceConfig(v)
  	}
  
@@ -61,7 +61,7 @@ index 71c274130..1176ea0eb 100644
  	if v, ok := d.GetOk("resource_usage_export_config"); ok {
  		cluster.ResourceUsageExportConfig = expandResourceUsageExportConfig(v)
  	}
-@@ -3937,19 +3901,6 @@ func expandMonitoringConfig(configured interface{}) *container.MonitoringConfig
+@@ -4598,19 +4562,6 @@ func expandMonitoringConfig(configured interface{}) *container.MonitoringConfig
  	return mc
  }
  
@@ -82,10 +82,10 @@ index 71c274130..1176ea0eb 100644
  	l := configured.([]interface{})
  	if len(l) == 0 || l[0] == nil {
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go
-index 148e24765..f12d1822e 100644
+index d251e7654..b14937a19 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go
-@@ -2830,30 +2830,6 @@ func TestAccContainerCluster_withDNSConfig(t *testing.T) {
+@@ -3445,30 +3445,6 @@ func TestAccContainerCluster_withGatewayApiConfig(t *testing.T) {
  	})
  }
  
@@ -116,7 +116,7 @@ index 148e24765..f12d1822e 100644
  func testAccContainerCluster_masterAuthorizedNetworksDisabled(t *testing.T, resource_name string) resource.TestCheckFunc {
  	return func(s *terraform.State) error {
  		rs, ok := s.RootModule().Resources[resource_name]
-@@ -5825,62 +5801,6 @@ resource "google_container_cluster" "primary" {
+@@ -7134,62 +7110,6 @@ resource "google_container_cluster" "primary" {
  `, name, name, name)
  }
  
@@ -176,6 +176,6 @@ index 148e24765..f12d1822e 100644
 -`, network, cluster)
 -}
 -
- func TestValidateNodePoolAutoConfig(t *testing.T) {
- 	withTags := &container.NodePoolAutoConfig{
- 		NetworkTags: &container.NetworkTags{
+ func testAccContainerCluster_failedCreation(cluster, project string) string {
+ 	return fmt.Sprintf(`
+ resource "google_container_cluster" "primary" {

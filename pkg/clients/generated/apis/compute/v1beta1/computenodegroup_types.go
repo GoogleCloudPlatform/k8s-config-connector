@@ -61,6 +61,24 @@ type NodegroupMaintenanceWindow struct {
 	StartTime string `json:"startTime"`
 }
 
+type NodegroupProjectMap struct {
+	/* The key of this project config in the parent map. */
+	IdRef v1alpha1.ResourceRef `json:"idRef"`
+
+	/* The project id/number should be the same as the key of this project
+	config in the project map. */
+	ProjectIdRef v1alpha1.ResourceRef `json:"projectIdRef"`
+}
+
+type NodegroupShareSettings struct {
+	/* Immutable. A map of project id and project config. This is only valid when shareType's value is SPECIFIC_PROJECTS. */
+	// +optional
+	ProjectMap []NodegroupProjectMap `json:"projectMap,omitempty"`
+
+	/* Immutable. Node group sharing type. Possible values: ["ORGANIZATION", "SPECIFIC_PROJECTS", "LOCAL"]. */
+	ShareType string `json:"shareType"`
+}
+
 type ComputeNodeGroupSpec struct {
 	/* Immutable. If you use sole-tenant nodes for your workloads, you can use the node
 	group autoscaler to automatically manage the sizes of your node groups. */
@@ -89,6 +107,10 @@ type ComputeNodeGroupSpec struct {
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Immutable. Share settings for the node group. */
+	// +optional
+	ShareSettings *NodegroupShareSettings `json:"shareSettings,omitempty"`
 
 	/* Immutable. The total number of nodes in the node group. One of 'initial_size' or 'size' must be specified. */
 	// +optional

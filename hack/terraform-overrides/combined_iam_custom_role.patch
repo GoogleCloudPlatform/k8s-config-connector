@@ -1,30 +1,15 @@
-# Copyright 2022 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
-index 1018085b8..fc7184e61 100644
+index 4222b5c2c..de18c2a8d 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
-@@ -1177,6 +1177,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
+@@ -1126,6 +1126,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
  			"google_healthcare_consent_store_iam_binding":                  ResourceIamBinding(HealthcareConsentStoreIamSchema, HealthcareConsentStoreIamUpdaterProducer, HealthcareConsentStoreIdParseFunc),
  			"google_healthcare_consent_store_iam_member":                   ResourceIamMember(HealthcareConsentStoreIamSchema, HealthcareConsentStoreIamUpdaterProducer, HealthcareConsentStoreIdParseFunc),
  			"google_healthcare_consent_store_iam_policy":                   ResourceIamPolicy(HealthcareConsentStoreIamSchema, HealthcareConsentStoreIamUpdaterProducer, HealthcareConsentStoreIdParseFunc),
 +			"google_iam_custom_role":                                       resourceIamCustomRole(),
  			"google_iam_deny_policy":                                       resourceIAM2DenyPolicy(),
+ 			"google_iam_access_boundary_policy":                            resourceIAM2AccessBoundaryPolicy(),
  			"google_iam_workload_identity_pool":                            resourceIAMBetaWorkloadIdentityPool(),
- 			"google_iam_workload_identity_pool_provider":                   resourceIAMBetaWorkloadIdentityPoolProvider(),
-
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_organization_iam_custom_role.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_organization_iam_custom_role.go
 index 2bf76615c..47b7fc6fa 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_organization_iam_custom_role.go

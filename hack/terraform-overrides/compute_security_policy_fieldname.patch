@@ -1,8 +1,8 @@
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_security_policy.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_security_policy.go
-index 9311a25b1..d4aca283b 100644
+index 4dcd779a0..ac787ba9c 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_security_policy.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_security_policy.go
-@@ -314,7 +314,7 @@ func resourceComputeSecurityPolicy() *schema.Resource {
+@@ -436,7 +436,7 @@ func resourceComputeSecurityPolicy() *schema.Resource {
  				MaxItems:    1,
  				Elem: &schema.Resource{
  					Schema: map[string]*schema.Schema{
@@ -11,29 +11,31 @@ index 9311a25b1..d4aca283b 100644
  							Type:        schema.TypeList,
  							Description: `Layer 7 DDoS Defense Config of this security policy`,
  							Optional:    true,
-@@ -732,7 +732,7 @@ func expandSecurityPolicyAdaptiveProtectionConfig(configured []interface{}) *com
+@@ -1096,7 +1096,7 @@ func expandSecurityPolicyAdaptiveProtectionConfig(configured []interface{}) *com
  
  	data := configured[0].(map[string]interface{})
  	return &compute.SecurityPolicyAdaptiveProtectionConfig{
 -		Layer7DdosDefenseConfig: expandLayer7DdosDefenseConfig(data["layer_7_ddos_defense_config"].([]interface{})),
 +		Layer7DdosDefenseConfig: expandLayer7DdosDefenseConfig(data["layer7_ddos_defense_config"].([]interface{})),
+ 		AutoDeployConfig:        expandAutoDeployConfig(data["auto_deploy_config"].([]interface{})),
  	}
  }
- 
-@@ -754,7 +754,7 @@ func flattenSecurityPolicyAdaptiveProtectionConfig(conf *compute.SecurityPolicyA
+@@ -1134,8 +1134,8 @@ func flattenSecurityPolicyAdaptiveProtectionConfig(conf *compute.SecurityPolicyA
  	}
  
  	data := map[string]interface{}{
 -		"layer_7_ddos_defense_config": flattenLayer7DdosDefenseConfig(conf.Layer7DdosDefenseConfig),
+-		"auto_deploy_config":          flattenAutoDeployConfig(conf.AutoDeployConfig),
 +		"layer7_ddos_defense_config": flattenLayer7DdosDefenseConfig(conf.Layer7DdosDefenseConfig),
++		"auto_deploy_config":         flattenAutoDeployConfig(conf.AutoDeployConfig),
  	}
  
  	return []map[string]interface{}{data}
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_security_policy_test.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_security_policy_test.go
-index 9ad7261e5..6fc54c2df 100644
+index b00e79d2e..8bcbc115e 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_security_policy_test.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_compute_security_policy_test.go
-@@ -384,7 +384,7 @@ resource "google_compute_security_policy" "policy" {
+@@ -971,7 +971,7 @@ resource "google_compute_security_policy" "policy" {
    description = "updated description"
  
    adaptive_protection_config {

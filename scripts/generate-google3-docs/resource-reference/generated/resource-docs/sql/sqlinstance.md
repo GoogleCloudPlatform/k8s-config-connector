@@ -161,6 +161,7 @@ settings:
     - expirationTime: string
       name: string
       value: string
+    enablePrivatePathForGoogleCloudServices: boolean
     ipv4Enabled: boolean
     privateNetworkRef:
       external: string
@@ -499,7 +500,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Initial root password. Required for MS SQL Server.{% endverbatim %}</p>
+            <p>{% verbatim %}Initial root password. Required for MS SQL Server.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -886,7 +887,7 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The type of data disk: PD_SSD or PD_HDD. Defaults to PD_SSD.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The type of data disk: PD_SSD or PD_HDD. Defaults to PD_SSD.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1017,6 +1018,16 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.enablePrivatePathForGoogleCloudServices</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Whether Google Cloud services such as BigQuery are allowed to access data in this Cloud SQL instance over a private IP connection. SQLSERVER database type is not supported.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

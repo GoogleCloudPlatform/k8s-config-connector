@@ -64,6 +64,7 @@ github.com/GoogleCloudPlatform/declarative-resource-client-library/services/goog
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/billingbudgets/beta
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/binaryauthorization
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/cloudbuild/beta
+github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/cloudbuildv2/beta
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/clouddeploy/beta
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/cloudfunctions/beta
 github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/cloudidentity/beta
@@ -520,7 +521,7 @@ github.com/hashicorp/go-hclog
 # github.com/hashicorp/go-multierror v1.1.1
 ## explicit; go 1.13
 github.com/hashicorp/go-multierror
-# github.com/hashicorp/go-plugin v1.4.4
+# github.com/hashicorp/go-plugin v1.4.8
 ## explicit; go 1.17
 github.com/hashicorp/go-plugin
 github.com/hashicorp/go-plugin/internal/plugin
@@ -570,7 +571,46 @@ github.com/hashicorp/terraform-exec/tfexec
 # github.com/hashicorp/terraform-json v0.14.0
 ## explicit; go 1.13
 github.com/hashicorp/terraform-json
-# github.com/hashicorp/terraform-plugin-go v0.14.0
+# github.com/hashicorp/terraform-plugin-framework v1.1.1
+## explicit; go 1.18
+github.com/hashicorp/terraform-plugin-framework/attr
+github.com/hashicorp/terraform-plugin-framework/attr/xattr
+github.com/hashicorp/terraform-plugin-framework/datasource
+github.com/hashicorp/terraform-plugin-framework/datasource/schema
+github.com/hashicorp/terraform-plugin-framework/diag
+github.com/hashicorp/terraform-plugin-framework/internal/fromproto5
+github.com/hashicorp/terraform-plugin-framework/internal/fromproto6
+github.com/hashicorp/terraform-plugin-framework/internal/fromtftypes
+github.com/hashicorp/terraform-plugin-framework/internal/fwschema
+github.com/hashicorp/terraform-plugin-framework/internal/fwschema/fwxschema
+github.com/hashicorp/terraform-plugin-framework/internal/fwschemadata
+github.com/hashicorp/terraform-plugin-framework/internal/fwserver
+github.com/hashicorp/terraform-plugin-framework/internal/logging
+github.com/hashicorp/terraform-plugin-framework/internal/privatestate
+github.com/hashicorp/terraform-plugin-framework/internal/proto5server
+github.com/hashicorp/terraform-plugin-framework/internal/proto6server
+github.com/hashicorp/terraform-plugin-framework/internal/reflect
+github.com/hashicorp/terraform-plugin-framework/internal/toproto5
+github.com/hashicorp/terraform-plugin-framework/internal/toproto6
+github.com/hashicorp/terraform-plugin-framework/internal/totftypes
+github.com/hashicorp/terraform-plugin-framework/path
+github.com/hashicorp/terraform-plugin-framework/provider
+github.com/hashicorp/terraform-plugin-framework/provider/metaschema
+github.com/hashicorp/terraform-plugin-framework/provider/schema
+github.com/hashicorp/terraform-plugin-framework/providerserver
+github.com/hashicorp/terraform-plugin-framework/resource
+github.com/hashicorp/terraform-plugin-framework/resource/schema
+github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier
+github.com/hashicorp/terraform-plugin-framework/schema/validator
+github.com/hashicorp/terraform-plugin-framework/tfsdk
+github.com/hashicorp/terraform-plugin-framework/types
+github.com/hashicorp/terraform-plugin-framework/types/basetypes
+# github.com/hashicorp/terraform-plugin-framework-validators v0.9.0
+## explicit; go 1.18
+github.com/hashicorp/terraform-plugin-framework-validators/helpers/validatordiag
+github.com/hashicorp/terraform-plugin-framework-validators/internal/schemavalidator
+github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator
+# github.com/hashicorp/terraform-plugin-go v0.14.3
 ## explicit; go 1.18
 github.com/hashicorp/terraform-plugin-go/internal/logging
 github.com/hashicorp/terraform-plugin-go/tfprotov5
@@ -595,6 +635,10 @@ github.com/hashicorp/terraform-plugin-log/internal/hclogutils
 github.com/hashicorp/terraform-plugin-log/internal/logging
 github.com/hashicorp/terraform-plugin-log/tflog
 github.com/hashicorp/terraform-plugin-log/tfsdklog
+# github.com/hashicorp/terraform-plugin-mux v0.8.0
+## explicit; go 1.18
+github.com/hashicorp/terraform-plugin-mux/internal/logging
+github.com/hashicorp/terraform-plugin-mux/tf5muxserver
 # github.com/hashicorp/terraform-plugin-sdk/v2 v2.24.0
 ## explicit; go 1.18
 github.com/hashicorp/terraform-plugin-sdk/v2/diag
@@ -620,7 +664,7 @@ github.com/hashicorp/terraform-plugin-sdk/v2/terraform
 ## explicit; go 1.18
 github.com/hashicorp/terraform-provider-google-beta/google-beta
 github.com/hashicorp/terraform-provider-google-beta/version
-# github.com/hashicorp/terraform-registry-address v0.0.0-20220623143253-7d51757b572c
+# github.com/hashicorp/terraform-registry-address v0.1.0
 ## explicit; go 1.14
 github.com/hashicorp/terraform-registry-address
 # github.com/hashicorp/terraform-svchost v0.0.0-20200729002733-f050f53b9734
@@ -803,7 +847,7 @@ github.com/vmihailenco/msgpack/codes
 ## explicit; go 1.11
 github.com/vmihailenco/msgpack/v4
 github.com/vmihailenco/msgpack/v4/codes
-# github.com/vmihailenco/tagparser v0.1.1
+# github.com/vmihailenco/tagparser v0.1.2
 ## explicit; go 1.13
 github.com/vmihailenco/tagparser
 github.com/vmihailenco/tagparser/internal

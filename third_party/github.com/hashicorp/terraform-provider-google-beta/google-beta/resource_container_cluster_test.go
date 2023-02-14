@@ -3420,6 +3420,10 @@ func TestAccContainerCluster_withGatewayApiConfig(t *testing.T) {
 		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
+				Config:      testAccContainerCluster_withGatewayApiConfig(clusterName, "CANARY"),
+				ExpectError: regexp.MustCompile(`expected gateway_api_config\.0\.channel to be one of \[CHANNEL_DISABLED CHANNEL_STANDARD\], got CANARY`),
+			},
+			{
 				Config: testAccContainerCluster_withGatewayApiConfig(clusterName, "CHANNEL_DISABLED"),
 			},
 			{
@@ -3436,22 +3440,6 @@ func TestAccContainerCluster_withGatewayApiConfig(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateVerifyIgnore: []string{"min_master_version"},
-			},
-		},
-	})
-}
-
-func TestAccContainerCluster_withInvalidGatewayApiConfigChannel(t *testing.T) {
-	t.Parallel()
-	clusterName := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	vcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
-		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
-		Steps: []resource.TestStep{
-			{
-				Config:      testAccContainerCluster_withGatewayApiConfig(clusterName, "CANARY"),
-				ExpectError: regexp.MustCompile(`expected gateway_api_config\.0\.channel to be one of \[CHANNEL_DISABLED CHANNEL_STANDARD\], got CANARY`),
 			},
 		},
 	})
@@ -4342,6 +4330,33 @@ func TestAccContainerCluster_withEnablePrivateEndpointToggle(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateVerifyIgnore: []string{"min_master_version"},
+			},
+		},
+	})
+}
+
+func TestAccContainerCluster_failedCreation(t *testing.T) {
+	// Test that in a scenario where the cluster fails to create, a subsequent apply will delete the resource.
+	skipIfVcr(t)
+	t.Parallel()
+
+	clusterName := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
+
+	project := BootstrapProject(t, "tf-fail-cluster-test", getTestBillingAccountFromEnv(t), []string{"container.googleapis.com"})
+	removeContainerServiceAgentRoleFromContainerEngineRobot(t, project)
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProviders,
+		Steps: []resource.TestStep{
+			{
+				Config:      testAccContainerCluster_failedCreation(clusterName, project.ProjectId),
+				ExpectError: regexp.MustCompile("timeout while waiting for state to become 'DONE'"),
+			},
+			{
+				Config:      testAccContainerCluster_failedCreation_update(clusterName, project.ProjectId),
+				ExpectError: regexp.MustCompile("Failed to create cluster"),
+				Check:       testAccCheckContainerClusterDestroyProducer(t),
 			},
 		},
 	})
@@ -7093,6 +7108,38 @@ resource "google_container_cluster" "primary" {
   }
 }
 `, name, name, name)
+}
+
+func testAccContainerCluster_failedCreation(cluster, project string) string {
+	return fmt.Sprintf(`
+resource "google_container_cluster" "primary" {
+  name               = "%s"
+  project            = "%s"
+  location           = "us-central1-a"
+  initial_node_count = 1
+
+  workload_identity_config {
+    workload_pool = "%s.svc.id.goog"
+  }
+
+  timeouts {
+    create = "40s"
+  }
+}`, cluster, project, project)
+}
+
+func testAccContainerCluster_failedCreation_update(cluster, project string) string {
+	return fmt.Sprintf(`
+resource "google_container_cluster" "primary" {
+  name               = "%s"
+  project            = "%s"
+  location           = "us-central1-a"
+  initial_node_count = 1
+
+  workload_identity_config {
+    workload_pool = "%s.svc.id.goog"
+  }
+}`, cluster, project, project)
 }
 
 func TestValidateNodePoolAutoConfig(t *testing.T) {

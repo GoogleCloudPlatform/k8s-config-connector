@@ -221,7 +221,7 @@ func TestAccSqlDatabaseInstance_deleteDefaultUserBeforeSubsequentApiCalls(t *tes
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccSqlDatabaseInstance_withPrivateNetwork_withoutAllocatedIpRange(databaseName, networkName, addressName),
+				Config: testAccSqlDatabaseInstance_withPrivateNetwork_withoutAllocatedIpRange(databaseName, networkName, addressName, false, false),
 			},
 			{
 				PreConfig: func() {
@@ -775,7 +775,25 @@ func TestAccSqlDatabaseInstance_withPrivateNetwork_withoutAllocatedIpRange(t *te
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccSqlDatabaseInstance_withPrivateNetwork_withoutAllocatedIpRange(databaseName, networkName, addressName),
+				Config: testAccSqlDatabaseInstance_withPrivateNetwork_withoutAllocatedIpRange(databaseName, networkName, addressName, false, false),
+			},
+			{
+				ResourceName:            "google_sql_database_instance.instance",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"deletion_protection"},
+			},
+			{
+				Config: testAccSqlDatabaseInstance_withPrivateNetwork_withoutAllocatedIpRange(databaseName, networkName, addressName, true, false),
+			},
+			{
+				ResourceName:            "google_sql_database_instance.instance",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"deletion_protection"},
+			},
+			{
+				Config: testAccSqlDatabaseInstance_withPrivateNetwork_withoutAllocatedIpRange(databaseName, networkName, addressName, true, true),
 			},
 			{
 				ResourceName:            "google_sql_database_instance.instance",
@@ -1231,6 +1249,10 @@ func TestAccSqlDatabaseInstance_encryptionKey_replicaInDifferentRegion(t *testin
 }
 
 func TestAccSqlDatabaseInstance_ActiveDirectory(t *testing.T) {
+	// skip the test until Active Directory setup issue gets resolved
+	// see https://github.com/hashicorp/terraform-provider-google/issues/13517
+	t.Skip()
+
 	t.Parallel()
 	databaseName := "tf-test-" + randString(t, 10)
 	networkName := BootstrapSharedTestNetwork(t, "sql-instance-private-test-ad")
@@ -1459,6 +1481,46 @@ func TestAccSqlDatabaseInstance_updateReadReplicaWithBinaryLogEnabled(t *testing
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateVerifyIgnore: []string{"deletion_protection"},
+			},
+		},
+	})
+}
+
+func TestAccSqlDatabaseInstance_rootPasswordShouldBeUpdatable(t *testing.T) {
+	t.Parallel()
+
+	databaseName := "tf-test-" + randString(t, 10)
+	rootPwd := "rootPassword-1-" + randString(t, 10)
+	newRootPwd := "rootPassword-2-" + randString(t, 10)
+	databaseVersion := "SQLSERVER_2017_STANDARD"
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testGoogleSqlDatabaseInstance_updateRootPassword(databaseName, databaseVersion, rootPwd),
+			},
+			{
+				ResourceName:            "google_sql_database_instance.main",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"deletion_protection", "root_password"},
+			},
+			{
+				Config: testGoogleSqlDatabaseInstance_updateRootPassword(databaseName, databaseVersion, newRootPwd),
+			},
+			{
+				ResourceName:            "google_sql_database_instance.main",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"deletion_protection", "root_password"},
+			},
+			{
+				Config: testGoogleSqlDatabaseInstance_updateRootPassword(databaseName, databaseVersion, ""),
+				ExpectError: regexp.MustCompile(
+					`Error, root password cannot be empty for SQL Server instance.`),
 			},
 		},
 	})
@@ -1775,7 +1837,12 @@ resource "google_sql_database_instance" "instance-failover" {
 `, instanceName, failoverName)
 }
 
-func testAccSqlDatabaseInstance_withPrivateNetwork_withoutAllocatedIpRange(databaseName, networkName, addressRangeName string) string {
+func testAccSqlDatabaseInstance_withPrivateNetwork_withoutAllocatedIpRange(databaseName, networkName, addressRangeName string, specifyPrivatePathOption bool, enablePrivatePath bool) string {
+	privatePathOption := ""
+	if specifyPrivatePathOption {
+		privatePathOption = fmt.Sprintf("enable_private_path_for_google_cloud_services = %t", enablePrivatePath)
+	}
+
 	return fmt.Sprintf(`
 data "google_compute_network" "servicenet" {
   name                    = "%s"
@@ -1806,10 +1873,11 @@ resource "google_sql_database_instance" "instance" {
     ip_configuration {
       ipv4_enabled       = "false"
       private_network    = data.google_compute_network.servicenet.self_link
+      %s
     }
   }
 }
-`, networkName, addressRangeName, databaseName)
+`, networkName, addressRangeName, databaseName, privatePathOption)
 }
 
 func testAccSqlDatabaseInstance_withPrivateNetwork_withAllocatedIpRange(databaseName, networkName, addressRangeName string) string {
@@ -2075,7 +2143,7 @@ resource "google_sql_database_instance" "instance" {
     tier                   = "db-f1-micro"
     location_preference {
       zone           = "us-central1-f"
-	  secondary_zone = "us-central1-a"	  
+	  secondary_zone = "us-central1-a"
     }
 
     ip_configuration {
@@ -2891,4 +2959,18 @@ resource "google_sql_database_instance" "replica" {
     }
   }
 }`, instance, instance)
+}
+
+func testGoogleSqlDatabaseInstance_updateRootPassword(instance, databaseVersion, rootPassword string) string {
+	return fmt.Sprintf(`
+resource "google_sql_database_instance" "main" {
+    name             = "%s"
+	database_version = "%s"
+	region           = "us-central1"
+	deletion_protection = false
+	root_password = "%s"
+	settings {
+		tier = "db-custom-2-13312"
+	}
+}`, instance, databaseVersion, rootPassword)
 }

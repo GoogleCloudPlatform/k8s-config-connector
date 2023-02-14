@@ -541,7 +541,7 @@ Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".{% endverb
 - ONE_HOUR:	Snapshot every 1 hour.
 - SIX_HOURS:	Snapshot every 6 hours.
 - TWELVE_HOURS:	Snapshot every 12 hours.
-- TWENTY_FOUR_HOURS:	Snapshot every 24 horus. Possible values: ["ONE_HOUR", "SIX_HOURS", "TWELVE_HOURS", "TWENTY_FOUR_HOURS"].{% endverbatim %}</p>
+- TWENTY_FOUR_HOURS:	Snapshot every 24 hours. Possible values: ["ONE_HOUR", "SIX_HOURS", "TWELVE_HOURS", "TWENTY_FOUR_HOURS"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

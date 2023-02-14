@@ -385,6 +385,11 @@ spec:
                   Timeout (in seconds) for TCP established connections.
                   Defaults to 1200s if not set.
                 type: integer
+              tcpTimeWaitTimeoutSec:
+                description: |-
+                  Timeout (in seconds) for TCP connections that are in TIME_WAIT state.
+                  Defaults to 120s if not set.
+                type: integer
               tcpTransitoryIdleTimeoutSec:
                 description: |-
                   Timeout (in seconds) for TCP transitory connections.

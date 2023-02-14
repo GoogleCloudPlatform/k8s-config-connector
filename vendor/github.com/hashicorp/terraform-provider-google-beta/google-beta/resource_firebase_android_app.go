@@ -47,15 +47,6 @@ func resourceFirebaseAndroidApp() *schema.Resource {
 				Required:    true,
 				Description: `The user-assigned display name of the AndroidApp.`,
 			},
-			"deletion_policy": {
-				Type:     schema.TypeString,
-				Optional: true,
-				ForceNew: true,
-				Description: `(Optional) Set to 'ABANDON' to allow the AndroidApp to be untracked from terraform state
-rather than deleted upon 'terraform destroy'. This is useful because the AndroidApp may be
-serving traffic. Set to 'DELETE' to delete the AndroidApp. Default to 'DELETE'.`,
-				Default: "DELETE",
-			},
 			"package_name": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -95,6 +86,14 @@ with update requests to ensure the client has an up-to-date value before proceed
 				Computed: true,
 				Description: `The fully qualified resource name of the AndroidApp, for example:
 projects/projectId/androidApps/appId`,
+			},
+			"deletion_policy": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Default:  "DELETE",
+				Description: `(Optional) Set to 'ABANDON' to allow the AndroidApp to be untracked from terraform state
+rather than deleted upon 'terraform destroy'. This is useful because the AndroidApp may be
+serving traffic. Set to 'DELETE' to delete the AndroidApp. Defaults to 'DELETE'.`,
 			},
 			"project": {
 				Type:     schema.TypeString,
@@ -236,6 +235,12 @@ func resourceFirebaseAndroidAppRead(d *schema.ResourceData, meta interface{}) er
 		return handleNotFoundError(err, d, fmt.Sprintf("FirebaseAndroidApp %q", d.Id()))
 	}
 
+	// Explicitly set virtual fields to default values if unset
+	if _, ok := d.GetOkExists("deletion_policy"); !ok {
+		if err := d.Set("deletion_policy", "DELETE"); err != nil {
+			return fmt.Errorf("Error setting deletion_policy: %s", err)
+		}
+	}
 	if err := d.Set("project", project); err != nil {
 		return fmt.Errorf("Error reading AndroidApp: %s", err)
 	}

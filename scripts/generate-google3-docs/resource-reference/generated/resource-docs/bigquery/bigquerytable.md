@@ -130,6 +130,7 @@ externalDataConfiguration:
     sourceUriPrefix: string
   ignoreUnknownValues: boolean
   maxBadRecords: integer
+  referenceFileSchemaUri: string
   schema: string
   sourceFormat: string
   sourceUris:
@@ -522,6 +523,16 @@ view:
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}The maximum number of bad records that BigQuery can ignore when reading data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>externalDataConfiguration.referenceFileSchemaUri</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}When creating an external table, the user can provide a reference file with the table schema. This is enabled for the following formats: AVRO, PARQUET, ORC.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

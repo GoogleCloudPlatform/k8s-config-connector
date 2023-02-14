@@ -120,6 +120,9 @@ resourcePolicies:
 scheduling:
   automaticRestart: boolean
   instanceTerminationAction: string
+  maxRunDuration:
+    nanos: integer
+    seconds: integer
   minNodeCpus: integer
   nodeAffinities:
   - value: {}

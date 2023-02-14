@@ -1560,6 +1560,11 @@ func (in *TableExternalDataConfiguration) DeepCopyInto(out *TableExternalDataCon
 		*out = new(int)
 		**out = **in
 	}
+	if in.ReferenceFileSchemaUri != nil {
+		in, out := &in.ReferenceFileSchemaUri, &out.ReferenceFileSchemaUri
+		*out = new(string)
+		**out = **in
+	}
 	if in.Schema != nil {
 		in, out := &in.Schema, &out.Schema
 		*out = new(string)

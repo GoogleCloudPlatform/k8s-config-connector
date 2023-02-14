@@ -137,3 +137,58 @@ resource "google_data_fusion_instance" "foobar" {
 }
 `, instanceName)
 }
+
+func TestAccDataFusionInstanceVersion_dataFusionInstanceUpdate(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+		"version":       "6.7.2",
+	}
+
+	contextUpdate := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+		"version":       "6.8.0",
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckDataFusionInstanceDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccDataFusionInstanceVersion_dataFusionInstanceUpdate(context),
+			},
+			{
+				ResourceName:            "google_data_fusion_instance.basic_instance",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"region"},
+			},
+			{
+				Config: testAccDataFusionInstanceVersion_dataFusionInstanceUpdate(contextUpdate),
+			},
+			{
+				ResourceName:            "google_data_fusion_instance.basic_instance",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"region"},
+			},
+		},
+	})
+}
+
+func testAccDataFusionInstanceVersion_dataFusionInstanceUpdate(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_data_fusion_instance" "basic_instance" {
+  name   = "tf-test-my-instance%{random_suffix}"
+  region = "us-central1"
+  type   = "BASIC"
+  # Mark for testing to avoid service networking connection usage that is not cleaned up
+  options = {
+    prober_test_run = "true"
+  }
+  version = "%{version}"
+}
+`, context)
+}

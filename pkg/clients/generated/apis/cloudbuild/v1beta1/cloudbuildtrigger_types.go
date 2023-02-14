@@ -133,6 +133,13 @@ type TriggerBuild struct {
 }
 
 type TriggerGitFileSource struct {
+	/* Only `external` field is supported to configure the reference.
+
+	The full resource name of the github enterprise config. Format:
+	projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}. */
+	// +optional
+	GithubEnterpriseConfigRef *v1alpha1.ResourceRef `json:"githubEnterpriseConfigRef,omitempty"`
+
 	/* The path of the file, with the repo root as the root of the path. */
 	Path string `json:"path"`
 
@@ -283,10 +290,14 @@ type TriggerPubsubConfig struct {
 }
 
 type TriggerPullRequest struct {
-	/* Regex of branches to match. */
-	Branch string `json:"branch"`
+	/* Regex of branches to match.
 
-	/* Whether to block builds on a "/gcbrun" comment from a repository owner or collaborator. Possible values: ["COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"]. */
+	The syntax of the regular expressions accepted is the syntax accepted by
+	RE2 and described at https://github.com/google/re2/wiki/Syntax. */
+	// +optional
+	Branch *string `json:"branch,omitempty"`
+
+	/* Configure builds to run whether a repository owner or collaborator need to comment '/gcbrun'. Possible values: ["COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"]. */
 	// +optional
 	CommentControl *string `json:"commentControl,omitempty"`
 
@@ -296,15 +307,21 @@ type TriggerPullRequest struct {
 }
 
 type TriggerPush struct {
-	/* Regex of branches to match.  Specify only one of branch or tag. */
+	/* Regex of branches to match.
+
+	The syntax of the regular expressions accepted is the syntax accepted by
+	RE2 and described at https://github.com/google/re2/wiki/Syntax. */
 	// +optional
 	Branch *string `json:"branch,omitempty"`
 
-	/* When true, only trigger a build if the revision regex does NOT match the git_ref regex. */
+	/* If true, only trigger a build if the revision regex does NOT match the git_ref regex. */
 	// +optional
 	InvertRegex *bool `json:"invertRegex,omitempty"`
 
-	/* Regex of tags to match.  Specify only one of branch or tag. */
+	/* Regex of tags to match.
+
+	The syntax of the regular expressions accepted is the syntax accepted by
+	RE2 and described at https://github.com/google/re2/wiki/Syntax. */
 	// +optional
 	Tag *string `json:"tag,omitempty"`
 }
@@ -350,6 +367,20 @@ type TriggerRepoSource struct {
 	TagName *string `json:"tagName,omitempty"`
 }
 
+type TriggerRepositoryEventConfig struct {
+	/* Contains filter properties for matching Pull Requests. */
+	// +optional
+	PullRequest *TriggerPullRequest `json:"pullRequest,omitempty"`
+
+	/* Contains filter properties for matching git pushes. */
+	// +optional
+	Push *TriggerPush `json:"push,omitempty"`
+
+	/* The resource name of the Repo API resource. */
+	// +optional
+	Repository *string `json:"repository,omitempty"`
+}
+
 type TriggerSecret struct {
 	/* KMS crypto key to use to decrypt these envs. */
 	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
@@ -382,6 +413,13 @@ type TriggerSource struct {
 }
 
 type TriggerSourceToBuild struct {
+	/* Only `external` field is supported to configure the reference.
+
+	The full resource name of the github enterprise config. Format:
+	projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}. */
+	// +optional
+	GithubEnterpriseConfigRef *v1alpha1.ResourceRef `json:"githubEnterpriseConfigRef,omitempty"`
+
 	/* The branch or tag to use. Must start with "refs/" (required). */
 	Ref string `json:"ref"`
 
@@ -668,6 +706,10 @@ type CloudBuildTriggerSpec struct {
 	One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided. */
 	// +optional
 	PubsubConfig *TriggerPubsubConfig `json:"pubsubConfig,omitempty"`
+
+	/* The configuration of a trigger that creates a build whenever an event from Repo API is received. */
+	// +optional
+	RepositoryEventConfig *TriggerRepositoryEventConfig `json:"repositoryEventConfig,omitempty"`
 
 	/* The service account used for all user-controlled operations including
 	triggers.patch, triggers.run, builds.create, and builds.cancel.

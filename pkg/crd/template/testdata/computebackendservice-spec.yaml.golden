@@ -72,6 +72,10 @@ customRequestHeaders:
 customResponseHeaders:
 - string
 description: string
+edgeSecurityPolicyRef:
+  external: string
+  name: string
+  namespace: string
 enableCdn: boolean
 failoverPolicy:
   disableConnectionDrainOnFailover: boolean
@@ -100,6 +104,12 @@ iap:
         name: string
   oauth2ClientSecretSha256: string
 loadBalancingScheme: string
+localityLbPolicies:
+- customPolicy:
+    data: string
+    name: string
+  policy:
+    name: string
 localityLbPolicy: string
 location: string
 logConfig:

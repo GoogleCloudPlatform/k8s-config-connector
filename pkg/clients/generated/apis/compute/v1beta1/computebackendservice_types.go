@@ -360,6 +360,24 @@ type BackendserviceConsistentHash struct {
 	MinimumRingSize *int `json:"minimumRingSize,omitempty"`
 }
 
+type BackendserviceCustomPolicy struct {
+	/* An optional, arbitrary JSON object with configuration data, understood
+	by a locally installed custom policy implementation. */
+	// +optional
+	Data *string `json:"data,omitempty"`
+
+	/* Identifies the custom policy.
+
+	The value should match the type the custom implementation is registered
+	with on the gRPC clients. It should follow protocol buffer
+	message naming conventions and include the full path (e.g.
+	myorg.CustomLbPolicy). The maximum length is 256 characters.
+
+	Note that specifying the same custom policy more than once for a
+	backend is not a valid configuration and will be rejected. */
+	Name string `json:"name"`
+}
+
 type BackendserviceFailoverPolicy struct {
 	/* On failover or failback, this field indicates whether connection drain
 	will be honored. Setting this to true has the following effect: connections
@@ -451,6 +469,17 @@ type BackendserviceInterval struct {
 	/* Span of time at a resolution of a second. Must be from 0 to 315,576,000,000
 	inclusive. */
 	Seconds int `json:"seconds"`
+}
+
+type BackendserviceLocalityLbPolicies struct {
+	/* The configuration for a custom policy implemented by the user and
+	deployed with the client. */
+	// +optional
+	CustomPolicy *BackendserviceCustomPolicy `json:"customPolicy,omitempty"`
+
+	/* The configuration for a built-in load balancing policy. */
+	// +optional
+	Policy *BackendservicePolicy `json:"policy,omitempty"`
 }
 
 type BackendserviceLogConfig struct {
@@ -560,6 +589,45 @@ type BackendserviceOutlierDetection struct {
 	SuccessRateStdevFactor *int `json:"successRateStdevFactor,omitempty"`
 }
 
+type BackendservicePolicy struct {
+	/* The name of a locality load balancer policy to be used. The value
+	should be one of the predefined ones as supported by localityLbPolicy,
+	although at the moment only ROUND_ROBIN is supported.
+
+	This field should only be populated when the customPolicy field is not
+	used.
+
+	Note that specifying the same policy more than once for a backend is
+	not a valid configuration and will be rejected.
+
+	The possible values are:
+
+	* 'ROUND_ROBIN': This is a simple policy in which each healthy backend
+	is selected in round robin order.
+
+	* 'LEAST_REQUEST': An O(1) algorithm which selects two random healthy
+	hosts and picks the host which has fewer active requests.
+
+	* 'RING_HASH': The ring/modulo hash load balancer implements consistent
+	hashing to backends. The algorithm has the property that the
+	addition/removal of a host from a set of N hosts only affects
+	1/N of the requests.
+
+	* 'RANDOM': The load balancer selects a random healthy host.
+
+	* 'ORIGINAL_DESTINATION': Backend host is selected based on the client
+	connection metadata, i.e., connections are opened
+	to the same address as the destination address of
+	the incoming connection before the connection
+	was redirected to the load balancer.
+
+	* 'MAGLEV': used as a drop in replacement for the ring hash load balancer.
+	Maglev is not as stable as ring hash but has faster table lookup
+	build times and host selection times. For more information about
+	Maglev, refer to https://ai.google/research/pubs/pub44824 Possible values: ["ROUND_ROBIN", "LEAST_REQUEST", "RING_HASH", "RANDOM", "ORIGINAL_DESTINATION", "MAGLEV"]. */
+	Name string `json:"name"`
+}
+
 type BackendserviceSecuritySettings struct {
 	/* ClientTlsPolicy is a resource that specifies how a client should
 	authenticate connections to backends of a service. This resource itself
@@ -661,6 +729,11 @@ type ComputeBackendServiceSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* The resource URL for the edge security policy associated with this
+	backend service. */
+	// +optional
+	EdgeSecurityPolicyRef *v1alpha1.ResourceRef `json:"edgeSecurityPolicyRef,omitempty"`
+
 	/* If true, enable Cloud CDN for this BackendService. */
 	// +optional
 	EnableCdn *bool `json:"enableCdn,omitempty"`
@@ -682,6 +755,16 @@ type ComputeBackendServiceSpec struct {
 	[Choosing a load balancer](https://cloud.google.com/load-balancing/docs/backend-service). Default value: "EXTERNAL" Possible values: ["EXTERNAL", "INTERNAL_SELF_MANAGED", "EXTERNAL_MANAGED"]. */
 	// +optional
 	LoadBalancingScheme *string `json:"loadBalancingScheme,omitempty"`
+
+	/* A list of locality load balancing policies to be used in order of
+	preference. Either the policy or the customPolicy field should be set.
+	Overrides any value set in the localityLbPolicy field.
+
+	localityLbPolicies is only supported when the BackendService is referenced
+	by a URL Map that is referenced by a target gRPC proxy that has the
+	validateForProxyless field set to true. */
+	// +optional
+	LocalityLbPolicies []BackendserviceLocalityLbPolicies `json:"localityLbPolicies,omitempty"`
 
 	/* The load balancing algorithm used within the scope of the locality.
 	The possible values are:

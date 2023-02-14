@@ -69,9 +69,9 @@ var (
 		"addons_config.0.dns_cache_config",
 		"addons_config.0.gce_persistent_disk_csi_driver_config",
 		"addons_config.0.gke_backup_agent_config",
+		"addons_config.0.config_connector_config",
 		"addons_config.0.istio_config",
 		"addons_config.0.kalm_config",
-		"addons_config.0.config_connector_config",
 	}
 
 	privateClusterConfigKeys = []string{
@@ -2169,6 +2169,8 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 		return err
 	}
 
+	clusterName := d.Get("name").(string)
+
 	operation := d.Get("operation").(string)
 	if operation != "" {
 		log.Printf("[DEBUG] in progress operation detected at %v, attempting to resume", operation)
@@ -2180,11 +2182,29 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 		}
 		waitErr := containerOperationWait(config, op, project, location, "resuming GKE cluster", userAgent, d.Timeout(schema.TimeoutRead))
 		if waitErr != nil {
+			// Try a GET on the cluster so we can see the state in debug logs. This will help classify error states.
+			clusterGetCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.Get(containerClusterFullName(project, location, clusterName))
+			if config.UserProjectOverride {
+				clusterGetCall.Header().Add("X-Goog-User-Project", project)
+			}
+			_, getErr := clusterGetCall.Do()
+			if getErr != nil {
+				log.Printf("[WARN] Cluster %s was created in an error state and not found", clusterName)
+				d.SetId("")
+			}
+
+			if deleteErr := cleanFailedContainerCluster(d, meta); deleteErr != nil {
+				log.Printf("[WARN] Unable to clean up cluster from failed creation: %s", deleteErr)
+				// Leave ID set as the cluster likely still exists and should not be removed from state yet.
+			} else {
+				log.Printf("[WARN] Verified failed creation of cluster %s was cleaned up", d.Id())
+				d.SetId("")
+			}
+			// The resource didn't actually create
 			return waitErr
 		}
 	}
 
-	clusterName := d.Get("name").(string)
 	name := containerClusterFullName(project, location, clusterName)
 	clusterGetCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.Get(name)
 	if config.UserProjectOverride {
