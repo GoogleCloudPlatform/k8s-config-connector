@@ -31,6 +31,7 @@ import (
 
 type IamV1beta1Interface interface {
 	RESTClient() rest.Interface
+	IAMAccessBoundaryPoliciesGetter
 	IAMAuditConfigsGetter
 	IAMCustomRolesGetter
 	IAMPartialPoliciesGetter
@@ -47,6 +48,10 @@ type IamV1beta1Interface interface {
 // IamV1beta1Client is used to interact with features provided by the iam.cnrm.cloud.google.com group.
 type IamV1beta1Client struct {
 	restClient rest.Interface
+}
+
+func (c *IamV1beta1Client) IAMAccessBoundaryPolicies(namespace string) IAMAccessBoundaryPolicyInterface {
+	return newIAMAccessBoundaryPolicies(c, namespace)
 }
 
 func (c *IamV1beta1Client) IAMAuditConfigs(namespace string) IAMAuditConfigInterface {

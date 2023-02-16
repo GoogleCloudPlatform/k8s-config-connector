@@ -803,6 +803,8 @@
     status:
       name: folders/20660350448
   resourceConfigId: Folder
+# not supported by asset inventory
+- resourceConfigId: IAMAccessBoundaryPolicy
 - asset:
     ancestors:
     - projects/1234567890

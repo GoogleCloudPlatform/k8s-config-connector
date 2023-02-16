@@ -784,6 +784,16 @@
         region: us-central1
   ResourceConfigId: PubSubLiteReservation
   URI: "https://pubsublite.googleapis.com/v1/admin/projects/kcc-test/locations/us-central1/reservations/pubsublitereservation-sample?alt=json"
+- ExpectedSkeleton:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMAccessBoundaryPolicy
+    metadata:
+      name: policies
+    spec:
+      projectRef:
+        external: v2
+  ResourceConfigId: IAMAccessBoundaryPolicy
+  URI: "https://iam.googleapis.com/v2/policies/cloudresourcemanager.googleapis.com%2Fprojects%2Fkcc-test/accessboundarypolicies/accessboundary-6hic5dfarsnd6xhszaea?alt=json"
 - ExpectedSkeleton: null
   ResourceConfigId: IAMCustomRole
   URI: "https://iam.googleapis.com/v1/projects/kcc-test/roles/rolechh3ku2jrdtltfiocs00?alt=json"

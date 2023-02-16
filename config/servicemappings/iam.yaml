@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,6 +22,27 @@ spec:
   version: v1beta1
   serviceHostName: "iam.googleapis.com"
   resources:
+    - name: google_iam_access_boundary_policy
+      kind: IAMAccessBoundaryPolicy
+      resourceID:
+        targetField: name
+      idTemplate: "{{parent}}/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      metadataMapping:
+        name: name
+      resourceReferences:
+        - tfField: parent
+          key: projectRef
+          parent: true
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+          valueTemplate: "cloudresourcemanager.googleapis.com%2Fprojects%2F{{value}}"
+          targetField: "name"
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
     - name: google_iam_custom_role
       kind: IAMCustomRole
       # Due to this being a custom KCC-only resource, the ID template is

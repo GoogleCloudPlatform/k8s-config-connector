@@ -31,6 +31,10 @@ type FakeIamV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakeIamV1beta1) IAMAccessBoundaryPolicies(namespace string) v1beta1.IAMAccessBoundaryPolicyInterface {
+	return &FakeIAMAccessBoundaryPolicies{c, namespace}
+}
+
 func (c *FakeIamV1beta1) IAMAuditConfigs(namespace string) v1beta1.IAMAuditConfigInterface {
 	return &FakeIAMAuditConfigs{c, namespace}
 }

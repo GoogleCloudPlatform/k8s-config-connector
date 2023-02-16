@@ -21,6 +21,8 @@
 
 package v1beta1
 
+type IAMAccessBoundaryPolicyExpansion interface{}
+
 type IAMAuditConfigExpansion interface{}
 
 type IAMCustomRoleExpansion interface{}

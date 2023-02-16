@@ -84,6 +84,9 @@ var testDisabledList = map[string]bool{
 	"iamworkforcepool":             true,
 	"oidc-workforce-pool-provider": true,
 	"saml-workforce-pool-provider": true,
+	// The following tests require using a Service Account under an allowlisted project (with
+	// label ACCESS_BOUNDARY_TRUSTED_TESTER).
+	"iamaccessboundarypolicy": true,
 	// The samples below requires a custom project with the test billing account
 	// configured, which has a quota limit on the number of projects attached to
 	// it. We should disable redundant sample tests for the same resource.
