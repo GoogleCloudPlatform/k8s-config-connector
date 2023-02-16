@@ -165,27 +165,27 @@ and
 
 ### Create a Resource
 
-1.  Enable Pub/Sub for your project.
+1.  Enable Artifact Registry for your project.
 
     ```shell
-    gcloud services enable pubsub.googleapis.com
+    gcloud services enable artifactregistry.googleapis.com
     ```
 
-1.  Create a Pub/Sub subscription. You may need to wait ~10-15 minutes to let
+1.  Create a Docker repository. You may need to wait ~10-15 minutes to let
     your cluster get set up after running `make deploy`.
 
     ```shell
     cd $GOPATH/src/github.com/GoogleCloudPlatform/k8s-config-connector
-    kubectl apply -f config/samples/resources/pubsubsubscription/basic-pubsub-subscription
+    kubectl apply -f config/samples/resources/artifactregistryrepository/artifactregistry_v1beta1_artifactregistryrepository.yaml
     ```
 
-1.  Wait a few minutes and then make sure your subscription exists in GCP.
+1.  Wait a few minutes and then make sure your repository exists in GCP.
 
     ```shell
-    gcloud pubsub subscriptions list
+    gcloud artifacts repositories list
     ```
 
-    If you see a subscription, then your cluster is properly functioning and
+    If you see a repository, then your cluster is properly functioning and
     actuating K8s resources onto GCP.
 
 ### Make a Code Change
