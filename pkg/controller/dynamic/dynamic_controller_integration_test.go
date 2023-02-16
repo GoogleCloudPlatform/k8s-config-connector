@@ -395,16 +395,16 @@ func testDriftCorrection(t *testing.T, testContext testrunner.TestContext, syste
 		return
 	}
 	kubeClient := systemContext.Manager.GetClient()
-	u := testContext.CreateUnstruct.DeepCopy()
-	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, u); err != nil {
+	testUnstruct := testContext.CreateUnstruct.DeepCopy()
+	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, testUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
 
 	// Delete all events for the resource so that we can check later at the end
 	// of this test that the right events are recorded.
-	testcontroller.DeleteAllEventsForUnstruct(t, kubeClient, u)
+	testcontroller.DeleteAllEventsForUnstruct(t, kubeClient, testUnstruct)
 
-	if err := resourceContext.Delete(t, u, systemContext.TFProvider, systemContext.Manager.GetClient(), systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter); err != nil {
+	if err := resourceContext.Delete(t, testUnstruct, systemContext.TFProvider, systemContext.Manager.GetClient(), systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter); err != nil {
 		t.Fatalf("error deleting: %v", err)
 	}
 	// Underlying APIs may not have strongly-consistent reads due to caching. Sleep before attempting a re-reconcile, to
@@ -412,8 +412,8 @@ func testDriftCorrection(t *testing.T, testContext testrunner.TestContext, syste
 	time.Sleep(time.Second * 10)
 
 	// get the current state
-	systemContext.Reconciler.Reconcile(testContext.CreateUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, testContext.CreateUnstruct.GroupVersionKind()), nil)
-	validateCreate(t, testContext, systemContext, resourceContext, u.GetGeneration())
+	systemContext.Reconciler.Reconcile(testUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, testUnstruct.GroupVersionKind()), nil)
+	validateCreate(t, testContext, systemContext, resourceContext, testUnstruct.GetGeneration())
 }
 
 func shouldSkipDriftDetection(t *testing.T, resourceContext contexts.ResourceContext, smLoader *servicemappingloader.ServiceMappingLoader,
