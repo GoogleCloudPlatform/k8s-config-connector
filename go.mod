@@ -65,6 +65,7 @@ require (
 	bitbucket.org/creachadair/stringset v0.0.8 // indirect
 	cloud.google.com/go v0.110.4 // indirect
 	cloud.google.com/go/bigtable v1.19.0 // indirect
+	cloud.google.com/go/certificatemanager v1.7.1 // indirect
 	cloud.google.com/go/compute v1.20.1 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	cloud.google.com/go/iam v1.1.0 // indirect

@@ -278,6 +278,9 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 		for _, resource := range resources {
 			gvk := resource.GroupVersionKind()
 			switch gvk.GroupKind() {
+			case schema.GroupKind{Group: "certificatemanager.cnrm.cloud.google.com", Kind: "CertificateManagerCertificate"}:
+				// ok
+
 			case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMServiceAccount"}:
 				// ok
 
