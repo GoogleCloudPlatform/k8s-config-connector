@@ -40,6 +40,9 @@ metadata:
     cnrm.cloud.google.com/component: configconnector-operator
   name: configconnector-operator
 spec:
+  # specifying replicas explicitly would help to enforce the intended
+  # value when the file is applied.
+  replicas: 1
   selector:
     matchLabels:
       cnrm.cloud.google.com/component: configconnector-operator
