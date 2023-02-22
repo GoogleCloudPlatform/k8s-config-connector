@@ -14,7 +14,7 @@
 <table>
 <thead>
 <tr>
-  <th><strong>{{gcp_name_short}} Resource</strong></th>
+  <th><strong>{{gcp_name_short}} Product</strong></th>
 <th><strong>{{product_name_short}} Resource Name</strong></th>
 </tr>
 </thead>
@@ -753,19 +753,20 @@
 </devsite-filter>
 </div>
 
-{{product_name_short}} stops supporting the following resources starting from
-the corresponding version.
+The following resources are not supported in {{product_name_short}} starting from the corresponding version:
 
 <div>
 <table>
 <thead>
 <tr>
+  <th><strong>{{gcp_name_short}} Product</strong></th>
   <th><strong>{{product_name_short}} Resource Name</strong></th>
   <th><strong>Deprecation Version</strong></th>
 </tr>
 </thead>
 <tbody class="list">
 <tr>
+  <td>{{game_servers_name}} Realm</td>
   <td>GameServicesRealm</td>
   <td>1.101.0</td>
 </tr>
