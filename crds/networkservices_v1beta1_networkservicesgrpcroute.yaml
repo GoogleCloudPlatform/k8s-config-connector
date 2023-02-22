@@ -16,12 +16,12 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.100.0
+    cnrm.cloud.google.com/version: 1.101.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: networkservicesgrpcroutes.networkservices.cnrm.cloud.google.com
 spec:

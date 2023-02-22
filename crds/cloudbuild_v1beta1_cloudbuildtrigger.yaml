@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.100.0
+    cnrm.cloud.google.com/version: 1.101.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -708,6 +708,38 @@ spec:
                 description: The file source describing the local or remote Build
                   template.
                 properties:
+                  githubEnterpriseConfigRef:
+                    description: |-
+                      Only `external` field is supported to configure the reference.
+
+                      The full resource name of the github enterprise config. Format:
+                      projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'Allowed value: The `name` field of a `CloudBuildGithubEnterpriseConfig`
+                          resource.'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                   path:
                     description: The path of the file, with the repo root as the root
                       of the path.
@@ -905,6 +937,56 @@ spec:
                 required:
                 - topicRef
                 type: object
+              repositoryEventConfig:
+                description: The configuration of a trigger that creates a build whenever
+                  an event from Repo API is received.
+                properties:
+                  pullRequest:
+                    description: Contains filter properties for matching Pull Requests.
+                    properties:
+                      branch:
+                        description: |-
+                          Regex of branches to match.
+
+                          The syntax of the regular expressions accepted is the syntax accepted by
+                          RE2 and described at https://github.com/google/re2/wiki/Syntax.
+                        type: string
+                      commentControl:
+                        description: 'Configure builds to run whether a repository
+                          owner or collaborator need to comment ''/gcbrun''. Possible
+                          values: ["COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"].'
+                        type: string
+                      invertRegex:
+                        description: If true, branches that do NOT match the git_ref
+                          will trigger a build.
+                        type: boolean
+                    type: object
+                  push:
+                    description: Contains filter properties for matching git pushes.
+                    properties:
+                      branch:
+                        description: |-
+                          Regex of branches to match.
+
+                          The syntax of the regular expressions accepted is the syntax accepted by
+                          RE2 and described at https://github.com/google/re2/wiki/Syntax.
+                        type: string
+                      invertRegex:
+                        description: If true, only trigger a build if the revision
+                          regex does NOT match the git_ref regex.
+                        type: boolean
+                      tag:
+                        description: |-
+                          Regex of tags to match.
+
+                          The syntax of the regular expressions accepted is the syntax accepted by
+                          RE2 and described at https://github.com/google/re2/wiki/Syntax.
+                        type: string
+                    type: object
+                  repository:
+                    description: The resource name of the Repo API resource.
+                    type: string
+                type: object
               serviceAccountRef:
                 description: |-
                   The service account used for all user-controlled operations including
@@ -951,6 +1033,38 @@ spec:
                   'github', 'pubsub_config' 'webhook_config' or 'source_to_build'
                   must be provided."
                 properties:
+                  githubEnterpriseConfigRef:
+                    description: |-
+                      Only `external` field is supported to configure the reference.
+
+                      The full resource name of the github enterprise config. Format:
+                      projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'Allowed value: The `name` field of a `CloudBuildGithubEnterpriseConfig`
+                          resource.'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                   ref:
                     description: The branch or tag to use. Must start with "refs/"
                       (required).

@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,16 +15,19 @@
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesGateway
 metadata:
-  labels:
-    key-one: value-one
   name: networkservicesgateway-sample
+  labels:
+    foo: bar
 spec:
-  projectRef:
-    # Replace ${PROJECT_ID?} with your project ID.
-    external: "projects/${PROJECT_ID?}"
-  type: OPEN_MESH
+  description: "A test Gateway"
+  type: "OPEN_MESH"
   ports:
   - 80
   - 443
-  location: global
-  scope: foo-scope
+  location: "global"
+  scope: "networkservicesgateway-sample"
+  serverTlsPolicyRef:
+    name: "networkservicesgateway-dep"
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"

@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: gameservices.cnrm.cloud.google.com/v1beta1
-kind: GameServicesRealm
+apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
+kind: NetworkSecurityServerTLSPolicy
 metadata:
-  labels:
-    label-one: "value-one"
-  name: realm-sample
+  name: networkservicesgateway-dep
 spec:
-  timeZone: EST
-  location: us-east1
+  location: "global"
+  allowOpen: true
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"

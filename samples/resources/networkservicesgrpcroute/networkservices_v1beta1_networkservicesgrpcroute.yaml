@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,31 +15,38 @@
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesGRPCRoute
 metadata:
-  labels:
-    key-one: value-one
   name: networkservicesgrpcroute-sample
+  labels:
+    foo: bar
 spec:
-  projectRef:
-    # Replace ${PROJECT_ID?} with your project ID.
-    external: "projects/${PROJECT_ID?}"
-  location: global
-  hostnames: ["baz.bar"]
+  description: "A test GrpcRoute"
   meshes:
-    - name: networkservicesgrpcroute-dep
+  - name: "networkservicesgrpcroute-dep"
   gateways:
-    - name: networkservicesgrpcroute-dep
+  - name: "networkservicesgrpcroute-dep"
+  location: "global"
+  hostnames:
+  - "test1"
+  - "test2"
   rules:
   - matches:
     - method:
-        grpcService: helloworld.Greeter
-        grpcMethod: SayHello
+        type: "EXACT"
+        grpcService: "helloworld.Greeter"
+        grpcMethod: "SayHello"
+        caseSensitive: false
       headers:
-      - key: foo
-        value: bar
+      - type: "EXACT"
+        key: "foo"
+        value: "bar"
     action:
       destinations:
       - serviceRef:
-          name: networkservicesgrpcroute-dep
+          name: "networkservicesgrpcroute-dep"
+        weight: 50
+      - serviceRef:
+          name: "networkservicesgrpcroute-dep"
+        weight: 50
       faultInjectionPolicy:
         abort:
           httpStatus: 501
@@ -56,4 +63,7 @@ spec:
   - action:
       destinations:
       - serviceRef:
-          name: networkservicesgrpcroute-dep
+          name: "networkservicesgrpcroute-dep"
+  projectRef:
+    # Replace "${PROJECT_ID?}" with your project ID
+    external: "projects/${PROJECT_ID?}"
