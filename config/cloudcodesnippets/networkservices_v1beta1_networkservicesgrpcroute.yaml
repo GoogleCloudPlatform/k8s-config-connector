@@ -5,44 +5,53 @@ insertText: |
   kind: NetworkServicesGRPCRoute
   metadata:
     labels:
-      \${1:key-one}: \${2:value-one}
+      \${1:foo}: \${2:bar}
     name: \${3:networkservicesgrpcroute-name}
   spec:
-    projectRef:
-      external: \${4:projects/[PROJECT_ID?]}
-    location: \${5:global}
-    hostnames:
-    - \${6:baz.bar}
+    description: \${4:A test GrpcRoute}
     meshes:
-    - name: \${7:networkservicesgrpcroute-dep}
+    - name: \${5:networkservicesgrpcroute-dep}
     gateways:
-    - name: \${8:networkservicesgrpcroute-dep}
+    - name: \${6:networkservicesgrpcroute-dep}
+    location: \${7:global}
+    hostnames:
+    - \${8:test1}
+    - \${9:test2}
     rules:
     - matches:
       - method:
-          grpcService: \${9:helloworld.Greeter}
-          grpcMethod: \${10:SayHello}
+          type: \${10:EXACT}
+          grpcService: \${11:helloworld.Greeter}
+          grpcMethod: \${12:SayHello}
+          caseSensitive: \${13:false}
         headers:
-        - key: \${11:foo}
-          value: \${12:bar}
+        - type: \${14:EXACT}
+          key: \${15:foo}
+          value: \${16:bar}
       action:
         destinations:
         - serviceRef:
-            name: \${13:networkservicesgrpcroute-dep}
+            name: \${17:networkservicesgrpcroute-dep}
+          weight: \${18:50}
+        - serviceRef:
+            name: \${19:networkservicesgrpcroute-dep}
+          weight: \${20:50}
         faultInjectionPolicy:
           abort:
-            httpStatus: \${14:501}
-            percentage: \${15:1}
+            httpStatus: \${21:501}
+            percentage: \${22:1}
           delay:
-            fixedDelay: \${16:10s}
-            percentage: \${17:2}
+            fixedDelay: \${23:10s}
+            percentage: \${24:2}
         retryPolicy:
-          numRetries: \${18:3}
+          numRetries: \${25:3}
           retryConditions:
-          - \${19:refused-stream}
-          - \${20:cancelled}
-        timeout: \${21:30s}
+          - \${26:refused-stream}
+          - \${27:cancelled}
+        timeout: \${28:30s}
     - action:
         destinations:
         - serviceRef:
-            name: \${22:networkservicesgrpcroute-dep}
+            name: \${29:networkservicesgrpcroute-dep}
+    projectRef:
+      external: \${30:projects/[PROJECT_ID?]}

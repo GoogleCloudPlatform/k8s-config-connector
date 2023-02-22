@@ -5,16 +5,15 @@ insertText: |
   kind: NetworkServicesTCPRoute
   metadata:
     labels:
-      \${1:key-one}: \${2:value-one}
+      \${1:foo}: \${2:bar}
     name: \${3:networkservicestcproute-name}
   spec:
-    projectRef:
-      external: \${4:projects/[PROJECT_ID?]}
-    location: \${5:global}
     meshes:
-    - name: \${6:networkservicestcproute-dep}
+    - name: \${4:networkservicestcproute-dep}
     gateways:
-    - name: \${7:networkservicestcproute-dep}
+    - name: \${5:networkservicestcproute-dep}
+    location: \${6:global}
+    description: \${7:A test TcpRoute}
     rules:
     - matches:
       - address: \${8:10.0.0.1/32}
@@ -23,7 +22,15 @@ insertText: |
         destinations:
         - serviceRef:
             name: \${10:networkservicestcproute-dep}
-    - action:
+          weight: \${11:1}
+    - matches:
+      - address: \${12:10.0.0.1/0}
+        port: \${13:1}
+      action:
+        originalDestination: \${14:false}
         destinations:
         - serviceRef:
-            name: \${11:networkservicestcproute-dep}
+            name: \${15:networkservicestcproute-dep}
+          weight: \${16:1}
+    projectRef:
+      external: \${17:projects/[PROJECT_ID?]}

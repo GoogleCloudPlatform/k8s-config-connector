@@ -5,14 +5,17 @@ insertText: |
   kind: NetworkServicesGateway
   metadata:
     labels:
-      \${1:key-one}: \${2:value-one}
+      \${1:foo}: \${2:bar}
     name: \${3:networkservicesgateway-name}
   spec:
-    projectRef:
-      external: \${4:projects/[PROJECT_ID?]}
+    description: \${4:A test Gateway}
     type: \${5:OPEN_MESH}
     ports:
     - \${6:80}
     - \${7:443}
     location: \${8:global}
-    scope: \${9:foo-scope}
+    scope: \${9:networkservicesgateway-sample}
+    serverTlsPolicyRef:
+      name: \${10:networkservicesgateway-dep}
+    projectRef:
+      external: \${11:projects/[PROJECT_ID?]}

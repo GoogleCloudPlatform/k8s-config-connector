@@ -5,67 +5,136 @@ insertText: |
   kind: NetworkServicesHTTPRoute
   metadata:
     labels:
-      \${1:key-one}: \${2:value-one}
+      \${1:foo}: \${2:bar}
     name: \${3:networkserviceshttproute-name}
   spec:
-    projectRef:
-      external: \${4:projects/[PROJECT_ID?]}
-    location: \${5:global}
-    hostnames:
-    - \${6:bar.baz}
+    description: \${4:A test HttpRoute}
     meshes:
-    - name: \${7:networkserviceshttproute-dep}
+    - name: \${5:networkserviceshttproute-dep}
     gateways:
-    - name: \${8:networkserviceshttproute-dep}
+    - name: \${6:networkserviceshttproute-dep}
+    location: \${7:global}
+    hostnames:
+    - \${8:test1}
+    - \${9:test2}
     rules:
     - matches:
-      - fullPathMatch: \${9:/foo/bar}
+      - fullPathMatch: \${10:/foo/bar}
         headers:
-        - header: \${10:foo-header}
-          prefixMatch: \${11:bar-value}
+        - header: \${11:foo-header}
+          prefixMatch: \${12:bar-value}
+      - prefixMatch: \${13:/foo/}
+        ignoreCase: \${14:true}
+      - regexMatch: \${15:/foo/.*/bar/.*}
+      - prefixMatch: \${16:/}
+        headers:
+        - header: \${17:foo}
+          exactMatch: \${18:bar}
+        - header: \${19:foo}
+          regexMatch: \${20:b.*ar}
+        - header: \${21:foo}
+          prefixMatch: \${22:ba}
+        - header: \${23:foo}
+          presentMatch: \${24:true}
+        - header: \${25:foo}
+          suffixMatch: \${26:ar}
+        - header: \${27:foo}
+          rangeMatch:
+            start: \${28:0}
+            end: \${29:5}
+          invertMatch: \${30:true}
+      - prefixMatch: \${31:/}
+        queryParameters:
+        - queryParameter: \${32:foo}
+          exactMatch: \${33:bar}
+        - queryParameter: \${34:foo}
+          regexMatch: \${35:.*bar.*}
+        - queryParameter: \${36:foo}
+          presentMatch: \${37:true}
       action:
         destinations:
         - serviceRef:
-            name: \${12:networkserviceshttproute-dep}
+            name: \${38:networkserviceshttproute-dep}
+          weight: \${39:1}
+        - serviceRef:
+            name: \${40:networkserviceshttproute-dep}
+          weight: \${41:1}
+        urlRewrite:
+          pathPrefixRewrite: \${42:foo}
+          hostRewrite: \${43:foo}
+        corsPolicy:
+          allowOrigins:
+          - \${44:foo.com}
+          - \${45:bar.com}
+          allowOriginRegexes:
+          - \${46:.*.foo.com}
+          - \${47:.*.bar.com}
+          allowMethods:
+          - \${48:GET}
+          - \${49:POST}
+          allowHeaders:
+          - \${50:foo}
+          - \${51:bar}
+          exposeHeaders:
+          - \${52:foo}
+          - \${53:bar}
+          maxAge: \${54:35}
+          allowCredentials: \${55:true}
+          disabled: \${56:false}
         faultInjectionPolicy:
           abort:
-            httpStatus: \${13:501}
-            percentage: \${14:1}
+            httpStatus: \${57:501}
+            percentage: \${58:1}
           delay:
-            fixedDelay: \${15:10s}
-            percentage: \${16:2}
+            fixedDelay: \${59:10s}
+            percentage: \${60:2}
         requestHeaderModifier:
           add:
-            foo1: \${17:bar1}
-            baz1: \${18:qux1}
+            foo1: \${61:bar1}
+            baz1: \${62:qux1}
           set:
-            foo2: \${19:bar2}
-            baz2: \${20:qux2}
+            foo2: \${63:bar2}
+            baz2: \${64:qux2}
           remove:
-          - \${21:foo3}
-          - \${22:bar3}
+          - \${65:foo3}
+          - \${66:bar3}
         requestMirrorPolicy:
           destination:
             serviceRef:
-              name: \${23:networkserviceshttproute-dep}
+              name: \${67:networkserviceshttproute-dep}
         responseHeaderModifier:
           add:
-            foo1: \${24:bar1}
-            baz1: \${25:qux1}
+            foo1: \${68:bar1}
+            baz1: \${69:qux1}
           set:
-            foo2: \${26:bar2}
-            baz2: \${27:qux2}
+            foo2: \${70:bar2}
+            baz2: \${71:qux2}
           remove:
-          - \${28:foo3}
-          - \${29:bar3}
+          - \${72:foo3}
+          - \${73:bar3}
         retryPolicy:
-          numRetries: \${30:3}
-          perTryTimeout: \${31:5s}
+          numRetries: \${74:3}
+          perTryTimeout: \${75:5s}
           retryConditions:
-          - \${32:refused-stream}
-          - \${33:cancelled}
-        timeout: \${34:30s}
+          - \${76:refused-stream}
+          - \${77:cancelled}
+        timeout: \${78:30s}
     - action:
-        destinations:
-        - serviceRef:
-            name: \${35:networkserviceshttproute-dep}
+        redirect:
+          hostRedirect: \${79:foo}
+          responseCode: \${80:MOVED_PERMANENTLY_DEFAULT}
+          httpsRedirect: \${81:true}
+          stripQuery: \${82:true}
+          portRedirect: \${83:7777}
+    - action:
+        redirect:
+          hostRedirect: \${84:test}
+          prefixRewrite: \${85:foo}
+          responseCode: \${86:FOUND}
+    - action:
+        redirect:
+          hostRedirect: \${87:test}
+          pathRedirect: \${88:/foo}
+          responseCode: \${89:FOUND}
+    projectRef:
+      external: \${90:projects/[PROJECT_ID?]}

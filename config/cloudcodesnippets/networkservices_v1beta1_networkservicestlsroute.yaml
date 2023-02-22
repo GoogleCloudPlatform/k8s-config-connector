@@ -4,26 +4,26 @@ insertText: |
   apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
   kind: NetworkServicesTLSRoute
   metadata:
-    labels:
-      \${1:key-one}: \${2:value-one}
-    name: \${3:networkservicestlsroute-name}
+    name: \${1:networkservicestlsroute-name}
   spec:
-    projectRef:
-      external: \${4:projects/[PROJECT_ID?]}
-    location: \${5:global}
     meshes:
-    - name: \${6:networkservicestlsroute-dep}
+    - name: \${2:networkservicestlsroute-dep}
     gateways:
-    - name: \${7:networkservicestlsroute-dep}
+    - name: \${3:networkservicestlsroute-dep}
+    description: \${4:A test TcpRoute}
+    location: \${5:global}
     rules:
     - matches:
       - sniHost:
-        - \${8:*.foo.example.com}
-        - \${9:foo.example.com}
+        - \${6:*.foo.example.com}
+        - \${7:foo.example.com}
         alpn:
-        - \${10:h2}
-        - \${11:http/1.1}
+        - \${8:h2}
+        - \${9:http/1.1}
       action:
         destinations:
         - serviceRef:
-            name: \${12:networkservicestlsroute-dep}
+            name: \${10:networkservicestlsroute-dep}
+          weight: \${11:1}
+    projectRef:
+      external: \${12:projects/[PROJECT_ID?]}
