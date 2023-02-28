@@ -20,7 +20,7 @@ spec:
   activatedPolicyTypes:
   - FINE_GRAINED_ACCESS_CONTROL
   description: A collection of policy tags
-  displayName: my_display_name
+  displayName: my_taxonomy
   projectRef:
     external: ${projectId}
   region: us

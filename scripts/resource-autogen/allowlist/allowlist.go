@@ -77,6 +77,7 @@ func NewAutoGenType(autoGenTypeInString string) (*AutoGenType, error) {
 type AutoGenAllowlist struct {
 	ServiceAndTFTypes  map[string]map[string]*AutoGenType
 	ServiceAndKRMKinds map[string]map[string]*AutoGenType
+	KRMKinds           map[string]*AutoGenType
 }
 
 func (a *AutoGenAllowlist) addAutoGenType(autoGenType *AutoGenType) {
@@ -91,6 +92,7 @@ func (a *AutoGenAllowlist) addAutoGenType(autoGenType *AutoGenType) {
 	if !ok {
 		TFTypeMap[autoGenType.toTFType()] = autoGenType
 		KRMKindMap[autoGenType.toKRMKind()] = autoGenType
+		a.KRMKinds[autoGenType.toKRMKind()] = autoGenType
 	}
 	return
 }
@@ -109,6 +111,11 @@ func (a *AutoGenAllowlist) HasTFTypeInService(service, tfType string) bool {
 	return ok
 }
 
+func (a *AutoGenAllowlist) HasKRMKind(krmKind string) bool {
+	_, ok := a.KRMKinds[krmKind]
+	return ok
+}
+
 func (a *AutoGenAllowlist) HasKRMKindInService(service, krmKind string) bool {
 	resourceMap, ok := a.ServiceAndKRMKinds[service]
 	if !ok {
@@ -122,6 +129,7 @@ func NewAutoGenAllowlist() *AutoGenAllowlist {
 	return &AutoGenAllowlist{
 		ServiceAndTFTypes:  make(map[string]map[string]*AutoGenType),
 		ServiceAndKRMKinds: make(map[string]map[string]*AutoGenType),
+		KRMKinds:           make(map[string]*AutoGenType),
 	}
 }
 
