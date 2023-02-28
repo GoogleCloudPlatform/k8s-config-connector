@@ -23,7 +23,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func resourceFirebaseProjectLocation() *schema.Resource {
+func ResourceFirebaseProjectLocation() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceFirebaseProjectLocationCreate,
 		Read:   resourceFirebaseProjectLocationRead,

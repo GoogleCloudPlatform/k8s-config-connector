@@ -24,7 +24,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func resourceDNSResponsePolicy() *schema.Resource {
+func ResourceDNSResponsePolicy() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceDNSResponsePolicyCreate,
 		Read:   resourceDNSResponsePolicyRead,

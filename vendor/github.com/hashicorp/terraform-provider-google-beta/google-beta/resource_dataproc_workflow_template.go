@@ -27,7 +27,7 @@ import (
 	dataproc "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/dataproc/beta"
 )
 
-func resourceDataprocWorkflowTemplate() *schema.Resource {
+func ResourceDataprocWorkflowTemplate() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceDataprocWorkflowTemplateCreate,
 		Read:   resourceDataprocWorkflowTemplateRead,

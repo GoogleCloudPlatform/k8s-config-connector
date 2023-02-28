@@ -6,9 +6,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func dataSourceGoogleFirebaseAndroidApp() *schema.Resource {
+func DataSourceGoogleFirebaseAndroidApp() *schema.Resource {
 	// Generate datasource schema from resource
-	dsSchema := datasourceSchemaFromResourceSchema(resourceFirebaseAndroidApp().Schema)
+	dsSchema := datasourceSchemaFromResourceSchema(ResourceFirebaseAndroidApp().Schema)
 
 	// Set 'Required' schema elements
 	addRequiredFieldsToSchema(dsSchema, "app_id")

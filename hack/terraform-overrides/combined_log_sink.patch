@@ -13,17 +13,17 @@
 # limitations under the License.
 
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
-index d48e1de4f..cdd6e47ac 100644
+index d5f29b5d1..64552d974 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
-@@ -1180,6 +1180,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
- 			"google_logging_organization_exclusion":        ResourceLoggingExclusion(OrganizationLoggingExclusionSchema, NewOrganizationLoggingExclusionUpdater, organizationLoggingExclusionIdParseFunc),
+@@ -1674,6 +1674,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
+ 			"google_logging_organization_exclusion":        ResourceLoggingExclusion(OrganizationLoggingExclusionSchema, NewOrganizationLoggingExclusionUpdater, OrganizationLoggingExclusionIdParseFunc),
  			"google_logging_organization_bucket_config":    ResourceLoggingOrganizationBucketConfig(),
- 			"google_logging_folder_sink":                   resourceLoggingFolderSink(),
+ 			"google_logging_folder_sink":                   ResourceLoggingFolderSink(),
 +			"google_logging_log_sink":                      resourceLoggingLogSink(),
- 			"google_logging_folder_exclusion":              ResourceLoggingExclusion(FolderLoggingExclusionSchema, NewFolderLoggingExclusionUpdater, folderLoggingExclusionIdParseFunc),
+ 			"google_logging_folder_exclusion":              ResourceLoggingExclusion(FolderLoggingExclusionSchema, NewFolderLoggingExclusionUpdater, FolderLoggingExclusionIdParseFunc),
  			"google_logging_folder_bucket_config":          ResourceLoggingFolderBucketConfig(),
- 			"google_logging_project_sink":                  resourceLoggingProjectSink(),
+ 			"google_logging_project_sink":                  ResourceLoggingProjectSink(),
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_logging_log_sink.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_logging_log_sink.go
 new file mode 100644
 index 000000000..35b99d7d3
@@ -42,9 +42,9 @@ index 000000000..35b99d7d3
 +func resourceLoggingLogSink() *schema.Resource {
 +	return combinedResource(
 +		map[string]*schema.Resource{
-+			projectType: resourceLoggingProjectSink(),
-+			folderType:  resourceLoggingFolderSink(),
-+			orgType:     resourceLoggingOrganizationSink(),
++			projectType: ResourceLoggingProjectSink(),
++			folderType:  ResourceLoggingFolderSink(),
++			orgType:     ResourceLoggingOrganizationSink(),
 +		}, loggingLogSinkImporter)
 +}
 +

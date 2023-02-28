@@ -23,7 +23,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func resourceServiceUsageConsumerQuotaOverride() *schema.Resource {
+func ResourceServiceUsageConsumerQuotaOverride() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceServiceUsageConsumerQuotaOverrideCreate,
 		Read:   resourceServiceUsageConsumerQuotaOverrideRead,

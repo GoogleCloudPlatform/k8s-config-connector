@@ -16,7 +16,7 @@ import (
 
 var clusterIdRegex = regexp.MustCompile("projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)")
 
-func resourceContainerNodePool() *schema.Resource {
+func ResourceContainerNodePool() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceContainerNodePoolCreate,
 		Read:   resourceContainerNodePoolRead,
@@ -826,9 +826,11 @@ func expandNodePool(d *schema.ResourceData, prefix string) (*container.NodePool,
 	}
 
 	if v, ok := d.GetOk(prefix + "placement_policy"); ok {
-		placement_policy := v.([]interface{})[0].(map[string]interface{})
-		np.PlacementPolicy = &container.PlacementPolicy{
-			Type: placement_policy["type"].(string),
+		if v.([]interface{}) != nil && v.([]interface{})[0] != nil {
+			placement_policy := v.([]interface{})[0].(map[string]interface{})
+			np.PlacementPolicy = &container.PlacementPolicy{
+				Type: placement_policy["type"].(string),
+			}
 		}
 	}
 

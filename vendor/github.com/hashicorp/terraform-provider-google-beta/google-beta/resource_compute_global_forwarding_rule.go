@@ -27,7 +27,7 @@ import (
 	compute "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/compute/beta"
 )
 
-func resourceComputeGlobalForwardingRule() *schema.Resource {
+func ResourceComputeGlobalForwardingRule() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceComputeGlobalForwardingRuleCreate,
 		Read:   resourceComputeGlobalForwardingRuleRead,

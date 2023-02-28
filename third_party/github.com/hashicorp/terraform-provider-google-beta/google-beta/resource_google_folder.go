@@ -14,7 +14,7 @@ import (
 
 var activeFolderNotFoundError = errors.New("active folder not found")
 
-func resourceGoogleFolder() *schema.Resource {
+func ResourceGoogleFolder() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceGoogleFolderCreate,
 		Read:   resourceGoogleFolderRead,

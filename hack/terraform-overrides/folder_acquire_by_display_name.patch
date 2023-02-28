@@ -1,19 +1,5 @@
-# Copyright 2022 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_folder.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_folder.go
-index bc6aac218..675b4a975 100644
+index f67b5d2c8..d8ad0e4f5 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_folder.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_google_folder.go
 @@ -2,6 +2,7 @@ package google
@@ -30,7 +16,7 @@ index bc6aac218..675b4a975 100644
  
 +var activeFolderNotFoundError = errors.New("active folder not found")
 +
- func resourceGoogleFolder() *schema.Resource {
+ func ResourceGoogleFolder() *schema.Resource {
  	return &schema.Resource{
  		Create: resourceGoogleFolderCreate,
 @@ -86,6 +89,19 @@ func resourceGoogleFolderCreate(d *schema.ResourceData, meta interface{}) error
@@ -53,7 +39,7 @@ index bc6aac218..675b4a975 100644
  	var op *resourceManagerV3.Operation
  	err = retryTimeDuration(func() error {
  		var reqErr error
-@@ -282,6 +298,27 @@ func getGoogleFolder(folderName, userAgent string, d *schema.ResourceData, confi
+@@ -295,6 +311,27 @@ func getGoogleFolder(folderName, userAgent string, d *schema.ResourceData, confi
  	return folder, nil
  }
  

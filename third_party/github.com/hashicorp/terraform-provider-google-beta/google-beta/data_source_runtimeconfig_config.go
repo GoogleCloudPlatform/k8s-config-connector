@@ -6,9 +6,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func dataSourceGoogleRuntimeconfigConfig() *schema.Resource {
+func DataSourceGoogleRuntimeconfigConfig() *schema.Resource {
 
-	dsSchema := datasourceSchemaFromResourceSchema(resourceRuntimeconfigConfig().Schema)
+	dsSchema := datasourceSchemaFromResourceSchema(ResourceRuntimeconfigConfig().Schema)
 	addRequiredFieldsToSchema(dsSchema, "name")
 	addOptionalFieldsToSchema(dsSchema, "project")
 

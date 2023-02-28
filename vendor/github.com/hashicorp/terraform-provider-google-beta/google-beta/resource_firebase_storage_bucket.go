@@ -22,7 +22,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func resourceFirebaseStorageBucket() *schema.Resource {
+func ResourceFirebaseStorageBucket() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceFirebaseStorageBucketCreate,
 		Read:   resourceFirebaseStorageBucketRead,

@@ -7,8 +7,8 @@ import (
 	"google.golang.org/api/compute/v0.beta"
 )
 
-func dataSourceGoogleComputeRouterStatus() *schema.Resource {
-	routeElemSchema := datasourceSchemaFromResourceSchema(resourceComputeRoute().Schema)
+func DataSourceGoogleComputeRouterStatus() *schema.Resource {
+	routeElemSchema := datasourceSchemaFromResourceSchema(ResourceComputeRoute().Schema)
 
 	return &schema.Resource{
 		Read: dataSourceComputeRouterStatusRead,

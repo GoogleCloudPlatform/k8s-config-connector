@@ -23,7 +23,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func resourceOSConfigGuestPolicies() *schema.Resource {
+func ResourceOSConfigGuestPolicies() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceOSConfigGuestPoliciesCreate,
 		Read:   resourceOSConfigGuestPoliciesRead,

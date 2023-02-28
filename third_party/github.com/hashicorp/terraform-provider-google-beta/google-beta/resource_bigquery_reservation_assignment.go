@@ -27,7 +27,7 @@ import (
 	bigqueryreservation "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/bigqueryreservation/beta"
 )
 
-func resourceBigqueryReservationAssignment() *schema.Resource {
+func ResourceBigqueryReservationAssignment() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceBigqueryReservationAssignmentCreate,
 		Read:   resourceBigqueryReservationAssignmentRead,

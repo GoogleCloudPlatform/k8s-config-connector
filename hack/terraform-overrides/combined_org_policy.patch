@@ -13,17 +13,17 @@
 # limitations under the License.
 
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
-index 534aaefa7..1d053ae5c 100644
+index 04b78afc1..4711ad825 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/provider.go
-@@ -1219,6 +1219,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
- 			"google_sql_user":                              resourceSqlUser(),
- 			"google_organization_iam_custom_role":          resourceGoogleOrganizationIamCustomRole(),
- 			"google_organization_policy":                   resourceGoogleOrganizationPolicy(),
-+			"google_org_policy":                            resourceOrgPolicy(),
- 			"google_project":                               resourceGoogleProject(),
- 			"google_project_default_service_accounts":      resourceGoogleProjectDefaultServiceAccounts(),
- 			"google_project_service":                       resourceGoogleProjectService(),
+@@ -1689,6 +1689,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
+ 			"google_sql_user":                              ResourceSqlUser(),
+ 			"google_organization_iam_custom_role":          ResourceGoogleOrganizationIamCustomRole(),
+ 			"google_organization_policy":                   ResourceGoogleOrganizationPolicy(),
++			"google_org_policy":                            ResourceOrgPolicy(),
+ 			"google_project":                               ResourceGoogleProject(),
+ 			"google_project_default_service_accounts":      ResourceGoogleProjectDefaultServiceAccounts(),
+ 			"google_project_service":                       ResourceGoogleProjectService(),
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_org_policy.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_org_policy.go
 new file mode 100644
 index 000000000..c2c58161a
@@ -39,12 +39,12 @@ index 000000000..c2c58161a
 +	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 +)
 +
-+func resourceOrgPolicy() *schema.Resource {
++func ResourceOrgPolicy() *schema.Resource {
 +	return combinedResource(
 +		map[string]*schema.Resource{
-+			projectType: resourceGoogleProjectOrganizationPolicy(),
-+			folderType:  resourceGoogleFolderOrganizationPolicy(),
-+			orgType:     resourceGoogleOrganizationPolicy(),
++			projectType: ResourceGoogleProjectOrganizationPolicy(),
++			folderType:  ResourceGoogleFolderOrganizationPolicy(),
++			orgType:     ResourceGoogleOrganizationPolicy(),
 +		}, func(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 +			// FROM: {{project?}}#{{folder?}}#{{org_id?}}#{{constraint}}
 +			// TO:

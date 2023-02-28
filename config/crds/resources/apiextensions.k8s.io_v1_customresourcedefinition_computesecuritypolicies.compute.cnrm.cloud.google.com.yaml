@@ -458,6 +458,24 @@ spec:
                           description: Determines the key to enforce the rateLimitThreshold
                             on.
                           type: string
+                        enforceOnKeyConfigs:
+                          description: Immutable. Enforce On Key Config of this security
+                            policy.
+                          items:
+                            properties:
+                              enforceOnKeyName:
+                                description: 'Rate limit key name applicable only
+                                  for the following key types: HTTP_HEADER -- Name
+                                  of the HTTP header whose value is taken as the key
+                                  value. HTTP_COOKIE -- Name of the HTTP cookie whose
+                                  value is taken as the key value.'
+                                type: string
+                              enforceOnKeyType:
+                                description: Determines the key to enforce the rate_limit_threshold
+                                  on.
+                                type: string
+                            type: object
+                          type: array
                         enforceOnKeyName:
                           description: 'Rate limit key name applicable only for the
                             following key types: HTTP_HEADER -- Name of the HTTP header

@@ -15,6 +15,7 @@
 package google
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -36,8 +37,20 @@ func TestAccRuntimeConfigConfigIamBindingGenerated(t *testing.T) {
 				Config: testAccRuntimeConfigConfigIamBinding_basicGenerated(context),
 			},
 			{
+				ResourceName:      "google_runtimeconfig_config_iam_binding.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/configs/%s roles/viewer", getTestProjectFromEnv(), fmt.Sprintf("tf-test-my-config%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
 				// Test Iam Binding update
 				Config: testAccRuntimeConfigConfigIamBinding_updateGenerated(context),
+			},
+			{
+				ResourceName:      "google_runtimeconfig_config_iam_binding.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/configs/%s roles/viewer", getTestProjectFromEnv(), fmt.Sprintf("tf-test-my-config%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})
@@ -59,6 +72,12 @@ func TestAccRuntimeConfigConfigIamMemberGenerated(t *testing.T) {
 				// Test Iam Member creation (no update for member, no need to test)
 				Config: testAccRuntimeConfigConfigIamMember_basicGenerated(context),
 			},
+			{
+				ResourceName:      "google_runtimeconfig_config_iam_member.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/configs/%s roles/viewer user:admin@hashicorptest.com", getTestProjectFromEnv(), fmt.Sprintf("tf-test-my-config%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
 		},
 	})
 }
@@ -79,7 +98,19 @@ func TestAccRuntimeConfigConfigIamPolicyGenerated(t *testing.T) {
 				Config: testAccRuntimeConfigConfigIamPolicy_basicGenerated(context),
 			},
 			{
+				ResourceName:      "google_runtimeconfig_config_iam_policy.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/configs/%s", getTestProjectFromEnv(), fmt.Sprintf("tf-test-my-config%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
 				Config: testAccRuntimeConfigConfigIamPolicy_emptyBinding(context),
+			},
+			{
+				ResourceName:      "google_runtimeconfig_config_iam_policy.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/configs/%s", getTestProjectFromEnv(), fmt.Sprintf("tf-test-my-config%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})

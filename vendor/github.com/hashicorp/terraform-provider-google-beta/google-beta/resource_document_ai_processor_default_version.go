@@ -24,7 +24,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func resourceDocumentAIProcessorDefaultVersion() *schema.Resource {
+func ResourceDocumentAIProcessorDefaultVersion() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceDocumentAIProcessorDefaultVersionCreate,
 		Read:   resourceDocumentAIProcessorDefaultVersionRead,
@@ -51,7 +51,8 @@ func resourceDocumentAIProcessorDefaultVersion() *schema.Resource {
 				Required:         true,
 				ForceNew:         true,
 				DiffSuppressFunc: projectNumberDiffSuppress,
-				Description:      `The version to set`,
+				Description: `The version to set. Using 'stable' or 'rc' will cause the API to return the latest version in that release channel.
+Apply 'lifecycle.ignore_changes' to the 'version' field to suppress this diff.`,
 			},
 		},
 		UseJSONNumber: true,

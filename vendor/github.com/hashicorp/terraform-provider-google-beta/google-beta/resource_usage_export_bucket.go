@@ -10,7 +10,7 @@ import (
 	compute "google.golang.org/api/compute/v0.beta"
 )
 
-func resourceProjectUsageBucket() *schema.Resource {
+func ResourceProjectUsageBucket() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceProjectUsageBucketCreate,
 		Read:   resourceProjectUsageBucketRead,

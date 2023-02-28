@@ -23,7 +23,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func resourceIAM2DenyPolicy() *schema.Resource {
+func ResourceIAM2DenyPolicy() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceIAM2DenyPolicyCreate,
 		Read:   resourceIAM2DenyPolicyRead,

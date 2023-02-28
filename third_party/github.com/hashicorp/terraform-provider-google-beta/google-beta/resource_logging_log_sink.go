@@ -10,9 +10,9 @@ import (
 func resourceLoggingLogSink() *schema.Resource {
 	return combinedResource(
 		map[string]*schema.Resource{
-			projectType: resourceLoggingProjectSink(),
-			folderType:  resourceLoggingFolderSink(),
-			orgType:     resourceLoggingOrganizationSink(),
+			projectType: ResourceLoggingProjectSink(),
+			folderType:  ResourceLoggingFolderSink(),
+			orgType:     ResourceLoggingOrganizationSink(),
 		}, loggingLogSinkImporter)
 }
 

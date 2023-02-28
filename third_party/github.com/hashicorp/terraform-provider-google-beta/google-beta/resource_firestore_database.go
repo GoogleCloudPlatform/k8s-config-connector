@@ -24,7 +24,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func resourceFirestoreDatabase() *schema.Resource {
+func ResourceFirestoreDatabase() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceFirestoreDatabaseCreate,
 		Read:   resourceFirestoreDatabaseRead,

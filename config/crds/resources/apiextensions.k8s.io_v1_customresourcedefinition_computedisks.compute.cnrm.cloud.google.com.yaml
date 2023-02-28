@@ -183,6 +183,48 @@ spec:
                             type: object
                         type: object
                     type: object
+                  rsaEncryptedKey:
+                    description: "Immutable. Specifies an RFC 4648 base64 encoded,
+                      RSA-wrapped 2048-bit \ncustomer-supplied encryption key to either
+                      encrypt or decrypt \nthis resource. You can provide either the
+                      rawKey or the rsaEncryptedKey."
+                    oneOf:
+                    - not:
+                        required:
+                        - valueFrom
+                      required:
+                      - value
+                    - not:
+                        required:
+                        - value
+                      required:
+                      - valueFrom
+                    properties:
+                      value:
+                        description: Value of the field. Cannot be used if 'valueFrom'
+                          is specified.
+                        type: string
+                      valueFrom:
+                        description: Source for the field's value. Cannot be used
+                          if 'value' is specified.
+                        properties:
+                          secretKeyRef:
+                            description: Reference to a value with the given key in
+                              the given Secret in the resource's namespace.
+                            properties:
+                              key:
+                                description: Key that identifies the value to be extracted.
+                                type: string
+                              name:
+                                description: Name of the Secret to extract a value
+                                  from.
+                                type: string
+                            required:
+                            - name
+                            - key
+                            type: object
+                        type: object
+                    type: object
                   sha256:
                     description: |-
                       The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied

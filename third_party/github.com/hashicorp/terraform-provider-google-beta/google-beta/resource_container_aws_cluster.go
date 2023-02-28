@@ -27,7 +27,7 @@ import (
 	containeraws "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/containeraws/beta"
 )
 
-func resourceContainerAwsCluster() *schema.Resource {
+func ResourceContainerAwsCluster() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceContainerAwsClusterCreate,
 		Read:   resourceContainerAwsClusterRead,

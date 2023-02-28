@@ -300,6 +300,50 @@ func TestAccComputeSecurityPolicy_withRateLimitWithRedirectOptions(t *testing.T)
 	})
 }
 
+func TestAccComputeSecurityPolicy_withRateLimit_withEnforceOnKeyConfigs(t *testing.T) {
+	t.Parallel()
+
+	spName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckComputeSecurityPolicyDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComputeSecurityPolicy_withRateLimitOptions_withEnforceOnKeyConfigs(spName),
+			},
+			{
+				ResourceName:      "google_compute_security_policy.policy",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func TestAccComputeSecurityPolicy_withRateLimitOption_withMultipleEnforceOnKeyConfigs(t *testing.T) {
+	t.Parallel()
+
+	spName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckComputeSecurityPolicyDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComputeSecurityPolicy_withRateLimitOption_withMultipleEnforceOnKeyConfigs(spName),
+			},
+			{
+				ResourceName:      "google_compute_security_policy.policy",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
 func TestAccComputeSecurityPolicy_withRecaptchaOptionsConfig(t *testing.T) {
 	t.Parallel()
 
@@ -1115,6 +1159,93 @@ resource "google_compute_security_policy" "policy" {
 			rate_limit_threshold {
 				count = 100
 				interval_sec = 60
+			}
+		}
+	}
+}
+`, spName)
+}
+
+func testAccComputeSecurityPolicy_withRateLimitOptions_withEnforceOnKeyConfigs(spName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_security_policy" "policy" {
+	name        = "%s"
+	description = "throttle rule with enforce_on_key_configs"
+	
+	rule {
+		action   = "throttle"
+		priority = "2147483647"
+		match {
+			versioned_expr = "SRC_IPS_V1"
+			config {
+				src_ip_ranges = ["*"]
+			}
+		}
+		description = "default rule"
+
+		rate_limit_options {
+			conform_action = "allow"
+			exceed_action = "redirect"
+
+			enforce_on_key = ""
+
+			enforce_on_key_configs {
+				enforce_on_key_type = "IP"
+			}
+			exceed_redirect_options {
+				type = "EXTERNAL_302"
+				target = "https://www.example.com"
+			}
+
+			rate_limit_threshold {
+				count = 10
+				interval_sec = 60
+			}
+		}
+	}
+}
+`, spName)
+}
+
+func testAccComputeSecurityPolicy_withRateLimitOption_withMultipleEnforceOnKeyConfigs(spName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_security_policy" "policy" {
+	name        = "%s"
+	description = "throttle rule with enforce_on_key_configs"
+	
+	rule {
+		action   = "throttle"
+		priority = "2147483647"
+		match {
+			versioned_expr = "SRC_IPS_V1"
+			config {
+				src_ip_ranges = ["*"]
+			}
+		}
+		description = "default rule"
+
+		rate_limit_options {
+			conform_action = "allow"
+			exceed_action = "deny(429)"
+
+			rate_limit_threshold {
+				count = 10
+				interval_sec = 60
+			}
+
+			enforce_on_key = ""
+
+			enforce_on_key_configs {
+				enforce_on_key_type = "HTTP_PATH"
+			}
+
+			enforce_on_key_configs {
+				enforce_on_key_type = "HTTP_HEADER"
+				enforce_on_key_name = "user-agent"
+			}
+
+			enforce_on_key_configs {
+				enforce_on_key_type = "REGION_CODE"
 			}
 		}
 	}

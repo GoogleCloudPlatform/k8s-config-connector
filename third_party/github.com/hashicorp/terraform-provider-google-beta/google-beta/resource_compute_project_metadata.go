@@ -10,7 +10,7 @@ import (
 	compute "google.golang.org/api/compute/v0.beta"
 )
 
-func resourceComputeProjectMetadata() *schema.Resource {
+func ResourceComputeProjectMetadata() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceComputeProjectMetadataCreateOrUpdate,
 		Read:   resourceComputeProjectMetadataRead,

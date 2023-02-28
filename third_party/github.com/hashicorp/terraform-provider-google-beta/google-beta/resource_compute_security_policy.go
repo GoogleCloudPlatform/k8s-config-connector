@@ -13,7 +13,7 @@ import (
 	compute "google.golang.org/api/compute/v0.beta"
 )
 
-func resourceComputeSecurityPolicy() *schema.Resource {
+func ResourceComputeSecurityPolicy() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceComputeSecurityPolicyCreate,
 		Read:   resourceComputeSecurityPolicyRead,
@@ -255,13 +255,35 @@ func resourceComputeSecurityPolicy() *schema.Resource {
 										Optional:     true,
 										Default:      "ALL",
 										Description:  `Determines the key to enforce the rateLimitThreshold on`,
-										ValidateFunc: validation.StringInSlice([]string{"ALL", "IP", "HTTP_HEADER", "XFF_IP", "HTTP_COOKIE"}, false),
+										ValidateFunc: validation.StringInSlice([]string{"ALL", "IP", "HTTP_HEADER", "XFF_IP", "HTTP_COOKIE", "HTTP_PATH", "SNI", "REGION_CODE", ""}, false),
 									},
 
 									"enforce_on_key_name": {
 										Type:        schema.TypeString,
 										Optional:    true,
 										Description: `Rate limit key name applicable only for the following key types: HTTP_HEADER -- Name of the HTTP header whose value is taken as the key value. HTTP_COOKIE -- Name of the HTTP cookie whose value is taken as the key value.`,
+									},
+
+									"enforce_on_key_configs": {
+										Type:        schema.TypeList,
+										Description: `Enforce On Key Config of this security policy`,
+										ForceNew:    true,
+										Optional:    true,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"enforce_on_key_type": {
+													Type:         schema.TypeString,
+													Optional:     true,
+													Description:  `Determines the key to enforce the rate_limit_threshold on`,
+													ValidateFunc: validation.StringInSlice([]string{"ALL", "IP", "HTTP_HEADER", "XFF_IP", "HTTP_COOKIE", "HTTP_PATH", "SNI", "REGION_CODE"}, false),
+												},
+												"enforce_on_key_name": {
+													Type:        schema.TypeString,
+													Optional:    true,
+													Description: `Rate limit key name applicable only for the following key types: HTTP_HEADER -- Name of the HTTP header whose value is taken as the key value. HTTP_COOKIE -- Name of the HTTP cookie whose value is taken as the key value.`,
+												},
+											},
+										},
 									},
 
 									"ban_threshold": {
@@ -1182,6 +1204,7 @@ func expandSecurityPolicyRuleRateLimitOptions(configured []interface{}) *compute
 		ConformAction:         data["conform_action"].(string),
 		EnforceOnKey:          data["enforce_on_key"].(string),
 		EnforceOnKeyName:      data["enforce_on_key_name"].(string),
+		EnforceOnKeyConfigs:   expandSecurityPolicyEnforceOnKeyConfigs(data["enforce_on_key_configs"].([]interface{})),
 		BanDurationSec:        int64(data["ban_duration_sec"].(int)),
 		ExceedRedirectOptions: expandSecurityPolicyRuleRedirectOptions(data["exceed_redirect_options"].([]interface{})),
 	}
@@ -1199,18 +1222,39 @@ func expandThreshold(configured []interface{}) *compute.SecurityPolicyRuleRateLi
 	}
 }
 
+func expandSecurityPolicyEnforceOnKeyConfigs(configured []interface{}) []*compute.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig {
+	params := make([]*compute.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig, 0, len(configured))
+
+	for _, raw := range configured {
+		params = append(params, expandSecurityPolicyEnforceOnKeyConfigsFields(raw))
+	}
+
+	return params
+}
+
+func expandSecurityPolicyEnforceOnKeyConfigsFields(raw interface{}) *compute.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig {
+	data := raw.(map[string]interface{})
+
+	return &compute.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig{
+		EnforceOnKeyType: data["enforce_on_key_type"].(string),
+		EnforceOnKeyName: data["enforce_on_key_name"].(string),
+	}
+}
+
 func flattenSecurityPolicyRuleRateLimitOptions(conf *compute.SecurityPolicyRuleRateLimitOptions) []map[string]interface{} {
 	if conf == nil {
 		return nil
 	}
 
 	data := map[string]interface{}{
-		"ban_threshold":           flattenThreshold(conf.BanThreshold),
-		"rate_limit_threshold":    flattenThreshold(conf.RateLimitThreshold),
-		"exceed_action":           conf.ExceedAction,
-		"conform_action":          conf.ConformAction,
-		"enforce_on_key":          conf.EnforceOnKey,
-		"enforce_on_key_name":     conf.EnforceOnKeyName,
+		"ban_threshold":          flattenThreshold(conf.BanThreshold),
+		"rate_limit_threshold":   flattenThreshold(conf.RateLimitThreshold),
+		"exceed_action":          conf.ExceedAction,
+		"conform_action":         conf.ConformAction,
+		"enforce_on_key":         conf.EnforceOnKey,
+		"enforce_on_key_name":    conf.EnforceOnKeyName,
+		"enforce_on_key_configs": flattenSecurityPolicyEnforceOnKeyConfigs(conf.EnforceOnKeyConfigs),
+
 		"ban_duration_sec":        conf.BanDurationSec,
 		"exceed_redirect_options": flattenSecurityPolicyRedirectOptions(conf.ExceedRedirectOptions),
 	}
@@ -1240,6 +1284,29 @@ func expandSecurityPolicyRuleRedirectOptions(configured []interface{}) *compute.
 	return &compute.SecurityPolicyRuleRedirectOptions{
 		Type:   data["type"].(string),
 		Target: data["target"].(string),
+	}
+}
+
+func flattenSecurityPolicyEnforceOnKeyConfigs(conf []*compute.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig) []map[string]interface{} {
+	if conf == nil || len(conf) == 0 {
+		return nil
+	}
+
+	transformed := make([]map[string]interface{}, 0, len(conf))
+	for _, raw := range conf {
+		transformed = append(transformed, flattenSecurityPolicyEnforceOnKeyConfigsFields(raw))
+	}
+	return transformed
+}
+
+func flattenSecurityPolicyEnforceOnKeyConfigsFields(conf *compute.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig) map[string]interface{} {
+	if conf == nil {
+		return nil
+	}
+
+	return map[string]interface{}{
+		"enforce_on_key_name": conf.EnforceOnKeyName,
+		"enforce_on_key_type": conf.EnforceOnKeyType,
 	}
 }
 

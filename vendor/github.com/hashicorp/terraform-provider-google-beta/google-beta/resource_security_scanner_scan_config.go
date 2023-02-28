@@ -25,7 +25,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
-func resourceSecurityScannerScanConfig() *schema.Resource {
+func ResourceSecurityScannerScanConfig() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceSecurityScannerScanConfigCreate,
 		Read:   resourceSecurityScannerScanConfigRead,

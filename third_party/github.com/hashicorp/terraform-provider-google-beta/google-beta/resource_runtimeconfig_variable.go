@@ -8,7 +8,7 @@ import (
 	runtimeconfig "google.golang.org/api/runtimeconfig/v1beta1"
 )
 
-func resourceRuntimeconfigVariable() *schema.Resource {
+func ResourceRuntimeconfigVariable() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceRuntimeconfigVariableCreate,
 		Read:   resourceRuntimeconfigVariableRead,

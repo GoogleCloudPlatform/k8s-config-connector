@@ -78,6 +78,21 @@
 ```yaml
 approvalConfig:
   approvalRequired: boolean
+bitbucketServerTriggerConfig:
+  bitbucketServerConfigResourceRef:
+    external: string
+    name: string
+    namespace: string
+  projectKey: string
+  pullRequest:
+    branch: string
+    commentControl: string
+    invertRegex: boolean
+  push:
+    branch: string
+    invertRegex: boolean
+    tag: string
+  repoSlug: string
 build:
   artifacts:
     images:
@@ -187,6 +202,10 @@ gitFileSource:
   revision: string
   uri: string
 github:
+  enterpriseConfigResourceNameRef:
+    external: string
+    name: string
+    namespace: string
   name: string
   owner: string
   pullRequest:
@@ -286,6 +305,161 @@ Any user with a Cloud Build Approver role for the project can approve a build.{%
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Whether or not approval is needed. If this is set on a build, it will become pending when run, 
 and will need to be explicitly approved to start.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bitbucketServerTriggerConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}BitbucketServerTriggerConfig describes the configuration of a trigger that creates a build whenever a Bitbucket Server event is received.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bitbucketServerTriggerConfig.bitbucketServerConfigResourceRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Only `external` field is supported to configure the reference.
+
+The full resource name of the bitbucket server config. Format:
+projects/{project}/locations/{location}/bitbucketServerConfigs/{id}.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bitbucketServerTriggerConfig.bitbucketServerConfigResourceRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `name` field of a `CloudBuildBitbucketServerConfig` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bitbucketServerTriggerConfig.bitbucketServerConfigResourceRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bitbucketServerTriggerConfig.bitbucketServerConfigResourceRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bitbucketServerTriggerConfig.projectKey</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Key of the project that the repo is in. For example: The key for https://mybitbucket.server/projects/TEST/repos/test-repo is "TEST".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bitbucketServerTriggerConfig.pullRequest</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Filter to match changes in pull requests.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bitbucketServerTriggerConfig.pullRequest.branch</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Regex of branches to match.
+The syntax of the regular expressions accepted is the syntax accepted by RE2 and described at https://github.com/google/re2/wiki/Syntax.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bitbucketServerTriggerConfig.pullRequest.commentControl</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Configure builds to run whether a repository owner or collaborator need to comment /gcbrun. Possible values: ["COMMENTS_DISABLED", "COMMENTS_ENABLED", "COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY"].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bitbucketServerTriggerConfig.pullRequest.invertRegex</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}If true, branches that do NOT match the git_ref will trigger a build.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bitbucketServerTriggerConfig.push</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Filter to match changes in refs like branches, tags.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bitbucketServerTriggerConfig.push.branch</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Regex of branches to match.  Specify only one of branch or tag.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bitbucketServerTriggerConfig.push.invertRegex</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}When true, only trigger a build if the revision regex does NOT match the gitRef regex.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bitbucketServerTriggerConfig.push.tag</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Regex of tags to match.  Specify only one of branch or tag.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>bitbucketServerTriggerConfig.repoSlug</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Slug of the repository. A repository slug is a URL-friendly version of a repository name, automatically generated by Bitbucket for use in the URL.
+For example, if the repository name is 'test repo', in the URL it would become 'test-repo' as in https://mybitbucket.server/projects/TEST/repos/test-repo.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1560,6 +1734,49 @@ invocation originated is assumed to be the repo from which to read the specified
             <p>{% verbatim %}Describes the configuration of a trigger that creates a build whenever a GitHub event is received.
 
 One of 'trigger_template', 'github', 'pubsub_config' or 'webhook_config' must be provided.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>github.enterpriseConfigResourceNameRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Only `external` field is supported to configure the reference.
+
+The full resource name of the github enterprise config. Format:
+projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>github.enterpriseConfigResourceNameRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `name` field of a `CloudBuildGithubEnterpriseConfig` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>github.enterpriseConfigResourceNameRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>github.enterpriseConfigResourceNameRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

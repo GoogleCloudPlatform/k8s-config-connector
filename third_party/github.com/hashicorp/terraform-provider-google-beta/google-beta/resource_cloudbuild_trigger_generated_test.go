@@ -214,7 +214,7 @@ resource "google_cloudbuild_trigger" "service-account-trigger" {
 }
 
 resource "google_service_account" "cloudbuild_service_account" {
-  account_id = "my-service-account"
+  account_id = "tf-test-my-service-account"
 }
 
 resource "google_project_iam_member" "act_as" {
@@ -496,6 +496,99 @@ resource "google_cloudbuild_trigger" "repo-trigger" {
     repository = google_cloudbuildv2_repository.my-repository.id
     push {
       branch = "feature-.*"
+    }
+  }
+
+  filename = "cloudbuild.yaml"
+}
+`, context)
+}
+
+func TestAccCloudBuildTrigger_cloudbuildTriggerBitbucketServerPushExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckCloudBuildTriggerDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCloudBuildTrigger_cloudbuildTriggerBitbucketServerPushExample(context),
+			},
+			{
+				ResourceName:            "google_cloudbuild_trigger.bbs-push-trigger",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"location"},
+			},
+		},
+	})
+}
+
+func testAccCloudBuildTrigger_cloudbuildTriggerBitbucketServerPushExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_cloudbuild_trigger" "bbs-push-trigger" {
+  name        = "terraform-bbs-push-trigger"
+  location    = "us-central1"
+
+  bitbucket_server_trigger_config {
+    repo_slug = "terraform-provider-google"
+    project_key = "STAG"
+    bitbucket_server_config_resource = "projects/123456789/locations/us-central1/bitbucketServerConfigs/myBitbucketConfig"
+    push {
+        tag = "^0.1.*"
+        invert_regex = true
+    }
+  }
+
+  filename = "cloudbuild.yaml"
+}
+`, context)
+}
+
+func TestAccCloudBuildTrigger_cloudbuildTriggerBitbucketServerPullRequestExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": randString(t, 10),
+	}
+
+	vcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckCloudBuildTriggerDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCloudBuildTrigger_cloudbuildTriggerBitbucketServerPullRequestExample(context),
+			},
+			{
+				ResourceName:            "google_cloudbuild_trigger.bbs-pull-request-trigger",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"location"},
+			},
+		},
+	})
+}
+
+func testAccCloudBuildTrigger_cloudbuildTriggerBitbucketServerPullRequestExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_cloudbuild_trigger" "bbs-pull-request-trigger" {
+  name        = "terraform-bbs-pull-request-trigger"
+  location    = "us-central1"
+
+  bitbucket_server_trigger_config {
+    repo_slug = "terraform-provider-google"
+    project_key = "STAG"
+    bitbucket_server_config_resource = "projects/123456789/locations/us-central1/bitbucketServerConfigs/myBitbucketConfig"
+    pull_request {
+        branch = "^master$"
+        invert_regex = false
+        comment_control = "COMMENTS_ENABLED"
     }
   }
 

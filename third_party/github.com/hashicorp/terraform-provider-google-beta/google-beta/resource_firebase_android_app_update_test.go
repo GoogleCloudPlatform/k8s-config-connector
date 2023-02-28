@@ -12,7 +12,7 @@ func TestAccFirebaseAndroidApp_update(t *testing.T) {
 		"project_id":    getTestProjectFromEnv(),
 		"package_name":  "android.package.app" + randString(t, 4),
 		"random_suffix": randString(t, 10),
-		"display_name":  "Display Name N",
+		"display_name":  "tf-test Display Name N",
 	}
 	vcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },

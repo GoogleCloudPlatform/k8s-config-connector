@@ -21,6 +21,7 @@ func TestAccDataflowFlexTemplateJob_basic(t *testing.T) {
 
 	randStr := randString(t, 10)
 	job := "tf-test-dataflow-job-" + randStr
+	bucket := "tf-test-dataflow-bucket-" + randStr
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
@@ -28,7 +29,7 @@ func TestAccDataflowFlexTemplateJob_basic(t *testing.T) {
 		CheckDestroy: testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataflowFlexTemplateJob_basic(job, "mytopic"),
+				Config: testAccDataflowFlexTemplateJob_basic(job, bucket, "mytopic"),
 				Check: resource.ComposeTestCheckFunc(
 					testAccDataflowJobExists(t, "google_dataflow_flex_template_job.job"),
 				),
@@ -45,6 +46,7 @@ func TestAccDataflowFlexTemplateJob_streamUpdate(t *testing.T) {
 
 	randStr := randString(t, 10)
 	job := "tf-test-dataflow-job-" + randStr
+	bucket := "tf-test-dataflow-bucket-" + randStr
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
@@ -52,13 +54,13 @@ func TestAccDataflowFlexTemplateJob_streamUpdate(t *testing.T) {
 		CheckDestroy: testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataflowFlexTemplateJob_basic(job, "mytopic"),
+				Config: testAccDataflowFlexTemplateJob_basic(job, bucket, "mytopic"),
 				Check: resource.ComposeTestCheckFunc(
 					testAccDataflowJobExists(t, "google_dataflow_flex_template_job.job"),
 				),
 			},
 			{
-				Config: testAccDataflowFlexTemplateJob_basic(job, "mytopic2"),
+				Config: testAccDataflowFlexTemplateJob_basic(job, bucket, "mytopic2"),
 				Check: resource.ComposeTestCheckFunc(
 					testAccDataflowJobHasOption(t, "google_dataflow_flex_template_job.job", "topic", "projects/myproject/topics/mytopic2"),
 				),
@@ -75,6 +77,7 @@ func TestAccDataflowFlexTemplateJob_streamUpdateFail(t *testing.T) {
 
 	randStr := randString(t, 10)
 	job := "tf-test-dataflow-job-" + randStr
+	bucket := "tf-test-dataflow-bucket-" + randStr
 
 	vcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
@@ -82,13 +85,13 @@ func TestAccDataflowFlexTemplateJob_streamUpdateFail(t *testing.T) {
 		CheckDestroy: testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataflowFlexTemplateJob_basic(job, "mytopic"),
+				Config: testAccDataflowFlexTemplateJob_basic(job, bucket, "mytopic"),
 				Check: resource.ComposeTestCheckFunc(
 					testAccDataflowJobExists(t, "google_dataflow_flex_template_job.job"),
 				),
 			},
 			{
-				Config: testAccDataflowFlexTemplateJob_basic(job, ""),
+				Config: testAccDataflowFlexTemplateJob_basic(job, bucket, ""),
 				Check: resource.ComposeTestCheckFunc(
 					testAccDataflowJobHasOption(t, "google_dataflow_flex_template_job.job", "topic", "projects/myproject/topics/mytopic"),
 				),
@@ -106,6 +109,7 @@ func TestAccDataflowFlexTemplateJob_withServiceAccount(t *testing.T) {
 
 	randStr := randString(t, 10)
 	job := "tf-test-dataflow-job-" + randStr
+	bucket := "tf-test-dataflow-bucket-" + randStr
 	accountId := "tf-test-dataflow-sa" + randStr
 	zone := "us-central1-b"
 
@@ -115,7 +119,7 @@ func TestAccDataflowFlexTemplateJob_withServiceAccount(t *testing.T) {
 		CheckDestroy: testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataflowFlexTemplateJob_serviceAccount(job, accountId, zone),
+				Config: testAccDataflowFlexTemplateJob_serviceAccount(job, bucket, accountId, zone),
 				Check: resource.ComposeTestCheckFunc(
 					testAccDataflowJobExists(t, "google_dataflow_flex_template_job.job"),
 					testAccDataflowFlexTemplateJobHasServiceAccount(t, "google_dataflow_flex_template_job.job", accountId, zone),
@@ -185,7 +189,7 @@ func testAccDataflowFlexTemplateJobGetGeneratedInstance(t *testing.T, s *terrafo
 }
 
 // note: this config creates a job that doesn't actually do anything, but still runs
-func testAccDataflowFlexTemplateJob_basic(job, topicName string) string {
+func testAccDataflowFlexTemplateJob_basic(job, bucket, topicName string) string {
 	topicField := ""
 	if topicName != "" {
 		topicField = fmt.Sprintf("topic = \"projects/myproject/topics/%s\"", topicName)
@@ -195,12 +199,26 @@ data "google_storage_bucket_object" "flex_template" {
   name   = "latest/flex/Streaming_Data_Generator"
   bucket = "dataflow-templates"
 }
+
+resource "google_storage_bucket" "bucket" {
+  name = "%s"
+  location = "US-CENTRAL1"
+  force_destroy = true
+  uniform_bucket_level_access = true
+}
+
+resource "google_storage_bucket_object" "schema" {
+  name = "schema.json"
+  bucket = google_storage_bucket.bucket.name
+  content = "{}"
+}
+
 resource "google_dataflow_flex_template_job" "job" {
   name = "%s"
   container_spec_gcs_path = "gs://${data.google_storage_bucket_object.flex_template.bucket}/${data.google_storage_bucket_object.flex_template.name}"
   on_delete = "cancel"
   parameters = {
-    schemaLocation = "gs://mybucket/schema.json"
+    schemaLocation = "gs://${google_storage_bucket_object.schema.bucket}/schema.json"
     qps = "1"
     %s
   }
@@ -208,11 +226,11 @@ resource "google_dataflow_flex_template_job" "job" {
    "my_labels" = "value"
   }
 }
-`, job, topicField)
+`, bucket, job, topicField)
 }
 
 // note: this config creates a job that doesn't actually do anything, but still runs
-func testAccDataflowFlexTemplateJob_serviceAccount(job, accountId, zone string) string {
+func testAccDataflowFlexTemplateJob_serviceAccount(job, bucket, accountId, zone string) string {
 	return fmt.Sprintf(`
 data "google_project" "project" {}
 
@@ -220,21 +238,37 @@ resource "google_service_account" "dataflow-sa" {
   account_id   = "%s"
   display_name = "DataFlow Service Account"
 }
+
 resource "google_project_iam_member" "dataflow-worker" {
   project = data.google_project.project.project_id
   role   = "roles/dataflow.worker"
   member = "serviceAccount:${google_service_account.dataflow-sa.email}"
 }
+
 data "google_storage_bucket_object" "flex_template" {
   name   = "latest/flex/Streaming_Data_Generator"
   bucket = "dataflow-templates"
 }
+
+resource "google_storage_bucket" "bucket" {
+  name = "%s"
+  location = "US-CENTRAL1"
+  force_destroy = true
+  uniform_bucket_level_access = true
+}
+
+resource "google_storage_bucket_object" "schema" {
+  name = "schema.json"
+  bucket = google_storage_bucket.bucket.name
+  content = "{}"
+}
+
 resource "google_dataflow_flex_template_job" "job" {
   name = "%s"
   container_spec_gcs_path = "gs://${data.google_storage_bucket_object.flex_template.bucket}/${data.google_storage_bucket_object.flex_template.name}"
   on_delete = "cancel"
   parameters = {
-    schemaLocation = "gs://mybucket/schema.json"
+    schemaLocation = "gs://${google_storabe_bucket_object.schema.bucket}/schema.json"
     qps = "1"
     topic = "projects/myproject/topics/mytopic"
     serviceAccount = google_service_account.dataflow-sa.email
@@ -244,7 +278,7 @@ resource "google_dataflow_flex_template_job" "job" {
    "my_labels" = "value"
   }
 }
-`, accountId, job, zone)
+`, accountId, bucket, job, zone)
 }
 
 func testAccDataflowJobHasOption(t *testing.T, res, option, expectedValue string) resource.TestCheckFunc {

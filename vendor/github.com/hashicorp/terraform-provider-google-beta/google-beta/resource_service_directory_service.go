@@ -24,7 +24,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func resourceServiceDirectoryService() *schema.Resource {
+func ResourceServiceDirectoryService() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceServiceDirectoryServiceCreate,
 		Read:   resourceServiceDirectoryServiceRead,

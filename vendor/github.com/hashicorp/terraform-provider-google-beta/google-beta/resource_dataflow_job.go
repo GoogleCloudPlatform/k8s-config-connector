@@ -69,7 +69,8 @@ func resourceDataflowJobSubnetworkDiffSuppress(k, old, new string, d *schema.Res
 	return compareSelfLinkOrResourceName(k, old, new, d)
 }
 
-func resourceDataflowJob() *schema.Resource {
+
+func ResourceDataflowJob() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceDataflowJobCreate,
 		Read:   resourceDataflowJobRead,
@@ -395,7 +396,7 @@ func resourceDataflowJobRead(d *schema.ResourceData, meta interface{}) error {
 // Stream update method. Batch job changes should have been set to ForceNew via custom diff
 func resourceDataflowJobUpdateByReplacement(d *schema.ResourceData, meta interface{}) error {
 	// Don't send an update request if only virtual fields have changes
-	if resourceDataflowJobIsVirtualUpdate(d, resourceDataflowJob().Schema) {
+	if resourceDataflowJobIsVirtualUpdate(d, ResourceDataflowJob().Schema) {
 		return nil
 	}
 

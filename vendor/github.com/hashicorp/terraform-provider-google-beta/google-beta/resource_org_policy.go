@@ -7,12 +7,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func resourceOrgPolicy() *schema.Resource {
+func ResourceOrgPolicy() *schema.Resource {
 	return combinedResource(
 		map[string]*schema.Resource{
-			projectType: resourceGoogleProjectOrganizationPolicy(),
-			folderType:  resourceGoogleFolderOrganizationPolicy(),
-			orgType:     resourceGoogleOrganizationPolicy(),
+			projectType: ResourceGoogleProjectOrganizationPolicy(),
+			folderType:  ResourceGoogleFolderOrganizationPolicy(),
+			orgType:     ResourceGoogleOrganizationPolicy(),
 		}, func(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 			// FROM: {{project?}}#{{folder?}}#{{org_id?}}#{{constraint}}
 			// TO:

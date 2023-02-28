@@ -24,7 +24,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func resourceApiGatewayGateway() *schema.Resource {
+func ResourceApiGatewayGateway() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceApiGatewayGatewayCreate,
 		Read:   resourceApiGatewayGatewayRead,

@@ -14,7 +14,7 @@ func TestAccDataSourceGoogleFirebaseAppleAppConfig(t *testing.T) {
 	context := map[string]interface{}{
 		"project_id":   getTestProjectFromEnv(),
 		"bundle_id":    "apple.app." + randString(t, 5),
-		"display_name": "Display Name AppleAppConfig DataSource",
+		"display_name": "tf-test Display Name AppleAppConfig DataSource",
 		"app_store_id": 12345,
 		"team_id":      1234567890,
 	}

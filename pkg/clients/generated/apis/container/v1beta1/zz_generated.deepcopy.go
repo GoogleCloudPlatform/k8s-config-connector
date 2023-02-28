@@ -840,6 +840,11 @@ func (in *ClusterKubeletConfig) DeepCopyInto(out *ClusterKubeletConfig) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.PodPidsLimit != nil {
+		in, out := &in.PodPidsLimit, &out.PodPidsLimit
+		*out = new(int)
+		**out = **in
+	}
 	return
 }
 
@@ -2686,6 +2691,11 @@ func (in *NodepoolKubeletConfig) DeepCopyInto(out *NodepoolKubeletConfig) {
 	if in.CpuCfsQuotaPeriod != nil {
 		in, out := &in.CpuCfsQuotaPeriod, &out.CpuCfsQuotaPeriod
 		*out = new(string)
+		**out = **in
+	}
+	if in.PodPidsLimit != nil {
+		in, out := &in.PodPidsLimit, &out.PodPidsLimit
+		*out = new(int)
 		**out = **in
 	}
 	return

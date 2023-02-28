@@ -24,7 +24,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func resourceBigqueryDatapolicyDataPolicy() *schema.Resource {
+func ResourceBigqueryDatapolicyDataPolicy() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceBigqueryDatapolicyDataPolicyCreate,
 		Read:   resourceBigqueryDatapolicyDataPolicyRead,

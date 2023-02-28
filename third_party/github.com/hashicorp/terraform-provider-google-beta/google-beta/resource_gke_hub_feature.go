@@ -27,7 +27,7 @@ import (
 	gkehub "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/gkehub/beta"
 )
 
-func resourceGkeHubFeature() *schema.Resource {
+func ResourceGkeHubFeature() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceGkeHubFeatureCreate,
 		Read:   resourceGkeHubFeatureRead,

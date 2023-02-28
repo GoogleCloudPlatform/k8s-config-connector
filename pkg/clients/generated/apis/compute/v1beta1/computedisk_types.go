@@ -55,6 +55,12 @@ type DiskDiskEncryptionKey struct {
 	// +optional
 	RawKey *DiskRawKey `json:"rawKey,omitempty"`
 
+	/* Immutable. Specifies an RFC 4648 base64 encoded, RSA-wrapped 2048-bit
+	customer-supplied encryption key to either encrypt or decrypt
+	this resource. You can provide either the rawKey or the rsaEncryptedKey. */
+	// +optional
+	RsaEncryptedKey *DiskRsaEncryptedKey `json:"rsaEncryptedKey,omitempty"`
+
 	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
 	encryption key that protects this resource. */
 	// +optional
@@ -62,6 +68,16 @@ type DiskDiskEncryptionKey struct {
 }
 
 type DiskRawKey struct {
+	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
+	// +optional
+	Value *string `json:"value,omitempty"`
+
+	/* Source for the field's value. Cannot be used if 'value' is specified. */
+	// +optional
+	ValueFrom *DiskValueFrom `json:"valueFrom,omitempty"`
+}
+
+type DiskRsaEncryptedKey struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	// +optional
 	Value *string `json:"value,omitempty"`

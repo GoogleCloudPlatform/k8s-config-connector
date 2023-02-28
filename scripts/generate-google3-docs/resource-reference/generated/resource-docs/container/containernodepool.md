@@ -123,6 +123,7 @@ nodeConfig:
     cpuCfsQuota: boolean
     cpuCfsQuotaPeriod: string
     cpuManagerPolicy: string
+    podPidsLimit: integer
   labels:
     string: string
   linuxNodeConfig:
@@ -671,6 +672,16 @@ version: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Control the CPU management policy on the node.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.kubeletConfig.podPidsLimit</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Controls the maximum number of processes allowed to run in a pod.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

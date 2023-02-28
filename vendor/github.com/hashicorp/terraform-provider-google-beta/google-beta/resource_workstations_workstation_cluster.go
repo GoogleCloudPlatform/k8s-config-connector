@@ -24,7 +24,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func resourceWorkstationsWorkstationCluster() *schema.Resource {
+func ResourceWorkstationsWorkstationCluster() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceWorkstationsWorkstationClusterCreate,
 		Read:   resourceWorkstationsWorkstationClusterRead,

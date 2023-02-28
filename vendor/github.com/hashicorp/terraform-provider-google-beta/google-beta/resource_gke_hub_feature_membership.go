@@ -27,7 +27,7 @@ import (
 	gkehub "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/gkehub/beta"
 )
 
-func resourceGkeHubFeatureMembership() *schema.Resource {
+func ResourceGkeHubFeatureMembership() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceGkeHubFeatureMembershipCreate,
 		Read:   resourceGkeHubFeatureMembershipRead,

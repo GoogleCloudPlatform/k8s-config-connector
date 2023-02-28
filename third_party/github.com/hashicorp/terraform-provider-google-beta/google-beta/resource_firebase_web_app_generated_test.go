@@ -28,6 +28,7 @@ func TestAccFirebaseWebApp_firebaseWebAppBasicExample(t *testing.T) {
 
 	context := map[string]interface{}{
 		"org_id":        getTestOrgFromEnv(t),
+		"display_name":  "tf-test Display Name Basic",
 		"random_suffix": randString(t, 10),
 	}
 
@@ -71,7 +72,7 @@ resource "google_firebase_project" "default" {
 resource "google_firebase_web_app" "basic" {
 	provider = google-beta
 	project = google_project.default.project_id
-	display_name = "Display Name Basic%{random_suffix}"
+	display_name = "%{display_name}"
 	deletion_policy = "DELETE"
 
 	depends_on = [google_firebase_project.default]

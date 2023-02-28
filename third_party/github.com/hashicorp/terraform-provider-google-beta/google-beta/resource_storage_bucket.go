@@ -22,7 +22,7 @@ import (
 	"google.golang.org/api/storage/v1"
 )
 
-func resourceStorageBucket() *schema.Resource {
+func ResourceStorageBucket() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceStorageBucketCreate,
 		Read:   resourceStorageBucketRead,
@@ -36,7 +36,7 @@ func resourceStorageBucket() *schema.Resource {
 		),
 
 		Timeouts: &schema.ResourceTimeout{
-			Create: schema.DefaultTimeout(4 * time.Minute),
+			Create: schema.DefaultTimeout(10 * time.Minute),
 			Update: schema.DefaultTimeout(4 * time.Minute),
 			Read:   schema.DefaultTimeout(4 * time.Minute),
 		},

@@ -87,6 +87,7 @@ encryptionKMSCryptoKeyRef:
   external: string
   name: string
   namespace: string
+instanceType: string
 maintenanceVersion: string
 masterInstanceRef:
   external: string
@@ -251,6 +252,16 @@ settings:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>instanceType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The type of the instance. The valid values are:- 'SQL_INSTANCE_TYPE_UNSPECIFIED', 'CLOUD_SQL_INSTANCE', 'ON_PREMISES_INSTANCE' and 'READ_REPLICA_INSTANCE'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1371,7 +1382,6 @@ conditions:
   type: string
 connectionName: string
 firstIpAddress: string
-instanceType: string
 ipAddress:
 - ipAddress: string
   timeToRetire: string
@@ -1471,13 +1481,6 @@ serviceAccountEmailAddress: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>instanceType</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The type of the instance. The valid values are:- 'SQL_INSTANCE_TYPE_UNSPECIFIED', 'CLOUD_SQL_INSTANCE', 'ON_PREMISES_INSTANCE' and 'READ_REPLICA_INSTANCE'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -27,7 +27,7 @@ import (
 	containerazure "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/containerazure/beta"
 )
 
-func resourceContainerAzureCluster() *schema.Resource {
+func ResourceContainerAzureCluster() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceContainerAzureClusterCreate,
 		Read:   resourceContainerAzureClusterRead,

@@ -23,7 +23,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func resourceComputeOrganizationSecurityPolicyAssociation() *schema.Resource {
+func ResourceComputeOrganizationSecurityPolicyAssociation() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceComputeOrganizationSecurityPolicyAssociationCreate,
 		Read:   resourceComputeOrganizationSecurityPolicyAssociationRead,

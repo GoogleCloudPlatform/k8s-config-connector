@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func dataSourceGoogleCloudAssetResourcesSearchAll() *schema.Resource {
+func DataSourceGoogleCloudAssetResourcesSearchAll() *schema.Resource {
 	return &schema.Resource{
 		Read: datasourceGoogleCloudAssetResourcesSearchAllRead,
 		Schema: map[string]*schema.Schema{

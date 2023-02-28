@@ -12,7 +12,7 @@ import (
 	compute "google.golang.org/api/compute/v0.beta"
 )
 
-func resourceComputeSharedVpcServiceProject() *schema.Resource {
+func ResourceComputeSharedVpcServiceProject() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceComputeSharedVpcServiceProjectCreate,
 		Read:   resourceComputeSharedVpcServiceProjectRead,

@@ -118,6 +118,12 @@ diskEncryptionKey:
       secretKeyRef:
         key: string
         name: string
+  rsaEncryptedKey:
+    value: string
+    valueFrom:
+      secretKeyRef:
+        key: string
+        name: string
   sha256: string
 imageRef:
   external: string
@@ -352,6 +358,68 @@ RFC 4648 base64 to either encrypt or decrypt this resource.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>diskEncryptionKey.rawKey.valueFrom.secretKeyRef.name</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the Secret to extract a value from.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>diskEncryptionKey.rsaEncryptedKey</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Specifies an RFC 4648 base64 encoded, RSA-wrapped 2048-bit 
+customer-supplied encryption key to either encrypt or decrypt 
+this resource. You can provide either the rawKey or the rsaEncryptedKey.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>diskEncryptionKey.rsaEncryptedKey.value</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Value of the field. Cannot be used if 'valueFrom' is specified.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>diskEncryptionKey.rsaEncryptedKey.valueFrom</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Source for the field's value. Cannot be used if 'value' is specified.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>diskEncryptionKey.rsaEncryptedKey.valueFrom.secretKeyRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Reference to a value with the given key in the given Secret in the resource's namespace.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>diskEncryptionKey.rsaEncryptedKey.valueFrom.secretKeyRef.key</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Key that identifies the value to be extracted.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>diskEncryptionKey.rsaEncryptedKey.valueFrom.secretKeyRef.name</code></p>
             <p><i>Required*</i></p>
         </td>
         <td>

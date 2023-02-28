@@ -121,7 +121,7 @@ func diffSuppressSourceRanges(k, old, new string, d *schema.ResourceData) bool {
 	return false
 }
 
-func resourceComputeFirewall() *schema.Resource {
+func ResourceComputeFirewall() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceComputeFirewallCreate,
 		Read:   resourceComputeFirewallRead,

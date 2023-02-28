@@ -12,7 +12,7 @@ func TestAccDataSourceGoogleFirebaseAndroidApp(t *testing.T) {
 	context := map[string]interface{}{
 		"project_id":   getTestProjectFromEnv(),
 		"package_name": "android.package.app" + randString(t, 4),
-		"display_name": "Display Name AndroidApp DataSource",
+		"display_name": "tf-test Display Name AndroidApp DataSource",
 	}
 
 	resourceName := "data.google_firebase_android_app.my_app"

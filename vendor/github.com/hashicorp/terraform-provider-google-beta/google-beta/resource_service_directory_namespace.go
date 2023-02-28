@@ -24,7 +24,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func resourceServiceDirectoryNamespace() *schema.Resource {
+func ResourceServiceDirectoryNamespace() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceServiceDirectoryNamespaceCreate,
 		Read:   resourceServiceDirectoryNamespaceRead,

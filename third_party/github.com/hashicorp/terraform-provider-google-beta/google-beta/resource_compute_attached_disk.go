@@ -12,7 +12,7 @@ import (
 	compute "google.golang.org/api/compute/v0.beta"
 )
 
-func resourceComputeAttachedDisk() *schema.Resource {
+func ResourceComputeAttachedDisk() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceAttachedDiskCreate,
 		Read:   resourceAttachedDiskRead,

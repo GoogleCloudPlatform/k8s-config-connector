@@ -294,6 +294,10 @@ spec:
                       cpuManagerPolicy:
                         description: Control the CPU management policy on the node.
                         type: string
+                      podPidsLimit:
+                        description: Controls the maximum number of processes allowed
+                          to run in a pod.
+                        type: integer
                     required:
                     - cpuManagerPolicy
                     type: object

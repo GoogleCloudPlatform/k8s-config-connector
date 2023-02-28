@@ -953,6 +953,11 @@ func (in *SQLInstanceSpec) DeepCopyInto(out *SQLInstanceSpec) {
 		*out = new(v1alpha1.ResourceRef)
 		**out = **in
 	}
+	if in.InstanceType != nil {
+		in, out := &in.InstanceType, &out.InstanceType
+		*out = new(string)
+		**out = **in
+	}
 	if in.MaintenanceVersion != nil {
 		in, out := &in.MaintenanceVersion, &out.MaintenanceVersion
 		*out = new(string)
@@ -1017,11 +1022,6 @@ func (in *SQLInstanceStatus) DeepCopyInto(out *SQLInstanceStatus) {
 	}
 	if in.FirstIpAddress != nil {
 		in, out := &in.FirstIpAddress, &out.FirstIpAddress
-		*out = new(string)
-		**out = **in
-	}
-	if in.InstanceType != nil {
-		in, out := &in.InstanceType, &out.InstanceType
 		*out = new(string)
 		**out = **in
 	}

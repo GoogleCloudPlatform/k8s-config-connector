@@ -64,6 +64,7 @@ func TestAccFirebaseHostingSite_firebasehostingSiteFullExample(t *testing.T) {
 
 	context := map[string]interface{}{
 		"project_id":    getTestProjectFromEnv(),
+		"display_name":  "tf-test Test web app for Firebase Hosting",
 		"random_suffix": randString(t, 10),
 	}
 
@@ -90,7 +91,7 @@ func testAccFirebaseHostingSite_firebasehostingSiteFullExample(context map[strin
 resource "google_firebase_web_app" "default" {
   provider = google-beta
   project  = "%{project_id}"
-  display_name = "Test web app for Firebase Hosting"
+  display_name = "%{display_name}"
   deletion_policy = "DELETE"
 }
 

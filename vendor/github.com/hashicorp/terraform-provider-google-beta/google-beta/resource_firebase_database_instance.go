@@ -53,7 +53,7 @@ func disableRTDB(config *Config, d *schema.ResourceData, project string, billing
 	return nil
 }
 
-func resourceFirebaseDatabaseInstance() *schema.Resource {
+func ResourceFirebaseDatabaseInstance() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceFirebaseDatabaseInstanceCreate,
 		Read:   resourceFirebaseDatabaseInstanceRead,

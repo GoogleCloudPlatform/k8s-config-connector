@@ -6,9 +6,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func dataSourceIAMBetaWorkloadIdentityPool() *schema.Resource {
+func DataSourceIAMBetaWorkloadIdentityPool() *schema.Resource {
 
-	dsSchema := datasourceSchemaFromResourceSchema(resourceIAMBetaWorkloadIdentityPool().Schema)
+	dsSchema := datasourceSchemaFromResourceSchema(ResourceIAMBetaWorkloadIdentityPool().Schema)
 	addRequiredFieldsToSchema(dsSchema, "workload_identity_pool_id")
 	addOptionalFieldsToSchema(dsSchema, "project")
 

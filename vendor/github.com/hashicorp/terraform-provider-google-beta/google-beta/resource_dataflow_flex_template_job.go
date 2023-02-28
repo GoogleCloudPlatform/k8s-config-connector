@@ -18,8 +18,8 @@ import (
 // Changing any non-computed field will result in the job being deleted (according to its
 // on_delete policy) and recreated with the updated parameters.
 
-// resourceDataflowFlexTemplateJob defines the schema for Dataflow FlexTemplate jobs.
-func resourceDataflowFlexTemplateJob() *schema.Resource {
+// ResourceDataflowFlexTemplateJob defines the schema for Dataflow FlexTemplate jobs.
+func ResourceDataflowFlexTemplateJob() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceDataflowFlexTemplateJobCreate,
 		Read:   resourceDataflowFlexTemplateJobRead,
@@ -224,7 +224,7 @@ func waitForDataflowJobState(d *schema.ResourceData, config *Config, jobID, user
 // resourceDataflowFlexTemplateJobUpdate updates a Flex Template Job resource.
 func resourceDataflowFlexTemplateJobUpdate(d *schema.ResourceData, meta interface{}) error {
 	// Don't send an update request if only virtual fields have changes
-	if resourceDataflowJobIsVirtualUpdate(d, resourceDataflowFlexTemplateJob().Schema) {
+	if resourceDataflowJobIsVirtualUpdate(d, ResourceDataflowFlexTemplateJob().Schema) {
 		return nil
 	}
 

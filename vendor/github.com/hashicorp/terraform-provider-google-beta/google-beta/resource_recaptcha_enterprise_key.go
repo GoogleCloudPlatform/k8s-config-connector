@@ -27,7 +27,7 @@ import (
 	recaptchaenterprise "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/recaptchaenterprise/beta"
 )
 
-func resourceRecaptchaEnterpriseKey() *schema.Resource {
+func ResourceRecaptchaEnterpriseKey() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceRecaptchaEnterpriseKeyCreate,
 		Read:   resourceRecaptchaEnterpriseKeyRead,

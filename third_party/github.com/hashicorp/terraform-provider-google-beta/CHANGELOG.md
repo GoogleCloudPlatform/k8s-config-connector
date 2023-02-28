@@ -1,4 +1,43 @@
-## 4.53.0 (Unreleased)
+## 4.55.0 (Unreleased)
+
+FEATURES:
+* **New Resource:** `google_cloudbuild_bitbucket_server_config` ([#5218](https://github.com/hashicorp/terraform-provider-google-beta/pull/5218))
+* **New Resource:** `google_firebase_hosting_release` ([#5229](https://github.com/hashicorp/terraform-provider-google-beta/pull/5229))
+* **New Resource:** `google_firebase_hosting_version` ([#5229](https://github.com/hashicorp/terraform-provider-google-beta/pull/5229))
+
+IMPROVEMENTS:
+* container: added support for `node_config.kubelet_config.pod_pids_limit` on `google_container_node_pool` ([#5217](https://github.com/hashicorp/terraform-provider-google-beta/pull/5217))
+* storage: changed the default create timeout of `google_storage_bucket` to 10m from 4m ([#5222](https://github.com/hashicorp/terraform-provider-google-beta/pull/5222))
+
+BUG FIXES:
+* container: fixed a crash when leaving `placement_policy` blank on `google_container_node_pool` ([#5233](https://github.com/hashicorp/terraform-provider-google-beta/pull/5233))
+* serviceusage: removed unneeded Optional schema behaviour from `email` field in `google_project_service_identity` ([#5226](https://github.com/hashicorp/terraform-provider-google-beta/pull/5226))
+
+## 4.54.0 (February 23, 2023)
+
+FEATURES:
+* **New Data Source:** `google_firebase_hosting_channel` ([#5188](https://github.com/hashicorp/terraform-provider-google-beta/pull/5188))
+* **New Data Source:** `google_logging_sink` ([#5207](https://github.com/hashicorp/terraform-provider-google-beta/pull/5207))
+* **New Data Source:** `google_sql_databases` ([#5204](https://github.com/hashicorp/terraform-provider-google-beta/pull/5204))
+
+IMPROVEMENTS:
+* cloudbuild: added `bitbucket_server_trigger_config` field to `google_cloudbuild_trigger` resource ([#5198](https://github.com/hashicorp/terraform-provider-google-beta/pull/5198))
+* cloudbuild: added `github.enterprise_config_resource_name` field to `google_cloudbuild_trigger` resource ([#5205](https://github.com/hashicorp/terraform-provider-google-beta/pull/5205))
+* compute: added field `rsa_encrypted_key` to `google_compute_disk` resource ([#5187](https://github.com/hashicorp/terraform-provider-google-beta/pull/5187))
+* compute: added additional fields to `rules[].rate_limit_options` in `google_compute_security_policy` to support Cloud Armor Rate Limit Options ([#5193](https://github.com/hashicorp/terraform-provider-google-beta/pull/5193))
+* sql: added replica promotion support to `google_sql_database_instance`. This change will allow users to promote read replica as stand alone primary instance. ([#5184](https://github.com/hashicorp/terraform-provider-google-beta/pull/5184))
+
+BUG FIXES:
+* bigquery: fixed permadiff on `max_time_travel_hours` of `google_bigquery_dataset` ([#5190](https://github.com/hashicorp/terraform-provider-google-beta/pull/5190))
+* compute: added possibility to remove `stateful_disk` in `compute_instance_group_manager` and `compute_region_instance_group_manager`. ([#5203](https://github.com/hashicorp/terraform-provider-google-beta/pull/5203))
+* sql: fixed an issue with updating the `settings.activation_policy` field in `google_sql_database_instance` ([#5202](https://github.com/hashicorp/terraform-provider-google-beta/pull/5202))
+
+## 4.53.1 (February 14, 2023)
+
+BUG FIXES:
+* provider: fixed crash when trying to configure the provider with invalid credentials
+
+## 4.53.0 (February 13, 2023)
 
 FEATURES:
 * **New Resource:** `google_apigee_addons_config` ([#5171](https://github.com/hashicorp/terraform-provider-google-beta/pull/5171))

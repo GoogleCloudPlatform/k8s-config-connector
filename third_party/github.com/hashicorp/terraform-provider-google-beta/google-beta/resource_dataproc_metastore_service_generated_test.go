@@ -139,47 +139,6 @@ resource "google_kms_crypto_key_iam_binding" "crypto_key_binding" {
 `, context)
 }
 
-func TestAccDataprocMetastoreService_dataprocMetastoreServiceEndpointExample(t *testing.T) {
-	t.Parallel()
-
-	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
-	}
-
-	vcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
-		CheckDestroy: testAccCheckDataprocMetastoreServiceDestroyProducer(t),
-		Steps: []resource.TestStep{
-			{
-				Config: testAccDataprocMetastoreService_dataprocMetastoreServiceEndpointExample(context),
-			},
-			{
-				ResourceName:            "google_dataproc_metastore_service.endpoint",
-				ImportState:             true,
-				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"service_id", "location"},
-			},
-		},
-	})
-}
-
-func testAccDataprocMetastoreService_dataprocMetastoreServiceEndpointExample(context map[string]interface{}) string {
-	return Nprintf(`
-resource "google_dataproc_metastore_service" "endpoint" {
-  provider   = google-beta
-  service_id = "tf-test-metastore-endpoint%{random_suffix}"
-  location   = "us-central1"
-  tier       = "DEVELOPER"
-
-  hive_metastore_config {
-    version           = "3.1.2"
-    endpoint_protocol = "GRPC"
-  }
-}
-`, context)
-}
-
 func TestAccDataprocMetastoreService_dataprocMetastoreServiceAuxExample(t *testing.T) {
 	t.Parallel()
 

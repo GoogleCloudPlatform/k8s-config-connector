@@ -17,7 +17,7 @@ var (
 	cryptoKeyVersionRegexp = regexp.MustCompile(`^(//[^/]*/[^/]*/)?(projects/[^/]+/locations/[^/]+/keyRings/[^/]+/cryptoKeys/[^/]+/cryptoKeyVersions/[^/]+)$`)
 )
 
-func dataSourceGoogleKmsSecretAsymmetric() *schema.Resource {
+func DataSourceGoogleKmsSecretAsymmetric() *schema.Resource {
 	return &schema.Resource{
 		ReadContext: dataSourceGoogleKmsSecretAsymmetricReadContext,
 		Schema: map[string]*schema.Schema{

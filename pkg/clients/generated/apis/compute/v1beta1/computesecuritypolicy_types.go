@@ -90,6 +90,16 @@ type SecuritypolicyConfig struct {
 	SrcIpRanges []string `json:"srcIpRanges"`
 }
 
+type SecuritypolicyEnforceOnKeyConfigs struct {
+	/* Rate limit key name applicable only for the following key types: HTTP_HEADER -- Name of the HTTP header whose value is taken as the key value. HTTP_COOKIE -- Name of the HTTP cookie whose value is taken as the key value. */
+	// +optional
+	EnforceOnKeyName *string `json:"enforceOnKeyName,omitempty"`
+
+	/* Determines the key to enforce the rate_limit_threshold on. */
+	// +optional
+	EnforceOnKeyType *string `json:"enforceOnKeyType,omitempty"`
+}
+
 type SecuritypolicyExceedRedirectOptions struct {
 	/* Target for the redirect action. This is required if the type is EXTERNAL_302 and cannot be specified for GOOGLE_RECAPTCHA. */
 	// +optional
@@ -184,6 +194,10 @@ type SecuritypolicyRateLimitOptions struct {
 	/* Determines the key to enforce the rateLimitThreshold on. */
 	// +optional
 	EnforceOnKey *string `json:"enforceOnKey,omitempty"`
+
+	/* Immutable. Enforce On Key Config of this security policy. */
+	// +optional
+	EnforceOnKeyConfigs []SecuritypolicyEnforceOnKeyConfigs `json:"enforceOnKeyConfigs,omitempty"`
 
 	/* Rate limit key name applicable only for the following key types: HTTP_HEADER -- Name of the HTTP header whose value is taken as the key value. HTTP_COOKIE -- Name of the HTTP cookie whose value is taken as the key value. */
 	// +optional

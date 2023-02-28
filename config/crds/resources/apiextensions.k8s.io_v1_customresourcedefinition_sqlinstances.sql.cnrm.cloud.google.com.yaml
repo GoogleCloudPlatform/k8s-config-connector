@@ -94,6 +94,10 @@ spec:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
+              instanceType:
+                description: The type of the instance. The valid values are:- 'SQL_INSTANCE_TYPE_UNSPECIFIED',
+                  'CLOUD_SQL_INSTANCE', 'ON_PREMISES_INSTANCE' and 'READ_REPLICA_INSTANCE'.
+                type: string
               maintenanceVersion:
                 description: Maintenance version.
                 type: string
@@ -641,10 +645,6 @@ spec:
                   strings. For example, when connecting with Cloud SQL Proxy.
                 type: string
               firstIpAddress:
-                type: string
-              instanceType:
-                description: The type of the instance. The valid values are:- 'SQL_INSTANCE_TYPE_UNSPECIFIED',
-                  'CLOUD_SQL_INSTANCE', 'ON_PREMISES_INSTANCE' and 'READ_REPLICA_INSTANCE'.
                 type: string
               ipAddress:
                 items:

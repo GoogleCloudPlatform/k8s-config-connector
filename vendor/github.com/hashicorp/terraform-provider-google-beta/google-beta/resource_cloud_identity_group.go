@@ -25,7 +25,7 @@ import (
 	"google.golang.org/api/googleapi"
 )
 
-func resourceCloudIdentityGroup() *schema.Resource {
+func ResourceCloudIdentityGroup() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceCloudIdentityGroupCreate,
 		Read:   resourceCloudIdentityGroupRead,

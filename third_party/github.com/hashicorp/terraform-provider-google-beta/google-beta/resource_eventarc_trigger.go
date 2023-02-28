@@ -27,7 +27,7 @@ import (
 	eventarc "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/eventarc/beta"
 )
 
-func resourceEventarcTrigger() *schema.Resource {
+func ResourceEventarcTrigger() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceEventarcTriggerCreate,
 		Read:   resourceEventarcTriggerRead,

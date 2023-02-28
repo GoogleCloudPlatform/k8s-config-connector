@@ -25,7 +25,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func resourceDataCatalogTaxonomy() *schema.Resource {
+func ResourceDataCatalogTaxonomy() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceDataCatalogTaxonomyCreate,
 		Read:   resourceDataCatalogTaxonomyRead,

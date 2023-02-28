@@ -15,6 +15,7 @@
 package google
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -36,8 +37,20 @@ func TestAccBigqueryDatapolicyDataPolicyIamBindingGenerated(t *testing.T) {
 				Config: testAccBigqueryDatapolicyDataPolicyIamBinding_basicGenerated(context),
 			},
 			{
+				ResourceName:      "google_bigquery_datapolicy_data_policy_iam_binding.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataPolicies/%s roles/viewer", getTestProjectFromEnv(), getTestRegionFromEnv(), fmt.Sprintf("tf_test_data_policy%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
 				// Test Iam Binding update
 				Config: testAccBigqueryDatapolicyDataPolicyIamBinding_updateGenerated(context),
+			},
+			{
+				ResourceName:      "google_bigquery_datapolicy_data_policy_iam_binding.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataPolicies/%s roles/viewer", getTestProjectFromEnv(), getTestRegionFromEnv(), fmt.Sprintf("tf_test_data_policy%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})
@@ -59,6 +72,12 @@ func TestAccBigqueryDatapolicyDataPolicyIamMemberGenerated(t *testing.T) {
 				// Test Iam Member creation (no update for member, no need to test)
 				Config: testAccBigqueryDatapolicyDataPolicyIamMember_basicGenerated(context),
 			},
+			{
+				ResourceName:      "google_bigquery_datapolicy_data_policy_iam_member.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataPolicies/%s roles/viewer user:admin@hashicorptest.com", getTestProjectFromEnv(), getTestRegionFromEnv(), fmt.Sprintf("tf_test_data_policy%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
 		},
 	})
 }
@@ -79,7 +98,19 @@ func TestAccBigqueryDatapolicyDataPolicyIamPolicyGenerated(t *testing.T) {
 				Config: testAccBigqueryDatapolicyDataPolicyIamPolicy_basicGenerated(context),
 			},
 			{
+				ResourceName:      "google_bigquery_datapolicy_data_policy_iam_policy.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataPolicies/%s", getTestProjectFromEnv(), getTestRegionFromEnv(), fmt.Sprintf("tf_test_data_policy%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
 				Config: testAccBigqueryDatapolicyDataPolicyIamPolicy_emptyBinding(context),
+			},
+			{
+				ResourceName:      "google_bigquery_datapolicy_data_policy_iam_policy.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/%s/dataPolicies/%s", getTestProjectFromEnv(), getTestRegionFromEnv(), fmt.Sprintf("tf_test_data_policy%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})

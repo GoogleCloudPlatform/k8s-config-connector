@@ -29,6 +29,7 @@ func TestAccFirebaseAppleApp_firebaseAppleAppBasicExample(t *testing.T) {
 	context := map[string]interface{}{
 		"org_id":        getTestOrgFromEnv(t),
 		"project_id":    getTestProjectFromEnv(),
+		"display_name":  "tf-test Display Name Basic",
 		"random_suffix": randString(t, 10),
 	}
 
@@ -54,7 +55,7 @@ func testAccFirebaseAppleApp_firebaseAppleAppBasicExample(context map[string]int
 resource "google_firebase_apple_app" "default" {
   provider = google-beta
   project = "%{project_id}"
-  display_name = "Display Name Basic%{random_suffix}"
+  display_name = "%{display_name}"
   bundle_id = "apple.app.12345%{random_suffix}"
 }
 `, context)
@@ -68,6 +69,7 @@ func TestAccFirebaseAppleApp_firebaseAppleAppFullExample(t *testing.T) {
 		"project_id":    getTestProjectFromEnv(),
 		"app_store_id":  12345,
 		"team_id":       9987654321,
+		"display_name":  "tf-test Display Name Full",
 		"random_suffix": randString(t, 10),
 	}
 
@@ -94,7 +96,7 @@ func testAccFirebaseAppleApp_firebaseAppleAppFullExample(context map[string]inte
 resource "google_firebase_apple_app" "full" {
   provider = google-beta
   project = "%{project_id}"
-  display_name = "Display Name Full%{random_suffix}"
+  display_name = "%{display_name}"
   bundle_id = "apple.app.12345%{random_suffix}"
   app_store_id = "%{app_store_id}"
   team_id = "%{team_id}"

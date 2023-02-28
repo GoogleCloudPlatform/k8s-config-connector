@@ -10,7 +10,7 @@ import (
 
 var runtimeConfigFullName *regexp.Regexp = regexp.MustCompile("^projects/([^/]+)/configs/(.+)$")
 
-func resourceRuntimeconfigConfig() *schema.Resource {
+func ResourceRuntimeconfigConfig() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceRuntimeconfigConfigCreate,
 		Read:   resourceRuntimeconfigConfigRead,

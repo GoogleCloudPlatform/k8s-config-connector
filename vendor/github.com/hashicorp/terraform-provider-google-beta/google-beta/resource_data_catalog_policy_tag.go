@@ -24,7 +24,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func resourceDataCatalogPolicyTag() *schema.Resource {
+func ResourceDataCatalogPolicyTag() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceDataCatalogPolicyTagCreate,
 		Read:   resourceDataCatalogPolicyTagRead,

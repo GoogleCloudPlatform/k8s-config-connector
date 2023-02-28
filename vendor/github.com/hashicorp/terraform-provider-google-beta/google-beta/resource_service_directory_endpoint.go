@@ -25,7 +25,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
-func resourceServiceDirectoryEndpoint() *schema.Resource {
+func ResourceServiceDirectoryEndpoint() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceServiceDirectoryEndpointCreate,
 		Read:   resourceServiceDirectoryEndpointRead,

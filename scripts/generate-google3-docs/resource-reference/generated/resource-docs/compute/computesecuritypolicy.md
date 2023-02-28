@@ -138,6 +138,9 @@ rule:
       intervalSec: integer
     conformAction: string
     enforceOnKey: string
+    enforceOnKeyConfigs:
+    - enforceOnKeyName: string
+      enforceOnKeyType: string
     enforceOnKeyName: string
     exceedAction: string
     exceedRedirectOptions:
@@ -854,6 +857,46 @@ used.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Determines the key to enforce the rateLimitThreshold on.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rule[].rateLimitOptions.enforceOnKeyConfigs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Immutable. Enforce On Key Config of this security policy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rule[].rateLimitOptions.enforceOnKeyConfigs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rule[].rateLimitOptions.enforceOnKeyConfigs[].enforceOnKeyName</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Rate limit key name applicable only for the following key types: HTTP_HEADER -- Name of the HTTP header whose value is taken as the key value. HTTP_COOKIE -- Name of the HTTP cookie whose value is taken as the key value.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rule[].rateLimitOptions.enforceOnKeyConfigs[].enforceOnKeyType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Determines the key to enforce the rate_limit_threshold on.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

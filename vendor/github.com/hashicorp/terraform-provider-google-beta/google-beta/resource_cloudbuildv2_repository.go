@@ -27,7 +27,7 @@ import (
 	cloudbuildv2 "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/cloudbuildv2/beta"
 )
 
-func resourceCloudbuildv2Repository() *schema.Resource {
+func ResourceCloudbuildv2Repository() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceCloudbuildv2RepositoryCreate,
 		Read:   resourceCloudbuildv2RepositoryRead,

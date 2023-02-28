@@ -6,9 +6,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func dataSourceGoogleFirebaseAppleApp() *schema.Resource {
+func DataSourceGoogleFirebaseAppleApp() *schema.Resource {
 	// Generate datasource schema from resource
-	dsSchema := datasourceSchemaFromResourceSchema(resourceFirebaseAppleApp().Schema)
+	dsSchema := datasourceSchemaFromResourceSchema(ResourceFirebaseAppleApp().Schema)
 
 	// Set 'Required' schema elements
 	addRequiredFieldsToSchema(dsSchema, "app_id")

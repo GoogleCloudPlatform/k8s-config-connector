@@ -27,7 +27,7 @@ import (
 	assuredworkloads "github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google/assuredworkloads/beta"
 )
 
-func resourceAssuredWorkloadsWorkload() *schema.Resource {
+func ResourceAssuredWorkloadsWorkload() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceAssuredWorkloadsWorkloadCreate,
 		Read:   resourceAssuredWorkloadsWorkloadRead,

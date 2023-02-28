@@ -8,9 +8,9 @@ import (
 	cloudidentity "google.golang.org/api/cloudidentity/v1beta1"
 )
 
-func dataSourceGoogleCloudIdentityGroups() *schema.Resource {
+func DataSourceGoogleCloudIdentityGroups() *schema.Resource {
 	// Generate datasource schema from resource
-	dsSchema := datasourceSchemaFromResourceSchema(resourceCloudIdentityGroup().Schema)
+	dsSchema := datasourceSchemaFromResourceSchema(ResourceCloudIdentityGroup().Schema)
 
 	return &schema.Resource{
 		Read: dataSourceGoogleCloudIdentityGroupsRead,

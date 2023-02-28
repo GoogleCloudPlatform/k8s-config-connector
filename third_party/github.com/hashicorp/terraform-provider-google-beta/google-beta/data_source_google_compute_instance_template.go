@@ -9,9 +9,9 @@ import (
 	compute "google.golang.org/api/compute/v0.beta"
 )
 
-func dataSourceGoogleComputeInstanceTemplate() *schema.Resource {
+func DataSourceGoogleComputeInstanceTemplate() *schema.Resource {
 	// Generate datasource schema from resource
-	dsSchema := datasourceSchemaFromResourceSchema(resourceComputeInstanceTemplate().Schema)
+	dsSchema := datasourceSchemaFromResourceSchema(ResourceComputeInstanceTemplate().Schema)
 
 	dsSchema["filter"] = &schema.Schema{
 		Type:     schema.TypeString,

@@ -10,8 +10,8 @@ import (
 func resourceIamCustomRole() *schema.Resource {
 	return combinedResource(
 		map[string]*schema.Resource{
-			projectType: resourceGoogleProjectIamCustomRole(),
-			orgType:     resourceGoogleOrganizationIamCustomRole(),
+			projectType: ResourceGoogleProjectIamCustomRole(),
+			orgType:     ResourceGoogleOrganizationIamCustomRole(),
 		}, func(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 			// FROM: {{project?}}#{{org_id?}}#{{role_id}}
 			// TO:

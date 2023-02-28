@@ -370,6 +370,10 @@ type ClusterKubeletConfig struct {
 
 	/* Control the CPU management policy on the node. */
 	CpuManagerPolicy string `json:"cpuManagerPolicy"`
+
+	/* Controls the maximum number of processes allowed to run in a pod. */
+	// +optional
+	PodPidsLimit *int `json:"podPidsLimit,omitempty"`
 }
 
 type ClusterLinuxNodeConfig struct {
