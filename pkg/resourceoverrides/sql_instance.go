@@ -19,7 +19,9 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 func GetSQLInstanceResourceOverrides() ResourceOverrides {
@@ -32,7 +34,29 @@ func GetSQLInstanceResourceOverrides() ResourceOverrides {
 	// Preserve the legacy fields for first generation sql instances that have been removed from Terraform 4.x upgrade.
 	// See b/206145549 for context.
 	ro.Overrides = append(ro.Overrides, keepFirstGenerationFields())
+
+	ro.Overrides = append(ro.Overrides, copyInstanceTypeFieldToStatus())
 	return ro
+}
+
+func copyInstanceTypeFieldToStatus() ResourceOverride {
+	o := ResourceOverride{}
+	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
+		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+		spec := schema.Properties["spec"]
+		status := schema.Properties["status"]
+		status.Properties["instanceType"] = spec.Properties["instanceType"]
+
+		return nil
+	}
+	o.PostActuationTransform = func(original, reconciled *k8s.Resource, tfState *terraform.InstanceState, dclState *unstructured.Unstructured) error {
+		if tfState != nil {
+			reconciled.Status["instanceType"] = tfState.Attributes["instance_type"]
+		}
+
+		return nil
+	}
+	return o
 }
 
 func keepDatabaseVersionFieldOptionalWithDefault() ResourceOverride {
@@ -82,7 +106,7 @@ func keepFirstGenerationFields() ResourceOverride {
 		}
 		return nil
 	}
-	o.PostActuationTransform = func(original, reconciled *k8s.Resource) error {
+	o.PostActuationTransform = func(original, reconciled *k8s.Resource, tfState *terraform.InstanceState, dclState *unstructured.Unstructured) error {
 		if err := PreserveUserSpecifiedLegacyField(original, reconciled, "settings", "authorizedGaeApplications"); err != nil {
 			return fmt.Errorf("error preserving no-ops field 'settings.authorizedGaeApplications' in post-actuation transformation: %w", err)
 		}

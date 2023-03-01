@@ -19,7 +19,9 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 var (
@@ -55,7 +57,7 @@ func preserveRrdatasFieldAndEnsureRrdatasRefsFieldIsMultiKind() ResourceOverride
 		}
 		return nil
 	}
-	o.PostActuationTransform = func(original, reconciled *k8s.Resource) error {
+	o.PostActuationTransform = func(original, reconciled *k8s.Resource, tfState *terraform.InstanceState, dclState *unstructured.Unstructured) error {
 		if err := PreserveUserSpecifiedLegacyArrayField(original, reconciled, []string{rrdatasFieldName}...); err != nil {
 			return fmt.Errorf("error preserving user-specified '%v' in post-actuation transformation: %w", rrdatasFieldName, err)
 		}

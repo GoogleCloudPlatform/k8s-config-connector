@@ -20,6 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides/operations"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -35,7 +36,7 @@ type PreActuationTransform func(r *k8s.Resource) error
 
 // PostActuationTransform transform the reconciled resource object.
 // A typical example of post-actuation transformations is to preserve the user specified fields.
-type PostActuationTransform func(original, reconciled *k8s.Resource) error
+type PostActuationTransform func(original, reconciled *k8s.Resource, tfState *terraform.InstanceState, dclState *unstructured.Unstructured) error
 
 // ConfigValidate validates the input configuration in the webhook.
 type ConfigValidate func(r *unstructured.Unstructured) error
@@ -119,14 +120,14 @@ func (h *ResourceOverridesHandler) PreActuationTransform(r *k8s.Resource) error 
 	return nil
 }
 
-func (h *ResourceOverridesHandler) PostActuationTransform(original, post *k8s.Resource) error {
+func (h *ResourceOverridesHandler) PostActuationTransform(original, post *k8s.Resource, tfState *terraform.InstanceState, dclState *unstructured.Unstructured) error {
 	ro, found := h.registration(original.Kind)
 	if !found {
 		return nil
 	}
 	for _, o := range ro.Overrides {
 		if o.PostActuationTransform != nil {
-			if err := o.PostActuationTransform(original, post); err != nil {
+			if err := o.PostActuationTransform(original, post, tfState, dclState); err != nil {
 				return err
 			}
 		}

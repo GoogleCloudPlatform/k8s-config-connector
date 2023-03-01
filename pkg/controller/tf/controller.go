@@ -430,7 +430,7 @@ func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, krmReso
 }
 
 func (r *Reconciler) handleDeleted(ctx context.Context, resource *krmtotf.Resource) error {
-	if err := resourceoverrides.Handler.PostActuationTransform(resource.Original, &resource.Resource); err != nil {
+	if err := resourceoverrides.Handler.PostActuationTransform(resource.Original, &resource.Resource, nil, nil); err != nil {
 		return r.HandlePostActuationTransformFailed(ctx, &resource.Resource, fmt.Errorf("error applying post-actuation transformation to resource '%v': %w", resource.GetNamespacedName(), err))
 	}
 	return r.HandleDeleted(ctx, &resource.Resource)
@@ -444,7 +444,7 @@ func (r *Reconciler) handleUpToDate(ctx context.Context, resource *krmtotf.Resou
 	if err := updateObservedSecretVersionsAnnotationFor(resource, secretVersions); err != nil {
 		return err
 	}
-	if err := resourceoverrides.Handler.PostActuationTransform(resource.Original, &resource.Resource); err != nil {
+	if err := resourceoverrides.Handler.PostActuationTransform(resource.Original, &resource.Resource, liveState, nil); err != nil {
 		return r.HandlePostActuationTransformFailed(ctx, &resource.Resource, fmt.Errorf("error applying post-actuation transformation to resource '%v': %w", resource.GetNamespacedName(), err))
 	}
 	if !k8s.IsSpecOrStatusUpdateRequired(&resource.Resource, resource.Original) &&

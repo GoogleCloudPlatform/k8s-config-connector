@@ -22,5 +22,6 @@ metadata:
 spec:
   region: us-central1
   databaseVersion: MYSQL_5_7
+  instanceType: CLOUD_SQL_INSTANCE
   settings:
     tier: db-n1-standard-4

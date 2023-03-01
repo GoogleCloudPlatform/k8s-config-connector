@@ -479,6 +479,10 @@ type SQLInstanceStatus struct {
 	// +optional
 	FirstIpAddress *string `json:"firstIpAddress,omitempty"`
 
+	/* The type of the instance. The valid values are:- 'SQL_INSTANCE_TYPE_UNSPECIFIED', 'CLOUD_SQL_INSTANCE', 'ON_PREMISES_INSTANCE' and 'READ_REPLICA_INSTANCE'. */
+	// +optional
+	InstanceType *string `json:"instanceType,omitempty"`
+
 	// +optional
 	IpAddress []InstanceIpAddressStatus `json:"ipAddress,omitempty"`
 

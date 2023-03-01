@@ -20,6 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -146,7 +147,7 @@ func TestResourceOverridesHandler(t *testing.T) {
 			if err := handler.PreActuationTransform(tc.original); err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			if err := handler.PostActuationTransform(tc.original, tc.reconciled); err != nil {
+			if err := handler.PostActuationTransform(tc.original, tc.reconciled, nil, nil); err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
 		})
@@ -175,7 +176,7 @@ func getFooOverrides() resourceoverrides.ResourceOverrides {
 	o1.ConfigValidate = func(r *unstructured.Unstructured) error {
 		return nil
 	}
-	o1.PostActuationTransform = func(original, reconciled *k8s.Resource) error {
+	o1.PostActuationTransform = func(original, reconciled *k8s.Resource, tfState *terraform.InstanceState, dclState *unstructured.Unstructured) error {
 		return nil
 	}
 	o1.PreActuationTransform = func(r *k8s.Resource) error {

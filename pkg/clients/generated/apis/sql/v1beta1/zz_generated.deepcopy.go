@@ -1025,6 +1025,11 @@ func (in *SQLInstanceStatus) DeepCopyInto(out *SQLInstanceStatus) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.InstanceType != nil {
+		in, out := &in.InstanceType, &out.InstanceType
+		*out = new(string)
+		**out = **in
+	}
 	if in.IpAddress != nil {
 		in, out := &in.IpAddress, &out.IpAddress
 		*out = make([]InstanceIpAddressStatus, len(*in))

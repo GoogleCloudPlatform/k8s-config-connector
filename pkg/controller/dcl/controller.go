@@ -432,7 +432,7 @@ func (r *Reconciler) applyChangesForBackwardsCompatibility(ctx context.Context, 
 }
 
 func (r *Reconciler) handleDeleted(ctx context.Context, resource *dcl.Resource) error {
-	if err := resourceoverrides.Handler.PostActuationTransform(resource.Original, &resource.Resource); err != nil {
+	if err := resourceoverrides.Handler.PostActuationTransform(resource.Original, &resource.Resource, nil, nil); err != nil {
 		return r.HandlePostActuationTransformFailed(ctx, &resource.Resource, fmt.Errorf("error applying post-actuation transformation to resource '%v': %w", resource.GetNamespacedName(), err))
 	}
 	return r.HandleDeleted(ctx, &resource.Resource)
@@ -452,7 +452,7 @@ func (r *Reconciler) updateSpecAndStatusWithLiveState(ctx context.Context, liveL
 		return false, err
 	}
 
-	if err := resourceoverrides.Handler.PostActuationTransform(resource.Original, &resource.Resource); err != nil {
+	if err := resourceoverrides.Handler.PostActuationTransform(resource.Original, &resource.Resource, nil, liveLite); err != nil {
 		return false, r.HandlePostActuationTransformFailed(ctx, &resource.Resource, fmt.Errorf("error applying post-actuation transformation to resource '%v': %w", resource.GetNamespacedName(), err))
 	}
 
