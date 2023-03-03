@@ -31,26 +31,32 @@ ifneq ($(origin KUBECONTEXT), undefined)
 CONTEXT_FLAG := --context ${KUBECONTEXT}
 endif
 
+.PHONY: all
 all: test manager operator config-connector
 
 # Run tests
+.PHONY: test
 test: generate fmt vet manifests
 	make -C operator test
 	go test -v ./pkg/... ./cmd/... ./config/tests/... ./scripts/generate-go-crd-clients/... -coverprofile cover.out -count=1
 
 # Build config-connector binary
+.PHONY: config-connector
 config-connector: generate fmt vet
 	./scripts/config-connector/build.sh
 
 # Build the operator's manager binary
+.PHONY: operator
 operator:
 	make -C operator manager
 
 # Build manager binary
+.PHONY: manager
 manager: generate fmt vet
 	go build -o bin/manager github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager
 
 # Generate manifests e.g. CRD, RBAC etc.
+.PHONY: manifests
 manifests: generate
 	make -C operator manifests
 	rm -rf config/crds/resources
@@ -66,6 +72,7 @@ manifests: generate
 	rm kustomization.yaml
 
 # Format code
+.PHONY: fmt
 fmt:
 	make -C operator fmt
 	goimports -w pkg cmd scripts config/tests
@@ -82,15 +89,18 @@ fmt:
 	-ignore "operator/vendor/**" \
 	./
 
+.PHONY: lint
 lint:
 	for f in `find pkg cmd -name "*.go"`; do golint -set_exit_status $$f || exit $?; done
 
 # Run go vet against code
+.PHONY: vet
 vet:
 	make -C operator vet
 	go vet -tags integration ./pkg/... ./cmd/... ./config/tests/...
 
 # Generate code
+.PHONY: generate
 generate:
 	# Don't run go generate on `pkg/clients/generated` in the normal development flow due to high latency.
 	# This path will be covered by `generate-go-client` target specifically.
@@ -98,13 +108,16 @@ generate:
 	make fmt
 
 # Build the docker images
+.PHONY: docker-build
 docker-build: docker-build-manager docker-build-recorder docker-build-webhook docker-build-deletiondefender docker-build-unmanageddetector
 
 # build all the binaries into the builder docker image
+.PHONY: docker-build-builder
 docker-build-builder:
 	$(DOCKER_BUILD) . -f build/builder/Dockerfile -t ${BUILDER_IMG}
 
 # Build the manager docker image
+.PHONY: docker-build-manager
 docker-build-manager: docker-build-builder
 	$(DOCKER_BUILD) -t ${CONTROLLER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/manager/Dockerfile
 	@echo "updating kustomize image patch file for manager resource"
@@ -112,6 +125,7 @@ docker-build-manager: docker-build-builder
 	sed -i'' -e 's@image: .*@image: '"${CONTROLLER_IMG}"'@' ./config/installbundle/components/manager/base/manager_image_patch.yaml
 
 # Build the recorder docker image
+.PHONY: docker-build-recorder
 docker-build-recorder: docker-build-builder
 	$(DOCKER_BUILD) -t ${RECORDER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/recorder/Dockerfile
 	@echo "updating kustomize image patch file for recorder resource"
@@ -119,18 +133,21 @@ docker-build-recorder: docker-build-builder
 	sed -i'' -e 's@image: .*@image: '"${RECORDER_IMG}"'@' ./config/installbundle/components/recorder/recorder_image_patch.yaml
 
 # Build the webhook docker image
+.PHONY: docker-build-webhook
 docker-build-webhook: docker-build-builder
 	$(DOCKER_BUILD) -t ${WEBHOOK_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/webhook/Dockerfile
 	@echo "updating kustomize image patch file for webhook resource"
 	cp config/installbundle/components/webhook/webhook_image_patch_template.yaml config/installbundle/components/webhook/webhook_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${WEBHOOK_IMG}"'@' ./config/installbundle/components/webhook/webhook_image_patch.yaml
 
+.PHONY: docker-build-deletiondefender
 docker-build-deletiondefender: docker-build-builder
 	$(DOCKER_BUILD) -t ${DELETION_DEFENDER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/deletiondefender/Dockerfile
 	@echo "updating kustomize image patch file for deletion defender resource"
 	cp config/installbundle/components/deletiondefender/deletiondefender_image_patch_template.yaml config/installbundle/components/deletiondefender/deletiondefender_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${DELETION_DEFENDER_IMG}"'@' ./config/installbundle/components/deletiondefender/deletiondefender_image_patch.yaml
 
+.PHONY: docker-build-unmanageddetector
 docker-build-unmanageddetector: docker-build-builder
 	$(DOCKER_BUILD) -t ${UNMANAGED_DETECTOR_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} - < build/unmanageddetector/Dockerfile
 	@echo "updating kustomize image patch file for unmanaged detector resource"
@@ -138,6 +155,7 @@ docker-build-unmanageddetector: docker-build-builder
 	sed -i'' -e 's@image: .*@image: '"${UNMANAGED_DETECTOR_IMG}"'@' ./config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
 
 # Push the docker image
+.PHONY: docker-push
 docker-push:
 	docker push ${CONTROLLER_IMG}
 	docker push ${RECORDER_IMG}
@@ -146,14 +164,17 @@ docker-push:
 	docker push ${UNMANAGED_DETECTOR_IMG}
 
 # Deploy controller in the configured Kubernetes cluster in ~/.kube/config
+.PHONY: deploy
 deploy: manifests install
 	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
 
 # Install CRDs into a cluster
+.PHONY: install
 install: manifests
 	kubectl apply -f config/crds/resources/ ${CONTEXT_FLAG}
 
 # Deploy controller only, this will skip CRD install in the configured K8s and usually runs much
 # faster than "make deploy". It is useful if you only want to quickly apply code change in controller
+.PHONY: deploy-controller
 deploy-controller: docker-build docker-push
 	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}

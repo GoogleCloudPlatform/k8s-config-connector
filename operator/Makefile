@@ -27,36 +27,44 @@ endif
 CONTROLLER_GEN := $(GOBIN)/controller-gen
 CONTROLLER_GEN_VERSION := 0.10.0
 
+.PHONY: all
 all: manager
 
 # Run tests
+.PHONY: test
 test: generate fmt vet manifests
 	go test -v ./pkg/... -coverprofile cover.out
 
 # Build manager binary
+.PHONY: manager
 manager: generate fmt vet
 	go build -o bin/manager cmd/manager/main.go
 
 # Generate manifests e.g. CRD, RBAC etc.
+.PHONY: manifests
 manifests: controller-gen
 	$(CONTROLLER_GEN) $(CRD_OPTIONS) paths="./pkg/apis/..." output:crd:artifacts:config=config/crd/bases
 	go run scripts/generate-image-configmap/main.go
 
 # Run go fmt against code
+.PHONY: fmt
 fmt:
 	go fmt ./...
 
 # Run go vet against code
+.PHONY: vet
 vet:
 	go vet ./...
 
 # Generate code
+.PHONY: generate
 generate: controller-gen
 	$(CONTROLLER_GEN) object paths="./..."
 
 # Download controller-gen binary if not found at the path specified by
 # CONTROLLER_GEN or if the binary found is not the version specified by
 # CONTROLLER_GEN_VERSION.
+.PHONY: controller-gen
 controller-gen:
 ifneq (Version: v$(CONTROLLER_GEN_VERSION), $(shell $(CONTROLLER_GEN) --version))
 	GOFLAGS='' go install sigs.k8s.io/controller-tools/cmd/controller-gen@v$(CONTROLLER_GEN_VERSION)
