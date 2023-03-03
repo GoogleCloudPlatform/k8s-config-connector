@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	iamapi "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/reconciliationinterval"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/fielddesc"
 	crdtemplate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/template"
@@ -121,6 +122,7 @@ type resource struct {
 	SpecDescriptions                               []HumanReadableFieldDescription
 	StatusDescriptions                             []HumanReadableFieldDescription
 	IsAlphaResource                                bool
+	DefaultReconcileInterval                       uint32
 }
 
 // some approved spellings in Google public doc
@@ -268,7 +270,7 @@ func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappi
 	}
 	r.Status = string(statusYaml)
 	buildFieldDescriptions(r, crd)
-
+	r.DefaultReconcileInterval = uint32(reconciliationinterval.MeanReconcileReenqueuePeriod(gvk, smLoader, serviceMetadataLoader).Seconds())
 	if dclmetadata.IsDCLBasedResourceKind(gvk, serviceMetadataLoader) {
 		resourceMetadata, found := serviceMetadataLoader.GetResourceWithGVK(gvk)
 		if !found {

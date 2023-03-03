@@ -47,6 +47,10 @@ Note: You must specify the resource's name in <code>metadata.name</code> or <cod
 <td>{{ .FullyQualifiedName}}</td>
 </tr>
 {{template "iamsupport.tmpl" .}}
+<tr>
+<td>{{"{{product_name_short}}"}} Default Average Reconcile Interval In Seconds</td>
+<td>{{ .DefaultReconcileInterval}}</td>
+</tr>
 </tbody>
 </table>
 

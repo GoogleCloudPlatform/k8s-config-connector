@@ -55,6 +55,10 @@ organization. The parent resource is configured by setting one of
 <td>{{ .FullyQualifiedName}}</td>
 </tr>
 {{template "iamsupport.tmpl" .}}
+<tr>
+<td>{{"{{product_name_short}}"}} Default Average Reconcile Interval In Seconds</td>
+<td>{{ .DefaultReconcileInterval}}</td>
+</tr>
 </tbody>
 </table>
 

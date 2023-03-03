@@ -81,6 +81,10 @@ must have `roles/billing.user` on the {{billing_name}} account, and the
 </tr>
 
 
+<tr>
+<td>{{product_name_short}} Default Average Reconcile Interval In Seconds</td>
+<td>600</td>
+</tr>
 </tbody>
 </table>
 

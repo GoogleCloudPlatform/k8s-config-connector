@@ -78,6 +78,10 @@ Before you upgrade Config Connector to a later version, we recommended that you 
 </tr>
 
 
+<tr>
+<td>{{product_name_short}} Default Average Reconcile Interval In Seconds</td>
+<td>600</td>
+</tr>
 </tbody>
 </table>
 

@@ -74,6 +74,10 @@ children and wait for them to be gone from the Kubernetes API Server first.
 </tr>
 
 
+<tr>
+<td>{{product_name_short}} Default Average Reconcile Interval In Seconds</td>
+<td>600</td>
+</tr>
 </tbody>
 </table>
 

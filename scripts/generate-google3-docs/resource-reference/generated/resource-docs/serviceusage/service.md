@@ -56,6 +56,10 @@ do so using <code>kubectl get gcpservice</code>.
 </tr>
 
 
+<tr>
+<td>{{product_name_short}} Default Average Reconcile Interval In Seconds</td>
+<td>3600</td>
+</tr>
 </tbody>
 </table>
 

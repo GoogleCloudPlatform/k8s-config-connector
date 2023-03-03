@@ -52,6 +52,10 @@ A Lien represents an encumbrance on the actions that can be performed on a resou
 </tr>
 
 
+<tr>
+<td>{{product_name_short}} Default Average Reconcile Interval In Seconds</td>
+<td>600</td>
+</tr>
 </tbody>
 </table>
 

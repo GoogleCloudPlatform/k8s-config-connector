@@ -49,6 +49,10 @@
 </tr>
 
 
+<tr>
+<td>{{product_name_short}} Default Average Reconcile Interval In Seconds</td>
+<td>0</td>
+</tr>
 </tbody>
 </table>
 
