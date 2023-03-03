@@ -31,11 +31,11 @@ Before you upgrade Config Connector to a later version, we recommended that you 
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Name</td>
-<td>v1.namespaces.services</td>
+<td>v2.projects.locations.services</td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/run/docs/reference/rest/v1/namespaces.services">/run/docs/reference/rest/v1/namespaces.services</a></td>
+<td><a href="/run/docs/reference/rest/v2/projects.locations.services">/run/docs/reference/rest/v2/projects.locations.services</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
