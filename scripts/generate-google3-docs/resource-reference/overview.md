@@ -8,6 +8,11 @@
 {{product_name_short}} resources have a Kubernetes API group of
 `cnrm.cloud.google.com`.
 
+Note: {{product_name_short}} reference documentation is based on the latest
+version. If you are using a different version, you can find each version's
+Custom Resource Definitions in the GitHub repository. For example, this
+[link contains CRDs for version 1.89.0](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/v1.89.0/crds).
+
 <div>
 <devsite-filter>
   <input type="text" placeholder="Type a keyword to filter the list of resources">
