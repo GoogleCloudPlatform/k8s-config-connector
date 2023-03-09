@@ -16,7 +16,7 @@
 
 ```hcl
 resource "google_compute_resource_policy" "hourly" {
-  name   = "policy"
+  name   = "gce-policy"
   region = "us-central1"
   description = "Start and stop instances"
   instance_schedule_policy {

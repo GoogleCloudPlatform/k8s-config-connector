@@ -15,10 +15,16 @@
  */
 
 ```hcl
-resource "google_privateca_certificate_authority" "test-ca" {
-  pool = ""
-  certificate_authority_id = "my-certificate-authority"
+resource "google_privateca_ca_pool" "default" {
   location = "us-central1"
+  name = "my-pool"
+  tier = "ENTERPRISE"
+}
+
+resource "google_privateca_certificate_authority" "default" {
+  location = "us-central1"
+  pool = google_privateca_ca_pool.default.name
+  certificate_authority_id = "my-authority"
   config {
     subject_config {
       subject {
@@ -58,11 +64,11 @@ resource "google_privateca_certificate_authority" "test-ca" {
 
 
 resource "google_privateca_certificate" "default" {
-  pool = ""
   location = "us-central1"
-  certificate_authority = google_privateca_certificate_authority.test-ca.certificate_authority_id
-  lifetime = "860s"
+  pool = google_privateca_ca_pool.default.name
+  certificate_authority = google_privateca_certificate_authority.default.certificate_authority_id
   name = "my-certificate"
+  lifetime = "860s"
   pem_csr = file("test-fixtures/rsa_csr.pem")
 }
 ```

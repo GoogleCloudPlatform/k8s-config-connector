@@ -28,3 +28,6 @@ spec:
       idTemplate: "{{name}}"
       idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
+      serverGeneratedIDField: name
+      resourceID:
+        targetField: name

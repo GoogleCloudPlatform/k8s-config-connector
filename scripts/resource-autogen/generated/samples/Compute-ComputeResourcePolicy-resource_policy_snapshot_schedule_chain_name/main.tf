@@ -16,7 +16,7 @@
 
 ```hcl
 resource "google_compute_resource_policy" "hourly" {
-  name   = "policy"
+  name   = "gce-policy"
   region = "us-central1"
   description = "chain name snapshot"
   snapshot_schedule_policy {

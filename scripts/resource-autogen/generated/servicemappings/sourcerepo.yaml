@@ -35,6 +35,10 @@ spec:
       idTemplate: "projects/{{project}}/repos/{{name}}"
       idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
       hierarchicalReferences:
         - type: project
           key: projectRef

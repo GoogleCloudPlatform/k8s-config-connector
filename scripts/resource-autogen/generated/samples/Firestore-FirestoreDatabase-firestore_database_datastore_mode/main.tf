@@ -16,8 +16,6 @@
 
 ```hcl
 resource "google_project" "project" {
-  provider = "google-beta"
-
   project_id = "tf-test%{random_suffix}"
   name       = "tf-test%{random_suffix}"
   org_id     = "123456789"
@@ -30,8 +28,6 @@ resource "time_sleep" "wait_60_seconds" {
 }
 
 resource "google_project_service" "firestore" {
-  provider = "google-beta"
-
   project = google_project.project.project_id
   service = "firestore.googleapis.com"
 
@@ -40,8 +36,6 @@ resource "google_project_service" "firestore" {
 }
 
 resource "google_firestore_database" "datastore_mode_database" {
-  provider = "google-beta"
-
   project = google_project.project.project_id
 
   name = "(default)"

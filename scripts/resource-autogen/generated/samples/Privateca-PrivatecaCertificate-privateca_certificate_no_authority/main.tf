@@ -15,12 +15,16 @@
  */
 
 ```hcl
-resource "google_privateca_certificate_authority" "authority" {
-  // This example assumes this pool already exists.
-  // Pools cannot be deleted in normal test circumstances, so we depend on static pools
-  pool = ""
-  certificate_authority_id = "my-authority"
+resource "google_privateca_ca_pool" "default" {
   location = "us-central1"
+  name = "my-pool"
+  tier = "ENTERPRISE"
+}
+
+resource "google_privateca_certificate_authority" "default" {
+  location = "us-central1"
+  pool = google_privateca_ca_pool.default.name
+  certificate_authority_id = "my-authority"
   config {
     subject_config {
       subject {
@@ -60,10 +64,10 @@ resource "google_privateca_certificate_authority" "authority" {
 
 
 resource "google_privateca_certificate" "default" {
-  pool = ""
   location = "us-central1"
-  lifetime = "860s"
+  pool = google_privateca_ca_pool.default.name
   name = "my-certificate"
+  lifetime = "860s"
   config {
     subject_config  {
       subject {
@@ -97,6 +101,6 @@ resource "google_privateca_certificate" "default" {
   }
   // Certificates require an authority to exist in the pool, though they don't
   // need to be explicitly connected to it
-  depends_on = [google_privateca_certificate_authority.authority]
+  depends_on = [google_privateca_certificate_authority.default]
 }
 ```

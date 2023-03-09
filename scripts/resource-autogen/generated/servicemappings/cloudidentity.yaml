@@ -40,6 +40,10 @@ spec:
       idTemplate: "{{name}}"
       idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
+      serverGeneratedIDField: name
+      resourceID:
+        targetField: name
+        valueTemplate: "{{group}}/memberships/{{value}}"
       resourceReferences:
         - key: groupRef
           tfField: group

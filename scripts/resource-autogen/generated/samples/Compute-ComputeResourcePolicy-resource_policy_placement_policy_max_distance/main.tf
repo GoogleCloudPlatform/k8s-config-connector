@@ -16,7 +16,7 @@
 
 ```hcl
 resource "google_compute_resource_policy" "baz" {
-  name   = "policy"
+  name   = "gce-policy"
   region = "us-central1"
   provider = google-beta
   group_placement_policy {

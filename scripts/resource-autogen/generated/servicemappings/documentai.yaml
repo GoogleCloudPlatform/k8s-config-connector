@@ -49,3 +49,7 @@ spec:
       idTemplate: "{{processor}}"
       idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
+      metadataMapping:
+        name: processor
+      resourceID:
+        targetField: processor
