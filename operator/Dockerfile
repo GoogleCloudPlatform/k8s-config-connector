@@ -39,7 +39,7 @@ RUN go run scripts/generate-third-party-licenses/main.go
 
 # Build a specific version of kubectl to be used by the
 # kubebuilder-declarative-pattern library.
-RUN curl -fsSL https://dl.k8s.io/v1.19.14/bin/linux/amd64/kubectl > kubectl
+RUN curl -fsSL https://dl.k8s.io/v1.26.2/bin/linux/amd64/kubectl > kubectl
 RUN chmod a+rx kubectl
 
 # Prepare a directory containing the binaries and other artifacts, and
