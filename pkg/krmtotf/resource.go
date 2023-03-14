@@ -328,7 +328,7 @@ func SupportsIAM(rc *corekccv1alpha1.ResourceConfig) bool {
 func GVKForResource(sm *corekccv1alpha1.ServiceMapping, rc *corekccv1alpha1.ResourceConfig) schema.GroupVersionKind {
 	return schema.GroupVersionKind{
 		Group:   sm.Name,
-		Version: sm.Spec.Version,
+		Version: sm.GetVersionFor(rc),
 		Kind:    rc.Kind,
 	}
 }

@@ -28,6 +28,8 @@ import (
 	"github.com/ghodss/yaml"
 )
 
+var emptyIAMConfig v1alpha1.IAMConfig
+
 func GetServiceMappingMap() (map[string]v1alpha1.ServiceMapping, error) {
 	generatedSMMap, err := getGeneratedSMMap()
 	if err != nil {
@@ -75,11 +77,28 @@ func getAllowlistedSMMap(generatedSMMap map[string]v1alpha1.ServiceMapping) (map
 		allowlistedSM := deepcopy.DeepCopy(sm).(v1alpha1.ServiceMapping)
 		rcList := []v1alpha1.ResourceConfig{}
 		for _, rc := range sm.Spec.Resources {
-			if !autoGenAllowlist.HasTFTypeInService(sm.Spec.Name, rc.Name) {
+			autoGenType, ok := autoGenAllowlist.GetTFTypeInService(sm.Spec.Name, rc.Name)
+			if !ok {
 				continue
 			}
-
+			// Override the version for the allowlisted resource.
+			rc.Version = &autoGenType.Version
 			allowlistedRC := deepcopy.DeepCopy(rc).(v1alpha1.ResourceConfig)
+			// Remove IAM config for v1alpha1 resources.
+			if autoGenType.Version == allowlist.AlphaVersion {
+				allowlistedRC.IAMConfig = emptyIAMConfig
+			}
+			// Remove the resource references of the allowlisted resource if the
+			// referenced resource is a v1alpha1 resource.
+			var resourceReferences []v1alpha1.ReferenceConfig
+			for _, rr := range allowlistedRC.ResourceReferences {
+				autoGenType, ok := autoGenAllowlist.GetKRMKind(rr.GVK.Kind)
+				if ok && autoGenType.Version == allowlist.AlphaVersion {
+					continue
+				}
+				resourceReferences = append(resourceReferences, rr)
+			}
+			allowlistedRC.ResourceReferences = resourceReferences
 			rcList = append(rcList, allowlistedRC)
 		}
 		sort.Slice(rcList, func(i, j int) bool {

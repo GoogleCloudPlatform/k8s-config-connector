@@ -116,7 +116,7 @@ func tfStateToResource(state *terraform.InstanceState, sm *v1alpha1.ServiceMappi
 	}
 	gvk := schema.GroupVersionKind{
 		Group:   sm.Name,
-		Version: sm.Spec.Version,
+		Version: sm.GetVersionFor(rc),
 		Kind:    rc.Kind,
 	}
 

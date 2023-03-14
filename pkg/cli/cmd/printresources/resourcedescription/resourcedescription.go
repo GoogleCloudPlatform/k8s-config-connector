@@ -67,7 +67,7 @@ func getSMResourceDescription(tfProvider *tfschema.Provider, sm v1alpha1.Service
 	rDesc := ResourceDescription{
 		GVK: schema.GroupVersionKind{
 			Group:   sm.Name,
-			Version: sm.Spec.Version,
+			Version: sm.GetVersionFor(&rc),
 			Kind:    rc.Kind,
 		},
 		ResourceNameFormat: resourceNameFormat,

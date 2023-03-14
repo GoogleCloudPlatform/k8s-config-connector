@@ -22,7 +22,10 @@ import (
 )
 
 var (
-	allowlist = []string{
+	AlphaVersion   = "v1alpha1"
+	betaVersion    = "v1beta1"
+	alphaAllowlist = []string{}
+	betaAllowlist  = []string{
 		"BigQuery/Routine",
 		"DataCatalog/PolicyTag",
 		"DataCatalog/Taxonomy",
@@ -30,7 +33,7 @@ var (
 		"Tags/TagKey",
 		"Tags/TagValue",
 	}
-	legacyServiceNames = map[string]string{
+	tfLegacyServiceNames = map[string]string{
 		"BigQuery": "bigquery",
 	}
 )
@@ -38,11 +41,12 @@ var (
 type AutoGenType struct {
 	ServiceName  string
 	ResourceName string
+	Version      string
 }
 
 func (t *AutoGenType) toTFType() string {
 	tfType := "google_"
-	legacyName, ok := legacyServiceNames[t.ServiceName]
+	legacyName, ok := tfLegacyServiceNames[t.ServiceName]
 	if ok {
 		tfType += legacyName
 	} else {
@@ -52,11 +56,11 @@ func (t *AutoGenType) toTFType() string {
 	return tfType
 }
 
-func (t *AutoGenType) toKRMKind() string {
+func (t *AutoGenType) ToKRMKind() string {
 	return t.ServiceName + t.ResourceName
 }
 
-func NewAutoGenType(autoGenTypeInString string) (*AutoGenType, error) {
+func NewAutoGenType(autoGenTypeInString string, version string) (*AutoGenType, error) {
 	parts := strings.Split(autoGenTypeInString, "/")
 	if len(parts) != 2 {
 		return nil, fmt.Errorf("type for resource auto-generation should be"+
@@ -71,7 +75,7 @@ func NewAutoGenType(autoGenTypeInString string) (*AutoGenType, error) {
 			" type is %q", autoGenTypeInString)
 	}
 
-	return &AutoGenType{ServiceName: parts[0], ResourceName: parts[1]}, nil
+	return &AutoGenType{ServiceName: parts[0], ResourceName: parts[1], Version: version}, nil
 }
 
 type AutoGenAllowlist struct {
@@ -91,8 +95,8 @@ func (a *AutoGenAllowlist) addAutoGenType(autoGenType *AutoGenType) {
 	_, ok = TFTypeMap[autoGenType.toTFType()]
 	if !ok {
 		TFTypeMap[autoGenType.toTFType()] = autoGenType
-		KRMKindMap[autoGenType.toKRMKind()] = autoGenType
-		a.KRMKinds[autoGenType.toKRMKind()] = autoGenType
+		KRMKindMap[autoGenType.ToKRMKind()] = autoGenType
+		a.KRMKinds[autoGenType.ToKRMKind()] = autoGenType
 	}
 	return
 }
@@ -102,18 +106,18 @@ func (a *AutoGenAllowlist) HasService(service string) bool {
 	return ok
 }
 
-func (a *AutoGenAllowlist) HasTFTypeInService(service, tfType string) bool {
+func (a *AutoGenAllowlist) GetTFTypeInService(service, tfType string) (*AutoGenType, bool) {
 	resourceMap, ok := a.ServiceAndTFTypes[service]
 	if !ok {
-		return false
+		return nil, false
 	}
-	_, ok = resourceMap[tfType]
-	return ok
+	autoGenType, ok := resourceMap[tfType]
+	return autoGenType, ok
 }
 
-func (a *AutoGenAllowlist) HasKRMKind(krmKind string) bool {
-	_, ok := a.KRMKinds[krmKind]
-	return ok
+func (a *AutoGenAllowlist) GetKRMKind(krmKind string) (*AutoGenType, bool) {
+	autoGenType, ok := a.KRMKinds[krmKind]
+	return autoGenType, ok
 }
 
 func (a *AutoGenAllowlist) HasKRMKindInService(service, krmKind string) bool {
@@ -135,11 +139,19 @@ func NewAutoGenAllowlist() *AutoGenAllowlist {
 
 func LoadAutoGenAllowList() (*AutoGenAllowlist, error) {
 	autoGenAllowlist := NewAutoGenAllowlist()
-	for _, typeInString := range allowlist {
-		autoGenType, err := NewAutoGenType(typeInString)
+	for _, typeInString := range alphaAllowlist {
+		autoGenType, err := NewAutoGenType(typeInString, AlphaVersion)
 		if err != nil {
 			return nil, fmt.Errorf("error converting the types in the "+
-				"allowlist from string to AutoGenType: %w", err)
+				"alphaAllowlist from string to AutoGenType: %w", err)
+		}
+		autoGenAllowlist.addAutoGenType(autoGenType)
+	}
+	for _, typeInString := range betaAllowlist {
+		autoGenType, err := NewAutoGenType(typeInString, betaVersion)
+		if err != nil {
+			return nil, fmt.Errorf("error converting the types in the "+
+				"betaAllowlist from string to AutoGenType: %w", err)
 		}
 		autoGenAllowlist.addAutoGenType(autoGenType)
 	}

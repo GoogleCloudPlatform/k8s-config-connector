@@ -107,7 +107,8 @@ func convertTFSamplesToKRMTestdata(tfToGVK map[string]schema.GroupVersionKind, s
 		kind := sampleNameInfo[1]
 		group := fmt.Sprintf("%s.cnrm.cloud.google.com", strings.ToLower(service))
 
-		if allowlisted := autoGenAllowlist.HasKRMKind(kind); !allowlisted {
+		autoGenType, ok := autoGenAllowlist.GetKRMKind(kind)
+		if !ok {
 			klog.Infof("Skipping the parse of sample %v. Kind %v not allowlisted.", sf, kind)
 			continue
 		}
@@ -169,7 +170,7 @@ func convertTFSamplesToKRMTestdata(tfToGVK map[string]schema.GroupVersionKind, s
 			continue
 		}
 
-		if err := insertTestData(create, dependencies, service, kind, sampleName, generatedSamples); err != nil {
+		if err := insertTestData(create, dependencies, autoGenType, sampleName, generatedSamples); err != nil {
 			errToReturn := fmt.Errorf("error unmarshaling json for TF sample %s: %v", sf, err)
 			klog.Warningf("Failed sample conversion: %v", errToReturn)
 			errs = multierror.Append(errs, errToReturn)
@@ -511,7 +512,7 @@ func GetTFTypeToGVKMap(smLoader *servicemappingloader.ServiceMappingLoader) (map
 			tfType := rc.Name
 			gvk := schema.GroupVersionKind{
 				Group:   sm.Name,
-				Version: sm.Spec.Version,
+				Version: sm.GetVersionFor(&rc),
 				Kind:    rc.Kind,
 			}
 			tfTypeToGVK[tfType] = gvk
@@ -520,8 +521,8 @@ func GetTFTypeToGVKMap(smLoader *servicemappingloader.ServiceMappingLoader) (map
 	return tfTypeToGVK, nil
 }
 
-func insertTestData(createConfig map[string]interface{}, dependenciesConfig []map[string]interface{}, service, kind, sampleName string, generatedSamples map[string]bool) error {
-	folderPath := getTestDataFolderPath(service, kind)
+func insertTestData(createConfig map[string]interface{}, dependenciesConfig []map[string]interface{}, autoGenType *allowlist.AutoGenType, sampleName string, generatedSamples map[string]bool) error {
+	folderPath := getTestDataFolderPath(autoGenType)
 
 	createFilePath := filepath.Join(folderPath, sampleName, "create.yaml")
 	if err := os.MkdirAll(filepath.Dir(createFilePath), 0770); err != nil {
@@ -557,10 +558,10 @@ func insertTestData(createConfig map[string]interface{}, dependenciesConfig []ma
 	return nil
 }
 
-func getTestDataFolderPath(service, kind string) string {
-	serviceFolderName := strings.ToLower(service)
-	kindFolderName := strings.ToLower(kind)
-	return filepath.Join(repo.GetBasicIntegrationTestDataPath(), serviceFolderName, "v1beta1", kindFolderName)
+func getTestDataFolderPath(autoGenType *allowlist.AutoGenType) string {
+	serviceFolderName := strings.ToLower(autoGenType.ServiceName)
+	kindFolderName := strings.ToLower(autoGenType.ToKRMKind())
+	return filepath.Join(repo.GetBasicIntegrationTestDataPath(), serviceFolderName, autoGenType.Version, kindFolderName)
 }
 
 func getTFReferenceValue(value interface{}) (tfRefValue, valueTemplate string, containsTFReference bool, err error) {

@@ -31,7 +31,8 @@ type ServiceMappingSpec struct {
 	// used for the construction of the generated CRDs' API group and kind.
 	Name string `json:"name"`
 
-	// Version is the API version for all the resource CRDs being generated.
+	// Version is the default API version for all the resource CRDs being
+	// generated.
 	Version string `json:"version"`
 
 	// ServiceHostName is the host portion of the URL for the associated service. IE, for Spanner, it is 'spanner.googleapis.com'
@@ -48,6 +49,10 @@ type ResourceConfig struct {
 
 	// Kind is the Kubernetes kind you wish the resource to have.
 	Kind string `json:"kind"`
+
+	// Version is the API version of the resource CRD.
+	// If unset, the default API version of the service mapping will be used.
+	Version *string `json:"version"`
 
 	// SkipImport skips the import step when fetching the live state of the underlying
 	// resource. If specified, IDTemplate must also be specified, and its expanded
@@ -395,6 +400,14 @@ type ServiceMapping struct {
 	// ServiceMappingSpec defines the aspects common to all resources of a particular
 	// service being mapped from the Terraform provider to Kubernetes Resource Model (KRM).
 	Spec ServiceMappingSpec `json:"spec,omitempty"`
+}
+
+func (sm *ServiceMapping) GetVersionFor(rc *ResourceConfig) string {
+	version := sm.Spec.Version
+	if rc.Version != nil {
+		version = *rc.Version
+	}
+	return version
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
