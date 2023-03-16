@@ -83,6 +83,7 @@ fmt:
 	-ignore "**/*.html" -ignore "config/installbundle/components/clusterroles/cnrm_admin.yaml" \
 	-ignore "config/installbundle/components/clusterroles/cnrm_viewer.yaml" \
 	-ignore "operator/channels/**" \
+	-ignore "operator/channels-autopilot/**" \
 	-ignore "operator/config/crd/bases/**" \
 	-ignore "operator/config/gke-addon/image_configmap.yaml" \
 	-ignore "operator/config/rbac/cnrm_viewer_role.yaml" \

@@ -24,6 +24,7 @@ WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
 COPY operator/pkg/      operator/pkg/
 COPY operator/cmd/      operator/cmd/
 COPY operator/channels/ operator/channels/
+COPY operator/autopilot-channels/ operator/autopilot-channels/
 COPY pkg/ pkg/
 COPY config/servicemappings/ config/servicemappings/
 COPY scripts/resource-autogen/ scripts/resource-autogen/
@@ -49,6 +50,7 @@ WORKDIR /configconnector-operator/
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/manager .
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/gke_addon_poststart .
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/operator/channels/ channels/
+COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/operator/autopilot-channels/ autopilot-channels/
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/kubectl kubectl
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/THIRD_PARTY_NOTICES/ THIRD_PARTY_NOTICES/
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/MIRRORED_LIBRARY_SOURCE/ MIRRORED_LIBRARY_SOURCE/

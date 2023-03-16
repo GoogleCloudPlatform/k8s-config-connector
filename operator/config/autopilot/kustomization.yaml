@@ -1,0 +1,30 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Adds namespace to all resources.
+namespace: configconnector-operator-system
+
+# Labels to add to all resources and selectors.
+commonLabels:
+  cnrm.cloud.google.com/operator-system: "true"
+
+commonAnnotations:
+  # Given our weekly release schedule, the version of the operator should remain the same of ConfigConnector Core,
+  # if we have to release the operator independently with the KCC core, append extension e.g. 1.6.0-operator.x
+  cnrm.cloud.google.com/operator-version: "1.102.0"
+
+bases:
+- ../crd
+- ../rbac
+- ../autopilot-manager
