@@ -1,0 +1,32 @@
+diff --git a/scripts/resource-autogen/generated/servicemappings/accesscontextmanager.yaml b/scripts/resource-autogen/generated/servicemappings/accesscontextmanager.yaml
+index a53f7446b..028e48d10 100644
+--- a/scripts/resource-autogen/generated/servicemappings/accesscontextmanager.yaml
++++ b/scripts/resource-autogen/generated/servicemappings/accesscontextmanager.yaml
+@@ -11,6 +11,7 @@
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
++
+ apiVersion: core.cnrm.cloud.google.com/v1alpha1
+ kind: ServiceMapping
+ metadata:
+@@ -125,10 +126,6 @@ spec:
+       idTemplate: "{{perimeter_name}}/{{resource}}"
+       idTemplateCanBeUsedToMatchResourceName: false
+       resourceAvailableInAssetInventory: false
+-      metadataMapping:
+-        name: resource
+-      resourceID:
+-        targetField: resource
+       resourceReferences:
+         - key: perimeterNameRef
+           tfField: perimeter_name
+@@ -136,7 +133,7 @@ spec:
+             kind: AccessContextManagerServicePerimeter
+             version: v1beta1
+             group: accesscontextmanager.cnrm.cloud.google.com
+-          targetField: name
++          valueTemplate: "{{parent}}/servicePerimeters/{{value}}"
+           parent: true
+     - name: google_access_context_manager_service_perimeters
+       kind: AccessContextManagerServicePerimeters

@@ -126,10 +126,6 @@ spec:
       idTemplate: "{{perimeter_name}}/{{resource}}"
       idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
-      metadataMapping:
-        name: resource
-      resourceID:
-        targetField: resource
       resourceReferences:
         - key: perimeterNameRef
           tfField: perimeter_name
@@ -137,7 +133,7 @@ spec:
             kind: AccessContextManagerServicePerimeter
             version: v1beta1
             group: accesscontextmanager.cnrm.cloud.google.com
-          targetField: name
+          valueTemplate: "{{parent}}/servicePerimeters/{{value}}"
           parent: true
     - name: google_access_context_manager_service_perimeters
       kind: AccessContextManagerServicePerimeters

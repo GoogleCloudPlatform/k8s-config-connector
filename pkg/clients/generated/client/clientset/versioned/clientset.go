@@ -25,6 +25,7 @@ import (
 	"fmt"
 	"net/http"
 
+	accesscontextmanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1alpha1"
 	accesscontextmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/accesscontextmanager/v1beta1"
 	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1beta1"
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1beta1"
@@ -88,6 +89,7 @@ import (
 type Interface interface {
 	Discovery() discovery.DiscoveryInterface
 	AccesscontextmanagerV1beta1() accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Interface
+	AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Interface
 	ApigeeV1beta1() apigeev1beta1.ApigeeV1beta1Interface
 	ArtifactregistryV1beta1() artifactregistryv1beta1.ArtifactregistryV1beta1Interface
 	BigqueryV1beta1() bigqueryv1beta1.BigqueryV1beta1Interface
@@ -148,66 +150,72 @@ type Interface interface {
 // version included in a Clientset.
 type Clientset struct {
 	*discovery.DiscoveryClient
-	accesscontextmanagerV1beta1 *accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Client
-	apigeeV1beta1               *apigeev1beta1.ApigeeV1beta1Client
-	artifactregistryV1beta1     *artifactregistryv1beta1.ArtifactregistryV1beta1Client
-	bigqueryV1beta1             *bigqueryv1beta1.BigqueryV1beta1Client
-	bigtableV1beta1             *bigtablev1beta1.BigtableV1beta1Client
-	billingbudgetsV1beta1       *billingbudgetsv1beta1.BillingbudgetsV1beta1Client
-	binaryauthorizationV1beta1  *binaryauthorizationv1beta1.BinaryauthorizationV1beta1Client
-	cloudbuildV1beta1           *cloudbuildv1beta1.CloudbuildV1beta1Client
-	cloudfunctionsV1beta1       *cloudfunctionsv1beta1.CloudfunctionsV1beta1Client
-	cloudidentityV1beta1        *cloudidentityv1beta1.CloudidentityV1beta1Client
-	cloudschedulerV1beta1       *cloudschedulerv1beta1.CloudschedulerV1beta1Client
-	computeV1beta1              *computev1beta1.ComputeV1beta1Client
-	configcontrollerV1beta1     *configcontrollerv1beta1.ConfigcontrollerV1beta1Client
-	containerV1beta1            *containerv1beta1.ContainerV1beta1Client
-	containeranalysisV1beta1    *containeranalysisv1beta1.ContaineranalysisV1beta1Client
-	datacatalogV1beta1          *datacatalogv1beta1.DatacatalogV1beta1Client
-	dataflowV1beta1             *dataflowv1beta1.DataflowV1beta1Client
-	datafusionV1beta1           *datafusionv1beta1.DatafusionV1beta1Client
-	dataprocV1beta1             *dataprocv1beta1.DataprocV1beta1Client
-	dlpV1beta1                  *dlpv1beta1.DlpV1beta1Client
-	dnsV1beta1                  *dnsv1beta1.DnsV1beta1Client
-	eventarcV1beta1             *eventarcv1beta1.EventarcV1beta1Client
-	filestoreV1beta1            *filestorev1beta1.FilestoreV1beta1Client
-	firestoreV1beta1            *firestorev1beta1.FirestoreV1beta1Client
-	gkehubV1beta1               *gkehubv1beta1.GkehubV1beta1Client
-	iamV1beta1                  *iamv1beta1.IamV1beta1Client
-	iapV1beta1                  *iapv1beta1.IapV1beta1Client
-	identityplatformV1beta1     *identityplatformv1beta1.IdentityplatformV1beta1Client
-	k8sV1alpha1                 *k8sv1alpha1.K8sV1alpha1Client
-	kmsV1beta1                  *kmsv1beta1.KmsV1beta1Client
-	loggingV1beta1              *loggingv1beta1.LoggingV1beta1Client
-	memcacheV1beta1             *memcachev1beta1.MemcacheV1beta1Client
-	monitoringV1beta1           *monitoringv1beta1.MonitoringV1beta1Client
-	networkconnectivityV1beta1  *networkconnectivityv1beta1.NetworkconnectivityV1beta1Client
-	networksecurityV1beta1      *networksecurityv1beta1.NetworksecurityV1beta1Client
-	networkservicesV1beta1      *networkservicesv1beta1.NetworkservicesV1beta1Client
-	osconfigV1beta1             *osconfigv1beta1.OsconfigV1beta1Client
-	privatecaV1beta1            *privatecav1beta1.PrivatecaV1beta1Client
-	pubsubV1beta1               *pubsubv1beta1.PubsubV1beta1Client
-	pubsubliteV1beta1           *pubsublitev1beta1.PubsubliteV1beta1Client
-	recaptchaenterpriseV1beta1  *recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Client
-	redisV1beta1                *redisv1beta1.RedisV1beta1Client
-	resourcemanagerV1beta1      *resourcemanagerv1beta1.ResourcemanagerV1beta1Client
-	runV1beta1                  *runv1beta1.RunV1beta1Client
-	secretmanagerV1beta1        *secretmanagerv1beta1.SecretmanagerV1beta1Client
-	servicedirectoryV1beta1     *servicedirectoryv1beta1.ServicedirectoryV1beta1Client
-	servicenetworkingV1beta1    *servicenetworkingv1beta1.ServicenetworkingV1beta1Client
-	serviceusageV1beta1         *serviceusagev1beta1.ServiceusageV1beta1Client
-	sourcerepoV1beta1           *sourcerepov1beta1.SourcerepoV1beta1Client
-	spannerV1beta1              *spannerv1beta1.SpannerV1beta1Client
-	sqlV1beta1                  *sqlv1beta1.SqlV1beta1Client
-	storageV1beta1              *storagev1beta1.StorageV1beta1Client
-	storagetransferV1beta1      *storagetransferv1beta1.StoragetransferV1beta1Client
-	tagsV1beta1                 *tagsv1beta1.TagsV1beta1Client
-	vpcaccessV1beta1            *vpcaccessv1beta1.VpcaccessV1beta1Client
+	accesscontextmanagerV1beta1  *accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Client
+	accesscontextmanagerV1alpha1 *accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Client
+	apigeeV1beta1                *apigeev1beta1.ApigeeV1beta1Client
+	artifactregistryV1beta1      *artifactregistryv1beta1.ArtifactregistryV1beta1Client
+	bigqueryV1beta1              *bigqueryv1beta1.BigqueryV1beta1Client
+	bigtableV1beta1              *bigtablev1beta1.BigtableV1beta1Client
+	billingbudgetsV1beta1        *billingbudgetsv1beta1.BillingbudgetsV1beta1Client
+	binaryauthorizationV1beta1   *binaryauthorizationv1beta1.BinaryauthorizationV1beta1Client
+	cloudbuildV1beta1            *cloudbuildv1beta1.CloudbuildV1beta1Client
+	cloudfunctionsV1beta1        *cloudfunctionsv1beta1.CloudfunctionsV1beta1Client
+	cloudidentityV1beta1         *cloudidentityv1beta1.CloudidentityV1beta1Client
+	cloudschedulerV1beta1        *cloudschedulerv1beta1.CloudschedulerV1beta1Client
+	computeV1beta1               *computev1beta1.ComputeV1beta1Client
+	configcontrollerV1beta1      *configcontrollerv1beta1.ConfigcontrollerV1beta1Client
+	containerV1beta1             *containerv1beta1.ContainerV1beta1Client
+	containeranalysisV1beta1     *containeranalysisv1beta1.ContaineranalysisV1beta1Client
+	datacatalogV1beta1           *datacatalogv1beta1.DatacatalogV1beta1Client
+	dataflowV1beta1              *dataflowv1beta1.DataflowV1beta1Client
+	datafusionV1beta1            *datafusionv1beta1.DatafusionV1beta1Client
+	dataprocV1beta1              *dataprocv1beta1.DataprocV1beta1Client
+	dlpV1beta1                   *dlpv1beta1.DlpV1beta1Client
+	dnsV1beta1                   *dnsv1beta1.DnsV1beta1Client
+	eventarcV1beta1              *eventarcv1beta1.EventarcV1beta1Client
+	filestoreV1beta1             *filestorev1beta1.FilestoreV1beta1Client
+	firestoreV1beta1             *firestorev1beta1.FirestoreV1beta1Client
+	gkehubV1beta1                *gkehubv1beta1.GkehubV1beta1Client
+	iamV1beta1                   *iamv1beta1.IamV1beta1Client
+	iapV1beta1                   *iapv1beta1.IapV1beta1Client
+	identityplatformV1beta1      *identityplatformv1beta1.IdentityplatformV1beta1Client
+	k8sV1alpha1                  *k8sv1alpha1.K8sV1alpha1Client
+	kmsV1beta1                   *kmsv1beta1.KmsV1beta1Client
+	loggingV1beta1               *loggingv1beta1.LoggingV1beta1Client
+	memcacheV1beta1              *memcachev1beta1.MemcacheV1beta1Client
+	monitoringV1beta1            *monitoringv1beta1.MonitoringV1beta1Client
+	networkconnectivityV1beta1   *networkconnectivityv1beta1.NetworkconnectivityV1beta1Client
+	networksecurityV1beta1       *networksecurityv1beta1.NetworksecurityV1beta1Client
+	networkservicesV1beta1       *networkservicesv1beta1.NetworkservicesV1beta1Client
+	osconfigV1beta1              *osconfigv1beta1.OsconfigV1beta1Client
+	privatecaV1beta1             *privatecav1beta1.PrivatecaV1beta1Client
+	pubsubV1beta1                *pubsubv1beta1.PubsubV1beta1Client
+	pubsubliteV1beta1            *pubsublitev1beta1.PubsubliteV1beta1Client
+	recaptchaenterpriseV1beta1   *recaptchaenterprisev1beta1.RecaptchaenterpriseV1beta1Client
+	redisV1beta1                 *redisv1beta1.RedisV1beta1Client
+	resourcemanagerV1beta1       *resourcemanagerv1beta1.ResourcemanagerV1beta1Client
+	runV1beta1                   *runv1beta1.RunV1beta1Client
+	secretmanagerV1beta1         *secretmanagerv1beta1.SecretmanagerV1beta1Client
+	servicedirectoryV1beta1      *servicedirectoryv1beta1.ServicedirectoryV1beta1Client
+	servicenetworkingV1beta1     *servicenetworkingv1beta1.ServicenetworkingV1beta1Client
+	serviceusageV1beta1          *serviceusagev1beta1.ServiceusageV1beta1Client
+	sourcerepoV1beta1            *sourcerepov1beta1.SourcerepoV1beta1Client
+	spannerV1beta1               *spannerv1beta1.SpannerV1beta1Client
+	sqlV1beta1                   *sqlv1beta1.SqlV1beta1Client
+	storageV1beta1               *storagev1beta1.StorageV1beta1Client
+	storagetransferV1beta1       *storagetransferv1beta1.StoragetransferV1beta1Client
+	tagsV1beta1                  *tagsv1beta1.TagsV1beta1Client
+	vpcaccessV1beta1             *vpcaccessv1beta1.VpcaccessV1beta1Client
 }
 
 // AccesscontextmanagerV1beta1 retrieves the AccesscontextmanagerV1beta1Client
 func (c *Clientset) AccesscontextmanagerV1beta1() accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Interface {
 	return c.accesscontextmanagerV1beta1
+}
+
+// AccesscontextmanagerV1alpha1 retrieves the AccesscontextmanagerV1alpha1Client
+func (c *Clientset) AccesscontextmanagerV1alpha1() accesscontextmanagerv1alpha1.AccesscontextmanagerV1alpha1Interface {
+	return c.accesscontextmanagerV1alpha1
 }
 
 // ApigeeV1beta1 retrieves the ApigeeV1beta1Client
@@ -528,6 +536,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.accesscontextmanagerV1alpha1, err = accesscontextmanagerv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.apigeeV1beta1, err = apigeev1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -766,6 +778,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 func New(c rest.Interface) *Clientset {
 	var cs Clientset
 	cs.accesscontextmanagerV1beta1 = accesscontextmanagerv1beta1.New(c)
+	cs.accesscontextmanagerV1alpha1 = accesscontextmanagerv1alpha1.New(c)
 	cs.apigeeV1beta1 = apigeev1beta1.New(c)
 	cs.artifactregistryV1beta1 = artifactregistryv1beta1.New(c)
 	cs.bigqueryV1beta1 = bigqueryv1beta1.New(c)

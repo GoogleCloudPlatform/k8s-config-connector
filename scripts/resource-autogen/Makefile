@@ -41,3 +41,7 @@ apply-autogen-patches:
 	# The patch is used to add resource references for the 'datasetId' field of
 	# BigQueryRoutine.
 	git apply ./hack/servicemappings/bigquery_routine_reference_field.patch
+	# The patch is used to fix the targetField and valueTemplate for
+	# 'perimeterNameRef' configuration, and to fix the metadataMapping and
+	# resourceID configuration for AccessContextManagerServicePerimeterResource.
+	git apply ./hack/servicemappings/accesscontextmanager_serviceperimeterresource.patch

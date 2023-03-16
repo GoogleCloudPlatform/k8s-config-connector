@@ -24,8 +24,10 @@ import (
 var (
 	AlphaVersion   = "v1alpha1"
 	betaVersion    = "v1beta1"
-	alphaAllowlist = []string{}
-	betaAllowlist  = []string{
+	alphaAllowlist = []string{
+		"AccessContextManager/ServicePerimeterResource",
+	}
+	betaAllowlist = []string{
 		"BigQuery/Routine",
 		"DataCatalog/PolicyTag",
 		"DataCatalog/Taxonomy",
