@@ -888,6 +888,7 @@ spec:
         type: Delete
       condition:
         age: 7
+        withState: ANY
   versioning:
     enabled: true
   cors:
