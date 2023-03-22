@@ -35,7 +35,7 @@ func testSweepMonitoringGenericService(region string) error {
 	resourceName := "MonitoringGenericService"
 	log.Printf("[INFO][SWEEPER_LOG] Starting sweeper for %s", resourceName)
 
-	config, err := sharedConfigForRegion(region)
+	config, err := SharedConfigForRegion(region)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error getting shared config for region: %s", err)
 		return err
@@ -48,7 +48,7 @@ func testSweepMonitoringGenericService(region string) error {
 	}
 
 	t := &testing.T{}
-	billingId := getTestBillingAccountFromEnv(t)
+	billingId := GetTestBillingAccountFromEnv(t)
 
 	// Setup variables to replace in list template
 	d := &ResourceDataMock{
@@ -68,7 +68,7 @@ func testSweepMonitoringGenericService(region string) error {
 		return nil
 	}
 
-	res, err := sendRequest(config, "GET", config.Project, listUrl, config.userAgent, nil)
+	res, err := SendRequest(config, "GET", config.Project, listUrl, config.UserAgent, nil)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] Error in response from request %s: %s", listUrl, err)
 		return nil
@@ -98,7 +98,7 @@ func testSweepMonitoringGenericService(region string) error {
 			return nil
 		}
 		// Skip resources that shouldn't be sweeped
-		if !isSweepableTestResource(name) {
+		if !IsSweepableTestResource(name) {
 			nonPrefixCount++
 			continue
 		}
@@ -112,7 +112,7 @@ func testSweepMonitoringGenericService(region string) error {
 		deleteUrl = deleteUrl + name
 
 		// Don't wait on operations as we may have a lot to delete
-		_, err = sendRequest(config, "DELETE", config.Project, deleteUrl, config.userAgent, nil)
+		_, err = SendRequest(config, "DELETE", config.Project, deleteUrl, config.UserAgent, nil)
 		if err != nil {
 			log.Printf("[INFO][SWEEPER_LOG] Error deleting for url %s : %s", deleteUrl, err)
 		} else {

@@ -47,7 +47,7 @@ index f0f878e73..047265040 100644
 +	}
  
  	var op *resourceManagerV3.Operation
- 	err = retryTimeDuration(func() error {
+ 	err = RetryTimeDuration(func() error {
 @@ -147,9 +154,6 @@ func resourceGoogleFolderRead(d *schema.ResourceData, meta interface{}) error {
  	if err := d.Set("folder_id", folderId); err != nil {
  		return fmt.Errorf("Error setting folder_id: %s", err)

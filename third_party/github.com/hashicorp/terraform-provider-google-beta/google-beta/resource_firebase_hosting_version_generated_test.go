@@ -24,13 +24,13 @@ func TestAccFirebaseHostingVersion_firebasehostingVersionRedirectExample(t *test
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    getTestProjectFromEnv(),
-		"random_suffix": randString(t, 10),
+		"project_id":    GetTestProjectFromEnv(),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProvidersOiCS,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFirebaseHostingVersion_firebasehostingVersionRedirectExample(context),
@@ -78,13 +78,13 @@ func TestAccFirebaseHostingVersion_firebasehostingVersionCloudRunExample(t *test
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    getTestProjectFromEnv(),
-		"random_suffix": randString(t, 10),
+		"project_id":    GetTestProjectFromEnv(),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProvidersOiCS,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFirebaseHostingVersion_firebasehostingVersionCloudRunExample(context),
@@ -150,14 +150,14 @@ func TestAccFirebaseHostingVersion_firebasehostingVersionCloudFunctionsExample(t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    getTestProjectFromEnv(),
+		"project_id":    GetTestProjectFromEnv(),
 		"zip_path":      "./test-fixtures/cloudfunctions2/function-source.zip",
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProvidersOiCS,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFirebaseHostingVersion_firebasehostingVersionCloudFunctionsExample(context),

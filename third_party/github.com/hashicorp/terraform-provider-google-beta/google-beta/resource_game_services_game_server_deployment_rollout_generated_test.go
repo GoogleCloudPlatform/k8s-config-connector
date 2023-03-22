@@ -27,12 +27,12 @@ func TestAccGameServicesGameServerDeploymentRollout_gameServiceDeploymentRollout
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckGameServicesGameServerDeploymentRolloutDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -86,7 +86,7 @@ func testAccCheckGameServicesGameServerDeploymentRolloutDestroyProducer(t *testi
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{GameServicesBasePath}}projects/{{project}}/locations/global/gameServerDeployments/{{deployment_id}}/rollout")
 			if err != nil {
@@ -99,7 +99,7 @@ func testAccCheckGameServicesGameServerDeploymentRolloutDestroyProducer(t *testi
 				billingProject = config.BillingProject
 			}
 
-			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("GameServicesGameServerDeploymentRollout still exists at %s", url)
 			}

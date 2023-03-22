@@ -512,7 +512,6 @@ func canonicalizeGatewayDesiredState(rawDesired, rawInitial *Gateway, opts ...dc
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -704,6 +703,9 @@ func diffGateway(c *Client, desired, actual *Gateway, opts ...dcl.ApplyOption) (
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

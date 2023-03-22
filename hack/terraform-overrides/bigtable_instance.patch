@@ -66,15 +66,15 @@ index d89545571..601dc09df 100644
 
  	return nil
  }
-@@ -306,9 +316,6 @@ func resourceBigtableInstanceUpdate(d *schema.ResourceData, meta interface{}) er
+@@ -342,9 +352,6 @@ func resourceBigtableInstanceUpdate(d *schema.ResourceData, meta interface{}) er
  }
-
+ 
  func resourceBigtableInstanceDestroy(d *schema.ResourceData, meta interface{}) error {
 -	if d.Get("deletion_protection").(bool) {
 -		return fmt.Errorf("cannot destroy instance without setting deletion_protection=false and running `terraform apply`")
 -	}
  	config := meta.(*Config)
- 	userAgent, err := generateUserAgentString(d, config.userAgent)
+ 	userAgent, err := generateUserAgentString(d, config.UserAgent)
  	if err != nil {
 @@ -526,3 +545,10 @@ func resourceBigtableInstanceImport(d *schema.ResourceData, meta interface{}) ([
 

@@ -12,15 +12,15 @@ import (
 func TestAccComputeRouterNat_basic(t *testing.T) {
 	t.Parallel()
 
-	project := getTestProjectFromEnv()
-	region := getTestRegionFromEnv()
+	project := GetTestProjectFromEnv()
+	region := GetTestRegionFromEnv()
 
-	testId := randString(t, 10)
+	testId := RandString(t, 10)
 	routerName := fmt.Sprintf("tf-test-router-nat-%s", testId)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeRouterNatDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -62,12 +62,12 @@ func TestAccComputeRouterNat_basic(t *testing.T) {
 func TestAccComputeRouterNat_update(t *testing.T) {
 	t.Parallel()
 
-	testId := randString(t, 10)
+	testId := RandString(t, 10)
 	routerName := fmt.Sprintf("tf-test-router-nat-%s", testId)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeRouterNatDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -117,12 +117,12 @@ func TestAccComputeRouterNat_update(t *testing.T) {
 func TestAccComputeRouterNat_removeLogConfig(t *testing.T) {
 	t.Parallel()
 
-	testId := randString(t, 10)
+	testId := RandString(t, 10)
 	routerName := fmt.Sprintf("tf-test-router-nat-%s", testId)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeRouterNatDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -148,12 +148,12 @@ func TestAccComputeRouterNat_removeLogConfig(t *testing.T) {
 func TestAccComputeRouterNat_withManualIpAndSubnetConfiguration(t *testing.T) {
 	t.Parallel()
 
-	testId := randString(t, 10)
+	testId := RandString(t, 10)
 	routerName := fmt.Sprintf("tf-test-router-nat-%s", testId)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeRouterNatDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -171,12 +171,12 @@ func TestAccComputeRouterNat_withManualIpAndSubnetConfiguration(t *testing.T) {
 func TestAccComputeRouterNat_withPortAllocationMethods(t *testing.T) {
 	t.Parallel()
 
-	testId := randString(t, 10)
+	testId := RandString(t, 10)
 	routerName := fmt.Sprintf("tf-test-router-nat-%s", testId)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeRouterNatDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -234,12 +234,12 @@ func TestAccComputeRouterNat_withPortAllocationMethods(t *testing.T) {
 func TestAccComputeRouterNat_withNatIpsAndDrainNatIps(t *testing.T) {
 	t.Parallel()
 
-	testId := randString(t, 10)
+	testId := RandString(t, 10)
 	routerName := fmt.Sprintf("tf-test-router-nat-%s", testId)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeRouterNatDestroyProducer(t),
 		Steps: []resource.TestStep{
 			// (ERROR): Creation with drain nat IPs should fail
@@ -282,16 +282,16 @@ func TestAccComputeRouterNat_withNatIpsAndDrainNatIps(t *testing.T) {
 func TestAccComputeRouterNat_withNatRules(t *testing.T) {
 	t.Parallel()
 
-	testId := randString(t, 10)
+	testId := RandString(t, 10)
 	routerName := fmt.Sprintf("tf-test-router-nat-%s", testId)
-	ruleDescription := randString(t, 10)
-	ruleDescriptionUpdate := randString(t, 10)
+	ruleDescription := RandString(t, 10)
+	ruleDescriptionUpdate := RandString(t, 10)
 	match := "inIpRange(destination.ip, '1.1.0.0/16') || inIpRange(destination.ip, '2.2.0.0/16')"
 	matchUpdate := "destination.ip == '1.1.0.1' || destination.ip == '8.8.8.8'"
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeRouterNatDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -404,21 +404,21 @@ func TestAccComputeRouterNat_withNatRules(t *testing.T) {
 
 func testAccCheckComputeRouterNatDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
-		routersService := config.NewComputeClient(config.userAgent).Routers
+		routersService := config.NewComputeClient(config.UserAgent).Routers
 
 		for _, rs := range s.RootModule().Resources {
 			if rs.Type != "google_compute_router" {
 				continue
 			}
 
-			project, err := getTestProject(rs.Primary, config)
+			project, err := GetTestProject(rs.Primary, config)
 			if err != nil {
 				return err
 			}
 
-			region, err := getTestRegion(rs.Primary, config)
+			region, err := GetTestRegion(rs.Primary, config)
 			if err != nil {
 				return err
 			}
@@ -438,21 +438,21 @@ func testAccCheckComputeRouterNatDestroyProducer(t *testing.T) func(s *terraform
 
 func testAccCheckComputeRouterNatDelete(t *testing.T, n string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
-		routersService := config.NewComputeClient(config.userAgent).Routers
+		routersService := config.NewComputeClient(config.UserAgent).Routers
 
 		for _, rs := range s.RootModule().Resources {
 			if rs.Type != "google_compute_router_nat" {
 				continue
 			}
 
-			project, err := getTestProject(rs.Primary, config)
+			project, err := GetTestProject(rs.Primary, config)
 			if err != nil {
 				return err
 			}
 
-			region, err := getTestRegion(rs.Primary, config)
+			region, err := GetTestRegion(rs.Primary, config)
 			if err != nil {
 				return err
 			}

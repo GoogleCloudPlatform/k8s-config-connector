@@ -35,14 +35,14 @@ func TestAccContainerAzureCluster_BasicHandWritten(t *testing.T) {
 		"azure_sub":           "00000000-0000-0000-0000-17aad2f0f61f",
 		"azure_tenant":        "00000000-0000-0000-0000-17aad2f0f61f",
 		"byo_prefix":          "mmv2",
-		"project_name":        getTestProjectFromEnv(),
+		"project_name":        GetTestProjectFromEnv(),
 		"project_number":      getTestProjectNumberFromEnv(),
-		"random_suffix":       randString(t, 10),
+		"random_suffix":       RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerAzureClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -75,15 +75,15 @@ func TestAccContainerAzureCluster_BetaBasicHandWritten(t *testing.T) {
 		"azure_sub":           "00000000-0000-0000-0000-17aad2f0f61f",
 		"azure_tenant":        "00000000-0000-0000-0000-17aad2f0f61f",
 		"byo_prefix":          "mmv2",
-		"project_name":        getTestProjectFromEnv(),
+		"project_name":        GetTestProjectFromEnv(),
 		"project_number":      getTestProjectNumberFromEnv(),
-		"random_suffix":       randString(t, 10),
+		"random_suffix":       RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck: func() { testAccPreCheck(t) },
 
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckContainerAzureClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -428,7 +428,7 @@ func testAccCheckContainerAzureClusterDestroyProducer(t *testing.T) func(s *terr
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			billingProject := ""
 			if config.BillingProject != "" {
@@ -437,10 +437,10 @@ func testAccCheckContainerAzureClusterDestroyProducer(t *testing.T) func(s *terr
 
 			obj := &containerazure.Cluster{
 				AzureRegion:     dcl.String(rs.Primary.Attributes["azure_region"]),
-				Client:          dcl.String(rs.Primary.Attributes["client"]),
 				Location:        dcl.String(rs.Primary.Attributes["location"]),
 				Name:            dcl.String(rs.Primary.Attributes["name"]),
 				ResourceGroupId: dcl.String(rs.Primary.Attributes["resource_group_id"]),
+				Client:          dcl.String(rs.Primary.Attributes["client"]),
 				Description:     dcl.String(rs.Primary.Attributes["description"]),
 				Project:         dcl.StringOrNil(rs.Primary.Attributes["project"]),
 				CreateTime:      dcl.StringOrNil(rs.Primary.Attributes["create_time"]),
@@ -452,7 +452,7 @@ func testAccCheckContainerAzureClusterDestroyProducer(t *testing.T) func(s *terr
 				UpdateTime:      dcl.StringOrNil(rs.Primary.Attributes["update_time"]),
 			}
 
-			client := NewDCLContainerAzureClient(config, config.userAgent, billingProject, 0)
+			client := NewDCLContainerAzureClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetCluster(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_container_azure_cluster still exists %v", obj)

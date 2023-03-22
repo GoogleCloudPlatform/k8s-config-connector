@@ -532,7 +532,6 @@ func canonicalizeAuthorizationPolicyDesiredState(rawDesired, rawInitial *Authori
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -659,23 +658,26 @@ func canonicalizeNewAuthorizationPolicyRulesSet(c *Client, des, nw []Authorizati
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []AuthorizationPolicyRules
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []AuthorizationPolicyRules
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareAuthorizationPolicyRulesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewAuthorizationPolicyRules(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewAuthorizationPolicyRulesSlice(c *Client, des, nw []AuthorizationPolicyRules) []AuthorizationPolicyRules {
@@ -782,23 +784,26 @@ func canonicalizeNewAuthorizationPolicyRulesSourcesSet(c *Client, des, nw []Auth
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []AuthorizationPolicyRulesSources
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []AuthorizationPolicyRulesSources
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareAuthorizationPolicyRulesSourcesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewAuthorizationPolicyRulesSources(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewAuthorizationPolicyRulesSourcesSlice(c *Client, des, nw []AuthorizationPolicyRulesSources) []AuthorizationPolicyRulesSources {
@@ -913,23 +918,26 @@ func canonicalizeNewAuthorizationPolicyRulesDestinationsSet(c *Client, des, nw [
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []AuthorizationPolicyRulesDestinations
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []AuthorizationPolicyRulesDestinations
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareAuthorizationPolicyRulesDestinationsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewAuthorizationPolicyRulesDestinations(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewAuthorizationPolicyRulesDestinationsSlice(c *Client, des, nw []AuthorizationPolicyRulesDestinations) []AuthorizationPolicyRulesDestinations {
@@ -1036,23 +1044,26 @@ func canonicalizeNewAuthorizationPolicyRulesDestinationsHttpHeaderMatchSet(c *Cl
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []AuthorizationPolicyRulesDestinationsHttpHeaderMatch
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []AuthorizationPolicyRulesDestinationsHttpHeaderMatch
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareAuthorizationPolicyRulesDestinationsHttpHeaderMatchNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewAuthorizationPolicyRulesDestinationsHttpHeaderMatch(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewAuthorizationPolicyRulesDestinationsHttpHeaderMatchSlice(c *Client, des, nw []AuthorizationPolicyRulesDestinationsHttpHeaderMatch) []AuthorizationPolicyRulesDestinationsHttpHeaderMatch {
@@ -1156,6 +1167,9 @@ func diffAuthorizationPolicy(c *Client, desired, actual *AuthorizationPolicy, op
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareAuthorizationPolicyRulesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

@@ -575,7 +575,6 @@ func canonicalizeNetworkFirewallPolicyRuleDesiredState(rawDesired, rawInitial *N
 	} else {
 		canonicalDesired.Project = rawDesired.Project
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -764,23 +763,26 @@ func canonicalizeNewNetworkFirewallPolicyRuleMatchSet(c *Client, des, nw []Netwo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []NetworkFirewallPolicyRuleMatch
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []NetworkFirewallPolicyRuleMatch
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareNetworkFirewallPolicyRuleMatchNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewNetworkFirewallPolicyRuleMatch(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewNetworkFirewallPolicyRuleMatchSlice(c *Client, des, nw []NetworkFirewallPolicyRuleMatch) []NetworkFirewallPolicyRuleMatch {
@@ -887,23 +889,26 @@ func canonicalizeNewNetworkFirewallPolicyRuleMatchLayer4ConfigsSet(c *Client, de
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []NetworkFirewallPolicyRuleMatchLayer4Configs
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []NetworkFirewallPolicyRuleMatchLayer4Configs
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareNetworkFirewallPolicyRuleMatchLayer4ConfigsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewNetworkFirewallPolicyRuleMatchLayer4Configs(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewNetworkFirewallPolicyRuleMatchLayer4ConfigsSlice(c *Client, des, nw []NetworkFirewallPolicyRuleMatchLayer4Configs) []NetworkFirewallPolicyRuleMatchLayer4Configs {
@@ -999,23 +1004,26 @@ func canonicalizeNewNetworkFirewallPolicyRuleMatchSrcSecureTagsSet(c *Client, de
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []NetworkFirewallPolicyRuleMatchSrcSecureTags
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []NetworkFirewallPolicyRuleMatchSrcSecureTags
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareNetworkFirewallPolicyRuleMatchSrcSecureTagsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewNetworkFirewallPolicyRuleMatchSrcSecureTags(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewNetworkFirewallPolicyRuleMatchSrcSecureTagsSlice(c *Client, des, nw []NetworkFirewallPolicyRuleMatchSrcSecureTags) []NetworkFirewallPolicyRuleMatchSrcSecureTags {
@@ -1111,23 +1119,26 @@ func canonicalizeNewNetworkFirewallPolicyRuleTargetSecureTagsSet(c *Client, des,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []NetworkFirewallPolicyRuleTargetSecureTags
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []NetworkFirewallPolicyRuleTargetSecureTags
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareNetworkFirewallPolicyRuleTargetSecureTagsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewNetworkFirewallPolicyRuleTargetSecureTags(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewNetworkFirewallPolicyRuleTargetSecureTagsSlice(c *Client, des, nw []NetworkFirewallPolicyRuleTargetSecureTags) []NetworkFirewallPolicyRuleTargetSecureTags {
@@ -1273,6 +1284,9 @@ func diffNetworkFirewallPolicyRule(c *Client, desired, actual *NetworkFirewallPo
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareNetworkFirewallPolicyRuleMatchNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

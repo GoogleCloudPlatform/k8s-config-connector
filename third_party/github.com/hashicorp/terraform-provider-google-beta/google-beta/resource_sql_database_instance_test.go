@@ -62,12 +62,12 @@ func TestMaintenanceVersionDiffSuppress(t *testing.T) {
 
 func TestAccSqlDatabaseInstance_basicInferredName(t *testing.T) {
 	// Randomness
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -89,11 +89,11 @@ func TestAccSqlDatabaseInstance_basicInferredName(t *testing.T) {
 func TestAccSqlDatabaseInstance_basicSecondGen(t *testing.T) {
 	t.Parallel()
 
-	databaseName := "tf-test-" + randString(t, 10)
+	databaseName := "tf-test-" + RandString(t, 10)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -114,12 +114,12 @@ func TestAccSqlDatabaseInstance_basicSecondGen(t *testing.T) {
 func TestAccSqlDatabaseInstance_basicMSSQL(t *testing.T) {
 	t.Parallel()
 
-	databaseName := "tf-test-" + randString(t, 10)
-	rootPassword := randString(t, 15)
+	databaseName := "tf-test-" + RandString(t, 10)
+	rootPassword := RandString(t, 15)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -149,15 +149,15 @@ func TestAccSqlDatabaseInstance_basicMSSQL(t *testing.T) {
 func TestAccSqlDatabaseInstance_dontDeleteDefaultUserOnReplica(t *testing.T) {
 	t.Parallel()
 
-	databaseName := "sql-instance-test-" + randString(t, 10)
-	failoverName := "sql-instance-test-failover-" + randString(t, 10)
+	databaseName := "sql-instance-test-" + RandString(t, 10)
+	failoverName := "sql-instance-test-failover-" + RandString(t, 10)
 	// 1. Create an instance.
 	// 2. Add a root@'%' user.
 	// 3. Create a replica and assert it succeeds (it'll fail if we try to delete the root user thinking it's a
 	//    default user)
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -172,18 +172,18 @@ func TestAccSqlDatabaseInstance_dontDeleteDefaultUserOnReplica(t *testing.T) {
 			{
 				PreConfig: func() {
 					// Add a root user
-					config := googleProviderConfig(t)
+					config := GoogleProviderConfig(t)
 					user := sqladmin.User{
 						Name:     "root",
 						Host:     "%",
-						Password: randString(t, 26),
+						Password: RandString(t, 26),
 					}
-					op, err := config.NewSqlAdminClient(config.userAgent).Users.Insert(config.Project, databaseName, &user).Do()
+					op, err := config.NewSqlAdminClient(config.UserAgent).Users.Insert(config.Project, databaseName, &user).Do()
 					if err != nil {
 						t.Errorf("Error while inserting root@%% user: %s", err)
 						return
 					}
-					err = sqlAdminOperationWaitTime(config, op, config.Project, "Waiting for user to insert", config.userAgent, 10*time.Minute)
+					err = SqlAdminOperationWaitTime(config, op, config.Project, "Waiting for user to insert", config.UserAgent, 10*time.Minute)
 					if err != nil {
 						t.Errorf("Error while waiting for user insert operation to complete: %s", err.Error())
 					}
@@ -203,21 +203,20 @@ func TestAccSqlDatabaseInstance_dontDeleteDefaultUserOnReplica(t *testing.T) {
 // be left on the instance.
 func TestAccSqlDatabaseInstance_deleteDefaultUserBeforeSubsequentApiCalls(t *testing.T) {
 	// Service Networking
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
-	databaseName := "tf-test-" + randString(t, 10)
-	addressName := "tf-test-" + randString(t, 10)
-	networkName := "tf-bootstrap-net-sql-instance-private-clone"
-	// networkName := BootstrapSharedTestNetwork(t, "sql-instance-private-clone")
+	databaseName := "tf-test-" + RandString(t, 10)
+	addressName := "tf-test-" + RandString(t, 10)
+	networkName := BootstrapSharedTestNetwork(t, "sql-instance-private-clone-2")
 
 	// 1. Create an instance.
 	// 2. Add a root@'%' user.
 	// 3. Create a clone with settings and assert it fails after the instance creation API call.
 	// 4. Check root user was deleted.
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -226,18 +225,18 @@ func TestAccSqlDatabaseInstance_deleteDefaultUserBeforeSubsequentApiCalls(t *tes
 			{
 				PreConfig: func() {
 					// Add a root user
-					config := googleProviderConfig(t)
+					config := GoogleProviderConfig(t)
 					user := sqladmin.User{
 						Name:     "root",
 						Host:     "%",
-						Password: randString(t, 26),
+						Password: RandString(t, 26),
 					}
-					op, err := config.NewSqlAdminClient(config.userAgent).Users.Insert(config.Project, databaseName, &user).Do()
+					op, err := config.NewSqlAdminClient(config.UserAgent).Users.Insert(config.Project, databaseName, &user).Do()
 					if err != nil {
 						t.Errorf("Error while inserting root@%% user: %s", err)
 						return
 					}
-					err = sqlAdminOperationWaitTime(config, op, config.Project, "Waiting for user to insert", config.userAgent, 10*time.Minute)
+					err = SqlAdminOperationWaitTime(config, op, config.Project, "Waiting for user to insert", config.UserAgent, 10*time.Minute)
 					if err != nil {
 						t.Errorf("Error while waiting for user insert operation to complete: %s", err.Error())
 					}
@@ -266,11 +265,11 @@ func TestAccSqlDatabaseInstance_deleteDefaultUserBeforeSubsequentApiCalls(t *tes
 func TestAccSqlDatabaseInstance_settings_basic(t *testing.T) {
 	t.Parallel()
 
-	databaseName := "tf-test-" + randString(t, 10)
+	databaseName := "tf-test-" + RandString(t, 10)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -290,11 +289,11 @@ func TestAccSqlDatabaseInstance_settings_basic(t *testing.T) {
 func TestAccSqlDatabaseInstance_settings_secondary(t *testing.T) {
 	t.Parallel()
 
-	databaseName := "tf-test-" + randString(t, 10)
+	databaseName := "tf-test-" + RandString(t, 10)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -314,11 +313,11 @@ func TestAccSqlDatabaseInstance_settings_secondary(t *testing.T) {
 func TestAccSqlDatabaseInstance_settings_deletionProtection(t *testing.T) {
 	t.Parallel()
 
-	databaseName := "tf-test-" + randString(t, 10)
+	databaseName := "tf-test-" + RandString(t, 10)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -348,11 +347,11 @@ func TestAccSqlDatabaseInstance_settings_deletionProtection(t *testing.T) {
 func TestAccSqlDatabaseInstance_maintenanceVersion(t *testing.T) {
 	t.Parallel()
 
-	databaseName := "tf-test-" + randString(t, 10)
+	databaseName := "tf-test-" + RandString(t, 10)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -388,11 +387,11 @@ func TestAccSqlDatabaseInstance_maintenanceVersion(t *testing.T) {
 func TestAccSqlDatabaseInstance_settings_deletionProtectionEnabled(t *testing.T) {
 	t.Parallel()
 
-	databaseName := "tf-test-" + randString(t, 10)
+	databaseName := "tf-test-" + RandString(t, 10)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -428,11 +427,11 @@ func TestAccSqlDatabaseInstance_settings_deletionProtectionEnabled(t *testing.T)
 func TestAccSqlDatabaseInstance_settings_checkServiceNetworking(t *testing.T) {
 	t.Parallel()
 
-	databaseName := "tf-test-" + randString(t, 10)
+	databaseName := "tf-test-" + RandString(t, 10)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -447,11 +446,11 @@ func TestAccSqlDatabaseInstance_settings_checkServiceNetworking(t *testing.T) {
 func TestAccSqlDatabaseInstance_replica(t *testing.T) {
 	t.Parallel()
 
-	databaseID := randInt(t)
+	databaseID := RandInt(t)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -488,12 +487,12 @@ func TestAccSqlDatabaseInstance_replica(t *testing.T) {
 func TestAccSqlDatabaseInstance_slave(t *testing.T) {
 	t.Parallel()
 
-	masterID := randInt(t)
-	slaveID := randInt(t)
+	masterID := RandInt(t)
+	slaveID := RandInt(t)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -519,11 +518,11 @@ func TestAccSqlDatabaseInstance_slave(t *testing.T) {
 func TestAccSqlDatabaseInstance_highAvailability(t *testing.T) {
 	t.Parallel()
 
-	instanceID := randInt(t)
+	instanceID := RandInt(t)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -543,11 +542,11 @@ func TestAccSqlDatabaseInstance_highAvailability(t *testing.T) {
 func TestAccSqlDatabaseInstance_diskspecs(t *testing.T) {
 	t.Parallel()
 
-	masterID := randInt(t)
+	masterID := RandInt(t)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -567,11 +566,11 @@ func TestAccSqlDatabaseInstance_diskspecs(t *testing.T) {
 func TestAccSqlDatabaseInstance_maintenance(t *testing.T) {
 	t.Parallel()
 
-	masterID := randInt(t)
+	masterID := RandInt(t)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -591,11 +590,11 @@ func TestAccSqlDatabaseInstance_maintenance(t *testing.T) {
 func TestAccSqlDatabaseInstance_settings_upgrade(t *testing.T) {
 	t.Parallel()
 
-	databaseName := "tf-test-" + randString(t, 10)
+	databaseName := "tf-test-" + RandString(t, 10)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -625,11 +624,11 @@ func TestAccSqlDatabaseInstance_settings_upgrade(t *testing.T) {
 func TestAccSqlDatabaseInstance_settingsDowngrade(t *testing.T) {
 	t.Parallel()
 
-	databaseName := "tf-test-" + randString(t, 10)
+	databaseName := "tf-test-" + RandString(t, 10)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -660,11 +659,11 @@ func TestAccSqlDatabaseInstance_settingsDowngrade(t *testing.T) {
 func TestAccSqlDatabaseInstance_authNets(t *testing.T) {
 	t.Parallel()
 
-	databaseID := randInt(t)
+	databaseID := RandInt(t)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -706,11 +705,11 @@ func TestAccSqlDatabaseInstance_authNets(t *testing.T) {
 func TestAccSqlDatabaseInstance_multipleOperations(t *testing.T) {
 	t.Parallel()
 
-	databaseID, instanceID, userID := randString(t, 8), randString(t, 8), randString(t, 8)
+	databaseID, instanceID, userID := RandString(t, 8), RandString(t, 8), RandString(t, 8)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -730,11 +729,11 @@ func TestAccSqlDatabaseInstance_multipleOperations(t *testing.T) {
 func TestAccSqlDatabaseInstance_basic_with_user_labels(t *testing.T) {
 	t.Parallel()
 
-	databaseName := "tf-test-" + randString(t, 10)
+	databaseName := "tf-test-" + RandString(t, 10)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -765,13 +764,13 @@ func TestAccSqlDatabaseInstance_basic_with_user_labels(t *testing.T) {
 func TestAccSqlDatabaseInstance_withPrivateNetwork_withoutAllocatedIpRange(t *testing.T) {
 	t.Parallel()
 
-	databaseName := "tf-test-" + randString(t, 10)
-	addressName := "tf-test-" + randString(t, 10)
+	databaseName := "tf-test-" + RandString(t, 10)
+	addressName := "tf-test-" + RandString(t, 10)
 	networkName := BootstrapSharedTestNetwork(t, "sql-instance-private")
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -807,18 +806,18 @@ func TestAccSqlDatabaseInstance_withPrivateNetwork_withoutAllocatedIpRange(t *te
 
 func TestAccSqlDatabaseInstance_withPrivateNetwork_withAllocatedIpRange(t *testing.T) {
 	// Service Networking
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
-	databaseName := "tf-test-" + randString(t, 10)
-	addressName := "tf-test-" + randString(t, 10)
+	databaseName := "tf-test-" + RandString(t, 10)
+	addressName := "tf-test-" + RandString(t, 10)
 	networkName := BootstrapSharedTestNetwork(t, "sql-instance-private-allocated-ip-range")
-	addressName_update := "tf-test-" + randString(t, 10) + "update"
+	addressName_update := "tf-test-" + RandString(t, 10) + "update"
 	networkName_update := BootstrapSharedTestNetwork(t, "sql-instance-private-allocated-ip-range-update")
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -845,16 +844,16 @@ func TestAccSqlDatabaseInstance_withPrivateNetwork_withAllocatedIpRange(t *testi
 
 func TestAccSqlDatabaseInstance_withPrivateNetwork_withAllocatedIpRangeReplica(t *testing.T) {
 	// Service Networking
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
-	databaseName := "tf-test-" + randString(t, 10)
-	addressName := "tf-test-" + randString(t, 10)
+	databaseName := "tf-test-" + RandString(t, 10)
+	addressName := "tf-test-" + RandString(t, 10)
 	networkName := BootstrapSharedTestNetwork(t, "sql-instance-private-replica")
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -878,16 +877,16 @@ func TestAccSqlDatabaseInstance_withPrivateNetwork_withAllocatedIpRangeReplica(t
 
 func TestAccSqlDatabaseInstance_withPrivateNetwork_withAllocatedIpRangeClone(t *testing.T) {
 	// Service Networking
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
-	databaseName := "tf-test-" + randString(t, 10)
-	addressName := "tf-test-" + randString(t, 10)
+	databaseName := "tf-test-" + RandString(t, 10)
+	addressName := "tf-test-" + RandString(t, 10)
 	networkName := BootstrapSharedTestNetwork(t, "sql-instance-private-clone")
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -911,17 +910,17 @@ func TestAccSqlDatabaseInstance_withPrivateNetwork_withAllocatedIpRangeClone(t *
 
 func TestAccSqlDatabaseInstance_createFromBackup(t *testing.T) {
 	// Sqladmin client
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":    randString(t, 10),
+		"random_suffix":    RandString(t, 10),
 		"original_db_name": BootstrapSharedSQLInstanceBackupRun(t),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -939,17 +938,17 @@ func TestAccSqlDatabaseInstance_createFromBackup(t *testing.T) {
 
 func TestAccSqlDatabaseInstance_backupUpdate(t *testing.T) {
 	// Sqladmin client
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":    randString(t, 10),
+		"random_suffix":    RandString(t, 10),
 		"original_db_name": BootstrapSharedSQLInstanceBackupRun(t),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -976,17 +975,17 @@ func TestAccSqlDatabaseInstance_backupUpdate(t *testing.T) {
 
 func TestAccSqlDatabaseInstance_basicClone(t *testing.T) {
 	// Sqladmin client
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":    randString(t, 10),
+		"random_suffix":    RandString(t, 10),
 		"original_db_name": BootstrapSharedSQLInstanceBackupRun(t),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1004,17 +1003,17 @@ func TestAccSqlDatabaseInstance_basicClone(t *testing.T) {
 
 func TestAccSqlDatabaseInstance_cloneWithSettings(t *testing.T) {
 	// Sqladmin client
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":    randString(t, 10),
+		"random_suffix":    RandString(t, 10),
 		"original_db_name": BootstrapSharedSQLInstanceBackupRun(t),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1033,12 +1032,12 @@ func TestAccSqlDatabaseInstance_cloneWithSettings(t *testing.T) {
 func testAccSqlDatabaseInstanceDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
 		for _, rs := range s.RootModule().Resources {
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 			if rs.Type != "google_sql_database_instance" {
 				continue
 			}
 
-			_, err := config.NewSqlAdminClient(config.userAgent).Instances.Get(config.Project,
+			_, err := config.NewSqlAdminClient(config.UserAgent).Instances.Get(config.Project,
 				rs.Primary.Attributes["name"]).Do()
 			if err == nil {
 				return fmt.Errorf("Database Instance still exists")
@@ -1051,9 +1050,9 @@ func testAccSqlDatabaseInstanceDestroyProducer(t *testing.T) func(s *terraform.S
 
 func testAccCheckGoogleSqlDatabaseRootUserDoesNotExist(t *testing.T, instance string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
-		users, err := config.NewSqlAdminClient(config.userAgent).Users.List(config.Project, instance).Do()
+		users, err := config.NewSqlAdminClient(config.UserAgent).Users.List(config.Project, instance).Do()
 
 		if err != nil {
 			return fmt.Errorf("Could not list database users for %q: %s", instance, err)
@@ -1072,11 +1071,11 @@ func testAccCheckGoogleSqlDatabaseRootUserDoesNotExist(t *testing.T, instance st
 func TestAccSqlDatabaseInstance_BackupRetention(t *testing.T) {
 	t.Parallel()
 
-	masterID := randInt(t)
+	masterID := RandInt(t)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1095,11 +1094,11 @@ func TestAccSqlDatabaseInstance_BackupRetention(t *testing.T) {
 func TestAccSqlDatabaseInstance_PointInTimeRecoveryEnabled(t *testing.T) {
 	t.Parallel()
 
-	masterID := randInt(t)
+	masterID := RandInt(t)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1127,11 +1126,11 @@ func TestAccSqlDatabaseInstance_PointInTimeRecoveryEnabled(t *testing.T) {
 func TestAccSqlDatabaseInstance_PointInTimeRecoveryEnabledForSqlServer(t *testing.T) {
 	t.Parallel()
 
-	masterID := randInt(t)
+	masterID := RandInt(t)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1159,11 +1158,11 @@ func TestAccSqlDatabaseInstance_PointInTimeRecoveryEnabledForSqlServer(t *testin
 func TestAccSqlDatabaseInstance_insights(t *testing.T) {
 	t.Parallel()
 
-	masterID := randInt(t)
+	masterID := RandInt(t)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1184,14 +1183,14 @@ func TestAccSqlDatabaseInstance_encryptionKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    getTestProjectFromEnv(),
-		"key_name":      "tf-test-key-" + randString(t, 10),
-		"instance_name": "tf-test-sql-" + randString(t, 10),
+		"project_id":    GetTestProjectFromEnv(),
+		"key_name":      "tf-test-key-" + RandString(t, 10),
+		"instance_name": "tf-test-sql-" + RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1218,14 +1217,14 @@ func TestAccSqlDatabaseInstance_encryptionKey_replicaInDifferentRegion(t *testin
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":    getTestProjectFromEnv(),
-		"key_name":      "tf-test-key-" + randString(t, 10),
-		"instance_name": "tf-test-sql-" + randString(t, 10),
+		"project_id":    GetTestProjectFromEnv(),
+		"key_name":      "tf-test-key-" + RandString(t, 10),
+		"instance_name": "tf-test-sql-" + RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1254,15 +1253,15 @@ func TestAccSqlDatabaseInstance_ActiveDirectory(t *testing.T) {
 	t.Skip()
 
 	t.Parallel()
-	databaseName := "tf-test-" + randString(t, 10)
+	databaseName := "tf-test-" + RandString(t, 10)
 	networkName := BootstrapSharedTestNetwork(t, "sql-instance-private-test-ad")
-	addressName := "tf-test-" + randString(t, 10)
-	rootPassword := randString(t, 15)
+	addressName := "tf-test-" + RandString(t, 10)
+	rootPassword := RandString(t, 15)
 	adDomainName := BootstrapSharedTestADDomain(t, "test-domain", networkName)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1280,13 +1279,13 @@ func TestAccSqlDatabaseInstance_ActiveDirectory(t *testing.T) {
 
 func TestAccSQLDatabaseInstance_DenyMaintenancePeriod(t *testing.T) {
 	t.Parallel()
-	databaseName := "tf-test-" + randString(t, 10)
+	databaseName := "tf-test-" + RandString(t, 10)
 	endDate := "2022-12-5"
 	startDate := "2022-10-5"
 	time := "00:00:00"
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1304,26 +1303,24 @@ func TestAccSQLDatabaseInstance_DenyMaintenancePeriod(t *testing.T) {
 
 func TestAccSqlDatabaseInstance_SqlServerAuditConfig(t *testing.T) {
 	// Service Networking
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
-	databaseName := "tf-test-" + randString(t, 10)
-	rootPassword := randString(t, 15)
-	addressName := "tf-test-" + randString(t, 10)
-	networkName := BootstrapSharedTestNetwork(t, "sql-instance-sqlserver-audit")
-	bucketName := fmt.Sprintf("%s-%d", "tf-test-bucket", randInt(t))
+	databaseName := "tf-test-" + RandString(t, 10)
+	rootPassword := RandString(t, 15)
+	bucketName := fmt.Sprintf("%s-%d", "tf-test-bucket", RandInt(t))
 	uploadInterval := "900s"
 	retentionInterval := "86400s"
-	bucketNameUpdate := fmt.Sprintf("%s-%d", "tf-test-bucket", randInt(t)) + "update"
+	bucketNameUpdate := fmt.Sprintf("%s-%d", "tf-test-bucket", RandInt(t)) + "update"
 	uploadIntervalUpdate := "1200s"
 	retentionIntervalUpdate := "172800s"
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testGoogleSqlDatabaseInstance_SqlServerAuditConfig(networkName, addressName, databaseName, rootPassword, bucketName, uploadInterval, retentionInterval),
+				Config: testGoogleSqlDatabaseInstance_SqlServerAuditConfig(databaseName, rootPassword, bucketName, uploadInterval, retentionInterval),
 			},
 			{
 				ResourceName:            "google_sql_database_instance.instance",
@@ -1332,7 +1329,7 @@ func TestAccSqlDatabaseInstance_SqlServerAuditConfig(t *testing.T) {
 				ImportStateVerifyIgnore: []string{"root_password", "deletion_protection"},
 			},
 			{
-				Config: testGoogleSqlDatabaseInstance_SqlServerAuditConfig(networkName, addressName, databaseName, rootPassword, bucketNameUpdate, uploadIntervalUpdate, retentionIntervalUpdate),
+				Config: testGoogleSqlDatabaseInstance_SqlServerAuditConfig(databaseName, rootPassword, bucketNameUpdate, uploadIntervalUpdate, retentionIntervalUpdate),
 			},
 			{
 				ResourceName:            "google_sql_database_instance.instance",
@@ -1346,14 +1343,14 @@ func TestAccSqlDatabaseInstance_SqlServerAuditConfig(t *testing.T) {
 
 func TestAccSqlDatabaseInstance_SqlServerAuditOptionalBucket(t *testing.T) {
 	t.Parallel()
-	databaseName := "tf-test-" + randString(t, 10)
-	rootPassword := randString(t, 15)
+	databaseName := "tf-test-" + RandString(t, 10)
+	rootPassword := RandString(t, 15)
 	uploadInterval := "900s"
 	retentionInterval := "86400s"
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1372,18 +1369,16 @@ func TestAccSqlDatabaseInstance_SqlServerAuditOptionalBucket(t *testing.T) {
 func TestAccSqlDatabaseInstance_Timezone(t *testing.T) {
 	t.Parallel()
 
-	databaseName := "tf-test-" + randString(t, 10)
-	rootPassword := randString(t, 15)
-	addressName := "tf-test-" + randString(t, 10)
-	networkName := BootstrapSharedTestNetwork(t, "sql-instance-sqlserver-audit")
+	databaseName := "tf-test-" + RandString(t, 10)
+	rootPassword := RandString(t, 15)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testGoogleSqlDatabaseInstance_Timezone(networkName, addressName, databaseName, rootPassword, "Pacific Standard Time"),
+				Config: testGoogleSqlDatabaseInstance_Timezone(databaseName, rootPassword, "Pacific Standard Time"),
 			},
 			{
 				ResourceName:            "google_sql_database_instance.instance",
@@ -1400,12 +1395,12 @@ func TestAccSqlDatabaseInstance_sqlMysqlInstancePvpExample(t *testing.T) {
 
 	context := map[string]interface{}{
 		"deletion_protection": false,
-		"random_suffix":       randString(t, 10),
+		"random_suffix":       RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSqlDatabaseInstance_sqlMysqlInstancePvpExample(context),
@@ -1423,11 +1418,11 @@ func TestAccSqlDatabaseInstance_sqlMysqlInstancePvpExample(t *testing.T) {
 func TestAccSqlDatabaseInstance_updateReadReplicaWithBinaryLogEnabled(t *testing.T) {
 	t.Parallel()
 
-	instance := "tf-test-" + randString(t, 10)
+	instance := "tf-test-" + RandString(t, 10)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1455,14 +1450,14 @@ func TestAccSqlDatabaseInstance_updateReadReplicaWithBinaryLogEnabled(t *testing
 func TestAccSqlDatabaseInstance_rootPasswordShouldBeUpdatable(t *testing.T) {
 	t.Parallel()
 
-	databaseName := "tf-test-" + randString(t, 10)
-	rootPwd := "rootPassword-1-" + randString(t, 10)
-	newRootPwd := "rootPassword-2-" + randString(t, 10)
+	databaseName := "tf-test-" + RandString(t, 10)
+	rootPwd := "rootPassword-1-" + RandString(t, 10)
+	newRootPwd := "rootPassword-2-" + RandString(t, 10)
 	databaseVersion := "SQLSERVER_2017_STANDARD"
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1495,11 +1490,11 @@ func TestAccSqlDatabaseInstance_rootPasswordShouldBeUpdatable(t *testing.T) {
 func TestAccSqlDatabaseInstance_activationPolicy(t *testing.T) {
 	t.Parallel()
 
-	instanceName := "tf-test-" + randString(t, 10)
+	instanceName := "tf-test-" + RandString(t, 10)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1554,11 +1549,11 @@ func TestAccSqlDatabaseInstance_activationPolicy(t *testing.T) {
 func TestAccSqlDatabaseInstance_ReplicaPromoteSuccessful(t *testing.T) {
 	t.Parallel()
 
-	databaseName := "sql-instance-test-" + randString(t, 10)
-	failoverName := "sql-instance-test-failover-" + randString(t, 10)
-	vcrTest(t, resource.TestCase{
+	databaseName := "sql-instance-test-" + RandString(t, 10)
+	failoverName := "sql-instance-test-failover-" + RandString(t, 10)
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1598,11 +1593,11 @@ func TestAccSqlDatabaseInstance_ReplicaPromoteSuccessful(t *testing.T) {
 
 func TestAccSqlDatabaseInstance_ReplicaPromoteFailedWithMasterInstanceNamePresent(t *testing.T) {
 	t.Parallel()
-	databaseName := "sql-instance-test-" + randString(t, 10)
-	failoverName := "sql-instance-test-failover-" + randString(t, 10)
-	vcrTest(t, resource.TestCase{
+	databaseName := "sql-instance-test-" + RandString(t, 10)
+	failoverName := "sql-instance-test-failover-" + RandString(t, 10)
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1644,11 +1639,11 @@ func TestAccSqlDatabaseInstance_ReplicaPromoteFailedWithMasterInstanceNamePresen
 func TestAccSqlDatabaseInstance_ReplicaPromoteFailedWithReplicaConfigurationPresent(t *testing.T) {
 	t.Parallel()
 
-	databaseName := "sql-instance-test-" + randString(t, 10)
-	failoverName := "sql-instance-test-failover-" + randString(t, 10)
-	vcrTest(t, resource.TestCase{
+	databaseName := "sql-instance-test-" + RandString(t, 10)
+	failoverName := "sql-instance-test-failover-" + RandString(t, 10)
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1690,11 +1685,11 @@ func TestAccSqlDatabaseInstance_ReplicaPromoteFailedWithReplicaConfigurationPres
 func TestAccSqlDatabaseInstance_ReplicaPromoteFailedWithMasterInstanceNameAndReplicaConfigurationPresent(t *testing.T) {
 	t.Parallel()
 
-	databaseName := "sql-instance-test-" + randString(t, 10)
-	failoverName := "sql-instance-test-failover-" + randString(t, 10)
-	vcrTest(t, resource.TestCase{
+	databaseName := "sql-instance-test-" + RandString(t, 10)
+	failoverName := "sql-instance-test-failover-" + RandString(t, 10)
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1735,11 +1730,11 @@ func TestAccSqlDatabaseInstance_ReplicaPromoteFailedWithMasterInstanceNameAndRep
 func TestAccSqlDatabaseInstance_ReplicaPromoteSkippedWithNoMasterInstanceNameAndNoReplicaConfigurationPresent(t *testing.T) {
 	t.Parallel()
 
-	databaseName := "sql-instance-test-" + randString(t, 10)
-	failoverName := "sql-instance-test-failover-" + randString(t, 10)
-	vcrTest(t, resource.TestCase{
+	databaseName := "sql-instance-test-" + RandString(t, 10)
+	failoverName := "sql-instance-test-failover-" + RandString(t, 10)
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccSqlDatabaseInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1924,7 +1919,7 @@ resource "google_sql_database_instance" "instance" {
 }`, databaseName, endDate, startDate, time)
 }
 
-func testGoogleSqlDatabaseInstance_SqlServerAuditConfig(networkName, addressName, databaseName, rootPassword, bucketName, uploadInterval, retentionInterval string) string {
+func testGoogleSqlDatabaseInstance_SqlServerAuditConfig(databaseName, rootPassword, bucketName, uploadInterval, retentionInterval string) string {
 	return fmt.Sprintf(`
 resource "google_storage_bucket" "gs-bucket" {
   name                      	= "%s"
@@ -1932,26 +1927,7 @@ resource "google_storage_bucket" "gs-bucket" {
   uniform_bucket_level_access = true
 }
 
-data "google_compute_network" "servicenet" {
-  name = "%s"
-}
-
-resource "google_compute_global_address" "foobar" {
-  name          = "%s"
-  purpose       = "VPC_PEERING"
-  address_type  = "INTERNAL"
-  prefix_length = 16
-  network       = data.google_compute_network.servicenet.self_link
-}
-
-resource "google_service_networking_connection" "foobar" {
-  network                 = data.google_compute_network.servicenet.self_link
-  service                 = "servicenetworking.googleapis.com"
-  reserved_peering_ranges = [google_compute_global_address.foobar.name]
-}
-
 resource "google_sql_database_instance" "instance" {
-	depends_on = [google_service_networking_connection.foobar]
   name             = "%s"
   region           = "us-central1"
   database_version = "SQLSERVER_2017_STANDARD"
@@ -1960,8 +1936,7 @@ resource "google_sql_database_instance" "instance" {
   settings {
     tier = "db-custom-1-3840"
     ip_configuration {
-      ipv4_enabled       = "false"
-      private_network    = data.google_compute_network.servicenet.self_link
+      ipv4_enabled       = "true"
     }
     sql_server_audit_config {
       bucket = "gs://%s"
@@ -1970,7 +1945,7 @@ resource "google_sql_database_instance" "instance" {
     }
   }
 }
-`, bucketName, networkName, addressName, databaseName, rootPassword, bucketName, retentionInterval, uploadInterval)
+`, bucketName, databaseName, rootPassword, bucketName, retentionInterval, uploadInterval)
 }
 
 func testGoogleSqlDatabaseInstance_SqlServerAuditOptionalBucket(databaseName, rootPassword, uploadInterval, retentionInterval string) string {
@@ -1992,27 +1967,9 @@ resource "google_sql_database_instance" "instance" {
 `, databaseName, rootPassword, retentionInterval, uploadInterval)
 }
 
-func testGoogleSqlDatabaseInstance_Timezone(networkName, addressName, databaseName, rootPassword, timezone string) string {
+func testGoogleSqlDatabaseInstance_Timezone(databaseName, rootPassword, timezone string) string {
 	return fmt.Sprintf(`
-data "google_compute_network" "servicenet" {
-  name = "%s"
-}
-
-resource "google_compute_global_address" "foobar" {
-  name          = "%s"
-  purpose       = "VPC_PEERING"
-  address_type  = "INTERNAL"
-  prefix_length = 16
-  network       = data.google_compute_network.servicenet.self_link
-}
-
-resource "google_service_networking_connection" "foobar" {
-  network                 = data.google_compute_network.servicenet.self_link
-  service                 = "servicenetworking.googleapis.com"
-  reserved_peering_ranges = [google_compute_global_address.foobar.name]
-}
 resource "google_sql_database_instance" "instance" {
-	depends_on = [google_service_networking_connection.foobar]
   name             = "%s"
   region           = "us-central1"
   database_version = "SQLSERVER_2017_STANDARD"
@@ -2021,13 +1978,12 @@ resource "google_sql_database_instance" "instance" {
   settings {
     tier = "db-custom-1-3840"
     ip_configuration {
-      ipv4_enabled       = "false"
-      private_network    = data.google_compute_network.servicenet.self_link
+      ipv4_enabled       = "true"
     }
     time_zone = "%s"
   }
 }
-`, networkName, addressName, databaseName, rootPassword, timezone)
+`, databaseName, rootPassword, timezone)
 }
 
 func testGoogleSqlDatabaseInstanceConfig_withoutReplica(instanceName string) string {

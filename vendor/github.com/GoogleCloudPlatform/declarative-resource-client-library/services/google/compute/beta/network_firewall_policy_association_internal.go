@@ -406,7 +406,6 @@ func canonicalizeNetworkFirewallPolicyAssociationDesiredState(rawDesired, rawIni
 	} else {
 		canonicalDesired.Project = rawDesired.Project
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -505,6 +504,9 @@ func diffNetworkFirewallPolicyAssociation(c *Client, desired, actual *NetworkFir
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

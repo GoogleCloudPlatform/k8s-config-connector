@@ -427,7 +427,7 @@ character, which cannot be a dash.`,
 
 func resourceComputeRegionAutoscalerCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -483,7 +483,7 @@ func resourceComputeRegionAutoscalerCreate(d *schema.ResourceData, meta interfac
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating RegionAutoscaler: %s", err)
 	}
@@ -495,7 +495,7 @@ func resourceComputeRegionAutoscalerCreate(d *schema.ResourceData, meta interfac
 	}
 	d.SetId(id)
 
-	err = computeOperationWaitTime(
+	err = ComputeOperationWaitTime(
 		config, res, project, "Creating RegionAutoscaler", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 
@@ -512,7 +512,7 @@ func resourceComputeRegionAutoscalerCreate(d *schema.ResourceData, meta interfac
 
 func resourceComputeRegionAutoscalerRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -535,7 +535,7 @@ func resourceComputeRegionAutoscalerRead(d *schema.ResourceData, meta interface{
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("ComputeRegionAutoscaler %q", d.Id()))
 	}
@@ -571,7 +571,7 @@ func resourceComputeRegionAutoscalerRead(d *schema.ResourceData, meta interface{
 
 func resourceComputeRegionAutoscalerUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -628,7 +628,7 @@ func resourceComputeRegionAutoscalerUpdate(d *schema.ResourceData, meta interfac
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := SendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating RegionAutoscaler %q: %s", d.Id(), err)
@@ -636,7 +636,7 @@ func resourceComputeRegionAutoscalerUpdate(d *schema.ResourceData, meta interfac
 		log.Printf("[DEBUG] Finished updating RegionAutoscaler %q: %#v", d.Id(), res)
 	}
 
-	err = computeOperationWaitTime(
+	err = ComputeOperationWaitTime(
 		config, res, project, "Updating RegionAutoscaler", userAgent,
 		d.Timeout(schema.TimeoutUpdate))
 
@@ -649,7 +649,7 @@ func resourceComputeRegionAutoscalerUpdate(d *schema.ResourceData, meta interfac
 
 func resourceComputeRegionAutoscalerDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -675,12 +675,12 @@ func resourceComputeRegionAutoscalerDelete(d *schema.ResourceData, meta interfac
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "RegionAutoscaler")
 	}
 
-	err = computeOperationWaitTime(
+	err = ComputeOperationWaitTime(
 		config, res, project, "Deleting RegionAutoscaler", userAgent,
 		d.Timeout(schema.TimeoutDelete))
 
@@ -759,7 +759,7 @@ func flattenComputeRegionAutoscalerAutoscalingPolicy(v interface{}, d *schema.Re
 func flattenComputeRegionAutoscalerAutoscalingPolicyMinReplicas(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}
@@ -776,7 +776,7 @@ func flattenComputeRegionAutoscalerAutoscalingPolicyMinReplicas(v interface{}, d
 func flattenComputeRegionAutoscalerAutoscalingPolicyMaxReplicas(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}
@@ -793,7 +793,7 @@ func flattenComputeRegionAutoscalerAutoscalingPolicyMaxReplicas(v interface{}, d
 func flattenComputeRegionAutoscalerAutoscalingPolicyCooldownPeriod(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}
@@ -844,7 +844,7 @@ func flattenComputeRegionAutoscalerAutoscalingPolicyScaleDownControlMaxScaledDow
 func flattenComputeRegionAutoscalerAutoscalingPolicyScaleDownControlMaxScaledDownReplicasFixed(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}
@@ -861,7 +861,7 @@ func flattenComputeRegionAutoscalerAutoscalingPolicyScaleDownControlMaxScaledDow
 func flattenComputeRegionAutoscalerAutoscalingPolicyScaleDownControlMaxScaledDownReplicasPercent(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}
@@ -878,7 +878,7 @@ func flattenComputeRegionAutoscalerAutoscalingPolicyScaleDownControlMaxScaledDow
 func flattenComputeRegionAutoscalerAutoscalingPolicyScaleDownControlTimeWindowSec(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}
@@ -925,7 +925,7 @@ func flattenComputeRegionAutoscalerAutoscalingPolicyScaleInControlMaxScaledInRep
 func flattenComputeRegionAutoscalerAutoscalingPolicyScaleInControlMaxScaledInReplicasFixed(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}
@@ -942,7 +942,7 @@ func flattenComputeRegionAutoscalerAutoscalingPolicyScaleInControlMaxScaledInRep
 func flattenComputeRegionAutoscalerAutoscalingPolicyScaleInControlMaxScaledInReplicasPercent(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}
@@ -959,7 +959,7 @@ func flattenComputeRegionAutoscalerAutoscalingPolicyScaleInControlMaxScaledInRep
 func flattenComputeRegionAutoscalerAutoscalingPolicyScaleInControlTimeWindowSec(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}
@@ -1082,7 +1082,7 @@ func flattenComputeRegionAutoscalerAutoscalingPolicyScalingSchedules(v interface
 func flattenComputeRegionAutoscalerAutoscalingPolicyScalingSchedulesMinRequiredReplicas(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}
@@ -1107,7 +1107,7 @@ func flattenComputeRegionAutoscalerAutoscalingPolicyScalingSchedulesTimeZone(v i
 func flattenComputeRegionAutoscalerAutoscalingPolicyScalingSchedulesDurationSec(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}

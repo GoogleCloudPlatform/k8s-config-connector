@@ -28,7 +28,7 @@ index 91deb7b47..7d44ae5af 100644
  
  func resourceGoogleProjectServiceRead(d *schema.ResourceData, meta interface{}) error {
  	config := meta.(*Config)
--	userAgent, err := generateUserAgentString(d, config.userAgent)
+-	userAgent, err := generateUserAgentString(d, config.UserAgent)
 -	if err != nil {
 -		return err
 -	}

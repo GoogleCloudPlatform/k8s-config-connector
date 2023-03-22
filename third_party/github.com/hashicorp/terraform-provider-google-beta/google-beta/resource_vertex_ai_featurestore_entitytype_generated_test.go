@@ -27,15 +27,15 @@ func TestAccVertexAIFeaturestoreEntitytype_vertexAiFeaturestoreEntitytypeExample
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":          getTestOrgFromEnv(t),
-		"billing_account": getTestBillingAccountFromEnv(t),
+		"org_id":          GetTestOrgFromEnv(t),
+		"billing_account": GetTestBillingAccountFromEnv(t),
 		"kms_key_name":    BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
-		"random_suffix":   randString(t, 10),
+		"random_suffix":   RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckVertexAIFeaturestoreEntitytypeDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -99,15 +99,15 @@ func TestAccVertexAIFeaturestoreEntitytype_vertexAiFeaturestoreEntitytypeWithBet
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":          getTestOrgFromEnv(t),
-		"billing_account": getTestBillingAccountFromEnv(t),
+		"org_id":          GetTestOrgFromEnv(t),
+		"billing_account": GetTestBillingAccountFromEnv(t),
 		"kms_key_name":    BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
-		"random_suffix":   randString(t, 10),
+		"random_suffix":   RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckVertexAIFeaturestoreEntitytypeDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -176,7 +176,7 @@ func testAccCheckVertexAIFeaturestoreEntitytypeDestroyProducer(t *testing.T) fun
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{VertexAIBasePath}}{{featurestore}}/entityTypes/{{name}}")
 			if err != nil {
@@ -189,7 +189,7 @@ func testAccCheckVertexAIFeaturestoreEntitytypeDestroyProducer(t *testing.T) fun
 				billingProject = config.BillingProject
 			}
 
-			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("VertexAIFeaturestoreEntitytype still exists at %s", url)
 			}

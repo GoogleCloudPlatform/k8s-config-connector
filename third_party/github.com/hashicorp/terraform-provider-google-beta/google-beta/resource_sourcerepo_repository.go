@@ -123,7 +123,7 @@ If unspecified, it defaults to the compute engine default service account.`,
 
 func resourceSourceRepoRepositoryCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -161,7 +161,7 @@ func resourceSourceRepoRepositoryCreate(d *schema.ResourceData, meta interface{}
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Repository: %s", err)
 	}
@@ -186,7 +186,7 @@ func resourceSourceRepoRepositoryCreate(d *schema.ResourceData, meta interface{}
 
 func resourceSourceRepoRepositoryRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -209,7 +209,7 @@ func resourceSourceRepoRepositoryRead(d *schema.ResourceData, meta interface{}) 
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("SourceRepoRepository %q", d.Id()))
 	}
@@ -236,7 +236,7 @@ func resourceSourceRepoRepositoryRead(d *schema.ResourceData, meta interface{}) 
 
 func resourceSourceRepoRepositoryUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -285,7 +285,7 @@ func resourceSourceRepoRepositoryUpdate(d *schema.ResourceData, meta interface{}
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Repository %q: %s", d.Id(), err)
@@ -298,7 +298,7 @@ func resourceSourceRepoRepositoryUpdate(d *schema.ResourceData, meta interface{}
 
 func resourceSourceRepoRepositoryDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -324,7 +324,7 @@ func resourceSourceRepoRepositoryDelete(d *schema.ResourceData, meta interface{}
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "Repository")
 	}
@@ -369,7 +369,7 @@ func flattenSourceRepoRepositoryUrl(v interface{}, d *schema.ResourceData, confi
 func flattenSourceRepoRepositorySize(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}

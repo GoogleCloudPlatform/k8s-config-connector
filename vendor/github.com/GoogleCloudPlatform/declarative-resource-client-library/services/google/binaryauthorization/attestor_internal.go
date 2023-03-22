@@ -439,7 +439,6 @@ func canonicalizeAttestorDesiredState(rawDesired, rawInitial *Attestor, opts ...
 	} else {
 		canonicalDesired.Project = rawDesired.Project
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -556,23 +555,26 @@ func canonicalizeNewAttestorUserOwnedDrydockNoteSet(c *Client, des, nw []Attesto
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []AttestorUserOwnedDrydockNote
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []AttestorUserOwnedDrydockNote
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareAttestorUserOwnedDrydockNoteNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewAttestorUserOwnedDrydockNote(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewAttestorUserOwnedDrydockNoteSlice(c *Client, des, nw []AttestorUserOwnedDrydockNote) []AttestorUserOwnedDrydockNote {
@@ -689,23 +691,26 @@ func canonicalizeNewAttestorUserOwnedDrydockNotePublicKeysSet(c *Client, des, nw
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []AttestorUserOwnedDrydockNotePublicKeys
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []AttestorUserOwnedDrydockNotePublicKeys
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareAttestorUserOwnedDrydockNotePublicKeysNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewAttestorUserOwnedDrydockNotePublicKeys(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewAttestorUserOwnedDrydockNotePublicKeysSlice(c *Client, des, nw []AttestorUserOwnedDrydockNotePublicKeys) []AttestorUserOwnedDrydockNotePublicKeys {
@@ -810,23 +815,26 @@ func canonicalizeNewAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySet(c *Cl
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []AttestorUserOwnedDrydockNotePublicKeysPkixPublicKey
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []AttestorUserOwnedDrydockNotePublicKeysPkixPublicKey
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewAttestorUserOwnedDrydockNotePublicKeysPkixPublicKey(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySlice(c *Client, des, nw []AttestorUserOwnedDrydockNotePublicKeysPkixPublicKey) []AttestorUserOwnedDrydockNotePublicKeysPkixPublicKey {
@@ -902,6 +910,9 @@ func diffAttestor(c *Client, desired, actual *Attestor, opts ...dcl.ApplyOption)
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareAttestorUserOwnedDrydockNoteNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

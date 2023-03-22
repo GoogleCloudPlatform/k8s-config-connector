@@ -19,7 +19,7 @@ func init() {
 }
 
 func testSweepAccessContextManagerPolicies(region string) error {
-	config, err := sharedConfigForRegion(region)
+	config, err := SharedConfigForRegion(region)
 	if err != nil {
 		log.Fatalf("error getting shared config for region %q: %s", region, err)
 	}
@@ -29,7 +29,7 @@ func testSweepAccessContextManagerPolicies(region string) error {
 		log.Fatalf("error loading and validating shared config for region %q: %s", region, err)
 	}
 
-	testOrg := getTestOrgFromEnv(nil)
+	testOrg := GetTestOrgFromEnv(nil)
 	if testOrg == "" {
 		log.Printf("test org not set for test environment, skip sweep")
 		return nil
@@ -40,8 +40,8 @@ func testSweepAccessContextManagerPolicies(region string) error {
 	parent := neturl.QueryEscape(fmt.Sprintf("organizations/%s", testOrg))
 	listUrl := fmt.Sprintf("%saccessPolicies?parent=%s", config.AccessContextManagerBasePath, parent)
 
-	resp, err := sendRequest(config, "GET", "", listUrl, config.userAgent, nil)
-	if err != nil && !isGoogleApiErrorWithCode(err, 404) {
+	resp, err := SendRequest(config, "GET", "", listUrl, config.UserAgent, nil)
+	if err != nil && !IsGoogleApiErrorWithCode(err, 404) {
 		log.Printf("unable to list AccessPolicies for organization %q: %v", testOrg, err)
 		return nil
 	}
@@ -65,7 +65,7 @@ func testSweepAccessContextManagerPolicies(region string) error {
 	log.Printf("[DEBUG] Deleting test Access Policies %q", policy["name"])
 
 	policyUrl := config.AccessContextManagerBasePath + policy["name"].(string)
-	if _, err := sendRequest(config, "DELETE", "", policyUrl, config.userAgent, nil); err != nil && !isGoogleApiErrorWithCode(err, 404) {
+	if _, err := SendRequest(config, "DELETE", "", policyUrl, config.UserAgent, nil); err != nil && !IsGoogleApiErrorWithCode(err, 404) {
 		log.Printf("unable to delete access policy %q", policy["name"].(string))
 		return nil
 	}
@@ -89,6 +89,7 @@ func TestAccAccessContextManager(t *testing.T) {
 		"access_level_condition":     testAccAccessContextManagerAccessLevelCondition_basicTest,
 		"service_perimeters":         testAccAccessContextManagerServicePerimeters_basicTest,
 		"gcp_user_access_binding":    testAccAccessContextManagerGcpUserAccessBinding_basicTest,
+		"authorized_orgs_desc":       testAccAccessContextManagerAuthorizedOrgsDesc_basicTest,
 	}
 
 	for name, tc := range testCases {
@@ -104,11 +105,11 @@ func TestAccAccessContextManager(t *testing.T) {
 }
 
 func testAccAccessContextManagerAccessPolicy_basicTest(t *testing.T) {
-	org := getTestOrgFromEnv(t)
+	org := GetTestOrgFromEnv(t)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckAccessContextManagerAccessPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -138,14 +139,14 @@ func testAccCheckAccessContextManagerAccessPolicyDestroyProducer(t *testing.T) f
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{AccessContextManagerBasePath}}accessPolicies/{{name}}")
 			if err != nil {
 				return err
 			}
 
-			_, err = sendRequest(config, "GET", "", url, config.userAgent, nil)
+			_, err = SendRequest(config, "GET", "", url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("AccessPolicy still exists at %s", url)
 			}
@@ -165,11 +166,11 @@ resource "google_access_context_manager_access_policy" "test-access" {
 }
 
 func testAccAccessContextManagerAccessPolicy_scopedTest(t *testing.T) {
-	org := getTestOrgFromEnv(t)
+	org := GetTestOrgFromEnv(t)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckAccessContextManagerAccessPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

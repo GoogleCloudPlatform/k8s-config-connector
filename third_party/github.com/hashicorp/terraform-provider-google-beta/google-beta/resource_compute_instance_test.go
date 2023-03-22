@@ -30,7 +30,7 @@ func testSweepComputeInstance(region string) error {
 	resourceName := "ComputeInstance"
 	log.Printf("[INFO][SWEEPER_LOG] Starting sweeper for %s", resourceName)
 
-	config, err := sharedConfigForRegion(region)
+	config, err := SharedConfigForRegion(region)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error getting shared config for region: %s", err)
 		return err
@@ -42,7 +42,7 @@ func testSweepComputeInstance(region string) error {
 		return err
 	}
 
-	found, err := config.NewComputeClient(config.userAgent).Instances.AggregatedList(config.Project).Do()
+	found, err := config.NewComputeClient(config.UserAgent).Instances.AggregatedList(config.Project).Do()
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] Error in response from request: %s", err)
 		return nil
@@ -52,13 +52,13 @@ func testSweepComputeInstance(region string) error {
 	nonPrefixCount := 0
 	for zone, itemList := range found.Items {
 		for _, instance := range itemList.Instances {
-			if !isSweepableTestResource(instance.Name) {
+			if !IsSweepableTestResource(instance.Name) {
 				nonPrefixCount++
 				continue
 			}
 
 			// Don't wait on operations as we may have a lot to delete
-			_, err := config.NewComputeClient(config.userAgent).Instances.Delete(config.Project, GetResourceNameFromSelfLink(zone), instance.Name).Do()
+			_, err := config.NewComputeClient(config.UserAgent).Instances.Delete(config.Project, GetResourceNameFromSelfLink(zone), instance.Name).Do()
 			if err != nil {
 				log.Printf("[INFO][SWEEPER_LOG] Error deleting %s resource %s : %s", resourceName, instance.Name, err)
 			} else {
@@ -83,7 +83,7 @@ func computeInstanceImportStep(zone, instanceName string, additionalImportIgnore
 	return resource.TestStep{
 		ResourceName:            "google_compute_instance.foobar",
 		ImportState:             true,
-		ImportStateId:           fmt.Sprintf("%s/%s/%s", getTestProjectFromEnv(), zone, instanceName),
+		ImportStateId:           fmt.Sprintf("%s/%s/%s", GetTestProjectFromEnv(), zone, instanceName),
 		ImportStateVerify:       true,
 		ImportStateVerifyIgnore: append(ignores, additionalImportIgnores...),
 	}
@@ -93,11 +93,11 @@ func TestAccComputeInstance_basic1(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -126,11 +126,11 @@ func TestAccComputeInstance_basic2(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -151,11 +151,11 @@ func TestAccComputeInstance_basic3(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -176,11 +176,11 @@ func TestAccComputeInstance_basic4(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -201,11 +201,11 @@ func TestAccComputeInstance_basic5(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -226,12 +226,12 @@ func TestAccComputeInstance_IP(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var ipName = fmt.Sprintf("tf-test-%s", randString(t, 10))
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var ipName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -250,13 +250,13 @@ func TestAccComputeInstance_IPv6(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var ipName = fmt.Sprintf("tf-test-%s", randString(t, 10))
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
-	var ptrName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var ipName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	var ptrName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -280,13 +280,13 @@ func TestAccComputeInstance_PTRRecord(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var ptrName = fmt.Sprintf("tf-test-%s", randString(t, 10))
-	var ipName = fmt.Sprintf("tf-test-%s", randString(t, 10))
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var ptrName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	var ipName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -313,11 +313,11 @@ func TestAccComputeInstance_PTRRecord(t *testing.T) {
 
 func TestAccComputeInstance_networkTier(t *testing.T) {
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -338,31 +338,31 @@ func TestAccComputeInstance_diskEncryption(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	bootEncryptionKey := "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
 	bootEncryptionKeyHash := "esTuF7d4eatX4cnc4JsiEiaI+Rff78JgPhA/v1zxX9E="
 	diskNameToEncryptionKey := map[string]*compute.CustomerEncryptionKey{
-		fmt.Sprintf("tf-testd-%s", randString(t, 10)): {
+		fmt.Sprintf("tf-testd-%s", RandString(t, 10)): {
 			RawKey: "Ym9vdDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=",
 			Sha256: "awJ7p57H+uVZ9axhJjl1D3lfC2MgA/wnt/z88Ltfvss=",
 		},
-		fmt.Sprintf("tf-testd-%s", randString(t, 10)): {
+		fmt.Sprintf("tf-testd-%s", RandString(t, 10)): {
 			RawKey: "c2Vjb25kNzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=",
 			Sha256: "7TpIwUdtCOJpq2m+3nt8GFgppu6a2Xsj1t0Gexk13Yc=",
 		},
-		fmt.Sprintf("tf-testd-%s", randString(t, 10)): {
+		fmt.Sprintf("tf-testd-%s", RandString(t, 10)): {
 			RawKey: "dGhpcmQ2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=",
 			Sha256: "b3pvaS7BjDbCKeLPPTx7yXBuQtxyMobCHN1QJR43xeM=",
 		},
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccComputeInstance_disks_encryption(bootEncryptionKey, diskNameToEncryptionKey, instanceName, randString(t, 10)),
+				Config: testAccComputeInstance_disks_encryption(bootEncryptionKey, diskNameToEncryptionKey, instanceName, RandString(t, 10)),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckComputeInstanceExists(
 						t, "google_compute_instance.foobar", &instance),
@@ -377,19 +377,19 @@ func TestAccComputeInstance_diskEncryptionRestart(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	bootEncryptionKey := "SGVsbG8gZnJvbSBHb29nbGUgQ2xvdWQgUGxhdGZvcm0="
 	bootEncryptionKeyHash := "esTuF7d4eatX4cnc4JsiEiaI+Rff78JgPhA/v1zxX9E="
 	diskNameToEncryptionKey := map[string]*compute.CustomerEncryptionKey{
-		fmt.Sprintf("tf-testd-%s", randString(t, 10)): {
+		fmt.Sprintf("tf-testd-%s", RandString(t, 10)): {
 			RawKey: "Ym9vdDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=",
 			Sha256: "awJ7p57H+uVZ9axhJjl1D3lfC2MgA/wnt/z88Ltfvss=",
 		},
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -416,29 +416,29 @@ func TestAccComputeInstance_kmsDiskEncryption(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	kms := BootstrapKMSKey(t)
 
 	bootKmsKeyName := kms.CryptoKey.Name
 	diskNameToEncryptionKey := map[string]*compute.CustomerEncryptionKey{
-		fmt.Sprintf("tf-testd-%s", randString(t, 10)): {
+		fmt.Sprintf("tf-testd-%s", RandString(t, 10)): {
 			KmsKeyName: kms.CryptoKey.Name,
 		},
-		fmt.Sprintf("tf-testd-%s", randString(t, 10)): {
+		fmt.Sprintf("tf-testd-%s", RandString(t, 10)): {
 			KmsKeyName: kms.CryptoKey.Name,
 		},
-		fmt.Sprintf("tf-testd-%s", randString(t, 10)): {
+		fmt.Sprintf("tf-testd-%s", RandString(t, 10)): {
 			KmsKeyName: kms.CryptoKey.Name,
 		},
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccComputeInstance_disks_kms(getTestProjectFromEnv(), bootKmsKeyName, diskNameToEncryptionKey, instanceName, randString(t, 10)),
+				Config: testAccComputeInstance_disks_kms(GetTestProjectFromEnv(), bootKmsKeyName, diskNameToEncryptionKey, instanceName, RandString(t, 10)),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckComputeInstanceExists(t, "google_compute_instance.foobar", &instance),
 					testAccCheckComputeInstanceDiskKmsEncryptionKey("google_compute_instance.foobar", &instance, bootKmsKeyName, diskNameToEncryptionKey),
@@ -453,13 +453,13 @@ func TestAccComputeInstance_resourcePolicyUpdate(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
-	var scheduleName1 = fmt.Sprintf("tf-tests-%s", randString(t, 10))
-	var scheduleName2 = fmt.Sprintf("tf-tests-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	var scheduleName1 = fmt.Sprintf("tf-tests-%s", RandString(t, 10))
+	var scheduleName2 = fmt.Sprintf("tf-tests-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -505,12 +505,12 @@ func TestAccComputeInstance_attachedDisk(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
-	var diskName = fmt.Sprintf("tf-testd-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	var diskName = fmt.Sprintf("tf-testd-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -530,12 +530,12 @@ func TestAccComputeInstance_attachedDisk_sourceUrl(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
-	var diskName = fmt.Sprintf("tf-testd-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	var diskName = fmt.Sprintf("tf-testd-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -555,12 +555,12 @@ func TestAccComputeInstance_attachedDisk_modeRo(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
-	var diskName = fmt.Sprintf("tf-testd-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	var diskName = fmt.Sprintf("tf-testd-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -580,13 +580,13 @@ func TestAccComputeInstance_attachedDiskUpdate(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
-	var diskName = fmt.Sprintf("tf-testd-%s", randString(t, 10))
-	var diskName2 = fmt.Sprintf("tf-testd-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	var diskName = fmt.Sprintf("tf-testd-%s", RandString(t, 10))
+	var diskName2 = fmt.Sprintf("tf-testd-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -633,12 +633,12 @@ func TestAccComputeInstance_bootDisk_source(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
-	var diskName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	var diskName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -658,12 +658,12 @@ func TestAccComputeInstance_bootDisk_sourceUrl(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
-	var diskName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	var diskName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -683,12 +683,12 @@ func TestAccComputeInstance_bootDisk_type(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	var diskType = "pd-ssd"
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -706,12 +706,12 @@ func TestAccComputeInstance_bootDisk_type(t *testing.T) {
 func TestAccComputeInstance_bootDisk_mode(t *testing.T) {
 	t.Parallel()
 
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	var diskMode = "READ_WRITE"
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -726,11 +726,11 @@ func TestAccComputeInstance_scratchDisk(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -750,11 +750,11 @@ func TestAccComputeInstance_forceNewAndChangeMetadata(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -781,11 +781,11 @@ func TestAccComputeInstance_update(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -815,11 +815,11 @@ func TestAccComputeInstance_stopInstanceToUpdate(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			// Set fields that require stopping the instance
@@ -857,11 +857,11 @@ func TestAccComputeInstance_serviceAccount(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -886,11 +886,11 @@ func TestAccComputeInstance_serviceAccount_updated(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -937,11 +937,11 @@ func TestAccComputeInstance_serviceAccount_updated0to1to0scopes(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -979,11 +979,11 @@ func TestAccComputeInstance_scheduling(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1010,11 +1010,11 @@ func TestAccComputeInstance_advancedMachineFeatures(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1040,13 +1040,13 @@ func TestAccComputeInstance_advancedMachineFeatures(t *testing.T) {
 func TestAccComputeInstance_soleTenantNodeAffinities(t *testing.T) {
 	t.Parallel()
 
-	var instanceName = fmt.Sprintf("tf-test-soletenant-%s", randString(t, 10))
-	var templateName = fmt.Sprintf("tf-test-nodetmpl-%s", randString(t, 10))
-	var groupName = fmt.Sprintf("tf-test-nodegroup-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-soletenant-%s", RandString(t, 10))
+	var templateName = fmt.Sprintf("tf-test-nodetmpl-%s", RandString(t, 10))
+	var groupName = fmt.Sprintf("tf-test-nodegroup-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1073,11 +1073,11 @@ func TestAccComputeInstance_reservationAffinities(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-resaffinity-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-resaffinity-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1112,15 +1112,15 @@ func TestAccComputeInstance_subnet_auto(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccComputeInstance_subnet_auto(randString(t, 10), instanceName),
+				Config: testAccComputeInstance_subnet_auto(RandString(t, 10), instanceName),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckComputeInstanceExists(
 						t, "google_compute_instance.foobar", &instance),
@@ -1136,15 +1136,15 @@ func TestAccComputeInstance_subnet_custom(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccComputeInstance_subnet_custom(randString(t, 10), instanceName),
+				Config: testAccComputeInstance_subnet_custom(RandString(t, 10), instanceName),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckComputeInstanceExists(
 						t, "google_compute_instance.foobar", &instance),
@@ -1158,22 +1158,22 @@ func TestAccComputeInstance_subnet_custom(t *testing.T) {
 
 func TestAccComputeInstance_subnet_xpn(t *testing.T) {
 	// Multiple fine-grained resources
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
-	org := getTestOrgFromEnv(t)
-	billingId := getTestBillingAccountFromEnv(t)
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	org := GetTestOrgFromEnv(t)
+	billingId := GetTestBillingAccountFromEnv(t)
 	projectName := fmt.Sprintf("tf-test-xpn-%d", time.Now().Unix())
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccComputeInstance_subnet_xpn(org, billingId, projectName, instanceName, randString(t, 10)),
+				Config: testAccComputeInstance_subnet_xpn(org, billingId, projectName, instanceName, RandString(t, 10)),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckComputeInstanceExistsInProject(
 						t, "google_compute_instance.foobar", fmt.Sprintf("%s-service", projectName),
@@ -1189,15 +1189,15 @@ func TestAccComputeInstance_networkIPAuto(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccComputeInstance_networkIPAuto(randString(t, 10), instanceName),
+				Config: testAccComputeInstance_networkIPAuto(RandString(t, 10), instanceName),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckComputeInstanceExists(
 						t, "google_compute_instance.foobar", &instance),
@@ -1212,15 +1212,15 @@ func TestAccComputeInstance_network_ip_custom(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	var ipAddress = "10.0.200.200"
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccComputeInstance_network_ip_custom(randString(t, 10), instanceName, ipAddress),
+				Config: testAccComputeInstance_network_ip_custom(RandString(t, 10), instanceName, ipAddress),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckComputeInstanceExists(
 						t, "google_compute_instance.foobar", &instance),
@@ -1235,13 +1235,13 @@ func TestAccComputeInstance_private_image_family(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
-	var diskName = fmt.Sprintf("tf-testd-%s", randString(t, 10))
-	var familyName = fmt.Sprintf("tf-testf-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	var diskName = fmt.Sprintf("tf-testd-%s", RandString(t, 10))
+	var familyName = fmt.Sprintf("tf-testf-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1267,17 +1267,17 @@ func TestAccComputeInstance_networkPerformanceConfig(t *testing.T) {
 	// in it /unable to find the resource/ as the start operation
 	// never completes successful. I suspect a bad configuration
 	// but am unsure.
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
-	var diskName = fmt.Sprintf("tf-testd-%s", randString(t, 10))
-	var imageName = fmt.Sprintf("tf-testf-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	var diskName = fmt.Sprintf("tf-testd-%s", RandString(t, 10))
+	var imageName = fmt.Sprintf("tf-testf-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1295,11 +1295,11 @@ func TestAccComputeInstance_forceChangeMachineTypeManually(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1319,13 +1319,13 @@ func TestAccComputeInstance_multiNic(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	instanceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	networkName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	subnetworkName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	networkName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	subnetworkName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1344,11 +1344,11 @@ func TestAccComputeInstance_nictype_update(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1373,11 +1373,11 @@ func TestAccComputeInstance_guestAccelerator(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	instanceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1397,11 +1397,11 @@ func TestAccComputeInstance_guestAcceleratorSkip(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	instanceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1420,11 +1420,11 @@ func TestAccComputeInstance_minCpuPlatform(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	instanceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1443,11 +1443,11 @@ func TestAccComputeInstance_deletionProtectionExplicitFalse(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1466,11 +1466,11 @@ func TestAccComputeInstance_deletionProtectionExplicitTrueAndUpdateFalse(t *test
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1499,11 +1499,11 @@ func TestAccComputeInstance_primaryAliasIpRange(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	instanceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1522,13 +1522,13 @@ func TestAccComputeInstance_secondaryAliasIpRange(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	instanceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	networkName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	subnetName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	networkName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	subnetName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1555,11 +1555,11 @@ func TestAccComputeInstance_hostname(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	instanceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1578,11 +1578,11 @@ func TestAccComputeInstance_shieldedVmConfig(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	instanceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1609,11 +1609,11 @@ func TestAccComputeInstanceConfidentialInstanceConfigMain(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	instanceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1630,11 +1630,11 @@ func TestAccComputeInstanceConfidentialInstanceConfigMain(t *testing.T) {
 func TestAccComputeInstance_enableDisplay(t *testing.T) {
 	t.Parallel()
 
-	instanceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1653,11 +1653,11 @@ func TestAccComputeInstance_desiredStatusOnCreation(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1680,11 +1680,11 @@ func TestAccComputeInstance_desiredStatusUpdateBasic(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1734,11 +1734,11 @@ func TestAccComputeInstance_desiredStatusTerminatedUpdateFields(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1776,11 +1776,11 @@ func TestAccComputeInstance_updateRunning_desiredStatusRunning_allowStoppingForU
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1810,11 +1810,11 @@ func TestAccComputeInstance_updateRunning_desiredStatusNotSet_notAllowStoppingFo
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1837,11 +1837,11 @@ func TestAccComputeInstance_updateRunning_desiredStatusRunning_notAllowStoppingF
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1864,11 +1864,11 @@ func TestAccComputeInstance_updateRunning_desiredStatusTerminated_allowStoppingF
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1896,11 +1896,11 @@ func TestAccComputeInstance_updateRunning_desiredStatusTerminated_notAllowStoppi
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1928,11 +1928,11 @@ func TestAccComputeInstance_updateTerminated_desiredStatusNotSet_allowStoppingFo
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1968,11 +1968,11 @@ func TestAccComputeInstance_updateTerminated_desiredStatusTerminated_allowStoppi
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -2008,11 +2008,11 @@ func TestAccComputeInstance_updateTerminated_desiredStatusNotSet_notAllowStoppin
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -2048,11 +2048,11 @@ func TestAccComputeInstance_updateTerminated_desiredStatusTerminated_notAllowSto
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -2088,11 +2088,11 @@ func TestAccComputeInstance_updateTerminated_desiredStatusRunning_allowStoppingF
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -2128,11 +2128,11 @@ func TestAccComputeInstance_updateTerminated_desiredStatusRunning_notAllowStoppi
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -2167,15 +2167,15 @@ func TestAccComputeInstance_updateTerminated_desiredStatusRunning_notAllowStoppi
 func TestAccComputeInstance_resourcePolicyCollocate(t *testing.T) {
 	t.Parallel()
 
-	instanceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccComputeInstance_resourcePolicyCollocate(instanceName, randString(t, 10)),
+				Config: testAccComputeInstance_resourcePolicyCollocate(instanceName, RandString(t, 10)),
 			},
 			computeInstanceImportStep("us-east4-b", instanceName, []string{"allow_stopping_for_update"}),
 		},
@@ -2184,12 +2184,12 @@ func TestAccComputeInstance_resourcePolicyCollocate(t *testing.T) {
 
 func TestAccComputeInstance_subnetworkUpdate(t *testing.T) {
 	t.Parallel()
-	instanceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	suffix := fmt.Sprintf("%s", randString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	suffix := fmt.Sprintf("%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -2210,11 +2210,11 @@ func TestAccComputeInstance_subnetworkUpdate(t *testing.T) {
 
 func TestAccComputeInstance_queueCount(t *testing.T) {
 	t.Parallel()
-	instanceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -2229,10 +2229,10 @@ func TestAccComputeInstance_spotVM(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
-	vcrTest(t, resource.TestCase{
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -2251,10 +2251,10 @@ func TestAccComputeInstance_spotVM_update(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
-	vcrTest(t, resource.TestCase{
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -2281,15 +2281,15 @@ func TestAccComputeInstance_spotVM_maxRunDration(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	var expectedMaxRunDuration = compute.Duration{}
 	// Define in testAccComputeInstance_spotVM_maxRunDuration
 	expectedMaxRunDuration.Nanos = 123
 	expectedMaxRunDuration.Seconds = 60
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -2310,14 +2310,14 @@ func TestAccComputeInstance_spotVM_maxRunDuration_update(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	// Define in testAccComputeInstance_spotVM_maxRunDuration
 	var expectedMaxRunDuration = compute.Duration{}
 	expectedMaxRunDuration.Nanos = 123
 	expectedMaxRunDuration.Seconds = 60
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -2473,11 +2473,11 @@ func TestAccComputeInstance_metadataStartupScript_update(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	var instanceName = fmt.Sprintf("tf-test-%s", randString(t, 10))
+	var instanceName = fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeInstanceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -2509,13 +2509,13 @@ func testAccCheckComputeInstanceUpdateMachineType(t *testing.T, n string) resour
 			return fmt.Errorf("No ID is set")
 		}
 
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
-		op, err := config.NewComputeClient(config.userAgent).Instances.Stop(config.Project, rs.Primary.Attributes["zone"], rs.Primary.Attributes["name"]).Do()
+		op, err := config.NewComputeClient(config.UserAgent).Instances.Stop(config.Project, rs.Primary.Attributes["zone"], rs.Primary.Attributes["name"]).Do()
 		if err != nil {
 			return fmt.Errorf("Could not stop instance: %s", err)
 		}
-		err = computeOperationWaitTime(config, op, config.Project, "Waiting on stop", config.userAgent, 20*time.Minute)
+		err = ComputeOperationWaitTime(config, op, config.Project, "Waiting on stop", config.UserAgent, 20*time.Minute)
 		if err != nil {
 			return fmt.Errorf("Could not stop instance: %s", err)
 		}
@@ -2524,12 +2524,12 @@ func testAccCheckComputeInstanceUpdateMachineType(t *testing.T, n string) resour
 			MachineType: "zones/us-central1-a/machineTypes/f1-micro",
 		}
 
-		op, err = config.NewComputeClient(config.userAgent).Instances.SetMachineType(
+		op, err = config.NewComputeClient(config.UserAgent).Instances.SetMachineType(
 			config.Project, rs.Primary.Attributes["zone"], rs.Primary.Attributes["name"], &machineType).Do()
 		if err != nil {
 			return fmt.Errorf("Could not change machine type: %s", err)
 		}
-		err = computeOperationWaitTime(config, op, config.Project, "Waiting machine type change", config.userAgent, 20*time.Minute)
+		err = ComputeOperationWaitTime(config, op, config.Project, "Waiting machine type change", config.UserAgent, 20*time.Minute)
 		if err != nil {
 			return fmt.Errorf("Could not change machine type: %s", err)
 		}
@@ -2539,14 +2539,14 @@ func testAccCheckComputeInstanceUpdateMachineType(t *testing.T, n string) resour
 
 func testAccCheckComputeInstanceDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
 		for _, rs := range s.RootModule().Resources {
 			if rs.Type != "google_compute_instance" {
 				continue
 			}
 
-			_, err := config.NewComputeClient(config.userAgent).Instances.Get(
+			_, err := config.NewComputeClient(config.UserAgent).Instances.Get(
 				config.Project, rs.Primary.Attributes["zone"], rs.Primary.Attributes["name"]).Do()
 			if err == nil {
 				return fmt.Errorf("Instance still exists")
@@ -2562,7 +2562,7 @@ func testAccCheckComputeInstanceExists(t *testing.T, n string, instance interfac
 		panic("Attempted to check existence of Instance that was nil.")
 	}
 
-	return testAccCheckComputeInstanceExistsInProject(t, n, getTestProjectFromEnv(), instance.(*compute.Instance))
+	return testAccCheckComputeInstanceExistsInProject(t, n, GetTestProjectFromEnv(), instance.(*compute.Instance))
 }
 
 func testAccCheckComputeInstanceExistsInProject(t *testing.T, n, p string, instance *compute.Instance) resource.TestCheckFunc {
@@ -2576,9 +2576,9 @@ func testAccCheckComputeInstanceExistsInProject(t *testing.T, n, p string, insta
 			return fmt.Errorf("No ID is set")
 		}
 
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
-		found, err := config.NewComputeClient(config.userAgent).Instances.Get(
+		found, err := config.NewComputeClient(config.UserAgent).Instances.Get(
 			p, rs.Primary.Attributes["zone"], rs.Primary.Attributes["name"]).Do()
 		if err != nil {
 			return err
@@ -2776,10 +2776,10 @@ func testAccCheckComputeInstanceBootDisk(instance *compute.Instance, source stri
 
 func testAccCheckComputeInstanceBootDiskType(t *testing.T, instanceName string, diskType string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
 		// boot disk is named the same as the Instance
-		disk, err := config.NewComputeClient(config.userAgent).Disks.Get(config.Project, "us-central1-a", instanceName).Do()
+		disk, err := config.NewComputeClient(config.UserAgent).Disks.Get(config.Project, "us-central1-a", instanceName).Do()
 		if err != nil {
 			return err
 		}

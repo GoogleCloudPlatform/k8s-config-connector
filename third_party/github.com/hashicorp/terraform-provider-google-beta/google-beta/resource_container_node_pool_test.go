@@ -12,12 +12,12 @@ import (
 func TestAccContainerNodePool_basic(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -35,12 +35,12 @@ func TestAccContainerNodePool_basic(t *testing.T) {
 func TestAccContainerNodePool_basicWithClusterId(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -59,13 +59,13 @@ func TestAccContainerNodePool_basicWithClusterId(t *testing.T) {
 func TestAccContainerNodePool_nodeLocations(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
-	network := fmt.Sprintf("tf-test-net-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
+	network := fmt.Sprintf("tf-test-net-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -83,13 +83,13 @@ func TestAccContainerNodePool_nodeLocations(t *testing.T) {
 func TestAccContainerNodePool_maxPodsPerNode(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
-	network := fmt.Sprintf("tf-test-net-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
+	network := fmt.Sprintf("tf-test-net-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -106,14 +106,14 @@ func TestAccContainerNodePool_maxPodsPerNode(t *testing.T) {
 
 func TestAccContainerNodePool_namePrefix(t *testing.T) {
 	// Randomness
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -131,14 +131,14 @@ func TestAccContainerNodePool_namePrefix(t *testing.T) {
 
 func TestAccContainerNodePool_noName(t *testing.T) {
 	// Randomness
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -156,12 +156,12 @@ func TestAccContainerNodePool_noName(t *testing.T) {
 func TestAccContainerNodePool_withLoggingVariantUpdates(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	nodePool := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	nodePool := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -195,12 +195,12 @@ func TestAccContainerNodePool_withLoggingVariantUpdates(t *testing.T) {
 func TestAccContainerNodePool_withNodeConfig(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	nodePool := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	nodePool := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -232,12 +232,12 @@ func TestAccContainerNodePool_withNodeConfig(t *testing.T) {
 func TestAccContainerNodePool_withReservationAffinity(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-np-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-np-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -261,13 +261,13 @@ func TestAccContainerNodePool_withReservationAffinity(t *testing.T) {
 func TestAccContainerNodePool_withReservationAffinitySpecific(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	reservation := fmt.Sprintf("tf-test-reservation-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-np-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	reservation := fmt.Sprintf("tf-test-reservation-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-np-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -297,13 +297,13 @@ func TestAccContainerNodePool_withReservationAffinitySpecific(t *testing.T) {
 func TestAccContainerNodePool_withWorkloadIdentityConfig(t *testing.T) {
 	t.Parallel()
 
-	pid := getTestProjectFromEnv()
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-np-%s", randString(t, 10))
+	pid := GetTestProjectFromEnv()
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-np-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -337,12 +337,12 @@ func TestAccContainerNodePool_withWorkloadIdentityConfig(t *testing.T) {
 func TestAccContainerNodePool_withSandboxConfig(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-np-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-np-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -390,12 +390,12 @@ func TestAccContainerNodePool_withSandboxConfig(t *testing.T) {
 func TestAccContainerNodePool_withKubeletConfig(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-np-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-np-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -431,14 +431,14 @@ func TestAccContainerNodePool_withKubeletConfig(t *testing.T) {
 func TestAccContainerNodePool_withInvalidKubeletCpuManagerPolicy(t *testing.T) {
 	t.Parallel()
 	// Unit test, no interactions
-	skipIfVcr(t)
+	SkipIfVcr(t)
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-np-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-np-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -452,12 +452,12 @@ func TestAccContainerNodePool_withInvalidKubeletCpuManagerPolicy(t *testing.T) {
 func TestAccContainerNodePool_withLinuxNodeConfig(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-np-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-np-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -484,13 +484,13 @@ func TestAccContainerNodePool_withLinuxNodeConfig(t *testing.T) {
 func TestAccContainerNodePool_withNetworkConfig(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-np-%s", randString(t, 10))
-	network := fmt.Sprintf("tf-test-net-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-np-%s", RandString(t, 10))
+	network := fmt.Sprintf("tf-test-net-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -515,13 +515,13 @@ func TestAccContainerNodePool_withNetworkConfig(t *testing.T) {
 func TestAccContainerNodePool_withEnablePrivateNodesToggle(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-np-%s", randString(t, 10))
-	network := fmt.Sprintf("tf-test-net-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-np-%s", RandString(t, 10))
+	network := fmt.Sprintf("tf-test-net-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -606,19 +606,19 @@ resource "google_container_node_pool" "with_enable_private_nodes" {
 
 func TestAccContainerNodePool_withBootDiskKmsKey(t *testing.T) {
 	// Uses generated time-based rotation time
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-np-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-np-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccContainerNodePool_withBootDiskKmsKey(getTestProjectFromEnv(), cluster, np),
+				Config: testAccContainerNodePool_withBootDiskKmsKey(GetTestProjectFromEnv(), cluster, np),
 			},
 			{
 				ResourceName:      "google_container_node_pool.with_boot_disk_kms_key",
@@ -632,12 +632,12 @@ func TestAccContainerNodePool_withBootDiskKmsKey(t *testing.T) {
 func TestAccContainerNodePool_withUpgradeSettings(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-np-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-np-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -687,12 +687,12 @@ func TestAccContainerNodePool_withUpgradeSettings(t *testing.T) {
 func TestAccContainerNodePool_withGPU(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-np-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-np-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -710,17 +710,17 @@ func TestAccContainerNodePool_withGPU(t *testing.T) {
 func TestAccContainerNodePool_withManagement(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	nodePool := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	nodePool := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
 	management := `
 	management {
 		auto_repair = "false"
 		auto_upgrade = "false"
 	}`
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -762,12 +762,12 @@ func TestAccContainerNodePool_withManagement(t *testing.T) {
 func TestAccContainerNodePool_withNodeConfigScopeAlias(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-np-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-np-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -786,12 +786,12 @@ func TestAccContainerNodePool_withNodeConfigScopeAlias(t *testing.T) {
 func TestAccContainerNodePool_regionalAutoscaling(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -841,12 +841,12 @@ func TestAccContainerNodePool_regionalAutoscaling(t *testing.T) {
 func TestAccContainerNodePool_totalSize(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -897,12 +897,12 @@ func TestAccContainerNodePool_totalSize(t *testing.T) {
 func TestAccContainerNodePool_autoscaling(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -951,12 +951,12 @@ func TestAccContainerNodePool_autoscaling(t *testing.T) {
 func TestAccContainerNodePool_resize(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -987,12 +987,12 @@ func TestAccContainerNodePool_resize(t *testing.T) {
 
 func TestAccContainerNodePool_version(t *testing.T) {
 	t.Parallel()
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1026,12 +1026,12 @@ func TestAccContainerNodePool_version(t *testing.T) {
 func TestAccContainerNodePool_regionalClusters(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1049,12 +1049,12 @@ func TestAccContainerNodePool_regionalClusters(t *testing.T) {
 func TestAccContainerNodePool_012_ConfigModeAttr(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1080,12 +1080,12 @@ func TestAccContainerNodePool_012_ConfigModeAttr(t *testing.T) {
 func TestAccContainerNodePool_EmptyGuestAccelerator(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1125,12 +1125,12 @@ func TestAccContainerNodePool_EmptyGuestAccelerator(t *testing.T) {
 func TestAccContainerNodePool_shieldedInstanceConfig(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1149,13 +1149,13 @@ func TestAccContainerNodePool_shieldedInstanceConfig(t *testing.T) {
 func TestAccContainerNodePool_concurrent(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np1 := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
-	np2 := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np1 := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
+	np2 := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1191,12 +1191,12 @@ func TestAccContainerNodePool_concurrent(t *testing.T) {
 func TestAccContainerNodePool_ephemeralStorageConfig(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1238,12 +1238,12 @@ resource "google_container_node_pool" "np" {
 func TestAccContainerNodePool_gcfsConfig(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1286,12 +1286,12 @@ resource "google_container_node_pool" "np" {
 func TestAccContainerNodePool_gvnic(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1334,12 +1334,12 @@ resource "google_container_node_pool" "np" {
 func TestAccContainerNodePool_compactPlacement(t *testing.T) {
 	t.Parallel()
 
-	cluster := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
-	np := fmt.Sprintf("tf-test-nodepool-%s", randString(t, 10))
+	cluster := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+	np := fmt.Sprintf("tf-test-nodepool-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1380,7 +1380,7 @@ resource "google_container_node_pool" "np" {
 
 func testAccCheckContainerNodePoolDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
 		for _, rs := range s.RootModule().Resources {
 			if rs.Type != "google_container_node_pool" {
@@ -1392,7 +1392,7 @@ func testAccCheckContainerNodePoolDestroyProducer(t *testing.T) func(s *terrafor
 
 			var err error
 			if location != "" {
-				_, err = config.NewContainerClient(config.userAgent).Projects.Zones.Clusters.NodePools.Get(
+				_, err = config.NewContainerClient(config.UserAgent).Projects.Zones.Clusters.NodePools.Get(
 					config.Project, attributes["location"], attributes["cluster"], attributes["name"]).Do()
 			} else {
 				name := fmt.Sprintf(
@@ -1402,7 +1402,7 @@ func testAccCheckContainerNodePoolDestroyProducer(t *testing.T) func(s *terrafor
 					attributes["cluster"],
 					attributes["name"],
 				)
-				_, err = config.NewContainerClient(config.userAgent).Projects.Locations.Clusters.NodePools.Get(name).Do()
+				_, err = config.NewContainerClient(config.UserAgent).Projects.Locations.Clusters.NodePools.Get(name).Do()
 			}
 
 			if err == nil {

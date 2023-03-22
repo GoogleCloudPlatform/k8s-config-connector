@@ -19,7 +19,7 @@ import (
 var tfObjectAcl, errObjectAcl = ioutil.TempFile("", "tf-gce-test")
 
 func testAclObjectName(t *testing.T) string {
-	return fmt.Sprintf("%s-%d", "tf-test-acl-object", randInt(t))
+	return fmt.Sprintf("%s-%d", "tf-test-acl-object", RandInt(t))
 }
 
 func TestAccStorageObjectAcl_basic(t *testing.T) {
@@ -31,14 +31,14 @@ func TestAccStorageObjectAcl_basic(t *testing.T) {
 	if err := ioutil.WriteFile(tfObjectAcl.Name(), objectData, 0644); err != nil {
 		t.Errorf("error writing file: %v", err)
 	}
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck: func() {
 			if errObjectAcl != nil {
 				panic(errObjectAcl)
 			}
 			testAccPreCheck(t)
 		},
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testGoogleStorageObjectsAclBasic1(bucketName, objectName),
@@ -62,14 +62,14 @@ func TestAccStorageObjectAcl_upgrade(t *testing.T) {
 	if err := ioutil.WriteFile(tfObjectAcl.Name(), objectData, 0644); err != nil {
 		t.Errorf("error writing file: %v", err)
 	}
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck: func() {
 			if errObjectAcl != nil {
 				panic(errObjectAcl)
 			}
 			testAccPreCheck(t)
 		},
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccStorageObjectAclDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -116,14 +116,14 @@ func TestAccStorageObjectAcl_downgrade(t *testing.T) {
 	if err := ioutil.WriteFile(tfObjectAcl.Name(), objectData, 0644); err != nil {
 		t.Errorf("error writing file: %v", err)
 	}
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck: func() {
 			if errObjectAcl != nil {
 				panic(errObjectAcl)
 			}
 			testAccPreCheck(t)
 		},
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccStorageObjectAclDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -170,14 +170,14 @@ func TestAccStorageObjectAcl_predefined(t *testing.T) {
 	if err := ioutil.WriteFile(tfObjectAcl.Name(), objectData, 0644); err != nil {
 		t.Errorf("error writing file: %v", err)
 	}
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck: func() {
 			if errObjectAcl != nil {
 				panic(errObjectAcl)
 			}
 			testAccPreCheck(t)
 		},
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccStorageObjectAclDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -196,14 +196,14 @@ func TestAccStorageObjectAcl_predefinedToExplicit(t *testing.T) {
 	if err := ioutil.WriteFile(tfObjectAcl.Name(), objectData, 0644); err != nil {
 		t.Errorf("error writing file: %v", err)
 	}
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck: func() {
 			if errObjectAcl != nil {
 				panic(errObjectAcl)
 			}
 			testAccPreCheck(t)
 		},
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccStorageObjectAclDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -231,14 +231,14 @@ func TestAccStorageObjectAcl_explicitToPredefined(t *testing.T) {
 	if err := ioutil.WriteFile(tfObjectAcl.Name(), objectData, 0644); err != nil {
 		t.Errorf("error writing file: %v", err)
 	}
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck: func() {
 			if errObjectAcl != nil {
 				panic(errObjectAcl)
 			}
 			testAccPreCheck(t)
 		},
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccStorageObjectAclDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -267,14 +267,14 @@ func TestAccStorageObjectAcl_unordered(t *testing.T) {
 	if err := ioutil.WriteFile(tfObjectAcl.Name(), objectData, 0644); err != nil {
 		t.Errorf("error writing file: %v", err)
 	}
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck: func() {
 			if errObjectAcl != nil {
 				panic(errObjectAcl)
 			}
 			testAccPreCheck(t)
 		},
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccStorageObjectAclDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -322,7 +322,7 @@ func (t *testRoundTripper) RoundTrip(r *http.Request) (*http.Response, error) {
 
 // Test that we don't fail if there's no owner for object
 func TestAccStorageObjectAcl_noOwner(t *testing.T) {
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	bucketName := testBucketName(t)
@@ -336,14 +336,14 @@ func TestAccStorageObjectAcl_noOwner(t *testing.T) {
 	provider.ConfigureContextFunc = func(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
 		c, diagnostics := oldConfigureFunc(ctx, d)
 		config := c.(*Config)
-		roundTripper := &testRoundTripper{RoundTripper: config.client.Transport, bucketName: bucketName, objectName: objectName}
-		config.client.Transport = roundTripper
+		roundTripper := &testRoundTripper{RoundTripper: config.Client.Transport, bucketName: bucketName, objectName: objectName}
+		config.Client.Transport = roundTripper
 		return c, diagnostics
 	}
 	providers := map[string]*schema.Provider{
 		"google": provider,
 	}
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck: func() {
 			if errObjectAcl != nil {
 				panic(errObjectAcl)
@@ -363,9 +363,9 @@ func TestAccStorageObjectAcl_noOwner(t *testing.T) {
 func testAccCheckGoogleStorageObjectAcl(t *testing.T, bucket, object, roleEntityS string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		roleEntity, _ := getRoleEntityPair(roleEntityS)
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
-		res, err := config.NewStorageClient(config.userAgent).ObjectAccessControls.Get(bucket,
+		res, err := config.NewStorageClient(config.UserAgent).ObjectAccessControls.Get(bucket,
 			object, roleEntity.Entity).Do()
 
 		if err != nil {
@@ -383,9 +383,9 @@ func testAccCheckGoogleStorageObjectAcl(t *testing.T, bucket, object, roleEntity
 func testAccCheckGoogleStorageObjectAclDelete(t *testing.T, bucket, object, roleEntityS string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		roleEntity, _ := getRoleEntityPair(roleEntityS)
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
-		_, err := config.NewStorageClient(config.userAgent).ObjectAccessControls.Get(bucket,
+		_, err := config.NewStorageClient(config.UserAgent).ObjectAccessControls.Get(bucket,
 			object, roleEntity.Entity).Do()
 
 		if err != nil {
@@ -398,7 +398,7 @@ func testAccCheckGoogleStorageObjectAclDelete(t *testing.T, bucket, object, role
 
 func testAccStorageObjectAclDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
 		for _, rs := range s.RootModule().Resources {
 			if rs.Type != "google_storage_bucket_acl" {
@@ -408,7 +408,7 @@ func testAccStorageObjectAclDestroyProducer(t *testing.T) func(s *terraform.Stat
 			bucket := rs.Primary.Attributes["bucket"]
 			object := rs.Primary.Attributes["object"]
 
-			_, err := config.NewStorageClient(config.userAgent).ObjectAccessControls.List(bucket, object).Do()
+			_, err := config.NewStorageClient(config.UserAgent).ObjectAccessControls.List(bucket, object).Do()
 
 			if err == nil {
 				return fmt.Errorf("Acl for bucket %s still exists", bucket)

@@ -405,7 +405,6 @@ func canonicalizeLogBucketDesiredState(rawDesired, rawInitial *LogBucket, opts .
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -543,6 +542,9 @@ func diffLogBucket(c *Client, desired, actual *LogBucket, opts ...dcl.ApplyOptio
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

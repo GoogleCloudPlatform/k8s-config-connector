@@ -10,11 +10,11 @@ import (
 func TestAccNotebooksInstance_create_container(t *testing.T) {
 	t.Parallel()
 
-	prefix := fmt.Sprintf("%d", randInt(t))
+	prefix := fmt.Sprintf("%d", RandInt(t))
 	name := fmt.Sprintf("tf-%s", prefix)
 
-	vcrTest(t, resource.TestCase{
-		Providers: testAccProviders,
+	VcrTest(t, resource.TestCase{
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccNotebooksInstance_create_container(name),

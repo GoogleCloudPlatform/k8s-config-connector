@@ -30,14 +30,14 @@ func TestAccDataplexLake_BasicLake(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  getTestProjectFromEnv(),
-		"region":        getTestRegionFromEnv(),
-		"random_suffix": randString(t, 10),
+		"project_name":  GetTestProjectFromEnv(),
+		"region":        GetTestRegionFromEnv(),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckDataplexLakeDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -108,7 +108,7 @@ func testAccCheckDataplexLakeDestroyProducer(t *testing.T) func(s *terraform.Sta
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			billingProject := ""
 			if config.BillingProject != "" {
@@ -128,7 +128,7 @@ func testAccCheckDataplexLakeDestroyProducer(t *testing.T) func(s *terraform.Sta
 				UpdateTime:     dcl.StringOrNil(rs.Primary.Attributes["update_time"]),
 			}
 
-			client := NewDCLDataplexClient(config, config.userAgent, billingProject, 0)
+			client := NewDCLDataplexClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetLake(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_dataplex_lake still exists %v", obj)

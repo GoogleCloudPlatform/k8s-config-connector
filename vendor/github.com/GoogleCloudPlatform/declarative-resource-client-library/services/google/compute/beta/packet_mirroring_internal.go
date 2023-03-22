@@ -541,7 +541,6 @@ func canonicalizePacketMirroringDesiredState(rawDesired, rawInitial *PacketMirro
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -702,23 +701,26 @@ func canonicalizeNewPacketMirroringNetworkSet(c *Client, des, nw []PacketMirrori
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []PacketMirroringNetwork
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []PacketMirroringNetwork
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := comparePacketMirroringNetworkNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewPacketMirroringNetwork(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewPacketMirroringNetworkSlice(c *Client, des, nw []PacketMirroringNetwork) []PacketMirroringNetwork {
@@ -818,23 +820,26 @@ func canonicalizeNewPacketMirroringCollectorIlbSet(c *Client, des, nw []PacketMi
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []PacketMirroringCollectorIlb
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []PacketMirroringCollectorIlb
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := comparePacketMirroringCollectorIlbNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewPacketMirroringCollectorIlb(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewPacketMirroringCollectorIlbSlice(c *Client, des, nw []PacketMirroringCollectorIlb) []PacketMirroringCollectorIlb {
@@ -937,23 +942,26 @@ func canonicalizeNewPacketMirroringMirroredResourcesSet(c *Client, des, nw []Pac
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []PacketMirroringMirroredResources
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []PacketMirroringMirroredResources
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := comparePacketMirroringMirroredResourcesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewPacketMirroringMirroredResources(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewPacketMirroringMirroredResourcesSlice(c *Client, des, nw []PacketMirroringMirroredResources) []PacketMirroringMirroredResources {
@@ -1053,23 +1061,26 @@ func canonicalizeNewPacketMirroringMirroredResourcesSubnetworksSet(c *Client, de
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []PacketMirroringMirroredResourcesSubnetworks
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []PacketMirroringMirroredResourcesSubnetworks
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := comparePacketMirroringMirroredResourcesSubnetworksNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewPacketMirroringMirroredResourcesSubnetworks(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewPacketMirroringMirroredResourcesSubnetworksSlice(c *Client, des, nw []PacketMirroringMirroredResourcesSubnetworks) []PacketMirroringMirroredResourcesSubnetworks {
@@ -1169,23 +1180,26 @@ func canonicalizeNewPacketMirroringMirroredResourcesInstancesSet(c *Client, des,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []PacketMirroringMirroredResourcesInstances
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []PacketMirroringMirroredResourcesInstances
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := comparePacketMirroringMirroredResourcesInstancesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewPacketMirroringMirroredResourcesInstances(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewPacketMirroringMirroredResourcesInstancesSlice(c *Client, des, nw []PacketMirroringMirroredResourcesInstances) []PacketMirroringMirroredResourcesInstances {
@@ -1298,23 +1312,26 @@ func canonicalizeNewPacketMirroringFilterSet(c *Client, des, nw []PacketMirrorin
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []PacketMirroringFilter
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []PacketMirroringFilter
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := comparePacketMirroringFilterNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewPacketMirroringFilter(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewPacketMirroringFilterSlice(c *Client, des, nw []PacketMirroringFilter) []PacketMirroringFilter {
@@ -1446,6 +1463,9 @@ func diffPacketMirroring(c *Client, desired, actual *PacketMirroring, opts ...dc
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func comparePacketMirroringNetworkNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

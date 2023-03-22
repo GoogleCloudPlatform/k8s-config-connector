@@ -79,7 +79,6 @@ components:
       - name
       - azureRegion
       - resourceGroupId
-      - client
       - networking
       - controlPlane
       - authorization
@@ -133,6 +132,28 @@ components:
             region supports a subset of nearby Azure regions. You can call to list
             all supported Azure regions within a given Google Cloud region.
           x-kubernetes-immutable: true
+        azureServicesAuthentication:
+          type: object
+          x-dcl-go-name: AzureServicesAuthentication
+          x-dcl-go-type: ClusterAzureServicesAuthentication
+          description: Azure authentication configuration for management of Azure
+            resources
+          x-dcl-conflicts:
+          - client
+          required:
+          - tenantId
+          - applicationId
+          properties:
+            applicationId:
+              type: string
+              x-dcl-go-name: ApplicationId
+              description: The Azure Active Directory Application ID for Authentication
+                configuration.
+            tenantId:
+              type: string
+              x-dcl-go-name: TenantId
+              description: The Azure Active Directory Tenant ID for Authentication
+                configuration.
         client:
           type: string
           x-dcl-go-name: Client
@@ -141,6 +162,8 @@ components:
             names are formatted as `projects/<project-number>/locations/<region>/azureClients/<client-id>`.
             See Resource Names (https:cloud.google.com/apis/design/resource_names)
             for more details on Google Cloud resource names.
+          x-dcl-conflicts:
+          - azureServicesAuthentication
           x-dcl-references:
           - resource: ContainerAzure/AzureClient
             field: name

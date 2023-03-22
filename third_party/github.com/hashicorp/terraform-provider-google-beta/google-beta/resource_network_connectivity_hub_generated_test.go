@@ -30,13 +30,13 @@ func TestAccNetworkConnectivityHub_BasicHub(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  getTestProjectFromEnv(),
-		"random_suffix": randString(t, 10),
+		"project_name":  GetTestProjectFromEnv(),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckNetworkConnectivityHubDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -103,7 +103,7 @@ func testAccCheckNetworkConnectivityHubDestroyProducer(t *testing.T) func(s *ter
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			billingProject := ""
 			if config.BillingProject != "" {
@@ -120,7 +120,7 @@ func testAccCheckNetworkConnectivityHubDestroyProducer(t *testing.T) func(s *ter
 				UpdateTime:  dcl.StringOrNil(rs.Primary.Attributes["update_time"]),
 			}
 
-			client := NewDCLNetworkConnectivityClient(config, config.userAgent, billingProject, 0)
+			client := NewDCLNetworkConnectivityClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetHub(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_network_connectivity_hub still exists %v", obj)

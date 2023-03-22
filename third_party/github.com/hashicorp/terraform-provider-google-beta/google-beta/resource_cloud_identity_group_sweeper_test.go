@@ -22,7 +22,7 @@ func testSweepCloudIdentityGroup(region string) error {
 	resourceName := "CloudIdentityGroup"
 	log.Printf("[INFO][SWEEPER_LOG] Starting sweeper for %s", resourceName)
 
-	config, err := sharedConfigForRegion(region)
+	config, err := SharedConfigForRegion(region)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error getting shared config for region: %s", err)
 		return err
@@ -35,7 +35,7 @@ func testSweepCloudIdentityGroup(region string) error {
 	}
 
 	t := &testing.T{}
-	custId := getTestCustIdFromEnv(t)
+	custId := GetTestCustIdFromEnv(t)
 
 	// Setup variables to replace in list template
 	d := &ResourceDataMock{
@@ -55,7 +55,7 @@ func testSweepCloudIdentityGroup(region string) error {
 		return nil
 	}
 
-	res, err := sendRequest(config, "GET", config.Project, listUrl, config.userAgent, nil)
+	res, err := SendRequest(config, "GET", config.Project, listUrl, config.UserAgent, nil)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] Error in response from request %s: %s", listUrl, err)
 		return nil
@@ -81,7 +81,7 @@ func testSweepCloudIdentityGroup(region string) error {
 
 		name := obj["name"].(string)
 		// Skip resources that shouldn't be sweeped
-		if !isSweepableTestResource(obj["displayName"].(string)) {
+		if !IsSweepableTestResource(obj["displayName"].(string)) {
 			nonPrefixCount++
 			continue
 		}
@@ -95,7 +95,7 @@ func testSweepCloudIdentityGroup(region string) error {
 		deleteUrl = deleteUrl + name
 
 		// Don't wait on operations as we may have a lot to delete
-		_, err = sendRequest(config, "DELETE", config.Project, deleteUrl, config.userAgent, nil)
+		_, err = SendRequest(config, "DELETE", config.Project, deleteUrl, config.UserAgent, nil)
 		if err != nil {
 			log.Printf("[INFO][SWEEPER_LOG] Error deleting for url %s : %s", deleteUrl, err)
 		} else {

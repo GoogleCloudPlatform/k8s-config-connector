@@ -633,7 +633,6 @@ func canonicalizeCaPoolDesiredState(rawDesired, rawInitial *CaPool, opts ...dcl.
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -762,23 +761,26 @@ func canonicalizeNewCaPoolIssuancePolicySet(c *Client, des, nw []CaPoolIssuanceP
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CaPoolIssuancePolicy
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CaPoolIssuancePolicy
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCaPoolIssuancePolicyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCaPoolIssuancePolicy(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCaPoolIssuancePolicySlice(c *Client, des, nw []CaPoolIssuancePolicy) []CaPoolIssuancePolicy {
@@ -893,23 +895,26 @@ func canonicalizeNewCaPoolIssuancePolicyAllowedKeyTypesSet(c *Client, des, nw []
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CaPoolIssuancePolicyAllowedKeyTypes
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CaPoolIssuancePolicyAllowedKeyTypes
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCaPoolIssuancePolicyAllowedKeyTypesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCaPoolIssuancePolicyAllowedKeyTypes(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCaPoolIssuancePolicyAllowedKeyTypesSlice(c *Client, des, nw []CaPoolIssuancePolicyAllowedKeyTypes) []CaPoolIssuancePolicyAllowedKeyTypes {
@@ -1011,23 +1016,26 @@ func canonicalizeNewCaPoolIssuancePolicyAllowedKeyTypesRsaSet(c *Client, des, nw
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CaPoolIssuancePolicyAllowedKeyTypesRsa
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CaPoolIssuancePolicyAllowedKeyTypesRsa
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCaPoolIssuancePolicyAllowedKeyTypesRsaNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCaPoolIssuancePolicyAllowedKeyTypesRsa(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCaPoolIssuancePolicyAllowedKeyTypesRsaSlice(c *Client, des, nw []CaPoolIssuancePolicyAllowedKeyTypesRsa) []CaPoolIssuancePolicyAllowedKeyTypesRsa {
@@ -1123,23 +1131,26 @@ func canonicalizeNewCaPoolIssuancePolicyAllowedKeyTypesEllipticCurveSet(c *Clien
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CaPoolIssuancePolicyAllowedKeyTypesEllipticCurve
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CaPoolIssuancePolicyAllowedKeyTypesEllipticCurve
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCaPoolIssuancePolicyAllowedKeyTypesEllipticCurveNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCaPoolIssuancePolicyAllowedKeyTypesEllipticCurve(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCaPoolIssuancePolicyAllowedKeyTypesEllipticCurveSlice(c *Client, des, nw []CaPoolIssuancePolicyAllowedKeyTypesEllipticCurve) []CaPoolIssuancePolicyAllowedKeyTypesEllipticCurve {
@@ -1246,23 +1257,26 @@ func canonicalizeNewCaPoolIssuancePolicyAllowedIssuanceModesSet(c *Client, des, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CaPoolIssuancePolicyAllowedIssuanceModes
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CaPoolIssuancePolicyAllowedIssuanceModes
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCaPoolIssuancePolicyAllowedIssuanceModesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCaPoolIssuancePolicyAllowedIssuanceModes(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCaPoolIssuancePolicyAllowedIssuanceModesSlice(c *Client, des, nw []CaPoolIssuancePolicyAllowedIssuanceModes) []CaPoolIssuancePolicyAllowedIssuanceModes {
@@ -1369,23 +1383,26 @@ func canonicalizeNewCaPoolIssuancePolicyBaselineValuesSet(c *Client, des, nw []C
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CaPoolIssuancePolicyBaselineValues
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CaPoolIssuancePolicyBaselineValues
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCaPoolIssuancePolicyBaselineValuesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCaPoolIssuancePolicyBaselineValues(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCaPoolIssuancePolicyBaselineValuesSlice(c *Client, des, nw []CaPoolIssuancePolicyBaselineValues) []CaPoolIssuancePolicyBaselineValues {
@@ -1482,23 +1499,26 @@ func canonicalizeNewCaPoolIssuancePolicyBaselineValuesKeyUsageSet(c *Client, des
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CaPoolIssuancePolicyBaselineValuesKeyUsage
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CaPoolIssuancePolicyBaselineValuesKeyUsage
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCaPoolIssuancePolicyBaselineValuesKeyUsageNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCaPoolIssuancePolicyBaselineValuesKeyUsage(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCaPoolIssuancePolicyBaselineValuesKeyUsageSlice(c *Client, des, nw []CaPoolIssuancePolicyBaselineValuesKeyUsage) []CaPoolIssuancePolicyBaselineValuesKeyUsage {
@@ -1661,23 +1681,26 @@ func canonicalizeNewCaPoolIssuancePolicyBaselineValuesKeyUsageBaseKeyUsageSet(c 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CaPoolIssuancePolicyBaselineValuesKeyUsageBaseKeyUsage
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CaPoolIssuancePolicyBaselineValuesKeyUsageBaseKeyUsage
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCaPoolIssuancePolicyBaselineValuesKeyUsageBaseKeyUsageNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCaPoolIssuancePolicyBaselineValuesKeyUsageBaseKeyUsage(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCaPoolIssuancePolicyBaselineValuesKeyUsageBaseKeyUsageSlice(c *Client, des, nw []CaPoolIssuancePolicyBaselineValuesKeyUsageBaseKeyUsage) []CaPoolIssuancePolicyBaselineValuesKeyUsageBaseKeyUsage {
@@ -1816,23 +1839,26 @@ func canonicalizeNewCaPoolIssuancePolicyBaselineValuesKeyUsageExtendedKeyUsageSe
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CaPoolIssuancePolicyBaselineValuesKeyUsageExtendedKeyUsage
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CaPoolIssuancePolicyBaselineValuesKeyUsageExtendedKeyUsage
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCaPoolIssuancePolicyBaselineValuesKeyUsageExtendedKeyUsageNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCaPoolIssuancePolicyBaselineValuesKeyUsageExtendedKeyUsage(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCaPoolIssuancePolicyBaselineValuesKeyUsageExtendedKeyUsageSlice(c *Client, des, nw []CaPoolIssuancePolicyBaselineValuesKeyUsageExtendedKeyUsage) []CaPoolIssuancePolicyBaselineValuesKeyUsageExtendedKeyUsage {
@@ -1928,23 +1954,26 @@ func canonicalizeNewCaPoolIssuancePolicyBaselineValuesKeyUsageUnknownExtendedKey
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CaPoolIssuancePolicyBaselineValuesKeyUsageUnknownExtendedKeyUsages
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CaPoolIssuancePolicyBaselineValuesKeyUsageUnknownExtendedKeyUsages
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCaPoolIssuancePolicyBaselineValuesKeyUsageUnknownExtendedKeyUsagesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCaPoolIssuancePolicyBaselineValuesKeyUsageUnknownExtendedKeyUsages(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCaPoolIssuancePolicyBaselineValuesKeyUsageUnknownExtendedKeyUsagesSlice(c *Client, des, nw []CaPoolIssuancePolicyBaselineValuesKeyUsageUnknownExtendedKeyUsages) []CaPoolIssuancePolicyBaselineValuesKeyUsageUnknownExtendedKeyUsages {
@@ -2049,23 +2078,26 @@ func canonicalizeNewCaPoolIssuancePolicyBaselineValuesCaOptionsSet(c *Client, de
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CaPoolIssuancePolicyBaselineValuesCaOptions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CaPoolIssuancePolicyBaselineValuesCaOptions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCaPoolIssuancePolicyBaselineValuesCaOptionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCaPoolIssuancePolicyBaselineValuesCaOptions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCaPoolIssuancePolicyBaselineValuesCaOptionsSlice(c *Client, des, nw []CaPoolIssuancePolicyBaselineValuesCaOptions) []CaPoolIssuancePolicyBaselineValuesCaOptions {
@@ -2161,23 +2193,26 @@ func canonicalizeNewCaPoolIssuancePolicyBaselineValuesPolicyIdsSet(c *Client, de
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CaPoolIssuancePolicyBaselineValuesPolicyIds
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CaPoolIssuancePolicyBaselineValuesPolicyIds
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCaPoolIssuancePolicyBaselineValuesPolicyIdsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCaPoolIssuancePolicyBaselineValuesPolicyIds(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCaPoolIssuancePolicyBaselineValuesPolicyIdsSlice(c *Client, des, nw []CaPoolIssuancePolicyBaselineValuesPolicyIds) []CaPoolIssuancePolicyBaselineValuesPolicyIds {
@@ -2286,23 +2321,26 @@ func canonicalizeNewCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsSet(c 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CaPoolIssuancePolicyBaselineValuesAdditionalExtensions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CaPoolIssuancePolicyBaselineValuesAdditionalExtensions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCaPoolIssuancePolicyBaselineValuesAdditionalExtensions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsSlice(c *Client, des, nw []CaPoolIssuancePolicyBaselineValuesAdditionalExtensions) []CaPoolIssuancePolicyBaselineValuesAdditionalExtensions {
@@ -2398,23 +2436,26 @@ func canonicalizeNewCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsObject
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CaPoolIssuancePolicyBaselineValuesAdditionalExtensionsObjectId
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CaPoolIssuancePolicyBaselineValuesAdditionalExtensionsObjectId
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsObjectIdNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsObjectId(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCaPoolIssuancePolicyBaselineValuesAdditionalExtensionsObjectIdSlice(c *Client, des, nw []CaPoolIssuancePolicyBaselineValuesAdditionalExtensionsObjectId) []CaPoolIssuancePolicyBaselineValuesAdditionalExtensionsObjectId {
@@ -2523,23 +2564,26 @@ func canonicalizeNewCaPoolIssuancePolicyIdentityConstraintsSet(c *Client, des, n
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CaPoolIssuancePolicyIdentityConstraints
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CaPoolIssuancePolicyIdentityConstraints
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCaPoolIssuancePolicyIdentityConstraintsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCaPoolIssuancePolicyIdentityConstraints(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCaPoolIssuancePolicyIdentityConstraintsSlice(c *Client, des, nw []CaPoolIssuancePolicyIdentityConstraints) []CaPoolIssuancePolicyIdentityConstraints {
@@ -2662,23 +2706,26 @@ func canonicalizeNewCaPoolIssuancePolicyIdentityConstraintsCelExpressionSet(c *C
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CaPoolIssuancePolicyIdentityConstraintsCelExpression
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CaPoolIssuancePolicyIdentityConstraintsCelExpression
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCaPoolIssuancePolicyIdentityConstraintsCelExpressionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCaPoolIssuancePolicyIdentityConstraintsCelExpression(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCaPoolIssuancePolicyIdentityConstraintsCelExpressionSlice(c *Client, des, nw []CaPoolIssuancePolicyIdentityConstraintsCelExpression) []CaPoolIssuancePolicyIdentityConstraintsCelExpression {
@@ -2777,23 +2824,26 @@ func canonicalizeNewCaPoolIssuancePolicyPassthroughExtensionsSet(c *Client, des,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CaPoolIssuancePolicyPassthroughExtensions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CaPoolIssuancePolicyPassthroughExtensions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCaPoolIssuancePolicyPassthroughExtensionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCaPoolIssuancePolicyPassthroughExtensions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCaPoolIssuancePolicyPassthroughExtensionsSlice(c *Client, des, nw []CaPoolIssuancePolicyPassthroughExtensions) []CaPoolIssuancePolicyPassthroughExtensions {
@@ -2889,23 +2939,26 @@ func canonicalizeNewCaPoolIssuancePolicyPassthroughExtensionsAdditionalExtension
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CaPoolIssuancePolicyPassthroughExtensionsAdditionalExtensions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CaPoolIssuancePolicyPassthroughExtensionsAdditionalExtensions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCaPoolIssuancePolicyPassthroughExtensionsAdditionalExtensionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCaPoolIssuancePolicyPassthroughExtensionsAdditionalExtensions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCaPoolIssuancePolicyPassthroughExtensionsAdditionalExtensionsSlice(c *Client, des, nw []CaPoolIssuancePolicyPassthroughExtensionsAdditionalExtensions) []CaPoolIssuancePolicyPassthroughExtensionsAdditionalExtensions {
@@ -3012,23 +3065,26 @@ func canonicalizeNewCaPoolPublishingOptionsSet(c *Client, des, nw []CaPoolPublis
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CaPoolPublishingOptions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CaPoolPublishingOptions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCaPoolPublishingOptionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCaPoolPublishingOptions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCaPoolPublishingOptionsSlice(c *Client, des, nw []CaPoolPublishingOptions) []CaPoolPublishingOptions {
@@ -3118,6 +3174,9 @@ func diffCaPool(c *Client, desired, actual *CaPool, opts ...dcl.ApplyOption) ([]
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareCaPoolIssuancePolicyNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

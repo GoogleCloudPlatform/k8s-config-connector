@@ -82,6 +82,20 @@ func ResourceStorageTransferJob() *schema.Resource {
 					Schema: map[string]*schema.Schema{
 						"object_conditions": objectConditionsSchema(),
 						"transfer_options":  transferOptionsSchema(),
+						"source_agent_pool_name": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Computed:    true,
+							ForceNew:    true,
+							Description: `Specifies the agent pool name associated with the posix data source. When unspecified, the default name is used.`,
+						},
+						"sink_agent_pool_name": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Computed:    true,
+							ForceNew:    true,
+							Description: `Specifies the agent pool name associated with the posix data source. When unspecified, the default name is used.`,
+						},
 						"gcs_data_sink": {
 							Type:         schema.TypeList,
 							Optional:     true,
@@ -511,7 +525,7 @@ func diffSuppressEmptyStartTimeOfDay(k, old, new string, d *schema.ResourceData)
 
 func resourceStorageTransferJobCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -554,7 +568,7 @@ func resourceStorageTransferJobCreate(d *schema.ResourceData, meta interface{}) 
 
 func resourceStorageTransferJobRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -614,7 +628,7 @@ func resourceStorageTransferJobRead(d *schema.ResourceData, meta interface{}) er
 
 func resourceStorageTransferJobUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -686,7 +700,7 @@ func resourceStorageTransferJobUpdate(d *schema.ResourceData, meta interface{}) 
 
 func resourceStorageTransferJobDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -1064,6 +1078,8 @@ func expandTransferSpecs(transferSpecs []interface{}) *storagetransfer.TransferS
 
 	transferSpec := transferSpecs[0].(map[string]interface{})
 	return &storagetransfer.TransferSpec{
+		SourceAgentPoolName:        transferSpec["source_agent_pool_name"].(string),
+		SinkAgentPoolName:          transferSpec["sink_agent_pool_name"].(string),
 		GcsDataSink:                expandGcsData(transferSpec["gcs_data_sink"].([]interface{})),
 		PosixDataSink:              expandPosixData(transferSpec["posix_data_sink"].([]interface{})),
 		ObjectConditions:           expandObjectConditions(transferSpec["object_conditions"].([]interface{})),
@@ -1076,8 +1092,13 @@ func expandTransferSpecs(transferSpecs []interface{}) *storagetransfer.TransferS
 	}
 }
 
-func flattenTransferSpec(transferSpec *storagetransfer.TransferSpec, d *schema.ResourceData) []map[string][]map[string]interface{} {
-	data := map[string][]map[string]interface{}{}
+func flattenTransferSpec(transferSpec *storagetransfer.TransferSpec, d *schema.ResourceData) []map[string]interface{} {
+
+	data := map[string]interface{}{}
+
+	data["sink_agent_pool_name"] = transferSpec.SinkAgentPoolName
+	data["source_agent_pool_name"] = transferSpec.SourceAgentPoolName
+
 	if transferSpec.GcsDataSink != nil {
 		data["gcs_data_sink"] = flattenGcsData(transferSpec.GcsDataSink)
 	}
@@ -1105,7 +1126,7 @@ func flattenTransferSpec(transferSpec *storagetransfer.TransferSpec, d *schema.R
 		data["posix_data_source"] = flattenPosixData(transferSpec.PosixDataSource)
 	}
 
-	return []map[string][]map[string]interface{}{data}
+	return []map[string]interface{}{data}
 }
 
 func usingPosix(transferSpec *storagetransfer.TransferSpec) bool {

@@ -92,7 +92,7 @@ func computeInstanceFromMachineImageSchema() map[string]*schema.Schema {
 
 func resourceComputeInstanceFromMachineImageCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -187,7 +187,7 @@ func resourceComputeInstanceFromMachineImageCreate(d *schema.ResourceData, meta 
 	d.SetId(fmt.Sprintf("projects/%s/zones/%s/instances/%s", project, z, instance.Name))
 
 	// Wait for the operation to complete
-	waitErr := computeOperationWaitTime(config, op, project,
+	waitErr := ComputeOperationWaitTime(config, op, project,
 		"instance to create", userAgent, d.Timeout(schema.TimeoutCreate))
 	if waitErr != nil {
 		// The resource didn't actually create

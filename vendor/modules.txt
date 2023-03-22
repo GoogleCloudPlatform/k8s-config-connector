@@ -53,7 +53,7 @@ contrib.go.opencensus.io/exporter/prometheus
 ## explicit; go 1.16
 github.com/Azure/go-ansiterm
 github.com/Azure/go-ansiterm/winterm
-# github.com/GoogleCloudPlatform/declarative-resource-client-library v1.31.0
+# github.com/GoogleCloudPlatform/declarative-resource-client-library v1.34.0
 ## explicit; go 1.19
 github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl
 github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl/operations
@@ -1021,6 +1021,7 @@ google.golang.org/api/option
 google.golang.org/api/option/internaloption
 google.golang.org/api/pubsub/v1
 google.golang.org/api/redis/v1
+google.golang.org/api/run/v2
 google.golang.org/api/runtimeconfig/v1beta1
 google.golang.org/api/servicemanagement/v1
 google.golang.org/api/servicenetworking/v1

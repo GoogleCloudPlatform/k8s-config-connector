@@ -37,7 +37,7 @@ index f67b5d2c8..d8ad0e4f5 100644
 +	}
 +
  	var op *resourceManagerV3.Operation
- 	err = retryTimeDuration(func() error {
+ 	err = RetryTimeDuration(func() error {
  		var reqErr error
 @@ -295,6 +311,27 @@ func getGoogleFolder(folderName, userAgent string, d *schema.ResourceData, confi
  	return folder, nil
@@ -49,7 +49,7 @@ index f67b5d2c8..d8ad0e4f5 100644
 +		query := fmt.Sprintf("state=ACTIVE AND parent=%s AND displayName=\"%s\"", parent, displayName)
 +		searchResponse, err := config.NewResourceManagerV3Client(userAgent).Folders.Search().Query(query).PageToken(pageToken).Do()
 +		if err != nil {
-+			if isGoogleApiErrorWithCode(err, 404) {
++			if IsGoogleApiErrorWithCode(err, 404) {
 +				return nil, activeFolderNotFoundError
 +			}
 +			return nil, fmt.Errorf("error searching for folders with query '%v': %v", query, err)

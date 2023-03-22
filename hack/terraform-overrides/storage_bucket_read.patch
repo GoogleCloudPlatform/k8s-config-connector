@@ -16,14 +16,14 @@ diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/goo
 index 863f9e6e0..d4e120e7d 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_storage_bucket.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_storage_bucket.go
-@@ -655,14 +655,7 @@ func resourceStorageBucketRead(d *schema.ResourceData, meta interface{}) error {
+@@ -750,14 +750,7 @@ func resourceStorageBucketRead(d *schema.ResourceData, meta interface{}) error {
  	// Get the bucket and acl
  	bucket := d.Get("name").(string)
  
 -	var res *storage.Bucket
 -	// There seems to be some eventual consistency errors in some cases, so we want to check a few times
 -	// to make sure it exists before moving on
--	err = retryTimeDuration(func() (operr error) {
+-	err = RetryTimeDuration(func() (operr error) {
 -		var retryErr error
 -		res, retryErr = config.NewStorageClient(userAgent).Buckets.Get(bucket).Do()
 -		return retryErr

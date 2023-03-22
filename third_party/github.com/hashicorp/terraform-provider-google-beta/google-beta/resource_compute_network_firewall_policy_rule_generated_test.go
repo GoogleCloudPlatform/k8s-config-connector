@@ -30,15 +30,15 @@ func TestAccComputeNetworkFirewallPolicyRule_GlobalHandWritten(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        getTestOrgFromEnv(t),
-		"project_name":  getTestProjectFromEnv(),
-		"service_acct":  getTestServiceAccountFromEnv(t),
-		"random_suffix": randString(t, 10),
+		"org_id":        GetTestOrgFromEnv(t),
+		"project_name":  GetTestProjectFromEnv(),
+		"service_acct":  GetTestServiceAccountFromEnv(t),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeNetworkFirewallPolicyRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -183,7 +183,7 @@ func testAccCheckComputeNetworkFirewallPolicyRuleDestroyProducer(t *testing.T) f
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			billingProject := ""
 			if config.BillingProject != "" {
@@ -202,7 +202,7 @@ func testAccCheckComputeNetworkFirewallPolicyRuleDestroyProducer(t *testing.T) f
 				Kind:           dcl.StringOrNil(rs.Primary.Attributes["kind"]),
 			}
 
-			client := NewDCLComputeClient(config, config.userAgent, billingProject, 0)
+			client := NewDCLComputeClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetNetworkFirewallPolicyRule(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_compute_network_firewall_policy_rule still exists %v", obj)

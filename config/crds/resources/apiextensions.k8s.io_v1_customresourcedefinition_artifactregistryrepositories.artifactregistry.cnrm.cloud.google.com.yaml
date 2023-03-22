@@ -119,11 +119,108 @@ spec:
                       Possible values: ["VERSION_POLICY_UNSPECIFIED", "RELEASE", "SNAPSHOT"].'
                     type: string
                 type: object
+              mode:
+                description: 'Immutable. The mode configures the repository to serve
+                  artifacts from different sources. Default value: "STANDARD_REPOSITORY"
+                  Possible values: ["STANDARD_REPOSITORY", "VIRTUAL_REPOSITORY", "REMOTE_REPOSITORY"].'
+                type: string
+              remoteRepositoryConfig:
+                description: Immutable. Configuration specific for a Remote Repository.
+                properties:
+                  description:
+                    description: Immutable. The description of the remote source.
+                    type: string
+                  dockerRepository:
+                    description: Immutable. Specific settings for a Docker remote
+                      repository.
+                    properties:
+                      publicRepository:
+                        description: 'Immutable. Address of the remote repository.
+                          Default value: "DOCKER_HUB" Possible values: ["DOCKER_HUB"].'
+                        type: string
+                    type: object
+                  mavenRepository:
+                    description: Immutable. Specific settings for a Maven remote repository.
+                    properties:
+                      publicRepository:
+                        description: 'Immutable. Address of the remote repository.
+                          Default value: "MAVEN_CENTRAL" Possible values: ["MAVEN_CENTRAL"].'
+                        type: string
+                    type: object
+                  npmRepository:
+                    description: Immutable. Specific settings for an Npm remote repository.
+                    properties:
+                      publicRepository:
+                        description: 'Immutable. Address of the remote repository.
+                          Default value: "NPMJS" Possible values: ["NPMJS"].'
+                        type: string
+                    type: object
+                  pythonRepository:
+                    description: Immutable. Specific settings for a Python remote
+                      repository.
+                    properties:
+                      publicRepository:
+                        description: 'Immutable. Address of the remote repository.
+                          Default value: "PYPI" Possible values: ["PYPI"].'
+                        type: string
+                    type: object
+                type: object
               resourceID:
                 description: Immutable. Optional. The repositoryId of the resource.
                   Used for creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
+              virtualRepositoryConfig:
+                description: Configuration specific for a Virtual Repository.
+                properties:
+                  upstreamPolicies:
+                    description: |-
+                      Policies that configure the upstream artifacts distributed by the Virtual
+                      Repository. Upstream policies cannot be set on a standard repository.
+                    items:
+                      properties:
+                        id:
+                          description: The user-provided ID of the upstream policy.
+                          type: string
+                        priority:
+                          description: Entries with a greater priority value take
+                            precedence in the pull order.
+                          type: integer
+                        repositoryRef:
+                          description: |-
+                            A reference to the repository resource, for example:
+                            "projects/p1/locations/us-central1/repositories/repo1".
+                          oneOf:
+                          - not:
+                              required:
+                              - external
+                            required:
+                            - name
+                          - not:
+                              anyOf:
+                              - required:
+                                - name
+                              - required:
+                                - namespace
+                            required:
+                            - external
+                          properties:
+                            external:
+                              description: 'Allowed value: string of the format `projects/{{project}}/locations/{{location}}/repositories/{{value}}`,
+                                where {{value}} is the `name` field of an `ArtifactRegistryRepository`
+                                resource.'
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                              type: string
+                            namespace:
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              type: string
+                          type: object
+                      type: object
+                    type: array
+                type: object
             required:
             - format
             - location

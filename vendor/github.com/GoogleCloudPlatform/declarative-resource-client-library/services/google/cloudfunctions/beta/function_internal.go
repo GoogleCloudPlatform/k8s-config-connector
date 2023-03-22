@@ -560,39 +560,6 @@ func canonicalizeFunctionDesiredState(rawDesired, rawInitial *Function, opts ...
 
 		return rawDesired, nil
 	}
-
-	if rawDesired.SourceArchiveUrl != nil || rawInitial.SourceArchiveUrl != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.SourceRepository) {
-			rawDesired.SourceArchiveUrl = nil
-			rawInitial.SourceArchiveUrl = nil
-		}
-	}
-
-	if rawDesired.SourceRepository != nil || rawInitial.SourceRepository != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.SourceArchiveUrl) {
-			rawDesired.SourceRepository = nil
-			rawInitial.SourceRepository = nil
-		}
-	}
-
-	if rawDesired.EventTrigger != nil || rawInitial.EventTrigger != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.HttpsTrigger) {
-			rawDesired.EventTrigger = nil
-			rawInitial.EventTrigger = nil
-		}
-	}
-
-	if rawDesired.HttpsTrigger != nil || rawInitial.HttpsTrigger != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.EventTrigger) {
-			rawDesired.HttpsTrigger = nil
-			rawInitial.HttpsTrigger = nil
-		}
-	}
-
 	canonicalDesired := &Function{}
 	if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawInitial.Name) {
 		canonicalDesired.Name = rawInitial.Name
@@ -684,6 +651,34 @@ func canonicalizeFunctionDesiredState(rawDesired, rawInitial *Function, opts ...
 		canonicalDesired.Project = rawInitial.Project
 	} else {
 		canonicalDesired.Project = rawDesired.Project
+	}
+
+	if canonicalDesired.SourceArchiveUrl != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.SourceRepository) {
+			canonicalDesired.SourceArchiveUrl = dcl.String("")
+		}
+	}
+
+	if canonicalDesired.SourceRepository != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.SourceArchiveUrl) {
+			canonicalDesired.SourceRepository = EmptyFunctionSourceRepository
+		}
+	}
+
+	if canonicalDesired.EventTrigger != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.HttpsTrigger) {
+			canonicalDesired.EventTrigger = EmptyFunctionEventTrigger
+		}
+	}
+
+	if canonicalDesired.HttpsTrigger != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.EventTrigger) {
+			canonicalDesired.HttpsTrigger = EmptyFunctionHttpsTrigger
+		}
 	}
 
 	return canonicalDesired, nil
@@ -901,23 +896,26 @@ func canonicalizeNewFunctionSourceRepositorySet(c *Client, des, nw []FunctionSou
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []FunctionSourceRepository
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []FunctionSourceRepository
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareFunctionSourceRepositoryNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewFunctionSourceRepository(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewFunctionSourceRepositorySlice(c *Client, des, nw []FunctionSourceRepository) []FunctionSourceRepository {
@@ -1017,23 +1015,26 @@ func canonicalizeNewFunctionHttpsTriggerSet(c *Client, des, nw []FunctionHttpsTr
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []FunctionHttpsTrigger
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []FunctionHttpsTrigger
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareFunctionHttpsTriggerNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewFunctionHttpsTrigger(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewFunctionHttpsTriggerSlice(c *Client, des, nw []FunctionHttpsTrigger) []FunctionHttpsTrigger {
@@ -1154,23 +1155,26 @@ func canonicalizeNewFunctionEventTriggerSet(c *Client, des, nw []FunctionEventTr
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []FunctionEventTrigger
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []FunctionEventTrigger
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareFunctionEventTriggerNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewFunctionEventTrigger(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewFunctionEventTriggerSlice(c *Client, des, nw []FunctionEventTrigger) []FunctionEventTrigger {
@@ -1365,6 +1369,9 @@ func diffFunction(c *Client, desired, actual *Function, opts ...dcl.ApplyOption)
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareFunctionSourceRepositoryNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

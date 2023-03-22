@@ -15,12 +15,12 @@ const DEFAULT_KMS_TEST_LOCATION = "us-central1"
 func TestAccKmsKeyRingIamBinding(t *testing.T) {
 	t.Parallel()
 
-	orgId := getTestOrgFromEnv(t)
-	projectId := fmt.Sprintf("tf-test-%d", randInt(t))
-	billingAccount := getTestBillingAccountFromEnv(t)
-	account := fmt.Sprintf("tf-test-%d", randInt(t))
+	orgId := GetTestOrgFromEnv(t)
+	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
+	billingAccount := GetTestBillingAccountFromEnv(t)
+	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 	roleId := "roles/cloudkms.cryptoKeyDecrypter"
-	keyRingName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	keyRingId := &kmsKeyRingId{
 		Project:  projectId,
@@ -28,9 +28,9 @@ func TestAccKmsKeyRingIamBinding(t *testing.T) {
 		Name:     keyRingName,
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Binding creation
@@ -66,12 +66,12 @@ func TestAccKmsKeyRingIamBinding(t *testing.T) {
 func TestAccKmsKeyRingIamBinding_withCondition(t *testing.T) {
 	t.Parallel()
 
-	orgId := getTestOrgFromEnv(t)
-	projectId := fmt.Sprintf("tf-test-%d", randInt(t))
-	billingAccount := getTestBillingAccountFromEnv(t)
-	account := fmt.Sprintf("tf-test-%d", randInt(t))
+	orgId := GetTestOrgFromEnv(t)
+	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
+	billingAccount := GetTestBillingAccountFromEnv(t)
+	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 	roleId := "roles/cloudkms.cryptoKeyDecrypter"
-	keyRingName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	conditionTitle := "expires_after_2019_12_31"
 
 	keyRingId := &kmsKeyRingId{
@@ -80,9 +80,9 @@ func TestAccKmsKeyRingIamBinding_withCondition(t *testing.T) {
 		Name:     keyRingName,
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccKmsKeyRingIamBinding_withCondition(projectId, orgId, billingAccount, account, keyRingName, roleId, conditionTitle),
@@ -100,12 +100,12 @@ func TestAccKmsKeyRingIamBinding_withCondition(t *testing.T) {
 func TestAccKmsKeyRingIamMember(t *testing.T) {
 	t.Parallel()
 
-	orgId := getTestOrgFromEnv(t)
-	projectId := fmt.Sprintf("tf-test-%d", randInt(t))
-	billingAccount := getTestBillingAccountFromEnv(t)
-	account := fmt.Sprintf("tf-test-%d", randInt(t))
+	orgId := GetTestOrgFromEnv(t)
+	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
+	billingAccount := GetTestBillingAccountFromEnv(t)
+	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 	roleId := "roles/cloudkms.cryptoKeyEncrypter"
-	keyRingName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	keyRingId := &kmsKeyRingId{
 		Project:  projectId,
@@ -113,9 +113,9 @@ func TestAccKmsKeyRingIamMember(t *testing.T) {
 		Name:     keyRingName,
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -137,12 +137,12 @@ func TestAccKmsKeyRingIamMember(t *testing.T) {
 func TestAccKmsKeyRingIamMember_withCondition(t *testing.T) {
 	t.Parallel()
 
-	orgId := getTestOrgFromEnv(t)
-	projectId := fmt.Sprintf("tf-test-%d", randInt(t))
-	billingAccount := getTestBillingAccountFromEnv(t)
-	account := fmt.Sprintf("tf-test-%d", randInt(t))
+	orgId := GetTestOrgFromEnv(t)
+	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
+	billingAccount := GetTestBillingAccountFromEnv(t)
+	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 	roleId := "roles/cloudkms.cryptoKeyEncrypter"
-	keyRingName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	conditionTitle := "expires_after_2019_12_31"
 
 	keyRingId := &kmsKeyRingId{
@@ -151,9 +151,9 @@ func TestAccKmsKeyRingIamMember_withCondition(t *testing.T) {
 		Name:     keyRingName,
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccKmsKeyRingIamMember_withCondition(projectId, orgId, billingAccount, account, keyRingName, roleId, conditionTitle),
@@ -171,12 +171,12 @@ func TestAccKmsKeyRingIamMember_withCondition(t *testing.T) {
 func TestAccKmsKeyRingIamPolicy(t *testing.T) {
 	t.Parallel()
 
-	orgId := getTestOrgFromEnv(t)
-	projectId := fmt.Sprintf("tf-test-%d", randInt(t))
-	billingAccount := getTestBillingAccountFromEnv(t)
-	account := fmt.Sprintf("tf-test-%d", randInt(t))
+	orgId := GetTestOrgFromEnv(t)
+	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
+	billingAccount := GetTestBillingAccountFromEnv(t)
+	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 	roleId := "roles/cloudkms.cryptoKeyEncrypter"
-	keyRingName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	keyRingId := &kmsKeyRingId{
 		Project:  projectId,
@@ -184,9 +184,9 @@ func TestAccKmsKeyRingIamPolicy(t *testing.T) {
 		Name:     keyRingName,
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccKmsKeyRingIamPolicy_basic(projectId, orgId, billingAccount, account, keyRingName, roleId),
@@ -207,12 +207,12 @@ func TestAccKmsKeyRingIamPolicy(t *testing.T) {
 func TestAccKmsKeyRingIamPolicy_withCondition(t *testing.T) {
 	t.Parallel()
 
-	orgId := getTestOrgFromEnv(t)
-	projectId := fmt.Sprintf("tf-test-%d", randInt(t))
-	billingAccount := getTestBillingAccountFromEnv(t)
-	account := fmt.Sprintf("tf-test-%d", randInt(t))
+	orgId := GetTestOrgFromEnv(t)
+	projectId := fmt.Sprintf("tf-test-%d", RandInt(t))
+	billingAccount := GetTestBillingAccountFromEnv(t)
+	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 	roleId := "roles/cloudkms.cryptoKeyEncrypter"
-	keyRingName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	conditionTitle := "expires_after_2019_12_31"
 
 	keyRingId := &kmsKeyRingId{
@@ -221,9 +221,9 @@ func TestAccKmsKeyRingIamPolicy_withCondition(t *testing.T) {
 		Name:     keyRingName,
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccKmsKeyRingIamPolicy_withCondition(projectId, orgId, billingAccount, account, keyRingName, roleId, conditionTitle),
@@ -240,8 +240,8 @@ func TestAccKmsKeyRingIamPolicy_withCondition(t *testing.T) {
 
 func testAccCheckGoogleKmsKeyRingIam(t *testing.T, keyRingId, role string, members []string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		config := googleProviderConfig(t)
-		p, err := config.NewKmsClient(config.userAgent).Projects.Locations.KeyRings.GetIamPolicy(keyRingId).Do()
+		config := GoogleProviderConfig(t)
+		p, err := config.NewKmsClient(config.UserAgent).Projects.Locations.KeyRings.GetIamPolicy(keyRingId).Do()
 		if err != nil {
 			return err
 		}

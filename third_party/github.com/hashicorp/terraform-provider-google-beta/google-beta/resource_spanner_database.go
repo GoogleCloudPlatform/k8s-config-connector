@@ -96,6 +96,22 @@ func validateDatabaseRetentionPeriod(v interface{}, k string) (ws []string, erro
 	return
 }
 
+func resourceSpannerDBVirtualUpdate(d *schema.ResourceData, resourceSchema map[string]*schema.Schema) bool {
+	// deletion_protection is the only virtual field
+	if d.HasChange("deletion_protection") {
+		for field := range resourceSchema {
+			if field == "deletion_protection" {
+				continue
+			}
+			if d.HasChange(field) {
+				return false
+			}
+		}
+		return true
+	}
+	return false
+}
+
 func ResourceSpannerDatabase() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceSpannerDatabaseCreate,
@@ -205,7 +221,7 @@ in Terraform state, a 'terraform destroy' or 'terraform apply' that would delete
 
 func resourceSpannerDatabaseCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -272,7 +288,7 @@ func resourceSpannerDatabaseCreate(d *schema.ResourceData, meta interface{}) err
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Database: %s", err)
 	}
@@ -287,7 +303,7 @@ func resourceSpannerDatabaseCreate(d *schema.ResourceData, meta interface{}) err
 	// Use the resource in the operation response to populate
 	// identity fields and d.Id() before read
 	var opRes map[string]interface{}
-	err = spannerOperationWaitTimeWithResponse(
+	err = SpannerOperationWaitTimeWithResponse(
 		config, res, &opRes, project, "Creating Database", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 	if err != nil {
@@ -365,7 +381,7 @@ func resourceSpannerDatabaseCreate(d *schema.ResourceData, meta interface{}) err
 				return err
 			}
 
-			res, err = sendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+			res, err = SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 			if err != nil {
 				return fmt.Errorf("Error executing DDL statements on Database: %s", err)
 			}
@@ -373,7 +389,7 @@ func resourceSpannerDatabaseCreate(d *schema.ResourceData, meta interface{}) err
 			// Use the resource in the operation response to populate
 			// identity fields and d.Id() before read
 			var opRes map[string]interface{}
-			err = spannerOperationWaitTimeWithResponse(
+			err = SpannerOperationWaitTimeWithResponse(
 				config, res, &opRes, project, "Creating Database", userAgent,
 				d.Timeout(schema.TimeoutCreate))
 			if err != nil {
@@ -391,7 +407,7 @@ func resourceSpannerDatabaseCreate(d *schema.ResourceData, meta interface{}) err
 
 func resourceSpannerDatabaseRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -414,7 +430,7 @@ func resourceSpannerDatabaseRead(d *schema.ResourceData, meta interface{}) error
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("SpannerDatabase %q", d.Id()))
 	}
@@ -465,7 +481,7 @@ func resourceSpannerDatabaseRead(d *schema.ResourceData, meta interface{}) error
 
 func resourceSpannerDatabaseUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -512,19 +528,28 @@ func resourceSpannerDatabaseUpdate(d *schema.ResourceData, meta interface{}) err
 			return resourceSpannerDatabaseRead(d, meta)
 		}
 
+		if resourceSpannerDBVirtualUpdate(d, ResourceSpannerDatabase().Schema) {
+			if d.Get("deletion_protection") != nil {
+				if err := d.Set("deletion_protection", d.Get("deletion_protection")); err != nil {
+					return fmt.Errorf("Error reading Instance: %s", err)
+				}
+			}
+			return nil
+		}
+
 		// err == nil indicates that the billing_project value was found
 		if bp, err := getBillingProject(d, config); err == nil {
 			billingProject = bp
 		}
 
-		res, err := sendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+		res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 		if err != nil {
 			return fmt.Errorf("Error updating Database %q: %s", d.Id(), err)
 		} else {
 			log.Printf("[DEBUG] Finished updating Database %q: %#v", d.Id(), res)
 		}
 
-		err = spannerOperationWaitTime(
+		err = SpannerOperationWaitTime(
 			config, res, project, "Updating Database", userAgent,
 			d.Timeout(schema.TimeoutUpdate))
 		if err != nil {
@@ -539,7 +564,7 @@ func resourceSpannerDatabaseUpdate(d *schema.ResourceData, meta interface{}) err
 
 func resourceSpannerDatabaseDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -568,12 +593,12 @@ func resourceSpannerDatabaseDelete(d *schema.ResourceData, meta interface{}) err
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "Database")
 	}
 
-	err = spannerOperationWaitTime(
+	err = SpannerOperationWaitTime(
 		config, res, project, "Deleting Database", userAgent,
 		d.Timeout(schema.TimeoutDelete))
 

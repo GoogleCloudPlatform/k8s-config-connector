@@ -530,7 +530,6 @@ func canonicalizeBucketDesiredState(rawDesired, rawInitial *Bucket, opts ...dcl.
 	}
 	canonicalDesired.Versioning = canonicalizeBucketVersioning(rawDesired.Versioning, rawInitial.Versioning, opts...)
 	canonicalDesired.Website = canonicalizeBucketWebsite(rawDesired.Website, rawInitial.Website, opts...)
-
 	return canonicalDesired, nil
 }
 
@@ -690,23 +689,26 @@ func canonicalizeNewBucketCorsSet(c *Client, des, nw []BucketCors) []BucketCors 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []BucketCors
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []BucketCors
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareBucketCorsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewBucketCors(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewBucketCorsSlice(c *Client, des, nw []BucketCors) []BucketCors {
@@ -799,23 +801,26 @@ func canonicalizeNewBucketLifecycleSet(c *Client, des, nw []BucketLifecycle) []B
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []BucketLifecycle
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []BucketLifecycle
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareBucketLifecycleNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewBucketLifecycle(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewBucketLifecycleSlice(c *Client, des, nw []BucketLifecycle) []BucketLifecycle {
@@ -910,23 +915,26 @@ func canonicalizeNewBucketLifecycleRuleSet(c *Client, des, nw []BucketLifecycleR
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []BucketLifecycleRule
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []BucketLifecycleRule
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareBucketLifecycleRuleNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewBucketLifecycleRule(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewBucketLifecycleRuleSlice(c *Client, des, nw []BucketLifecycleRule) []BucketLifecycleRule {
@@ -1031,23 +1039,26 @@ func canonicalizeNewBucketLifecycleRuleActionSet(c *Client, des, nw []BucketLife
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []BucketLifecycleRuleAction
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []BucketLifecycleRuleAction
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareBucketLifecycleRuleActionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewBucketLifecycleRuleAction(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewBucketLifecycleRuleActionSlice(c *Client, des, nw []BucketLifecycleRuleAction) []BucketLifecycleRuleAction {
@@ -1170,23 +1181,26 @@ func canonicalizeNewBucketLifecycleRuleConditionSet(c *Client, des, nw []BucketL
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []BucketLifecycleRuleCondition
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []BucketLifecycleRuleCondition
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareBucketLifecycleRuleConditionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewBucketLifecycleRuleCondition(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewBucketLifecycleRuleConditionSlice(c *Client, des, nw []BucketLifecycleRuleCondition) []BucketLifecycleRuleCondition {
@@ -1293,23 +1307,26 @@ func canonicalizeNewBucketLoggingSet(c *Client, des, nw []BucketLogging) []Bucke
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []BucketLogging
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []BucketLogging
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareBucketLoggingNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewBucketLogging(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewBucketLoggingSlice(c *Client, des, nw []BucketLogging) []BucketLogging {
@@ -1408,23 +1425,26 @@ func canonicalizeNewBucketVersioningSet(c *Client, des, nw []BucketVersioning) [
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []BucketVersioning
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []BucketVersioning
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareBucketVersioningNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewBucketVersioning(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewBucketVersioningSlice(c *Client, des, nw []BucketVersioning) []BucketVersioning {
@@ -1531,23 +1551,26 @@ func canonicalizeNewBucketWebsiteSet(c *Client, des, nw []BucketWebsite) []Bucke
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []BucketWebsite
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []BucketWebsite
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareBucketWebsiteNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewBucketWebsite(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewBucketWebsiteSlice(c *Client, des, nw []BucketWebsite) []BucketWebsite {
@@ -1651,6 +1674,9 @@ func diffBucket(c *Client, desired, actual *Bucket, opts ...dcl.ApplyOption) ([]
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareBucketCorsNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

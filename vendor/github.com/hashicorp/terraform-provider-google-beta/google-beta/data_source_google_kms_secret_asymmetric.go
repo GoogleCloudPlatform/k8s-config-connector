@@ -60,7 +60,7 @@ func dataSourceGoogleKmsSecretAsymmetricReadContext(ctx context.Context, d *sche
 
 func dataSourceGoogleKmsSecretAsymmetricRead(ctx context.Context, d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}

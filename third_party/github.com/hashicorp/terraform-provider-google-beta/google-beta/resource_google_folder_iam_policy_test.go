@@ -12,13 +12,13 @@ import (
 func TestAccFolderIamPolicy_basic(t *testing.T) {
 	t.Parallel()
 
-	folderDisplayName := "tf-test-" + randString(t, 10)
-	org := getTestOrgFromEnv(t)
+	folderDisplayName := "tf-test-" + RandString(t, 10)
+	org := GetTestOrgFromEnv(t)
 	parent := "organizations/" + org
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckGoogleFolderIamPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -44,13 +44,13 @@ func TestAccFolderIamPolicy_basic(t *testing.T) {
 func TestAccFolderIamPolicy_auditConfigs(t *testing.T) {
 	t.Parallel()
 
-	folderDisplayName := "tf-test-" + randString(t, 10)
-	org := getTestOrgFromEnv(t)
+	folderDisplayName := "tf-test-" + RandString(t, 10)
+	org := GetTestOrgFromEnv(t)
 	parent := "organizations/" + org
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckGoogleFolderIamPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -67,7 +67,7 @@ func TestAccFolderIamPolicy_auditConfigs(t *testing.T) {
 
 func testAccCheckGoogleFolderIamPolicyDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
 		for _, rs := range s.RootModule().Resources {
 			if rs.Type != "google_folder_iam_policy" {
@@ -75,7 +75,7 @@ func testAccCheckGoogleFolderIamPolicyDestroyProducer(t *testing.T) func(s *terr
 			}
 
 			folder := rs.Primary.Attributes["folder"]
-			policy, err := config.NewResourceManagerV3Client(config.userAgent).Folders.GetIamPolicy(folder, &resourceManagerV3.GetIamPolicyRequest{}).Do()
+			policy, err := config.NewResourceManagerV3Client(config.UserAgent).Folders.GetIamPolicy(folder, &resourceManagerV3.GetIamPolicyRequest{}).Do()
 
 			if err != nil && len(policy.Bindings) > 0 {
 				return fmt.Errorf("Folder '%s' policy hasn't been deleted.", folder)
@@ -88,13 +88,13 @@ func testAccCheckGoogleFolderIamPolicyDestroyProducer(t *testing.T) func(s *terr
 // Confirm that a folder has an IAM policy with at least 1 binding
 func testAccFolderExistingPolicy(t *testing.T, org, fname string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		c := googleProviderConfig(t)
+		c := GoogleProviderConfig(t)
 		var err error
-		originalPolicy, err = getFolderIamPolicyByParentAndDisplayName("organizations/"+org, fname, c)
+		OriginalPolicy, err = getFolderIamPolicyByParentAndDisplayName("organizations/"+org, fname, c)
 		if err != nil {
 			return fmt.Errorf("Failed to retrieve IAM Policy for folder %q: %s", fname, err)
 		}
-		if len(originalPolicy.Bindings) == 0 {
+		if len(OriginalPolicy.Bindings) == 0 {
 			return fmt.Errorf("Refuse to run test against folder with zero IAM Bindings. This is likely an error in the test code that is not properly identifying the IAM policy of a folder.")
 		}
 		return nil

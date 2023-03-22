@@ -161,7 +161,7 @@ object. This field is used in optimistic locking.`,
 
 func resourceComputeRegionSslPolicyCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -229,7 +229,7 @@ func resourceComputeRegionSslPolicyCreate(d *schema.ResourceData, meta interface
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating RegionSslPolicy: %s", err)
 	}
@@ -241,7 +241,7 @@ func resourceComputeRegionSslPolicyCreate(d *schema.ResourceData, meta interface
 	}
 	d.SetId(id)
 
-	err = computeOperationWaitTime(
+	err = ComputeOperationWaitTime(
 		config, res, project, "Creating RegionSslPolicy", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 
@@ -258,7 +258,7 @@ func resourceComputeRegionSslPolicyCreate(d *schema.ResourceData, meta interface
 
 func resourceComputeRegionSslPolicyRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -281,7 +281,7 @@ func resourceComputeRegionSslPolicyRead(d *schema.ResourceData, meta interface{}
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("ComputeRegionSslPolicy %q", d.Id()))
 	}
@@ -326,7 +326,7 @@ func resourceComputeRegionSslPolicyRead(d *schema.ResourceData, meta interface{}
 
 func resourceComputeRegionSslPolicyUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -377,7 +377,7 @@ func resourceComputeRegionSslPolicyUpdate(d *schema.ResourceData, meta interface
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating RegionSslPolicy %q: %s", d.Id(), err)
@@ -385,7 +385,7 @@ func resourceComputeRegionSslPolicyUpdate(d *schema.ResourceData, meta interface
 		log.Printf("[DEBUG] Finished updating RegionSslPolicy %q: %#v", d.Id(), res)
 	}
 
-	err = computeOperationWaitTime(
+	err = ComputeOperationWaitTime(
 		config, res, project, "Updating RegionSslPolicy", userAgent,
 		d.Timeout(schema.TimeoutUpdate))
 
@@ -398,7 +398,7 @@ func resourceComputeRegionSslPolicyUpdate(d *schema.ResourceData, meta interface
 
 func resourceComputeRegionSslPolicyDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -424,12 +424,12 @@ func resourceComputeRegionSslPolicyDelete(d *schema.ResourceData, meta interface
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "RegionSslPolicy")
 	}
 
-	err = computeOperationWaitTime(
+	err = ComputeOperationWaitTime(
 		config, res, project, "Deleting RegionSslPolicy", userAgent,
 		d.Timeout(schema.TimeoutDelete))
 

@@ -26,19 +26,53 @@ import (
 	"testing"
 )
 
+func TestAccClouddeployTarget_MultiTarget(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"project_name":  GetTestProjectFromEnv(),
+		"region":        GetTestRegionFromEnv(),
+		"random_suffix": RandString(t, 10),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck: func() { testAccPreCheck(t) },
+
+		Providers:    TestAccProvidersOiCS,
+		CheckDestroy: testAccCheckClouddeployTargetDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccClouddeployTarget_MultiTarget(context),
+			},
+			{
+				ResourceName:      "google_clouddeploy_target.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccClouddeployTarget_MultiTargetUpdate0(context),
+			},
+			{
+				ResourceName:      "google_clouddeploy_target.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
 func TestAccClouddeployTarget_RunTarget(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  getTestProjectFromEnv(),
-		"region":        getTestRegionFromEnv(),
-		"random_suffix": randString(t, 10),
+		"project_name":  GetTestProjectFromEnv(),
+		"region":        GetTestRegionFromEnv(),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck: func() { testAccPreCheck(t) },
 
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckClouddeployTargetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -64,14 +98,14 @@ func TestAccClouddeployTarget_Target(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  getTestProjectFromEnv(),
-		"region":        getTestRegionFromEnv(),
-		"random_suffix": randString(t, 10),
+		"project_name":  GetTestProjectFromEnv(),
+		"region":        GetTestRegionFromEnv(),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckClouddeployTargetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -116,6 +150,75 @@ func TestAccClouddeployTarget_Target(t *testing.T) {
 			},
 		},
 	})
+}
+
+func testAccClouddeployTarget_MultiTarget(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_clouddeploy_target" "primary" {
+  location = "%{region}"
+  name     = "tf-test-target%{random_suffix}"
+
+  annotations = {
+    my_first_annotation = "example-annotation-1"
+
+    my_second_annotation = "example-annotation-2"
+  }
+
+  description = "multi-target description"
+
+  execution_configs {
+    usages            = ["RENDER", "DEPLOY"]
+    execution_timeout = "3600s"
+  }
+
+  labels = {
+    my_first_label = "example-label-1"
+
+    my_second_label = "example-label-2"
+  }
+
+  multi_target {
+    target_ids = ["1", "2"]
+  }
+
+  project          = "%{project_name}"
+  require_approval = false
+  provider = google-beta
+}
+
+`, context)
+}
+
+func testAccClouddeployTarget_MultiTargetUpdate0(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_clouddeploy_target" "primary" {
+  location = "%{region}"
+  name     = "tf-test-target%{random_suffix}"
+
+  annotations = {
+    my_second_annotation = "updated-example-annotation-2"
+
+    my_third_annotation = "example-annotation-3"
+  }
+
+  description = "updated mutli-target description"
+
+  labels = {
+    my_second_label = "example-label-2"
+
+    my_third_label = "example-label-3"
+  }
+
+  multi_target {
+    target_ids = ["1", "2", "3"]
+  }
+
+  project          = "%{project_name}"
+  require_approval = true
+  provider = google-beta
+}
+
+`, context)
 }
 
 func testAccClouddeployTarget_RunTarget(context map[string]interface{}) string {
@@ -395,7 +498,7 @@ func testAccCheckClouddeployTargetDestroyProducer(t *testing.T) func(s *terrafor
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			billingProject := ""
 			if config.BillingProject != "" {
@@ -415,7 +518,7 @@ func testAccCheckClouddeployTargetDestroyProducer(t *testing.T) func(s *terrafor
 				UpdateTime:      dcl.StringOrNil(rs.Primary.Attributes["update_time"]),
 			}
 
-			client := NewDCLClouddeployClient(config, config.userAgent, billingProject, 0)
+			client := NewDCLClouddeployClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetTarget(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_clouddeploy_target still exists %v", obj)

@@ -60,13 +60,6 @@ func ResourceContainerAzureCluster() *schema.Resource {
 				Description: "The Azure region where the cluster runs. Each Google Cloud region supports a subset of nearby Azure regions. You can call to list all supported Azure regions within a given Google Cloud region.",
 			},
 
-			"client": {
-				Type:             schema.TypeString,
-				Required:         true,
-				DiffSuppressFunc: compareSelfLinkOrResourceName,
-				Description:      "Name of the AzureClient. The `AzureClient` resource must reside on the same GCP project and region as the `AzureCluster`. `AzureClient` names are formatted as `projects/<project-number>/locations/<region>/azureClients/<client-id>`. See Resource Names (https:cloud.google.com/apis/design/resource_names) for more details on Google Cloud resource names.",
-			},
-
 			"control_plane": {
 				Type:        schema.TypeList,
 				Required:    true,
@@ -120,6 +113,23 @@ func ResourceContainerAzureCluster() *schema.Resource {
 				ForceNew:    true,
 				Description: "Optional. Annotations on the cluster. This field has the same restrictions as Kubernetes annotations. The total size of all keys and values combined is limited to 256k. Keys can have 2 segments: prefix (optional) and name (required), separated by a slash (/). Prefix must be a DNS subdomain. Name must be 63 characters or less, begin and end with alphanumerics, with dashes (-), underscores (_), dots (.), and alphanumerics between.",
 				Elem:        &schema.Schema{Type: schema.TypeString},
+			},
+
+			"azure_services_authentication": {
+				Type:          schema.TypeList,
+				Optional:      true,
+				Description:   "Azure authentication configuration for management of Azure resources",
+				MaxItems:      1,
+				Elem:          ContainerAzureClusterAzureServicesAuthenticationSchema(),
+				ConflictsWith: []string{"client"},
+			},
+
+			"client": {
+				Type:             schema.TypeString,
+				Optional:         true,
+				DiffSuppressFunc: compareSelfLinkOrResourceName,
+				Description:      "Name of the AzureClient. The `AzureClient` resource must reside on the same GCP project and region as the `AzureCluster`. `AzureClient` names are formatted as `projects/<project-number>/locations/<region>/azureClients/<client-id>`. See Resource Names (https:cloud.google.com/apis/design/resource_names) for more details on Google Cloud resource names.",
+				ConflictsWith:    []string{"azure_services_authentication"},
 			},
 
 			"description": {
@@ -454,6 +464,24 @@ func ContainerAzureClusterNetworkingSchema() *schema.Resource {
 	}
 }
 
+func ContainerAzureClusterAzureServicesAuthenticationSchema() *schema.Resource {
+	return &schema.Resource{
+		Schema: map[string]*schema.Schema{
+			"application_id": {
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "The Azure Active Directory Application ID for Authentication configuration.",
+			},
+
+			"tenant_id": {
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "The Azure Active Directory Tenant ID for Authentication configuration.",
+			},
+		},
+	}
+}
+
 func ContainerAzureClusterLoggingConfigSchema() *schema.Resource {
 	return &schema.Resource{
 		Schema: map[string]*schema.Schema{
@@ -515,19 +543,20 @@ func resourceContainerAzureClusterCreate(d *schema.ResourceData, meta interface{
 	}
 
 	obj := &containerazure.Cluster{
-		Authorization:   expandContainerAzureClusterAuthorization(d.Get("authorization")),
-		AzureRegion:     dcl.String(d.Get("azure_region").(string)),
-		Client:          dcl.String(d.Get("client").(string)),
-		ControlPlane:    expandContainerAzureClusterControlPlane(d.Get("control_plane")),
-		Fleet:           expandContainerAzureClusterFleet(d.Get("fleet")),
-		Location:        dcl.String(d.Get("location").(string)),
-		Name:            dcl.String(d.Get("name").(string)),
-		Networking:      expandContainerAzureClusterNetworking(d.Get("networking")),
-		ResourceGroupId: dcl.String(d.Get("resource_group_id").(string)),
-		Annotations:     checkStringMap(d.Get("annotations")),
-		Description:     dcl.String(d.Get("description").(string)),
-		LoggingConfig:   expandContainerAzureClusterLoggingConfig(d.Get("logging_config")),
-		Project:         dcl.String(project),
+		Authorization:               expandContainerAzureClusterAuthorization(d.Get("authorization")),
+		AzureRegion:                 dcl.String(d.Get("azure_region").(string)),
+		ControlPlane:                expandContainerAzureClusterControlPlane(d.Get("control_plane")),
+		Fleet:                       expandContainerAzureClusterFleet(d.Get("fleet")),
+		Location:                    dcl.String(d.Get("location").(string)),
+		Name:                        dcl.String(d.Get("name").(string)),
+		Networking:                  expandContainerAzureClusterNetworking(d.Get("networking")),
+		ResourceGroupId:             dcl.String(d.Get("resource_group_id").(string)),
+		Annotations:                 checkStringMap(d.Get("annotations")),
+		AzureServicesAuthentication: expandContainerAzureClusterAzureServicesAuthentication(d.Get("azure_services_authentication")),
+		Client:                      dcl.String(d.Get("client").(string)),
+		Description:                 dcl.String(d.Get("description").(string)),
+		LoggingConfig:               expandContainerAzureClusterLoggingConfig(d.Get("logging_config")),
+		Project:                     dcl.String(project),
 	}
 
 	id, err := obj.ID()
@@ -536,7 +565,7 @@ func resourceContainerAzureClusterCreate(d *schema.ResourceData, meta interface{
 	}
 	d.SetId(id)
 	directive := CreateDirective
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -575,22 +604,23 @@ func resourceContainerAzureClusterRead(d *schema.ResourceData, meta interface{})
 	}
 
 	obj := &containerazure.Cluster{
-		Authorization:   expandContainerAzureClusterAuthorization(d.Get("authorization")),
-		AzureRegion:     dcl.String(d.Get("azure_region").(string)),
-		Client:          dcl.String(d.Get("client").(string)),
-		ControlPlane:    expandContainerAzureClusterControlPlane(d.Get("control_plane")),
-		Fleet:           expandContainerAzureClusterFleet(d.Get("fleet")),
-		Location:        dcl.String(d.Get("location").(string)),
-		Name:            dcl.String(d.Get("name").(string)),
-		Networking:      expandContainerAzureClusterNetworking(d.Get("networking")),
-		ResourceGroupId: dcl.String(d.Get("resource_group_id").(string)),
-		Annotations:     checkStringMap(d.Get("annotations")),
-		Description:     dcl.String(d.Get("description").(string)),
-		LoggingConfig:   expandContainerAzureClusterLoggingConfig(d.Get("logging_config")),
-		Project:         dcl.String(project),
+		Authorization:               expandContainerAzureClusterAuthorization(d.Get("authorization")),
+		AzureRegion:                 dcl.String(d.Get("azure_region").(string)),
+		ControlPlane:                expandContainerAzureClusterControlPlane(d.Get("control_plane")),
+		Fleet:                       expandContainerAzureClusterFleet(d.Get("fleet")),
+		Location:                    dcl.String(d.Get("location").(string)),
+		Name:                        dcl.String(d.Get("name").(string)),
+		Networking:                  expandContainerAzureClusterNetworking(d.Get("networking")),
+		ResourceGroupId:             dcl.String(d.Get("resource_group_id").(string)),
+		Annotations:                 checkStringMap(d.Get("annotations")),
+		AzureServicesAuthentication: expandContainerAzureClusterAzureServicesAuthentication(d.Get("azure_services_authentication")),
+		Client:                      dcl.String(d.Get("client").(string)),
+		Description:                 dcl.String(d.Get("description").(string)),
+		LoggingConfig:               expandContainerAzureClusterLoggingConfig(d.Get("logging_config")),
+		Project:                     dcl.String(project),
 	}
 
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -618,9 +648,6 @@ func resourceContainerAzureClusterRead(d *schema.ResourceData, meta interface{})
 	if err = d.Set("azure_region", res.AzureRegion); err != nil {
 		return fmt.Errorf("error setting azure_region in state: %s", err)
 	}
-	if err = d.Set("client", res.Client); err != nil {
-		return fmt.Errorf("error setting client in state: %s", err)
-	}
 	if err = d.Set("control_plane", flattenContainerAzureClusterControlPlane(res.ControlPlane)); err != nil {
 		return fmt.Errorf("error setting control_plane in state: %s", err)
 	}
@@ -641,6 +668,12 @@ func resourceContainerAzureClusterRead(d *schema.ResourceData, meta interface{})
 	}
 	if err = d.Set("annotations", res.Annotations); err != nil {
 		return fmt.Errorf("error setting annotations in state: %s", err)
+	}
+	if err = d.Set("azure_services_authentication", flattenContainerAzureClusterAzureServicesAuthentication(res.AzureServicesAuthentication)); err != nil {
+		return fmt.Errorf("error setting azure_services_authentication in state: %s", err)
+	}
+	if err = d.Set("client", res.Client); err != nil {
+		return fmt.Errorf("error setting client in state: %s", err)
 	}
 	if err = d.Set("description", res.Description); err != nil {
 		return fmt.Errorf("error setting description in state: %s", err)
@@ -686,22 +719,23 @@ func resourceContainerAzureClusterUpdate(d *schema.ResourceData, meta interface{
 	}
 
 	obj := &containerazure.Cluster{
-		Authorization:   expandContainerAzureClusterAuthorization(d.Get("authorization")),
-		AzureRegion:     dcl.String(d.Get("azure_region").(string)),
-		Client:          dcl.String(d.Get("client").(string)),
-		ControlPlane:    expandContainerAzureClusterControlPlane(d.Get("control_plane")),
-		Fleet:           expandContainerAzureClusterFleet(d.Get("fleet")),
-		Location:        dcl.String(d.Get("location").(string)),
-		Name:            dcl.String(d.Get("name").(string)),
-		Networking:      expandContainerAzureClusterNetworking(d.Get("networking")),
-		ResourceGroupId: dcl.String(d.Get("resource_group_id").(string)),
-		Annotations:     checkStringMap(d.Get("annotations")),
-		Description:     dcl.String(d.Get("description").(string)),
-		LoggingConfig:   expandContainerAzureClusterLoggingConfig(d.Get("logging_config")),
-		Project:         dcl.String(project),
+		Authorization:               expandContainerAzureClusterAuthorization(d.Get("authorization")),
+		AzureRegion:                 dcl.String(d.Get("azure_region").(string)),
+		ControlPlane:                expandContainerAzureClusterControlPlane(d.Get("control_plane")),
+		Fleet:                       expandContainerAzureClusterFleet(d.Get("fleet")),
+		Location:                    dcl.String(d.Get("location").(string)),
+		Name:                        dcl.String(d.Get("name").(string)),
+		Networking:                  expandContainerAzureClusterNetworking(d.Get("networking")),
+		ResourceGroupId:             dcl.String(d.Get("resource_group_id").(string)),
+		Annotations:                 checkStringMap(d.Get("annotations")),
+		AzureServicesAuthentication: expandContainerAzureClusterAzureServicesAuthentication(d.Get("azure_services_authentication")),
+		Client:                      dcl.String(d.Get("client").(string)),
+		Description:                 dcl.String(d.Get("description").(string)),
+		LoggingConfig:               expandContainerAzureClusterLoggingConfig(d.Get("logging_config")),
+		Project:                     dcl.String(project),
 	}
 	directive := UpdateDirective
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -741,23 +775,24 @@ func resourceContainerAzureClusterDelete(d *schema.ResourceData, meta interface{
 	}
 
 	obj := &containerazure.Cluster{
-		Authorization:   expandContainerAzureClusterAuthorization(d.Get("authorization")),
-		AzureRegion:     dcl.String(d.Get("azure_region").(string)),
-		Client:          dcl.String(d.Get("client").(string)),
-		ControlPlane:    expandContainerAzureClusterControlPlane(d.Get("control_plane")),
-		Fleet:           expandContainerAzureClusterFleet(d.Get("fleet")),
-		Location:        dcl.String(d.Get("location").(string)),
-		Name:            dcl.String(d.Get("name").(string)),
-		Networking:      expandContainerAzureClusterNetworking(d.Get("networking")),
-		ResourceGroupId: dcl.String(d.Get("resource_group_id").(string)),
-		Annotations:     checkStringMap(d.Get("annotations")),
-		Description:     dcl.String(d.Get("description").(string)),
-		LoggingConfig:   expandContainerAzureClusterLoggingConfig(d.Get("logging_config")),
-		Project:         dcl.String(project),
+		Authorization:               expandContainerAzureClusterAuthorization(d.Get("authorization")),
+		AzureRegion:                 dcl.String(d.Get("azure_region").(string)),
+		ControlPlane:                expandContainerAzureClusterControlPlane(d.Get("control_plane")),
+		Fleet:                       expandContainerAzureClusterFleet(d.Get("fleet")),
+		Location:                    dcl.String(d.Get("location").(string)),
+		Name:                        dcl.String(d.Get("name").(string)),
+		Networking:                  expandContainerAzureClusterNetworking(d.Get("networking")),
+		ResourceGroupId:             dcl.String(d.Get("resource_group_id").(string)),
+		Annotations:                 checkStringMap(d.Get("annotations")),
+		AzureServicesAuthentication: expandContainerAzureClusterAzureServicesAuthentication(d.Get("azure_services_authentication")),
+		Client:                      dcl.String(d.Get("client").(string)),
+		Description:                 dcl.String(d.Get("description").(string)),
+		LoggingConfig:               expandContainerAzureClusterLoggingConfig(d.Get("logging_config")),
+		Project:                     dcl.String(project),
 	}
 
 	log.Printf("[DEBUG] Deleting Cluster %q", d.Id())
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -1167,6 +1202,34 @@ func flattenContainerAzureClusterNetworking(obj *containerazure.ClusterNetworkin
 		"pod_address_cidr_blocks":     obj.PodAddressCidrBlocks,
 		"service_address_cidr_blocks": obj.ServiceAddressCidrBlocks,
 		"virtual_network_id":          obj.VirtualNetworkId,
+	}
+
+	return []interface{}{transformed}
+
+}
+
+func expandContainerAzureClusterAzureServicesAuthentication(o interface{}) *containerazure.ClusterAzureServicesAuthentication {
+	if o == nil {
+		return containerazure.EmptyClusterAzureServicesAuthentication
+	}
+	objArr := o.([]interface{})
+	if len(objArr) == 0 || objArr[0] == nil {
+		return containerazure.EmptyClusterAzureServicesAuthentication
+	}
+	obj := objArr[0].(map[string]interface{})
+	return &containerazure.ClusterAzureServicesAuthentication{
+		ApplicationId: dcl.String(obj["application_id"].(string)),
+		TenantId:      dcl.String(obj["tenant_id"].(string)),
+	}
+}
+
+func flattenContainerAzureClusterAzureServicesAuthentication(obj *containerazure.ClusterAzureServicesAuthentication) interface{} {
+	if obj == nil || obj.Empty() {
+		return nil
+	}
+	transformed := map[string]interface{}{
+		"application_id": obj.ApplicationId,
+		"tenant_id":      obj.TenantId,
 	}
 
 	return []interface{}{transformed}

@@ -68,6 +68,78 @@ func ResourceComputeRegionPerInstanceConfig() *schema.Resource {
 							Elem:        computeRegionPerInstanceConfigPreservedStateDiskSchema(),
 							// Default schema.HashSchema is used.
 						},
+						"external_ip": {
+							Type:        schema.TypeSet,
+							Optional:    true,
+							Description: `Preserved external IPs defined for this instance. This map is keyed with the name of the network interface.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"interface_name": {
+										Type:     schema.TypeString,
+										Required: true,
+									},
+									"auto_delete": {
+										Type:         schema.TypeString,
+										Optional:     true,
+										ValidateFunc: validateEnum([]string{"NEVER", "ON_PERMANENT_INSTANCE_DELETION", ""}),
+										Description:  `These stateful IPs will never be released during autohealing, update or VM instance recreate operations. This flag is used to configure if the IP reservation should be deleted after it is no longer used by the group, e.g. when the given instance or the whole group is deleted. Default value: "NEVER" Possible values: ["NEVER", "ON_PERMANENT_INSTANCE_DELETION"]`,
+										Default:      "NEVER",
+									},
+									"ip_address": {
+										Type:        schema.TypeList,
+										Optional:    true,
+										Description: `Ip address representation`,
+										MaxItems:    1,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"address": {
+													Type:             schema.TypeString,
+													Optional:         true,
+													DiffSuppressFunc: compareSelfLinkOrResourceName,
+													Description:      `The URL of the reservation for this IP address.`,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+						"internal_ip": {
+							Type:        schema.TypeSet,
+							Optional:    true,
+							Description: `Preserved internal IPs defined for this instance. This map is keyed with the name of the network interface.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"interface_name": {
+										Type:     schema.TypeString,
+										Required: true,
+									},
+									"auto_delete": {
+										Type:         schema.TypeString,
+										Optional:     true,
+										ValidateFunc: validateEnum([]string{"NEVER", "ON_PERMANENT_INSTANCE_DELETION", ""}),
+										Description:  `These stateful IPs will never be released during autohealing, update or VM instance recreate operations. This flag is used to configure if the IP reservation should be deleted after it is no longer used by the group, e.g. when the given instance or the whole group is deleted. Default value: "NEVER" Possible values: ["NEVER", "ON_PERMANENT_INSTANCE_DELETION"]`,
+										Default:      "NEVER",
+									},
+									"ip_address": {
+										Type:        schema.TypeList,
+										Optional:    true,
+										Description: `Ip address representation`,
+										MaxItems:    1,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"address": {
+													Type:             schema.TypeString,
+													Optional:         true,
+													DiffSuppressFunc: compareSelfLinkOrResourceName,
+													Description:      `The URL of the reservation for this IP address.`,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
 						"metadata": {
 							Type:        schema.TypeMap,
 							Optional:    true,
@@ -164,7 +236,7 @@ deleted from the instance group. Default value: "NEVER" Possible values: ["NEVER
 
 func resourceComputeRegionPerInstanceConfigCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -214,7 +286,7 @@ func resourceComputeRegionPerInstanceConfigCreate(d *schema.ResourceData, meta i
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating RegionPerInstanceConfig: %s", err)
 	}
@@ -226,7 +298,7 @@ func resourceComputeRegionPerInstanceConfigCreate(d *schema.ResourceData, meta i
 	}
 	d.SetId(id)
 
-	err = computeOperationWaitTime(
+	err = ComputeOperationWaitTime(
 		config, res, project, "Creating RegionPerInstanceConfig", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 
@@ -243,7 +315,7 @@ func resourceComputeRegionPerInstanceConfigCreate(d *schema.ResourceData, meta i
 
 func resourceComputeRegionPerInstanceConfigRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -266,7 +338,7 @@ func resourceComputeRegionPerInstanceConfigRead(d *schema.ResourceData, meta int
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "POST", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "POST", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("ComputeRegionPerInstanceConfig %q", d.Id()))
 	}
@@ -323,7 +395,7 @@ func resourceComputeRegionPerInstanceConfigRead(d *schema.ResourceData, meta int
 
 func resourceComputeRegionPerInstanceConfigUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -374,7 +446,7 @@ func resourceComputeRegionPerInstanceConfigUpdate(d *schema.ResourceData, meta i
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating RegionPerInstanceConfig %q: %s", d.Id(), err)
@@ -382,7 +454,7 @@ func resourceComputeRegionPerInstanceConfigUpdate(d *schema.ResourceData, meta i
 		log.Printf("[DEBUG] Finished updating RegionPerInstanceConfig %q: %#v", d.Id(), res)
 	}
 
-	err = computeOperationWaitTime(
+	err = ComputeOperationWaitTime(
 		config, res, project, "Updating RegionPerInstanceConfig", userAgent,
 		d.Timeout(schema.TimeoutUpdate))
 
@@ -417,13 +489,13 @@ func resourceComputeRegionPerInstanceConfigUpdate(d *schema.ResourceData, meta i
 	}
 
 	log.Printf("[DEBUG] Applying updates to PerInstanceConfig %q: %#v", d.Id(), obj)
-	res, err = sendRequestWithTimeout(config, "POST", project, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err = SendRequestWithTimeout(config, "POST", project, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating PerInstanceConfig %q: %s", d.Id(), err)
 	}
 
-	err = computeOperationWaitTime(
+	err = ComputeOperationWaitTime(
 		config, res, project, "Applying update to PerInstanceConfig", userAgent,
 		d.Timeout(schema.TimeoutUpdate))
 
@@ -435,7 +507,7 @@ func resourceComputeRegionPerInstanceConfigUpdate(d *schema.ResourceData, meta i
 
 func resourceComputeRegionPerInstanceConfigDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -463,12 +535,12 @@ func resourceComputeRegionPerInstanceConfigDelete(d *schema.ResourceData, meta i
 	}
 	log.Printf("[DEBUG] Deleting RegionPerInstanceConfig %q", d.Id())
 
-	res, err := sendRequestWithTimeout(config, "POST", project, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "POST", project, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "RegionPerInstanceConfig")
 	}
 
-	err = computeOperationWaitTime(
+	err = ComputeOperationWaitTime(
 		config, res, project, "Deleting RegionPerInstanceConfig", userAgent,
 		d.Timeout(schema.TimeoutDelete))
 
@@ -494,13 +566,13 @@ func resourceComputeRegionPerInstanceConfigDelete(d *schema.ResourceData, meta i
 		}
 
 		log.Printf("[DEBUG] Applying updates to PerInstanceConfig %q: %#v", d.Id(), obj)
-		res, err = sendRequestWithTimeout(config, "POST", project, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+		res, err = SendRequestWithTimeout(config, "POST", project, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 		if err != nil {
 			return fmt.Errorf("Error updating PerInstanceConfig %q: %s", d.Id(), err)
 		}
 
-		err = computeOperationWaitTime(
+		err = ComputeOperationWaitTime(
 			config, res, project, "Applying update to PerInstanceConfig", userAgent,
 			d.Timeout(schema.TimeoutUpdate))
 
@@ -568,6 +640,10 @@ func flattenNestedComputeRegionPerInstanceConfigPreservedState(v interface{}, d 
 		flattenNestedComputeRegionPerInstanceConfigPreservedStateMetadata(original["metadata"], d, config)
 	transformed["disk"] =
 		flattenNestedComputeRegionPerInstanceConfigPreservedStateDisk(original["disks"], d, config)
+	transformed["internal_ip"] =
+		flattenNestedComputeRegionPerInstanceConfigPreservedStateInternalIp(original["internalIPs"], d, config)
+	transformed["external_ip"] =
+		flattenNestedComputeRegionPerInstanceConfigPreservedStateExternalIp(original["externalIPs"], d, config)
 	return []interface{}{transformed}
 }
 func flattenNestedComputeRegionPerInstanceConfigPreservedStateMetadata(v interface{}, d *schema.ResourceData, config *Config) interface{} {
@@ -596,6 +672,86 @@ func flattenNestedComputeRegionPerInstanceConfigPreservedStateDisk(v interface{}
 	return transformed
 }
 
+func flattenNestedComputeRegionPerInstanceConfigPreservedStateInternalIp(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return v
+	}
+	l := v.(map[string]interface{})
+	transformed := make([]interface{}, 0, len(l))
+	for k, raw := range l {
+		original := raw.(map[string]interface{})
+		transformed = append(transformed, map[string]interface{}{
+			"interface_name": k,
+			"auto_delete":    flattenNestedComputeRegionPerInstanceConfigPreservedStateInternalIpAutoDelete(original["autoDelete"], d, config),
+			"ip_address":     flattenNestedComputeRegionPerInstanceConfigPreservedStateInternalIpIpAddress(original["ipAddress"], d, config),
+		})
+	}
+	return transformed
+}
+func flattenNestedComputeRegionPerInstanceConfigPreservedStateInternalIpAutoDelete(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenNestedComputeRegionPerInstanceConfigPreservedStateInternalIpIpAddress(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["address"] =
+		flattenNestedComputeRegionPerInstanceConfigPreservedStateInternalIpIpAddressAddress(original["address"], d, config)
+	return []interface{}{transformed}
+}
+func flattenNestedComputeRegionPerInstanceConfigPreservedStateInternalIpIpAddressAddress(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return v
+	}
+	return ConvertSelfLinkToV1(v.(string))
+}
+
+func flattenNestedComputeRegionPerInstanceConfigPreservedStateExternalIp(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return v
+	}
+	l := v.(map[string]interface{})
+	transformed := make([]interface{}, 0, len(l))
+	for k, raw := range l {
+		original := raw.(map[string]interface{})
+		transformed = append(transformed, map[string]interface{}{
+			"interface_name": k,
+			"auto_delete":    flattenNestedComputeRegionPerInstanceConfigPreservedStateExternalIpAutoDelete(original["autoDelete"], d, config),
+			"ip_address":     flattenNestedComputeRegionPerInstanceConfigPreservedStateExternalIpIpAddress(original["ipAddress"], d, config),
+		})
+	}
+	return transformed
+}
+func flattenNestedComputeRegionPerInstanceConfigPreservedStateExternalIpAutoDelete(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
+func flattenNestedComputeRegionPerInstanceConfigPreservedStateExternalIpIpAddress(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["address"] =
+		flattenNestedComputeRegionPerInstanceConfigPreservedStateExternalIpIpAddressAddress(original["address"], d, config)
+	return []interface{}{transformed}
+}
+func flattenNestedComputeRegionPerInstanceConfigPreservedStateExternalIpIpAddressAddress(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	if v == nil {
+		return v
+	}
+	return ConvertSelfLinkToV1(v.(string))
+}
+
 func expandNestedComputeRegionPerInstanceConfigName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
@@ -621,6 +777,20 @@ func expandNestedComputeRegionPerInstanceConfigPreservedState(v interface{}, d T
 		return nil, err
 	} else if val := reflect.ValueOf(transformedDisk); val.IsValid() && !isEmptyValue(val) {
 		transformed["disks"] = transformedDisk
+	}
+
+	transformedInternalIp, err := expandNestedComputeRegionPerInstanceConfigPreservedStateInternalIp(original["internal_ip"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedInternalIp); val.IsValid() && !isEmptyValue(val) {
+		transformed["internalIPs"] = transformedInternalIp
+	}
+
+	transformedExternalIp, err := expandNestedComputeRegionPerInstanceConfigPreservedStateExternalIp(original["external_ip"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedExternalIp); val.IsValid() && !isEmptyValue(val) {
+		transformed["externalIPs"] = transformedExternalIp
 	}
 
 	return transformed, nil
@@ -665,6 +835,132 @@ func expandNestedComputeRegionPerInstanceConfigPreservedStateDisk(v interface{},
 		req[deviceName] = diskObj
 	}
 	return req, nil
+}
+
+func expandNestedComputeRegionPerInstanceConfigPreservedStateInternalIp(v interface{}, d TerraformResourceData, config *Config) (map[string]interface{}, error) {
+	if v == nil {
+		return map[string]interface{}{}, nil
+	}
+	m := make(map[string]interface{})
+	for _, raw := range v.(*schema.Set).List() {
+		original := raw.(map[string]interface{})
+		transformed := make(map[string]interface{})
+
+		transformedAutoDelete, err := expandNestedComputeRegionPerInstanceConfigPreservedStateInternalIpAutoDelete(original["auto_delete"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedAutoDelete); val.IsValid() && !isEmptyValue(val) {
+			transformed["autoDelete"] = transformedAutoDelete
+		}
+
+		transformedIpAddress, err := expandNestedComputeRegionPerInstanceConfigPreservedStateInternalIpIpAddress(original["ip_address"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedIpAddress); val.IsValid() && !isEmptyValue(val) {
+			transformed["ipAddress"] = transformedIpAddress
+		}
+
+		transformedInterfaceName, err := expandString(original["interface_name"], d, config)
+		if err != nil {
+			return nil, err
+		}
+		m[transformedInterfaceName] = transformed
+	}
+	return m, nil
+}
+
+func expandNestedComputeRegionPerInstanceConfigPreservedStateInternalIpAutoDelete(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandNestedComputeRegionPerInstanceConfigPreservedStateInternalIpIpAddress(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedAddress, err := expandNestedComputeRegionPerInstanceConfigPreservedStateInternalIpIpAddressAddress(original["address"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedAddress); val.IsValid() && !isEmptyValue(val) {
+		transformed["address"] = transformedAddress
+	}
+
+	return transformed, nil
+}
+
+func expandNestedComputeRegionPerInstanceConfigPreservedStateInternalIpIpAddressAddress(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	f, err := parseRegionalFieldValue("addresses", v.(string), "project", "region", "zone", d, config, true)
+	if err != nil {
+		return nil, fmt.Errorf("Invalid value for address: %s", err)
+	}
+	return f.RelativeLink(), nil
+}
+
+func expandNestedComputeRegionPerInstanceConfigPreservedStateExternalIp(v interface{}, d TerraformResourceData, config *Config) (map[string]interface{}, error) {
+	if v == nil {
+		return map[string]interface{}{}, nil
+	}
+	m := make(map[string]interface{})
+	for _, raw := range v.(*schema.Set).List() {
+		original := raw.(map[string]interface{})
+		transformed := make(map[string]interface{})
+
+		transformedAutoDelete, err := expandNestedComputeRegionPerInstanceConfigPreservedStateExternalIpAutoDelete(original["auto_delete"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedAutoDelete); val.IsValid() && !isEmptyValue(val) {
+			transformed["autoDelete"] = transformedAutoDelete
+		}
+
+		transformedIpAddress, err := expandNestedComputeRegionPerInstanceConfigPreservedStateExternalIpIpAddress(original["ip_address"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedIpAddress); val.IsValid() && !isEmptyValue(val) {
+			transformed["ipAddress"] = transformedIpAddress
+		}
+
+		transformedInterfaceName, err := expandString(original["interface_name"], d, config)
+		if err != nil {
+			return nil, err
+		}
+		m[transformedInterfaceName] = transformed
+	}
+	return m, nil
+}
+
+func expandNestedComputeRegionPerInstanceConfigPreservedStateExternalIpAutoDelete(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandNestedComputeRegionPerInstanceConfigPreservedStateExternalIpIpAddress(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedAddress, err := expandNestedComputeRegionPerInstanceConfigPreservedStateExternalIpIpAddressAddress(original["address"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedAddress); val.IsValid() && !isEmptyValue(val) {
+		transformed["address"] = transformedAddress
+	}
+
+	return transformed, nil
+}
+
+func expandNestedComputeRegionPerInstanceConfigPreservedStateExternalIpIpAddressAddress(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	f, err := parseRegionalFieldValue("addresses", v.(string), "project", "region", "zone", d, config, true)
+	if err != nil {
+		return nil, fmt.Errorf("Invalid value for address: %s", err)
+	}
+	return f.RelativeLink(), nil
 }
 
 func resourceComputeRegionPerInstanceConfigEncoder(d *schema.ResourceData, meta interface{}, obj map[string]interface{}) (map[string]interface{}, error) {

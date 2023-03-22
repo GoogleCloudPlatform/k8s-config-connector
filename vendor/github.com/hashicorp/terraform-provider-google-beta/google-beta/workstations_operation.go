@@ -33,7 +33,7 @@ func (w *WorkstationsOperationWaiter) QueryOp() (interface{}, error) {
 	// Returns the proper get.
 	url := fmt.Sprintf("%s%s", w.Config.WorkstationsBasePath, w.CommonOperationWaiter.Op.Name)
 
-	return sendRequest(w.Config, "GET", w.Project, url, w.UserAgent, nil)
+	return SendRequest(w.Config, "GET", w.Project, url, w.UserAgent, nil)
 }
 
 func createWorkstationsWaiter(config *Config, op map[string]interface{}, project, activity, userAgent string) (*WorkstationsOperationWaiter, error) {
@@ -48,7 +48,7 @@ func createWorkstationsWaiter(config *Config, op map[string]interface{}, project
 	return w, nil
 }
 
-func workstationsOperationWaitTime(config *Config, op map[string]interface{}, project, activity, userAgent string, timeout time.Duration) error {
+func WorkstationsOperationWaitTime(config *Config, op map[string]interface{}, project, activity, userAgent string, timeout time.Duration) error {
 	if val, ok := op["name"]; !ok || val == "" {
 		// This was a synchronous call - there is no operation to wait for.
 		return nil

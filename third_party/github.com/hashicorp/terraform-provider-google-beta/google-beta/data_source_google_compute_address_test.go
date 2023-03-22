@@ -72,16 +72,16 @@ func TestComputeAddressIdParsing(t *testing.T) {
 func TestAccDataSourceComputeAddress(t *testing.T) {
 	t.Parallel()
 
-	addressName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	addressName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	rsName := "foobar"
 	rsFullName := fmt.Sprintf("google_compute_address.%s", rsName)
 	dsName := "my_address"
 	dsFullName := fmt.Sprintf("data.google_compute_address.%s", dsName)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckDataSourceComputeAddressDestroy(t, rsFullName),
 		Steps: []resource.TestStep{
 			{
@@ -148,14 +148,14 @@ func testAccCheckDataSourceComputeAddressDestroy(t *testing.T, name string) reso
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			addressId, err := parseComputeAddressId(rs.Primary.ID, nil)
 			if err != nil {
 				return err
 			}
 
-			_, err = config.NewComputeClient(config.userAgent).Addresses.Get(
+			_, err = config.NewComputeClient(config.UserAgent).Addresses.Get(
 				config.Project, addressId.Region, addressId.Name).Do()
 			if err == nil {
 				return fmt.Errorf("Address still exists")

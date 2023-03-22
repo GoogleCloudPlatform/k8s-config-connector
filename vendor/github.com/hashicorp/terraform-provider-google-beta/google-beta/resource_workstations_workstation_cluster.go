@@ -182,7 +182,7 @@ May be sent on update and delete requests to ensure that the client has an up-to
 
 func resourceWorkstationsWorkstationClusterCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -250,7 +250,7 @@ func resourceWorkstationsWorkstationClusterCreate(d *schema.ResourceData, meta i
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating WorkstationCluster: %s", err)
 	}
@@ -262,7 +262,7 @@ func resourceWorkstationsWorkstationClusterCreate(d *schema.ResourceData, meta i
 	}
 	d.SetId(id)
 
-	err = workstationsOperationWaitTime(
+	err = WorkstationsOperationWaitTime(
 		config, res, project, "Creating WorkstationCluster", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 
@@ -279,7 +279,7 @@ func resourceWorkstationsWorkstationClusterCreate(d *schema.ResourceData, meta i
 
 func resourceWorkstationsWorkstationClusterRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -302,7 +302,7 @@ func resourceWorkstationsWorkstationClusterRead(d *schema.ResourceData, meta int
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("WorkstationsWorkstationCluster %q", d.Id()))
 	}
@@ -353,7 +353,7 @@ func resourceWorkstationsWorkstationClusterRead(d *schema.ResourceData, meta int
 
 func resourceWorkstationsWorkstationClusterUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -437,7 +437,7 @@ func resourceWorkstationsWorkstationClusterUpdate(d *schema.ResourceData, meta i
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating WorkstationCluster %q: %s", d.Id(), err)
@@ -445,7 +445,7 @@ func resourceWorkstationsWorkstationClusterUpdate(d *schema.ResourceData, meta i
 		log.Printf("[DEBUG] Finished updating WorkstationCluster %q: %#v", d.Id(), res)
 	}
 
-	err = workstationsOperationWaitTime(
+	err = WorkstationsOperationWaitTime(
 		config, res, project, "Updating WorkstationCluster", userAgent,
 		d.Timeout(schema.TimeoutUpdate))
 
@@ -458,7 +458,7 @@ func resourceWorkstationsWorkstationClusterUpdate(d *schema.ResourceData, meta i
 
 func resourceWorkstationsWorkstationClusterDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -484,12 +484,12 @@ func resourceWorkstationsWorkstationClusterDelete(d *schema.ResourceData, meta i
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "WorkstationCluster")
 	}
 
-	err = workstationsOperationWaitTime(
+	err = WorkstationsOperationWaitTime(
 		config, res, project, "Deleting WorkstationCluster", userAgent,
 		d.Timeout(schema.TimeoutDelete))
 
@@ -507,7 +507,6 @@ func resourceWorkstationsWorkstationClusterImport(d *schema.ResourceData, meta i
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/workstationClusters/(?P<workstation_cluster_id>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<workstation_cluster_id>[^/]+)",
 		"(?P<location>[^/]+)/(?P<workstation_cluster_id>[^/]+)",
-		"(?P<workstation_cluster_id>[^/]+)",
 	}, d, config); err != nil {
 		return nil, err
 	}
@@ -614,7 +613,7 @@ func flattenWorkstationsWorkstationClusterConditions(v interface{}, d *schema.Re
 func flattenWorkstationsWorkstationClusterConditionsCode(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}

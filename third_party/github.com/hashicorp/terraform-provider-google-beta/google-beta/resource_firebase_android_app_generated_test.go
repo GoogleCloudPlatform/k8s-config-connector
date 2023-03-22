@@ -27,16 +27,16 @@ func TestAccFirebaseAndroidApp_firebaseAndroidAppBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        getTestOrgFromEnv(t),
-		"project_id":    getTestProjectFromEnv(),
-		"package_name":  "android.package.app" + randString(t, 4),
+		"org_id":        GetTestOrgFromEnv(t),
+		"project_id":    GetTestProjectFromEnv(),
+		"package_name":  "android.package.app" + RandString(t, 4),
 		"display_name":  "tf-test Display Name Basic",
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckFirebaseAndroidAppDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -75,7 +75,7 @@ func testAccCheckFirebaseAndroidAppDestroyProducer(t *testing.T) func(s *terrafo
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{FirebaseBasePath}}{{name}}")
 			if err != nil {
@@ -88,7 +88,7 @@ func testAccCheckFirebaseAndroidAppDestroyProducer(t *testing.T) func(s *terrafo
 				billingProject = config.BillingProject
 			}
 
-			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("FirebaseAndroidApp still exists at %s", url)
 			}

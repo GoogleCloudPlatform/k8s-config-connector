@@ -826,7 +826,6 @@ func canonicalizeWorkflowTemplateDesiredState(rawDesired, rawInitial *WorkflowTe
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -959,23 +958,26 @@ func canonicalizeNewWorkflowTemplatePlacementSet(c *Client, des, nw []WorkflowTe
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacement
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacement
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacement(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementSlice(c *Client, des, nw []WorkflowTemplatePlacement) []WorkflowTemplatePlacement {
@@ -1082,23 +1084,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterSet(c *Client, des, n
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedCluster
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedCluster
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedCluster(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedCluster) []WorkflowTemplatePlacementManagedCluster {
@@ -1223,23 +1228,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSet(c *Client, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfig) []WorkflowTemplatePlacementManagedClusterConfig {
@@ -1398,23 +1406,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigGceClusterConfi
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigGceClusterConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigGceClusterConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigGceClusterConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigGceClusterConfig) []WorkflowTemplatePlacementManagedClusterConfigGceClusterConfig {
@@ -1527,23 +1538,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigGceClusterConfi
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigReservationAffinity
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigReservationAffinity
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigReservationAffinityNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigReservationAffinity(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigReservationAffinitySlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigReservationAffinity) []WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigReservationAffinity {
@@ -1639,23 +1653,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigGceClusterConfi
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigNodeGroupAffinity
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigNodeGroupAffinity
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigNodeGroupAffinityNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigNodeGroupAffinity(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigNodeGroupAffinitySlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigNodeGroupAffinity) []WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigNodeGroupAffinity {
@@ -1770,23 +1787,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigGceClusterConfi
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfigSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig) []WorkflowTemplatePlacementManagedClusterConfigGceClusterConfigShieldedInstanceConfig {
@@ -1922,23 +1942,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigMasterConfigSet
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigMasterConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigMasterConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigMasterConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigMasterConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigMasterConfigSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigMasterConfig) []WorkflowTemplatePlacementManagedClusterConfigMasterConfig {
@@ -2049,23 +2072,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigMasterConfigDis
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigMasterConfigDiskConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigMasterConfigDiskConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigMasterConfigDiskConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigMasterConfigDiskConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigMasterConfigDiskConfigSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigMasterConfigDiskConfig) []WorkflowTemplatePlacementManagedClusterConfigMasterConfigDiskConfig {
@@ -2161,23 +2187,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigMasterConfigMan
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigMasterConfigManagedGroupConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigMasterConfigManagedGroupConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigMasterConfigManagedGroupConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigMasterConfigManagedGroupConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigMasterConfigManagedGroupConfigSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigMasterConfigManagedGroupConfig) []WorkflowTemplatePlacementManagedClusterConfigMasterConfigManagedGroupConfig {
@@ -2282,23 +2311,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigMasterConfigAcc
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigMasterConfigAccelerators
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigMasterConfigAccelerators
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigMasterConfigAcceleratorsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigMasterConfigAccelerators(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigMasterConfigAcceleratorsSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigMasterConfigAccelerators) []WorkflowTemplatePlacementManagedClusterConfigMasterConfigAccelerators {
@@ -2434,23 +2466,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigWorkerConfigSet
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigWorkerConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigWorkerConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigWorkerConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigWorkerConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigWorkerConfigSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigWorkerConfig) []WorkflowTemplatePlacementManagedClusterConfigWorkerConfig {
@@ -2561,23 +2596,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigWorkerConfigDis
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigWorkerConfigDiskConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigWorkerConfigDiskConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigWorkerConfigDiskConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigWorkerConfigDiskConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigWorkerConfigDiskConfigSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigWorkerConfigDiskConfig) []WorkflowTemplatePlacementManagedClusterConfigWorkerConfigDiskConfig {
@@ -2673,23 +2711,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigWorkerConfigMan
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigWorkerConfigManagedGroupConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigWorkerConfigManagedGroupConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigWorkerConfigManagedGroupConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigWorkerConfigManagedGroupConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigWorkerConfigManagedGroupConfigSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigWorkerConfigManagedGroupConfig) []WorkflowTemplatePlacementManagedClusterConfigWorkerConfigManagedGroupConfig {
@@ -2794,23 +2835,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigWorkerConfigAcc
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigWorkerConfigAccelerators
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigWorkerConfigAccelerators
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigWorkerConfigAcceleratorsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigWorkerConfigAccelerators(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigWorkerConfigAcceleratorsSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigWorkerConfigAccelerators) []WorkflowTemplatePlacementManagedClusterConfigWorkerConfigAccelerators {
@@ -2946,23 +2990,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecondaryWorker
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfig) []WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfig {
@@ -3073,23 +3120,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecondaryWorker
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigDiskConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigDiskConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigDiskConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigDiskConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigDiskConfigSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigDiskConfig) []WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigDiskConfig {
@@ -3185,23 +3235,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecondaryWorker
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigManagedGroupConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigManagedGroupConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigManagedGroupConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigManagedGroupConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigManagedGroupConfigSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigManagedGroupConfig) []WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigManagedGroupConfig {
@@ -3306,23 +3359,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecondaryWorker
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigAccelerators
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigAccelerators
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigAcceleratorsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigAccelerators(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigAcceleratorsSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigAccelerators) []WorkflowTemplatePlacementManagedClusterConfigSecondaryWorkerConfigAccelerators {
@@ -3433,23 +3489,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSoftwareConfigS
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigSoftwareConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigSoftwareConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigSoftwareConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSoftwareConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSoftwareConfigSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigSoftwareConfig) []WorkflowTemplatePlacementManagedClusterConfigSoftwareConfig {
@@ -3556,23 +3615,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigInitializationA
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigInitializationActions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigInitializationActions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigInitializationActionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigInitializationActions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigInitializationActionsSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigInitializationActions) []WorkflowTemplatePlacementManagedClusterConfigInitializationActions {
@@ -3668,23 +3730,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigEncryptionConfi
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigEncryptionConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigEncryptionConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigEncryptionConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigEncryptionConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigEncryptionConfigSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigEncryptionConfig) []WorkflowTemplatePlacementManagedClusterConfigEncryptionConfig {
@@ -3780,23 +3845,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigAutoscalingConf
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigAutoscalingConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigAutoscalingConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigAutoscalingConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigAutoscalingConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigAutoscalingConfigSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigAutoscalingConfig) []WorkflowTemplatePlacementManagedClusterConfigAutoscalingConfig {
@@ -3889,23 +3957,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecurityConfigS
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigSecurityConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigSecurityConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigSecurityConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecurityConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecurityConfigSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigSecurityConfig) []WorkflowTemplatePlacementManagedClusterConfigSecurityConfig {
@@ -4112,23 +4183,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecurityConfigK
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigSecurityConfigKerberosConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigSecurityConfigKerberosConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigSecurityConfigKerberosConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecurityConfigKerberosConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigSecurityConfigKerberosConfigSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigSecurityConfigKerberosConfig) []WorkflowTemplatePlacementManagedClusterConfigSecurityConfigKerberosConfig {
@@ -4241,23 +4315,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigLifecycleConfig
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigLifecycleConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigLifecycleConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigLifecycleConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigLifecycleConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigLifecycleConfigSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigLifecycleConfig) []WorkflowTemplatePlacementManagedClusterConfigLifecycleConfig {
@@ -4356,23 +4433,26 @@ func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigEndpointConfigS
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementManagedClusterConfigEndpointConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementManagedClusterConfigEndpointConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementManagedClusterConfigEndpointConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigEndpointConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementManagedClusterConfigEndpointConfigSlice(c *Client, des, nw []WorkflowTemplatePlacementManagedClusterConfigEndpointConfig) []WorkflowTemplatePlacementManagedClusterConfigEndpointConfig {
@@ -4477,23 +4557,26 @@ func canonicalizeNewWorkflowTemplatePlacementClusterSelectorSet(c *Client, des, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplatePlacementClusterSelector
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplatePlacementClusterSelector
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplatePlacementClusterSelectorNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplatePlacementClusterSelector(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplatePlacementClusterSelectorSlice(c *Client, des, nw []WorkflowTemplatePlacementClusterSelector) []WorkflowTemplatePlacementClusterSelector {
@@ -4624,23 +4707,26 @@ func canonicalizeNewWorkflowTemplateJobsSet(c *Client, des, nw []WorkflowTemplat
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobs
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobs
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobs(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsSlice(c *Client, des, nw []WorkflowTemplateJobs) []WorkflowTemplateJobs {
@@ -4787,23 +4873,26 @@ func canonicalizeNewWorkflowTemplateJobsHadoopJobSet(c *Client, des, nw []Workfl
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsHadoopJob
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsHadoopJob
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsHadoopJobNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsHadoopJob(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsHadoopJobSlice(c *Client, des, nw []WorkflowTemplateJobsHadoopJob) []WorkflowTemplateJobsHadoopJob {
@@ -4899,23 +4988,26 @@ func canonicalizeNewWorkflowTemplateJobsHadoopJobLoggingConfigSet(c *Client, des
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsHadoopJobLoggingConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsHadoopJobLoggingConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsHadoopJobLoggingConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsHadoopJobLoggingConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsHadoopJobLoggingConfigSlice(c *Client, des, nw []WorkflowTemplateJobsHadoopJobLoggingConfig) []WorkflowTemplateJobsHadoopJobLoggingConfig {
@@ -5062,23 +5154,26 @@ func canonicalizeNewWorkflowTemplateJobsSparkJobSet(c *Client, des, nw []Workflo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsSparkJob
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsSparkJob
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsSparkJobNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsSparkJob(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsSparkJobSlice(c *Client, des, nw []WorkflowTemplateJobsSparkJob) []WorkflowTemplateJobsSparkJob {
@@ -5174,23 +5269,26 @@ func canonicalizeNewWorkflowTemplateJobsSparkJobLoggingConfigSet(c *Client, des,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsSparkJobLoggingConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsSparkJobLoggingConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsSparkJobLoggingConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsSparkJobLoggingConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsSparkJobLoggingConfigSlice(c *Client, des, nw []WorkflowTemplateJobsSparkJobLoggingConfig) []WorkflowTemplateJobsSparkJobLoggingConfig {
@@ -5337,23 +5435,26 @@ func canonicalizeNewWorkflowTemplateJobsPysparkJobSet(c *Client, des, nw []Workf
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsPysparkJob
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsPysparkJob
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsPysparkJobNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsPysparkJob(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsPysparkJobSlice(c *Client, des, nw []WorkflowTemplateJobsPysparkJob) []WorkflowTemplateJobsPysparkJob {
@@ -5449,23 +5550,26 @@ func canonicalizeNewWorkflowTemplateJobsPysparkJobLoggingConfigSet(c *Client, de
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsPysparkJobLoggingConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsPysparkJobLoggingConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsPysparkJobLoggingConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsPysparkJobLoggingConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsPysparkJobLoggingConfigSlice(c *Client, des, nw []WorkflowTemplateJobsPysparkJobLoggingConfig) []WorkflowTemplateJobsPysparkJobLoggingConfig {
@@ -5594,23 +5698,26 @@ func canonicalizeNewWorkflowTemplateJobsHiveJobSet(c *Client, des, nw []Workflow
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsHiveJob
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsHiveJob
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsHiveJobNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsHiveJob(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsHiveJobSlice(c *Client, des, nw []WorkflowTemplateJobsHiveJob) []WorkflowTemplateJobsHiveJob {
@@ -5709,23 +5816,26 @@ func canonicalizeNewWorkflowTemplateJobsHiveJobQueryListSet(c *Client, des, nw [
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsHiveJobQueryList
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsHiveJobQueryList
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsHiveJobQueryListNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsHiveJobQueryList(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsHiveJobQueryListSlice(c *Client, des, nw []WorkflowTemplateJobsHiveJobQueryList) []WorkflowTemplateJobsHiveJobQueryList {
@@ -5856,23 +5966,26 @@ func canonicalizeNewWorkflowTemplateJobsPigJobSet(c *Client, des, nw []WorkflowT
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsPigJob
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsPigJob
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsPigJobNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsPigJob(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsPigJobSlice(c *Client, des, nw []WorkflowTemplateJobsPigJob) []WorkflowTemplateJobsPigJob {
@@ -5971,23 +6084,26 @@ func canonicalizeNewWorkflowTemplateJobsPigJobQueryListSet(c *Client, des, nw []
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsPigJobQueryList
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsPigJobQueryList
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsPigJobQueryListNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsPigJobQueryList(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsPigJobQueryListSlice(c *Client, des, nw []WorkflowTemplateJobsPigJobQueryList) []WorkflowTemplateJobsPigJobQueryList {
@@ -6083,23 +6199,26 @@ func canonicalizeNewWorkflowTemplateJobsPigJobLoggingConfigSet(c *Client, des, n
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsPigJobLoggingConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsPigJobLoggingConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsPigJobLoggingConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsPigJobLoggingConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsPigJobLoggingConfigSlice(c *Client, des, nw []WorkflowTemplateJobsPigJobLoggingConfig) []WorkflowTemplateJobsPigJobLoggingConfig {
@@ -6230,23 +6349,26 @@ func canonicalizeNewWorkflowTemplateJobsSparkRJobSet(c *Client, des, nw []Workfl
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsSparkRJob
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsSparkRJob
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsSparkRJobNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsSparkRJob(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsSparkRJobSlice(c *Client, des, nw []WorkflowTemplateJobsSparkRJob) []WorkflowTemplateJobsSparkRJob {
@@ -6342,23 +6464,26 @@ func canonicalizeNewWorkflowTemplateJobsSparkRJobLoggingConfigSet(c *Client, des
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsSparkRJobLoggingConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsSparkRJobLoggingConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsSparkRJobLoggingConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsSparkRJobLoggingConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsSparkRJobLoggingConfigSlice(c *Client, des, nw []WorkflowTemplateJobsSparkRJobLoggingConfig) []WorkflowTemplateJobsSparkRJobLoggingConfig {
@@ -6481,23 +6606,26 @@ func canonicalizeNewWorkflowTemplateJobsSparkSqlJobSet(c *Client, des, nw []Work
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsSparkSqlJob
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsSparkSqlJob
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsSparkSqlJobNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsSparkSqlJob(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsSparkSqlJobSlice(c *Client, des, nw []WorkflowTemplateJobsSparkSqlJob) []WorkflowTemplateJobsSparkSqlJob {
@@ -6596,23 +6724,26 @@ func canonicalizeNewWorkflowTemplateJobsSparkSqlJobQueryListSet(c *Client, des, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsSparkSqlJobQueryList
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsSparkSqlJobQueryList
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsSparkSqlJobQueryListNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsSparkSqlJobQueryList(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsSparkSqlJobQueryListSlice(c *Client, des, nw []WorkflowTemplateJobsSparkSqlJobQueryList) []WorkflowTemplateJobsSparkSqlJobQueryList {
@@ -6708,23 +6839,26 @@ func canonicalizeNewWorkflowTemplateJobsSparkSqlJobLoggingConfigSet(c *Client, d
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsSparkSqlJobLoggingConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsSparkSqlJobLoggingConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsSparkSqlJobLoggingConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsSparkSqlJobLoggingConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsSparkSqlJobLoggingConfigSlice(c *Client, des, nw []WorkflowTemplateJobsSparkSqlJobLoggingConfig) []WorkflowTemplateJobsSparkSqlJobLoggingConfig {
@@ -6857,23 +6991,26 @@ func canonicalizeNewWorkflowTemplateJobsPrestoJobSet(c *Client, des, nw []Workfl
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsPrestoJob
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsPrestoJob
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsPrestoJobNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsPrestoJob(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsPrestoJobSlice(c *Client, des, nw []WorkflowTemplateJobsPrestoJob) []WorkflowTemplateJobsPrestoJob {
@@ -6972,23 +7109,26 @@ func canonicalizeNewWorkflowTemplateJobsPrestoJobQueryListSet(c *Client, des, nw
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsPrestoJobQueryList
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsPrestoJobQueryList
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsPrestoJobQueryListNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsPrestoJobQueryList(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsPrestoJobQueryListSlice(c *Client, des, nw []WorkflowTemplateJobsPrestoJobQueryList) []WorkflowTemplateJobsPrestoJobQueryList {
@@ -7084,23 +7224,26 @@ func canonicalizeNewWorkflowTemplateJobsPrestoJobLoggingConfigSet(c *Client, des
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsPrestoJobLoggingConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsPrestoJobLoggingConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsPrestoJobLoggingConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsPrestoJobLoggingConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsPrestoJobLoggingConfigSlice(c *Client, des, nw []WorkflowTemplateJobsPrestoJobLoggingConfig) []WorkflowTemplateJobsPrestoJobLoggingConfig {
@@ -7202,23 +7345,26 @@ func canonicalizeNewWorkflowTemplateJobsSchedulingSet(c *Client, des, nw []Workf
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateJobsScheduling
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateJobsScheduling
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateJobsSchedulingNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateJobsScheduling(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateJobsSchedulingSlice(c *Client, des, nw []WorkflowTemplateJobsScheduling) []WorkflowTemplateJobsScheduling {
@@ -7335,23 +7481,26 @@ func canonicalizeNewWorkflowTemplateParametersSet(c *Client, des, nw []WorkflowT
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateParameters
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateParameters
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateParametersNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateParameters(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateParametersSlice(c *Client, des, nw []WorkflowTemplateParameters) []WorkflowTemplateParameters {
@@ -7446,23 +7595,26 @@ func canonicalizeNewWorkflowTemplateParametersValidationSet(c *Client, des, nw [
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateParametersValidation
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateParametersValidation
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateParametersValidationNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateParametersValidation(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateParametersValidationSlice(c *Client, des, nw []WorkflowTemplateParametersValidation) []WorkflowTemplateParametersValidation {
@@ -7561,23 +7713,26 @@ func canonicalizeNewWorkflowTemplateParametersValidationRegexSet(c *Client, des,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateParametersValidationRegex
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateParametersValidationRegex
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateParametersValidationRegexNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateParametersValidationRegex(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateParametersValidationRegexSlice(c *Client, des, nw []WorkflowTemplateParametersValidationRegex) []WorkflowTemplateParametersValidationRegex {
@@ -7676,23 +7831,26 @@ func canonicalizeNewWorkflowTemplateParametersValidationValuesSet(c *Client, des
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkflowTemplateParametersValidationValues
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkflowTemplateParametersValidationValues
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkflowTemplateParametersValidationValuesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkflowTemplateParametersValidationValues(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkflowTemplateParametersValidationValuesSlice(c *Client, des, nw []WorkflowTemplateParametersValidationValues) []WorkflowTemplateParametersValidationValues {
@@ -7810,6 +7968,9 @@ func diffWorkflowTemplate(c *Client, desired, actual *WorkflowTemplate, opts ...
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareWorkflowTemplatePlacementNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

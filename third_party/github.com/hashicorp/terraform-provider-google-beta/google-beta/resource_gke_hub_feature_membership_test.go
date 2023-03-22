@@ -13,18 +13,18 @@ import (
 
 func TestAccGkeHubFeatureMembership_gkehubFeatureAcmUpdate(t *testing.T) {
 	// Multiple fine-grained resources cause VCR to fail
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"org_id":          getTestOrgFromEnv(t),
-		"billing_account": getTestBillingAccountFromEnv(t),
+		"random_suffix":   RandString(t, 10),
+		"org_id":          GetTestOrgFromEnv(t),
+		"billing_account": GetTestBillingAccountFromEnv(t),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckGKEHubFeatureDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -323,18 +323,18 @@ resource "google_gke_hub_feature_membership" "feature_member_3" {
 
 func TestAccGkeHubFeatureMembership_gkehubFeatureAcmAllFields(t *testing.T) {
 	// VCR fails to handle batched project services
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"org_id":          getTestOrgFromEnv(t),
-		"billing_account": getTestBillingAccountFromEnv(t),
+		"random_suffix":   RandString(t, 10),
+		"org_id":          GetTestOrgFromEnv(t),
+		"billing_account": GetTestBillingAccountFromEnv(t),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckGKEHubFeatureDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -582,18 +582,18 @@ resource "google_gke_hub_feature_membership" "feature_member" {
 
 func TestAccGkeHubFeatureMembership_gkehubFeatureAcmOci(t *testing.T) {
 	// Multiple fine-grained resources cause VCR to fail
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"org_id":          getTestOrgFromEnv(t),
-		"billing_account": getTestBillingAccountFromEnv(t),
+		"random_suffix":   RandString(t, 10),
+		"org_id":          GetTestOrgFromEnv(t),
+		"billing_account": GetTestBillingAccountFromEnv(t),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckGKEHubFeatureDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -780,18 +780,18 @@ resource "google_gke_hub_feature_membership" "feature_member" {
 
 func TestAccGkeHubFeatureMembership_gkehubFeatureMesh(t *testing.T) {
 	// VCR fails to handle batched project services
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"org_id":          getTestOrgFromEnv(t),
-		"billing_account": getTestBillingAccountFromEnv(t),
+		"random_suffix":   RandString(t, 10),
+		"org_id":          GetTestOrgFromEnv(t),
+		"billing_account": GetTestBillingAccountFromEnv(t),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckGKEHubFeatureDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -1120,7 +1120,7 @@ resource "google_gke_hub_membership" "membership_acmoci" {
 
 func testAccCheckGkeHubFeatureMembershipPresent(t *testing.T, project, location, feature, membership string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 		obj := &gkehub.FeatureMembership{
 			Feature:    dcl.StringOrNil(feature),
 			Location:   dcl.StringOrNil(location),
@@ -1138,7 +1138,7 @@ func testAccCheckGkeHubFeatureMembershipPresent(t *testing.T, project, location,
 
 func testAccCheckGkeHubFeatureMembershipNotPresent(t *testing.T, project, location, feature, membership string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 		obj := &gkehub.FeatureMembership{
 			Feature:    dcl.StringOrNil(feature),
 			Location:   dcl.StringOrNil(location),

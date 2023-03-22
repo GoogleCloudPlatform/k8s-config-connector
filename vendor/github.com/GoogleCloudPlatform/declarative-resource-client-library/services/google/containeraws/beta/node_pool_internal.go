@@ -644,7 +644,6 @@ func canonicalizeNodePoolDesiredState(rawDesired, rawInitial *NodePool, opts ...
 	} else {
 		canonicalDesired.Cluster = rawDesired.Cluster
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -871,23 +870,26 @@ func canonicalizeNewNodePoolConfigSet(c *Client, des, nw []NodePoolConfig) []Nod
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []NodePoolConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []NodePoolConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareNodePoolConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewNodePoolConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewNodePoolConfigSlice(c *Client, des, nw []NodePoolConfig) []NodePoolConfig {
@@ -1004,23 +1006,26 @@ func canonicalizeNewNodePoolConfigRootVolumeSet(c *Client, des, nw []NodePoolCon
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []NodePoolConfigRootVolume
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []NodePoolConfigRootVolume
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareNodePoolConfigRootVolumeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewNodePoolConfigRootVolume(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewNodePoolConfigRootVolumeSlice(c *Client, des, nw []NodePoolConfigRootVolume) []NodePoolConfigRootVolume {
@@ -1133,23 +1138,26 @@ func canonicalizeNewNodePoolConfigTaintsSet(c *Client, des, nw []NodePoolConfigT
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []NodePoolConfigTaints
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []NodePoolConfigTaints
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareNodePoolConfigTaintsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewNodePoolConfigTaints(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewNodePoolConfigTaintsSlice(c *Client, des, nw []NodePoolConfigTaints) []NodePoolConfigTaints {
@@ -1248,23 +1256,26 @@ func canonicalizeNewNodePoolConfigConfigEncryptionSet(c *Client, des, nw []NodeP
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []NodePoolConfigConfigEncryption
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []NodePoolConfigConfigEncryption
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareNodePoolConfigConfigEncryptionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewNodePoolConfigConfigEncryption(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewNodePoolConfigConfigEncryptionSlice(c *Client, des, nw []NodePoolConfigConfigEncryption) []NodePoolConfigConfigEncryption {
@@ -1363,23 +1374,26 @@ func canonicalizeNewNodePoolConfigSshConfigSet(c *Client, des, nw []NodePoolConf
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []NodePoolConfigSshConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []NodePoolConfigSshConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareNodePoolConfigSshConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewNodePoolConfigSshConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewNodePoolConfigSshConfigSlice(c *Client, des, nw []NodePoolConfigSshConfig) []NodePoolConfigSshConfig {
@@ -1486,23 +1500,26 @@ func canonicalizeNewNodePoolConfigProxyConfigSet(c *Client, des, nw []NodePoolCo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []NodePoolConfigProxyConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []NodePoolConfigProxyConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareNodePoolConfigProxyConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewNodePoolConfigProxyConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewNodePoolConfigProxyConfigSlice(c *Client, des, nw []NodePoolConfigProxyConfig) []NodePoolConfigProxyConfig {
@@ -1598,23 +1615,26 @@ func canonicalizeNewNodePoolConfigInstancePlacementSet(c *Client, des, nw []Node
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []NodePoolConfigInstancePlacement
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []NodePoolConfigInstancePlacement
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareNodePoolConfigInstancePlacementNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewNodePoolConfigInstancePlacement(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewNodePoolConfigInstancePlacementSlice(c *Client, des, nw []NodePoolConfigInstancePlacement) []NodePoolConfigInstancePlacement {
@@ -1721,23 +1741,26 @@ func canonicalizeNewNodePoolConfigAutoscalingMetricsCollectionSet(c *Client, des
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []NodePoolConfigAutoscalingMetricsCollection
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []NodePoolConfigAutoscalingMetricsCollection
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareNodePoolConfigAutoscalingMetricsCollectionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewNodePoolConfigAutoscalingMetricsCollection(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewNodePoolConfigAutoscalingMetricsCollectionSlice(c *Client, des, nw []NodePoolConfigAutoscalingMetricsCollection) []NodePoolConfigAutoscalingMetricsCollection {
@@ -1839,23 +1862,26 @@ func canonicalizeNewNodePoolAutoscalingSet(c *Client, des, nw []NodePoolAutoscal
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []NodePoolAutoscaling
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []NodePoolAutoscaling
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareNodePoolAutoscalingNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewNodePoolAutoscaling(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewNodePoolAutoscalingSlice(c *Client, des, nw []NodePoolAutoscaling) []NodePoolAutoscaling {
@@ -1951,23 +1977,26 @@ func canonicalizeNewNodePoolMaxPodsConstraintSet(c *Client, des, nw []NodePoolMa
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []NodePoolMaxPodsConstraint
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []NodePoolMaxPodsConstraint
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareNodePoolMaxPodsConstraintNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewNodePoolMaxPodsConstraint(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewNodePoolMaxPodsConstraintSlice(c *Client, des, nw []NodePoolMaxPodsConstraint) []NodePoolMaxPodsConstraint {
@@ -2120,6 +2149,9 @@ func diffNodePool(c *Client, desired, actual *NodePool, opts ...dcl.ApplyOption)
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareNodePoolConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

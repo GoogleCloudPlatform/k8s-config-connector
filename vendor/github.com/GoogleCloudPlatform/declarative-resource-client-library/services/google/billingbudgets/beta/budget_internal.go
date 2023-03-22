@@ -483,7 +483,6 @@ func canonicalizeBudgetDesiredState(rawDesired, rawInitial *Budget, opts ...dcl.
 	} else {
 		canonicalDesired.BillingAccount = rawDesired.BillingAccount
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -679,23 +678,26 @@ func canonicalizeNewBudgetBudgetFilterSet(c *Client, des, nw []BudgetBudgetFilte
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []BudgetBudgetFilter
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []BudgetBudgetFilter
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareBudgetBudgetFilterNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewBudgetBudgetFilter(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewBudgetBudgetFilterSlice(c *Client, des, nw []BudgetBudgetFilter) []BudgetBudgetFilter {
@@ -794,23 +796,26 @@ func canonicalizeNewBudgetBudgetFilterLabelsSet(c *Client, des, nw []BudgetBudge
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []BudgetBudgetFilterLabels
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []BudgetBudgetFilterLabels
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareBudgetBudgetFilterLabelsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewBudgetBudgetFilterLabels(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewBudgetBudgetFilterLabelsSlice(c *Client, des, nw []BudgetBudgetFilterLabels) []BudgetBudgetFilterLabels {
@@ -905,23 +910,26 @@ func canonicalizeNewBudgetBudgetFilterCustomPeriodSet(c *Client, des, nw []Budge
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []BudgetBudgetFilterCustomPeriod
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []BudgetBudgetFilterCustomPeriod
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareBudgetBudgetFilterCustomPeriodNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewBudgetBudgetFilterCustomPeriod(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewBudgetBudgetFilterCustomPeriodSlice(c *Client, des, nw []BudgetBudgetFilterCustomPeriod) []BudgetBudgetFilterCustomPeriod {
@@ -1029,23 +1037,26 @@ func canonicalizeNewBudgetBudgetFilterCustomPeriodStartDateSet(c *Client, des, n
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []BudgetBudgetFilterCustomPeriodStartDate
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []BudgetBudgetFilterCustomPeriodStartDate
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareBudgetBudgetFilterCustomPeriodStartDateNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewBudgetBudgetFilterCustomPeriodStartDate(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewBudgetBudgetFilterCustomPeriodStartDateSlice(c *Client, des, nw []BudgetBudgetFilterCustomPeriodStartDate) []BudgetBudgetFilterCustomPeriodStartDate {
@@ -1153,23 +1164,26 @@ func canonicalizeNewBudgetBudgetFilterCustomPeriodEndDateSet(c *Client, des, nw 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []BudgetBudgetFilterCustomPeriodEndDate
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []BudgetBudgetFilterCustomPeriodEndDate
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareBudgetBudgetFilterCustomPeriodEndDateNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewBudgetBudgetFilterCustomPeriodEndDate(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewBudgetBudgetFilterCustomPeriodEndDateSlice(c *Client, des, nw []BudgetBudgetFilterCustomPeriodEndDate) []BudgetBudgetFilterCustomPeriodEndDate {
@@ -1284,23 +1298,26 @@ func canonicalizeNewBudgetAmountSet(c *Client, des, nw []BudgetAmount) []BudgetA
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []BudgetAmount
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []BudgetAmount
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareBudgetAmountNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewBudgetAmount(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewBudgetAmountSlice(c *Client, des, nw []BudgetAmount) []BudgetAmount {
@@ -1411,23 +1428,26 @@ func canonicalizeNewBudgetAmountSpecifiedAmountSet(c *Client, des, nw []BudgetAm
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []BudgetAmountSpecifiedAmount
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []BudgetAmountSpecifiedAmount
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareBudgetAmountSpecifiedAmountNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewBudgetAmountSpecifiedAmount(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewBudgetAmountSpecifiedAmountSlice(c *Client, des, nw []BudgetAmountSpecifiedAmount) []BudgetAmountSpecifiedAmount {
@@ -1515,23 +1535,26 @@ func canonicalizeNewBudgetAmountLastPeriodAmountSet(c *Client, des, nw []BudgetA
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []BudgetAmountLastPeriodAmount
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []BudgetAmountLastPeriodAmount
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareBudgetAmountLastPeriodAmountNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewBudgetAmountLastPeriodAmount(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewBudgetAmountLastPeriodAmountSlice(c *Client, des, nw []BudgetAmountLastPeriodAmount) []BudgetAmountLastPeriodAmount {
@@ -1633,23 +1656,26 @@ func canonicalizeNewBudgetThresholdRulesSet(c *Client, des, nw []BudgetThreshold
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []BudgetThresholdRules
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []BudgetThresholdRules
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareBudgetThresholdRulesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewBudgetThresholdRules(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewBudgetThresholdRulesSlice(c *Client, des, nw []BudgetThresholdRules) []BudgetThresholdRules {
@@ -1770,23 +1796,26 @@ func canonicalizeNewBudgetAllUpdatesRuleSet(c *Client, des, nw []BudgetAllUpdate
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []BudgetAllUpdatesRule
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []BudgetAllUpdatesRule
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareBudgetAllUpdatesRuleNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewBudgetAllUpdatesRule(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewBudgetAllUpdatesRuleSlice(c *Client, des, nw []BudgetAllUpdatesRule) []BudgetAllUpdatesRule {
@@ -1883,6 +1912,9 @@ func diffBudget(c *Client, desired, actual *Budget, opts ...dcl.ApplyOption) ([]
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareBudgetBudgetFilterNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

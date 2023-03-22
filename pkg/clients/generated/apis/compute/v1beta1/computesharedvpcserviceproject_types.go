@@ -36,6 +36,11 @@ import (
 )
 
 type ComputeSharedVPCServiceProjectSpec struct {
+	/* The deletion policy for the shared VPC service. Setting ABANDON allows the resource
+	to be abandoned rather than deleted. Possible values are: "ABANDON". */
+	// +optional
+	DeletionPolicy *string `json:"deletionPolicy,omitempty"`
+
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 }
 

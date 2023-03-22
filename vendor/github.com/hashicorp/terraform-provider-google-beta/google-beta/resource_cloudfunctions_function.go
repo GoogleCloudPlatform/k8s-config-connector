@@ -79,10 +79,43 @@ func validateResourceCloudFunctionsFunctionName(v interface{}, k string) (ws []s
 	return validateRegexp(re)(v, k)
 }
 
+func partsCompare(a, b, reg string) bool {
+
+	regex := regexp.MustCompile(reg)
+	if regex.MatchString(a) && regex.MatchString(b) {
+		aParts := regex.FindStringSubmatch(a)
+		bParts := regex.FindStringSubmatch(b)
+		for i := 0; i < len(aParts); i++ {
+			if aParts[i] != bParts[i] {
+				return false
+			}
+		}
+	} else if regex.MatchString(a) {
+		aParts := regex.FindStringSubmatch(a)
+		if aParts[len(aParts)-1] != b {
+			return false
+		}
+	} else if regex.MatchString(b) {
+		bParts := regex.FindStringSubmatch(b)
+		if bParts[len(bParts)-1] != a {
+			return false
+		}
+	} else {
+		if a != b {
+			return false
+		}
+	}
+
+	return true
+}
+
 // based on compareSelfLinkOrResourceName, but less reusable and allows multi-/
 // strings in the new state (config) part
 func compareSelfLinkOrResourceNameWithMultipleParts(_, old, new string, _ *schema.ResourceData) bool {
-	return strings.HasSuffix(old, new)
+	// two formats based on expandEventTrigger()
+	regex1 := "projects/(.+)/databases/\\(default\\)/documents/(.+)"
+	regex2 := "projects/(.+)/(.+)/(.+)"
+	return partsCompare(old, new, regex1) || partsCompare(old, new, regex2)
 }
 
 func ResourceCloudFunctionsFunction() *schema.Resource {
@@ -430,7 +463,7 @@ func ResourceCloudFunctionsFunction() *schema.Resource {
 
 func resourceCloudFunctionsCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -560,7 +593,7 @@ func resourceCloudFunctionsCreate(d *schema.ResourceData, meta interface{}) erro
 	// We retry the whole create-and-wait because Cloud Functions
 	// will sometimes fail a creation operation entirely if it fails to pull
 	// source code and we need to try the whole creation again.
-	rerr := retryTimeDuration(func() error {
+	rerr := RetryTimeDuration(func() error {
 		op, err := config.NewCloudFunctionsClient(userAgent).Projects.Locations.Functions.Create(
 			cloudFuncId.locationId(), function).Do()
 		if err != nil {
@@ -582,7 +615,7 @@ func resourceCloudFunctionsCreate(d *schema.ResourceData, meta interface{}) erro
 
 func resourceCloudFunctionsRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -712,7 +745,7 @@ func resourceCloudFunctionsRead(d *schema.ResourceData, meta interface{}) error 
 func resourceCloudFunctionsUpdate(d *schema.ResourceData, meta interface{}) error {
 	log.Printf("[DEBUG]: Updating google_cloudfunctions_function")
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -859,7 +892,7 @@ func resourceCloudFunctionsUpdate(d *schema.ResourceData, meta interface{}) erro
 	if len(updateMaskArr) > 0 {
 		log.Printf("[DEBUG] Send Patch CloudFunction Configuration request: %#v", function)
 		updateMask := strings.Join(updateMaskArr, ",")
-		rerr := retryTimeDuration(func() error {
+		rerr := RetryTimeDuration(func() error {
 			op, err := config.NewCloudFunctionsClient(userAgent).Projects.Locations.Functions.Patch(function.Name, function).
 				UpdateMask(updateMask).Do()
 			if err != nil {
@@ -880,7 +913,7 @@ func resourceCloudFunctionsUpdate(d *schema.ResourceData, meta interface{}) erro
 
 func resourceCloudFunctionsDestroy(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}

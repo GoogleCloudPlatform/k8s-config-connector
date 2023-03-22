@@ -490,7 +490,6 @@ func canonicalizeConfigDesiredState(rawDesired, rawInitial *Config, opts ...dcl.
 	} else {
 		canonicalDesired.Project = rawDesired.Project
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -645,23 +644,26 @@ func canonicalizeNewConfigSignInSet(c *Client, des, nw []ConfigSignIn) []ConfigS
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigSignIn
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigSignIn
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigSignInNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigSignIn(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigSignInSlice(c *Client, des, nw []ConfigSignIn) []ConfigSignIn {
@@ -769,23 +771,26 @@ func canonicalizeNewConfigSignInEmailSet(c *Client, des, nw []ConfigSignInEmail)
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigSignInEmail
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigSignInEmail
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigSignInEmailNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigSignInEmail(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigSignInEmailSlice(c *Client, des, nw []ConfigSignInEmail) []ConfigSignInEmail {
@@ -881,23 +886,26 @@ func canonicalizeNewConfigSignInEmailHashConfigSet(c *Client, des, nw []ConfigSi
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigSignInEmailHashConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigSignInEmailHashConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigSignInEmailHashConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigSignInEmailHashConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigSignInEmailHashConfigSlice(c *Client, des, nw []ConfigSignInEmailHashConfig) []ConfigSignInEmailHashConfig {
@@ -1004,23 +1012,26 @@ func canonicalizeNewConfigSignInPhoneNumberSet(c *Client, des, nw []ConfigSignIn
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigSignInPhoneNumber
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigSignInPhoneNumber
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigSignInPhoneNumberNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigSignInPhoneNumber(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigSignInPhoneNumberSlice(c *Client, des, nw []ConfigSignInPhoneNumber) []ConfigSignInPhoneNumber {
@@ -1119,23 +1130,26 @@ func canonicalizeNewConfigSignInAnonymousSet(c *Client, des, nw []ConfigSignInAn
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigSignInAnonymous
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigSignInAnonymous
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigSignInAnonymousNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigSignInAnonymous(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigSignInAnonymousSlice(c *Client, des, nw []ConfigSignInAnonymous) []ConfigSignInAnonymous {
@@ -1231,23 +1245,26 @@ func canonicalizeNewConfigSignInHashConfigSet(c *Client, des, nw []ConfigSignInH
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigSignInHashConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigSignInHashConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigSignInHashConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigSignInHashConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigSignInHashConfigSlice(c *Client, des, nw []ConfigSignInHashConfig) []ConfigSignInHashConfig {
@@ -1350,23 +1367,26 @@ func canonicalizeNewConfigNotificationSet(c *Client, des, nw []ConfigNotificatio
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigNotification
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigNotification
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigNotificationNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigNotification(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigNotificationSlice(c *Client, des, nw []ConfigNotification) []ConfigNotification {
@@ -1483,23 +1503,26 @@ func canonicalizeNewConfigNotificationSendEmailSet(c *Client, des, nw []ConfigNo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigNotificationSendEmail
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigNotificationSendEmail
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigNotificationSendEmailNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigNotificationSendEmail(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigNotificationSendEmailSlice(c *Client, des, nw []ConfigNotificationSendEmail) []ConfigNotificationSendEmail {
@@ -1632,23 +1655,26 @@ func canonicalizeNewConfigNotificationSendEmailSmtpSet(c *Client, des, nw []Conf
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigNotificationSendEmailSmtp
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigNotificationSendEmailSmtp
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigNotificationSendEmailSmtpNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigNotificationSendEmailSmtp(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigNotificationSendEmailSmtpSlice(c *Client, des, nw []ConfigNotificationSendEmailSmtp) []ConfigNotificationSendEmailSmtp {
@@ -1788,23 +1814,26 @@ func canonicalizeNewConfigNotificationSendEmailResetPasswordTemplateSet(c *Clien
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigNotificationSendEmailResetPasswordTemplate
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigNotificationSendEmailResetPasswordTemplate
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigNotificationSendEmailResetPasswordTemplateNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigNotificationSendEmailResetPasswordTemplate(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigNotificationSendEmailResetPasswordTemplateSlice(c *Client, des, nw []ConfigNotificationSendEmailResetPasswordTemplate) []ConfigNotificationSendEmailResetPasswordTemplate {
@@ -1944,23 +1973,26 @@ func canonicalizeNewConfigNotificationSendEmailVerifyEmailTemplateSet(c *Client,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigNotificationSendEmailVerifyEmailTemplate
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigNotificationSendEmailVerifyEmailTemplate
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigNotificationSendEmailVerifyEmailTemplateNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigNotificationSendEmailVerifyEmailTemplate(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigNotificationSendEmailVerifyEmailTemplateSlice(c *Client, des, nw []ConfigNotificationSendEmailVerifyEmailTemplate) []ConfigNotificationSendEmailVerifyEmailTemplate {
@@ -2100,23 +2132,26 @@ func canonicalizeNewConfigNotificationSendEmailChangeEmailTemplateSet(c *Client,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigNotificationSendEmailChangeEmailTemplate
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigNotificationSendEmailChangeEmailTemplate
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigNotificationSendEmailChangeEmailTemplateNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigNotificationSendEmailChangeEmailTemplate(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigNotificationSendEmailChangeEmailTemplateSlice(c *Client, des, nw []ConfigNotificationSendEmailChangeEmailTemplate) []ConfigNotificationSendEmailChangeEmailTemplate {
@@ -2221,23 +2256,26 @@ func canonicalizeNewConfigNotificationSendEmailDnsInfoSet(c *Client, des, nw []C
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigNotificationSendEmailDnsInfo
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigNotificationSendEmailDnsInfo
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigNotificationSendEmailDnsInfoNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigNotificationSendEmailDnsInfo(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigNotificationSendEmailDnsInfoSlice(c *Client, des, nw []ConfigNotificationSendEmailDnsInfo) []ConfigNotificationSendEmailDnsInfo {
@@ -2377,23 +2415,26 @@ func canonicalizeNewConfigNotificationSendEmailRevertSecondFactorAdditionTemplat
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigNotificationSendEmailRevertSecondFactorAdditionTemplate
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigNotificationSendEmailRevertSecondFactorAdditionTemplate
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigNotificationSendEmailRevertSecondFactorAdditionTemplateNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigNotificationSendEmailRevertSecondFactorAdditionTemplate(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigNotificationSendEmailRevertSecondFactorAdditionTemplateSlice(c *Client, des, nw []ConfigNotificationSendEmailRevertSecondFactorAdditionTemplate) []ConfigNotificationSendEmailRevertSecondFactorAdditionTemplate {
@@ -2493,23 +2534,26 @@ func canonicalizeNewConfigNotificationSendSmsSet(c *Client, des, nw []ConfigNoti
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigNotificationSendSms
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigNotificationSendSms
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigNotificationSendSmsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigNotificationSendSms(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigNotificationSendSmsSlice(c *Client, des, nw []ConfigNotificationSendSms) []ConfigNotificationSendSms {
@@ -2602,23 +2646,26 @@ func canonicalizeNewConfigNotificationSendSmsSmsTemplateSet(c *Client, des, nw [
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigNotificationSendSmsSmsTemplate
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigNotificationSendSmsSmsTemplate
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigNotificationSendSmsSmsTemplateNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigNotificationSendSmsSmsTemplate(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigNotificationSendSmsSmsTemplateSlice(c *Client, des, nw []ConfigNotificationSendSmsSmsTemplate) []ConfigNotificationSendSmsSmsTemplate {
@@ -2711,23 +2758,26 @@ func canonicalizeNewConfigQuotaSet(c *Client, des, nw []ConfigQuota) []ConfigQuo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigQuota
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigQuota
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigQuotaNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigQuota(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigQuotaSlice(c *Client, des, nw []ConfigQuota) []ConfigQuota {
@@ -2838,23 +2888,26 @@ func canonicalizeNewConfigQuotaSignUpQuotaConfigSet(c *Client, des, nw []ConfigQ
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigQuotaSignUpQuotaConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigQuotaSignUpQuotaConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigQuotaSignUpQuotaConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigQuotaSignUpQuotaConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigQuotaSignUpQuotaConfigSlice(c *Client, des, nw []ConfigQuotaSignUpQuotaConfig) []ConfigQuotaSignUpQuotaConfig {
@@ -2947,23 +3000,26 @@ func canonicalizeNewConfigMonitoringSet(c *Client, des, nw []ConfigMonitoring) [
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigMonitoring
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigMonitoring
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigMonitoringNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigMonitoring(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigMonitoringSlice(c *Client, des, nw []ConfigMonitoring) []ConfigMonitoring {
@@ -3062,23 +3118,26 @@ func canonicalizeNewConfigMonitoringRequestLoggingSet(c *Client, des, nw []Confi
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigMonitoringRequestLogging
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigMonitoringRequestLogging
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigMonitoringRequestLoggingNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigMonitoringRequestLogging(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigMonitoringRequestLoggingSlice(c *Client, des, nw []ConfigMonitoringRequestLogging) []ConfigMonitoringRequestLogging {
@@ -3183,23 +3242,26 @@ func canonicalizeNewConfigMultiTenantSet(c *Client, des, nw []ConfigMultiTenant)
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigMultiTenant
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigMultiTenant
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigMultiTenantNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigMultiTenant(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigMultiTenantSlice(c *Client, des, nw []ConfigMultiTenant) []ConfigMultiTenant {
@@ -3298,23 +3360,26 @@ func canonicalizeNewConfigClientSet(c *Client, des, nw []ConfigClient) []ConfigC
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigClient
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigClient
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigClientNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigClient(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigClientSlice(c *Client, des, nw []ConfigClient) []ConfigClient {
@@ -3421,23 +3486,26 @@ func canonicalizeNewConfigClientPermissionsSet(c *Client, des, nw []ConfigClient
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigClientPermissions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigClientPermissions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigClientPermissionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigClientPermissions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigClientPermissionsSlice(c *Client, des, nw []ConfigClientPermissions) []ConfigClientPermissions {
@@ -3533,23 +3601,26 @@ func canonicalizeNewConfigMfaSet(c *Client, des, nw []ConfigMfa) []ConfigMfa {
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigMfa
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigMfa
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigMfaNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigMfa(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigMfaSlice(c *Client, des, nw []ConfigMfa) []ConfigMfa {
@@ -3645,23 +3716,26 @@ func canonicalizeNewConfigBlockingFunctionsSet(c *Client, des, nw []ConfigBlocki
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigBlockingFunctions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigBlockingFunctions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigBlockingFunctionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigBlockingFunctions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigBlockingFunctionsSlice(c *Client, des, nw []ConfigBlockingFunctions) []ConfigBlockingFunctions {
@@ -3757,23 +3831,26 @@ func canonicalizeNewConfigBlockingFunctionsTriggersSet(c *Client, des, nw []Conf
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ConfigBlockingFunctionsTriggers
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ConfigBlockingFunctionsTriggers
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareConfigBlockingFunctionsTriggersNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewConfigBlockingFunctionsTriggers(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewConfigBlockingFunctionsTriggersSlice(c *Client, des, nw []ConfigBlockingFunctionsTriggers) []ConfigBlockingFunctionsTriggers {
@@ -3891,6 +3968,9 @@ func diffConfig(c *Client, desired, actual *Config, opts ...dcl.ApplyOption) ([]
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareConfigSignInNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

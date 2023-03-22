@@ -199,6 +199,7 @@ resourcePolicies:
 scheduling:
   automaticRestart: boolean
   instanceTerminationAction: string
+  maintenanceInterval: string
   maxRunDuration:
     nanos: integer
     seconds: integer
@@ -1514,6 +1515,16 @@ local SSD.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Specifies the action GCE should take when SPOT VM is preempted.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scheduling.maintenanceInterval</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Specifies the frequency of planned maintenance events. The accepted values are: PERIODIC.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

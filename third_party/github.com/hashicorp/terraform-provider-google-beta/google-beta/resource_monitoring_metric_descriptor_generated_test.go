@@ -27,12 +27,12 @@ func TestAccMonitoringMetricDescriptor_monitoringMetricDescriptorBasicExample(t 
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckMonitoringMetricDescriptorDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -75,12 +75,12 @@ func TestAccMonitoringMetricDescriptor_monitoringMetricDescriptorAlertExample(t 
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckMonitoringMetricDescriptorDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -132,7 +132,7 @@ func testAccCheckMonitoringMetricDescriptorDestroyProducer(t *testing.T) func(s 
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{MonitoringBasePath}}v3/{{name}}")
 			if err != nil {
@@ -145,7 +145,7 @@ func testAccCheckMonitoringMetricDescriptorDestroyProducer(t *testing.T) func(s 
 				billingProject = config.BillingProject
 			}
 
-			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil, isMonitoringConcurrentEditError)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, isMonitoringConcurrentEditError)
 			if err == nil {
 				return fmt.Errorf("MonitoringMetricDescriptor still exists at %s", url)
 			}

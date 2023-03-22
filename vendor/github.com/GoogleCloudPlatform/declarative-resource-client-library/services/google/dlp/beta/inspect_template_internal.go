@@ -632,7 +632,6 @@ func canonicalizeInspectTemplateDesiredState(rawDesired, rawInitial *InspectTemp
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -794,23 +793,26 @@ func canonicalizeNewInspectTemplateInspectConfigSet(c *Client, des, nw []Inspect
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigSlice(c *Client, des, nw []InspectTemplateInspectConfig) []InspectTemplateInspectConfig {
@@ -909,23 +911,26 @@ func canonicalizeNewInspectTemplateInspectConfigInfoTypesSet(c *Client, des, nw 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigInfoTypes
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigInfoTypes
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigInfoTypesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigInfoTypes(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigInfoTypesSlice(c *Client, des, nw []InspectTemplateInspectConfigInfoTypes) []InspectTemplateInspectConfigInfoTypes {
@@ -1030,23 +1035,26 @@ func canonicalizeNewInspectTemplateInspectConfigLimitsSet(c *Client, des, nw []I
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigLimits
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigLimits
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigLimitsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigLimits(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigLimitsSlice(c *Client, des, nw []InspectTemplateInspectConfigLimits) []InspectTemplateInspectConfigLimits {
@@ -1145,23 +1153,26 @@ func canonicalizeNewInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeSet(
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigLimitsMaxFindingsPerInfoType
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigLimitsMaxFindingsPerInfoType
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigLimitsMaxFindingsPerInfoType(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeSlice(c *Client, des, nw []InspectTemplateInspectConfigLimitsMaxFindingsPerInfoType) []InspectTemplateInspectConfigLimitsMaxFindingsPerInfoType {
@@ -1260,23 +1271,26 @@ func canonicalizeNewInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeInfo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeInfoType
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeInfoType
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeInfoTypeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeInfoType(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeInfoTypeSlice(c *Client, des, nw []InspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeInfoType) []InspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeInfoType {
@@ -1429,23 +1443,26 @@ func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesSet(c *Client, de
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigCustomInfoTypes
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigCustomInfoTypes
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigCustomInfoTypesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigCustomInfoTypes(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesSlice(c *Client, des, nw []InspectTemplateInspectConfigCustomInfoTypes) []InspectTemplateInspectConfigCustomInfoTypes {
@@ -1544,23 +1561,26 @@ func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesInfoTypeSet(c *Cl
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigCustomInfoTypesInfoType
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigCustomInfoTypesInfoType
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigCustomInfoTypesInfoTypeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesInfoType(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesInfoTypeSlice(c *Client, des, nw []InspectTemplateInspectConfigCustomInfoTypesInfoType) []InspectTemplateInspectConfigCustomInfoTypesInfoType {
@@ -1675,23 +1695,26 @@ func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesDictionarySet(c *
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigCustomInfoTypesDictionary
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigCustomInfoTypesDictionary
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigCustomInfoTypesDictionaryNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesDictionary(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesDictionarySlice(c *Client, des, nw []InspectTemplateInspectConfigCustomInfoTypesDictionary) []InspectTemplateInspectConfigCustomInfoTypesDictionary {
@@ -1790,23 +1813,26 @@ func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesDictionaryWordLis
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigCustomInfoTypesDictionaryWordList
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigCustomInfoTypesDictionaryWordList
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigCustomInfoTypesDictionaryWordListNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesDictionaryWordList(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesDictionaryWordListSlice(c *Client, des, nw []InspectTemplateInspectConfigCustomInfoTypesDictionaryWordList) []InspectTemplateInspectConfigCustomInfoTypesDictionaryWordList {
@@ -1905,23 +1931,26 @@ func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesDictionaryCloudSt
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigCustomInfoTypesDictionaryCloudStoragePath
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigCustomInfoTypesDictionaryCloudStoragePath
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigCustomInfoTypesDictionaryCloudStoragePathNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesDictionaryCloudStoragePath(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesDictionaryCloudStoragePathSlice(c *Client, des, nw []InspectTemplateInspectConfigCustomInfoTypesDictionaryCloudStoragePath) []InspectTemplateInspectConfigCustomInfoTypesDictionaryCloudStoragePath {
@@ -2026,23 +2055,26 @@ func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesRegexSet(c *Clien
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigCustomInfoTypesRegex
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigCustomInfoTypesRegex
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigCustomInfoTypesRegexNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesRegex(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesRegexSlice(c *Client, des, nw []InspectTemplateInspectConfigCustomInfoTypesRegex) []InspectTemplateInspectConfigCustomInfoTypesRegex {
@@ -2130,23 +2162,26 @@ func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesSurrogateTypeSet(
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigCustomInfoTypesSurrogateType
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigCustomInfoTypesSurrogateType
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigCustomInfoTypesSurrogateTypeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesSurrogateType(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesSurrogateTypeSlice(c *Client, des, nw []InspectTemplateInspectConfigCustomInfoTypesSurrogateType) []InspectTemplateInspectConfigCustomInfoTypesSurrogateType {
@@ -2242,23 +2277,26 @@ func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesStoredTypeSet(c *
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigCustomInfoTypesStoredType
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigCustomInfoTypesStoredType
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigCustomInfoTypesStoredTypeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesStoredType(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigCustomInfoTypesStoredTypeSlice(c *Client, des, nw []InspectTemplateInspectConfigCustomInfoTypesStoredType) []InspectTemplateInspectConfigCustomInfoTypesStoredType {
@@ -2353,23 +2391,26 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetSet(c *Client, des, nw []
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigRuleSet
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigRuleSet
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigRuleSetNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigRuleSet(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigRuleSetSlice(c *Client, des, nw []InspectTemplateInspectConfigRuleSet) []InspectTemplateInspectConfigRuleSet {
@@ -2468,23 +2509,26 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetInfoTypesSet(c *Client, d
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigRuleSetInfoTypes
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigRuleSetInfoTypes
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigRuleSetInfoTypesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigRuleSetInfoTypes(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigRuleSetInfoTypesSlice(c *Client, des, nw []InspectTemplateInspectConfigRuleSetInfoTypes) []InspectTemplateInspectConfigRuleSetInfoTypes {
@@ -2599,23 +2643,26 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesSet(c *Client, des, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigRuleSetRules
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigRuleSetRules
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigRuleSetRulesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigRuleSetRules(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesSlice(c *Client, des, nw []InspectTemplateInspectConfigRuleSetRules) []InspectTemplateInspectConfigRuleSetRules {
@@ -2712,23 +2759,26 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesHotwordRuleSet(c *Cl
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigRuleSetRulesHotwordRule
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigRuleSetRulesHotwordRule
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigRuleSetRulesHotwordRuleNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigRuleSetRulesHotwordRule(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesHotwordRuleSlice(c *Client, des, nw []InspectTemplateInspectConfigRuleSetRulesHotwordRule) []InspectTemplateInspectConfigRuleSetRulesHotwordRule {
@@ -2833,23 +2883,26 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesHotwordRuleHotwordRe
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigRuleSetRulesHotwordRuleHotwordRegex
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigRuleSetRulesHotwordRuleHotwordRegex
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigRuleSetRulesHotwordRuleHotwordRegexNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigRuleSetRulesHotwordRuleHotwordRegex(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesHotwordRuleHotwordRegexSlice(c *Client, des, nw []InspectTemplateInspectConfigRuleSetRulesHotwordRuleHotwordRegex) []InspectTemplateInspectConfigRuleSetRulesHotwordRuleHotwordRegex {
@@ -2951,23 +3004,26 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesHotwordRuleProximity
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigRuleSetRulesHotwordRuleProximity
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigRuleSetRulesHotwordRuleProximity
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigRuleSetRulesHotwordRuleProximityNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigRuleSetRulesHotwordRuleProximity(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesHotwordRuleProximitySlice(c *Client, des, nw []InspectTemplateInspectConfigRuleSetRulesHotwordRuleProximity) []InspectTemplateInspectConfigRuleSetRulesHotwordRuleProximity {
@@ -3089,23 +3145,26 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustment
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustment
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustment(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentSlice(c *Client, des, nw []InspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustment) []InspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustment {
@@ -3238,23 +3297,26 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleSet(c *
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigRuleSetRulesExclusionRule
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigRuleSetRulesExclusionRule
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRule(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleSlice(c *Client, des, nw []InspectTemplateInspectConfigRuleSetRulesExclusionRule) []InspectTemplateInspectConfigRuleSetRulesExclusionRule {
@@ -3369,23 +3431,26 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleDiction
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionary
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionary
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionary(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionarySlice(c *Client, des, nw []InspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionary) []InspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionary {
@@ -3484,23 +3549,26 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleDiction
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryWordList
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryWordList
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryWordListNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryWordList(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryWordListSlice(c *Client, des, nw []InspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryWordList) []InspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryWordList {
@@ -3599,23 +3667,26 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleDiction
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePath
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePath
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePathNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePath(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePathSlice(c *Client, des, nw []InspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePath) []InspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePath {
@@ -3720,23 +3791,26 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleRegexSe
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigRuleSetRulesExclusionRuleRegex
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigRuleSetRulesExclusionRuleRegex
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleRegexNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleRegex(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleRegexSlice(c *Client, des, nw []InspectTemplateInspectConfigRuleSetRulesExclusionRuleRegex) []InspectTemplateInspectConfigRuleSetRulesExclusionRuleRegex {
@@ -3829,23 +3903,26 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleExclude
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypes
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypes
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypes(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesSlice(c *Client, des, nw []InspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypes) []InspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypes {
@@ -3944,23 +4021,26 @@ func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleExclude
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypes
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypes
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypes(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypesSlice(c *Client, des, nw []InspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypes) []InspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypes {
@@ -4064,6 +4144,9 @@ func diffInspectTemplate(c *Client, desired, actual *InspectTemplate, opts ...dc
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareInspectTemplateInspectConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

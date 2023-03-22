@@ -43,7 +43,7 @@ func ResourceProjectServiceIdentity() *schema.Resource {
 
 func resourceProjectServiceIdentityCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -65,13 +65,13 @@ func resourceProjectServiceIdentityCreate(d *schema.ResourceData, meta interface
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, nil, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, nil, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Service Identity: %s", err)
 	}
 
 	var opRes map[string]interface{}
-	err = serviceUsageOperationWaitTimeWithResponse(
+	err = ServiceUsageOperationWaitTimeWithResponse(
 		config, res, &opRes, billingProject, "Creating Service Identity", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 	if err != nil {

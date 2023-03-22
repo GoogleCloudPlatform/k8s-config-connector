@@ -25,10 +25,10 @@ index 166221a29..4bfc7ff62 100644
 
  	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 @@ -174,6 +175,13 @@ func resourceStorageBucketAccessControlRead(d *schema.ResourceData, meta interfa
-
- 	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+ 
+ 	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
  	if err != nil {
-+		if isGoogleApiErrorWithCode(err, 400) && strings.Contains(err.Error(), "Unknown user email address") {
++		if IsGoogleApiErrorWithCode(err, 400) && strings.Contains(err.Error(), "Unknown user email address") {
 +			// BucketAccessControls.get returns 400 in the case of an unknown email address. As stale access controls
 +			// are pruned when a service account is deleted, this should be treated the same as a bucket access control
 +			// not existing.
@@ -37,4 +37,4 @@ index 166221a29..4bfc7ff62 100644
 +		}
  		return handleNotFoundError(err, d, fmt.Sprintf("StorageBucketAccessControl %q", d.Id()))
  	}
-
+ 

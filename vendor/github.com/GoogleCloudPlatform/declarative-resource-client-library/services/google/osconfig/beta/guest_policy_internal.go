@@ -677,7 +677,6 @@ func canonicalizeGuestPolicyDesiredState(rawDesired, rawInitial *GuestPolicy, op
 	} else {
 		canonicalDesired.Project = rawDesired.Project
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -842,23 +841,26 @@ func canonicalizeNewGuestPolicyAssignmentSet(c *Client, des, nw []GuestPolicyAss
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyAssignment
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyAssignment
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyAssignmentNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyAssignment(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyAssignmentSlice(c *Client, des, nw []GuestPolicyAssignment) []GuestPolicyAssignment {
@@ -954,23 +956,26 @@ func canonicalizeNewGuestPolicyAssignmentGroupLabelsSet(c *Client, des, nw []Gue
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyAssignmentGroupLabels
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyAssignmentGroupLabels
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyAssignmentGroupLabelsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyAssignmentGroupLabels(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyAssignmentGroupLabelsSlice(c *Client, des, nw []GuestPolicyAssignmentGroupLabels) []GuestPolicyAssignmentGroupLabels {
@@ -1085,23 +1090,26 @@ func canonicalizeNewGuestPolicyAssignmentOSTypesSet(c *Client, des, nw []GuestPo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyAssignmentOSTypes
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyAssignmentOSTypes
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyAssignmentOSTypesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyAssignmentOSTypes(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyAssignmentOSTypesSlice(c *Client, des, nw []GuestPolicyAssignmentOSTypes) []GuestPolicyAssignmentOSTypes {
@@ -1212,23 +1220,26 @@ func canonicalizeNewGuestPolicyPackagesSet(c *Client, des, nw []GuestPolicyPacka
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyPackages
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyPackages
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyPackagesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyPackages(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyPackagesSlice(c *Client, des, nw []GuestPolicyPackages) []GuestPolicyPackages {
@@ -1367,23 +1378,26 @@ func canonicalizeNewGuestPolicyPackageRepositoriesSet(c *Client, des, nw []Guest
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyPackageRepositories
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyPackageRepositories
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyPackageRepositoriesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyPackageRepositories(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyPackageRepositoriesSlice(c *Client, des, nw []GuestPolicyPackageRepositories) []GuestPolicyPackageRepositories {
@@ -1512,23 +1526,26 @@ func canonicalizeNewGuestPolicyPackageRepositoriesAptSet(c *Client, des, nw []Gu
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyPackageRepositoriesApt
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyPackageRepositoriesApt
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyPackageRepositoriesAptNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyPackageRepositoriesApt(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyPackageRepositoriesAptSlice(c *Client, des, nw []GuestPolicyPackageRepositoriesApt) []GuestPolicyPackageRepositoriesApt {
@@ -1651,23 +1668,26 @@ func canonicalizeNewGuestPolicyPackageRepositoriesYumSet(c *Client, des, nw []Gu
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyPackageRepositoriesYum
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyPackageRepositoriesYum
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyPackageRepositoriesYumNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyPackageRepositoriesYum(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyPackageRepositoriesYumSlice(c *Client, des, nw []GuestPolicyPackageRepositoriesYum) []GuestPolicyPackageRepositoriesYum {
@@ -1790,23 +1810,26 @@ func canonicalizeNewGuestPolicyPackageRepositoriesZypperSet(c *Client, des, nw [
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyPackageRepositoriesZypper
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyPackageRepositoriesZypper
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyPackageRepositoriesZypperNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyPackageRepositoriesZypper(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyPackageRepositoriesZypperSlice(c *Client, des, nw []GuestPolicyPackageRepositoriesZypper) []GuestPolicyPackageRepositoriesZypper {
@@ -1913,23 +1936,26 @@ func canonicalizeNewGuestPolicyPackageRepositoriesGooSet(c *Client, des, nw []Gu
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyPackageRepositoriesGoo
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyPackageRepositoriesGoo
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyPackageRepositoriesGooNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyPackageRepositoriesGoo(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyPackageRepositoriesGooSlice(c *Client, des, nw []GuestPolicyPackageRepositoriesGoo) []GuestPolicyPackageRepositoriesGoo {
@@ -2068,23 +2094,26 @@ func canonicalizeNewGuestPolicyRecipesSet(c *Client, des, nw []GuestPolicyRecipe
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipes
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipes
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipes(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesSlice(c *Client, des, nw []GuestPolicyRecipes) []GuestPolicyRecipes {
@@ -2195,23 +2224,26 @@ func canonicalizeNewGuestPolicyRecipesArtifactsSet(c *Client, des, nw []GuestPol
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipesArtifacts
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipesArtifacts
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesArtifactsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipesArtifacts(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesArtifactsSlice(c *Client, des, nw []GuestPolicyRecipesArtifacts) []GuestPolicyRecipesArtifacts {
@@ -2318,23 +2350,26 @@ func canonicalizeNewGuestPolicyRecipesArtifactsRemoteSet(c *Client, des, nw []Gu
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipesArtifactsRemote
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipesArtifactsRemote
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesArtifactsRemoteNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipesArtifactsRemote(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesArtifactsRemoteSlice(c *Client, des, nw []GuestPolicyRecipesArtifactsRemote) []GuestPolicyRecipesArtifactsRemote {
@@ -2445,23 +2480,26 @@ func canonicalizeNewGuestPolicyRecipesArtifactsGcsSet(c *Client, des, nw []Guest
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipesArtifactsGcs
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipesArtifactsGcs
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesArtifactsGcsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipesArtifactsGcs(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesArtifactsGcsSlice(c *Client, des, nw []GuestPolicyRecipesArtifactsGcs) []GuestPolicyRecipesArtifactsGcs {
@@ -2566,23 +2604,26 @@ func canonicalizeNewGuestPolicyRecipesInstallStepsSet(c *Client, des, nw []Guest
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipesInstallSteps
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipesInstallSteps
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesInstallStepsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipesInstallSteps(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesInstallStepsSlice(c *Client, des, nw []GuestPolicyRecipesInstallSteps) []GuestPolicyRecipesInstallSteps {
@@ -2705,23 +2746,26 @@ func canonicalizeNewGuestPolicyRecipesInstallStepsFileCopySet(c *Client, des, nw
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipesInstallStepsFileCopy
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipesInstallStepsFileCopy
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesInstallStepsFileCopyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipesInstallStepsFileCopy(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesInstallStepsFileCopySlice(c *Client, des, nw []GuestPolicyRecipesInstallStepsFileCopy) []GuestPolicyRecipesInstallStepsFileCopy {
@@ -2834,23 +2878,26 @@ func canonicalizeNewGuestPolicyRecipesInstallStepsArchiveExtractionSet(c *Client
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipesInstallStepsArchiveExtraction
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipesInstallStepsArchiveExtraction
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesInstallStepsArchiveExtractionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipesInstallStepsArchiveExtraction(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesInstallStepsArchiveExtractionSlice(c *Client, des, nw []GuestPolicyRecipesInstallStepsArchiveExtraction) []GuestPolicyRecipesInstallStepsArchiveExtraction {
@@ -2963,23 +3010,26 @@ func canonicalizeNewGuestPolicyRecipesInstallStepsMsiInstallationSet(c *Client, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipesInstallStepsMsiInstallation
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipesInstallStepsMsiInstallation
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesInstallStepsMsiInstallationNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipesInstallStepsMsiInstallation(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesInstallStepsMsiInstallationSlice(c *Client, des, nw []GuestPolicyRecipesInstallStepsMsiInstallation) []GuestPolicyRecipesInstallStepsMsiInstallation {
@@ -3078,23 +3128,26 @@ func canonicalizeNewGuestPolicyRecipesInstallStepsDpkgInstallationSet(c *Client,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipesInstallStepsDpkgInstallation
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipesInstallStepsDpkgInstallation
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesInstallStepsDpkgInstallationNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipesInstallStepsDpkgInstallation(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesInstallStepsDpkgInstallationSlice(c *Client, des, nw []GuestPolicyRecipesInstallStepsDpkgInstallation) []GuestPolicyRecipesInstallStepsDpkgInstallation {
@@ -3193,23 +3246,26 @@ func canonicalizeNewGuestPolicyRecipesInstallStepsRpmInstallationSet(c *Client, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipesInstallStepsRpmInstallation
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipesInstallStepsRpmInstallation
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesInstallStepsRpmInstallationNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipesInstallStepsRpmInstallation(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesInstallStepsRpmInstallationSlice(c *Client, des, nw []GuestPolicyRecipesInstallStepsRpmInstallation) []GuestPolicyRecipesInstallStepsRpmInstallation {
@@ -3330,23 +3386,26 @@ func canonicalizeNewGuestPolicyRecipesInstallStepsFileExecSet(c *Client, des, nw
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipesInstallStepsFileExec
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipesInstallStepsFileExec
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesInstallStepsFileExecNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipesInstallStepsFileExec(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesInstallStepsFileExecSlice(c *Client, des, nw []GuestPolicyRecipesInstallStepsFileExec) []GuestPolicyRecipesInstallStepsFileExec {
@@ -3457,23 +3516,26 @@ func canonicalizeNewGuestPolicyRecipesInstallStepsScriptRunSet(c *Client, des, n
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipesInstallStepsScriptRun
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipesInstallStepsScriptRun
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesInstallStepsScriptRunNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipesInstallStepsScriptRun(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesInstallStepsScriptRunSlice(c *Client, des, nw []GuestPolicyRecipesInstallStepsScriptRun) []GuestPolicyRecipesInstallStepsScriptRun {
@@ -3578,23 +3640,26 @@ func canonicalizeNewGuestPolicyRecipesUpdateStepsSet(c *Client, des, nw []GuestP
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipesUpdateSteps
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipesUpdateSteps
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesUpdateStepsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipesUpdateSteps(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesUpdateStepsSlice(c *Client, des, nw []GuestPolicyRecipesUpdateSteps) []GuestPolicyRecipesUpdateSteps {
@@ -3717,23 +3782,26 @@ func canonicalizeNewGuestPolicyRecipesUpdateStepsFileCopySet(c *Client, des, nw 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipesUpdateStepsFileCopy
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipesUpdateStepsFileCopy
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesUpdateStepsFileCopyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipesUpdateStepsFileCopy(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesUpdateStepsFileCopySlice(c *Client, des, nw []GuestPolicyRecipesUpdateStepsFileCopy) []GuestPolicyRecipesUpdateStepsFileCopy {
@@ -3846,23 +3914,26 @@ func canonicalizeNewGuestPolicyRecipesUpdateStepsArchiveExtractionSet(c *Client,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipesUpdateStepsArchiveExtraction
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipesUpdateStepsArchiveExtraction
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesUpdateStepsArchiveExtractionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipesUpdateStepsArchiveExtraction(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesUpdateStepsArchiveExtractionSlice(c *Client, des, nw []GuestPolicyRecipesUpdateStepsArchiveExtraction) []GuestPolicyRecipesUpdateStepsArchiveExtraction {
@@ -3975,23 +4046,26 @@ func canonicalizeNewGuestPolicyRecipesUpdateStepsMsiInstallationSet(c *Client, d
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipesUpdateStepsMsiInstallation
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipesUpdateStepsMsiInstallation
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesUpdateStepsMsiInstallationNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipesUpdateStepsMsiInstallation(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesUpdateStepsMsiInstallationSlice(c *Client, des, nw []GuestPolicyRecipesUpdateStepsMsiInstallation) []GuestPolicyRecipesUpdateStepsMsiInstallation {
@@ -4090,23 +4164,26 @@ func canonicalizeNewGuestPolicyRecipesUpdateStepsDpkgInstallationSet(c *Client, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipesUpdateStepsDpkgInstallation
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipesUpdateStepsDpkgInstallation
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesUpdateStepsDpkgInstallationNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipesUpdateStepsDpkgInstallation(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesUpdateStepsDpkgInstallationSlice(c *Client, des, nw []GuestPolicyRecipesUpdateStepsDpkgInstallation) []GuestPolicyRecipesUpdateStepsDpkgInstallation {
@@ -4205,23 +4282,26 @@ func canonicalizeNewGuestPolicyRecipesUpdateStepsRpmInstallationSet(c *Client, d
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipesUpdateStepsRpmInstallation
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipesUpdateStepsRpmInstallation
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesUpdateStepsRpmInstallationNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipesUpdateStepsRpmInstallation(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesUpdateStepsRpmInstallationSlice(c *Client, des, nw []GuestPolicyRecipesUpdateStepsRpmInstallation) []GuestPolicyRecipesUpdateStepsRpmInstallation {
@@ -4342,23 +4422,26 @@ func canonicalizeNewGuestPolicyRecipesUpdateStepsFileExecSet(c *Client, des, nw 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipesUpdateStepsFileExec
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipesUpdateStepsFileExec
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesUpdateStepsFileExecNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipesUpdateStepsFileExec(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesUpdateStepsFileExecSlice(c *Client, des, nw []GuestPolicyRecipesUpdateStepsFileExec) []GuestPolicyRecipesUpdateStepsFileExec {
@@ -4469,23 +4552,26 @@ func canonicalizeNewGuestPolicyRecipesUpdateStepsScriptRunSet(c *Client, des, nw
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GuestPolicyRecipesUpdateStepsScriptRun
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GuestPolicyRecipesUpdateStepsScriptRun
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGuestPolicyRecipesUpdateStepsScriptRunNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGuestPolicyRecipesUpdateStepsScriptRun(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGuestPolicyRecipesUpdateStepsScriptRunSlice(c *Client, des, nw []GuestPolicyRecipesUpdateStepsScriptRun) []GuestPolicyRecipesUpdateStepsScriptRun {
@@ -4596,6 +4682,9 @@ func diffGuestPolicy(c *Client, desired, actual *GuestPolicy, opts ...dcl.ApplyO
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareGuestPolicyAssignmentNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

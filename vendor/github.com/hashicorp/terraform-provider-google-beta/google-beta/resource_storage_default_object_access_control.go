@@ -119,7 +119,7 @@ func ResourceStorageDefaultObjectAccessControl() *schema.Resource {
 
 func resourceStorageDefaultObjectAccessControlCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -170,7 +170,7 @@ func resourceStorageDefaultObjectAccessControlCreate(d *schema.ResourceData, met
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating DefaultObjectAccessControl: %s", err)
 	}
@@ -189,7 +189,7 @@ func resourceStorageDefaultObjectAccessControlCreate(d *schema.ResourceData, met
 
 func resourceStorageDefaultObjectAccessControlRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -206,7 +206,7 @@ func resourceStorageDefaultObjectAccessControlRead(d *schema.ResourceData, meta 
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("StorageDefaultObjectAccessControl %q", d.Id()))
 	}
@@ -241,7 +241,7 @@ func resourceStorageDefaultObjectAccessControlRead(d *schema.ResourceData, meta 
 
 func resourceStorageDefaultObjectAccessControlUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -293,7 +293,7 @@ func resourceStorageDefaultObjectAccessControlUpdate(d *schema.ResourceData, met
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := SendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating DefaultObjectAccessControl %q: %s", d.Id(), err)
@@ -306,7 +306,7 @@ func resourceStorageDefaultObjectAccessControlUpdate(d *schema.ResourceData, met
 
 func resourceStorageDefaultObjectAccessControlDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -333,7 +333,7 @@ func resourceStorageDefaultObjectAccessControlDelete(d *schema.ResourceData, met
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "DefaultObjectAccessControl")
 	}
@@ -379,7 +379,7 @@ func flattenStorageDefaultObjectAccessControlEntityId(v interface{}, d *schema.R
 func flattenStorageDefaultObjectAccessControlGeneration(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}

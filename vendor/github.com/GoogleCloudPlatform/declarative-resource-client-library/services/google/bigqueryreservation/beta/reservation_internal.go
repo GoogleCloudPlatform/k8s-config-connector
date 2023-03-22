@@ -446,7 +446,6 @@ func canonicalizeReservationDesiredState(rawDesired, rawInitial *Reservation, op
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -563,6 +562,9 @@ func diffReservation(c *Client, desired, actual *Reservation, opts ...dcl.ApplyO
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

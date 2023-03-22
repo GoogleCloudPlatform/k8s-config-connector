@@ -513,6 +513,16 @@ spec:
                     required:
                     - rootDirectory
                     type: object
+                  sinkAgentPoolName:
+                    description: Immutable. Specifies the agent pool name associated
+                      with the posix data source. When unspecified, the default name
+                      is used.
+                    type: string
+                  sourceAgentPoolName:
+                    description: Immutable. Specifies the agent pool name associated
+                      with the posix data source. When unspecified, the default name
+                      is used.
+                    type: string
                   transferOptions:
                     description: Characteristics of how to treat files from datasource
                       and sink during job. If the option delete_objects_unique_in_sink

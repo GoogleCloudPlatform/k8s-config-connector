@@ -39,6 +39,17 @@ spec:
     idTemplate: "projects/{{project}}/locations/{{location}}/repositories/{{repository_id}}"
     idTemplateCanBeUsedToMatchResourceName: true
     resourceReferences:
+      - tfField: virtual_repository_config.upstream_policies.repository
+        key: repositoryRef
+        description: |-
+          A reference to the repository resource, for example:
+          "projects/p1/locations/us-central1/repositories/repo1".
+        gvk:
+          kind: ArtifactRegistryRepository
+          version: v1beta1
+          group: artifactregistry.cnrm.cloud.google.com
+        targetField: name
+        valueTemplate: "projects/{{project}}/locations/{{location}}/repositories/{{value}}"
       - tfField: kms_key_name
         key: kmsKeyRef
         description: |-

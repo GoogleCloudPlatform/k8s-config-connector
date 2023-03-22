@@ -34,7 +34,7 @@ func init() {
 func testSweepCloudbuildv2Connection(region string) error {
 	log.Print("[INFO][SWEEPER_LOG] Starting sweeper for Cloudbuildv2Connection")
 
-	config, err := sharedConfigForRegion(region)
+	config, err := SharedConfigForRegion(region)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error getting shared config for region: %s", err)
 		return err
@@ -47,7 +47,7 @@ func testSweepCloudbuildv2Connection(region string) error {
 	}
 
 	t := &testing.T{}
-	billingId := getTestBillingAccountFromEnv(t)
+	billingId := GetTestBillingAccountFromEnv(t)
 
 	// Setup variables to be used for Delete arguments.
 	d := map[string]string{
@@ -58,7 +58,7 @@ func testSweepCloudbuildv2Connection(region string) error {
 		"billing_account": billingId,
 	}
 
-	client := NewDCLCloudbuildv2Client(config, config.userAgent, "", 0)
+	client := NewDCLCloudbuildv2Client(config, config.UserAgent, "", 0)
 	err = client.DeleteAllConnection(context.Background(), d["project"], d["location"], isDeletableCloudbuildv2Connection)
 	if err != nil {
 		return err
@@ -67,5 +67,5 @@ func testSweepCloudbuildv2Connection(region string) error {
 }
 
 func isDeletableCloudbuildv2Connection(r *cloudbuildv2.Connection) bool {
-	return isSweepableTestResource(*r.Name)
+	return IsSweepableTestResource(*r.Name)
 }

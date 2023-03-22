@@ -78,6 +78,9 @@ spec:
                       with a COLLOCATED policy, then exactly 'vm_count' instances must be created at the same time with the resource policy
                       attached. Possible values: ["COLLOCATED"].
                     type: string
+                  maxDistance:
+                    description: Immutable. Specifies the number of max logical switches.
+                    type: integer
                   vmCount:
                     description: |-
                       Immutable. Number of VMs in this placement group. Google does not recommend that you use this field

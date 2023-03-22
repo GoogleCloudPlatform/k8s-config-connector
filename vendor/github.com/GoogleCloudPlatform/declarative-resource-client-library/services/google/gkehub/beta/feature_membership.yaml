@@ -334,9 +334,9 @@ components:
               type: string
               x-dcl-go-name: ControlPlane
               x-dcl-go-type: FeatureMembershipMeshControlPlaneEnum
-              description: 'Whether to automatically manage Service Mesh control planes.
-                Possible values: CONTROL_PLANE_MANAGEMENT_UNSPECIFIED, AUTOMATIC,
-                MANUAL'
+              description: '**DEPRECATED** Whether to automatically manage Service
+                Mesh control planes. Possible values: CONTROL_PLANE_MANAGEMENT_UNSPECIFIED,
+                AUTOMATIC, MANUAL'
               enum:
               - CONTROL_PLANE_MANAGEMENT_UNSPECIFIED
               - AUTOMATIC

@@ -153,7 +153,7 @@ func ResourceVertexAIFeaturestore() *schema.Resource {
 
 func resourceVertexAIFeaturestoreCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -203,7 +203,7 @@ func resourceVertexAIFeaturestoreCreate(d *schema.ResourceData, meta interface{}
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Featurestore: %s", err)
 	}
@@ -218,7 +218,7 @@ func resourceVertexAIFeaturestoreCreate(d *schema.ResourceData, meta interface{}
 	// Use the resource in the operation response to populate
 	// identity fields and d.Id() before read
 	var opRes map[string]interface{}
-	err = vertexAIOperationWaitTimeWithResponse(
+	err = VertexAIOperationWaitTimeWithResponse(
 		config, res, &opRes, project, "Creating Featurestore", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 	if err != nil {
@@ -242,7 +242,7 @@ func resourceVertexAIFeaturestoreCreate(d *schema.ResourceData, meta interface{}
 
 func resourceVertexAIFeaturestoreRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -265,7 +265,7 @@ func resourceVertexAIFeaturestoreRead(d *schema.ResourceData, meta interface{}) 
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("VertexAIFeaturestore %q", d.Id()))
 	}
@@ -304,7 +304,7 @@ func resourceVertexAIFeaturestoreRead(d *schema.ResourceData, meta interface{}) 
 
 func resourceVertexAIFeaturestoreUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -378,7 +378,7 @@ func resourceVertexAIFeaturestoreUpdate(d *schema.ResourceData, meta interface{}
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Featurestore %q: %s", d.Id(), err)
@@ -386,7 +386,7 @@ func resourceVertexAIFeaturestoreUpdate(d *schema.ResourceData, meta interface{}
 		log.Printf("[DEBUG] Finished updating Featurestore %q: %#v", d.Id(), res)
 	}
 
-	err = vertexAIOperationWaitTime(
+	err = VertexAIOperationWaitTime(
 		config, res, project, "Updating Featurestore", userAgent,
 		d.Timeout(schema.TimeoutUpdate))
 
@@ -399,7 +399,7 @@ func resourceVertexAIFeaturestoreUpdate(d *schema.ResourceData, meta interface{}
 
 func resourceVertexAIFeaturestoreDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -432,12 +432,12 @@ func resourceVertexAIFeaturestoreDelete(d *schema.ResourceData, meta interface{}
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "Featurestore")
 	}
 
-	err = vertexAIOperationWaitTime(
+	err = VertexAIOperationWaitTime(
 		config, res, project, "Deleting Featurestore", userAgent,
 		d.Timeout(schema.TimeoutDelete))
 
@@ -505,7 +505,7 @@ func flattenVertexAIFeaturestoreOnlineServingConfig(v interface{}, d *schema.Res
 func flattenVertexAIFeaturestoreOnlineServingConfigFixedNodeCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}
@@ -537,7 +537,7 @@ func flattenVertexAIFeaturestoreOnlineServingConfigScaling(v interface{}, d *sch
 func flattenVertexAIFeaturestoreOnlineServingConfigScalingMinNodeCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}
@@ -554,7 +554,7 @@ func flattenVertexAIFeaturestoreOnlineServingConfigScalingMinNodeCount(v interfa
 func flattenVertexAIFeaturestoreOnlineServingConfigScalingMaxNodeCount(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}
@@ -571,7 +571,7 @@ func flattenVertexAIFeaturestoreOnlineServingConfigScalingMaxNodeCount(v interfa
 func flattenVertexAIFeaturestoreOnlineStorageTtlDays(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}

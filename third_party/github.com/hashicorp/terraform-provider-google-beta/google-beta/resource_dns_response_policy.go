@@ -100,7 +100,7 @@ This should be formatted like
 
 func resourceDNSResponsePolicyCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -150,7 +150,7 @@ func resourceDNSResponsePolicyCreate(d *schema.ResourceData, meta interface{}) e
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating ResponsePolicy: %s", err)
 	}
@@ -169,7 +169,7 @@ func resourceDNSResponsePolicyCreate(d *schema.ResourceData, meta interface{}) e
 
 func resourceDNSResponsePolicyRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -192,7 +192,7 @@ func resourceDNSResponsePolicyRead(d *schema.ResourceData, meta interface{}) err
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("DNSResponsePolicy %q", d.Id()))
 	}
@@ -219,7 +219,7 @@ func resourceDNSResponsePolicyRead(d *schema.ResourceData, meta interface{}) err
 
 func resourceDNSResponsePolicyUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -264,7 +264,7 @@ func resourceDNSResponsePolicyUpdate(d *schema.ResourceData, meta interface{}) e
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating ResponsePolicy %q: %s", d.Id(), err)
@@ -277,7 +277,7 @@ func resourceDNSResponsePolicyUpdate(d *schema.ResourceData, meta interface{}) e
 
 func resourceDNSResponsePolicyDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -306,7 +306,7 @@ func resourceDNSResponsePolicyDelete(d *schema.ResourceData, meta interface{}) e
 			return err
 		}
 
-		_, err = sendRequestWithTimeout(config, "PATCH", project, url, userAgent, patched, d.Timeout(schema.TimeoutUpdate))
+		_, err = SendRequestWithTimeout(config, "PATCH", project, url, userAgent, patched, d.Timeout(schema.TimeoutUpdate))
 		if err != nil {
 			return fmt.Errorf("Error updating Policy %q: %s", d.Id(), err)
 		}
@@ -322,7 +322,7 @@ func resourceDNSResponsePolicyDelete(d *schema.ResourceData, meta interface{}) e
 			return err
 		}
 
-		_, err = sendRequestWithTimeout(config, "PATCH", project, url, userAgent, patched, d.Timeout(schema.TimeoutUpdate))
+		_, err = SendRequestWithTimeout(config, "PATCH", project, url, userAgent, patched, d.Timeout(schema.TimeoutUpdate))
 		if err != nil {
 			return fmt.Errorf("Error updating Policy %q: %s", d.Id(), err)
 		}
@@ -334,7 +334,7 @@ func resourceDNSResponsePolicyDelete(d *schema.ResourceData, meta interface{}) e
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "ResponsePolicy")
 	}

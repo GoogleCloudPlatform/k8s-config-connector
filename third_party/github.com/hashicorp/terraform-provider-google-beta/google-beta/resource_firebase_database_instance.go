@@ -29,7 +29,7 @@ func enableRTDB(config *Config, d *schema.ResourceData, project string, billingP
 		return err
 	}
 
-	res, err := sendRequest(config, "POST", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "POST", billingProject, url, userAgent, nil)
 	if err != nil {
 		return fmt.Errorf("Error reenabling firebase_database_instance %q: %s", d.Id(), err)
 	} else {
@@ -44,7 +44,7 @@ func disableRTDB(config *Config, d *schema.ResourceData, project string, billing
 		return err
 	}
 
-	res, err := sendRequest(config, "POST", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "POST", billingProject, url, userAgent, nil)
 	if err != nil {
 		return fmt.Errorf("Error disabling firebase_database_instance %q: %s", d.Id(), err)
 	} else {
@@ -134,7 +134,7 @@ Learn more about using project identifiers in Google's [AIP 2510 standard](https
 
 func resourceFirebaseDatabaseInstanceCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -166,7 +166,7 @@ func resourceFirebaseDatabaseInstanceCreate(d *schema.ResourceData, meta interfa
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Instance: %s", err)
 	}
@@ -196,7 +196,7 @@ func resourceFirebaseDatabaseInstanceCreate(d *schema.ResourceData, meta interfa
 
 func resourceFirebaseDatabaseInstanceRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -219,7 +219,7 @@ func resourceFirebaseDatabaseInstanceRead(d *schema.ResourceData, meta interface
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("FirebaseDatabaseInstance %q", d.Id()))
 	}
@@ -264,7 +264,7 @@ func resourceFirebaseDatabaseInstanceRead(d *schema.ResourceData, meta interface
 
 func resourceFirebaseDatabaseInstanceUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -318,7 +318,7 @@ func resourceFirebaseDatabaseInstanceUpdate(d *schema.ResourceData, meta interfa
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := SendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Instance %q: %s", d.Id(), err)
@@ -331,7 +331,7 @@ func resourceFirebaseDatabaseInstanceUpdate(d *schema.ResourceData, meta interfa
 
 func resourceFirebaseDatabaseInstanceDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -369,7 +369,7 @@ func resourceFirebaseDatabaseInstanceDelete(d *schema.ResourceData, meta interfa
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "Instance")
 	}

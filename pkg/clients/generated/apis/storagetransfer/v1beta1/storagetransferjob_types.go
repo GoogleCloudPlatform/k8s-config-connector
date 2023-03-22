@@ -271,6 +271,14 @@ type JobTransferSpec struct {
 	// +optional
 	PosixDataSource *JobPosixDataSource `json:"posixDataSource,omitempty"`
 
+	/* Immutable. Specifies the agent pool name associated with the posix data source. When unspecified, the default name is used. */
+	// +optional
+	SinkAgentPoolName *string `json:"sinkAgentPoolName,omitempty"`
+
+	/* Immutable. Specifies the agent pool name associated with the posix data source. When unspecified, the default name is used. */
+	// +optional
+	SourceAgentPoolName *string `json:"sourceAgentPoolName,omitempty"`
+
 	/* Characteristics of how to treat files from datasource and sink during job. If the option delete_objects_unique_in_sink is true, object conditions based on objects' last_modification_time are ignored and do not exclude objects in a data source or a data sink. */
 	// +optional
 	TransferOptions *JobTransferOptions `json:"transferOptions,omitempty"`

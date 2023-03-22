@@ -34,7 +34,7 @@ func (w *FirebaseOperationWaiter) QueryOp() (interface{}, error) {
 	// Returns the proper get.
 	url := fmt.Sprintf("%s%s", w.Config.FirebaseBasePath, w.CommonOperationWaiter.Op.Name)
 
-	return sendRequest(w.Config, "GET", w.Project, url, w.UserAgent, nil)
+	return SendRequest(w.Config, "GET", w.Project, url, w.UserAgent, nil)
 }
 
 func createFirebaseWaiter(config *Config, op map[string]interface{}, project, activity, userAgent string) (*FirebaseOperationWaiter, error) {
@@ -50,7 +50,7 @@ func createFirebaseWaiter(config *Config, op map[string]interface{}, project, ac
 }
 
 // nolint: deadcode,unused
-func firebaseOperationWaitTimeWithResponse(config *Config, op map[string]interface{}, response *map[string]interface{}, project, activity, userAgent string, timeout time.Duration) error {
+func FirebaseOperationWaitTimeWithResponse(config *Config, op map[string]interface{}, response *map[string]interface{}, project, activity, userAgent string, timeout time.Duration) error {
 	w, err := createFirebaseWaiter(config, op, project, activity, userAgent)
 	if err != nil {
 		return err
@@ -61,7 +61,7 @@ func firebaseOperationWaitTimeWithResponse(config *Config, op map[string]interfa
 	return json.Unmarshal([]byte(w.CommonOperationWaiter.Op.Response), response)
 }
 
-func firebaseOperationWaitTime(config *Config, op map[string]interface{}, project, activity, userAgent string, timeout time.Duration) error {
+func FirebaseOperationWaitTime(config *Config, op map[string]interface{}, project, activity, userAgent string, timeout time.Duration) error {
 	if val, ok := op["name"]; !ok || val == "" {
 		// This was a synchronous call - there is no operation to wait for.
 		return nil

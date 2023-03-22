@@ -577,7 +577,6 @@ func canonicalizeTriggerDesiredState(rawDesired, rawInitial *Trigger, opts ...dc
 	} else {
 		canonicalDesired.Channel = rawDesired.Channel
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -754,23 +753,26 @@ func canonicalizeNewTriggerMatchingCriteriaSet(c *Client, des, nw []TriggerMatch
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []TriggerMatchingCriteria
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []TriggerMatchingCriteria
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareTriggerMatchingCriteriaNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewTriggerMatchingCriteria(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewTriggerMatchingCriteriaSlice(c *Client, des, nw []TriggerMatchingCriteria) []TriggerMatchingCriteria {
@@ -921,23 +923,26 @@ func canonicalizeNewTriggerDestinationSet(c *Client, des, nw []TriggerDestinatio
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []TriggerDestination
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []TriggerDestination
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareTriggerDestinationNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewTriggerDestination(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewTriggerDestinationSlice(c *Client, des, nw []TriggerDestination) []TriggerDestination {
@@ -1050,23 +1055,26 @@ func canonicalizeNewTriggerDestinationCloudRunServiceSet(c *Client, des, nw []Tr
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []TriggerDestinationCloudRunService
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []TriggerDestinationCloudRunService
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareTriggerDestinationCloudRunServiceNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewTriggerDestinationCloudRunService(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewTriggerDestinationCloudRunServiceSlice(c *Client, des, nw []TriggerDestinationCloudRunService) []TriggerDestinationCloudRunService {
@@ -1195,23 +1203,26 @@ func canonicalizeNewTriggerDestinationGkeSet(c *Client, des, nw []TriggerDestina
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []TriggerDestinationGke
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []TriggerDestinationGke
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareTriggerDestinationGkeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewTriggerDestinationGke(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewTriggerDestinationGkeSlice(c *Client, des, nw []TriggerDestinationGke) []TriggerDestinationGke {
@@ -1304,23 +1315,26 @@ func canonicalizeNewTriggerTransportSet(c *Client, des, nw []TriggerTransport) [
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []TriggerTransport
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []TriggerTransport
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareTriggerTransportNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewTriggerTransport(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewTriggerTransportSlice(c *Client, des, nw []TriggerTransport) []TriggerTransport {
@@ -1422,23 +1436,26 @@ func canonicalizeNewTriggerTransportPubsubSet(c *Client, des, nw []TriggerTransp
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []TriggerTransportPubsub
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []TriggerTransportPubsub
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareTriggerTransportPubsubNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewTriggerTransportPubsub(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewTriggerTransportPubsubSlice(c *Client, des, nw []TriggerTransportPubsub) []TriggerTransportPubsub {
@@ -1577,6 +1594,9 @@ func diffTrigger(c *Client, desired, actual *Trigger, opts ...dcl.ApplyOption) (
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareTriggerMatchingCriteriaNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

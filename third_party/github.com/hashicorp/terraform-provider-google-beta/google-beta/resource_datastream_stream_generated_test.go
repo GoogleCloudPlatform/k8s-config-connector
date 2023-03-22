@@ -24,17 +24,17 @@ import (
 )
 
 func TestAccDatastreamStream_datastreamStreamBasicExample(t *testing.T) {
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
 		"deletion_protection": false,
-		"random_suffix":       randString(t, 10),
+		"random_suffix":       RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -184,17 +184,18 @@ resource "google_datastream_stream" "default" {
 }
 
 func TestAccDatastreamStream_datastreamStreamFullExample(t *testing.T) {
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
 		"deletion_protection": false,
-		"random_suffix":       randString(t, 10),
+		"stream_cmek":         BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
+		"random_suffix":       RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -312,7 +313,7 @@ resource "google_storage_bucket_iam_member" "reader" {
 }
 
 resource "google_kms_crypto_key_iam_member" "key_user" {
-    crypto_key_id = "tf-test-kms-name%{random_suffix}"
+    crypto_key_id = "%{stream_cmek}"
     role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
     member        = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-datastream.iam.gserviceaccount.com"
 }
@@ -382,7 +383,7 @@ resource "google_datastream_stream" "default" {
         gcs_destination_config {
             path = "mydata"
             file_rotation_mb = 200
-            file_rotation_interval = "900s"
+            file_rotation_interval = "60s"
             json_file_format {
                 schema_file_format = "NO_SCHEMA_FILE"
                 compression = "GZIP"
@@ -409,24 +410,24 @@ resource "google_datastream_stream" "default" {
         }
     }
 
-    customer_managed_encryption_key = "tf-test-kms-name%{random_suffix}"
+    customer_managed_encryption_key = "%{stream_cmek}"
 }
 `, context)
 }
 
 func TestAccDatastreamStream_datastreamStreamBigqueryExample(t *testing.T) {
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
 		"deletion_protection":                     false,
 		"bigquery_destination_table_kms_key_name": BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
-		"random_suffix":                           randString(t, 10),
+		"random_suffix":                           RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -575,7 +576,7 @@ func testAccCheckDatastreamStreamDestroyProducer(t *testing.T) func(s *terraform
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{DatastreamBasePath}}projects/{{project}}/locations/{{location}}/streams/{{stream_id}}")
 			if err != nil {
@@ -588,7 +589,7 @@ func testAccCheckDatastreamStreamDestroyProducer(t *testing.T) func(s *terraform
 				billingProject = config.BillingProject
 			}
 
-			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("DatastreamStream still exists at %s", url)
 			}

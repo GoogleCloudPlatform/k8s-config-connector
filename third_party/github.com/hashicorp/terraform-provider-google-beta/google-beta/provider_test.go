@@ -33,11 +33,11 @@ import (
 	"google.golang.org/api/serviceusage/v1"
 )
 
-var testAccProviders map[string]*schema.Provider
-var testAccProvidersOiCS map[string]*schema.Provider
+var TestAccProviders map[string]*schema.Provider
+var TestAccProvidersOiCS map[string]*schema.Provider
 var testAccProvider *schema.Provider
 
-var credsEnvVars = []string{
+var CredsEnvVars = []string{
 	"GOOGLE_CREDENTIALS",
 	"GOOGLE_CLOUD_KEYFILE_JSON",
 	"GCLOUD_KEYFILE_JSON",
@@ -49,7 +49,7 @@ var projectNumberEnvVars = []string{
 	"GOOGLE_PROJECT_NUMBER",
 }
 
-var projectEnvVars = []string{
+var ProjectEnvVars = []string{
 	"GOOGLE_PROJECT",
 	"GCLOUD_PROJECT",
 	"CLOUDSDK_CORE_PROJECT",
@@ -100,6 +100,8 @@ var orgTargetEnvVars = []string{
 	"GOOGLE_ORG_2",
 }
 
+// This is the billing account that will be charged for the infrastructure used during testing. For
+// that reason, it is also the billing account used for creating new projects.
 var billingAccountEnvVars = []string{
 	"GOOGLE_BILLING_ACCOUNT",
 }
@@ -114,6 +116,8 @@ type VcrSource struct {
 
 var sources map[string]VcrSource
 
+// This is the billing account that will be modified to test billing-related functionality. It is
+// expected to have more permissions granted to the test user and support subaccounts.
 var masterBillingAccountEnvVars = []string{
 	"GOOGLE_MASTER_BILLING_ACCOUNT",
 }
@@ -125,14 +129,14 @@ func init() {
 	configs = make(map[string]*Config)
 	sources = make(map[string]VcrSource)
 	testAccProvider = Provider()
-	testAccProviders = map[string]*schema.Provider{
+	TestAccProviders = map[string]*schema.Provider{
 		"google": testAccProvider,
 	}
 
 	// The OiCS provider map is used to ensure that OiCS examples use `google-beta`
 	// if the example is versioned as beta; normal beta tests should continue to
 	// use the standard provider map.
-	testAccProvidersOiCS = map[string]*schema.Provider{
+	TestAccProvidersOiCS = map[string]*schema.Provider{
 		"google-beta": testAccProvider,
 	}
 }
@@ -175,7 +179,7 @@ func getCachedConfig(ctx context.Context, d *schema.ResourceData, configureFunc 
 	}
 	path := filepath.Join(envPath, vcrFileName(testName))
 
-	rec, err := recorder.NewAsMode(path, vcrMode, config.client.Transport)
+	rec, err := recorder.NewAsMode(path, vcrMode, config.Client.Transport)
 	if err != nil {
 		return nil, diag.FromErr(err)
 	}
@@ -221,7 +225,7 @@ func getCachedConfig(ctx context.Context, d *schema.ResourceData, configureFunc 
 		}
 		return false
 	})
-	config.client.Transport = rec
+	config.Client.Transport = rec
 	configsLock.Lock()
 	configs[testName] = config
 	configsLock.Unlock()
@@ -237,7 +241,7 @@ func closeRecorder(t *testing.T) {
 		// We did not cache the config if it does not use VCR
 		if !t.Failed() && isVcrEnabled() {
 			// If a test succeeds, write new seed/yaml to files
-			err := config.client.Transport.(*recorder.Recorder).Stop()
+			err := config.Client.Transport.(*recorder.Recorder).Stop()
 			if err != nil {
 				t.Error(err)
 			}
@@ -264,7 +268,7 @@ func closeRecorder(t *testing.T) {
 	}
 }
 
-func googleProviderConfig(t *testing.T) *Config {
+func GoogleProviderConfig(t *testing.T) *Config {
 	configsLock.RLock()
 	config, ok := configs[t.Name()]
 	configsLock.RUnlock()
@@ -304,7 +308,7 @@ func isVcrEnabled() bool {
 
 // Wrapper for resource.Test to swap out providers for VCR providers and handle VCR specific things
 // Can be called when VCR is not enabled, and it will behave as normal
-func vcrTest(t *testing.T, c resource.TestCase) {
+func VcrTest(t *testing.T, c resource.TestCase) {
 	if isVcrEnabled() {
 		providers := getTestAccProviders(t.Name(), c)
 		c.Providers = providers
@@ -377,7 +381,7 @@ func readSeedFromFile(fileName string) (int64, error) {
 	// Remove NULL characters from seed
 	data = bytes.Trim(data, "\x00")
 	seed := string(data)
-	return stringToFixed64(seed)
+	return StringToFixed64(seed)
 }
 
 func writeSeedToFile(seed int64, fileName string) error {
@@ -393,7 +397,7 @@ func writeSeedToFile(seed int64, fileName string) error {
 	return nil
 }
 
-func randString(t *testing.T, length int) string {
+func RandString(t *testing.T, length int) string {
 	if !isVcrEnabled() {
 		return acctest.RandString(length)
 	}
@@ -414,7 +418,7 @@ func randString(t *testing.T, length int) string {
 	return string(result)
 }
 
-func randInt(t *testing.T) int {
+func RandInt(t *testing.T) int {
 	if !isVcrEnabled() {
 		return acctest.RandInt()
 	}
@@ -455,12 +459,12 @@ func testAccPreCheck(t *testing.T) {
 		os.Setenv("GOOGLE_CREDENTIALS", string(creds))
 	}
 
-	if v := MultiEnvSearch(credsEnvVars); v == "" {
-		t.Fatalf("One of %s must be set for acceptance tests", strings.Join(credsEnvVars, ", "))
+	if v := MultiEnvSearch(CredsEnvVars); v == "" {
+		t.Fatalf("One of %s must be set for acceptance tests", strings.Join(CredsEnvVars, ", "))
 	}
 
-	if v := MultiEnvSearch(projectEnvVars); v == "" {
-		t.Fatalf("One of %s must be set for acceptance tests", strings.Join(projectEnvVars, ", "))
+	if v := MultiEnvSearch(ProjectEnvVars); v == "" {
+		t.Fatalf("One of %s must be set for acceptance tests", strings.Join(ProjectEnvVars, ", "))
 	}
 
 	if v := MultiEnvSearch(regionEnvVars); v == "" {
@@ -507,13 +511,13 @@ func TestProvider_loadCredentialsFromJSON(t *testing.T) {
 func TestAccProviderBasePath_setBasePath(t *testing.T) {
 	t.Parallel()
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeAddressDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccProviderBasePath_setBasePath("https://www.googleapis.com/compute/beta/", randString(t, 10)),
+				Config: testAccProviderBasePath_setBasePath("https://www.googleapis.com/compute/beta/", RandString(t, 10)),
 			},
 			{
 				ResourceName:      "google_compute_address.default",
@@ -527,13 +531,13 @@ func TestAccProviderBasePath_setBasePath(t *testing.T) {
 func TestAccProviderBasePath_setInvalidBasePath(t *testing.T) {
 	t.Parallel()
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeAddressDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config:      testAccProviderBasePath_setBasePath("https://www.example.com/compute/beta/", randString(t, 10)),
+				Config:      testAccProviderBasePath_setBasePath("https://www.example.com/compute/beta/", RandString(t, 10)),
 				ExpectError: regexp.MustCompile("got HTTP response code 404 with body"),
 			},
 		},
@@ -544,13 +548,13 @@ func TestAccProviderMeta_setModuleName(t *testing.T) {
 	t.Parallel()
 
 	moduleName := "my-module"
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeAddressDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccProviderMeta_setModuleName(moduleName, randString(t, 10)),
+				Config: testAccProviderMeta_setModuleName(moduleName, RandString(t, 10)),
 			},
 			{
 				ResourceName:      "google_compute_address.default",
@@ -563,13 +567,13 @@ func TestAccProviderMeta_setModuleName(t *testing.T) {
 
 func TestAccProviderUserProjectOverride(t *testing.T) {
 	// Parallel fine-grained resource creation
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
-	org := getTestOrgFromEnv(t)
-	billing := getTestBillingAccountFromEnv(t)
-	pid := "tf-test-" + randString(t, 10)
-	topicName := "tf-test-topic-" + randString(t, 10)
+	org := GetTestOrgFromEnv(t)
+	billing := GetTestBillingAccountFromEnv(t)
+	pid := "tf-test-" + RandString(t, 10)
+	topicName := "tf-test-topic-" + RandString(t, 10)
 
 	config := BootstrapConfig(t)
 	accessToken, err := setupProjectsAndGetAccessToken(org, billing, pid, "pubsub", config)
@@ -577,9 +581,9 @@ func TestAccProviderUserProjectOverride(t *testing.T) {
 		t.Error(err)
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		// No TestDestroy since that's not really the point of this test
 		Steps: []resource.TestStep{
 			{
@@ -605,12 +609,12 @@ func TestAccProviderUserProjectOverride(t *testing.T) {
 // a reference to a different resource instead of a project field.
 func TestAccProviderIndirectUserProjectOverride(t *testing.T) {
 	// Parallel fine-grained resource creation
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
-	org := getTestOrgFromEnv(t)
-	billing := getTestBillingAccountFromEnv(t)
-	pid := "tf-test-" + randString(t, 10)
+	org := GetTestOrgFromEnv(t)
+	billing := GetTestBillingAccountFromEnv(t)
+	pid := "tf-test-" + RandString(t, 10)
 
 	config := BootstrapConfig(t)
 	accessToken, err := setupProjectsAndGetAccessToken(org, billing, pid, "cloudkms", config)
@@ -618,9 +622,9 @@ func TestAccProviderIndirectUserProjectOverride(t *testing.T) {
 		t.Error(err)
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		// No TestDestroy since that's not really the point of this test
 		Steps: []resource.TestStep{
 			{
@@ -743,8 +747,8 @@ provider "google" {
 `, accessToken, override)
 }
 
-// getTestRegion has the same logic as the provider's getRegion, to be used in tests.
-func getTestRegion(is *terraform.InstanceState, config *Config) (string, error) {
+// GetTestRegion has the same logic as the provider's getRegion, to be used in tests.
+func GetTestRegion(is *terraform.InstanceState, config *Config) (string, error) {
 	if res, ok := is.Attributes["region"]; ok {
 		return res, nil
 	}
@@ -754,8 +758,8 @@ func getTestRegion(is *terraform.InstanceState, config *Config) (string, error) 
 	return "", fmt.Errorf("%q: required field is not set", "region")
 }
 
-// getTestProject has the same logic as the provider's getProject, to be used in tests.
-func getTestProject(is *terraform.InstanceState, config *Config) (string, error) {
+// GetTestProject has the same logic as the provider's getProject, to be used in tests.
+func GetTestProject(is *terraform.InstanceState, config *Config) (string, error) {
 	if res, ok := is.Attributes["project"]; ok {
 		return res, nil
 	}
@@ -771,85 +775,97 @@ func getTestProjectNumberFromEnv() string {
 }
 
 // testAccPreCheck ensures at least one of the project env variables is set.
-func getTestProjectFromEnv() string {
-	return MultiEnvSearch(projectEnvVars)
+func GetTestProjectFromEnv() string {
+	return MultiEnvSearch(ProjectEnvVars)
 }
 
 // testAccPreCheck ensures at least one of the credentials env variables is set.
-func getTestCredsFromEnv() string {
+func GetTestCredsFromEnv() string {
 	// Return empty string if GOOGLE_USE_DEFAULT_CREDENTIALS is set to true.
-	if MultiEnvSearch(credsEnvVars) == "true" {
+	if MultiEnvSearch(CredsEnvVars) == "true" {
 		return ""
 	}
-	return MultiEnvSearch(credsEnvVars)
+	return MultiEnvSearch(CredsEnvVars)
 }
 
 // testAccPreCheck ensures at least one of the region env variables is set.
-func getTestRegionFromEnv() string {
+func GetTestRegionFromEnv() string {
 	return MultiEnvSearch(regionEnvVars)
 }
 
-func getTestZoneFromEnv() string {
+func GetTestZoneFromEnv() string {
 	return MultiEnvSearch(zoneEnvVars)
 }
 
-func getTestCustIdFromEnv(t *testing.T) string {
-	skipIfEnvNotSet(t, custIdEnvVars...)
+func GetTestCustIdFromEnv(t *testing.T) string {
+	SkipIfEnvNotSet(t, custIdEnvVars...)
 	return MultiEnvSearch(custIdEnvVars)
 }
 
-func getTestIdentityUserFromEnv(t *testing.T) string {
-	skipIfEnvNotSet(t, identityUserEnvVars...)
+func GetTestIdentityUserFromEnv(t *testing.T) string {
+	SkipIfEnvNotSet(t, identityUserEnvVars...)
 	return MultiEnvSearch(identityUserEnvVars)
 }
 
 // Firestore can't be enabled at the same time as Datastore, so we need a new
 // project to manage it until we can enable Firestore programmatically.
-func getTestFirestoreProjectFromEnv(t *testing.T) string {
-	skipIfEnvNotSet(t, firestoreProjectEnvVars...)
+func GetTestFirestoreProjectFromEnv(t *testing.T) string {
+	SkipIfEnvNotSet(t, firestoreProjectEnvVars...)
 	return MultiEnvSearch(firestoreProjectEnvVars)
 }
 
-func getTestOrgFromEnv(t *testing.T) string {
-	skipIfEnvNotSet(t, orgEnvVars...)
+// Returns the raw organization id like 1234567890, skipping the test if one is
+// not found.
+func GetTestOrgFromEnv(t *testing.T) string {
+	SkipIfEnvNotSet(t, orgEnvVars...)
 	return MultiEnvSearch(orgEnvVars)
 }
 
-func getTestOrgDomainFromEnv(t *testing.T) string {
-	skipIfEnvNotSet(t, orgEnvDomainVars...)
+// Alternative to GetTestOrgFromEnv that doesn't need *testing.T
+// If using this, you need to process unset values at the call site
+func UnsafeGetTestOrgFromEnv() string {
+	return MultiEnvSearch(orgEnvVars)
+}
+
+func GetTestOrgDomainFromEnv(t *testing.T) string {
+	SkipIfEnvNotSet(t, orgEnvDomainVars...)
 	return MultiEnvSearch(orgEnvDomainVars)
 }
 
-func getTestOrgTargetFromEnv(t *testing.T) string {
-	skipIfEnvNotSet(t, orgTargetEnvVars...)
+func GetTestOrgTargetFromEnv(t *testing.T) string {
+	SkipIfEnvNotSet(t, orgTargetEnvVars...)
 	return MultiEnvSearch(orgTargetEnvVars)
 }
 
-func getTestBillingAccountFromEnv(t *testing.T) string {
-	skipIfEnvNotSet(t, billingAccountEnvVars...)
+// This is the billing account that will be charged for the infrastructure used during testing. For
+// that reason, it is also the billing account used for creating new projects.
+func GetTestBillingAccountFromEnv(t *testing.T) string {
+	SkipIfEnvNotSet(t, billingAccountEnvVars...)
 	return MultiEnvSearch(billingAccountEnvVars)
 }
 
-func getTestMasterBillingAccountFromEnv(t *testing.T) string {
-	skipIfEnvNotSet(t, masterBillingAccountEnvVars...)
+// This is the billing account that will be modified to test billing-related functionality. It is
+// expected to have more permissions granted to the test user and support subaccounts.
+func GetTestMasterBillingAccountFromEnv(t *testing.T) string {
+	SkipIfEnvNotSet(t, masterBillingAccountEnvVars...)
 	return MultiEnvSearch(masterBillingAccountEnvVars)
 }
 
-func getTestServiceAccountFromEnv(t *testing.T) string {
-	skipIfEnvNotSet(t, serviceAccountEnvVars...)
+func GetTestServiceAccountFromEnv(t *testing.T) string {
+	SkipIfEnvNotSet(t, serviceAccountEnvVars...)
 	return MultiEnvSearch(serviceAccountEnvVars)
 }
 
 // Some tests fail during VCR. One common case is race conditions when creating resources.
 // If a test config adds two fine-grained resources with the same parent it is undefined
 // which will be created first, causing VCR to fail ~50% of the time
-func skipIfVcr(t *testing.T) {
+func SkipIfVcr(t *testing.T) {
 	if isVcrEnabled() {
 		t.Skipf("VCR enabled, skipping test: %s", t.Name())
 	}
 }
 
-func sleepInSecondsForTest(t int) resource.TestCheckFunc {
+func SleepInSecondsForTest(t int) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		time.Sleep(time.Duration(t) * time.Second)
 		return nil
@@ -858,7 +874,7 @@ func sleepInSecondsForTest(t int) resource.TestCheckFunc {
 
 func setupProjectsAndGetAccessToken(org, billing, pid, service string, config *Config) (string, error) {
 	// Create project-1 and project-2
-	rmService := config.NewResourceManagerClient(config.userAgent)
+	rmService := config.NewResourceManagerClient(config.UserAgent)
 
 	project := &cloudresourcemanager.Project{
 		ProjectId: pid,
@@ -870,7 +886,7 @@ func setupProjectsAndGetAccessToken(org, billing, pid, service string, config *C
 	}
 
 	var op *cloudresourcemanager.Operation
-	err := retryTimeDuration(func() (reqErr error) {
+	err := RetryTimeDuration(func() (reqErr error) {
 		op, reqErr = rmService.Projects.Create(project).Do()
 		return reqErr
 	}, 5*time.Minute)
@@ -884,7 +900,7 @@ func setupProjectsAndGetAccessToken(org, billing, pid, service string, config *C
 		return "", err
 	}
 
-	waitErr := resourceManagerOperationWaitTime(config, opAsMap, "creating project", config.userAgent, 5*time.Minute)
+	waitErr := ResourceManagerOperationWaitTime(config, opAsMap, "creating project", config.UserAgent, 5*time.Minute)
 	if waitErr != nil {
 		return "", waitErr
 	}
@@ -892,7 +908,7 @@ func setupProjectsAndGetAccessToken(org, billing, pid, service string, config *C
 	ba := &cloudbilling.ProjectBillingInfo{
 		BillingAccountName: fmt.Sprintf("billingAccounts/%s", billing),
 	}
-	_, err = config.NewBillingClient(config.userAgent).Projects.UpdateBillingInfo(prefixedProject(pid), ba).Do()
+	_, err = config.NewBillingClient(config.UserAgent).Projects.UpdateBillingInfo(PrefixedProject(pid), ba).Do()
 	if err != nil {
 		return "", err
 	}
@@ -901,7 +917,7 @@ func setupProjectsAndGetAccessToken(org, billing, pid, service string, config *C
 	project.ProjectId = p2
 	project.Name = fmt.Sprintf("%s-2", pname)
 
-	err = retryTimeDuration(func() (reqErr error) {
+	err = RetryTimeDuration(func() (reqErr error) {
 		op, reqErr = rmService.Projects.Create(project).Do()
 		return reqErr
 	}, 5*time.Minute)
@@ -915,18 +931,18 @@ func setupProjectsAndGetAccessToken(org, billing, pid, service string, config *C
 		return "", err
 	}
 
-	waitErr = resourceManagerOperationWaitTime(config, opAsMap, "creating project", config.userAgent, 5*time.Minute)
+	waitErr = ResourceManagerOperationWaitTime(config, opAsMap, "creating project", config.UserAgent, 5*time.Minute)
 	if waitErr != nil {
 		return "", waitErr
 	}
 
-	_, err = config.NewBillingClient(config.userAgent).Projects.UpdateBillingInfo(prefixedProject(p2), ba).Do()
+	_, err = config.NewBillingClient(config.UserAgent).Projects.UpdateBillingInfo(PrefixedProject(p2), ba).Do()
 	if err != nil {
 		return "", err
 	}
 
 	// Enable the appropriate service in project-2 only
-	suService := config.NewServiceUsageClient(config.userAgent)
+	suService := config.NewServiceUsageClient(config.UserAgent)
 
 	serviceReq := &serviceusage.BatchEnableServicesRequest{
 		ServiceIds: []string{fmt.Sprintf("%s.googleapis.com", service)},
@@ -939,7 +955,7 @@ func setupProjectsAndGetAccessToken(org, billing, pid, service string, config *C
 
 	// Enable the test runner to create service accounts and get an access token on behalf of
 	// the project 1 service account
-	curEmail, err := GetCurrentUserEmail(config, config.userAgent)
+	curEmail, err := GetCurrentUserEmail(config, config.UserAgent)
 	if err != nil {
 		return "", err
 	}
@@ -954,20 +970,20 @@ func setupProjectsAndGetAccessToken(org, billing, pid, service string, config *C
 		Role:    "roles/iam.serviceAccountCreator",
 	}
 
-	bindings := mergeBindings([]*cloudresourcemanager.Binding{proj1SATokenCreator, proj1SACreator})
+	bindings := MergeBindings([]*cloudresourcemanager.Binding{proj1SATokenCreator, proj1SACreator})
 
 	p, err := rmService.Projects.GetIamPolicy(pid,
 		&cloudresourcemanager.GetIamPolicyRequest{
 			Options: &cloudresourcemanager.GetPolicyOptions{
-				RequestedPolicyVersion: iamPolicyVersion,
+				RequestedPolicyVersion: IamPolicyVersion,
 			},
 		}).Do()
 	if err != nil {
 		return "", err
 	}
 
-	p.Bindings = mergeBindings(append(p.Bindings, bindings...))
-	_, err = config.NewResourceManagerClient(config.userAgent).Projects.SetIamPolicy(pid,
+	p.Bindings = MergeBindings(append(p.Bindings, bindings...))
+	_, err = config.NewResourceManagerClient(config.UserAgent).Projects.SetIamPolicy(pid,
 		&cloudresourcemanager.SetIamPolicyRequest{
 			Policy:     p,
 			UpdateMask: "bindings,etag,auditConfigs",
@@ -996,7 +1012,7 @@ func setupProjectsAndGetAccessToken(org, billing, pid, service string, config *C
 		Role:    fmt.Sprintf("roles/%s.admin", service),
 	}
 
-	bindings = mergeBindings([]*cloudresourcemanager.Binding{proj2ServiceUsageBinding, proj2ServiceAdminBinding})
+	bindings = MergeBindings([]*cloudresourcemanager.Binding{proj2ServiceUsageBinding, proj2ServiceAdminBinding})
 
 	// For KMS test only
 	if service == "cloudkms" {
@@ -1005,21 +1021,21 @@ func setupProjectsAndGetAccessToken(org, billing, pid, service string, config *C
 			Role:    "roles/cloudkms.cryptoKeyEncrypter",
 		}
 
-		bindings = mergeBindings(append(bindings, proj2CryptoKeyBinding))
+		bindings = MergeBindings(append(bindings, proj2CryptoKeyBinding))
 	}
 
 	p, err = rmService.Projects.GetIamPolicy(p2,
 		&cloudresourcemanager.GetIamPolicyRequest{
 			Options: &cloudresourcemanager.GetPolicyOptions{
-				RequestedPolicyVersion: iamPolicyVersion,
+				RequestedPolicyVersion: IamPolicyVersion,
 			},
 		}).Do()
 	if err != nil {
 		return "", err
 	}
 
-	p.Bindings = mergeBindings(append(p.Bindings, bindings...))
-	_, err = config.NewResourceManagerClient(config.userAgent).Projects.SetIamPolicy(p2,
+	p.Bindings = MergeBindings(append(p.Bindings, bindings...))
+	_, err = config.NewResourceManagerClient(config.UserAgent).Projects.SetIamPolicy(p2,
 		&cloudresourcemanager.SetIamPolicyRequest{
 			Policy:     p,
 			UpdateMask: "bindings,etag,auditConfigs",
@@ -1032,7 +1048,7 @@ func setupProjectsAndGetAccessToken(org, billing, pid, service string, config *C
 	// actually usable. Wait a solid 2 minutes to ensure we can use it.
 	time.Sleep(2 * time.Minute)
 
-	iamCredsService := config.NewIamCredentialsClient(config.userAgent)
+	iamCredsService := config.NewIamCredentialsClient(config.UserAgent)
 	tokenRequest := &iamcredentials.GenerateAccessTokenRequest{
 		Lifetime: "300s",
 		Scope:    []string{"https://www.googleapis.com/auth/cloud-platform"},
@@ -1113,4 +1129,18 @@ func reformConfigWithProvider(config, provider string) string {
 	providerReplacementBytes = []byte(providerReplacement)
 	resourceHeader := regexp.MustCompile(`(resource .*google_.* .*\w+.*\{.*)`)
 	return string(resourceHeader.ReplaceAll(configBytes, providerReplacementBytes))
+}
+
+func SkipIfEnvNotSet(t *testing.T, envs ...string) {
+	if t == nil {
+		log.Printf("[DEBUG] Not running inside of test - skip skipping")
+		return
+	}
+
+	for _, k := range envs {
+		if os.Getenv(k) == "" {
+			log.Printf("[DEBUG] Warning - environment variable %s is not set - skipping test %s", k, t.Name())
+			t.Skipf("Environment variable %s is not set", k)
+		}
+	}
 }

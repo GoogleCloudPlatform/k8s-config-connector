@@ -25,28 +25,29 @@ import (
 )
 
 type Cluster struct {
-	Name                   *string                        `json:"name"`
-	Description            *string                        `json:"description"`
-	AzureRegion            *string                        `json:"azureRegion"`
-	ResourceGroupId        *string                        `json:"resourceGroupId"`
-	Client                 *string                        `json:"client"`
-	Networking             *ClusterNetworking             `json:"networking"`
-	ControlPlane           *ClusterControlPlane           `json:"controlPlane"`
-	Authorization          *ClusterAuthorization          `json:"authorization"`
-	State                  *ClusterStateEnum              `json:"state"`
-	Endpoint               *string                        `json:"endpoint"`
-	Uid                    *string                        `json:"uid"`
-	Reconciling            *bool                          `json:"reconciling"`
-	CreateTime             *string                        `json:"createTime"`
-	UpdateTime             *string                        `json:"updateTime"`
-	Etag                   *string                        `json:"etag"`
-	Annotations            map[string]string              `json:"annotations"`
-	WorkloadIdentityConfig *ClusterWorkloadIdentityConfig `json:"workloadIdentityConfig"`
-	Project                *string                        `json:"project"`
-	Location               *string                        `json:"location"`
-	Fleet                  *ClusterFleet                  `json:"fleet"`
-	LoggingConfig          *ClusterLoggingConfig          `json:"loggingConfig"`
-	MonitoringConfig       *ClusterMonitoringConfig       `json:"monitoringConfig"`
+	Name                        *string                             `json:"name"`
+	Description                 *string                             `json:"description"`
+	AzureRegion                 *string                             `json:"azureRegion"`
+	ResourceGroupId             *string                             `json:"resourceGroupId"`
+	Client                      *string                             `json:"client"`
+	AzureServicesAuthentication *ClusterAzureServicesAuthentication `json:"azureServicesAuthentication"`
+	Networking                  *ClusterNetworking                  `json:"networking"`
+	ControlPlane                *ClusterControlPlane                `json:"controlPlane"`
+	Authorization               *ClusterAuthorization               `json:"authorization"`
+	State                       *ClusterStateEnum                   `json:"state"`
+	Endpoint                    *string                             `json:"endpoint"`
+	Uid                         *string                             `json:"uid"`
+	Reconciling                 *bool                               `json:"reconciling"`
+	CreateTime                  *string                             `json:"createTime"`
+	UpdateTime                  *string                             `json:"updateTime"`
+	Etag                        *string                             `json:"etag"`
+	Annotations                 map[string]string                   `json:"annotations"`
+	WorkloadIdentityConfig      *ClusterWorkloadIdentityConfig      `json:"workloadIdentityConfig"`
+	Project                     *string                             `json:"project"`
+	Location                    *string                             `json:"location"`
+	Fleet                       *ClusterFleet                       `json:"fleet"`
+	LoggingConfig               *ClusterLoggingConfig               `json:"loggingConfig"`
+	MonitoringConfig            *ClusterMonitoringConfig            `json:"monitoringConfig"`
 }
 
 func (r *Cluster) String() string {
@@ -105,6 +106,55 @@ func (v ClusterLoggingConfigComponentConfigEnableComponentsEnum) Validate() erro
 		Value: string(v),
 		Valid: []string{},
 	}
+}
+
+type ClusterAzureServicesAuthentication struct {
+	empty         bool    `json:"-"`
+	TenantId      *string `json:"tenantId"`
+	ApplicationId *string `json:"applicationId"`
+}
+
+type jsonClusterAzureServicesAuthentication ClusterAzureServicesAuthentication
+
+func (r *ClusterAzureServicesAuthentication) UnmarshalJSON(data []byte) error {
+	var res jsonClusterAzureServicesAuthentication
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+
+	var m map[string]interface{}
+	json.Unmarshal(data, &m)
+
+	if len(m) == 0 {
+		*r = *EmptyClusterAzureServicesAuthentication
+	} else {
+
+		r.TenantId = res.TenantId
+
+		r.ApplicationId = res.ApplicationId
+
+	}
+	return nil
+}
+
+// This object is used to assert a desired state where this ClusterAzureServicesAuthentication is
+// empty. Go lacks global const objects, but this object should be treated
+// as one. Modifying this object will have undesirable results.
+var EmptyClusterAzureServicesAuthentication *ClusterAzureServicesAuthentication = &ClusterAzureServicesAuthentication{empty: true}
+
+func (r *ClusterAzureServicesAuthentication) Empty() bool {
+	return r.empty
+}
+
+func (r *ClusterAzureServicesAuthentication) String() string {
+	return dcl.SprintResource(r)
+}
+
+func (r *ClusterAzureServicesAuthentication) HashCode() string {
+	// Placeholder for a more complex hash method that handles ordering, etc
+	// Hash resource body for easy comparison later
+	hash := sha256.New().Sum([]byte(r.String()))
+	return fmt.Sprintf("%x", hash)
 }
 
 type ClusterNetworking struct {
@@ -907,28 +957,29 @@ func (r *Cluster) ID() (string, error) {
 	}
 	nr := r.urlNormalized()
 	params := map[string]interface{}{
-		"name":                     dcl.ValueOrEmptyString(nr.Name),
-		"description":              dcl.ValueOrEmptyString(nr.Description),
-		"azure_region":             dcl.ValueOrEmptyString(nr.AzureRegion),
-		"resource_group_id":        dcl.ValueOrEmptyString(nr.ResourceGroupId),
-		"client":                   dcl.ValueOrEmptyString(nr.Client),
-		"networking":               dcl.ValueOrEmptyString(nr.Networking),
-		"control_plane":            dcl.ValueOrEmptyString(nr.ControlPlane),
-		"authorization":            dcl.ValueOrEmptyString(nr.Authorization),
-		"state":                    dcl.ValueOrEmptyString(nr.State),
-		"endpoint":                 dcl.ValueOrEmptyString(nr.Endpoint),
-		"uid":                      dcl.ValueOrEmptyString(nr.Uid),
-		"reconciling":              dcl.ValueOrEmptyString(nr.Reconciling),
-		"create_time":              dcl.ValueOrEmptyString(nr.CreateTime),
-		"update_time":              dcl.ValueOrEmptyString(nr.UpdateTime),
-		"etag":                     dcl.ValueOrEmptyString(nr.Etag),
-		"annotations":              dcl.ValueOrEmptyString(nr.Annotations),
-		"workload_identity_config": dcl.ValueOrEmptyString(nr.WorkloadIdentityConfig),
-		"project":                  dcl.ValueOrEmptyString(nr.Project),
-		"location":                 dcl.ValueOrEmptyString(nr.Location),
-		"fleet":                    dcl.ValueOrEmptyString(nr.Fleet),
-		"logging_config":           dcl.ValueOrEmptyString(nr.LoggingConfig),
-		"monitoring_config":        dcl.ValueOrEmptyString(nr.MonitoringConfig),
+		"name":                          dcl.ValueOrEmptyString(nr.Name),
+		"description":                   dcl.ValueOrEmptyString(nr.Description),
+		"azure_region":                  dcl.ValueOrEmptyString(nr.AzureRegion),
+		"resource_group_id":             dcl.ValueOrEmptyString(nr.ResourceGroupId),
+		"client":                        dcl.ValueOrEmptyString(nr.Client),
+		"azure_services_authentication": dcl.ValueOrEmptyString(nr.AzureServicesAuthentication),
+		"networking":                    dcl.ValueOrEmptyString(nr.Networking),
+		"control_plane":                 dcl.ValueOrEmptyString(nr.ControlPlane),
+		"authorization":                 dcl.ValueOrEmptyString(nr.Authorization),
+		"state":                         dcl.ValueOrEmptyString(nr.State),
+		"endpoint":                      dcl.ValueOrEmptyString(nr.Endpoint),
+		"uid":                           dcl.ValueOrEmptyString(nr.Uid),
+		"reconciling":                   dcl.ValueOrEmptyString(nr.Reconciling),
+		"create_time":                   dcl.ValueOrEmptyString(nr.CreateTime),
+		"update_time":                   dcl.ValueOrEmptyString(nr.UpdateTime),
+		"etag":                          dcl.ValueOrEmptyString(nr.Etag),
+		"annotations":                   dcl.ValueOrEmptyString(nr.Annotations),
+		"workload_identity_config":      dcl.ValueOrEmptyString(nr.WorkloadIdentityConfig),
+		"project":                       dcl.ValueOrEmptyString(nr.Project),
+		"location":                      dcl.ValueOrEmptyString(nr.Location),
+		"fleet":                         dcl.ValueOrEmptyString(nr.Fleet),
+		"logging_config":                dcl.ValueOrEmptyString(nr.LoggingConfig),
+		"monitoring_config":             dcl.ValueOrEmptyString(nr.MonitoringConfig),
 	}
 	return dcl.Nprintf("projects/{{project}}/locations/{{location}}/azureClusters/{{name}}", params), nil
 }

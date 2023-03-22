@@ -395,7 +395,6 @@ func canonicalizeAssignmentDesiredState(rawDesired, rawInitial *Assignment, opts
 	} else {
 		canonicalDesired.Reservation = rawDesired.Reservation
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -497,6 +496,9 @@ func diffAssignment(c *Client, desired, actual *Assignment, opts ...dcl.ApplyOpt
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

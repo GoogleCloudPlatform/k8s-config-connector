@@ -466,7 +466,6 @@ func canonicalizeInstanceDesiredState(rawDesired, rawInitial *Instance, opts ...
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -627,23 +626,26 @@ func canonicalizeNewInstanceFileSharesSet(c *Client, des, nw []InstanceFileShare
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceFileShares
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceFileShares
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceFileSharesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceFileShares(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceFileSharesSlice(c *Client, des, nw []InstanceFileShares) []InstanceFileShares {
@@ -766,23 +768,26 @@ func canonicalizeNewInstanceFileSharesNfsExportOptionsSet(c *Client, des, nw []I
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceFileSharesNfsExportOptions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceFileSharesNfsExportOptions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceFileSharesNfsExportOptionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceFileSharesNfsExportOptions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceFileSharesNfsExportOptionsSlice(c *Client, des, nw []InstanceFileSharesNfsExportOptions) []InstanceFileSharesNfsExportOptions {
@@ -896,23 +901,26 @@ func canonicalizeNewInstanceNetworksSet(c *Client, des, nw []InstanceNetworks) [
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceNetworks
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceNetworks
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceNetworksNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceNetworks(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceNetworksSlice(c *Client, des, nw []InstanceNetworks) []InstanceNetworks {
@@ -1037,6 +1045,9 @@ func diffInstance(c *Client, desired, actual *Instance, opts ...dcl.ApplyOption)
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareInstanceFileSharesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

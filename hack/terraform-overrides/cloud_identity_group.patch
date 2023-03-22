@@ -10,9 +10,9 @@ index 900830ffb..74855e0dd 100644
  )
  
  func ResourceCloudIdentityGroup() *schema.Resource {
-@@ -292,6 +293,11 @@ func resourceCloudIdentityGroupRead(d *schema.ResourceData, meta interface{}) er
+@@ -293,6 +294,11 @@ func resourceCloudIdentityGroupRead(d *schema.ResourceData, meta interface{}) er
  
- 	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+ 	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
  	if err != nil {
 +		if gerr, ok := err.(*googleapi.Error); ok && gerr.Code == 403 && strings.Contains(gerr.Message, "Permission denied") {
 +			// Deleted or uncreated Groups will always return 403 on GET

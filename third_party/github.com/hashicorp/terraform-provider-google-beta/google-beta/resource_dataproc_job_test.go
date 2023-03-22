@@ -26,9 +26,9 @@ type jobTestField struct {
 // func TestAccDataprocJob_failForMissingJobConfig(t *testing.T) {
 // 	t.Parallel()
 
-// 	vcrTest(t, resource.TestCase{
+// 	VcrTest(t, resource.TestCase{
 // 		PreCheck:     func() { testAccPreCheck(t) },
-// 		Providers:    testAccProviders,
+// 		Providers:    TestAccProviders,
 // 		CheckDestroy: testAccCheckDataprocJobDestroyProducer(t),
 // 		Steps: []resource.TestStep{
 // 			{
@@ -43,11 +43,11 @@ func TestAccDataprocJob_updatable(t *testing.T) {
 	t.Parallel()
 
 	var job dataproc.Job
-	rnd := randString(t, 10)
+	rnd := RandString(t, 10)
 	jobId := fmt.Sprintf("dproc-update-job-id-%s", rnd)
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckDataprocJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -72,11 +72,11 @@ func TestAccDataprocJob_PySpark(t *testing.T) {
 	t.Parallel()
 
 	var job dataproc.Job
-	rnd := randString(t, 10)
+	rnd := RandString(t, 10)
 	jobId := fmt.Sprintf("dproc-custom-job-id-%s", rnd)
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckDataprocJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -111,10 +111,10 @@ func TestAccDataprocJob_Spark(t *testing.T) {
 	t.Parallel()
 
 	var job dataproc.Job
-	rnd := randString(t, 10)
-	vcrTest(t, resource.TestCase{
+	rnd := RandString(t, 10)
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckDataprocJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -143,10 +143,10 @@ func TestAccDataprocJob_Hadoop(t *testing.T) {
 	t.Parallel()
 
 	var job dataproc.Job
-	rnd := randString(t, 10)
-	vcrTest(t, resource.TestCase{
+	rnd := RandString(t, 10)
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckDataprocJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -175,10 +175,10 @@ func TestAccDataprocJob_Hive(t *testing.T) {
 	t.Parallel()
 
 	var job dataproc.Job
-	rnd := randString(t, 10)
-	vcrTest(t, resource.TestCase{
+	rnd := RandString(t, 10)
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckDataprocJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -207,10 +207,10 @@ func TestAccDataprocJob_Pig(t *testing.T) {
 	t.Parallel()
 
 	var job dataproc.Job
-	rnd := randString(t, 10)
-	vcrTest(t, resource.TestCase{
+	rnd := RandString(t, 10)
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckDataprocJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -239,10 +239,10 @@ func TestAccDataprocJob_SparkSql(t *testing.T) {
 	t.Parallel()
 
 	var job dataproc.Job
-	rnd := randString(t, 10)
-	vcrTest(t, resource.TestCase{
+	rnd := RandString(t, 10)
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckDataprocJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -271,10 +271,10 @@ func TestAccDataprocJob_Presto(t *testing.T) {
 	t.Parallel()
 
 	var job dataproc.Job
-	rnd := randString(t, 10)
-	vcrTest(t, resource.TestCase{
+	rnd := RandString(t, 10)
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckDataprocJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -301,7 +301,7 @@ func TestAccDataprocJob_Presto(t *testing.T) {
 
 func testAccCheckDataprocJobDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
 		for _, rs := range s.RootModule().Resources {
 			if rs.Type != "google_dataproc_job" {
@@ -313,14 +313,14 @@ func testAccCheckDataprocJobDestroyProducer(t *testing.T) func(s *terraform.Stat
 			}
 			attributes := rs.Primary.Attributes
 
-			project, err := getTestProject(rs.Primary, config)
+			project, err := GetTestProject(rs.Primary, config)
 			if err != nil {
 				return err
 			}
 
 			parts := strings.Split(rs.Primary.ID, "/")
 			job_id := parts[len(parts)-1]
-			_, err = config.NewDataprocClient(config.userAgent).Projects.Regions.Jobs.Get(
+			_, err = config.NewDataprocClient(config.UserAgent).Projects.Regions.Jobs.Get(
 				project, attributes["region"], job_id).Do()
 			if err != nil {
 				if gerr, ok := err.(*googleapi.Error); ok && gerr.Code == 404 {
@@ -339,23 +339,23 @@ func testAccCheckDataprocJobDestroyProducer(t *testing.T) func(s *terraform.Stat
 
 func testAccCheckDataprocJobCompletesSuccessfully(t *testing.T, n string, job *dataproc.Job) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
 		attributes := s.RootModule().Resources[n].Primary.Attributes
 		region := attributes["region"]
-		project, err := getTestProject(s.RootModule().Resources[n].Primary, config)
+		project, err := GetTestProject(s.RootModule().Resources[n].Primary, config)
 		if err != nil {
 			return err
 		}
 
 		jobCompleteTimeoutMins := 5 * time.Minute
 		waitErr := dataprocJobOperationWait(config, region, project, job.Reference.JobId,
-			"Awaiting Dataproc job completion", config.userAgent, jobCompleteTimeoutMins)
+			"Awaiting Dataproc job completion", config.UserAgent, jobCompleteTimeoutMins)
 		if waitErr != nil {
 			return waitErr
 		}
 
-		completeJob, err := config.NewDataprocClient(config.userAgent).Projects.Regions.Jobs.Get(
+		completeJob, err := config.NewDataprocClient(config.UserAgent).Projects.Regions.Jobs.Get(
 			project, region, job.Reference.JobId).Do()
 		if err != nil {
 			return err
@@ -368,12 +368,12 @@ func testAccCheckDataprocJobCompletesSuccessfully(t *testing.T, n string, job *d
 			if len(u) != 2 {
 				return fmt.Errorf("Job completed in ERROR state but no valid log URI found")
 			}
-			l, err := config.NewStorageClient(config.userAgent).Objects.List(u[0]).Prefix(u[1]).Do()
+			l, err := config.NewStorageClient(config.UserAgent).Objects.List(u[0]).Prefix(u[1]).Do()
 			if err != nil {
 				return errwrap.Wrapf("Job completed in ERROR state, found error when trying to list logs: {{err}}", err)
 			}
 			for _, item := range l.Items {
-				resp, err := config.NewStorageClient(config.userAgent).Objects.Get(item.Bucket, item.Name).Download()
+				resp, err := config.NewStorageClient(config.UserAgent).Objects.Get(item.Bucket, item.Name).Download()
 				if err != nil {
 					return errwrap.Wrapf("Job completed in ERROR state, found error when trying to read logs: {{err}}", err)
 				}
@@ -404,15 +404,15 @@ func testAccCheckDataprocJobExists(t *testing.T, n string, job *dataproc.Job) re
 			return fmt.Errorf("No ID is set for Dataproc job")
 		}
 
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 		parts := strings.Split(s.RootModule().Resources[n].Primary.ID, "/")
 		jobId := parts[len(parts)-1]
-		project, err := getTestProject(s.RootModule().Resources[n].Primary, config)
+		project, err := GetTestProject(s.RootModule().Resources[n].Primary, config)
 		if err != nil {
 			return err
 		}
 
-		found, err := config.NewDataprocClient(config.userAgent).Projects.Regions.Jobs.Get(
+		found, err := config.NewDataprocClient(config.UserAgent).Projects.Regions.Jobs.Get(
 			project, rs.Primary.Attributes["region"], jobId).Do()
 		if err != nil {
 			return err

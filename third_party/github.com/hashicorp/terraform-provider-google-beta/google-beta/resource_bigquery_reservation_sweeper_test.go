@@ -21,7 +21,7 @@ func testSweepBigqueryReservation(region string) error {
 	resourceName := "BigqueryReservation"
 	log.Printf("[INFO][SWEEPER_LOG] Starting sweeper for %s", resourceName)
 
-	config, err := sharedConfigForRegion(region)
+	config, err := SharedConfigForRegion(region)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error getting shared config for region: %s", err)
 		return err
@@ -33,7 +33,7 @@ func testSweepBigqueryReservation(region string) error {
 		return err
 	}
 	servicesUrl := config.BigqueryReservationBasePath + "projects/" + config.Project + "/locations/" + region + "/reservations"
-	res, err := sendRequest(config, "GET", config.Project, servicesUrl, config.userAgent, nil)
+	res, err := SendRequest(config, "GET", config.Project, servicesUrl, config.UserAgent, nil)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] Error in response from request %s: %s", servicesUrl, err)
 		return nil
@@ -61,7 +61,7 @@ func testSweepBigqueryReservation(region string) error {
 		reservationNameParts := strings.Split(reservationName, "/")
 		reservationShortName := reservationNameParts[len(reservationNameParts)-1]
 		// Increment count and skip if resource is not sweepable.
-		if !isSweepableTestResource(reservationShortName) {
+		if !IsSweepableTestResource(reservationShortName) {
 			nonPrefixCount++
 			continue
 		}
@@ -70,7 +70,7 @@ func testSweepBigqueryReservation(region string) error {
 
 		deleteUrl := servicesUrl + "/" + reservationShortName
 		// Don't wait on operations as we may have a lot to delete
-		_, err = sendRequest(config, "DELETE", config.Project, deleteUrl, config.userAgent, nil)
+		_, err = SendRequest(config, "DELETE", config.Project, deleteUrl, config.UserAgent, nil)
 		if err != nil {
 			log.Printf("[INFO][SWEEPER_LOG] Error deleting for url %s : %s", deleteUrl, err)
 		} else {
@@ -88,7 +88,7 @@ func testSweepBigqueryReservation(region string) error {
 func deleteAllAssignments(config *Config, reservationName string) {
 	assignmentListUrl := config.BigqueryReservationBasePath + reservationName + "/assignments"
 
-	assignmentRes, err := sendRequest(config, "GET", config.Project, assignmentListUrl, config.userAgent, nil)
+	assignmentRes, err := SendRequest(config, "GET", config.Project, assignmentListUrl, config.UserAgent, nil)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] Error in response from request %s: %s", assignmentListUrl, err)
 		return
@@ -107,7 +107,7 @@ func deleteAllAssignments(config *Config, reservationName string) {
 		name := obj["name"].(string)
 
 		deleteUrl := config.BigqueryReservationBasePath + name
-		_, err = sendRequest(config, "DELETE", config.Project, deleteUrl, config.userAgent, nil)
+		_, err = SendRequest(config, "DELETE", config.Project, deleteUrl, config.UserAgent, nil)
 		if err != nil {
 			log.Printf("[INFO][SWEEPER_LOG] Error deleting for url %s : %s", deleteUrl, err)
 		} else {

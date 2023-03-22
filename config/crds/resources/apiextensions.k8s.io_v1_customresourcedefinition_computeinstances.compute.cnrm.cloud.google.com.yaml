@@ -770,6 +770,10 @@ spec:
                     description: Specifies the action GCE should take when SPOT VM
                       is preempted.
                     type: string
+                  maintenanceInterval:
+                    description: 'Specifies the frequency of planned maintenance events.
+                      The accepted values are: PERIODIC.'
+                    type: string
                   maxRunDuration:
                     description: Immutable. The timeout for new network connections
                       to hosts.

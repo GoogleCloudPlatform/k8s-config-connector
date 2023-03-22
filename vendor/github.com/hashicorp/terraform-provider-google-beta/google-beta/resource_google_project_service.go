@@ -237,9 +237,9 @@ func resourceGoogleProjectServiceUpdate(d *schema.ResourceData, meta interface{}
 
 // Disables a project service.
 func disableServiceUsageProjectService(service, project string, d *schema.ResourceData, config *Config, disableDependentServices bool) error {
-	err := retryTimeDuration(func() error {
+	err := RetryTimeDuration(func() error {
 		billingProject := project
-		userAgent, err := generateUserAgentString(d, config.userAgent)
+		userAgent, err := generateUserAgentString(d, config.UserAgent)
 		if err != nil {
 			return err
 		}

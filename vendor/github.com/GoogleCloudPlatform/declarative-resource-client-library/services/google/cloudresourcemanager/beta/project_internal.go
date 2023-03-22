@@ -425,7 +425,6 @@ func canonicalizeProjectDesiredState(rawDesired, rawInitial *Project, opts ...dc
 	} else {
 		canonicalDesired.Name = rawDesired.Name
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -533,6 +532,9 @@ func diffProject(c *Client, desired, actual *Project, opts ...dcl.ApplyOption) (
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

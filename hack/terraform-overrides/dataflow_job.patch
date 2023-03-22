@@ -193,7 +193,7 @@ index a024b8fa8..cec940a8f 100644
 +	}
 +
  	config := meta.(*Config)
- 	userAgent, err := generateUserAgentString(d, config.userAgent)
+ 	userAgent, err := generateUserAgentString(d, config.UserAgent)
  	if err != nil {
 @@ -425,10 +446,10 @@ func resourceDataflowJobUpdateByReplacement(d *schema.ResourceData, meta interfa
  	}

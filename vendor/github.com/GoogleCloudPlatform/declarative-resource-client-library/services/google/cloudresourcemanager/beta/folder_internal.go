@@ -442,7 +442,6 @@ func canonicalizeFolderDesiredState(rawDesired, rawInitial *Folder, opts ...dcl.
 	} else {
 		canonicalDesired.DisplayName = rawDesired.DisplayName
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -574,6 +573,9 @@ func diffFolder(c *Client, desired, actual *Folder, opts ...dcl.ApplyOption) ([]
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

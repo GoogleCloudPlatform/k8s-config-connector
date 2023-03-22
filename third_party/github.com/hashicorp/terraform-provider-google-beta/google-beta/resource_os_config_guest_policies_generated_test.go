@@ -27,12 +27,12 @@ func TestAccOSConfigGuestPolicies_osConfigGuestPoliciesBasicExample(t *testing.T
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckOSConfigGuestPoliciesDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -99,12 +99,12 @@ func TestAccOSConfigGuestPolicies_osConfigGuestPoliciesPackagesExample(t *testin
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckOSConfigGuestPoliciesDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -183,12 +183,12 @@ func TestAccOSConfigGuestPolicies_osConfigGuestPoliciesRecipesExample(t *testing
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckOSConfigGuestPoliciesDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -248,7 +248,7 @@ func testAccCheckOSConfigGuestPoliciesDestroyProducer(t *testing.T) func(s *terr
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{OSConfigBasePath}}projects/{{project}}/guestPolicies/{{guest_policy_id}}")
 			if err != nil {
@@ -261,7 +261,7 @@ func testAccCheckOSConfigGuestPoliciesDestroyProducer(t *testing.T) func(s *terr
 				billingProject = config.BillingProject
 			}
 
-			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("OSConfigGuestPolicies still exists at %s", url)
 			}

@@ -27,12 +27,12 @@ func TestAccServiceDirectoryEndpoint_serviceDirectoryEndpointBasicExample(t *tes
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckServiceDirectoryEndpointDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -82,12 +82,12 @@ func TestAccServiceDirectoryEndpoint_serviceDirectoryEndpointWithNetworkExample(
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckServiceDirectoryEndpointDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -153,7 +153,7 @@ func testAccCheckServiceDirectoryEndpointDestroyProducer(t *testing.T) func(s *t
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{ServiceDirectoryBasePath}}{{name}}")
 			if err != nil {
@@ -166,7 +166,7 @@ func testAccCheckServiceDirectoryEndpointDestroyProducer(t *testing.T) func(s *t
 				billingProject = config.BillingProject
 			}
 
-			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("ServiceDirectoryEndpoint still exists at %s", url)
 			}

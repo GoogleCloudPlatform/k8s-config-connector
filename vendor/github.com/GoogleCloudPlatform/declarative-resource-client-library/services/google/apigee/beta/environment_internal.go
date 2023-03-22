@@ -413,7 +413,6 @@ func canonicalizeEnvironmentDesiredState(rawDesired, rawInitial *Environment, op
 	} else {
 		canonicalDesired.ApigeeOrganization = rawDesired.ApigeeOrganization
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -542,6 +541,9 @@ func diffEnvironment(c *Client, desired, actual *Environment, opts ...dcl.ApplyO
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

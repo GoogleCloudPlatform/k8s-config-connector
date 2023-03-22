@@ -546,7 +546,6 @@ func canonicalizeEndpointPolicyDesiredState(rawDesired, rawInitial *EndpointPoli
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -692,23 +691,26 @@ func canonicalizeNewEndpointPolicyEndpointMatcherSet(c *Client, des, nw []Endpoi
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []EndpointPolicyEndpointMatcher
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []EndpointPolicyEndpointMatcher
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareEndpointPolicyEndpointMatcherNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewEndpointPolicyEndpointMatcher(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewEndpointPolicyEndpointMatcherSlice(c *Client, des, nw []EndpointPolicyEndpointMatcher) []EndpointPolicyEndpointMatcher {
@@ -807,23 +809,26 @@ func canonicalizeNewEndpointPolicyEndpointMatcherMetadataLabelMatcherSet(c *Clie
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []EndpointPolicyEndpointMatcherMetadataLabelMatcher
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []EndpointPolicyEndpointMatcherMetadataLabelMatcher
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareEndpointPolicyEndpointMatcherMetadataLabelMatcherNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewEndpointPolicyEndpointMatcherMetadataLabelMatcher(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewEndpointPolicyEndpointMatcherMetadataLabelMatcherSlice(c *Client, des, nw []EndpointPolicyEndpointMatcherMetadataLabelMatcher) []EndpointPolicyEndpointMatcherMetadataLabelMatcher {
@@ -930,23 +935,26 @@ func canonicalizeNewEndpointPolicyEndpointMatcherMetadataLabelMatcherMetadataLab
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []EndpointPolicyEndpointMatcherMetadataLabelMatcherMetadataLabels
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []EndpointPolicyEndpointMatcherMetadataLabelMatcherMetadataLabels
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareEndpointPolicyEndpointMatcherMetadataLabelMatcherMetadataLabelsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewEndpointPolicyEndpointMatcherMetadataLabelMatcherMetadataLabels(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewEndpointPolicyEndpointMatcherMetadataLabelMatcherMetadataLabelsSlice(c *Client, des, nw []EndpointPolicyEndpointMatcherMetadataLabelMatcherMetadataLabels) []EndpointPolicyEndpointMatcherMetadataLabelMatcherMetadataLabels {
@@ -1045,23 +1053,26 @@ func canonicalizeNewEndpointPolicyTrafficPortSelectorSet(c *Client, des, nw []En
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []EndpointPolicyTrafficPortSelector
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []EndpointPolicyTrafficPortSelector
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareEndpointPolicyTrafficPortSelectorNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewEndpointPolicyTrafficPortSelector(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewEndpointPolicyTrafficPortSelectorSlice(c *Client, des, nw []EndpointPolicyTrafficPortSelector) []EndpointPolicyTrafficPortSelector {
@@ -1193,6 +1204,9 @@ func diffEndpointPolicy(c *Client, desired, actual *EndpointPolicy, opts ...dcl.
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareEndpointPolicyEndpointMatcherNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

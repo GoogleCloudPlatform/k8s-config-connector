@@ -498,7 +498,6 @@ func canonicalizeOrganizationDesiredState(rawDesired, rawInitial *Organization, 
 	} else {
 		canonicalDesired.Project = rawDesired.Project
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -690,23 +689,26 @@ func canonicalizeNewOrganizationAddonsConfigSet(c *Client, des, nw []Organizatio
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OrganizationAddonsConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OrganizationAddonsConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOrganizationAddonsConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOrganizationAddonsConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOrganizationAddonsConfigSlice(c *Client, des, nw []OrganizationAddonsConfig) []OrganizationAddonsConfig {
@@ -805,23 +807,26 @@ func canonicalizeNewOrganizationAddonsConfigAdvancedApiOpsConfigSet(c *Client, d
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OrganizationAddonsConfigAdvancedApiOpsConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OrganizationAddonsConfigAdvancedApiOpsConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOrganizationAddonsConfigAdvancedApiOpsConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOrganizationAddonsConfigAdvancedApiOpsConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOrganizationAddonsConfigAdvancedApiOpsConfigSlice(c *Client, des, nw []OrganizationAddonsConfigAdvancedApiOpsConfig) []OrganizationAddonsConfigAdvancedApiOpsConfig {
@@ -920,23 +925,26 @@ func canonicalizeNewOrganizationAddonsConfigMonetizationConfigSet(c *Client, des
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OrganizationAddonsConfigMonetizationConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OrganizationAddonsConfigMonetizationConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOrganizationAddonsConfigMonetizationConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOrganizationAddonsConfigMonetizationConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOrganizationAddonsConfigMonetizationConfigSlice(c *Client, des, nw []OrganizationAddonsConfigMonetizationConfig) []OrganizationAddonsConfigMonetizationConfig {
@@ -1110,6 +1118,9 @@ func diffOrganization(c *Client, desired, actual *Organization, opts ...dcl.Appl
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareOrganizationAddonsConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

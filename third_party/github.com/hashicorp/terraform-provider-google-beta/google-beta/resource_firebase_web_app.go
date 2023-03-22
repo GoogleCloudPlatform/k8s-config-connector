@@ -88,7 +88,7 @@ serving traffic. Set to 'DELETE' to delete the WebApp. Default to 'ABANDON'`,
 
 func resourceFirebaseWebAppCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -120,7 +120,7 @@ func resourceFirebaseWebAppCreate(d *schema.ResourceData, meta interface{}) erro
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating WebApp: %s", err)
 	}
@@ -135,7 +135,7 @@ func resourceFirebaseWebAppCreate(d *schema.ResourceData, meta interface{}) erro
 	// Use the resource in the operation response to populate
 	// identity fields and d.Id() before read
 	var opRes map[string]interface{}
-	err = firebaseOperationWaitTimeWithResponse(
+	err = FirebaseOperationWaitTimeWithResponse(
 		config, res, &opRes, project, "Creating WebApp", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 	if err != nil {
@@ -163,7 +163,7 @@ func resourceFirebaseWebAppCreate(d *schema.ResourceData, meta interface{}) erro
 
 func resourceFirebaseWebAppRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -186,7 +186,7 @@ func resourceFirebaseWebAppRead(d *schema.ResourceData, meta interface{}) error 
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("FirebaseWebApp %q", d.Id()))
 	}
@@ -219,7 +219,7 @@ func resourceFirebaseWebAppRead(d *schema.ResourceData, meta interface{}) error 
 
 func resourceFirebaseWebAppUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -263,7 +263,7 @@ func resourceFirebaseWebAppUpdate(d *schema.ResourceData, meta interface{}) erro
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating WebApp %q: %s", d.Id(), err)
@@ -276,7 +276,7 @@ func resourceFirebaseWebAppUpdate(d *schema.ResourceData, meta interface{}) erro
 
 func resourceFirebaseWebAppDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -310,12 +310,12 @@ func resourceFirebaseWebAppDelete(d *schema.ResourceData, meta interface{}) erro
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "App")
 	}
 
-	err = firebaseOperationWaitTime(
+	err = FirebaseOperationWaitTime(
 		config, res, project, "Deleting App", userAgent,
 		d.Timeout(schema.TimeoutDelete))
 

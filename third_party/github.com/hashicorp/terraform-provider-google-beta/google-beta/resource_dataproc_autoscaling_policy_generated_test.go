@@ -27,12 +27,12 @@ func TestAccDataprocAutoscalingPolicy_dataprocAutoscalingPolicyBasicExample(t *t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckDataprocAutoscalingPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -74,12 +74,12 @@ func TestAccDataprocAutoscalingPolicy_dataprocAutoscalingPolicyExample(t *testin
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckDataprocAutoscalingPolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -138,7 +138,7 @@ func testAccCheckDataprocAutoscalingPolicyDestroyProducer(t *testing.T) func(s *
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{DataprocBasePath}}projects/{{project}}/locations/{{location}}/autoscalingPolicies/{{policy_id}}")
 			if err != nil {
@@ -151,7 +151,7 @@ func testAccCheckDataprocAutoscalingPolicyDestroyProducer(t *testing.T) func(s *
 				billingProject = config.BillingProject
 			}
 
-			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("DataprocAutoscalingPolicy still exists at %s", url)
 			}

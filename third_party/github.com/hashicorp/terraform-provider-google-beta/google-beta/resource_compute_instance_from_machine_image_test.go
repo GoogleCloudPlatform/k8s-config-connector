@@ -14,13 +14,13 @@ func TestAccComputeInstanceFromMachineImage_basic(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	instanceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	generatedInstanceName := fmt.Sprintf("tf-test-generated-%s", randString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	generatedInstanceName := fmt.Sprintf("tf-test-generated-%s", RandString(t, 10))
 	resourceName := "google_compute_instance_from_machine_image.foobar"
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckComputeInstanceFromMachineImageDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -42,13 +42,13 @@ func TestAccComputeInstanceFromMachineImage_overrideMetadataDotStartupScript(t *
 	t.Parallel()
 
 	var instance compute.Instance
-	instanceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	generatedInstanceName := fmt.Sprintf("tf-test-generated-%s", randString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	generatedInstanceName := fmt.Sprintf("tf-test-generated-%s", RandString(t, 10))
 	resourceName := "google_compute_instance_from_machine_image.foobar"
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckComputeInstanceFromMachineImageDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -67,16 +67,16 @@ func TestAccComputeInstanceFromMachineImage_diffProject(t *testing.T) {
 	t.Parallel()
 
 	var instance compute.Instance
-	instanceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	generatedInstanceName := fmt.Sprintf("tf-test-generated-%s", randString(t, 10))
+	instanceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	generatedInstanceName := fmt.Sprintf("tf-test-generated-%s", RandString(t, 10))
 	resourceName := "google_compute_instance_from_machine_image.foobar"
-	org := getTestOrgFromEnv(t)
-	billingId := getTestBillingAccountFromEnv(t)
-	projectID := fmt.Sprintf("tf-test-%d", randInt(t))
+	org := GetTestOrgFromEnv(t)
+	billingId := GetTestBillingAccountFromEnv(t)
+	projectID := fmt.Sprintf("tf-test-%d", RandInt(t))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckComputeInstanceFromMachineImageDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -96,14 +96,14 @@ func TestAccComputeInstanceFromMachineImage_diffProject(t *testing.T) {
 
 func testAccCheckComputeInstanceFromMachineImageDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
 		for _, rs := range s.RootModule().Resources {
 			if rs.Type != "google_compute_instance_from_machine_image" {
 				continue
 			}
 
-			_, err := config.NewComputeClient(config.userAgent).Instances.Get(
+			_, err := config.NewComputeClient(config.UserAgent).Instances.Get(
 				config.Project, rs.Primary.Attributes["zone"], rs.Primary.ID).Do()
 			if err == nil {
 				return fmt.Errorf("Instance still exists")

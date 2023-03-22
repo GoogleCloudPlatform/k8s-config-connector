@@ -27,15 +27,15 @@ func TestAccCloudfunctions2function_cloudfunctions2BasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       getTestProjectFromEnv(),
+		"project":       GetTestProjectFromEnv(),
 		"zip_path":      "./test-fixtures/cloudfunctions2/function-source.zip",
 		"location":      "us-central1",
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckCloudfunctions2functionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -104,16 +104,16 @@ func TestAccCloudfunctions2function_cloudfunctions2FullExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":             getTestProjectFromEnv(),
+		"project":             GetTestProjectFromEnv(),
 		"zip_path":            "./test-fixtures/cloudfunctions2/function-source-pubsub.zip",
 		"primary_resource_id": "terraform-test",
 		"location":            "us-central1",
-		"random_suffix":       randString(t, 10),
+		"random_suffix":       RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckCloudfunctions2functionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -206,15 +206,16 @@ func TestAccCloudfunctions2function_cloudfunctions2BasicGcsExample(t *testing.T)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":             getTestProjectFromEnv(),
+		"project":             GetTestProjectFromEnv(),
 		"zip_path":            "./test-fixtures/cloudfunctions2/function-source-eventarc-gcs.zip",
 		"primary_resource_id": "terraform-test",
-		"random_suffix":       randString(t, 10),
+		"policyChanged":       BootstrapPSARole(t, "service-", "gcp-sa-pubsub", "roles/cloudkms.cryptoKeyEncrypterDecrypter"),
+		"random_suffix":       RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckCloudfunctions2functionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -345,15 +346,16 @@ func TestAccCloudfunctions2function_cloudfunctions2BasicAuditlogsExample(t *test
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":             getTestProjectFromEnv(),
+		"project":             GetTestProjectFromEnv(),
 		"zip_path":            "./test-fixtures/cloudfunctions2/function-source-eventarc-gcs.zip",
 		"primary_resource_id": "terraform-test",
-		"random_suffix":       randString(t, 10),
+		"policyChanged":       BootstrapPSARole(t, "service-", "gcp-sa-pubsub", "roles/cloudkms.cryptoKeyEncrypterDecrypter"),
+		"random_suffix":       RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckCloudfunctions2functionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -488,15 +490,16 @@ func TestAccCloudfunctions2function_cloudfunctions2SecretEnvExample(t *testing.T
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       getTestProjectFromEnv(),
+		"project":       GetTestProjectFromEnv(),
 		"zip_path":      "./test-fixtures/cloudfunctions2/function-source.zip",
 		"location":      "us-central1",
-		"random_suffix": randString(t, 10),
+		"policyChanged": BootstrapPSARole(t, "service-", "gcp-sa-pubsub", "roles/cloudkms.cryptoKeyEncrypterDecrypter"),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckCloudfunctions2functionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -586,15 +589,16 @@ func TestAccCloudfunctions2function_cloudfunctions2SecretVolumeExample(t *testin
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       getTestProjectFromEnv(),
+		"project":       GetTestProjectFromEnv(),
 		"zip_path":      "./test-fixtures/cloudfunctions2/function-source.zip",
 		"location":      "us-central1",
-		"random_suffix": randString(t, 10),
+		"policyChanged": BootstrapPSARole(t, "service-", "gcp-sa-pubsub", "roles/cloudkms.cryptoKeyEncrypterDecrypter"),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckCloudfunctions2functionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -683,15 +687,15 @@ func TestAccCloudfunctions2function_cloudfunctions2PrivateWorkerpoolExample(t *t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project":       getTestProjectFromEnv(),
+		"project":       GetTestProjectFromEnv(),
 		"zip_path":      "./test-fixtures/cloudfunctions2/function-source.zip",
 		"location":      "us-central1",
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckCloudfunctions2functionDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -771,7 +775,7 @@ func testAccCheckCloudfunctions2functionDestroyProducer(t *testing.T) func(s *te
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{Cloudfunctions2BasePath}}projects/{{project}}/locations/{{location}}/functions/{{name}}")
 			if err != nil {
@@ -784,7 +788,7 @@ func testAccCheckCloudfunctions2functionDestroyProducer(t *testing.T) func(s *te
 				billingProject = config.BillingProject
 			}
 
-			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("Cloudfunctions2function still exists at %s", url)
 			}

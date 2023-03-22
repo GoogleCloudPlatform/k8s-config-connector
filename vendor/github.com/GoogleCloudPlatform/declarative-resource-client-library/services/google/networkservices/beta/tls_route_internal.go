@@ -514,7 +514,6 @@ func canonicalizeTlsRouteDesiredState(rawDesired, rawInitial *TlsRoute, opts ...
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -655,23 +654,26 @@ func canonicalizeNewTlsRouteRulesSet(c *Client, des, nw []TlsRouteRules) []TlsRo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []TlsRouteRules
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []TlsRouteRules
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareTlsRouteRulesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewTlsRouteRules(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewTlsRouteRulesSlice(c *Client, des, nw []TlsRouteRules) []TlsRouteRules {
@@ -778,23 +780,26 @@ func canonicalizeNewTlsRouteRulesMatchesSet(c *Client, des, nw []TlsRouteRulesMa
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []TlsRouteRulesMatches
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []TlsRouteRulesMatches
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareTlsRouteRulesMatchesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewTlsRouteRulesMatches(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewTlsRouteRulesMatchesSlice(c *Client, des, nw []TlsRouteRulesMatches) []TlsRouteRulesMatches {
@@ -887,23 +892,26 @@ func canonicalizeNewTlsRouteRulesActionSet(c *Client, des, nw []TlsRouteRulesAct
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []TlsRouteRulesAction
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []TlsRouteRulesAction
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareTlsRouteRulesActionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewTlsRouteRulesAction(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewTlsRouteRulesActionSlice(c *Client, des, nw []TlsRouteRulesAction) []TlsRouteRulesAction {
@@ -1005,23 +1013,26 @@ func canonicalizeNewTlsRouteRulesActionDestinationsSet(c *Client, des, nw []TlsR
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []TlsRouteRulesActionDestinations
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []TlsRouteRulesActionDestinations
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareTlsRouteRulesActionDestinationsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewTlsRouteRulesActionDestinations(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewTlsRouteRulesActionDestinationsSlice(c *Client, des, nw []TlsRouteRulesActionDestinations) []TlsRouteRulesActionDestinations {
@@ -1132,6 +1143,9 @@ func diffTlsRoute(c *Client, desired, actual *TlsRoute, opts ...dcl.ApplyOption)
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareTlsRouteRulesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

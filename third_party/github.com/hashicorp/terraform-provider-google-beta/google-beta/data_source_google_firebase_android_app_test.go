@@ -10,16 +10,16 @@ func TestAccDataSourceGoogleFirebaseAndroidApp(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":   getTestProjectFromEnv(),
-		"package_name": "android.package.app" + randString(t, 4),
+		"project_id":   GetTestProjectFromEnv(),
+		"package_name": "android.package.app" + RandString(t, 4),
 		"display_name": "tf-test Display Name AndroidApp DataSource",
 	}
 
 	resourceName := "data.google_firebase_android_app.my_app"
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceGoogleFirebaseAndroidApp(context),
@@ -48,6 +48,11 @@ resource "google_firebase_android_app" "my_app" {
 }
 
 data "google_firebase_android_app" "my_app" {
+  app_id = google_firebase_android_app.my_app.app_id
+}
+
+data "google_firebase_android_app" "my_app_project" {
+  project = "%{project_id}"
   app_id = google_firebase_android_app.my_app.app_id
 }
 `, context)

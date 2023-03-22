@@ -11,16 +11,23 @@ import (
 func TestAccSpannerDatabase_basic(t *testing.T) {
 	t.Parallel()
 
-	project := getTestProjectFromEnv()
-	rnd := randString(t, 10)
+	project := GetTestProjectFromEnv()
+	rnd := RandString(t, 10)
 	instanceName := fmt.Sprintf("tf-test-%s", rnd)
 	databaseName := fmt.Sprintf("tfgen_%s", rnd)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
+			{
+				Config: testAccSpannerDatabase_virtualUpdate(instanceName, databaseName),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttrSet("google_spanner_database.basic", "state"),
+					resource.TestCheckResourceAttr("google_spanner_database.basic", "version_retention_period", "1h"), // default set by API
+				),
+			},
 			{
 				Config: testAccSpannerDatabase_basic(instanceName, databaseName),
 				Check: resource.ComposeTestCheckFunc(
@@ -119,16 +126,37 @@ resource "google_spanner_database" "basic" {
 `, instanceName, instanceName, databaseName)
 }
 
+func testAccSpannerDatabase_virtualUpdate(instanceName, databaseName string) string {
+	return fmt.Sprintf(`
+resource "google_spanner_instance" "basic" {
+  name         = "%s"
+  config       = "regional-us-central1"
+  display_name = "%s-display"
+  num_nodes    = 1
+}
+
+resource "google_spanner_database" "basic" {
+  instance = google_spanner_instance.basic.name
+  name     = "%s"
+  ddl = [
+	"CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)",
+	"CREATE TABLE t2 (t2 INT64 NOT NULL,) PRIMARY KEY(t2)",
+  ]
+  deletion_protection = true
+}
+`, instanceName, instanceName, databaseName)
+}
+
 func TestAccSpannerDatabase_postgres(t *testing.T) {
 	t.Parallel()
 
-	rnd := randString(t, 10)
+	rnd := RandString(t, 10)
 	instanceName := fmt.Sprintf("tf-test-%s", rnd)
 	databaseName := fmt.Sprintf("tfgen_%s", rnd)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -211,13 +239,13 @@ resource "google_spanner_database" "basic_spangres" {
 func TestAccSpannerDatabase_versionRetentionPeriod(t *testing.T) {
 	t.Parallel()
 
-	rnd := randString(t, 10)
+	rnd := RandString(t, 10)
 	instanceName := fmt.Sprintf("tf-test-%s", rnd)
 	databaseName := fmt.Sprintf("tfgen_%s", rnd)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -520,16 +548,16 @@ func TestValidateDatabaseRetentionPeriod(t *testing.T) {
 }
 
 func TestAccSpannerDatabase_deletionProtection(t *testing.T) {
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -573,16 +601,16 @@ resource "google_spanner_database" "database" {
 }
 
 func TestAccSpannerDatabase_cmek(t *testing.T) {
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

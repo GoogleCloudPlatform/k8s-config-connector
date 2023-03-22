@@ -95,7 +95,7 @@ func ResourceDataflowFlexTemplateJob() *schema.Resource {
 // resourceDataflowFlexTemplateJobCreate creates a Flex Template Job from TF code.
 func resourceDataflowFlexTemplateJobCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -145,7 +145,7 @@ func resourceDataflowFlexTemplateJobCreate(d *schema.ResourceData, meta interfac
 // resourceDataflowFlexTemplateJobRead reads a Flex Template Job resource.
 func resourceDataflowFlexTemplateJobRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -229,7 +229,7 @@ func resourceDataflowFlexTemplateJobUpdate(d *schema.ResourceData, meta interfac
 	}
 
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -286,7 +286,7 @@ func resourceDataflowFlexTemplateJobUpdate(d *schema.ResourceData, meta interfac
 
 func resourceDataflowFlexTemplateJobDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}

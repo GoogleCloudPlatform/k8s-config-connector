@@ -652,23 +652,6 @@ func canonicalizeServiceLevelObjectiveDesiredState(rawDesired, rawInitial *Servi
 
 		return rawDesired, nil
 	}
-
-	if rawDesired.RollingPeriod != nil || rawInitial.RollingPeriod != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.CalendarPeriod) {
-			rawDesired.RollingPeriod = nil
-			rawInitial.RollingPeriod = nil
-		}
-	}
-
-	if rawDesired.CalendarPeriod != nil || rawInitial.CalendarPeriod != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.RollingPeriod) {
-			rawDesired.CalendarPeriod = nil
-			rawInitial.CalendarPeriod = nil
-		}
-	}
-
 	canonicalDesired := &ServiceLevelObjective{}
 	if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawInitial.Name) {
 		canonicalDesired.Name = rawInitial.Name
@@ -713,6 +696,20 @@ func canonicalizeServiceLevelObjectiveDesiredState(rawDesired, rawInitial *Servi
 		canonicalDesired.Service = rawInitial.Service
 	} else {
 		canonicalDesired.Service = rawDesired.Service
+	}
+
+	if canonicalDesired.RollingPeriod != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.CalendarPeriod) {
+			canonicalDesired.RollingPeriod = dcl.String("")
+		}
+	}
+
+	if canonicalDesired.CalendarPeriod != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.RollingPeriod) {
+			canonicalDesired.CalendarPeriod = ServiceLevelObjectiveCalendarPeriodEnumRef("")
+		}
 	}
 
 	return canonicalDesired, nil
@@ -894,23 +891,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorSet(c *Client, des
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicator
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicator
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicator(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorSlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicator) []ServiceLevelObjectiveServiceLevelIndicator {
@@ -1073,23 +1073,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSliSet(c *Cli
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorBasicSli
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorBasicSli
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorBasicSliNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSli(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSliSlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorBasicSli) []ServiceLevelObjectiveServiceLevelIndicatorBasicSli {
@@ -1177,23 +1180,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSliAvailabili
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorBasicSliAvailability
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorBasicSliAvailability
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorBasicSliAvailabilityNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSliAvailability(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSliAvailabilitySlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorBasicSliAvailability) []ServiceLevelObjectiveServiceLevelIndicatorBasicSliAvailability {
@@ -1298,23 +1304,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSliLatencySet
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorBasicSliLatency
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorBasicSliLatency
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorBasicSliLatencyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSliLatency(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSliLatencySlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorBasicSliLatency) []ServiceLevelObjectiveServiceLevelIndicatorBasicSliLatency {
@@ -1402,23 +1411,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationA
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationAvailability
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationAvailability
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationAvailabilityNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationAvailability(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationAvailabilitySlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationAvailability) []ServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationAvailability {
@@ -1523,23 +1535,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationL
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatency
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatency
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatencyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatency(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatencySlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatency) []ServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatency {
@@ -1654,23 +1669,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorRequestBasedSet(c 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorRequestBased
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorRequestBased
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorRequestBasedNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorRequestBased(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorRequestBasedSlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorRequestBased) []ServiceLevelObjectiveServiceLevelIndicatorRequestBased {
@@ -1785,23 +1803,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorRequestBasedGoodTo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorRequestBasedGoodTotalRatio
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorRequestBasedGoodTotalRatio
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorRequestBasedGoodTotalRatioNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorRequestBasedGoodTotalRatio(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorRequestBasedGoodTotalRatioSlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorRequestBasedGoodTotalRatio) []ServiceLevelObjectiveServiceLevelIndicatorRequestBasedGoodTotalRatio {
@@ -1902,23 +1923,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistri
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCut
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCut
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCutNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCut(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCutSlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCut) []ServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCut {
@@ -2020,23 +2044,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistri
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCutRange
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCutRange
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCutRangeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCutRange(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCutRangeSlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCutRange) []ServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCutRange {
@@ -2189,23 +2216,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedSet(c 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorWindowsBased
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorWindowsBased
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorWindowsBasedNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBased(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedSlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorWindowsBased) []ServiceLevelObjectiveServiceLevelIndicatorWindowsBased {
@@ -2326,23 +2356,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThreshold
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThreshold
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThreshold(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdSlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThreshold) []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThreshold {
@@ -2457,23 +2490,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformance
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformance
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformance(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceSlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformance) []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformance {
@@ -2588,23 +2624,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceGoodTotalRatio
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceGoodTotalRatio
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceGoodTotalRatioNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceGoodTotalRatio(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceGoodTotalRatioSlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceGoodTotalRatio) []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceGoodTotalRatio {
@@ -2705,23 +2744,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCut
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCut
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCutNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCut(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCutSlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCut) []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCut {
@@ -2823,23 +2865,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCutRange
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCutRange
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCutRangeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCutRange(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCutRangeSlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCutRange) []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCutRange {
@@ -3002,23 +3047,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformance
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformance
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformance(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceSlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformance) []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformance {
@@ -3106,23 +3154,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceAvailability
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceAvailability
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceAvailabilityNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceAvailability(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceAvailabilitySlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceAvailability) []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceAvailability {
@@ -3227,23 +3278,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatency
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatency
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatencyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatency(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatencySlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatency) []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatency {
@@ -3331,23 +3385,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationAvailability
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationAvailability
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationAvailabilityNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationAvailability(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationAvailabilitySlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationAvailability) []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationAvailability {
@@ -3452,23 +3509,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatency
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatency
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatencyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatency(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatencySlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatency) []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatency {
@@ -3569,23 +3629,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetric
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRange
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRange
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRangeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRange(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRangeSlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRange) []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRange {
@@ -3687,23 +3750,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetric
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRangeRange
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRangeRange
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRangeRangeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRangeRange(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRangeRangeSlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRangeRange) []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRangeRange {
@@ -3804,23 +3870,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetric
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRange
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRange
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRangeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRange(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRangeSlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRange) []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRange {
@@ -3922,23 +3991,26 @@ func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetric
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRangeRange
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRangeRange
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRangeRangeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRangeRange(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRangeRangeSlice(c *Client, des, nw []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRangeRange) []ServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRangeRange {
@@ -4063,6 +4135,9 @@ func diffServiceLevelObjective(c *Client, desired, actual *ServiceLevelObjective
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareServiceLevelObjectiveServiceLevelIndicatorNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

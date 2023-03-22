@@ -350,6 +350,109 @@ handle this extension, the client should consider this to be an error).`,
 											Type: schema.TypeString,
 										},
 									},
+									"name_constraints": {
+										Type:        schema.TypeList,
+										Optional:    true,
+										Description: `Describes the X.509 name constraints extension.`,
+										MaxItems:    1,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"critical": {
+													Type:        schema.TypeBool,
+													Required:    true,
+													Description: `Indicates whether or not the name constraints are marked critical.`,
+												},
+												"excluded_dns_names": {
+													Type:     schema.TypeList,
+													Optional: true,
+													Description: `Contains excluded DNS names. Any DNS name that can be
+constructed by simply adding zero or more labels to
+the left-hand side of the name satisfies the name constraint.
+For example, 'example.com', 'www.example.com', 'www.sub.example.com'
+would satisfy 'example.com' while 'example1.com' does not.`,
+													Elem: &schema.Schema{
+														Type: schema.TypeString,
+													},
+												},
+												"excluded_email_addresses": {
+													Type:     schema.TypeList,
+													Optional: true,
+													Description: `Contains the excluded email addresses. The value can be a particular
+email address, a hostname to indicate all email addresses on that host or
+a domain with a leading period (e.g. '.example.com') to indicate
+all email addresses in that domain.`,
+													Elem: &schema.Schema{
+														Type: schema.TypeString,
+													},
+												},
+												"excluded_ip_ranges": {
+													Type:     schema.TypeList,
+													Optional: true,
+													Description: `Contains the excluded IP ranges. For IPv4 addresses, the ranges
+are expressed using CIDR notation as specified in RFC 4632.
+For IPv6 addresses, the ranges are expressed in similar encoding as IPv4
+addresses.`,
+													Elem: &schema.Schema{
+														Type: schema.TypeString,
+													},
+												},
+												"excluded_uris": {
+													Type:     schema.TypeList,
+													Optional: true,
+													Description: `Contains the excluded URIs that apply to the host part of the name.
+The value can be a hostname or a domain with a
+leading period (like '.example.com')`,
+													Elem: &schema.Schema{
+														Type: schema.TypeString,
+													},
+												},
+												"permitted_dns_names": {
+													Type:     schema.TypeList,
+													Optional: true,
+													Description: `Contains permitted DNS names. Any DNS name that can be
+constructed by simply adding zero or more labels to
+the left-hand side of the name satisfies the name constraint.
+For example, 'example.com', 'www.example.com', 'www.sub.example.com'
+would satisfy 'example.com' while 'example1.com' does not.`,
+													Elem: &schema.Schema{
+														Type: schema.TypeString,
+													},
+												},
+												"permitted_email_addresses": {
+													Type:     schema.TypeList,
+													Optional: true,
+													Description: `Contains the permitted email addresses. The value can be a particular
+email address, a hostname to indicate all email addresses on that host or
+a domain with a leading period (e.g. '.example.com') to indicate
+all email addresses in that domain.`,
+													Elem: &schema.Schema{
+														Type: schema.TypeString,
+													},
+												},
+												"permitted_ip_ranges": {
+													Type:     schema.TypeList,
+													Optional: true,
+													Description: `Contains the permitted IP ranges. For IPv4 addresses, the ranges
+are expressed using CIDR notation as specified in RFC 4632.
+For IPv6 addresses, the ranges are expressed in similar encoding as IPv4
+addresses.`,
+													Elem: &schema.Schema{
+														Type: schema.TypeString,
+													},
+												},
+												"permitted_uris": {
+													Type:     schema.TypeList,
+													Optional: true,
+													Description: `Contains the permitted URIs that apply to the host part of the name.
+The value can be a hostname or a domain with a
+leading period (like '.example.com')`,
+													Elem: &schema.Schema{
+														Type: schema.TypeString,
+													},
+												},
+											},
+										},
+									},
 									"policy_ids": {
 										Type:        schema.TypeList,
 										Optional:    true,
@@ -482,7 +585,7 @@ also rebuilt shortly after a certificate is revoked.`,
 
 func resourcePrivatecaCaPoolCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -532,7 +635,7 @@ func resourcePrivatecaCaPoolCreate(d *schema.ResourceData, meta interface{}) err
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating CaPool: %s", err)
 	}
@@ -547,7 +650,7 @@ func resourcePrivatecaCaPoolCreate(d *schema.ResourceData, meta interface{}) err
 	// Use the resource in the operation response to populate
 	// identity fields and d.Id() before read
 	var opRes map[string]interface{}
-	err = privatecaOperationWaitTimeWithResponse(
+	err = PrivatecaOperationWaitTimeWithResponse(
 		config, res, &opRes, project, "Creating CaPool", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 	if err != nil {
@@ -571,7 +674,7 @@ func resourcePrivatecaCaPoolCreate(d *schema.ResourceData, meta interface{}) err
 
 func resourcePrivatecaCaPoolRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -594,7 +697,7 @@ func resourcePrivatecaCaPoolRead(d *schema.ResourceData, meta interface{}) error
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("PrivatecaCaPool %q", d.Id()))
 	}
@@ -621,7 +724,7 @@ func resourcePrivatecaCaPoolRead(d *schema.ResourceData, meta interface{}) error
 
 func resourcePrivatecaCaPoolUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -685,7 +788,7 @@ func resourcePrivatecaCaPoolUpdate(d *schema.ResourceData, meta interface{}) err
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating CaPool %q: %s", d.Id(), err)
@@ -693,7 +796,7 @@ func resourcePrivatecaCaPoolUpdate(d *schema.ResourceData, meta interface{}) err
 		log.Printf("[DEBUG] Finished updating CaPool %q: %#v", d.Id(), res)
 	}
 
-	err = privatecaOperationWaitTime(
+	err = PrivatecaOperationWaitTime(
 		config, res, project, "Updating CaPool", userAgent,
 		d.Timeout(schema.TimeoutUpdate))
 
@@ -706,7 +809,7 @@ func resourcePrivatecaCaPoolUpdate(d *schema.ResourceData, meta interface{}) err
 
 func resourcePrivatecaCaPoolDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -732,12 +835,12 @@ func resourcePrivatecaCaPoolDelete(d *schema.ResourceData, meta interface{}) err
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "CaPool")
 	}
 
-	err = privatecaOperationWaitTime(
+	err = PrivatecaOperationWaitTime(
 		config, res, project, "Deleting CaPool", userAgent,
 		d.Timeout(schema.TimeoutDelete))
 
@@ -955,6 +1058,8 @@ func flattenPrivatecaCaPoolIssuancePolicyBaselineValues(v interface{}, d *schema
 		flattenPrivatecaCertificateConfigX509ConfigCaOptions(original["caOptions"], d, config)
 	transformed["key_usage"] =
 		flattenPrivatecaCertificateConfigX509ConfigKeyUsage(original["keyUsage"], d, config)
+	transformed["name_constraints"] =
+		flattenPrivatecaCertificateConfigX509ConfigNameConstraints(original["nameConstraints"], d, config)
 	return []interface{}{transformed}
 }
 
@@ -1302,6 +1407,11 @@ func expandPrivatecaCaPoolIssuancePolicyBaselineValues(v interface{}, d Terrafor
 	}
 	transformed["additionalExtensions"] = addExts
 
+	nameConstraints, err := expandPrivatecaCertificateConfigX509ConfigNameConstraints(original["name_constraints"], d, config)
+	if err != nil {
+		return nil, err
+	}
+	transformed["nameConstraints"] = nameConstraints
 	return transformed, nil
 }
 

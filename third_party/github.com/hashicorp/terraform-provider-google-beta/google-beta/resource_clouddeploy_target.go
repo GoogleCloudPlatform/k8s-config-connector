@@ -72,7 +72,7 @@ func ResourceClouddeployTarget() *schema.Resource {
 				Description:   "Information specifying an Anthos Cluster.",
 				MaxItems:      1,
 				Elem:          ClouddeployTargetAnthosClusterSchema(),
-				ConflictsWith: []string{"gke", "run"},
+				ConflictsWith: []string{"gke", "run", "multi_target"},
 			},
 
 			"description": {
@@ -95,7 +95,7 @@ func ResourceClouddeployTarget() *schema.Resource {
 				Description:   "Information specifying a GKE Cluster.",
 				MaxItems:      1,
 				Elem:          ClouddeployTargetGkeSchema(),
-				ConflictsWith: []string{"anthos_cluster", "run"},
+				ConflictsWith: []string{"anthos_cluster", "run", "multi_target"},
 			},
 
 			"labels": {
@@ -103,6 +103,15 @@ func ResourceClouddeployTarget() *schema.Resource {
 				Optional:    true,
 				Description: "Optional. Labels are attributes that can be set and used by both the user and by Google Cloud Deploy. Labels must meet the following constraints: * Keys and values can contain only lowercase letters, numeric characters, underscores, and dashes. * All characters must use UTF-8 encoding, and international characters are allowed. * Keys must start with a lowercase letter or international character. * Each resource is limited to a maximum of 64 labels. Both keys and values are additionally constrained to be <= 128 bytes.",
 				Elem:        &schema.Schema{Type: schema.TypeString},
+			},
+
+			"multi_target": {
+				Type:          schema.TypeList,
+				Optional:      true,
+				Description:   "Information specifying a multiTarget.",
+				MaxItems:      1,
+				Elem:          ClouddeployTargetMultiTargetSchema(),
+				ConflictsWith: []string{"gke", "anthos_cluster", "run"},
 			},
 
 			"project": {
@@ -126,7 +135,7 @@ func ResourceClouddeployTarget() *schema.Resource {
 				Description:   "Information specifying a Cloud Run deployment target.",
 				MaxItems:      1,
 				Elem:          ClouddeployTargetRunSchema(),
-				ConflictsWith: []string{"gke", "anthos_cluster"},
+				ConflictsWith: []string{"gke", "anthos_cluster", "multi_target"},
 			},
 
 			"create_time": {
@@ -235,6 +244,19 @@ func ClouddeployTargetGkeSchema() *schema.Resource {
 	}
 }
 
+func ClouddeployTargetMultiTargetSchema() *schema.Resource {
+	return &schema.Resource{
+		Schema: map[string]*schema.Schema{
+			"target_ids": {
+				Type:        schema.TypeList,
+				Required:    true,
+				Description: "Required. The target_ids of this multiTarget.",
+				Elem:        &schema.Schema{Type: schema.TypeString},
+			},
+		},
+	}
+}
+
 func ClouddeployTargetRunSchema() *schema.Resource {
 	return &schema.Resource{
 		Schema: map[string]*schema.Schema{
@@ -263,6 +285,7 @@ func resourceClouddeployTargetCreate(d *schema.ResourceData, meta interface{}) e
 		ExecutionConfigs: expandClouddeployTargetExecutionConfigsArray(d.Get("execution_configs")),
 		Gke:              expandClouddeployTargetGke(d.Get("gke")),
 		Labels:           checkStringMap(d.Get("labels")),
+		MultiTarget:      expandClouddeployTargetMultiTarget(d.Get("multi_target")),
 		Project:          dcl.String(project),
 		RequireApproval:  dcl.Bool(d.Get("require_approval").(bool)),
 		Run:              expandClouddeployTargetRun(d.Get("run")),
@@ -274,7 +297,7 @@ func resourceClouddeployTargetCreate(d *schema.ResourceData, meta interface{}) e
 	}
 	d.SetId(id)
 	directive := CreateDirective
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -321,12 +344,13 @@ func resourceClouddeployTargetRead(d *schema.ResourceData, meta interface{}) err
 		ExecutionConfigs: expandClouddeployTargetExecutionConfigsArray(d.Get("execution_configs")),
 		Gke:              expandClouddeployTargetGke(d.Get("gke")),
 		Labels:           checkStringMap(d.Get("labels")),
+		MultiTarget:      expandClouddeployTargetMultiTarget(d.Get("multi_target")),
 		Project:          dcl.String(project),
 		RequireApproval:  dcl.Bool(d.Get("require_approval").(bool)),
 		Run:              expandClouddeployTargetRun(d.Get("run")),
 	}
 
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -372,6 +396,9 @@ func resourceClouddeployTargetRead(d *schema.ResourceData, meta interface{}) err
 	if err = d.Set("labels", res.Labels); err != nil {
 		return fmt.Errorf("error setting labels in state: %s", err)
 	}
+	if err = d.Set("multi_target", flattenClouddeployTargetMultiTarget(res.MultiTarget)); err != nil {
+		return fmt.Errorf("error setting multi_target in state: %s", err)
+	}
 	if err = d.Set("project", res.Project); err != nil {
 		return fmt.Errorf("error setting project in state: %s", err)
 	}
@@ -415,12 +442,13 @@ func resourceClouddeployTargetUpdate(d *schema.ResourceData, meta interface{}) e
 		ExecutionConfigs: expandClouddeployTargetExecutionConfigsArray(d.Get("execution_configs")),
 		Gke:              expandClouddeployTargetGke(d.Get("gke")),
 		Labels:           checkStringMap(d.Get("labels")),
+		MultiTarget:      expandClouddeployTargetMultiTarget(d.Get("multi_target")),
 		Project:          dcl.String(project),
 		RequireApproval:  dcl.Bool(d.Get("require_approval").(bool)),
 		Run:              expandClouddeployTargetRun(d.Get("run")),
 	}
 	directive := UpdateDirective
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -468,13 +496,14 @@ func resourceClouddeployTargetDelete(d *schema.ResourceData, meta interface{}) e
 		ExecutionConfigs: expandClouddeployTargetExecutionConfigsArray(d.Get("execution_configs")),
 		Gke:              expandClouddeployTargetGke(d.Get("gke")),
 		Labels:           checkStringMap(d.Get("labels")),
+		MultiTarget:      expandClouddeployTargetMultiTarget(d.Get("multi_target")),
 		Project:          dcl.String(project),
 		RequireApproval:  dcl.Bool(d.Get("require_approval").(bool)),
 		Run:              expandClouddeployTargetRun(d.Get("run")),
 	}
 
 	log.Printf("[DEBUG] Deleting Target %q", d.Id())
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -630,6 +659,32 @@ func flattenClouddeployTargetGke(obj *clouddeploy.TargetGke) interface{} {
 	transformed := map[string]interface{}{
 		"cluster":     obj.Cluster,
 		"internal_ip": obj.InternalIP,
+	}
+
+	return []interface{}{transformed}
+
+}
+
+func expandClouddeployTargetMultiTarget(o interface{}) *clouddeploy.TargetMultiTarget {
+	if o == nil {
+		return clouddeploy.EmptyTargetMultiTarget
+	}
+	objArr := o.([]interface{})
+	if len(objArr) == 0 || objArr[0] == nil {
+		return clouddeploy.EmptyTargetMultiTarget
+	}
+	obj := objArr[0].(map[string]interface{})
+	return &clouddeploy.TargetMultiTarget{
+		TargetIds: expandStringArray(obj["target_ids"]),
+	}
+}
+
+func flattenClouddeployTargetMultiTarget(obj *clouddeploy.TargetMultiTarget) interface{} {
+	if obj == nil || obj.Empty() {
+		return nil
+	}
+	transformed := map[string]interface{}{
+		"target_ids": obj.TargetIds,
 	}
 
 	return []interface{}{transformed}

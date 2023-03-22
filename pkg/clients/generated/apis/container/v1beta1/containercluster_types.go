@@ -697,6 +697,16 @@ type ClusterPrivateClusterConfig struct {
 	PublicEndpoint *string `json:"publicEndpoint,omitempty"`
 }
 
+type ClusterProtectConfig struct {
+	/* WorkloadConfig defines the flags to enable or disable the workload configurations for the cluster. */
+	// +optional
+	WorkloadConfig *ClusterWorkloadConfig `json:"workloadConfig,omitempty"`
+
+	/* WorkloadVulnerabilityMode defines mode to perform vulnerability scanning. Accepted values are WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED, DISABLED, BASIC. */
+	// +optional
+	WorkloadVulnerabilityMode *string `json:"workloadVulnerabilityMode,omitempty"`
+}
+
 type ClusterPubsub struct {
 	/* Whether or not the notification config is enabled. */
 	Enabled bool `json:"enabled"`
@@ -850,6 +860,11 @@ type ClusterValueFrom struct {
 type ClusterVerticalPodAutoscaling struct {
 	/* Enables vertical pod autoscaling. */
 	Enabled bool `json:"enabled"`
+}
+
+type ClusterWorkloadConfig struct {
+	/* Mode defines how to audit the workload configs. Accepted values are MODE_UNSPECIFIED, DISABLED, BASIC. */
+	AuditMode string `json:"auditMode"`
 }
 
 type ClusterWorkloadIdentityConfig struct {
@@ -1062,6 +1077,10 @@ type ContainerClusterSpec struct {
 	/* The desired state of IPv6 connectivity to Google Services. By default, no private IPv6 access to or from Google Services (all access will be via IPv4). */
 	// +optional
 	PrivateIpv6GoogleAccess *string `json:"privateIpv6GoogleAccess,omitempty"`
+
+	/* The notification config for sending cluster upgrade notifications. */
+	// +optional
+	ProtectConfig *ClusterProtectConfig `json:"protectConfig,omitempty"`
 
 	/* Configuration options for the Release channel feature, which provide more control over automatic upgrades of your GKE clusters. Note that removing this field from your config will not unenroll it. Instead, use the "UNSPECIFIED" channel. */
 	// +optional

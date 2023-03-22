@@ -279,7 +279,6 @@ func canonicalizeGoogleChannelConfigDesiredState(rawDesired, rawInitial *GoogleC
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -363,6 +362,9 @@ func diffGoogleChannelConfig(c *Client, desired, actual *GoogleChannelConfig, op
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

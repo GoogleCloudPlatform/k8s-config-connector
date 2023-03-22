@@ -8,10 +8,13 @@ import (
 )
 
 func TestAccMonitoringMetricDescriptor_update(t *testing.T) {
+	// TODO: Fix requires a breaking change https://github.com/hashicorp/terraform-provider-google/issues/12139
+	t.Skip()
+
 	t.Parallel()
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckMonitoringMetricDescriptorDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

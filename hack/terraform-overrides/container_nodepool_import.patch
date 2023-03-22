@@ -16,11 +16,11 @@ diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/goo
 index 3b995fb32..340072371 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_node_pool.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_node_pool.go
-@@ -538,11 +538,6 @@ func resourceContainerNodePoolExists(d *schema.ResourceData, meta interface{}) (
+@@ -754,11 +754,6 @@ func resourceContainerNodePoolExists(d *schema.ResourceData, meta interface{}) (
  func resourceContainerNodePoolStateImporter(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
  	config := meta.(*Config)
  
--	userAgent, err := generateUserAgentString(d, config.userAgent)
+-	userAgent, err := generateUserAgentString(d, config.UserAgent)
 -	if err != nil {
 -		return nil, err
 -	}
@@ -28,7 +28,7 @@ index 3b995fb32..340072371 100644
  	idRegexes := []string{
  		"projects/(?P<project>[^/]+)/zones/(?P<location>[^/]+)/clusters/(?P<cluster>[^/]+)/nodePools/(?P<name>[^/]+)",
  		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<cluster>[^/]+)/nodePools/(?P<name>[^/]+)",
-@@ -560,26 +555,6 @@ func resourceContainerNodePoolStateImporter(d *schema.ResourceData, meta interfa
+@@ -776,26 +771,6 @@ func resourceContainerNodePoolStateImporter(d *schema.ResourceData, meta interfa
  
  	d.SetId(id)
  

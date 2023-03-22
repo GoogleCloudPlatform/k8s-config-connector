@@ -335,8 +335,8 @@ spec:
                 description: Manage Mesh Features
                 properties:
                   controlPlane:
-                    description: 'Whether to automatically manage Service Mesh control
-                      planes. Possible values: CONTROL_PLANE_MANAGEMENT_UNSPECIFIED,
+                    description: '**DEPRECATED** Whether to automatically manage Service
+                      Mesh control planes. Possible values: CONTROL_PLANE_MANAGEMENT_UNSPECIFIED,
                       AUTOMATIC, MANUAL'
                     type: string
                   management:

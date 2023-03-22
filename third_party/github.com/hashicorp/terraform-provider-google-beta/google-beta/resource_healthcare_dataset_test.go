@@ -72,13 +72,13 @@ func TestAccHealthcareDataset_basic(t *testing.T) {
 	t.Parallel()
 
 	location := "us-central1"
-	datasetName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	datasetName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 	timeZone := "America/New_York"
 	resourceName := "google_healthcare_dataset.dataset"
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckHealthcareDatasetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -111,14 +111,14 @@ func testAccCheckGoogleHealthcareDatasetUpdate(t *testing.T, timeZone string) re
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			gcpResourceUri, err := replaceVarsForTest(config, rs, "projects/{{project}}/locations/{{location}}/datasets/{{name}}")
 			if err != nil {
 				return err
 			}
 
-			response, err := config.NewHealthcareClient(config.userAgent).Projects.Locations.Datasets.Get(gcpResourceUri).Do()
+			response, err := config.NewHealthcareClient(config.UserAgent).Projects.Locations.Datasets.Get(gcpResourceUri).Do()
 			if err != nil {
 				return fmt.Errorf("Unexpected failure while verifying 'updated' dataset: %s", err)
 			}

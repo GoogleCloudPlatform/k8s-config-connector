@@ -358,39 +358,6 @@ func canonicalizePolicyDesiredState(rawDesired, rawInitial *Policy, opts ...dcl.
 
 		return rawDesired, nil
 	}
-
-	if rawDesired.KubernetesNamespaceAdmissionRules != nil || rawInitial.KubernetesNamespaceAdmissionRules != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.KubernetesServiceAccountAdmissionRules, rawDesired.IstioServiceIdentityAdmissionRules, rawDesired.ClusterAdmissionRules) {
-			rawDesired.KubernetesNamespaceAdmissionRules = nil
-			rawInitial.KubernetesNamespaceAdmissionRules = nil
-		}
-	}
-
-	if rawDesired.KubernetesServiceAccountAdmissionRules != nil || rawInitial.KubernetesServiceAccountAdmissionRules != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.KubernetesNamespaceAdmissionRules, rawDesired.IstioServiceIdentityAdmissionRules, rawDesired.ClusterAdmissionRules) {
-			rawDesired.KubernetesServiceAccountAdmissionRules = nil
-			rawInitial.KubernetesServiceAccountAdmissionRules = nil
-		}
-	}
-
-	if rawDesired.IstioServiceIdentityAdmissionRules != nil || rawInitial.IstioServiceIdentityAdmissionRules != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.KubernetesNamespaceAdmissionRules, rawDesired.KubernetesServiceAccountAdmissionRules, rawDesired.ClusterAdmissionRules) {
-			rawDesired.IstioServiceIdentityAdmissionRules = nil
-			rawInitial.IstioServiceIdentityAdmissionRules = nil
-		}
-	}
-
-	if rawDesired.ClusterAdmissionRules != nil || rawInitial.ClusterAdmissionRules != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.KubernetesNamespaceAdmissionRules, rawDesired.KubernetesServiceAccountAdmissionRules, rawDesired.IstioServiceIdentityAdmissionRules) {
-			rawDesired.ClusterAdmissionRules = nil
-			rawInitial.ClusterAdmissionRules = nil
-		}
-	}
-
 	canonicalDesired := &Policy{}
 	canonicalDesired.AdmissionWhitelistPatterns = canonicalizePolicyAdmissionWhitelistPatternsSlice(rawDesired.AdmissionWhitelistPatterns, rawInitial.AdmissionWhitelistPatterns, opts...)
 	if dcl.IsZeroValue(rawDesired.ClusterAdmissionRules) || (dcl.IsEmptyValueIndirect(rawDesired.ClusterAdmissionRules) && dcl.IsEmptyValueIndirect(rawInitial.ClusterAdmissionRules)) {
@@ -432,6 +399,34 @@ func canonicalizePolicyDesiredState(rawDesired, rawInitial *Policy, opts ...dcl.
 		canonicalDesired.Project = rawInitial.Project
 	} else {
 		canonicalDesired.Project = rawDesired.Project
+	}
+
+	if canonicalDesired.KubernetesNamespaceAdmissionRules != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.KubernetesServiceAccountAdmissionRules, rawDesired.IstioServiceIdentityAdmissionRules, rawDesired.ClusterAdmissionRules) {
+			canonicalDesired.KubernetesNamespaceAdmissionRules = map[string]PolicyKubernetesNamespaceAdmissionRules{}
+		}
+	}
+
+	if canonicalDesired.KubernetesServiceAccountAdmissionRules != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.KubernetesNamespaceAdmissionRules, rawDesired.IstioServiceIdentityAdmissionRules, rawDesired.ClusterAdmissionRules) {
+			canonicalDesired.KubernetesServiceAccountAdmissionRules = map[string]PolicyKubernetesServiceAccountAdmissionRules{}
+		}
+	}
+
+	if canonicalDesired.IstioServiceIdentityAdmissionRules != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.KubernetesNamespaceAdmissionRules, rawDesired.KubernetesServiceAccountAdmissionRules, rawDesired.ClusterAdmissionRules) {
+			canonicalDesired.IstioServiceIdentityAdmissionRules = map[string]PolicyIstioServiceIdentityAdmissionRules{}
+		}
+	}
+
+	if canonicalDesired.ClusterAdmissionRules != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.KubernetesNamespaceAdmissionRules, rawDesired.KubernetesServiceAccountAdmissionRules, rawDesired.IstioServiceIdentityAdmissionRules) {
+			canonicalDesired.ClusterAdmissionRules = map[string]PolicyClusterAdmissionRules{}
+		}
 	}
 
 	return canonicalDesired, nil
@@ -581,23 +576,26 @@ func canonicalizeNewPolicyAdmissionWhitelistPatternsSet(c *Client, des, nw []Pol
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []PolicyAdmissionWhitelistPatterns
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []PolicyAdmissionWhitelistPatterns
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := comparePolicyAdmissionWhitelistPatternsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewPolicyAdmissionWhitelistPatterns(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewPolicyAdmissionWhitelistPatternsSlice(c *Client, des, nw []PolicyAdmissionWhitelistPatterns) []PolicyAdmissionWhitelistPatterns {
@@ -708,23 +706,26 @@ func canonicalizeNewPolicyClusterAdmissionRulesSet(c *Client, des, nw []PolicyCl
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []PolicyClusterAdmissionRules
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []PolicyClusterAdmissionRules
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := comparePolicyClusterAdmissionRulesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewPolicyClusterAdmissionRules(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewPolicyClusterAdmissionRulesSlice(c *Client, des, nw []PolicyClusterAdmissionRules) []PolicyClusterAdmissionRules {
@@ -835,23 +836,26 @@ func canonicalizeNewPolicyKubernetesNamespaceAdmissionRulesSet(c *Client, des, n
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []PolicyKubernetesNamespaceAdmissionRules
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []PolicyKubernetesNamespaceAdmissionRules
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := comparePolicyKubernetesNamespaceAdmissionRulesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewPolicyKubernetesNamespaceAdmissionRules(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewPolicyKubernetesNamespaceAdmissionRulesSlice(c *Client, des, nw []PolicyKubernetesNamespaceAdmissionRules) []PolicyKubernetesNamespaceAdmissionRules {
@@ -962,23 +966,26 @@ func canonicalizeNewPolicyKubernetesServiceAccountAdmissionRulesSet(c *Client, d
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []PolicyKubernetesServiceAccountAdmissionRules
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []PolicyKubernetesServiceAccountAdmissionRules
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := comparePolicyKubernetesServiceAccountAdmissionRulesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewPolicyKubernetesServiceAccountAdmissionRules(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewPolicyKubernetesServiceAccountAdmissionRulesSlice(c *Client, des, nw []PolicyKubernetesServiceAccountAdmissionRules) []PolicyKubernetesServiceAccountAdmissionRules {
@@ -1089,23 +1096,26 @@ func canonicalizeNewPolicyIstioServiceIdentityAdmissionRulesSet(c *Client, des, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []PolicyIstioServiceIdentityAdmissionRules
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []PolicyIstioServiceIdentityAdmissionRules
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := comparePolicyIstioServiceIdentityAdmissionRulesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewPolicyIstioServiceIdentityAdmissionRules(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewPolicyIstioServiceIdentityAdmissionRulesSlice(c *Client, des, nw []PolicyIstioServiceIdentityAdmissionRules) []PolicyIstioServiceIdentityAdmissionRules {
@@ -1216,23 +1226,26 @@ func canonicalizeNewPolicyDefaultAdmissionRuleSet(c *Client, des, nw []PolicyDef
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []PolicyDefaultAdmissionRule
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []PolicyDefaultAdmissionRule
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := comparePolicyDefaultAdmissionRuleNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewPolicyDefaultAdmissionRule(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewPolicyDefaultAdmissionRuleSlice(c *Client, des, nw []PolicyDefaultAdmissionRule) []PolicyDefaultAdmissionRule {
@@ -1350,6 +1363,9 @@ func diffPolicy(c *Client, desired, actual *Policy, opts ...dcl.ApplyOption) ([]
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func comparePolicyAdmissionWhitelistPatternsNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

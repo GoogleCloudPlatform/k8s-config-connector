@@ -25,7 +25,7 @@ func TestAccComputeMachineImageIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           randString(t, 10),
+		"random_suffix":           RandString(t, 10),
 		"role":                    "roles/compute.admin",
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -34,9 +34,9 @@ func TestAccComputeMachineImageIamBindingGenerated(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProvidersOiCS,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeMachineImageIamBinding_basicGenerated(context),
@@ -53,7 +53,7 @@ func TestAccComputeMachineImageIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           randString(t, 10),
+		"random_suffix":           RandString(t, 10),
 		"role":                    "roles/compute.admin",
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -62,9 +62,9 @@ func TestAccComputeMachineImageIamMemberGenerated(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProvidersOiCS,
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -78,7 +78,7 @@ func TestAccComputeMachineImageIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           randString(t, 10),
+		"random_suffix":           RandString(t, 10),
 		"role":                    "roles/compute.admin",
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -87,9 +87,9 @@ func TestAccComputeMachineImageIamPolicyGenerated(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProvidersOiCS,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeMachineImageIamPolicy_basicGenerated(context),
@@ -105,7 +105,7 @@ func TestAccComputeMachineImageIamBindingGenerated_withCondition(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           randString(t, 10),
+		"random_suffix":           RandString(t, 10),
 		"role":                    "roles/compute.admin",
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -114,9 +114,9 @@ func TestAccComputeMachineImageIamBindingGenerated_withCondition(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProvidersOiCS,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeMachineImageIamBinding_withConditionGenerated(context),
@@ -127,11 +127,11 @@ func TestAccComputeMachineImageIamBindingGenerated_withCondition(t *testing.T) {
 
 func TestAccComputeMachineImageIamBindingGenerated_withAndWithoutCondition(t *testing.T) {
 	// Multiple fine-grained resources
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           randString(t, 10),
+		"random_suffix":           RandString(t, 10),
 		"role":                    "roles/compute.admin",
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -140,9 +140,9 @@ func TestAccComputeMachineImageIamBindingGenerated_withAndWithoutCondition(t *te
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProvidersOiCS,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeMachineImageIamBinding_withAndWithoutConditionGenerated(context),
@@ -155,7 +155,7 @@ func TestAccComputeMachineImageIamMemberGenerated_withCondition(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           randString(t, 10),
+		"random_suffix":           RandString(t, 10),
 		"role":                    "roles/compute.admin",
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -164,9 +164,9 @@ func TestAccComputeMachineImageIamMemberGenerated_withCondition(t *testing.T) {
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProvidersOiCS,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeMachineImageIamMember_withConditionGenerated(context),
@@ -177,11 +177,11 @@ func TestAccComputeMachineImageIamMemberGenerated_withCondition(t *testing.T) {
 
 func TestAccComputeMachineImageIamMemberGenerated_withAndWithoutCondition(t *testing.T) {
 	// Multiple fine-grained resources
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           randString(t, 10),
+		"random_suffix":           RandString(t, 10),
 		"role":                    "roles/compute.admin",
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -190,9 +190,9 @@ func TestAccComputeMachineImageIamMemberGenerated_withAndWithoutCondition(t *tes
 		"condition_expr_no_desc":  `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProvidersOiCS,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeMachineImageIamMember_withAndWithoutConditionGenerated(context),
@@ -205,7 +205,7 @@ func TestAccComputeMachineImageIamPolicyGenerated_withCondition(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":           randString(t, 10),
+		"random_suffix":           RandString(t, 10),
 		"role":                    "roles/compute.admin",
 		"condition_title":         "expires_after_2019_12_31",
 		"condition_expr":          `request.time < timestamp(\"2020-01-01T00:00:00Z\")`,
@@ -218,9 +218,9 @@ func TestAccComputeMachineImageIamPolicyGenerated_withCondition(t *testing.T) {
 	expectedPolicyData := Nprintf(`{"bindings":[{"condition":{"description":"%{condition_desc}","expression":"%{condition_expr}","title":"%{condition_title}"},"members":["user:admin@hashicorptest.com"],"role":"%{role}"},{"condition":{"expression":"%{condition_expr}","title":"%{condition_title}-no-description"},"members":["user:admin@hashicorptest.com"],"role":"%{role}"}]}`, context)
 	expectedPolicyData = strings.Replace(expectedPolicyData, "<", "\\u003c", -1)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProvidersOiCS,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeMachineImageIamPolicy_withConditionGenerated(context),

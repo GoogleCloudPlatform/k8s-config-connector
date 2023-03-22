@@ -480,23 +480,6 @@ func canonicalizeWorkloadIdentityPoolProviderDesiredState(rawDesired, rawInitial
 
 		return rawDesired, nil
 	}
-
-	if rawDesired.Aws != nil || rawInitial.Aws != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.Oidc) {
-			rawDesired.Aws = nil
-			rawInitial.Aws = nil
-		}
-	}
-
-	if rawDesired.Oidc != nil || rawInitial.Oidc != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.Aws) {
-			rawDesired.Oidc = nil
-			rawInitial.Oidc = nil
-		}
-	}
-
 	canonicalDesired := &WorkloadIdentityPoolProvider{}
 	if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawInitial.Name) {
 		canonicalDesired.Name = rawInitial.Name
@@ -545,6 +528,20 @@ func canonicalizeWorkloadIdentityPoolProviderDesiredState(rawDesired, rawInitial
 		canonicalDesired.WorkloadIdentityPool = rawInitial.WorkloadIdentityPool
 	} else {
 		canonicalDesired.WorkloadIdentityPool = rawDesired.WorkloadIdentityPool
+	}
+
+	if canonicalDesired.Aws != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.Oidc) {
+			canonicalDesired.Aws = EmptyWorkloadIdentityPoolProviderAws
+		}
+	}
+
+	if canonicalDesired.Oidc != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.Aws) {
+			canonicalDesired.Oidc = EmptyWorkloadIdentityPoolProviderOidc
+		}
 	}
 
 	return canonicalDesired, nil
@@ -705,23 +702,26 @@ func canonicalizeNewWorkloadIdentityPoolProviderAwsSet(c *Client, des, nw []Work
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkloadIdentityPoolProviderAws
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkloadIdentityPoolProviderAws
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkloadIdentityPoolProviderAwsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkloadIdentityPoolProviderAws(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkloadIdentityPoolProviderAwsSlice(c *Client, des, nw []WorkloadIdentityPoolProviderAws) []WorkloadIdentityPoolProviderAws {
@@ -828,23 +828,26 @@ func canonicalizeNewWorkloadIdentityPoolProviderOidcSet(c *Client, des, nw []Wor
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkloadIdentityPoolProviderOidc
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkloadIdentityPoolProviderOidc
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkloadIdentityPoolProviderOidcNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkloadIdentityPoolProviderOidc(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkloadIdentityPoolProviderOidcSlice(c *Client, des, nw []WorkloadIdentityPoolProviderOidc) []WorkloadIdentityPoolProviderOidc {
@@ -969,6 +972,9 @@ func diffWorkloadIdentityPoolProvider(c *Client, desired, actual *WorkloadIdenti
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareWorkloadIdentityPoolProviderAwsNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

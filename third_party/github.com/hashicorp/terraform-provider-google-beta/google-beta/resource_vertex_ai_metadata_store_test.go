@@ -13,11 +13,11 @@ func TestAccVertexAIMetadataStore_vertexAiMetadataStoreExample(t *testing.T) {
 	t.Parallel()
 
 	kms := BootstrapKMSKeyInLocation(t, "us-central1")
-	name := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	name := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckVertexAIMetadataStoreDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -56,7 +56,7 @@ func testAccCheckVertexAIMetadataStoreDestroyProducer(t *testing.T) func(s *terr
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{VertexAIBasePath}}{{name}}")
 			if err != nil {
@@ -69,7 +69,7 @@ func testAccCheckVertexAIMetadataStoreDestroyProducer(t *testing.T) func(s *terr
 				billingProject = config.BillingProject
 			}
 
-			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("VertexAIMetadataStore still exists at %s", url)
 			}

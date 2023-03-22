@@ -69,7 +69,7 @@ func ResourceComputeOrganizationSecurityPolicyAssociation() *schema.Resource {
 
 func resourceComputeOrganizationSecurityPolicyAssociationCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -101,7 +101,7 @@ func resourceComputeOrganizationSecurityPolicyAssociationCreate(d *schema.Resour
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating OrganizationSecurityPolicyAssociation: %s", err)
 	}
@@ -121,14 +121,14 @@ func resourceComputeOrganizationSecurityPolicyAssociationCreate(d *schema.Resour
 		return err
 	}
 
-	policyRes, err := sendRequest(config, "GET", "", url, userAgent, nil)
+	policyRes, err := SendRequest(config, "GET", "", url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("ComputeOrganizationSecurityPolicy %q", d.Get("policy_id")))
 	}
 
 	parent := flattenComputeOrganizationSecurityPolicyParent(policyRes["parent"], d, config)
 	var opRes map[string]interface{}
-	err = computeOrgOperationWaitTimeWithResponse(
+	err = ComputeOrgOperationWaitTimeWithResponse(
 		config, res, &opRes, parent.(string), "Creating OrganizationSecurityPolicyAssociation", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 
@@ -145,7 +145,7 @@ func resourceComputeOrganizationSecurityPolicyAssociationCreate(d *schema.Resour
 
 func resourceComputeOrganizationSecurityPolicyAssociationRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -162,7 +162,7 @@ func resourceComputeOrganizationSecurityPolicyAssociationRead(d *schema.Resource
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(transformSecurityPolicyAssociationReadError(err), d, fmt.Sprintf("ComputeOrganizationSecurityPolicyAssociation %q", d.Id()))
 	}
@@ -182,7 +182,7 @@ func resourceComputeOrganizationSecurityPolicyAssociationRead(d *schema.Resource
 
 func resourceComputeOrganizationSecurityPolicyAssociationDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -202,7 +202,7 @@ func resourceComputeOrganizationSecurityPolicyAssociationDelete(d *schema.Resour
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "OrganizationSecurityPolicyAssociation")
 	}
@@ -215,14 +215,14 @@ func resourceComputeOrganizationSecurityPolicyAssociationDelete(d *schema.Resour
 		return err
 	}
 
-	policyRes, err := sendRequest(config, "GET", "", url, userAgent, nil)
+	policyRes, err := SendRequest(config, "GET", "", url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("ComputeOrganizationSecurityPolicy %q", d.Get("policy_id")))
 	}
 
 	parent := flattenComputeOrganizationSecurityPolicyParent(policyRes["parent"], d, config)
 	var opRes map[string]interface{}
-	err = computeOrgOperationWaitTimeWithResponse(
+	err = ComputeOrgOperationWaitTimeWithResponse(
 		config, res, &opRes, parent.(string), "Creating OrganizationSecurityPolicyAssociation", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 

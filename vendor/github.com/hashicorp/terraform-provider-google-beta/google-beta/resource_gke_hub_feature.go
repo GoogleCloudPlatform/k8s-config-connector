@@ -227,7 +227,7 @@ func resourceGkeHubFeatureCreate(d *schema.ResourceData, meta interface{}) error
 	}
 	d.SetId(id)
 	directive := CreateDirective
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -273,7 +273,7 @@ func resourceGkeHubFeatureRead(d *schema.ResourceData, meta interface{}) error {
 		Spec:     expandGkeHubFeatureSpec(d.Get("spec")),
 	}
 
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -350,7 +350,7 @@ func resourceGkeHubFeatureUpdate(d *schema.ResourceData, meta interface{}) error
 	defer mutexKV.Unlock(lockName)
 
 	directive := UpdateDirective
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -404,7 +404,7 @@ func resourceGkeHubFeatureDelete(d *schema.ResourceData, meta interface{}) error
 	defer mutexKV.Unlock(lockName)
 
 	log.Printf("[DEBUG] Deleting Feature %q", d.Id())
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}

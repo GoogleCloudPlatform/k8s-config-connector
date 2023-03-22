@@ -45,7 +45,7 @@ import (
 
 func NewDCLApikeysClient(config *Config, userAgent, billingProject string, timeout time.Duration) *apikeys.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.ApikeysBasePath),
@@ -68,7 +68,7 @@ func NewDCLApikeysClient(config *Config, userAgent, billingProject string, timeo
 
 func NewDCLAssuredWorkloadsClient(config *Config, userAgent, billingProject string, timeout time.Duration) *assuredworkloads.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.AssuredWorkloadsBasePath),
@@ -91,7 +91,7 @@ func NewDCLAssuredWorkloadsClient(config *Config, userAgent, billingProject stri
 
 func NewDCLBigqueryReservationClient(config *Config, userAgent, billingProject string, timeout time.Duration) *bigqueryreservation.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.BigqueryReservationBasePath),
@@ -114,7 +114,7 @@ func NewDCLBigqueryReservationClient(config *Config, userAgent, billingProject s
 
 func NewDCLCloudbuildClient(config *Config, userAgent, billingProject string, timeout time.Duration) *cloudbuild.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.CloudBuildWorkerPoolBasePath),
@@ -137,7 +137,7 @@ func NewDCLCloudbuildClient(config *Config, userAgent, billingProject string, ti
 
 func NewDCLCloudbuildv2Client(config *Config, userAgent, billingProject string, timeout time.Duration) *cloudbuildv2.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.Cloudbuildv2BasePath),
@@ -160,7 +160,7 @@ func NewDCLCloudbuildv2Client(config *Config, userAgent, billingProject string, 
 
 func NewDCLClouddeployClient(config *Config, userAgent, billingProject string, timeout time.Duration) *clouddeploy.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.ClouddeployBasePath),
@@ -183,7 +183,7 @@ func NewDCLClouddeployClient(config *Config, userAgent, billingProject string, t
 
 func NewDCLCloudResourceManagerClient(config *Config, userAgent, billingProject string, timeout time.Duration) *cloudresourcemanager.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.CloudResourceManagerBasePath),
@@ -206,7 +206,7 @@ func NewDCLCloudResourceManagerClient(config *Config, userAgent, billingProject 
 
 func NewDCLComputeClient(config *Config, userAgent, billingProject string, timeout time.Duration) *compute.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.ComputeBasePath),
@@ -229,7 +229,7 @@ func NewDCLComputeClient(config *Config, userAgent, billingProject string, timeo
 
 func NewDCLContainerAwsClient(config *Config, userAgent, billingProject string, timeout time.Duration) *containeraws.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.ContainerAwsBasePath),
@@ -252,7 +252,7 @@ func NewDCLContainerAwsClient(config *Config, userAgent, billingProject string, 
 
 func NewDCLContainerAzureClient(config *Config, userAgent, billingProject string, timeout time.Duration) *containerazure.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.ContainerAzureBasePath),
@@ -275,7 +275,7 @@ func NewDCLContainerAzureClient(config *Config, userAgent, billingProject string
 
 func NewDCLDataplexClient(config *Config, userAgent, billingProject string, timeout time.Duration) *dataplex.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.DataplexBasePath),
@@ -298,7 +298,7 @@ func NewDCLDataplexClient(config *Config, userAgent, billingProject string, time
 
 func NewDCLDataprocClient(config *Config, userAgent, billingProject string, timeout time.Duration) *dataproc.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.DataprocBasePath),
@@ -321,7 +321,7 @@ func NewDCLDataprocClient(config *Config, userAgent, billingProject string, time
 
 func NewDCLEventarcClient(config *Config, userAgent, billingProject string, timeout time.Duration) *eventarc.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.EventarcBasePath),
@@ -344,7 +344,7 @@ func NewDCLEventarcClient(config *Config, userAgent, billingProject string, time
 
 func NewDCLFirebaserulesClient(config *Config, userAgent, billingProject string, timeout time.Duration) *firebaserules.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.FirebaserulesBasePath),
@@ -367,7 +367,7 @@ func NewDCLFirebaserulesClient(config *Config, userAgent, billingProject string,
 
 func NewDCLGkeHubClient(config *Config, userAgent, billingProject string, timeout time.Duration) *gkehub.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.GKEHubFeatureBasePath),
@@ -390,7 +390,7 @@ func NewDCLGkeHubClient(config *Config, userAgent, billingProject string, timeou
 
 func NewDCLLoggingClient(config *Config, userAgent, billingProject string, timeout time.Duration) *logging.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.LoggingBasePath),
@@ -413,7 +413,7 @@ func NewDCLLoggingClient(config *Config, userAgent, billingProject string, timeo
 
 func NewDCLMonitoringClient(config *Config, userAgent, billingProject string, timeout time.Duration) *monitoring.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.MonitoringBasePath),
@@ -436,7 +436,7 @@ func NewDCLMonitoringClient(config *Config, userAgent, billingProject string, ti
 
 func NewDCLNetworkConnectivityClient(config *Config, userAgent, billingProject string, timeout time.Duration) *networkconnectivity.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.NetworkConnectivityBasePath),
@@ -459,7 +459,7 @@ func NewDCLNetworkConnectivityClient(config *Config, userAgent, billingProject s
 
 func NewDCLOrgPolicyClient(config *Config, userAgent, billingProject string, timeout time.Duration) *orgpolicy.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.OrgPolicyBasePath),
@@ -482,7 +482,7 @@ func NewDCLOrgPolicyClient(config *Config, userAgent, billingProject string, tim
 
 func NewDCLOsConfigClient(config *Config, userAgent, billingProject string, timeout time.Duration) *osconfig.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.OSConfigBasePath),
@@ -505,7 +505,7 @@ func NewDCLOsConfigClient(config *Config, userAgent, billingProject string, time
 
 func NewDCLPrivatecaClient(config *Config, userAgent, billingProject string, timeout time.Duration) *privateca.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.PrivatecaBasePath),
@@ -528,7 +528,7 @@ func NewDCLPrivatecaClient(config *Config, userAgent, billingProject string, tim
 
 func NewDCLRecaptchaEnterpriseClient(config *Config, userAgent, billingProject string, timeout time.Duration) *recaptchaenterprise.Client {
 	configOptions := []dcl.ConfigOption{
-		dcl.WithHTTPClient(config.client),
+		dcl.WithHTTPClient(config.Client),
 		dcl.WithUserAgent(userAgent),
 		dcl.WithLogger(dclLogger{}),
 		dcl.WithBasePath(config.RecaptchaEnterpriseBasePath),

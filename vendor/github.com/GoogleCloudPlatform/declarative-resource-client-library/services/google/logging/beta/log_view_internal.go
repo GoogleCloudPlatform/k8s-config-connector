@@ -443,7 +443,6 @@ func canonicalizeLogViewDesiredState(rawDesired, rawInitial *LogView, opts ...dc
 	} else {
 		canonicalDesired.Bucket = rawDesired.Bucket
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -566,6 +565,9 @@ func diffLogView(c *Client, desired, actual *LogView, opts ...dcl.ApplyOption) (
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

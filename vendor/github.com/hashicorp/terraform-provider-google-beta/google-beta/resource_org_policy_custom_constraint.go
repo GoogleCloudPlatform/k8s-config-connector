@@ -105,7 +105,7 @@ func ResourceOrgPolicyCustomConstraint() *schema.Resource {
 
 func resourceOrgPolicyCustomConstraintCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -167,7 +167,7 @@ func resourceOrgPolicyCustomConstraintCreate(d *schema.ResourceData, meta interf
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating CustomConstraint: %s", err)
 	}
@@ -186,7 +186,7 @@ func resourceOrgPolicyCustomConstraintCreate(d *schema.ResourceData, meta interf
 
 func resourceOrgPolicyCustomConstraintRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -203,7 +203,7 @@ func resourceOrgPolicyCustomConstraintRead(d *schema.ResourceData, meta interfac
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("OrgPolicyCustomConstraint %q", d.Id()))
 	}
@@ -238,7 +238,7 @@ func resourceOrgPolicyCustomConstraintRead(d *schema.ResourceData, meta interfac
 
 func resourceOrgPolicyCustomConstraintUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -294,7 +294,7 @@ func resourceOrgPolicyCustomConstraintUpdate(d *schema.ResourceData, meta interf
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating CustomConstraint %q: %s", d.Id(), err)
@@ -307,7 +307,7 @@ func resourceOrgPolicyCustomConstraintUpdate(d *schema.ResourceData, meta interf
 
 func resourceOrgPolicyCustomConstraintDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -327,7 +327,7 @@ func resourceOrgPolicyCustomConstraintDelete(d *schema.ResourceData, meta interf
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "CustomConstraint")
 	}

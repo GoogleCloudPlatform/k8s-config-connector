@@ -80,6 +80,7 @@
 ### Spec
 #### Schema
 ```yaml
+deletionPolicy: string
 projectRef:
   external: string
   name: string
@@ -93,6 +94,17 @@ projectRef:
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td>
+            <p><code>deletionPolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The deletion policy for the shared VPC service. Setting ABANDON allows the resource
+				to be abandoned rather than deleted. Possible values are: "ABANDON".{% endverbatim %}</p>
+        </td>
+    </tr>
     <tr>
         <td>
             <p><code>projectRef</code></p>

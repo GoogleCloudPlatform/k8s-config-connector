@@ -290,7 +290,7 @@ func resourceCloudbuildv2ConnectionCreate(d *schema.ResourceData, meta interface
 	}
 	d.SetId(id)
 	directive := CreateDirective
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -338,7 +338,7 @@ func resourceCloudbuildv2ConnectionRead(d *schema.ResourceData, meta interface{}
 		Project:                dcl.String(project),
 	}
 
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -416,7 +416,7 @@ func resourceCloudbuildv2ConnectionUpdate(d *schema.ResourceData, meta interface
 		Project:                dcl.String(project),
 	}
 	directive := UpdateDirective
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -466,7 +466,7 @@ func resourceCloudbuildv2ConnectionDelete(d *schema.ResourceData, meta interface
 	}
 
 	log.Printf("[DEBUG] Deleting Connection %q", d.Id())
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}

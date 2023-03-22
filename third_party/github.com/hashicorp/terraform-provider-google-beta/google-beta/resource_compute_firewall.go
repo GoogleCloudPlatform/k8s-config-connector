@@ -429,7 +429,7 @@ Example inputs include: ["22"], ["80","443"], and
 
 func resourceComputeFirewallCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -545,7 +545,7 @@ func resourceComputeFirewallCreate(d *schema.ResourceData, meta interface{}) err
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Firewall: %s", err)
 	}
@@ -557,7 +557,7 @@ func resourceComputeFirewallCreate(d *schema.ResourceData, meta interface{}) err
 	}
 	d.SetId(id)
 
-	err = computeOperationWaitTime(
+	err = ComputeOperationWaitTime(
 		config, res, project, "Creating Firewall", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 
@@ -574,7 +574,7 @@ func resourceComputeFirewallCreate(d *schema.ResourceData, meta interface{}) err
 
 func resourceComputeFirewallRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -597,7 +597,7 @@ func resourceComputeFirewallRead(d *schema.ResourceData, meta interface{}) error
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("ComputeFirewall %q", d.Id()))
 	}
@@ -663,7 +663,7 @@ func resourceComputeFirewallRead(d *schema.ResourceData, meta interface{}) error
 
 func resourceComputeFirewallUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -768,7 +768,7 @@ func resourceComputeFirewallUpdate(d *schema.ResourceData, meta interface{}) err
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating Firewall %q: %s", d.Id(), err)
@@ -776,7 +776,7 @@ func resourceComputeFirewallUpdate(d *schema.ResourceData, meta interface{}) err
 		log.Printf("[DEBUG] Finished updating Firewall %q: %#v", d.Id(), res)
 	}
 
-	err = computeOperationWaitTime(
+	err = ComputeOperationWaitTime(
 		config, res, project, "Updating Firewall", userAgent,
 		d.Timeout(schema.TimeoutUpdate))
 
@@ -789,7 +789,7 @@ func resourceComputeFirewallUpdate(d *schema.ResourceData, meta interface{}) err
 
 func resourceComputeFirewallDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -815,12 +815,12 @@ func resourceComputeFirewallDelete(d *schema.ResourceData, meta interface{}) err
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "Firewall")
 	}
 
-	err = computeOperationWaitTime(
+	err = ComputeOperationWaitTime(
 		config, res, project, "Deleting Firewall", userAgent,
 		d.Timeout(schema.TimeoutDelete))
 
@@ -962,7 +962,7 @@ func flattenComputeFirewallNetwork(v interface{}, d *schema.ResourceData, config
 func flattenComputeFirewallPriority(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}

@@ -115,7 +115,7 @@ Currently only NO_NAT (default value) is supported. Default value: "NO_NAT" Poss
 
 func resourceComputeTargetInstanceCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -177,7 +177,7 @@ func resourceComputeTargetInstanceCreate(d *schema.ResourceData, meta interface{
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating TargetInstance: %s", err)
 	}
@@ -189,7 +189,7 @@ func resourceComputeTargetInstanceCreate(d *schema.ResourceData, meta interface{
 	}
 	d.SetId(id)
 
-	err = computeOperationWaitTime(
+	err = ComputeOperationWaitTime(
 		config, res, project, "Creating TargetInstance", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 
@@ -206,7 +206,7 @@ func resourceComputeTargetInstanceCreate(d *schema.ResourceData, meta interface{
 
 func resourceComputeTargetInstanceRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -229,7 +229,7 @@ func resourceComputeTargetInstanceRead(d *schema.ResourceData, meta interface{})
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("ComputeTargetInstance %q", d.Id()))
 	}
@@ -268,7 +268,7 @@ func resourceComputeTargetInstanceRead(d *schema.ResourceData, meta interface{})
 
 func resourceComputeTargetInstanceDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -294,12 +294,12 @@ func resourceComputeTargetInstanceDelete(d *schema.ResourceData, meta interface{
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "TargetInstance")
 	}
 
-	err = computeOperationWaitTime(
+	err = ComputeOperationWaitTime(
 		config, res, project, "Deleting TargetInstance", userAgent,
 		d.Timeout(schema.TimeoutDelete))
 

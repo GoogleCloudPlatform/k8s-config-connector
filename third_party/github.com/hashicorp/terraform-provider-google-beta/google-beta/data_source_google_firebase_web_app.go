@@ -13,6 +13,9 @@ func DataSourceGoogleFirebaseWebApp() *schema.Resource {
 	// Set 'Required' schema elements
 	addRequiredFieldsToSchema(dsSchema, "app_id")
 
+	// Allow specifying a project
+	addOptionalFieldsToSchema(dsSchema, "project")
+
 	return &schema.Resource{
 		Read:   dataSourceGoogleFirebaseWebAppRead,
 		Schema: dsSchema,

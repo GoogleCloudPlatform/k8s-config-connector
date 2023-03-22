@@ -10,13 +10,13 @@ import (
 func TestAccServiceDirectoryService_serviceDirectoryServiceUpdateExample(t *testing.T) {
 	t.Parallel()
 
-	project := getTestProjectFromEnv()
+	project := GetTestProjectFromEnv()
 	location := "us-central1"
-	testId := fmt.Sprintf("tf-test-example-service%s", randString(t, 10))
+	testId := fmt.Sprintf("tf-test-example-service%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckServiceDirectoryServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

@@ -9,14 +9,14 @@ import (
 func TestAccFirebaseAppleApp_update(t *testing.T) {
 	t.Parallel()
 	context := map[string]interface{}{
-		"project_id":    getTestProjectFromEnv(),
+		"project_id":    GetTestProjectFromEnv(),
 		"bundle_id":     "apple.app.12345",
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 		"display_name":  "tf-test Display Name N",
 	}
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProvidersOiCS,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFirebaseAppleApp(context, 12345, "1"),

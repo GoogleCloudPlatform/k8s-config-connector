@@ -289,7 +289,7 @@ func resourceClouddeployDeliveryPipelineCreate(d *schema.ResourceData, meta inte
 	}
 	d.SetId(id)
 	directive := CreateDirective
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -338,7 +338,7 @@ func resourceClouddeployDeliveryPipelineRead(d *schema.ResourceData, meta interf
 		Suspended:      dcl.Bool(d.Get("suspended").(bool)),
 	}
 
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -420,7 +420,7 @@ func resourceClouddeployDeliveryPipelineUpdate(d *schema.ResourceData, meta inte
 		Suspended:      dcl.Bool(d.Get("suspended").(bool)),
 	}
 	directive := UpdateDirective
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -471,7 +471,7 @@ func resourceClouddeployDeliveryPipelineDelete(d *schema.ResourceData, meta inte
 	}
 
 	log.Printf("[DEBUG] Deleting DeliveryPipeline %q", d.Id())
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}

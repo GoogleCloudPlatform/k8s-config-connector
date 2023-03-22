@@ -16,14 +16,14 @@ func TestAccEventarcGoogleChannelConfig_basic(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  getTestProjectFromEnv(),
-		"region":        getTestRegionFromEnv(),
-		"random_suffix": randString(t, 10),
+		"project_name":  GetTestProjectFromEnv(),
+		"region":        GetTestRegionFromEnv(),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckEventarcGoogleChannelConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -41,22 +41,22 @@ func TestAccEventarcGoogleChannelConfig_basic(t *testing.T) {
 func TestAccEventarcGoogleChannelConfig_cryptoKeyUpdate(t *testing.T) {
 	t.Parallel()
 
-	region := getTestRegionFromEnv()
-	key1 := BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-key1")
-	key2 := BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-key2")
+	region := GetTestRegionFromEnv()
+	key1 := BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-google-channel-config-key1")
+	key2 := BootstrapKMSKeyWithPurposeInLocationAndName(t, "ENCRYPT_DECRYPT", region, "tf-bootstrap-eventarc-google-channel-config-key2")
 
 	context := map[string]interface{}{
-		"project_name":  getTestProjectFromEnv(),
-		"region":        getTestRegionFromEnv(),
-		"random_suffix": randString(t, 10),
+		"project_name":  GetTestProjectFromEnv(),
+		"region":        GetTestRegionFromEnv(),
+		"random_suffix": RandString(t, 10),
 		"key_ring":      GetResourceNameFromSelfLink(key1.KeyRing.Name),
 		"key1":          GetResourceNameFromSelfLink(key1.CryptoKey.Name),
 		"key2":          GetResourceNameFromSelfLink(key2.CryptoKey.Name),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckEventarcGoogleChannelConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -162,7 +162,7 @@ func testAccCheckEventarcGoogleChannelConfigDestroyProducer(t *testing.T) func(s
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			billingProject := ""
 			if config.BillingProject != "" {
@@ -177,7 +177,7 @@ func testAccCheckEventarcGoogleChannelConfigDestroyProducer(t *testing.T) func(s
 				UpdateTime:    dcl.StringOrNil(rs.Primary.Attributes["update_time"]),
 			}
 
-			client := NewDCLEventarcClient(config, config.userAgent, billingProject, 0)
+			client := NewDCLEventarcClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetGoogleChannelConfig(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_eventarc_google_channel_config still exists %v", obj)

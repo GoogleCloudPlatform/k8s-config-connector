@@ -16,16 +16,16 @@ import (
 func TestAccDataflowFlexTemplateJob_basic(t *testing.T) {
 	// This resource uses custom retry logic that cannot be sped up without
 	// modifying the actual resource
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
-	randStr := randString(t, 10)
+	randStr := RandString(t, 10)
 	job := "tf-test-dataflow-job-" + randStr
 	bucket := "tf-test-dataflow-bucket-" + randStr
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -41,16 +41,16 @@ func TestAccDataflowFlexTemplateJob_basic(t *testing.T) {
 func TestAccDataflowFlexTemplateJob_streamUpdate(t *testing.T) {
 	// This resource uses custom retry logic that cannot be sped up without
 	// modifying the actual resource
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
-	randStr := randString(t, 10)
+	randStr := RandString(t, 10)
 	job := "tf-test-dataflow-job-" + randStr
 	bucket := "tf-test-dataflow-bucket-" + randStr
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -72,16 +72,16 @@ func TestAccDataflowFlexTemplateJob_streamUpdate(t *testing.T) {
 func TestAccDataflowFlexTemplateJob_streamUpdateFail(t *testing.T) {
 	// This resource uses custom retry logic that cannot be sped up without
 	// modifying the actual resource
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
-	randStr := randString(t, 10)
+	randStr := RandString(t, 10)
 	job := "tf-test-dataflow-job-" + randStr
 	bucket := "tf-test-dataflow-bucket-" + randStr
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -104,18 +104,18 @@ func TestAccDataflowFlexTemplateJob_streamUpdateFail(t *testing.T) {
 func TestAccDataflowFlexTemplateJob_withServiceAccount(t *testing.T) {
 	// Dataflow responses include serialized java classes and bash commands
 	// This makes body comparison infeasible
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
-	randStr := randString(t, 10)
+	randStr := RandString(t, 10)
 	job := "tf-test-dataflow-job-" + randStr
 	bucket := "tf-test-dataflow-bucket-" + randStr
 	accountId := "tf-test-dataflow-sa" + randStr
 	zone := "us-central1-b"
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckDataflowJobDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -157,12 +157,12 @@ func testAccDataflowFlexTemplateJobGetGeneratedInstance(t *testing.T, s *terrafo
 	}
 	filter := fmt.Sprintf("labels.goog-dataflow-job-id = %s", rs.Primary.ID)
 
-	config := googleProviderConfig(t)
+	config := GoogleProviderConfig(t)
 
 	var instance *compute.Instance
 
 	err := resource.Retry(1*time.Minute, func() *resource.RetryError {
-		instances, rerr := config.NewComputeClient(config.userAgent).Instances.
+		instances, rerr := config.NewComputeClient(config.UserAgent).Instances.
 			List(config.Project, zone).
 			Filter(filter).
 			MaxResults(2).
@@ -268,7 +268,7 @@ resource "google_dataflow_flex_template_job" "job" {
   container_spec_gcs_path = "gs://${data.google_storage_bucket_object.flex_template.bucket}/${data.google_storage_bucket_object.flex_template.name}"
   on_delete = "cancel"
   parameters = {
-    schemaLocation = "gs://${google_storabe_bucket_object.schema.bucket}/schema.json"
+    schemaLocation = "gs://${google_storage_bucket_object.schema.bucket}/schema.json"
     qps = "1"
     topic = "projects/myproject/topics/mytopic"
     serviceAccount = google_service_account.dataflow-sa.email
@@ -291,9 +291,9 @@ func testAccDataflowJobHasOption(t *testing.T, res, option, expectedValue string
 		if rs.Primary.ID == "" {
 			return fmt.Errorf("No ID is set")
 		}
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
-		job, err := config.NewDataflowClient(config.userAgent).Projects.Jobs.Get(config.Project, rs.Primary.ID).View("JOB_VIEW_ALL").Do()
+		job, err := config.NewDataflowClient(config.UserAgent).Projects.Jobs.Get(config.Project, rs.Primary.ID).View("JOB_VIEW_ALL").Do()
 		if err != nil {
 			return fmt.Errorf("dataflow job does not exist")
 		}

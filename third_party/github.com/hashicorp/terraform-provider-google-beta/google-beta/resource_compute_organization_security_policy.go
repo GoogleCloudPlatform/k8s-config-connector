@@ -87,7 +87,7 @@ updates of this resource.`,
 
 func resourceComputeOrganizationSecurityPolicyCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -137,7 +137,7 @@ func resourceComputeOrganizationSecurityPolicyCreate(d *schema.ResourceData, met
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating OrganizationSecurityPolicy: %s", err)
 	}
@@ -151,7 +151,7 @@ func resourceComputeOrganizationSecurityPolicyCreate(d *schema.ResourceData, met
 
 	parent := d.Get("parent").(string)
 	var opRes map[string]interface{}
-	err = computeOrgOperationWaitTimeWithResponse(
+	err = ComputeOrgOperationWaitTimeWithResponse(
 		config, res, &opRes, parent, "Creating OrganizationSecurityPolicy", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 
@@ -183,7 +183,7 @@ func resourceComputeOrganizationSecurityPolicyCreate(d *schema.ResourceData, met
 
 func resourceComputeOrganizationSecurityPolicyRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -200,7 +200,7 @@ func resourceComputeOrganizationSecurityPolicyRead(d *schema.ResourceData, meta 
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("ComputeOrganizationSecurityPolicy %q", d.Id()))
 	}
@@ -229,7 +229,7 @@ func resourceComputeOrganizationSecurityPolicyRead(d *schema.ResourceData, meta 
 
 func resourceComputeOrganizationSecurityPolicyUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -262,7 +262,7 @@ func resourceComputeOrganizationSecurityPolicyUpdate(d *schema.ResourceData, met
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating OrganizationSecurityPolicy %q: %s", d.Id(), err)
@@ -272,7 +272,7 @@ func resourceComputeOrganizationSecurityPolicyUpdate(d *schema.ResourceData, met
 
 	parent := d.Get("parent").(string)
 	var opRes map[string]interface{}
-	err = computeOrgOperationWaitTimeWithResponse(
+	err = ComputeOrgOperationWaitTimeWithResponse(
 		config, res, &opRes, parent, "Creating OrganizationSecurityPolicy", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 
@@ -285,7 +285,7 @@ func resourceComputeOrganizationSecurityPolicyUpdate(d *schema.ResourceData, met
 
 func resourceComputeOrganizationSecurityPolicyDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -305,14 +305,14 @@ func resourceComputeOrganizationSecurityPolicyDelete(d *schema.ResourceData, met
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "OrganizationSecurityPolicy")
 	}
 
 	parent := d.Get("parent").(string)
 	var opRes map[string]interface{}
-	err = computeOrgOperationWaitTimeWithResponse(
+	err = ComputeOrgOperationWaitTimeWithResponse(
 		config, res, &opRes, parent, "Creating OrganizationSecurityPolicy", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 

@@ -27,13 +27,13 @@ func TestAccServiceUsageConsumerQuotaOverride_consumerQuotaOverrideExample(t *te
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        getTestOrgFromEnv(t),
-		"random_suffix": randString(t, 10),
+		"org_id":        GetTestOrgFromEnv(t),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckServiceUsageConsumerQuotaOverrideDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -74,13 +74,13 @@ func TestAccServiceUsageConsumerQuotaOverride_consumerQuotaOverrideZeroValueExam
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        getTestOrgFromEnv(t),
-		"random_suffix": randString(t, 10),
+		"org_id":        GetTestOrgFromEnv(t),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckServiceUsageConsumerQuotaOverrideDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -121,13 +121,13 @@ func TestAccServiceUsageConsumerQuotaOverride_regionConsumerQuotaOverrideExample
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        getTestOrgFromEnv(t),
-		"random_suffix": randString(t, 10),
+		"org_id":        GetTestOrgFromEnv(t),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckServiceUsageConsumerQuotaOverrideDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -171,13 +171,13 @@ func TestAccServiceUsageConsumerQuotaOverride_consumerQuotaOverrideCustomDimensi
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        getTestOrgFromEnv(t),
-		"random_suffix": randString(t, 10),
+		"org_id":        GetTestOrgFromEnv(t),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckServiceUsageConsumerQuotaOverrideDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -227,7 +227,7 @@ func testAccCheckServiceUsageConsumerQuotaOverrideDestroyProducer(t *testing.T) 
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{ServiceUsageBasePath}}projects/{{project}}/services/{{service}}/consumerQuotaMetrics/{{metric}}/limits/{{limit}}/consumerOverrides/")
 			if err != nil {
@@ -240,7 +240,7 @@ func testAccCheckServiceUsageConsumerQuotaOverrideDestroyProducer(t *testing.T) 
 				billingProject = config.BillingProject
 			}
 
-			res, err := sendRequest(config, "GET", billingProject, url, config.userAgent, nil)
+			res, err := SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				// Sometimes the API returns an empty response instead of erroring, treat empty as nonexistent
 				if len(res) != 0 {

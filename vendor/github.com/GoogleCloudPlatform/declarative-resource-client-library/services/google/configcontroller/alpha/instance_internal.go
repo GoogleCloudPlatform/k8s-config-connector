@@ -452,7 +452,6 @@ func canonicalizeInstanceDesiredState(rawDesired, rawInitial *Instance, opts ...
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -581,23 +580,26 @@ func canonicalizeNewInstanceBundlesConfigSet(c *Client, des, nw []InstanceBundle
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceBundlesConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceBundlesConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceBundlesConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceBundlesConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceBundlesConfigSlice(c *Client, des, nw []InstanceBundlesConfig) []InstanceBundlesConfig {
@@ -696,23 +698,26 @@ func canonicalizeNewInstanceBundlesConfigConfigControllerConfigSet(c *Client, de
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceBundlesConfigConfigControllerConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceBundlesConfigConfigControllerConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceBundlesConfigConfigControllerConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceBundlesConfigConfigControllerConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceBundlesConfigConfigControllerConfigSlice(c *Client, des, nw []InstanceBundlesConfigConfigControllerConfig) []InstanceBundlesConfigConfigControllerConfig {
@@ -827,23 +832,26 @@ func canonicalizeNewInstanceManagementConfigSet(c *Client, des, nw []InstanceMan
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceManagementConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceManagementConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceManagementConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceManagementConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceManagementConfigSlice(c *Client, des, nw []InstanceManagementConfig) []InstanceManagementConfig {
@@ -988,23 +996,26 @@ func canonicalizeNewInstanceManagementConfigStandardManagementConfigSet(c *Clien
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceManagementConfigStandardManagementConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceManagementConfigStandardManagementConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceManagementConfigStandardManagementConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceManagementConfigStandardManagementConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceManagementConfigStandardManagementConfigSlice(c *Client, des, nw []InstanceManagementConfigStandardManagementConfig) []InstanceManagementConfigStandardManagementConfig {
@@ -1149,23 +1160,26 @@ func canonicalizeNewInstanceManagementConfigFullManagementConfigSet(c *Client, d
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceManagementConfigFullManagementConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceManagementConfigFullManagementConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceManagementConfigFullManagementConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceManagementConfigFullManagementConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceManagementConfigFullManagementConfigSlice(c *Client, des, nw []InstanceManagementConfigFullManagementConfig) []InstanceManagementConfigFullManagementConfig {
@@ -1269,6 +1283,9 @@ func diffInstance(c *Client, desired, actual *Instance, opts ...dcl.ApplyOption)
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareInstanceBundlesConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

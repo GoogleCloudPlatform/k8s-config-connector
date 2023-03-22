@@ -474,7 +474,6 @@ func canonicalizeNotificationChannelDesiredState(rawDesired, rawInitial *Notific
 	} else {
 		canonicalDesired.Project = rawDesired.Project
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -618,6 +617,9 @@ func diffNotificationChannel(c *Client, desired, actual *NotificationChannel, op
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

@@ -499,6 +499,16 @@ func (in *JobTransferSpec) DeepCopyInto(out *JobTransferSpec) {
 		*out = new(JobPosixDataSource)
 		**out = **in
 	}
+	if in.SinkAgentPoolName != nil {
+		in, out := &in.SinkAgentPoolName, &out.SinkAgentPoolName
+		*out = new(string)
+		**out = **in
+	}
+	if in.SourceAgentPoolName != nil {
+		in, out := &in.SourceAgentPoolName, &out.SourceAgentPoolName
+		*out = new(string)
+		**out = **in
+	}
 	if in.TransferOptions != nil {
 		in, out := &in.TransferOptions, &out.TransferOptions
 		*out = new(JobTransferOptions)

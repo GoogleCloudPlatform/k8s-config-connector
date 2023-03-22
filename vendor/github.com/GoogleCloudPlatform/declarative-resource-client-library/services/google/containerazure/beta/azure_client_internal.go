@@ -389,7 +389,6 @@ func canonicalizeClientDesiredState(rawDesired, rawInitial *AzureClient, opts ..
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -521,6 +520,9 @@ func diffClient(c *Client, desired, actual *AzureClient, opts ...dcl.ApplyOption
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

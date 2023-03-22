@@ -127,7 +127,7 @@ type FeaturemembershipHierarchyController struct {
 }
 
 type FeaturemembershipMesh struct {
-	/* Whether to automatically manage Service Mesh control planes. Possible values: CONTROL_PLANE_MANAGEMENT_UNSPECIFIED, AUTOMATIC, MANUAL */
+	/* **DEPRECATED** Whether to automatically manage Service Mesh control planes. Possible values: CONTROL_PLANE_MANAGEMENT_UNSPECIFIED, AUTOMATIC, MANUAL */
 	// +optional
 	ControlPlane *string `json:"controlPlane,omitempty"`
 

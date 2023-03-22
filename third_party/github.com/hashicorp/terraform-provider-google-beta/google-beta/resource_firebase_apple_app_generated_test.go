@@ -27,15 +27,15 @@ func TestAccFirebaseAppleApp_firebaseAppleAppBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        getTestOrgFromEnv(t),
-		"project_id":    getTestProjectFromEnv(),
+		"org_id":        GetTestOrgFromEnv(t),
+		"project_id":    GetTestProjectFromEnv(),
 		"display_name":  "tf-test Display Name Basic",
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckFirebaseAppleAppDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -65,17 +65,17 @@ func TestAccFirebaseAppleApp_firebaseAppleAppFullExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        getTestOrgFromEnv(t),
-		"project_id":    getTestProjectFromEnv(),
+		"org_id":        GetTestOrgFromEnv(t),
+		"project_id":    GetTestProjectFromEnv(),
 		"app_store_id":  12345,
 		"team_id":       9987654321,
 		"display_name":  "tf-test Display Name Full",
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckFirebaseAppleAppDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -114,7 +114,7 @@ func testAccCheckFirebaseAppleAppDestroyProducer(t *testing.T) func(s *terraform
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{FirebaseBasePath}}{{name}}")
 			if err != nil {
@@ -127,7 +127,7 @@ func testAccCheckFirebaseAppleAppDestroyProducer(t *testing.T) func(s *terraform
 				billingProject = config.BillingProject
 			}
 
-			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("FirebaseAppleApp still exists at %s", url)
 			}

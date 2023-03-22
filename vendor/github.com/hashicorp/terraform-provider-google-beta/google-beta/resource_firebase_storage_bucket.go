@@ -62,7 +62,7 @@ func ResourceFirebaseStorageBucket() *schema.Resource {
 
 func resourceFirebaseStorageBucketCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -88,7 +88,7 @@ func resourceFirebaseStorageBucketCreate(d *schema.ResourceData, meta interface{
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Bucket: %s", err)
 	}
@@ -110,7 +110,7 @@ func resourceFirebaseStorageBucketCreate(d *schema.ResourceData, meta interface{
 
 func resourceFirebaseStorageBucketRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -133,7 +133,7 @@ func resourceFirebaseStorageBucketRead(d *schema.ResourceData, meta interface{})
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("FirebaseStorageBucket %q", d.Id()))
 	}
@@ -151,7 +151,7 @@ func resourceFirebaseStorageBucketRead(d *schema.ResourceData, meta interface{})
 
 func resourceFirebaseStorageBucketDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -177,7 +177,7 @@ func resourceFirebaseStorageBucketDelete(d *schema.ResourceData, meta interface{
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "Bucket")
 	}

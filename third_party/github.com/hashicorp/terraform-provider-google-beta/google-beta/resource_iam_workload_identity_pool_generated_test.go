@@ -27,12 +27,12 @@ func TestAccIAMBetaWorkloadIdentityPool_iamWorkloadIdentityPoolBasicExample(t *t
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckIAMBetaWorkloadIdentityPoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -60,12 +60,12 @@ func TestAccIAMBetaWorkloadIdentityPool_iamWorkloadIdentityPoolFullExample(t *te
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckIAMBetaWorkloadIdentityPoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -102,14 +102,14 @@ func testAccCheckIAMBetaWorkloadIdentityPoolDestroyProducer(t *testing.T) func(s
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{IAMBetaBasePath}}projects/{{project}}/locations/global/workloadIdentityPools/{{workload_identity_pool_id}}")
 			if err != nil {
 				return err
 			}
 
-			res, err := sendRequest(config, "GET", "", url, config.userAgent, nil)
+			res, err := SendRequest(config, "GET", "", url, config.UserAgent, nil)
 			if err != nil {
 				return nil
 			}

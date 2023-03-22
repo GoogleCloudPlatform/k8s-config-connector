@@ -58,6 +58,11 @@ spec:
             type: object
           spec:
             properties:
+              deletionPolicy:
+                description: "The deletion policy for the shared VPC service. Setting
+                  ABANDON allows the resource\n\t\t\t\tto be abandoned rather than
+                  deleted. Possible values are: \"ABANDON\"."
+                type: string
               projectRef:
                 oneOf:
                 - not:

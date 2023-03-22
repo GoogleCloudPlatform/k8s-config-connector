@@ -35,14 +35,14 @@ func TestAccContainerAzureNodePool_BasicHandWritten(t *testing.T) {
 		"azure_sub":           "00000000-0000-0000-0000-17aad2f0f61f",
 		"azure_tenant":        "00000000-0000-0000-0000-17aad2f0f61f",
 		"byo_prefix":          "mmv2",
-		"project_name":        getTestProjectFromEnv(),
+		"project_name":        GetTestProjectFromEnv(),
 		"project_number":      getTestProjectNumberFromEnv(),
-		"random_suffix":       randString(t, 10),
+		"random_suffix":       RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerAzureNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -73,15 +73,15 @@ func TestAccContainerAzureNodePool_BetaBasicHandWritten(t *testing.T) {
 		"azure_sub":           "00000000-0000-0000-0000-17aad2f0f61f",
 		"azure_tenant":        "00000000-0000-0000-0000-17aad2f0f61f",
 		"byo_prefix":          "mmv2",
-		"project_name":        getTestProjectFromEnv(),
+		"project_name":        GetTestProjectFromEnv(),
 		"project_number":      getTestProjectNumberFromEnv(),
-		"random_suffix":       randString(t, 10),
+		"random_suffix":       RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck: func() { testAccPreCheck(t) },
 
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckContainerAzureNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -532,7 +532,7 @@ func testAccCheckContainerAzureNodePoolDestroyProducer(t *testing.T) func(s *ter
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			billingProject := ""
 			if config.BillingProject != "" {
@@ -555,7 +555,7 @@ func testAccCheckContainerAzureNodePoolDestroyProducer(t *testing.T) func(s *ter
 				UpdateTime:            dcl.StringOrNil(rs.Primary.Attributes["update_time"]),
 			}
 
-			client := NewDCLContainerAzureClient(config, config.userAgent, billingProject, 0)
+			client := NewDCLContainerAzureClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetNodePool(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_container_azure_node_pool still exists %v", obj)

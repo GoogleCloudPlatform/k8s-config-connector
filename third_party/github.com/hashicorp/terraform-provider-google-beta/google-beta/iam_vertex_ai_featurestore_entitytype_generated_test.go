@@ -25,24 +25,24 @@ func TestAccVertexAIFeaturestoreEntitytypeIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
+		"random_suffix":   RandString(t, 10),
 		"role":            "roles/viewer",
-		"org_id":          getTestOrgFromEnv(t),
-		"billing_account": getTestBillingAccountFromEnv(t),
+		"org_id":          GetTestOrgFromEnv(t),
+		"billing_account": GetTestBillingAccountFromEnv(t),
 
 		"kms_key_name": BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccVertexAIFeaturestoreEntitytypeIamBinding_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_vertex_ai_featurestore_entitytype_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("%s/entityTypes/%s roles/viewer", fmt.Sprintf("projects/%s/locations/%s/featurestores/%s", getTestProjectFromEnv(), getTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])), fmt.Sprintf("terraform%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("%s/entityTypes/%s roles/viewer", fmt.Sprintf("projects/%s/locations/%s/featurestores/%s", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])), fmt.Sprintf("terraform%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -52,7 +52,7 @@ func TestAccVertexAIFeaturestoreEntitytypeIamBindingGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_vertex_ai_featurestore_entitytype_iam_binding.foo",
-				ImportStateId:     fmt.Sprintf("%s/entityTypes/%s roles/viewer", fmt.Sprintf("projects/%s/locations/%s/featurestores/%s", getTestProjectFromEnv(), getTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])), fmt.Sprintf("terraform%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("%s/entityTypes/%s roles/viewer", fmt.Sprintf("projects/%s/locations/%s/featurestores/%s", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])), fmt.Sprintf("terraform%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -64,17 +64,17 @@ func TestAccVertexAIFeaturestoreEntitytypeIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
+		"random_suffix":   RandString(t, 10),
 		"role":            "roles/viewer",
-		"org_id":          getTestOrgFromEnv(t),
-		"billing_account": getTestBillingAccountFromEnv(t),
+		"org_id":          GetTestOrgFromEnv(t),
+		"billing_account": GetTestBillingAccountFromEnv(t),
 
 		"kms_key_name": BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -82,7 +82,7 @@ func TestAccVertexAIFeaturestoreEntitytypeIamMemberGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_vertex_ai_featurestore_entitytype_iam_member.foo",
-				ImportStateId:     fmt.Sprintf("%s/entityTypes/%s roles/viewer user:admin@hashicorptest.com", fmt.Sprintf("projects/%s/locations/%s/featurestores/%s", getTestProjectFromEnv(), getTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])), fmt.Sprintf("terraform%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("%s/entityTypes/%s roles/viewer user:admin@hashicorptest.com", fmt.Sprintf("projects/%s/locations/%s/featurestores/%s", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])), fmt.Sprintf("terraform%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -94,24 +94,24 @@ func TestAccVertexAIFeaturestoreEntitytypeIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
+		"random_suffix":   RandString(t, 10),
 		"role":            "roles/viewer",
-		"org_id":          getTestOrgFromEnv(t),
-		"billing_account": getTestBillingAccountFromEnv(t),
+		"org_id":          GetTestOrgFromEnv(t),
+		"billing_account": GetTestBillingAccountFromEnv(t),
 
 		"kms_key_name": BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccVertexAIFeaturestoreEntitytypeIamPolicy_basicGenerated(context),
 			},
 			{
 				ResourceName:      "google_vertex_ai_featurestore_entitytype_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("%s/entityTypes/%s", fmt.Sprintf("projects/%s/locations/%s/featurestores/%s", getTestProjectFromEnv(), getTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])), fmt.Sprintf("terraform%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("%s/entityTypes/%s", fmt.Sprintf("projects/%s/locations/%s/featurestores/%s", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])), fmt.Sprintf("terraform%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -120,7 +120,7 @@ func TestAccVertexAIFeaturestoreEntitytypeIamPolicyGenerated(t *testing.T) {
 			},
 			{
 				ResourceName:      "google_vertex_ai_featurestore_entitytype_iam_policy.foo",
-				ImportStateId:     fmt.Sprintf("%s/entityTypes/%s", fmt.Sprintf("projects/%s/locations/%s/featurestores/%s", getTestProjectFromEnv(), getTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])), fmt.Sprintf("terraform%s", context["random_suffix"])),
+				ImportStateId:     fmt.Sprintf("%s/entityTypes/%s", fmt.Sprintf("projects/%s/locations/%s/featurestores/%s", GetTestProjectFromEnv(), GetTestRegionFromEnv(), fmt.Sprintf("terraform%s", context["random_suffix"])), fmt.Sprintf("terraform%s", context["random_suffix"])),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},

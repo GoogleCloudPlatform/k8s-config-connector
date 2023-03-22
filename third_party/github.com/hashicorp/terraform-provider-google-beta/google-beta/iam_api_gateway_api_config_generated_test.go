@@ -24,13 +24,13 @@ func TestAccApiGatewayApiConfigIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 		"role":          "roles/apigateway.viewer",
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProvidersOiCS,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccApiGatewayApiConfigIamBinding_basicGenerated(context),
@@ -47,13 +47,13 @@ func TestAccApiGatewayApiConfigIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 		"role":          "roles/apigateway.viewer",
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProvidersOiCS,
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -67,13 +67,13 @@ func TestAccApiGatewayApiConfigIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 		"role":          "roles/apigateway.viewer",
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProvidersOiCS,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccApiGatewayApiConfigIamPolicy_basicGenerated(context),

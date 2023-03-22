@@ -610,7 +610,6 @@ func canonicalizeGrpcRouteDesiredState(rawDesired, rawInitial *GrpcRoute, opts .
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -764,23 +763,26 @@ func canonicalizeNewGrpcRouteRulesSet(c *Client, des, nw []GrpcRouteRules) []Grp
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GrpcRouteRules
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GrpcRouteRules
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGrpcRouteRulesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGrpcRouteRules(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGrpcRouteRulesSlice(c *Client, des, nw []GrpcRouteRules) []GrpcRouteRules {
@@ -885,23 +887,26 @@ func canonicalizeNewGrpcRouteRulesMatchesSet(c *Client, des, nw []GrpcRouteRules
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GrpcRouteRulesMatches
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GrpcRouteRulesMatches
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGrpcRouteRulesMatchesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGrpcRouteRulesMatches(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGrpcRouteRulesMatchesSlice(c *Client, des, nw []GrpcRouteRulesMatches) []GrpcRouteRulesMatches {
@@ -1032,23 +1037,26 @@ func canonicalizeNewGrpcRouteRulesMatchesMethodSet(c *Client, des, nw []GrpcRout
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GrpcRouteRulesMatchesMethod
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GrpcRouteRulesMatchesMethod
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGrpcRouteRulesMatchesMethodNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGrpcRouteRulesMatchesMethod(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGrpcRouteRulesMatchesMethodSlice(c *Client, des, nw []GrpcRouteRulesMatchesMethod) []GrpcRouteRulesMatchesMethod {
@@ -1161,23 +1169,26 @@ func canonicalizeNewGrpcRouteRulesMatchesHeadersSet(c *Client, des, nw []GrpcRou
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GrpcRouteRulesMatchesHeaders
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GrpcRouteRulesMatchesHeaders
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGrpcRouteRulesMatchesHeadersNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGrpcRouteRulesMatchesHeaders(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGrpcRouteRulesMatchesHeadersSlice(c *Client, des, nw []GrpcRouteRulesMatchesHeaders) []GrpcRouteRulesMatchesHeaders {
@@ -1282,23 +1293,26 @@ func canonicalizeNewGrpcRouteRulesActionSet(c *Client, des, nw []GrpcRouteRulesA
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GrpcRouteRulesAction
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GrpcRouteRulesAction
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGrpcRouteRulesActionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGrpcRouteRulesAction(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGrpcRouteRulesActionSlice(c *Client, des, nw []GrpcRouteRulesAction) []GrpcRouteRulesAction {
@@ -1410,23 +1424,26 @@ func canonicalizeNewGrpcRouteRulesActionDestinationsSet(c *Client, des, nw []Grp
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GrpcRouteRulesActionDestinations
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GrpcRouteRulesActionDestinations
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGrpcRouteRulesActionDestinationsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGrpcRouteRulesActionDestinations(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGrpcRouteRulesActionDestinationsSlice(c *Client, des, nw []GrpcRouteRulesActionDestinations) []GrpcRouteRulesActionDestinations {
@@ -1541,23 +1558,26 @@ func canonicalizeNewGrpcRouteRulesActionFaultInjectionPolicySet(c *Client, des, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GrpcRouteRulesActionFaultInjectionPolicy
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GrpcRouteRulesActionFaultInjectionPolicy
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGrpcRouteRulesActionFaultInjectionPolicyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGrpcRouteRulesActionFaultInjectionPolicy(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGrpcRouteRulesActionFaultInjectionPolicySlice(c *Client, des, nw []GrpcRouteRulesActionFaultInjectionPolicy) []GrpcRouteRulesActionFaultInjectionPolicy {
@@ -1682,23 +1702,26 @@ func canonicalizeNewGrpcRouteRulesActionFaultInjectionPolicyDelaySet(c *Client, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GrpcRouteRulesActionFaultInjectionPolicyDelay
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GrpcRouteRulesActionFaultInjectionPolicyDelay
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGrpcRouteRulesActionFaultInjectionPolicyDelayNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGrpcRouteRulesActionFaultInjectionPolicyDelay(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGrpcRouteRulesActionFaultInjectionPolicyDelaySlice(c *Client, des, nw []GrpcRouteRulesActionFaultInjectionPolicyDelay) []GrpcRouteRulesActionFaultInjectionPolicyDelay {
@@ -1820,23 +1843,26 @@ func canonicalizeNewGrpcRouteRulesActionFaultInjectionPolicyAbortSet(c *Client, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GrpcRouteRulesActionFaultInjectionPolicyAbort
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GrpcRouteRulesActionFaultInjectionPolicyAbort
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGrpcRouteRulesActionFaultInjectionPolicyAbortNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGrpcRouteRulesActionFaultInjectionPolicyAbort(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGrpcRouteRulesActionFaultInjectionPolicyAbortSlice(c *Client, des, nw []GrpcRouteRulesActionFaultInjectionPolicyAbort) []GrpcRouteRulesActionFaultInjectionPolicyAbort {
@@ -1941,23 +1967,26 @@ func canonicalizeNewGrpcRouteRulesActionRetryPolicySet(c *Client, des, nw []Grpc
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []GrpcRouteRulesActionRetryPolicy
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []GrpcRouteRulesActionRetryPolicy
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareGrpcRouteRulesActionRetryPolicyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewGrpcRouteRulesActionRetryPolicy(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewGrpcRouteRulesActionRetryPolicySlice(c *Client, des, nw []GrpcRouteRulesActionRetryPolicy) []GrpcRouteRulesActionRetryPolicy {
@@ -2082,6 +2111,9 @@ func diffGrpcRoute(c *Client, desired, actual *GrpcRoute, opts ...dcl.ApplyOptio
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareGrpcRouteRulesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

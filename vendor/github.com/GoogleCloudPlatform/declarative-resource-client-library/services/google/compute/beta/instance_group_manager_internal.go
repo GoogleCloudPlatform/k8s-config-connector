@@ -800,23 +800,6 @@ func canonicalizeInstanceGroupManagerDesiredState(rawDesired, rawInitial *Instan
 
 		return rawDesired, nil
 	}
-
-	if rawDesired.InstanceTemplate != nil || rawInitial.InstanceTemplate != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.Versions) {
-			rawDesired.InstanceTemplate = nil
-			rawInitial.InstanceTemplate = nil
-		}
-	}
-
-	if rawDesired.Versions != nil || rawInitial.Versions != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.InstanceTemplate) {
-			rawDesired.Versions = nil
-			rawInitial.Versions = nil
-		}
-	}
-
 	canonicalDesired := &InstanceGroupManager{}
 	if dcl.StringCanonicalize(rawDesired.Name, rawInitial.Name) {
 		canonicalDesired.Name = rawInitial.Name
@@ -877,6 +860,20 @@ func canonicalizeInstanceGroupManagerDesiredState(rawDesired, rawInitial *Instan
 		canonicalDesired.Location = rawInitial.Location
 	} else {
 		canonicalDesired.Location = rawDesired.Location
+	}
+
+	if canonicalDesired.InstanceTemplate != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.Versions) {
+			canonicalDesired.InstanceTemplate = dcl.String("")
+		}
+	}
+
+	if canonicalDesired.Versions != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.InstanceTemplate) {
+			canonicalDesired.Versions = []InstanceGroupManagerVersions{}
+		}
 	}
 
 	return canonicalDesired, nil
@@ -1117,23 +1114,26 @@ func canonicalizeNewInstanceGroupManagerDistributionPolicySet(c *Client, des, nw
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGroupManagerDistributionPolicy
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGroupManagerDistributionPolicy
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGroupManagerDistributionPolicyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGroupManagerDistributionPolicy(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGroupManagerDistributionPolicySlice(c *Client, des, nw []InstanceGroupManagerDistributionPolicy) []InstanceGroupManagerDistributionPolicy {
@@ -1232,23 +1232,26 @@ func canonicalizeNewInstanceGroupManagerDistributionPolicyZonesSet(c *Client, de
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGroupManagerDistributionPolicyZones
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGroupManagerDistributionPolicyZones
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGroupManagerDistributionPolicyZonesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGroupManagerDistributionPolicyZones(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGroupManagerDistributionPolicyZonesSlice(c *Client, des, nw []InstanceGroupManagerDistributionPolicyZones) []InstanceGroupManagerDistributionPolicyZones {
@@ -1355,23 +1358,26 @@ func canonicalizeNewInstanceGroupManagerVersionsSet(c *Client, des, nw []Instanc
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGroupManagerVersions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGroupManagerVersions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGroupManagerVersionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGroupManagerVersions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGroupManagerVersionsSlice(c *Client, des, nw []InstanceGroupManagerVersions) []InstanceGroupManagerVersions {
@@ -1473,23 +1479,26 @@ func canonicalizeNewInstanceGroupManagerVersionsTargetSizeSet(c *Client, des, nw
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGroupManagerVersionsTargetSize
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGroupManagerVersionsTargetSize
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGroupManagerVersionsTargetSizeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGroupManagerVersionsTargetSize(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGroupManagerVersionsTargetSizeSlice(c *Client, des, nw []InstanceGroupManagerVersionsTargetSize) []InstanceGroupManagerVersionsTargetSize {
@@ -1578,23 +1587,26 @@ func canonicalizeNewInstanceGroupManagerCurrentActionsSet(c *Client, des, nw []I
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGroupManagerCurrentActions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGroupManagerCurrentActions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGroupManagerCurrentActionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGroupManagerCurrentActions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGroupManagerCurrentActionsSlice(c *Client, des, nw []InstanceGroupManagerCurrentActions) []InstanceGroupManagerCurrentActions {
@@ -1692,23 +1704,26 @@ func canonicalizeNewInstanceGroupManagerStatusSet(c *Client, des, nw []InstanceG
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGroupManagerStatus
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGroupManagerStatus
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGroupManagerStatusNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGroupManagerStatus(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGroupManagerStatusSlice(c *Client, des, nw []InstanceGroupManagerStatus) []InstanceGroupManagerStatus {
@@ -1801,23 +1816,26 @@ func canonicalizeNewInstanceGroupManagerStatusVersionTargetSet(c *Client, des, n
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGroupManagerStatusVersionTarget
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGroupManagerStatusVersionTarget
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGroupManagerStatusVersionTargetNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGroupManagerStatusVersionTarget(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGroupManagerStatusVersionTargetSlice(c *Client, des, nw []InstanceGroupManagerStatusVersionTarget) []InstanceGroupManagerStatusVersionTarget {
@@ -1914,23 +1932,26 @@ func canonicalizeNewInstanceGroupManagerStatusStatefulSet(c *Client, des, nw []I
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGroupManagerStatusStateful
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGroupManagerStatusStateful
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGroupManagerStatusStatefulNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGroupManagerStatusStateful(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGroupManagerStatusStatefulSlice(c *Client, des, nw []InstanceGroupManagerStatusStateful) []InstanceGroupManagerStatusStateful {
@@ -2029,23 +2050,26 @@ func canonicalizeNewInstanceGroupManagerStatusStatefulPerInstanceConfigsSet(c *C
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGroupManagerStatusStatefulPerInstanceConfigs
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGroupManagerStatusStatefulPerInstanceConfigs
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGroupManagerStatusStatefulPerInstanceConfigsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGroupManagerStatusStatefulPerInstanceConfigs(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGroupManagerStatusStatefulPerInstanceConfigsSlice(c *Client, des, nw []InstanceGroupManagerStatusStatefulPerInstanceConfigs) []InstanceGroupManagerStatusStatefulPerInstanceConfigs {
@@ -2147,23 +2171,26 @@ func canonicalizeNewInstanceGroupManagerAutoHealingPoliciesSet(c *Client, des, n
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGroupManagerAutoHealingPolicies
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGroupManagerAutoHealingPolicies
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGroupManagerAutoHealingPoliciesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGroupManagerAutoHealingPolicies(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGroupManagerAutoHealingPoliciesSlice(c *Client, des, nw []InstanceGroupManagerAutoHealingPolicies) []InstanceGroupManagerAutoHealingPolicies {
@@ -2294,23 +2321,26 @@ func canonicalizeNewInstanceGroupManagerUpdatePolicySet(c *Client, des, nw []Ins
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGroupManagerUpdatePolicy
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGroupManagerUpdatePolicy
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGroupManagerUpdatePolicyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGroupManagerUpdatePolicy(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGroupManagerUpdatePolicySlice(c *Client, des, nw []InstanceGroupManagerUpdatePolicy) []InstanceGroupManagerUpdatePolicy {
@@ -2412,23 +2442,26 @@ func canonicalizeNewInstanceGroupManagerUpdatePolicyMaxSurgeSet(c *Client, des, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGroupManagerUpdatePolicyMaxSurge
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGroupManagerUpdatePolicyMaxSurge
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGroupManagerUpdatePolicyMaxSurgeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGroupManagerUpdatePolicyMaxSurge(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGroupManagerUpdatePolicyMaxSurgeSlice(c *Client, des, nw []InstanceGroupManagerUpdatePolicyMaxSurge) []InstanceGroupManagerUpdatePolicyMaxSurge {
@@ -2530,23 +2563,26 @@ func canonicalizeNewInstanceGroupManagerUpdatePolicyMaxUnavailableSet(c *Client,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGroupManagerUpdatePolicyMaxUnavailable
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGroupManagerUpdatePolicyMaxUnavailable
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGroupManagerUpdatePolicyMaxUnavailableNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGroupManagerUpdatePolicyMaxUnavailable(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGroupManagerUpdatePolicyMaxUnavailableSlice(c *Client, des, nw []InstanceGroupManagerUpdatePolicyMaxUnavailable) []InstanceGroupManagerUpdatePolicyMaxUnavailable {
@@ -2651,23 +2687,26 @@ func canonicalizeNewInstanceGroupManagerNamedPortsSet(c *Client, des, nw []Insta
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGroupManagerNamedPorts
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGroupManagerNamedPorts
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGroupManagerNamedPortsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGroupManagerNamedPorts(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGroupManagerNamedPortsSlice(c *Client, des, nw []InstanceGroupManagerNamedPorts) []InstanceGroupManagerNamedPorts {
@@ -2760,23 +2799,26 @@ func canonicalizeNewInstanceGroupManagerStatefulPolicySet(c *Client, des, nw []I
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGroupManagerStatefulPolicy
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGroupManagerStatefulPolicy
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGroupManagerStatefulPolicyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGroupManagerStatefulPolicy(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGroupManagerStatefulPolicySlice(c *Client, des, nw []InstanceGroupManagerStatefulPolicy) []InstanceGroupManagerStatefulPolicy {
@@ -2884,23 +2926,26 @@ func canonicalizeNewInstanceGroupManagerStatefulPolicyPreservedStateSet(c *Clien
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGroupManagerStatefulPolicyPreservedState
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGroupManagerStatefulPolicyPreservedState
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGroupManagerStatefulPolicyPreservedStateNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGroupManagerStatefulPolicyPreservedState(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGroupManagerStatefulPolicyPreservedStateSlice(c *Client, des, nw []InstanceGroupManagerStatefulPolicyPreservedState) []InstanceGroupManagerStatefulPolicyPreservedState {
@@ -2996,23 +3041,26 @@ func canonicalizeNewInstanceGroupManagerStatefulPolicyPreservedStateDisksSet(c *
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGroupManagerStatefulPolicyPreservedStateDisks
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGroupManagerStatefulPolicyPreservedStateDisks
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGroupManagerStatefulPolicyPreservedStateDisksNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGroupManagerStatefulPolicyPreservedStateDisks(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGroupManagerStatefulPolicyPreservedStateDisksSlice(c *Client, des, nw []InstanceGroupManagerStatefulPolicyPreservedStateDisks) []InstanceGroupManagerStatefulPolicyPreservedStateDisks {
@@ -3108,23 +3156,26 @@ func canonicalizeNewInstanceGroupManagerStatefulPolicyPreservedStateInternalIpsS
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGroupManagerStatefulPolicyPreservedStateInternalIps
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGroupManagerStatefulPolicyPreservedStateInternalIps
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGroupManagerStatefulPolicyPreservedStateInternalIpsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGroupManagerStatefulPolicyPreservedStateInternalIps(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGroupManagerStatefulPolicyPreservedStateInternalIpsSlice(c *Client, des, nw []InstanceGroupManagerStatefulPolicyPreservedStateInternalIps) []InstanceGroupManagerStatefulPolicyPreservedStateInternalIps {
@@ -3220,23 +3271,26 @@ func canonicalizeNewInstanceGroupManagerStatefulPolicyPreservedStateExternalIpsS
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGroupManagerStatefulPolicyPreservedStateExternalIps
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGroupManagerStatefulPolicyPreservedStateExternalIps
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGroupManagerStatefulPolicyPreservedStateExternalIpsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGroupManagerStatefulPolicyPreservedStateExternalIps(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGroupManagerStatefulPolicyPreservedStateExternalIpsSlice(c *Client, des, nw []InstanceGroupManagerStatefulPolicyPreservedStateExternalIps) []InstanceGroupManagerStatefulPolicyPreservedStateExternalIps {
@@ -3452,6 +3506,9 @@ func diffInstanceGroupManager(c *Client, desired, actual *InstanceGroupManager, 
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareInstanceGroupManagerDistributionPolicyNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

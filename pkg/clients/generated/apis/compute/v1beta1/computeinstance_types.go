@@ -284,6 +284,10 @@ type InstanceScheduling struct {
 	// +optional
 	InstanceTerminationAction *string `json:"instanceTerminationAction,omitempty"`
 
+	/* Specifies the frequency of planned maintenance events. The accepted values are: PERIODIC. */
+	// +optional
+	MaintenanceInterval *string `json:"maintenanceInterval,omitempty"`
+
 	/* Immutable. The timeout for new network connections to hosts. */
 	// +optional
 	MaxRunDuration *InstanceMaxRunDuration `json:"maxRunDuration,omitempty"`

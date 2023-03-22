@@ -579,7 +579,6 @@ func canonicalizeServerTlsPolicyDesiredState(rawDesired, rawInitial *ServerTlsPo
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -735,23 +734,26 @@ func canonicalizeNewServerTlsPolicyServerCertificateSet(c *Client, des, nw []Ser
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServerTlsPolicyServerCertificate
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServerTlsPolicyServerCertificate
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServerTlsPolicyServerCertificateNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServerTlsPolicyServerCertificate(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServerTlsPolicyServerCertificateSlice(c *Client, des, nw []ServerTlsPolicyServerCertificate) []ServerTlsPolicyServerCertificate {
@@ -850,23 +852,26 @@ func canonicalizeNewServerTlsPolicyServerCertificateGrpcEndpointSet(c *Client, d
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServerTlsPolicyServerCertificateGrpcEndpoint
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServerTlsPolicyServerCertificateGrpcEndpoint
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServerTlsPolicyServerCertificateGrpcEndpointNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServerTlsPolicyServerCertificateGrpcEndpoint(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServerTlsPolicyServerCertificateGrpcEndpointSlice(c *Client, des, nw []ServerTlsPolicyServerCertificateGrpcEndpoint) []ServerTlsPolicyServerCertificateGrpcEndpoint {
@@ -965,23 +970,26 @@ func canonicalizeNewServerTlsPolicyServerCertificateCertificateProviderInstanceS
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServerTlsPolicyServerCertificateCertificateProviderInstance
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServerTlsPolicyServerCertificateCertificateProviderInstance
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServerTlsPolicyServerCertificateCertificateProviderInstanceNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServerTlsPolicyServerCertificateCertificateProviderInstance(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServerTlsPolicyServerCertificateCertificateProviderInstanceSlice(c *Client, des, nw []ServerTlsPolicyServerCertificateCertificateProviderInstance) []ServerTlsPolicyServerCertificateCertificateProviderInstance {
@@ -1074,23 +1082,26 @@ func canonicalizeNewServerTlsPolicyMtlsPolicySet(c *Client, des, nw []ServerTlsP
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServerTlsPolicyMtlsPolicy
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServerTlsPolicyMtlsPolicy
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServerTlsPolicyMtlsPolicyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServerTlsPolicyMtlsPolicy(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServerTlsPolicyMtlsPolicySlice(c *Client, des, nw []ServerTlsPolicyMtlsPolicy) []ServerTlsPolicyMtlsPolicy {
@@ -1205,23 +1216,26 @@ func canonicalizeNewServerTlsPolicyMtlsPolicyClientValidationCaSet(c *Client, de
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServerTlsPolicyMtlsPolicyClientValidationCa
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServerTlsPolicyMtlsPolicyClientValidationCa
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServerTlsPolicyMtlsPolicyClientValidationCaNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServerTlsPolicyMtlsPolicyClientValidationCa(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServerTlsPolicyMtlsPolicyClientValidationCaSlice(c *Client, des, nw []ServerTlsPolicyMtlsPolicyClientValidationCa) []ServerTlsPolicyMtlsPolicyClientValidationCa {
@@ -1320,23 +1334,26 @@ func canonicalizeNewServerTlsPolicyMtlsPolicyClientValidationCaGrpcEndpointSet(c
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServerTlsPolicyMtlsPolicyClientValidationCaGrpcEndpoint
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServerTlsPolicyMtlsPolicyClientValidationCaGrpcEndpoint
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServerTlsPolicyMtlsPolicyClientValidationCaGrpcEndpointNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServerTlsPolicyMtlsPolicyClientValidationCaGrpcEndpoint(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServerTlsPolicyMtlsPolicyClientValidationCaGrpcEndpointSlice(c *Client, des, nw []ServerTlsPolicyMtlsPolicyClientValidationCaGrpcEndpoint) []ServerTlsPolicyMtlsPolicyClientValidationCaGrpcEndpoint {
@@ -1435,23 +1452,26 @@ func canonicalizeNewServerTlsPolicyMtlsPolicyClientValidationCaCertificateProvid
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServerTlsPolicyMtlsPolicyClientValidationCaCertificateProviderInstance
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServerTlsPolicyMtlsPolicyClientValidationCaCertificateProviderInstance
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServerTlsPolicyMtlsPolicyClientValidationCaCertificateProviderInstanceNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServerTlsPolicyMtlsPolicyClientValidationCaCertificateProviderInstance(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServerTlsPolicyMtlsPolicyClientValidationCaCertificateProviderInstanceSlice(c *Client, des, nw []ServerTlsPolicyMtlsPolicyClientValidationCaCertificateProviderInstance) []ServerTlsPolicyMtlsPolicyClientValidationCaCertificateProviderInstance {
@@ -1562,6 +1582,9 @@ func diffServerTlsPolicy(c *Client, desired, actual *ServerTlsPolicy, opts ...dc
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareServerTlsPolicyServerCertificateNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

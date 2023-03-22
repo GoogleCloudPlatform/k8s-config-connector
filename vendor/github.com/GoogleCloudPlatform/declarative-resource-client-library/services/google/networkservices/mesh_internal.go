@@ -478,7 +478,6 @@ func canonicalizeMeshDesiredState(rawDesired, rawInitial *Mesh, opts ...dcl.Appl
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -616,6 +615,9 @@ func diffMesh(c *Client, desired, actual *Mesh, opts ...dcl.ApplyOption) ([]*dcl
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

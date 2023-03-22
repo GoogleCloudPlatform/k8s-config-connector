@@ -11,11 +11,11 @@ import (
 // Since each test here is acting on the same organization and only one AccessPolicy
 // can exist, they need to be run serially. See AccessPolicy for the test runner.
 func testAccAccessContextManagerServicePerimeters_basicTest(t *testing.T) {
-	org := getTestOrgFromEnv(t)
+	org := GetTestOrgFromEnv(t)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckAccessContextManagerServicePerimetersDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -53,14 +53,14 @@ func testAccCheckAccessContextManagerServicePerimetersDestroyProducer(t *testing
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{AccessContextManagerBasePath}}{{parent}}/servicePerimeters")
 			if err != nil {
 				return err
 			}
 
-			_, err = sendRequest(config, "GET", "", url, config.userAgent, nil)
+			_, err = SendRequest(config, "GET", "", url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("ServicePerimeters still exists at %s", url)
 			}

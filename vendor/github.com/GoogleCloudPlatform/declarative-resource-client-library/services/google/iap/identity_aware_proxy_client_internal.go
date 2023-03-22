@@ -372,7 +372,6 @@ func canonicalizeIdentityAwareProxyClientDesiredState(rawDesired, rawInitial *Id
 	} else {
 		canonicalDesired.Brand = rawDesired.Brand
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -459,6 +458,9 @@ func diffIdentityAwareProxyClient(c *Client, desired, actual *IdentityAwareProxy
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

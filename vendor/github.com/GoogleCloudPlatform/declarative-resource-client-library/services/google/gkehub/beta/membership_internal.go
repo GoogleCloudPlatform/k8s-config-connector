@@ -576,7 +576,6 @@ func canonicalizeMembershipDesiredState(rawDesired, rawInitial *Membership, opts
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -742,23 +741,26 @@ func canonicalizeNewMembershipEndpointSet(c *Client, des, nw []MembershipEndpoin
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []MembershipEndpoint
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []MembershipEndpoint
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareMembershipEndpointNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewMembershipEndpoint(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewMembershipEndpointSlice(c *Client, des, nw []MembershipEndpoint) []MembershipEndpoint {
@@ -854,23 +856,26 @@ func canonicalizeNewMembershipEndpointGkeClusterSet(c *Client, des, nw []Members
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []MembershipEndpointGkeCluster
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []MembershipEndpointGkeCluster
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareMembershipEndpointGkeClusterNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewMembershipEndpointGkeCluster(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewMembershipEndpointGkeClusterSlice(c *Client, des, nw []MembershipEndpointGkeCluster) []MembershipEndpointGkeCluster {
@@ -966,23 +971,26 @@ func canonicalizeNewMembershipEndpointKubernetesMetadataSet(c *Client, des, nw [
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []MembershipEndpointKubernetesMetadata
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []MembershipEndpointKubernetesMetadata
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareMembershipEndpointKubernetesMetadataNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewMembershipEndpointKubernetesMetadata(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewMembershipEndpointKubernetesMetadataSlice(c *Client, des, nw []MembershipEndpointKubernetesMetadata) []MembershipEndpointKubernetesMetadata {
@@ -1083,23 +1091,26 @@ func canonicalizeNewMembershipEndpointKubernetesResourceSet(c *Client, des, nw [
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []MembershipEndpointKubernetesResource
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []MembershipEndpointKubernetesResource
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareMembershipEndpointKubernetesResourceNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewMembershipEndpointKubernetesResource(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewMembershipEndpointKubernetesResourceSlice(c *Client, des, nw []MembershipEndpointKubernetesResource) []MembershipEndpointKubernetesResource {
@@ -1206,23 +1217,26 @@ func canonicalizeNewMembershipEndpointKubernetesResourceMembershipResourcesSet(c
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []MembershipEndpointKubernetesResourceMembershipResources
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []MembershipEndpointKubernetesResourceMembershipResources
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareMembershipEndpointKubernetesResourceMembershipResourcesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewMembershipEndpointKubernetesResourceMembershipResources(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewMembershipEndpointKubernetesResourceMembershipResourcesSlice(c *Client, des, nw []MembershipEndpointKubernetesResourceMembershipResources) []MembershipEndpointKubernetesResourceMembershipResources {
@@ -1329,23 +1343,26 @@ func canonicalizeNewMembershipEndpointKubernetesResourceConnectResourcesSet(c *C
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []MembershipEndpointKubernetesResourceConnectResources
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []MembershipEndpointKubernetesResourceConnectResources
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareMembershipEndpointKubernetesResourceConnectResourcesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewMembershipEndpointKubernetesResourceConnectResources(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewMembershipEndpointKubernetesResourceConnectResourcesSlice(c *Client, des, nw []MembershipEndpointKubernetesResourceConnectResources) []MembershipEndpointKubernetesResourceConnectResources {
@@ -1452,23 +1469,26 @@ func canonicalizeNewMembershipEndpointKubernetesResourceResourceOptionsSet(c *Cl
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []MembershipEndpointKubernetesResourceResourceOptions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []MembershipEndpointKubernetesResourceResourceOptions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareMembershipEndpointKubernetesResourceResourceOptionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewMembershipEndpointKubernetesResourceResourceOptions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewMembershipEndpointKubernetesResourceResourceOptionsSlice(c *Client, des, nw []MembershipEndpointKubernetesResourceResourceOptions) []MembershipEndpointKubernetesResourceResourceOptions {
@@ -1557,23 +1577,26 @@ func canonicalizeNewMembershipStateSet(c *Client, des, nw []MembershipState) []M
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []MembershipState
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []MembershipState
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareMembershipStateNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewMembershipState(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewMembershipStateSlice(c *Client, des, nw []MembershipState) []MembershipState {
@@ -1678,23 +1701,26 @@ func canonicalizeNewMembershipAuthoritySet(c *Client, des, nw []MembershipAuthor
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []MembershipAuthority
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []MembershipAuthority
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareMembershipAuthorityNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewMembershipAuthority(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewMembershipAuthoritySlice(c *Client, des, nw []MembershipAuthority) []MembershipAuthority {
@@ -1840,6 +1866,9 @@ func diffMembership(c *Client, desired, actual *Membership, opts ...dcl.ApplyOpt
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareMembershipEndpointNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

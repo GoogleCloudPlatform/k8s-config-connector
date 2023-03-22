@@ -392,7 +392,6 @@ func canonicalizeRepositoryDesiredState(rawDesired, rawInitial *Repository, opts
 	} else {
 		canonicalDesired.Connection = rawDesired.Connection
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -527,6 +526,9 @@ func diffRepository(c *Client, desired, actual *Repository, opts ...dcl.ApplyOpt
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

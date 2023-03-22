@@ -196,7 +196,7 @@ instances that are applied with this rule.`,
 
 func resourceComputeOrganizationSecurityPolicyRuleCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -270,7 +270,7 @@ func resourceComputeOrganizationSecurityPolicyRuleCreate(d *schema.ResourceData,
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating OrganizationSecurityPolicyRule: %s", err)
 	}
@@ -290,14 +290,14 @@ func resourceComputeOrganizationSecurityPolicyRuleCreate(d *schema.ResourceData,
 		return err
 	}
 
-	policyRes, err := sendRequest(config, "GET", "", url, userAgent, nil)
+	policyRes, err := SendRequest(config, "GET", "", url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("ComputeOrganizationSecurityPolicy %q", d.Get("policy_id")))
 	}
 
 	parent := flattenComputeOrganizationSecurityPolicyParent(policyRes["parent"], d, config)
 	var opRes map[string]interface{}
-	err = computeOrgOperationWaitTimeWithResponse(
+	err = ComputeOrgOperationWaitTimeWithResponse(
 		config, res, &opRes, parent.(string), "Creating OrganizationSecurityPolicyRule", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 
@@ -314,7 +314,7 @@ func resourceComputeOrganizationSecurityPolicyRuleCreate(d *schema.ResourceData,
 
 func resourceComputeOrganizationSecurityPolicyRuleRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -331,7 +331,7 @@ func resourceComputeOrganizationSecurityPolicyRuleRead(d *schema.ResourceData, m
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("ComputeOrganizationSecurityPolicyRule %q", d.Id()))
 	}
@@ -369,7 +369,7 @@ func resourceComputeOrganizationSecurityPolicyRuleRead(d *schema.ResourceData, m
 
 func resourceComputeOrganizationSecurityPolicyRuleUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -444,7 +444,7 @@ func resourceComputeOrganizationSecurityPolicyRuleUpdate(d *schema.ResourceData,
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating OrganizationSecurityPolicyRule %q: %s", d.Id(), err)
@@ -460,14 +460,14 @@ func resourceComputeOrganizationSecurityPolicyRuleUpdate(d *schema.ResourceData,
 		return err
 	}
 
-	policyRes, err := sendRequest(config, "GET", "", url, userAgent, nil)
+	policyRes, err := SendRequest(config, "GET", "", url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("ComputeOrganizationSecurityPolicy %q", d.Get("policy_id")))
 	}
 
 	parent := flattenComputeOrganizationSecurityPolicyParent(policyRes["parent"], d, config)
 	var opRes map[string]interface{}
-	err = computeOrgOperationWaitTimeWithResponse(
+	err = ComputeOrgOperationWaitTimeWithResponse(
 		config, res, &opRes, parent.(string), "Creating OrganizationSecurityPolicyRule", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 
@@ -481,7 +481,7 @@ func resourceComputeOrganizationSecurityPolicyRuleUpdate(d *schema.ResourceData,
 
 func resourceComputeOrganizationSecurityPolicyRuleDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -501,7 +501,7 @@ func resourceComputeOrganizationSecurityPolicyRuleDelete(d *schema.ResourceData,
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "OrganizationSecurityPolicyRule")
 	}
@@ -514,14 +514,14 @@ func resourceComputeOrganizationSecurityPolicyRuleDelete(d *schema.ResourceData,
 		return err
 	}
 
-	policyRes, err := sendRequest(config, "GET", "", url, userAgent, nil)
+	policyRes, err := SendRequest(config, "GET", "", url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("ComputeOrganizationSecurityPolicy %q", d.Get("policy_id")))
 	}
 
 	parent := flattenComputeOrganizationSecurityPolicyParent(policyRes["parent"], d, config)
 	var opRes map[string]interface{}
-	err = computeOrgOperationWaitTimeWithResponse(
+	err = ComputeOrgOperationWaitTimeWithResponse(
 		config, res, &opRes, parent.(string), "Creating OrganizationSecurityPolicyRule", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 
@@ -560,7 +560,7 @@ func flattenComputeOrganizationSecurityPolicyRuleDescription(v interface{}, d *s
 func flattenComputeOrganizationSecurityPolicyRulePriority(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}

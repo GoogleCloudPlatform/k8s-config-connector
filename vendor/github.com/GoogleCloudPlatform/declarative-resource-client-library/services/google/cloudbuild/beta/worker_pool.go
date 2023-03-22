@@ -198,9 +198,10 @@ func (r *WorkerPoolPrivatePoolV1ConfigWorkerConfig) HashCode() string {
 }
 
 type WorkerPoolPrivatePoolV1ConfigNetworkConfig struct {
-	empty         bool                                                        `json:"-"`
-	PeeredNetwork *string                                                     `json:"peeredNetwork"`
-	EgressOption  *WorkerPoolPrivatePoolV1ConfigNetworkConfigEgressOptionEnum `json:"egressOption"`
+	empty                bool                                                        `json:"-"`
+	PeeredNetwork        *string                                                     `json:"peeredNetwork"`
+	PeeredNetworkIPRange *string                                                     `json:"peeredNetworkIPRange"`
+	EgressOption         *WorkerPoolPrivatePoolV1ConfigNetworkConfigEgressOptionEnum `json:"egressOption"`
 }
 
 type jsonWorkerPoolPrivatePoolV1ConfigNetworkConfig WorkerPoolPrivatePoolV1ConfigNetworkConfig
@@ -219,6 +220,8 @@ func (r *WorkerPoolPrivatePoolV1ConfigNetworkConfig) UnmarshalJSON(data []byte) 
 	} else {
 
 		r.PeeredNetwork = res.PeeredNetwork
+
+		r.PeeredNetworkIPRange = res.PeeredNetworkIPRange
 
 		r.EgressOption = res.EgressOption
 
@@ -299,8 +302,9 @@ func (r *WorkerPoolWorkerConfig) HashCode() string {
 }
 
 type WorkerPoolNetworkConfig struct {
-	empty         bool    `json:"-"`
-	PeeredNetwork *string `json:"peeredNetwork"`
+	empty                bool    `json:"-"`
+	PeeredNetwork        *string `json:"peeredNetwork"`
+	PeeredNetworkIPRange *string `json:"peeredNetworkIPRange"`
 }
 
 type jsonWorkerPoolNetworkConfig WorkerPoolNetworkConfig
@@ -319,6 +323,8 @@ func (r *WorkerPoolNetworkConfig) UnmarshalJSON(data []byte) error {
 	} else {
 
 		r.PeeredNetwork = res.PeeredNetwork
+
+		r.PeeredNetworkIPRange = res.PeeredNetworkIPRange
 
 	}
 	return nil

@@ -448,6 +448,119 @@ handle this extension, the client should consider this to be an error).`,
 											Type: schema.TypeString,
 										},
 									},
+									"name_constraints": {
+										Type:        schema.TypeList,
+										Optional:    true,
+										ForceNew:    true,
+										Description: `Describes the X.509 name constraints extension.`,
+										MaxItems:    1,
+										Elem: &schema.Resource{
+											Schema: map[string]*schema.Schema{
+												"critical": {
+													Type:        schema.TypeBool,
+													Required:    true,
+													ForceNew:    true,
+													Description: `Indicates whether or not the name constraints are marked critical.`,
+												},
+												"excluded_dns_names": {
+													Type:     schema.TypeList,
+													Optional: true,
+													ForceNew: true,
+													Description: `Contains excluded DNS names. Any DNS name that can be
+constructed by simply adding zero or more labels to
+the left-hand side of the name satisfies the name constraint.
+For example, 'example.com', 'www.example.com', 'www.sub.example.com'
+would satisfy 'example.com' while 'example1.com' does not.`,
+													Elem: &schema.Schema{
+														Type: schema.TypeString,
+													},
+												},
+												"excluded_email_addresses": {
+													Type:     schema.TypeList,
+													Optional: true,
+													ForceNew: true,
+													Description: `Contains the excluded email addresses. The value can be a particular
+email address, a hostname to indicate all email addresses on that host or
+a domain with a leading period (e.g. '.example.com') to indicate
+all email addresses in that domain.`,
+													Elem: &schema.Schema{
+														Type: schema.TypeString,
+													},
+												},
+												"excluded_ip_ranges": {
+													Type:     schema.TypeList,
+													Optional: true,
+													ForceNew: true,
+													Description: `Contains the excluded IP ranges. For IPv4 addresses, the ranges
+are expressed using CIDR notation as specified in RFC 4632.
+For IPv6 addresses, the ranges are expressed in similar encoding as IPv4
+addresses.`,
+													Elem: &schema.Schema{
+														Type: schema.TypeString,
+													},
+												},
+												"excluded_uris": {
+													Type:     schema.TypeList,
+													Optional: true,
+													ForceNew: true,
+													Description: `Contains the excluded URIs that apply to the host part of the name.
+The value can be a hostname or a domain with a
+leading period (like '.example.com')`,
+													Elem: &schema.Schema{
+														Type: schema.TypeString,
+													},
+												},
+												"permitted_dns_names": {
+													Type:     schema.TypeList,
+													Optional: true,
+													ForceNew: true,
+													Description: `Contains permitted DNS names. Any DNS name that can be
+constructed by simply adding zero or more labels to
+the left-hand side of the name satisfies the name constraint.
+For example, 'example.com', 'www.example.com', 'www.sub.example.com'
+would satisfy 'example.com' while 'example1.com' does not.`,
+													Elem: &schema.Schema{
+														Type: schema.TypeString,
+													},
+												},
+												"permitted_email_addresses": {
+													Type:     schema.TypeList,
+													Optional: true,
+													ForceNew: true,
+													Description: `Contains the permitted email addresses. The value can be a particular
+email address, a hostname to indicate all email addresses on that host or
+a domain with a leading period (e.g. '.example.com') to indicate
+all email addresses in that domain.`,
+													Elem: &schema.Schema{
+														Type: schema.TypeString,
+													},
+												},
+												"permitted_ip_ranges": {
+													Type:     schema.TypeList,
+													Optional: true,
+													ForceNew: true,
+													Description: `Contains the permitted IP ranges. For IPv4 addresses, the ranges
+are expressed using CIDR notation as specified in RFC 4632.
+For IPv6 addresses, the ranges are expressed in similar encoding as IPv4
+addresses.`,
+													Elem: &schema.Schema{
+														Type: schema.TypeString,
+													},
+												},
+												"permitted_uris": {
+													Type:     schema.TypeList,
+													Optional: true,
+													ForceNew: true,
+													Description: `Contains the permitted URIs that apply to the host part of the name.
+The value can be a hostname or a domain with a
+leading period (like '.example.com')`,
+													Elem: &schema.Schema{
+														Type: schema.TypeString,
+													},
+												},
+											},
+										},
+									},
 									"policy_ids": {
 										Type:        schema.TypeList,
 										Optional:    true,
@@ -704,7 +817,7 @@ in Terraform state, a 'terraform destroy' or 'terraform apply' that would delete
 
 func resourcePrivatecaCertificateAuthorityCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -775,7 +888,7 @@ func resourcePrivatecaCertificateAuthorityCreate(d *schema.ResourceData, meta in
 	// Drop `subordinateConfig` as it can not be set during CA creation.
 	// It can be used to activate CA during post_create or pre_update.
 	delete(obj, "subordinateConfig")
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating CertificateAuthority: %s", err)
 	}
@@ -790,7 +903,7 @@ func resourcePrivatecaCertificateAuthorityCreate(d *schema.ResourceData, meta in
 	// Use the resource in the operation response to populate
 	// identity fields and d.Id() before read
 	var opRes map[string]interface{}
-	err = privatecaOperationWaitTimeWithResponse(
+	err = PrivatecaOperationWaitTimeWithResponse(
 		config, res, &opRes, project, "Creating CertificateAuthority", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 	if err != nil {
@@ -850,7 +963,7 @@ func resourcePrivatecaCertificateAuthorityCreate(d *schema.ResourceData, meta in
 
 func resourcePrivatecaCertificateAuthorityRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -873,7 +986,7 @@ func resourcePrivatecaCertificateAuthorityRead(d *schema.ResourceData, meta inte
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("PrivatecaCertificateAuthority %q", d.Id()))
 	}
@@ -945,7 +1058,7 @@ func resourcePrivatecaCertificateAuthorityRead(d *schema.ResourceData, meta inte
 
 func resourcePrivatecaCertificateAuthorityUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -1042,7 +1155,7 @@ func resourcePrivatecaCertificateAuthorityUpdate(d *schema.ResourceData, meta in
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating CertificateAuthority %q: %s", d.Id(), err)
@@ -1050,7 +1163,7 @@ func resourcePrivatecaCertificateAuthorityUpdate(d *schema.ResourceData, meta in
 		log.Printf("[DEBUG] Finished updating CertificateAuthority %q: %#v", d.Id(), res)
 	}
 
-	err = privatecaOperationWaitTime(
+	err = PrivatecaOperationWaitTime(
 		config, res, project, "Updating CertificateAuthority", userAgent,
 		d.Timeout(schema.TimeoutUpdate))
 
@@ -1063,7 +1176,7 @@ func resourcePrivatecaCertificateAuthorityUpdate(d *schema.ResourceData, meta in
 
 func resourcePrivatecaCertificateAuthorityDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -1094,13 +1207,13 @@ func resourcePrivatecaCertificateAuthorityDelete(d *schema.ResourceData, meta in
 
 		log.Printf("[DEBUG] Disabling CertificateAuthority: %#v", obj)
 
-		dRes, err := sendRequest(config, "POST", billingProject, disableUrl, userAgent, nil)
+		dRes, err := SendRequest(config, "POST", billingProject, disableUrl, userAgent, nil)
 		if err != nil {
 			return fmt.Errorf("Error disabling CertificateAuthority: %s", err)
 		}
 
 		var opRes map[string]interface{}
-		err = privatecaOperationWaitTimeWithResponse(
+		err = PrivatecaOperationWaitTimeWithResponse(
 			config, dRes, &opRes, project, "Disabling CertificateAuthority", userAgent,
 			d.Timeout(schema.TimeoutDelete))
 		if err != nil {
@@ -1114,12 +1227,12 @@ func resourcePrivatecaCertificateAuthorityDelete(d *schema.ResourceData, meta in
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "CertificateAuthority")
 	}
 
-	err = privatecaOperationWaitTime(
+	err = PrivatecaOperationWaitTime(
 		config, res, project, "Deleting CertificateAuthority", userAgent,
 		d.Timeout(schema.TimeoutDelete))
 
@@ -1198,6 +1311,8 @@ func flattenPrivatecaCertificateAuthorityConfigX509Config(v interface{}, d *sche
 		flattenPrivatecaCertificateConfigX509ConfigCaOptions(original["caOptions"], d, config)
 	transformed["key_usage"] =
 		flattenPrivatecaCertificateConfigX509ConfigKeyUsage(original["keyUsage"], d, config)
+	transformed["name_constraints"] =
+		flattenPrivatecaCertificateConfigX509ConfigNameConstraints(original["nameConstraints"], d, config)
 	return []interface{}{transformed}
 }
 
@@ -1495,6 +1610,11 @@ func expandPrivatecaCertificateAuthorityConfigX509Config(v interface{}, d Terraf
 	}
 	transformed["additionalExtensions"] = addExts
 
+	nameConstraints, err := expandPrivatecaCertificateConfigX509ConfigNameConstraints(original["name_constraints"], d, config)
+	if err != nil {
+		return nil, err
+	}
+	transformed["nameConstraints"] = nameConstraints
 	return transformed, nil
 }
 

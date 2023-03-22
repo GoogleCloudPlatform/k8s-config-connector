@@ -10,11 +10,11 @@ import (
 func TestAccDNSResponsePolicy_update(t *testing.T) {
 	t.Parallel()
 
-	responsePolicySuffix := randString(t, 10)
+	responsePolicySuffix := RandString(t, 10)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckDNSResponsePolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

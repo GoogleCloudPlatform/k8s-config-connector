@@ -1271,7 +1271,6 @@ func canonicalizeInstanceDesiredState(rawDesired, rawInitial *Instance, opts ...
 	} else {
 		canonicalDesired.Project = rawDesired.Project
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -1564,23 +1563,26 @@ func canonicalizeNewInstanceDisksSet(c *Client, des, nw []InstanceDisks) []Insta
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceDisks
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceDisks
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceDisksNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceDisks(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceDisksSlice(c *Client, des, nw []InstanceDisks) []InstanceDisks {
@@ -1690,23 +1692,26 @@ func canonicalizeNewInstanceDisksDiskEncryptionKeySet(c *Client, des, nw []Insta
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceDisksDiskEncryptionKey
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceDisksDiskEncryptionKey
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceDisksDiskEncryptionKeyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceDisksDiskEncryptionKey(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceDisksDiskEncryptionKeySlice(c *Client, des, nw []InstanceDisksDiskEncryptionKey) []InstanceDisksDiskEncryptionKey {
@@ -1827,23 +1832,26 @@ func canonicalizeNewInstanceDisksInitializeParamsSet(c *Client, des, nw []Instan
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceDisksInitializeParams
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceDisksInitializeParams
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceDisksInitializeParamsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceDisksInitializeParams(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceDisksInitializeParamsSlice(c *Client, des, nw []InstanceDisksInitializeParams) []InstanceDisksInitializeParams {
@@ -1945,23 +1953,26 @@ func canonicalizeNewInstanceDisksInitializeParamsSourceImageEncryptionKeySet(c *
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceDisksInitializeParamsSourceImageEncryptionKey
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceDisksInitializeParamsSourceImageEncryptionKey
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceDisksInitializeParamsSourceImageEncryptionKeyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceDisksInitializeParamsSourceImageEncryptionKey(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceDisksInitializeParamsSourceImageEncryptionKeySlice(c *Client, des, nw []InstanceDisksInitializeParamsSourceImageEncryptionKey) []InstanceDisksInitializeParamsSourceImageEncryptionKey {
@@ -2066,23 +2077,26 @@ func canonicalizeNewInstanceGuestAcceleratorsSet(c *Client, des, nw []InstanceGu
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceGuestAccelerators
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceGuestAccelerators
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceGuestAcceleratorsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceGuestAccelerators(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceGuestAcceleratorsSlice(c *Client, des, nw []InstanceGuestAccelerators) []InstanceGuestAccelerators {
@@ -2202,23 +2216,26 @@ func canonicalizeNewInstanceNetworkInterfacesSet(c *Client, des, nw []InstanceNe
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceNetworkInterfaces
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceNetworkInterfaces
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceNetworkInterfacesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceNetworkInterfaces(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceNetworkInterfacesSlice(c *Client, des, nw []InstanceNetworkInterfaces) []InstanceNetworkInterfaces {
@@ -2357,23 +2374,26 @@ func canonicalizeNewInstanceNetworkInterfacesAccessConfigsSet(c *Client, des, nw
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceNetworkInterfacesAccessConfigs
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceNetworkInterfacesAccessConfigs
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceNetworkInterfacesAccessConfigsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceNetworkInterfacesAccessConfigs(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceNetworkInterfacesAccessConfigsSlice(c *Client, des, nw []InstanceNetworkInterfacesAccessConfigs) []InstanceNetworkInterfacesAccessConfigs {
@@ -2512,23 +2532,26 @@ func canonicalizeNewInstanceNetworkInterfacesIPv6AccessConfigsSet(c *Client, des
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceNetworkInterfacesIPv6AccessConfigs
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceNetworkInterfacesIPv6AccessConfigs
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceNetworkInterfacesIPv6AccessConfigsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceNetworkInterfacesIPv6AccessConfigs(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceNetworkInterfacesIPv6AccessConfigsSlice(c *Client, des, nw []InstanceNetworkInterfacesIPv6AccessConfigs) []InstanceNetworkInterfacesIPv6AccessConfigs {
@@ -2635,23 +2658,26 @@ func canonicalizeNewInstanceNetworkInterfacesAliasIPRangesSet(c *Client, des, nw
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceNetworkInterfacesAliasIPRanges
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceNetworkInterfacesAliasIPRanges
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceNetworkInterfacesAliasIPRangesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceNetworkInterfacesAliasIPRanges(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceNetworkInterfacesAliasIPRangesSlice(c *Client, des, nw []InstanceNetworkInterfacesAliasIPRanges) []InstanceNetworkInterfacesAliasIPRanges {
@@ -2766,23 +2792,26 @@ func canonicalizeNewInstanceSchedulingSet(c *Client, des, nw []InstanceSchedulin
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceScheduling
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceScheduling
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceSchedulingNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceScheduling(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceSchedulingSlice(c *Client, des, nw []InstanceScheduling) []InstanceScheduling {
@@ -2889,23 +2918,26 @@ func canonicalizeNewInstanceServiceAccountsSet(c *Client, des, nw []InstanceServ
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceServiceAccounts
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceServiceAccounts
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceServiceAccountsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceServiceAccounts(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceServiceAccountsSlice(c *Client, des, nw []InstanceServiceAccounts) []InstanceServiceAccounts {
@@ -3020,23 +3052,26 @@ func canonicalizeNewInstanceShieldedInstanceConfigSet(c *Client, des, nw []Insta
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []InstanceShieldedInstanceConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []InstanceShieldedInstanceConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareInstanceShieldedInstanceConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewInstanceShieldedInstanceConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewInstanceShieldedInstanceConfigSlice(c *Client, des, nw []InstanceShieldedInstanceConfig) []InstanceShieldedInstanceConfig {
@@ -3245,6 +3280,9 @@ func diffInstance(c *Client, desired, actual *Instance, opts ...dcl.ApplyOption)
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareInstanceDisksNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

@@ -840,7 +840,6 @@ func canonicalizeCertificateAuthorityDesiredState(rawDesired, rawInitial *Certif
 	} else {
 		canonicalDesired.CaPool = rawDesired.CaPool
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -1027,23 +1026,26 @@ func canonicalizeNewCertificateAuthorityConfigSet(c *Client, des, nw []Certifica
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityConfigSlice(c *Client, des, nw []CertificateAuthorityConfig) []CertificateAuthorityConfig {
@@ -1138,23 +1140,26 @@ func canonicalizeNewCertificateAuthorityConfigSubjectConfigSet(c *Client, des, n
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityConfigSubjectConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityConfigSubjectConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityConfigSubjectConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityConfigSubjectConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityConfigSubjectConfigSlice(c *Client, des, nw []CertificateAuthorityConfigSubjectConfig) []CertificateAuthorityConfigSubjectConfig {
@@ -1309,23 +1314,26 @@ func canonicalizeNewCertificateAuthorityConfigSubjectConfigSubjectSet(c *Client,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityConfigSubjectConfigSubject
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityConfigSubjectConfigSubject
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityConfigSubjectConfigSubjectNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityConfigSubjectConfigSubject(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityConfigSubjectConfigSubjectSlice(c *Client, des, nw []CertificateAuthorityConfigSubjectConfigSubject) []CertificateAuthorityConfigSubjectConfigSubject {
@@ -1450,23 +1458,26 @@ func canonicalizeNewCertificateAuthorityConfigSubjectConfigSubjectAltNameSet(c *
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityConfigSubjectConfigSubjectAltName
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityConfigSubjectConfigSubjectAltName
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityConfigSubjectConfigSubjectAltNameNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityConfigSubjectConfigSubjectAltName(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityConfigSubjectConfigSubjectAltNameSlice(c *Client, des, nw []CertificateAuthorityConfigSubjectConfigSubjectAltName) []CertificateAuthorityConfigSubjectConfigSubjectAltName {
@@ -1575,23 +1586,26 @@ func canonicalizeNewCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomS
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSans
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSans
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSansNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSans(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSansSlice(c *Client, des, nw []CertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSans) []CertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSans {
@@ -1687,23 +1701,26 @@ func canonicalizeNewCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomS
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSansObjectId
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSansObjectId
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSansObjectIdNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSansObjectId(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSansObjectIdSlice(c *Client, des, nw []CertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSansObjectId) []CertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSansObjectId {
@@ -1805,23 +1822,26 @@ func canonicalizeNewCertificateAuthorityConfigX509ConfigSet(c *Client, des, nw [
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityConfigX509Config
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityConfigX509Config
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityConfigX509ConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityConfigX509Config(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityConfigX509ConfigSlice(c *Client, des, nw []CertificateAuthorityConfigX509Config) []CertificateAuthorityConfigX509Config {
@@ -1918,23 +1938,26 @@ func canonicalizeNewCertificateAuthorityConfigX509ConfigKeyUsageSet(c *Client, d
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityConfigX509ConfigKeyUsage
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityConfigX509ConfigKeyUsage
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityConfigX509ConfigKeyUsageNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityConfigX509ConfigKeyUsage(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityConfigX509ConfigKeyUsageSlice(c *Client, des, nw []CertificateAuthorityConfigX509ConfigKeyUsage) []CertificateAuthorityConfigX509ConfigKeyUsage {
@@ -2097,23 +2120,26 @@ func canonicalizeNewCertificateAuthorityConfigX509ConfigKeyUsageBaseKeyUsageSet(
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityConfigX509ConfigKeyUsageBaseKeyUsage
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityConfigX509ConfigKeyUsageBaseKeyUsage
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityConfigX509ConfigKeyUsageBaseKeyUsageNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityConfigX509ConfigKeyUsageBaseKeyUsage(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityConfigX509ConfigKeyUsageBaseKeyUsageSlice(c *Client, des, nw []CertificateAuthorityConfigX509ConfigKeyUsageBaseKeyUsage) []CertificateAuthorityConfigX509ConfigKeyUsageBaseKeyUsage {
@@ -2252,23 +2278,26 @@ func canonicalizeNewCertificateAuthorityConfigX509ConfigKeyUsageExtendedKeyUsage
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityConfigX509ConfigKeyUsageExtendedKeyUsage
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityConfigX509ConfigKeyUsageExtendedKeyUsage
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityConfigX509ConfigKeyUsageExtendedKeyUsageNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityConfigX509ConfigKeyUsageExtendedKeyUsage(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityConfigX509ConfigKeyUsageExtendedKeyUsageSlice(c *Client, des, nw []CertificateAuthorityConfigX509ConfigKeyUsageExtendedKeyUsage) []CertificateAuthorityConfigX509ConfigKeyUsageExtendedKeyUsage {
@@ -2364,23 +2393,26 @@ func canonicalizeNewCertificateAuthorityConfigX509ConfigKeyUsageUnknownExtendedK
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityConfigX509ConfigKeyUsageUnknownExtendedKeyUsages
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityConfigX509ConfigKeyUsageUnknownExtendedKeyUsages
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityConfigX509ConfigKeyUsageUnknownExtendedKeyUsagesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityConfigX509ConfigKeyUsageUnknownExtendedKeyUsages(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityConfigX509ConfigKeyUsageUnknownExtendedKeyUsagesSlice(c *Client, des, nw []CertificateAuthorityConfigX509ConfigKeyUsageUnknownExtendedKeyUsages) []CertificateAuthorityConfigX509ConfigKeyUsageUnknownExtendedKeyUsages {
@@ -2485,23 +2517,26 @@ func canonicalizeNewCertificateAuthorityConfigX509ConfigCaOptionsSet(c *Client, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityConfigX509ConfigCaOptions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityConfigX509ConfigCaOptions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityConfigX509ConfigCaOptionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityConfigX509ConfigCaOptions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityConfigX509ConfigCaOptionsSlice(c *Client, des, nw []CertificateAuthorityConfigX509ConfigCaOptions) []CertificateAuthorityConfigX509ConfigCaOptions {
@@ -2597,23 +2632,26 @@ func canonicalizeNewCertificateAuthorityConfigX509ConfigPolicyIdsSet(c *Client, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityConfigX509ConfigPolicyIds
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityConfigX509ConfigPolicyIds
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityConfigX509ConfigPolicyIdsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityConfigX509ConfigPolicyIds(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityConfigX509ConfigPolicyIdsSlice(c *Client, des, nw []CertificateAuthorityConfigX509ConfigPolicyIds) []CertificateAuthorityConfigX509ConfigPolicyIds {
@@ -2722,23 +2760,26 @@ func canonicalizeNewCertificateAuthorityConfigX509ConfigAdditionalExtensionsSet(
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityConfigX509ConfigAdditionalExtensions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityConfigX509ConfigAdditionalExtensions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityConfigX509ConfigAdditionalExtensionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityConfigX509ConfigAdditionalExtensions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityConfigX509ConfigAdditionalExtensionsSlice(c *Client, des, nw []CertificateAuthorityConfigX509ConfigAdditionalExtensions) []CertificateAuthorityConfigX509ConfigAdditionalExtensions {
@@ -2834,23 +2875,26 @@ func canonicalizeNewCertificateAuthorityConfigX509ConfigAdditionalExtensionsObje
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityConfigX509ConfigAdditionalExtensionsObjectId
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityConfigX509ConfigAdditionalExtensionsObjectId
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityConfigX509ConfigAdditionalExtensionsObjectIdNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityConfigX509ConfigAdditionalExtensionsObjectId(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityConfigX509ConfigAdditionalExtensionsObjectIdSlice(c *Client, des, nw []CertificateAuthorityConfigX509ConfigAdditionalExtensionsObjectId) []CertificateAuthorityConfigX509ConfigAdditionalExtensionsObjectId {
@@ -2955,23 +2999,26 @@ func canonicalizeNewCertificateAuthorityConfigPublicKeySet(c *Client, des, nw []
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityConfigPublicKey
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityConfigPublicKey
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityConfigPublicKeyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityConfigPublicKey(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityConfigPublicKeySlice(c *Client, des, nw []CertificateAuthorityConfigPublicKey) []CertificateAuthorityConfigPublicKey {
@@ -3093,23 +3140,26 @@ func canonicalizeNewCertificateAuthorityKeySpecSet(c *Client, des, nw []Certific
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityKeySpec
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityKeySpec
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityKeySpecNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityKeySpec(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityKeySpecSlice(c *Client, des, nw []CertificateAuthorityKeySpec) []CertificateAuthorityKeySpec {
@@ -3228,23 +3278,26 @@ func canonicalizeNewCertificateAuthoritySubordinateConfigSet(c *Client, des, nw 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthoritySubordinateConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthoritySubordinateConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthoritySubordinateConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthoritySubordinateConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthoritySubordinateConfigSlice(c *Client, des, nw []CertificateAuthoritySubordinateConfig) []CertificateAuthoritySubordinateConfig {
@@ -3343,23 +3396,26 @@ func canonicalizeNewCertificateAuthoritySubordinateConfigPemIssuerChainSet(c *Cl
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthoritySubordinateConfigPemIssuerChain
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthoritySubordinateConfigPemIssuerChain
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthoritySubordinateConfigPemIssuerChainNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthoritySubordinateConfigPemIssuerChain(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthoritySubordinateConfigPemIssuerChainSlice(c *Client, des, nw []CertificateAuthoritySubordinateConfigPemIssuerChain) []CertificateAuthoritySubordinateConfigPemIssuerChain {
@@ -3478,23 +3534,26 @@ func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSet(c *Client, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityCaCertificateDescriptions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityCaCertificateDescriptions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityCaCertificateDescriptionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityCaCertificateDescriptions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSlice(c *Client, des, nw []CertificateAuthorityCaCertificateDescriptions) []CertificateAuthorityCaCertificateDescriptions {
@@ -3617,23 +3676,26 @@ func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSubjectDescript
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityCaCertificateDescriptionsSubjectDescription
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityCaCertificateDescriptionsSubjectDescription
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSubjectDescription(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSlice(c *Client, des, nw []CertificateAuthorityCaCertificateDescriptionsSubjectDescription) []CertificateAuthorityCaCertificateDescriptionsSubjectDescription {
@@ -3788,23 +3850,26 @@ func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSubjectDescript
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubject
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubject
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubject(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectSlice(c *Client, des, nw []CertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubject) []CertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubject {
@@ -3929,23 +3994,26 @@ func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSubjectDescript
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltName
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltName
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltName(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameSlice(c *Client, des, nw []CertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltName) []CertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltName {
@@ -4054,23 +4122,26 @@ func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSubjectDescript
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSans
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSans
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSansNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSans(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSansSlice(c *Client, des, nw []CertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSans) []CertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSans {
@@ -4166,23 +4237,26 @@ func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSubjectDescript
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSansObjectId
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSansObjectId
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSansObjectIdNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSansObjectId(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSansObjectIdSlice(c *Client, des, nw []CertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSansObjectId) []CertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSansObjectId {
@@ -4284,23 +4358,26 @@ func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509Description
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityCaCertificateDescriptionsX509Description
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityCaCertificateDescriptionsX509Description
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509Description(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509DescriptionSlice(c *Client, des, nw []CertificateAuthorityCaCertificateDescriptionsX509Description) []CertificateAuthorityCaCertificateDescriptionsX509Description {
@@ -4397,23 +4474,26 @@ func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509Description
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsage
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsage
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsage(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageSlice(c *Client, des, nw []CertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsage) []CertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsage {
@@ -4576,23 +4656,26 @@ func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509Description
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageBaseKeyUsage
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageBaseKeyUsage
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageBaseKeyUsageNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageBaseKeyUsage(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageBaseKeyUsageSlice(c *Client, des, nw []CertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageBaseKeyUsage) []CertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageBaseKeyUsage {
@@ -4731,23 +4814,26 @@ func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509Description
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageExtendedKeyUsage
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageExtendedKeyUsage
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageExtendedKeyUsageNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageExtendedKeyUsage(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageExtendedKeyUsageSlice(c *Client, des, nw []CertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageExtendedKeyUsage) []CertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageExtendedKeyUsage {
@@ -4843,23 +4929,26 @@ func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509Description
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageUnknownExtendedKeyUsages
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageUnknownExtendedKeyUsages
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageUnknownExtendedKeyUsagesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageUnknownExtendedKeyUsages(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageUnknownExtendedKeyUsagesSlice(c *Client, des, nw []CertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageUnknownExtendedKeyUsages) []CertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageUnknownExtendedKeyUsages {
@@ -4964,23 +5053,26 @@ func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509Description
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityCaCertificateDescriptionsX509DescriptionCaOptions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityCaCertificateDescriptionsX509DescriptionCaOptions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionCaOptionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509DescriptionCaOptions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509DescriptionCaOptionsSlice(c *Client, des, nw []CertificateAuthorityCaCertificateDescriptionsX509DescriptionCaOptions) []CertificateAuthorityCaCertificateDescriptionsX509DescriptionCaOptions {
@@ -5076,23 +5168,26 @@ func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509Description
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityCaCertificateDescriptionsX509DescriptionPolicyIds
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityCaCertificateDescriptionsX509DescriptionPolicyIds
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionPolicyIdsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509DescriptionPolicyIds(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509DescriptionPolicyIdsSlice(c *Client, des, nw []CertificateAuthorityCaCertificateDescriptionsX509DescriptionPolicyIds) []CertificateAuthorityCaCertificateDescriptionsX509DescriptionPolicyIds {
@@ -5201,23 +5296,26 @@ func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509Description
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensionsSlice(c *Client, des, nw []CertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensions) []CertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensions {
@@ -5313,23 +5411,26 @@ func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509Description
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensionsObjectId
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensionsObjectId
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensionsObjectIdNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensionsObjectId(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensionsObjectIdSlice(c *Client, des, nw []CertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensionsObjectId) []CertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensionsObjectId {
@@ -5434,23 +5535,26 @@ func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsPublicKeySet(c 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityCaCertificateDescriptionsPublicKey
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityCaCertificateDescriptionsPublicKey
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityCaCertificateDescriptionsPublicKeyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityCaCertificateDescriptionsPublicKey(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsPublicKeySlice(c *Client, des, nw []CertificateAuthorityCaCertificateDescriptionsPublicKey) []CertificateAuthorityCaCertificateDescriptionsPublicKey {
@@ -5549,23 +5653,26 @@ func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSubjectKeyIdSet
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityCaCertificateDescriptionsSubjectKeyId
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityCaCertificateDescriptionsSubjectKeyId
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityCaCertificateDescriptionsSubjectKeyIdNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSubjectKeyId(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsSubjectKeyIdSlice(c *Client, des, nw []CertificateAuthorityCaCertificateDescriptionsSubjectKeyId) []CertificateAuthorityCaCertificateDescriptionsSubjectKeyId {
@@ -5664,23 +5771,26 @@ func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsAuthorityKeyIdS
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityCaCertificateDescriptionsAuthorityKeyId
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityCaCertificateDescriptionsAuthorityKeyId
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityCaCertificateDescriptionsAuthorityKeyIdNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityCaCertificateDescriptionsAuthorityKeyId(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsAuthorityKeyIdSlice(c *Client, des, nw []CertificateAuthorityCaCertificateDescriptionsAuthorityKeyId) []CertificateAuthorityCaCertificateDescriptionsAuthorityKeyId {
@@ -5779,23 +5889,26 @@ func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsCertFingerprint
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityCaCertificateDescriptionsCertFingerprint
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityCaCertificateDescriptionsCertFingerprint
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityCaCertificateDescriptionsCertFingerprintNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityCaCertificateDescriptionsCertFingerprint(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityCaCertificateDescriptionsCertFingerprintSlice(c *Client, des, nw []CertificateAuthorityCaCertificateDescriptionsCertFingerprint) []CertificateAuthorityCaCertificateDescriptionsCertFingerprint {
@@ -5902,23 +6015,26 @@ func canonicalizeNewCertificateAuthorityAccessUrlsSet(c *Client, des, nw []Certi
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CertificateAuthorityAccessUrls
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CertificateAuthorityAccessUrls
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCertificateAuthorityAccessUrlsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCertificateAuthorityAccessUrls(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCertificateAuthorityAccessUrlsSlice(c *Client, des, nw []CertificateAuthorityAccessUrls) []CertificateAuthorityAccessUrls {
@@ -6099,6 +6215,9 @@ func diffCertificateAuthority(c *Client, desired, actual *CertificateAuthority, 
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareCertificateAuthorityConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

@@ -873,7 +873,6 @@ func canonicalizeClusterDesiredState(rawDesired, rawInitial *Cluster, opts ...dc
 		canonicalDesired.Location = rawDesired.Location
 	}
 	canonicalDesired.VirtualClusterConfig = canonicalizeClusterVirtualClusterConfig(rawDesired.VirtualClusterConfig, rawInitial.VirtualClusterConfig, opts...)
-
 	return canonicalDesired, nil
 }
 
@@ -1045,23 +1044,26 @@ func canonicalizeNewClusterConfigSet(c *Client, des, nw []ClusterConfig) []Clust
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigSlice(c *Client, des, nw []ClusterConfig) []ClusterConfig {
@@ -1222,23 +1224,26 @@ func canonicalizeNewClusterConfigGceClusterConfigSet(c *Client, des, nw []Cluste
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigGceClusterConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigGceClusterConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigGceClusterConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigGceClusterConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigGceClusterConfigSlice(c *Client, des, nw []ClusterConfigGceClusterConfig) []ClusterConfigGceClusterConfig {
@@ -1351,23 +1356,26 @@ func canonicalizeNewClusterConfigGceClusterConfigReservationAffinitySet(c *Clien
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigGceClusterConfigReservationAffinity
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigGceClusterConfigReservationAffinity
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigGceClusterConfigReservationAffinityNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigGceClusterConfigReservationAffinity(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigGceClusterConfigReservationAffinitySlice(c *Client, des, nw []ClusterConfigGceClusterConfigReservationAffinity) []ClusterConfigGceClusterConfigReservationAffinity {
@@ -1463,23 +1471,26 @@ func canonicalizeNewClusterConfigGceClusterConfigNodeGroupAffinitySet(c *Client,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigGceClusterConfigNodeGroupAffinity
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigGceClusterConfigNodeGroupAffinity
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigGceClusterConfigNodeGroupAffinityNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigGceClusterConfigNodeGroupAffinity(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigGceClusterConfigNodeGroupAffinitySlice(c *Client, des, nw []ClusterConfigGceClusterConfigNodeGroupAffinity) []ClusterConfigGceClusterConfigNodeGroupAffinity {
@@ -1594,23 +1605,26 @@ func canonicalizeNewClusterConfigGceClusterConfigShieldedInstanceConfigSet(c *Cl
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigGceClusterConfigShieldedInstanceConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigGceClusterConfigShieldedInstanceConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigGceClusterConfigShieldedInstanceConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigGceClusterConfigShieldedInstanceConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigGceClusterConfigShieldedInstanceConfigSlice(c *Client, des, nw []ClusterConfigGceClusterConfigShieldedInstanceConfig) []ClusterConfigGceClusterConfigShieldedInstanceConfig {
@@ -1709,23 +1723,26 @@ func canonicalizeNewClusterConfigGceClusterConfigConfidentialInstanceConfigSet(c
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigGceClusterConfigConfidentialInstanceConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigGceClusterConfigConfidentialInstanceConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigGceClusterConfigConfidentialInstanceConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigGceClusterConfigConfidentialInstanceConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigGceClusterConfigConfidentialInstanceConfigSlice(c *Client, des, nw []ClusterConfigGceClusterConfigConfidentialInstanceConfig) []ClusterConfigGceClusterConfigConfidentialInstanceConfig {
@@ -1862,23 +1879,26 @@ func canonicalizeNewClusterConfigMasterConfigSet(c *Client, des, nw []ClusterCon
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigMasterConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigMasterConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigMasterConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigMasterConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigMasterConfigSlice(c *Client, des, nw []ClusterConfigMasterConfig) []ClusterConfigMasterConfig {
@@ -1997,23 +2017,26 @@ func canonicalizeNewClusterConfigMasterConfigDiskConfigSet(c *Client, des, nw []
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigMasterConfigDiskConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigMasterConfigDiskConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigMasterConfigDiskConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigMasterConfigDiskConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigMasterConfigDiskConfigSlice(c *Client, des, nw []ClusterConfigMasterConfigDiskConfig) []ClusterConfigMasterConfigDiskConfig {
@@ -2109,23 +2132,26 @@ func canonicalizeNewClusterConfigMasterConfigManagedGroupConfigSet(c *Client, de
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigMasterConfigManagedGroupConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigMasterConfigManagedGroupConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigMasterConfigManagedGroupConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigMasterConfigManagedGroupConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigMasterConfigManagedGroupConfigSlice(c *Client, des, nw []ClusterConfigMasterConfigManagedGroupConfig) []ClusterConfigMasterConfigManagedGroupConfig {
@@ -2230,23 +2256,26 @@ func canonicalizeNewClusterConfigMasterConfigAcceleratorsSet(c *Client, des, nw 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigMasterConfigAccelerators
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigMasterConfigAccelerators
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigMasterConfigAcceleratorsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigMasterConfigAccelerators(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigMasterConfigAcceleratorsSlice(c *Client, des, nw []ClusterConfigMasterConfigAccelerators) []ClusterConfigMasterConfigAccelerators {
@@ -2369,23 +2398,26 @@ func canonicalizeNewClusterConfigMasterConfigInstanceReferencesSet(c *Client, de
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigMasterConfigInstanceReferences
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigMasterConfigInstanceReferences
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigMasterConfigInstanceReferencesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigMasterConfigInstanceReferences(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigMasterConfigInstanceReferencesSlice(c *Client, des, nw []ClusterConfigMasterConfigInstanceReferences) []ClusterConfigMasterConfigInstanceReferences {
@@ -2522,23 +2554,26 @@ func canonicalizeNewClusterConfigWorkerConfigSet(c *Client, des, nw []ClusterCon
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigWorkerConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigWorkerConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigWorkerConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigWorkerConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigWorkerConfigSlice(c *Client, des, nw []ClusterConfigWorkerConfig) []ClusterConfigWorkerConfig {
@@ -2657,23 +2692,26 @@ func canonicalizeNewClusterConfigWorkerConfigDiskConfigSet(c *Client, des, nw []
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigWorkerConfigDiskConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigWorkerConfigDiskConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigWorkerConfigDiskConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigWorkerConfigDiskConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigWorkerConfigDiskConfigSlice(c *Client, des, nw []ClusterConfigWorkerConfigDiskConfig) []ClusterConfigWorkerConfigDiskConfig {
@@ -2769,23 +2807,26 @@ func canonicalizeNewClusterConfigWorkerConfigManagedGroupConfigSet(c *Client, de
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigWorkerConfigManagedGroupConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigWorkerConfigManagedGroupConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigWorkerConfigManagedGroupConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigWorkerConfigManagedGroupConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigWorkerConfigManagedGroupConfigSlice(c *Client, des, nw []ClusterConfigWorkerConfigManagedGroupConfig) []ClusterConfigWorkerConfigManagedGroupConfig {
@@ -2890,23 +2931,26 @@ func canonicalizeNewClusterConfigWorkerConfigAcceleratorsSet(c *Client, des, nw 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigWorkerConfigAccelerators
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigWorkerConfigAccelerators
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigWorkerConfigAcceleratorsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigWorkerConfigAccelerators(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigWorkerConfigAcceleratorsSlice(c *Client, des, nw []ClusterConfigWorkerConfigAccelerators) []ClusterConfigWorkerConfigAccelerators {
@@ -3029,23 +3073,26 @@ func canonicalizeNewClusterConfigWorkerConfigInstanceReferencesSet(c *Client, de
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigWorkerConfigInstanceReferences
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigWorkerConfigInstanceReferences
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigWorkerConfigInstanceReferencesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigWorkerConfigInstanceReferences(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigWorkerConfigInstanceReferencesSlice(c *Client, des, nw []ClusterConfigWorkerConfigInstanceReferences) []ClusterConfigWorkerConfigInstanceReferences {
@@ -3182,23 +3229,26 @@ func canonicalizeNewClusterConfigSecondaryWorkerConfigSet(c *Client, des, nw []C
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigSecondaryWorkerConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigSecondaryWorkerConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigSecondaryWorkerConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigSecondaryWorkerConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigSecondaryWorkerConfigSlice(c *Client, des, nw []ClusterConfigSecondaryWorkerConfig) []ClusterConfigSecondaryWorkerConfig {
@@ -3317,23 +3367,26 @@ func canonicalizeNewClusterConfigSecondaryWorkerConfigDiskConfigSet(c *Client, d
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigSecondaryWorkerConfigDiskConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigSecondaryWorkerConfigDiskConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigSecondaryWorkerConfigDiskConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigSecondaryWorkerConfigDiskConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigSecondaryWorkerConfigDiskConfigSlice(c *Client, des, nw []ClusterConfigSecondaryWorkerConfigDiskConfig) []ClusterConfigSecondaryWorkerConfigDiskConfig {
@@ -3429,23 +3482,26 @@ func canonicalizeNewClusterConfigSecondaryWorkerConfigManagedGroupConfigSet(c *C
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigSecondaryWorkerConfigManagedGroupConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigSecondaryWorkerConfigManagedGroupConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigSecondaryWorkerConfigManagedGroupConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigSecondaryWorkerConfigManagedGroupConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigSecondaryWorkerConfigManagedGroupConfigSlice(c *Client, des, nw []ClusterConfigSecondaryWorkerConfigManagedGroupConfig) []ClusterConfigSecondaryWorkerConfigManagedGroupConfig {
@@ -3550,23 +3606,26 @@ func canonicalizeNewClusterConfigSecondaryWorkerConfigAcceleratorsSet(c *Client,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigSecondaryWorkerConfigAccelerators
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigSecondaryWorkerConfigAccelerators
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigSecondaryWorkerConfigAcceleratorsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigSecondaryWorkerConfigAccelerators(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigSecondaryWorkerConfigAcceleratorsSlice(c *Client, des, nw []ClusterConfigSecondaryWorkerConfigAccelerators) []ClusterConfigSecondaryWorkerConfigAccelerators {
@@ -3689,23 +3748,26 @@ func canonicalizeNewClusterConfigSecondaryWorkerConfigInstanceReferencesSet(c *C
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigSecondaryWorkerConfigInstanceReferences
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigSecondaryWorkerConfigInstanceReferences
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigSecondaryWorkerConfigInstanceReferencesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigSecondaryWorkerConfigInstanceReferences(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigSecondaryWorkerConfigInstanceReferencesSlice(c *Client, des, nw []ClusterConfigSecondaryWorkerConfigInstanceReferences) []ClusterConfigSecondaryWorkerConfigInstanceReferences {
@@ -3818,23 +3880,26 @@ func canonicalizeNewClusterConfigSoftwareConfigSet(c *Client, des, nw []ClusterC
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigSoftwareConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigSoftwareConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigSoftwareConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigSoftwareConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigSoftwareConfigSlice(c *Client, des, nw []ClusterConfigSoftwareConfig) []ClusterConfigSoftwareConfig {
@@ -3941,23 +4006,26 @@ func canonicalizeNewClusterConfigInitializationActionsSet(c *Client, des, nw []C
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigInitializationActions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigInitializationActions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigInitializationActionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigInitializationActions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigInitializationActionsSlice(c *Client, des, nw []ClusterConfigInitializationActions) []ClusterConfigInitializationActions {
@@ -4053,23 +4121,26 @@ func canonicalizeNewClusterConfigEncryptionConfigSet(c *Client, des, nw []Cluste
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigEncryptionConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigEncryptionConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigEncryptionConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigEncryptionConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigEncryptionConfigSlice(c *Client, des, nw []ClusterConfigEncryptionConfig) []ClusterConfigEncryptionConfig {
@@ -4165,23 +4236,26 @@ func canonicalizeNewClusterConfigAutoscalingConfigSet(c *Client, des, nw []Clust
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigAutoscalingConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigAutoscalingConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigAutoscalingConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigAutoscalingConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigAutoscalingConfigSlice(c *Client, des, nw []ClusterConfigAutoscalingConfig) []ClusterConfigAutoscalingConfig {
@@ -4276,23 +4350,26 @@ func canonicalizeNewClusterConfigSecurityConfigSet(c *Client, des, nw []ClusterC
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigSecurityConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigSecurityConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigSecurityConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigSecurityConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigSecurityConfigSlice(c *Client, des, nw []ClusterConfigSecurityConfig) []ClusterConfigSecurityConfig {
@@ -4499,23 +4576,26 @@ func canonicalizeNewClusterConfigSecurityConfigKerberosConfigSet(c *Client, des,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigSecurityConfigKerberosConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigSecurityConfigKerberosConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigSecurityConfigKerberosConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigSecurityConfigKerberosConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigSecurityConfigKerberosConfigSlice(c *Client, des, nw []ClusterConfigSecurityConfigKerberosConfig) []ClusterConfigSecurityConfigKerberosConfig {
@@ -4611,23 +4691,26 @@ func canonicalizeNewClusterConfigSecurityConfigIdentityConfigSet(c *Client, des,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigSecurityConfigIdentityConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigSecurityConfigIdentityConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigSecurityConfigIdentityConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigSecurityConfigIdentityConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigSecurityConfigIdentityConfigSlice(c *Client, des, nw []ClusterConfigSecurityConfigIdentityConfig) []ClusterConfigSecurityConfigIdentityConfig {
@@ -4740,23 +4823,26 @@ func canonicalizeNewClusterConfigLifecycleConfigSet(c *Client, des, nw []Cluster
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigLifecycleConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigLifecycleConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigLifecycleConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigLifecycleConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigLifecycleConfigSlice(c *Client, des, nw []ClusterConfigLifecycleConfig) []ClusterConfigLifecycleConfig {
@@ -4855,23 +4941,26 @@ func canonicalizeNewClusterConfigEndpointConfigSet(c *Client, des, nw []ClusterC
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigEndpointConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigEndpointConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigEndpointConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigEndpointConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigEndpointConfigSlice(c *Client, des, nw []ClusterConfigEndpointConfig) []ClusterConfigEndpointConfig {
@@ -4964,23 +5053,26 @@ func canonicalizeNewClusterConfigGkeClusterConfigSet(c *Client, des, nw []Cluste
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigGkeClusterConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigGkeClusterConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigGkeClusterConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigGkeClusterConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigGkeClusterConfigSlice(c *Client, des, nw []ClusterConfigGkeClusterConfig) []ClusterConfigGkeClusterConfig {
@@ -5085,23 +5177,26 @@ func canonicalizeNewClusterConfigGkeClusterConfigNamespacedGkeDeploymentTargetSe
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigGkeClusterConfigNamespacedGkeDeploymentTarget
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigGkeClusterConfigNamespacedGkeDeploymentTarget
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigGkeClusterConfigNamespacedGkeDeploymentTargetNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigGkeClusterConfigNamespacedGkeDeploymentTarget(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigGkeClusterConfigNamespacedGkeDeploymentTargetSlice(c *Client, des, nw []ClusterConfigGkeClusterConfigNamespacedGkeDeploymentTarget) []ClusterConfigGkeClusterConfigNamespacedGkeDeploymentTarget {
@@ -5197,23 +5292,26 @@ func canonicalizeNewClusterConfigMetastoreConfigSet(c *Client, des, nw []Cluster
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigMetastoreConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigMetastoreConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigMetastoreConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigMetastoreConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigMetastoreConfigSlice(c *Client, des, nw []ClusterConfigMetastoreConfig) []ClusterConfigMetastoreConfig {
@@ -5306,23 +5404,26 @@ func canonicalizeNewClusterConfigDataprocMetricConfigSet(c *Client, des, nw []Cl
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigDataprocMetricConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigDataprocMetricConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigDataprocMetricConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigDataprocMetricConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigDataprocMetricConfigSlice(c *Client, des, nw []ClusterConfigDataprocMetricConfig) []ClusterConfigDataprocMetricConfig {
@@ -5427,23 +5528,26 @@ func canonicalizeNewClusterConfigDataprocMetricConfigMetricsSet(c *Client, des, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterConfigDataprocMetricConfigMetrics
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterConfigDataprocMetricConfigMetrics
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterConfigDataprocMetricConfigMetricsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterConfigDataprocMetricConfigMetrics(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterConfigDataprocMetricConfigMetricsSlice(c *Client, des, nw []ClusterConfigDataprocMetricConfigMetrics) []ClusterConfigDataprocMetricConfigMetrics {
@@ -5536,23 +5640,26 @@ func canonicalizeNewClusterStatusSet(c *Client, des, nw []ClusterStatus) []Clust
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterStatus
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterStatus
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterStatusNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterStatus(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterStatusSlice(c *Client, des, nw []ClusterStatus) []ClusterStatus {
@@ -5645,23 +5752,26 @@ func canonicalizeNewClusterStatusHistorySet(c *Client, des, nw []ClusterStatusHi
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterStatusHistory
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterStatusHistory
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterStatusHistoryNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterStatusHistory(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterStatusHistorySlice(c *Client, des, nw []ClusterStatusHistory) []ClusterStatusHistory {
@@ -5763,23 +5873,26 @@ func canonicalizeNewClusterMetricsSet(c *Client, des, nw []ClusterMetrics) []Clu
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterMetrics
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterMetrics
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterMetricsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterMetrics(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterMetricsSlice(c *Client, des, nw []ClusterMetrics) []ClusterMetrics {
@@ -5880,23 +5993,26 @@ func canonicalizeNewClusterVirtualClusterConfigSet(c *Client, des, nw []ClusterV
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterVirtualClusterConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterVirtualClusterConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterVirtualClusterConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterVirtualClusterConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterVirtualClusterConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfig) []ClusterVirtualClusterConfig {
@@ -5999,23 +6115,26 @@ func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigSet(c *Cli
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterVirtualClusterConfigKubernetesClusterConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterVirtualClusterConfigKubernetesClusterConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterVirtualClusterConfigKubernetesClusterConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfig) []ClusterVirtualClusterConfigKubernetesClusterConfig {
@@ -6114,23 +6233,26 @@ func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeCluster
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfig {
@@ -6235,23 +6357,26 @@ func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeCluster
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetSlice(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTarget {
@@ -6354,23 +6479,26 @@ func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeCluster
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfig {
@@ -6511,23 +6639,26 @@ func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeCluster
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfig {
@@ -6640,23 +6771,26 @@ func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeCluster
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAcceleratorsSlice(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigAccelerators {
@@ -6752,23 +6886,26 @@ func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeCluster
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigConfigEphemeralStorageConfig {
@@ -6870,23 +7007,26 @@ func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeCluster
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscalingSlice(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling) []ClusterVirtualClusterConfigKubernetesClusterConfigGkeClusterConfigNodePoolTargetNodePoolConfigAutoscaling {
@@ -6988,23 +7128,26 @@ func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigKubernetes
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig) []ClusterVirtualClusterConfigKubernetesClusterConfigKubernetesSoftwareConfig {
@@ -7099,23 +7242,26 @@ func canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigSet(c *Cli
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterVirtualClusterConfigAuxiliaryServicesConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterVirtualClusterConfigAuxiliaryServicesConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterVirtualClusterConfigAuxiliaryServicesConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfigAuxiliaryServicesConfig) []ClusterVirtualClusterConfigAuxiliaryServicesConfig {
@@ -7211,23 +7357,26 @@ func canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreC
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig) []ClusterVirtualClusterConfigAuxiliaryServicesConfigMetastoreConfig {
@@ -7323,23 +7472,26 @@ func canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHisto
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfigSlice(c *Client, des, nw []ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig) []ClusterVirtualClusterConfigAuxiliaryServicesConfigSparkHistoryServerConfig {
@@ -7450,6 +7602,9 @@ func diffCluster(c *Client, desired, actual *Cluster, opts ...dcl.ApplyOption) (
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareClusterConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

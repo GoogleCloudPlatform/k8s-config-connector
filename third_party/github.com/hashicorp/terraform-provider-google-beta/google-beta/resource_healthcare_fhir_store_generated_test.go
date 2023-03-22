@@ -27,12 +27,12 @@ func TestAccHealthcareFhirStore_healthcareFhirStoreBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckHealthcareFhirStoreDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -84,12 +84,13 @@ func TestAccHealthcareFhirStore_healthcareFhirStoreStreamingConfigExample(t *tes
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"policyChanged": BootstrapPSARoles(t, "service-", "gcp-sa-healthcare", []string{"roles/bigquery.dataEditor", "roles/bigquery.jobUser"}),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckHealthcareFhirStoreDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -130,25 +131,6 @@ resource "google_healthcare_fhir_store" "default" {
       }
     }
   }
-
-  depends_on = [
-    google_project_iam_member.bigquery_editor,
-    google_project_iam_member.bigquery_job_user
-  ]
-}
-
-data "google_project" "project" {}
-
-resource "google_project_iam_member" "bigquery_editor" {
-  project = data.google_project.project.project_id
-  role    = "roles/bigquery.dataEditor"
-  member  = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-healthcare.iam.gserviceaccount.com"
-}
-
-resource "google_project_iam_member" "bigquery_job_user" {
-  project = data.google_project.project.project_id
-  role    = "roles/bigquery.jobUser"
-  member  = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-healthcare.iam.gserviceaccount.com"
 }
 
 resource "google_pubsub_topic" "topic" {
@@ -174,12 +156,12 @@ func TestAccHealthcareFhirStore_healthcareFhirStoreNotificationConfigExample(t *
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckHealthcareFhirStoreDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -231,12 +213,12 @@ func TestAccHealthcareFhirStore_healthcareFhirStoreNotificationConfigsExample(t 
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckHealthcareFhirStoreDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -298,7 +280,7 @@ func testAccCheckHealthcareFhirStoreDestroyProducer(t *testing.T) func(s *terraf
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{HealthcareBasePath}}{{dataset}}/fhirStores/{{name}}")
 			if err != nil {
@@ -311,7 +293,7 @@ func testAccCheckHealthcareFhirStoreDestroyProducer(t *testing.T) func(s *terraf
 				billingProject = config.BillingProject
 			}
 
-			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("HealthcareFhirStore still exists at %s", url)
 			}

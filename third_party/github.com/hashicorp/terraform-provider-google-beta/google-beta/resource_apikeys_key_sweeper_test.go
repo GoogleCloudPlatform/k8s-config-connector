@@ -34,7 +34,7 @@ func init() {
 func testSweepApikeysKey(region string) error {
 	log.Print("[INFO][SWEEPER_LOG] Starting sweeper for ApikeysKey")
 
-	config, err := sharedConfigForRegion(region)
+	config, err := SharedConfigForRegion(region)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error getting shared config for region: %s", err)
 		return err
@@ -47,7 +47,7 @@ func testSweepApikeysKey(region string) error {
 	}
 
 	t := &testing.T{}
-	billingId := getTestBillingAccountFromEnv(t)
+	billingId := GetTestBillingAccountFromEnv(t)
 
 	// Setup variables to be used for Delete arguments.
 	d := map[string]string{
@@ -58,7 +58,7 @@ func testSweepApikeysKey(region string) error {
 		"billing_account": billingId,
 	}
 
-	client := NewDCLApikeysClient(config, config.userAgent, "", 0)
+	client := NewDCLApikeysClient(config, config.UserAgent, "", 0)
 	err = client.DeleteAllKey(context.Background(), d["project"], isDeletableApikeysKey)
 	if err != nil {
 		return err
@@ -67,5 +67,5 @@ func testSweepApikeysKey(region string) error {
 }
 
 func isDeletableApikeysKey(r *apikeys.Key) bool {
-	return isSweepableTestResource(*r.Name)
+	return IsSweepableTestResource(*r.Name)
 }

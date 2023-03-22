@@ -12,11 +12,11 @@ import (
 func TestAccBigQueryDataset_basic(t *testing.T) {
 	t.Parallel()
 
-	datasetID := fmt.Sprintf("tf_test_%s", randString(t, 10))
+	datasetID := fmt.Sprintf("tf_test_%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckBigQueryDatasetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -35,6 +35,14 @@ func TestAccBigQueryDataset_basic(t *testing.T) {
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
+			{
+				Config: testAccBigQueryDatasetUpdated2(datasetID),
+			},
+			{
+				ResourceName:      "google_bigquery_dataset.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
 		},
 	})
 }
@@ -42,12 +50,12 @@ func TestAccBigQueryDataset_basic(t *testing.T) {
 func TestAccBigQueryDataset_datasetWithContents(t *testing.T) {
 	t.Parallel()
 
-	datasetID := fmt.Sprintf("tf_test_%s", randString(t, 10))
-	tableID := fmt.Sprintf("tf_test_%s", randString(t, 10))
+	datasetID := fmt.Sprintf("tf_test_%s", RandString(t, 10))
+	tableID := fmt.Sprintf("tf_test_%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckBigQueryDatasetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -67,13 +75,13 @@ func TestAccBigQueryDataset_datasetWithContents(t *testing.T) {
 func TestAccBigQueryDataset_access(t *testing.T) {
 	t.Parallel()
 
-	datasetID := fmt.Sprintf("tf_test_access_%s", randString(t, 10))
-	otherDatasetID := fmt.Sprintf("tf_test_other_%s", randString(t, 10))
-	otherTableID := fmt.Sprintf("tf_test_other_%s", randString(t, 10))
+	datasetID := fmt.Sprintf("tf_test_access_%s", RandString(t, 10))
+	otherDatasetID := fmt.Sprintf("tf_test_other_%s", RandString(t, 10))
+	otherTableID := fmt.Sprintf("tf_test_other_%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckBigQueryDatasetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -115,11 +123,11 @@ func TestAccBigQueryDataset_access(t *testing.T) {
 func TestAccBigQueryDataset_regionalLocation(t *testing.T) {
 	t.Parallel()
 
-	datasetID1 := fmt.Sprintf("tf_test_%s", randString(t, 10))
+	datasetID1 := fmt.Sprintf("tf_test_%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckBigQueryDatasetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -138,12 +146,12 @@ func TestAccBigQueryDataset_cmek(t *testing.T) {
 	t.Parallel()
 
 	kms := BootstrapKMSKeyInLocation(t, "us")
-	pid := getTestProjectFromEnv()
-	datasetID1 := fmt.Sprintf("tf_test_%s", randString(t, 10))
+	pid := GetTestProjectFromEnv()
+	datasetID1 := fmt.Sprintf("tf_test_%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccBigQueryDataset_cmek(pid, datasetID1, kms.CryptoKey.Name),
@@ -160,7 +168,7 @@ func TestAccBigQueryDataset_cmek(t *testing.T) {
 func testAccAddTable(t *testing.T, datasetID string, tableID string) resource.TestCheckFunc {
 	// Not actually a check, but adds a table independently of terraform
 	return func(s *terraform.State) error {
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 		table := &bigquery.Table{
 			TableReference: &bigquery.TableReference{
 				DatasetId: datasetID,
@@ -168,7 +176,7 @@ func testAccAddTable(t *testing.T, datasetID string, tableID string) resource.Te
 				ProjectId: config.Project,
 			},
 		}
-		_, err := config.NewBigQueryClient(config.userAgent).Tables.Insert(config.Project, datasetID, table).Do()
+		_, err := config.NewBigQueryClient(config.UserAgent).Tables.Insert(config.Project, datasetID, table).Do()
 		if err != nil {
 			return fmt.Errorf("Could not create table")
 		}
@@ -199,6 +207,24 @@ func testAccBigQueryDatasetUpdated(datasetID string) string {
 resource "google_bigquery_dataset" "test" {
   dataset_id                      = "%s"
   friendly_name                   = "bar"
+  description                     = "This is a bar description"
+  location                        = "EU"
+  default_partition_expiration_ms = 7200000
+  default_table_expiration_ms     = 7200000
+
+  labels = {
+    env                         = "bar"
+    default_table_expiration_ms = 7200000
+  }
+}
+`, datasetID)
+}
+
+func testAccBigQueryDatasetUpdated2(datasetID string) string {
+	return fmt.Sprintf(`
+resource "google_bigquery_dataset" "test" {
+  dataset_id                      = "%s"
+  # friendly_name                   = "bar"
   description                     = "This is a bar description"
   location                        = "EU"
   default_partition_expiration_ms = 7200000

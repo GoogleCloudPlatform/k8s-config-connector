@@ -93,6 +93,7 @@ components:
           x-dcl-conflicts:
           - gke
           - run
+          - multiTarget
           properties:
             membership:
               type: string
@@ -192,6 +193,7 @@ components:
           x-dcl-conflicts:
           - anthosCluster
           - run
+          - multiTarget
           properties:
             cluster:
               type: string
@@ -227,6 +229,27 @@ components:
           x-dcl-go-name: Location
           description: The location for the resource
           x-kubernetes-immutable: true
+        multiTarget:
+          type: object
+          x-dcl-go-name: MultiTarget
+          x-dcl-go-type: TargetMultiTarget
+          description: Information specifying a multiTarget.
+          x-dcl-conflicts:
+          - gke
+          - anthosCluster
+          - run
+          required:
+          - targetIds
+          properties:
+            targetIds:
+              type: array
+              x-dcl-go-name: TargetIds
+              description: Required. The target_ids of this multiTarget.
+              x-dcl-send-empty: true
+              x-dcl-list-type: list
+              items:
+                type: string
+                x-dcl-go-type: string
         name:
           type: string
           x-dcl-go-name: Name
@@ -253,6 +276,7 @@ components:
           x-dcl-conflicts:
           - gke
           - anthosCluster
+          - multiTarget
           required:
           - location
           properties:

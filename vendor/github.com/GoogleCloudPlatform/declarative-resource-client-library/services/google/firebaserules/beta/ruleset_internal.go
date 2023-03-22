@@ -373,7 +373,6 @@ func canonicalizeRulesetDesiredState(rawDesired, rawInitial *Ruleset, opts ...dc
 	} else {
 		canonicalDesired.Project = rawDesired.Project
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -482,23 +481,26 @@ func canonicalizeNewRulesetSourceSet(c *Client, des, nw []RulesetSource) []Rules
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []RulesetSource
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []RulesetSource
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareRulesetSourceNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewRulesetSource(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewRulesetSourceSlice(c *Client, des, nw []RulesetSource) []RulesetSource {
@@ -613,23 +615,26 @@ func canonicalizeNewRulesetSourceFilesSet(c *Client, des, nw []RulesetSourceFile
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []RulesetSourceFiles
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []RulesetSourceFiles
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareRulesetSourceFilesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewRulesetSourceFiles(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewRulesetSourceFilesSlice(c *Client, des, nw []RulesetSourceFiles) []RulesetSourceFiles {
@@ -728,23 +733,26 @@ func canonicalizeNewRulesetMetadataSet(c *Client, des, nw []RulesetMetadata) []R
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []RulesetMetadata
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []RulesetMetadata
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareRulesetMetadataNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewRulesetMetadata(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewRulesetMetadataSlice(c *Client, des, nw []RulesetMetadata) []RulesetMetadata {
@@ -820,6 +828,9 @@ func diffRuleset(c *Client, desired, actual *Ruleset, opts ...dcl.ApplyOption) (
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareRulesetSourceNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

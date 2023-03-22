@@ -120,6 +120,7 @@ resourcePolicies:
 scheduling:
   automaticRestart: boolean
   instanceTerminationAction: string
+  maintenanceInterval: string
   maxRunDuration:
     nanos: integer
     seconds: integer

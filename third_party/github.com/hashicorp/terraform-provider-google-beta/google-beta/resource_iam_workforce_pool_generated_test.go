@@ -27,13 +27,13 @@ func TestAccIAMWorkforcePoolWorkforcePool_iamWorkforcePoolBasicExample(t *testin
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        getTestOrgFromEnv(t),
-		"random_suffix": randString(t, 10),
+		"org_id":        GetTestOrgFromEnv(t),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckIAMWorkforcePoolWorkforcePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -63,13 +63,13 @@ func TestAccIAMWorkforcePoolWorkforcePool_iamWorkforcePoolFullExample(t *testing
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        getTestOrgFromEnv(t),
-		"random_suffix": randString(t, 10),
+		"org_id":        GetTestOrgFromEnv(t),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckIAMWorkforcePoolWorkforcePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -109,14 +109,14 @@ func testAccCheckIAMWorkforcePoolWorkforcePoolDestroyProducer(t *testing.T) func
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{IAMWorkforcePoolBasePath}}locations/{{location}}/workforcePools/{{workforce_pool_id}}")
 			if err != nil {
 				return err
 			}
 
-			res, err := sendRequest(config, "GET", "", url, config.userAgent, nil)
+			res, err := SendRequest(config, "GET", "", url, config.UserAgent, nil)
 			if err != nil {
 				return nil
 			}

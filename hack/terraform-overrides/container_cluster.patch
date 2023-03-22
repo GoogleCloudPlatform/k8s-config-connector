@@ -16,22 +16,22 @@ diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/goo
 index 70d8f61d4..8a9511d18 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
-@@ -3573,10 +3573,10 @@ func flattenDatabaseEncryption(c *containerBeta.DatabaseEncryption) []map[string
+@@ -5492,10 +5429,10 @@ func flattenNodePoolAutoConfigNetworkTags(c *container.NetworkTags) []map[string
  func resourceContainerClusterStateImporter(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
  	config := meta.(*Config)
-
--	userAgent, err := generateUserAgentString(d, config.userAgent)
+ 
+-	userAgent, err := generateUserAgentString(d, config.UserAgent)
 -	if err != nil {
 -		return nil, err
 -	}
-+	// userAgent, err := generateUserAgentString(d, config.userAgent)
++	// userAgent, err := generateUserAgentString(d, config.UserAgent)
 +	// if err != nil {
 +	// 	return nil, err
 +	// }
-
+ 
  	if err := parseImportId([]string{"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)", "(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)", "(?P<location>[^/]+)/(?P<name>[^/]+)"}, d, config); err != nil {
  		return nil, err
-@@ -3596,9 +3596,9 @@ func resourceContainerClusterStateImporter(d *schema.ResourceData, meta interfac
+@@ -5515,9 +5452,9 @@ func resourceContainerClusterStateImporter(d *schema.ResourceData, meta interfac
  	if err := d.Set("location", location); err != nil {
  		return nil, fmt.Errorf("Error setting location: %s", err)
  	}
@@ -41,6 +41,6 @@ index 70d8f61d4..8a9511d18 100644
 +	// if _, err := containerClusterAwaitRestingState(config, project, location, clusterName, userAgent, d.Timeout(schema.TimeoutCreate)); err != nil {
 +	// 	return nil, err
 +	// }
-
+ 
  	d.SetId(containerClusterFullName(project, location, clusterName))
-
+ 

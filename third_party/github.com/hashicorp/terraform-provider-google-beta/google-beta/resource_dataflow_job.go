@@ -254,7 +254,7 @@ func shouldStopDataflowJobDeleteQuery(state string, skipWait bool) bool {
 
 func resourceDataflowJobCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -301,7 +301,7 @@ func resourceDataflowJobCreate(d *schema.ResourceData, meta interface{}) error {
 
 func resourceDataflowJobRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -405,7 +405,7 @@ func resourceDataflowJobUpdateByReplacement(d *schema.ResourceData, meta interfa
 	}
 
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -437,7 +437,7 @@ func resourceDataflowJobUpdateByReplacement(d *schema.ResourceData, meta interfa
 	}
 
 	var response *dataflow.LaunchTemplateResponse
-	err = retryTimeDuration(func() (updateErr error) {
+	err = RetryTimeDuration(func() (updateErr error) {
 		response, updateErr = resourceDataflowJobLaunchTemplate(config, project, region, userAgent, d.Get("template_gcs_path").(string), &request)
 		return updateErr
 	}, time.Minute*time.Duration(5), isDataflowJobUpdateRetryableError)
@@ -456,7 +456,7 @@ func resourceDataflowJobUpdateByReplacement(d *schema.ResourceData, meta interfa
 
 func resourceDataflowJobDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}

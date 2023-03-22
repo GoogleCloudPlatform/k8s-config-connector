@@ -683,7 +683,6 @@ func canonicalizeServiceDesiredState(rawDesired, rawInitial *Service, opts ...dc
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -951,23 +950,26 @@ func canonicalizeNewServiceBinaryAuthorizationSet(c *Client, des, nw []ServiceBi
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceBinaryAuthorization
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceBinaryAuthorization
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceBinaryAuthorizationNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceBinaryAuthorization(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceBinaryAuthorizationSlice(c *Client, des, nw []ServiceBinaryAuthorization) []ServiceBinaryAuthorization {
@@ -1112,23 +1114,26 @@ func canonicalizeNewServiceTemplateSet(c *Client, des, nw []ServiceTemplate) []S
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceTemplate
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceTemplate
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceTemplateNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceTemplate(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceTemplateSlice(c *Client, des, nw []ServiceTemplate) []ServiceTemplate {
@@ -1230,23 +1235,26 @@ func canonicalizeNewServiceTemplateScalingSet(c *Client, des, nw []ServiceTempla
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceTemplateScaling
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceTemplateScaling
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceTemplateScalingNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceTemplateScaling(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceTemplateScalingSlice(c *Client, des, nw []ServiceTemplateScaling) []ServiceTemplateScaling {
@@ -1348,23 +1356,26 @@ func canonicalizeNewServiceTemplateVPCAccessSet(c *Client, des, nw []ServiceTemp
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceTemplateVPCAccess
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceTemplateVPCAccess
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceTemplateVPCAccessNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceTemplateVPCAccess(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceTemplateVPCAccessSlice(c *Client, des, nw []ServiceTemplateVPCAccess) []ServiceTemplateVPCAccess {
@@ -1495,23 +1506,26 @@ func canonicalizeNewServiceTemplateContainersSet(c *Client, des, nw []ServiceTem
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceTemplateContainers
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceTemplateContainers
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceTemplateContainersNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceTemplateContainers(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceTemplateContainersSlice(c *Client, des, nw []ServiceTemplateContainers) []ServiceTemplateContainers {
@@ -1640,23 +1654,26 @@ func canonicalizeNewServiceTemplateContainersEnvSet(c *Client, des, nw []Service
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceTemplateContainersEnv
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceTemplateContainersEnv
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceTemplateContainersEnvNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceTemplateContainersEnv(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceTemplateContainersEnvSlice(c *Client, des, nw []ServiceTemplateContainersEnv) []ServiceTemplateContainersEnv {
@@ -1749,23 +1766,26 @@ func canonicalizeNewServiceTemplateContainersEnvValueSourceSet(c *Client, des, n
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceTemplateContainersEnvValueSource
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceTemplateContainersEnvValueSource
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceTemplateContainersEnvValueSourceNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceTemplateContainersEnvValueSource(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceTemplateContainersEnvValueSourceSlice(c *Client, des, nw []ServiceTemplateContainersEnvValueSource) []ServiceTemplateContainersEnvValueSource {
@@ -1867,23 +1887,26 @@ func canonicalizeNewServiceTemplateContainersEnvValueSourceSecretKeyRefSet(c *Cl
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceTemplateContainersEnvValueSourceSecretKeyRef
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceTemplateContainersEnvValueSourceSecretKeyRef
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceTemplateContainersEnvValueSourceSecretKeyRefNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceTemplateContainersEnvValueSourceSecretKeyRef(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceTemplateContainersEnvValueSourceSecretKeyRefSlice(c *Client, des, nw []ServiceTemplateContainersEnvValueSourceSecretKeyRef) []ServiceTemplateContainersEnvValueSourceSecretKeyRef {
@@ -1988,23 +2011,26 @@ func canonicalizeNewServiceTemplateContainersResourcesSet(c *Client, des, nw []S
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceTemplateContainersResources
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceTemplateContainersResources
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceTemplateContainersResourcesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceTemplateContainersResources(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceTemplateContainersResourcesSlice(c *Client, des, nw []ServiceTemplateContainersResources) []ServiceTemplateContainersResources {
@@ -2109,23 +2135,26 @@ func canonicalizeNewServiceTemplateContainersPortsSet(c *Client, des, nw []Servi
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceTemplateContainersPorts
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceTemplateContainersPorts
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceTemplateContainersPortsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceTemplateContainersPorts(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceTemplateContainersPortsSlice(c *Client, des, nw []ServiceTemplateContainersPorts) []ServiceTemplateContainersPorts {
@@ -2232,23 +2261,26 @@ func canonicalizeNewServiceTemplateContainersVolumeMountsSet(c *Client, des, nw 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceTemplateContainersVolumeMounts
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceTemplateContainersVolumeMounts
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceTemplateContainersVolumeMountsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceTemplateContainersVolumeMounts(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceTemplateContainersVolumeMountsSlice(c *Client, des, nw []ServiceTemplateContainersVolumeMounts) []ServiceTemplateContainersVolumeMounts {
@@ -2371,23 +2403,26 @@ func canonicalizeNewServiceTemplateVolumesSet(c *Client, des, nw []ServiceTempla
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceTemplateVolumes
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceTemplateVolumes
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceTemplateVolumesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceTemplateVolumes(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceTemplateVolumesSlice(c *Client, des, nw []ServiceTemplateVolumes) []ServiceTemplateVolumes {
@@ -2492,23 +2527,26 @@ func canonicalizeNewServiceTemplateVolumesSecretSet(c *Client, des, nw []Service
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceTemplateVolumesSecret
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceTemplateVolumesSecret
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceTemplateVolumesSecretNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceTemplateVolumesSecret(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceTemplateVolumesSecretSlice(c *Client, des, nw []ServiceTemplateVolumesSecret) []ServiceTemplateVolumesSecret {
@@ -2619,23 +2657,26 @@ func canonicalizeNewServiceTemplateVolumesSecretItemsSet(c *Client, des, nw []Se
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceTemplateVolumesSecretItems
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceTemplateVolumesSecretItems
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceTemplateVolumesSecretItemsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceTemplateVolumesSecretItems(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceTemplateVolumesSecretItemsSlice(c *Client, des, nw []ServiceTemplateVolumesSecretItems) []ServiceTemplateVolumesSecretItems {
@@ -2734,23 +2775,26 @@ func canonicalizeNewServiceTemplateVolumesCloudSqlInstanceSet(c *Client, des, nw
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceTemplateVolumesCloudSqlInstance
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceTemplateVolumesCloudSqlInstance
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceTemplateVolumesCloudSqlInstanceNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceTemplateVolumesCloudSqlInstance(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceTemplateVolumesCloudSqlInstanceSlice(c *Client, des, nw []ServiceTemplateVolumesCloudSqlInstance) []ServiceTemplateVolumesCloudSqlInstance {
@@ -2869,23 +2913,26 @@ func canonicalizeNewServiceTrafficSet(c *Client, des, nw []ServiceTraffic) []Ser
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceTraffic
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceTraffic
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceTrafficNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceTraffic(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceTrafficSlice(c *Client, des, nw []ServiceTraffic) []ServiceTraffic {
@@ -3058,23 +3105,26 @@ func canonicalizeNewServiceTerminalConditionSet(c *Client, des, nw []ServiceTerm
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceTerminalCondition
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceTerminalCondition
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceTerminalConditionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceTerminalCondition(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceTerminalConditionSlice(c *Client, des, nw []ServiceTerminalCondition) []ServiceTerminalCondition {
@@ -3201,23 +3251,26 @@ func canonicalizeNewServiceTrafficStatusesSet(c *Client, des, nw []ServiceTraffi
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceTrafficStatuses
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceTrafficStatuses
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceTrafficStatusesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceTrafficStatuses(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceTrafficStatusesSlice(c *Client, des, nw []ServiceTrafficStatuses) []ServiceTrafficStatuses {
@@ -3454,6 +3507,9 @@ func diffService(c *Client, desired, actual *Service, opts ...dcl.ApplyOption) (
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareServiceBinaryAuthorizationNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

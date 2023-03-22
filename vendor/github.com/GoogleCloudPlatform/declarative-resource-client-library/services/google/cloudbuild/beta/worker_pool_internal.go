@@ -543,39 +543,6 @@ func canonicalizeWorkerPoolDesiredState(rawDesired, rawInitial *WorkerPool, opts
 
 		return rawDesired, nil
 	}
-
-	if rawDesired.NetworkConfig != nil || rawInitial.NetworkConfig != nil {
-		// Check if anything else is set.
-		if dcl.AnySet() {
-			rawDesired.NetworkConfig = nil
-			rawInitial.NetworkConfig = nil
-		}
-	}
-
-	if rawDesired.PrivatePoolV1Config != nil || rawInitial.PrivatePoolV1Config != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.NetworkConfig) {
-			rawDesired.PrivatePoolV1Config = nil
-			rawInitial.PrivatePoolV1Config = nil
-		}
-	}
-
-	if rawDesired.WorkerConfig != nil || rawInitial.WorkerConfig != nil {
-		// Check if anything else is set.
-		if dcl.AnySet() {
-			rawDesired.WorkerConfig = nil
-			rawInitial.WorkerConfig = nil
-		}
-	}
-
-	if rawDesired.PrivatePoolV1Config != nil || rawInitial.PrivatePoolV1Config != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.WorkerConfig) {
-			rawDesired.PrivatePoolV1Config = nil
-			rawInitial.PrivatePoolV1Config = nil
-		}
-	}
-
 	canonicalDesired := &WorkerPool{}
 	if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawInitial.Name) {
 		canonicalDesired.Name = rawInitial.Name
@@ -605,6 +572,34 @@ func canonicalizeWorkerPoolDesiredState(rawDesired, rawInitial *WorkerPool, opts
 		canonicalDesired.Location = rawInitial.Location
 	} else {
 		canonicalDesired.Location = rawDesired.Location
+	}
+
+	if canonicalDesired.NetworkConfig != nil {
+		// Check if anything else is set.
+		if dcl.AnySet() {
+			canonicalDesired.NetworkConfig = EmptyWorkerPoolNetworkConfig
+		}
+	}
+
+	if canonicalDesired.PrivatePoolV1Config != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.NetworkConfig) {
+			canonicalDesired.PrivatePoolV1Config = EmptyWorkerPoolPrivatePoolV1Config
+		}
+	}
+
+	if canonicalDesired.WorkerConfig != nil {
+		// Check if anything else is set.
+		if dcl.AnySet() {
+			canonicalDesired.WorkerConfig = EmptyWorkerPoolWorkerConfig
+		}
+	}
+
+	if canonicalDesired.PrivatePoolV1Config != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.WorkerConfig) {
+			canonicalDesired.PrivatePoolV1Config = EmptyWorkerPoolPrivatePoolV1Config
+		}
 	}
 
 	return canonicalDesired, nil
@@ -766,23 +761,26 @@ func canonicalizeNewWorkerPoolPrivatePoolV1ConfigSet(c *Client, des, nw []Worker
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkerPoolPrivatePoolV1Config
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkerPoolPrivatePoolV1Config
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkerPoolPrivatePoolV1ConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkerPoolPrivatePoolV1Config(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkerPoolPrivatePoolV1ConfigSlice(c *Client, des, nw []WorkerPoolPrivatePoolV1Config) []WorkerPoolPrivatePoolV1Config {
@@ -887,23 +885,26 @@ func canonicalizeNewWorkerPoolPrivatePoolV1ConfigWorkerConfigSet(c *Client, des,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkerPoolPrivatePoolV1ConfigWorkerConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkerPoolPrivatePoolV1ConfigWorkerConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkerPoolPrivatePoolV1ConfigWorkerConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkerPoolPrivatePoolV1ConfigWorkerConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkerPoolPrivatePoolV1ConfigWorkerConfigSlice(c *Client, des, nw []WorkerPoolPrivatePoolV1ConfigWorkerConfig) []WorkerPoolPrivatePoolV1ConfigWorkerConfig {
@@ -945,6 +946,11 @@ func canonicalizeWorkerPoolPrivatePoolV1ConfigNetworkConfig(des, initial *Worker
 		cDes.PeeredNetwork = initial.PeeredNetwork
 	} else {
 		cDes.PeeredNetwork = des.PeeredNetwork
+	}
+	if dcl.StringCanonicalize(des.PeeredNetworkIPRange, initial.PeeredNetworkIPRange) || dcl.IsZeroValue(des.PeeredNetworkIPRange) {
+		cDes.PeeredNetworkIPRange = initial.PeeredNetworkIPRange
+	} else {
+		cDes.PeeredNetworkIPRange = des.PeeredNetworkIPRange
 	}
 	if dcl.IsZeroValue(des.EgressOption) || (dcl.IsEmptyValueIndirect(des.EgressOption) && dcl.IsEmptyValueIndirect(initial.EgressOption)) {
 		// Desired and initial values are equivalent, so set canonical desired value to initial value.
@@ -998,6 +1004,10 @@ func canonicalizeNewWorkerPoolPrivatePoolV1ConfigNetworkConfig(c *Client, des, n
 		return nil
 	}
 
+	if dcl.StringCanonicalize(des.PeeredNetworkIPRange, nw.PeeredNetworkIPRange) {
+		nw.PeeredNetworkIPRange = des.PeeredNetworkIPRange
+	}
+
 	return nw
 }
 
@@ -1005,23 +1015,26 @@ func canonicalizeNewWorkerPoolPrivatePoolV1ConfigNetworkConfigSet(c *Client, des
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkerPoolPrivatePoolV1ConfigNetworkConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkerPoolPrivatePoolV1ConfigNetworkConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkerPoolPrivatePoolV1ConfigNetworkConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkerPoolPrivatePoolV1ConfigNetworkConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkerPoolPrivatePoolV1ConfigNetworkConfigSlice(c *Client, des, nw []WorkerPoolPrivatePoolV1ConfigNetworkConfig) []WorkerPoolPrivatePoolV1ConfigNetworkConfig {
@@ -1134,23 +1147,26 @@ func canonicalizeNewWorkerPoolWorkerConfigSet(c *Client, des, nw []WorkerPoolWor
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkerPoolWorkerConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkerPoolWorkerConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkerPoolWorkerConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkerPoolWorkerConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkerPoolWorkerConfigSlice(c *Client, des, nw []WorkerPoolWorkerConfig) []WorkerPoolWorkerConfig {
@@ -1192,6 +1208,11 @@ func canonicalizeWorkerPoolNetworkConfig(des, initial *WorkerPoolNetworkConfig, 
 		cDes.PeeredNetwork = initial.PeeredNetwork
 	} else {
 		cDes.PeeredNetwork = des.PeeredNetwork
+	}
+	if dcl.StringCanonicalize(des.PeeredNetworkIPRange, initial.PeeredNetworkIPRange) || dcl.IsZeroValue(des.PeeredNetworkIPRange) {
+		cDes.PeeredNetworkIPRange = initial.PeeredNetworkIPRange
+	} else {
+		cDes.PeeredNetworkIPRange = des.PeeredNetworkIPRange
 	}
 
 	return cDes
@@ -1239,6 +1260,10 @@ func canonicalizeNewWorkerPoolNetworkConfig(c *Client, des, nw *WorkerPoolNetwor
 		return nil
 	}
 
+	if dcl.StringCanonicalize(des.PeeredNetworkIPRange, nw.PeeredNetworkIPRange) {
+		nw.PeeredNetworkIPRange = des.PeeredNetworkIPRange
+	}
+
 	return nw
 }
 
@@ -1246,23 +1271,26 @@ func canonicalizeNewWorkerPoolNetworkConfigSet(c *Client, des, nw []WorkerPoolNe
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkerPoolNetworkConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkerPoolNetworkConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkerPoolNetworkConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkerPoolNetworkConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkerPoolNetworkConfigSlice(c *Client, des, nw []WorkerPoolNetworkConfig) []WorkerPoolNetworkConfig {
@@ -1401,6 +1429,9 @@ func diffWorkerPool(c *Client, desired, actual *WorkerPool, opts ...dcl.ApplyOpt
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareWorkerPoolPrivatePoolV1ConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
@@ -1502,6 +1533,13 @@ func compareWorkerPoolPrivatePoolV1ConfigNetworkConfigNewStyle(d, a interface{},
 		diffs = append(diffs, ds...)
 	}
 
+	if ds, err := dcl.Diff(desired.PeeredNetworkIPRange, actual.PeeredNetworkIPRange, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PeeredNetworkIpRange")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
 	if ds, err := dcl.Diff(desired.EgressOption, actual.EgressOption, dcl.DiffInfo{ServerDefault: true, Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateWorkerPoolUpdateWorkerPoolOperation")}, fn.AddNest("EgressOption")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
@@ -1575,6 +1613,13 @@ func compareWorkerPoolNetworkConfigNewStyle(d, a interface{}, fn dcl.FieldName) 
 	}
 
 	if ds, err := dcl.Diff(desired.PeeredNetwork, actual.PeeredNetwork, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PeeredNetwork")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.PeeredNetworkIPRange, actual.PeeredNetworkIPRange, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("PeeredNetworkIpRange")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2049,6 +2094,9 @@ func expandWorkerPoolPrivatePoolV1ConfigNetworkConfig(c *Client, f *WorkerPoolPr
 	if v := f.PeeredNetwork; !dcl.IsEmptyValueIndirect(v) {
 		m["peeredNetwork"] = v
 	}
+	if v := f.PeeredNetworkIPRange; !dcl.IsEmptyValueIndirect(v) {
+		m["peeredNetworkIpRange"] = v
+	}
 	if v := f.EgressOption; !dcl.IsEmptyValueIndirect(v) {
 		m["egressOption"] = v
 	}
@@ -2070,6 +2118,7 @@ func flattenWorkerPoolPrivatePoolV1ConfigNetworkConfig(c *Client, i interface{},
 		return EmptyWorkerPoolPrivatePoolV1ConfigNetworkConfig
 	}
 	r.PeeredNetwork = dcl.FlattenString(m["peeredNetwork"])
+	r.PeeredNetworkIPRange = dcl.FlattenString(m["peeredNetworkIpRange"])
 	r.EgressOption = flattenWorkerPoolPrivatePoolV1ConfigNetworkConfigEgressOptionEnum(m["egressOption"])
 
 	return r
@@ -2289,6 +2338,9 @@ func expandWorkerPoolNetworkConfig(c *Client, f *WorkerPoolNetworkConfig, res *W
 	if v := f.PeeredNetwork; !dcl.IsEmptyValueIndirect(v) {
 		m["peeredNetwork"] = v
 	}
+	if v := f.PeeredNetworkIPRange; !dcl.IsEmptyValueIndirect(v) {
+		m["peeredNetworkIpRange"] = v
+	}
 
 	return m, nil
 }
@@ -2307,6 +2359,7 @@ func flattenWorkerPoolNetworkConfig(c *Client, i interface{}, res *WorkerPool) *
 		return EmptyWorkerPoolNetworkConfig
 	}
 	r.PeeredNetwork = dcl.FlattenString(m["peeredNetwork"])
+	r.PeeredNetworkIPRange = dcl.FlattenString(m["peeredNetworkIpRange"])
 
 	return r
 }

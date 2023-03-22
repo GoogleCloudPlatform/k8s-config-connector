@@ -500,7 +500,6 @@ func canonicalizeCryptoKeyDesiredState(rawDesired, rawInitial *CryptoKey, opts .
 	} else {
 		canonicalDesired.KeyRing = rawDesired.KeyRing
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -671,23 +670,26 @@ func canonicalizeNewCryptoKeyPrimarySet(c *Client, des, nw []CryptoKeyPrimary) [
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CryptoKeyPrimary
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CryptoKeyPrimary
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCryptoKeyPrimaryNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCryptoKeyPrimary(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCryptoKeyPrimarySlice(c *Client, des, nw []CryptoKeyPrimary) []CryptoKeyPrimary {
@@ -781,23 +783,26 @@ func canonicalizeNewCryptoKeyPrimaryAttestationSet(c *Client, des, nw []CryptoKe
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CryptoKeyPrimaryAttestation
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CryptoKeyPrimaryAttestation
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCryptoKeyPrimaryAttestationNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCryptoKeyPrimaryAttestation(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCryptoKeyPrimaryAttestationSlice(c *Client, des, nw []CryptoKeyPrimaryAttestation) []CryptoKeyPrimaryAttestation {
@@ -912,23 +917,26 @@ func canonicalizeNewCryptoKeyPrimaryAttestationCertChainsSet(c *Client, des, nw 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CryptoKeyPrimaryAttestationCertChains
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CryptoKeyPrimaryAttestationCertChains
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCryptoKeyPrimaryAttestationCertChainsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCryptoKeyPrimaryAttestationCertChains(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCryptoKeyPrimaryAttestationCertChainsSlice(c *Client, des, nw []CryptoKeyPrimaryAttestationCertChains) []CryptoKeyPrimaryAttestationCertChains {
@@ -1027,23 +1035,26 @@ func canonicalizeNewCryptoKeyPrimaryExternalProtectionLevelOptionsSet(c *Client,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CryptoKeyPrimaryExternalProtectionLevelOptions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CryptoKeyPrimaryExternalProtectionLevelOptions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCryptoKeyPrimaryExternalProtectionLevelOptionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCryptoKeyPrimaryExternalProtectionLevelOptions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCryptoKeyPrimaryExternalProtectionLevelOptionsSlice(c *Client, des, nw []CryptoKeyPrimaryExternalProtectionLevelOptions) []CryptoKeyPrimaryExternalProtectionLevelOptions {
@@ -1145,23 +1156,26 @@ func canonicalizeNewCryptoKeyVersionTemplateSet(c *Client, des, nw []CryptoKeyVe
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []CryptoKeyVersionTemplate
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []CryptoKeyVersionTemplate
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareCryptoKeyVersionTemplateNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewCryptoKeyVersionTemplate(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewCryptoKeyVersionTemplateSlice(c *Client, des, nw []CryptoKeyVersionTemplate) []CryptoKeyVersionTemplate {
@@ -1293,6 +1307,9 @@ func diffCryptoKey(c *Client, desired, actual *CryptoKey, opts ...dcl.ApplyOptio
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareCryptoKeyPrimaryNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

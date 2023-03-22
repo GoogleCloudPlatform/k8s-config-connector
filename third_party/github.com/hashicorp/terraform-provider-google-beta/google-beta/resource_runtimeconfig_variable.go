@@ -68,7 +68,7 @@ func ResourceRuntimeconfigVariable() *schema.Resource {
 
 func resourceRuntimeconfigVariableCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -94,7 +94,7 @@ func resourceRuntimeconfigVariableCreate(d *schema.ResourceData, meta interface{
 
 func resourceRuntimeconfigVariableRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -110,7 +110,7 @@ func resourceRuntimeconfigVariableRead(d *schema.ResourceData, meta interface{})
 
 func resourceRuntimeconfigVariableUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -138,7 +138,7 @@ func resourceRuntimeconfigVariableUpdate(d *schema.ResourceData, meta interface{
 
 func resourceRuntimeconfigVariableDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}

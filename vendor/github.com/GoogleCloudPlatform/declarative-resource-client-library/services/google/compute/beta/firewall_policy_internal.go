@@ -426,7 +426,6 @@ func canonicalizeFirewallPolicyDesiredState(rawDesired, rawInitial *FirewallPoli
 	} else {
 		canonicalDesired.Parent = rawDesired.Parent
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -597,6 +596,9 @@ func diffFirewallPolicy(c *Client, desired, actual *FirewallPolicy, opts ...dcl.
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

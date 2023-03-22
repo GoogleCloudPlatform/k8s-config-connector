@@ -13,13 +13,13 @@ func TestAccCloudbuildWorkerPool_basic(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
-		"project":       getTestProjectFromEnv(),
+		"random_suffix": RandString(t, 10),
+		"project":       GetTestProjectFromEnv(),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: funcAccTestCloudbuildWorkerPoolCheckDestroy(t),
 		Steps: []resource.TestStep{
 			{
@@ -91,13 +91,13 @@ func TestAccCloudbuildWorkerPool_withNetwork(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
-		"project":       getTestProjectFromEnv(),
+		"random_suffix": RandString(t, 10),
+		"project":       GetTestProjectFromEnv(),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: funcAccTestCloudbuildWorkerPoolCheckDestroy(t),
 		Steps: []resource.TestStep{
 			{
@@ -150,6 +150,7 @@ resource "google_cloudbuild_worker_pool" "pool" {
 	}
 	network_config {
 		peered_network = google_compute_network.network.id
+		peered_network_ip_range = "/29"
 	}
 	depends_on = [google_service_networking_connection.worker_pool_conn]
 }
@@ -166,7 +167,7 @@ func funcAccTestCloudbuildWorkerPoolCheckDestroy(t *testing.T) func(s *terraform
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{CloudBuildBasePath}}projects/{{project}}/locations/{{location}}/workerPools/{{name}}")
 			if err != nil {
@@ -179,7 +180,7 @@ func funcAccTestCloudbuildWorkerPoolCheckDestroy(t *testing.T) func(s *terraform
 				billingProject = config.BillingProject
 			}
 
-			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("CloudbuildWorkerPool still exists at %s", url)
 			}

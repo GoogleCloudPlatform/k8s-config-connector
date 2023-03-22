@@ -11,18 +11,18 @@ import (
 
 func TestAccGKEHubFeature_gkehubFeatureMciUpdate(t *testing.T) {
 	// VCR fails to handle batched project services
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"org_id":          getTestOrgFromEnv(t),
-		"billing_account": getTestBillingAccountFromEnv(t),
+		"random_suffix":   RandString(t, 10),
+		"org_id":          GetTestOrgFromEnv(t),
+		"billing_account": GetTestBillingAccountFromEnv(t),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckGKEHubFeatureDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -167,18 +167,18 @@ resource "google_gke_hub_feature" "feature" {
 
 func TestAccGKEHubFeature_gkehubFeatureMcsd(t *testing.T) {
 	// VCR fails to handle batched project services
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix":   randString(t, 10),
-		"org_id":          getTestOrgFromEnv(t),
-		"billing_account": getTestBillingAccountFromEnv(t),
+		"random_suffix":   RandString(t, 10),
+		"org_id":          GetTestOrgFromEnv(t),
+		"billing_account": GetTestBillingAccountFromEnv(t),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckGKEHubFeatureDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -299,7 +299,7 @@ func testAccCheckGKEHubFeatureDestroyProducer(t *testing.T) func(s *terraform.St
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{GkeHubBasePath}}projects/{{project}}/locations/{{location}}/features/{{name}}")
 			if err != nil {
@@ -312,7 +312,7 @@ func testAccCheckGKEHubFeatureDestroyProducer(t *testing.T) func(s *terraform.St
 				billingProject = config.BillingProject
 			}
 
-			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("GKEHubFeature still exists at %s", url)
 			}

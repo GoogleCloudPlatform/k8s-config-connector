@@ -704,7 +704,7 @@ Allowed value: The Google Cloud resource name of a `GKEHubMembership` resource (
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Whether to automatically manage Service Mesh control planes. Possible values: CONTROL_PLANE_MANAGEMENT_UNSPECIFIED, AUTOMATIC, MANUAL{% endverbatim %}</p>
+            <p>{% verbatim %}**DEPRECATED** Whether to automatically manage Service Mesh control planes. Possible values: CONTROL_PLANE_MANAGEMENT_UNSPECIFIED, AUTOMATIC, MANUAL{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

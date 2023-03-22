@@ -27,6 +27,9 @@ import (
 
 func (r *Cluster) validate() error {
 
+	if err := dcl.ValidateExactlyOneOfFieldsSet([]string{"Client", "AzureServicesAuthentication"}, r.Client, r.AzureServicesAuthentication); err != nil {
+		return err
+	}
 	if err := dcl.Required(r, "name"); err != nil {
 		return err
 	}
@@ -34,9 +37,6 @@ func (r *Cluster) validate() error {
 		return err
 	}
 	if err := dcl.Required(r, "resourceGroupId"); err != nil {
-		return err
-	}
-	if err := dcl.Required(r, "client"); err != nil {
 		return err
 	}
 	if err := dcl.Required(r, "networking"); err != nil {
@@ -56,6 +56,11 @@ func (r *Cluster) validate() error {
 	}
 	if err := dcl.Required(r, "fleet"); err != nil {
 		return err
+	}
+	if !dcl.IsEmptyValueIndirect(r.AzureServicesAuthentication) {
+		if err := r.AzureServicesAuthentication.validate(); err != nil {
+			return err
+		}
 	}
 	if !dcl.IsEmptyValueIndirect(r.Networking) {
 		if err := r.Networking.validate(); err != nil {
@@ -91,6 +96,15 @@ func (r *Cluster) validate() error {
 		if err := r.MonitoringConfig.validate(); err != nil {
 			return err
 		}
+	}
+	return nil
+}
+func (r *ClusterAzureServicesAuthentication) validate() error {
+	if err := dcl.Required(r, "tenantId"); err != nil {
+		return err
+	}
+	if err := dcl.Required(r, "applicationId"); err != nil {
+		return err
 	}
 	return nil
 }
@@ -289,6 +303,11 @@ func newUpdateClusterUpdateAzureClusterRequest(ctx context.Context, f *Cluster, 
 	}
 	if v := f.Client; !dcl.IsEmptyValueIndirect(v) {
 		req["azureClient"] = v
+	}
+	if v, err := expandClusterAzureServicesAuthentication(c, f.AzureServicesAuthentication, res); err != nil {
+		return nil, fmt.Errorf("error expanding AzureServicesAuthentication into azureServicesAuthentication: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		req["azureServicesAuthentication"] = v
 	}
 	if v, err := expandClusterControlPlane(c, f.ControlPlane, res); err != nil {
 		return nil, fmt.Errorf("error expanding ControlPlane into controlPlane: %w", err)
@@ -640,6 +659,21 @@ func (c *Client) clusterDiffsForRawDesired(ctx context.Context, rawDesired *Clus
 
 func canonicalizeClusterInitialState(rawInitial, rawDesired *Cluster) (*Cluster, error) {
 	// TODO(magic-modules-eng): write canonicalizer once relevant traits are added.
+
+	if !dcl.IsZeroValue(rawInitial.Client) {
+		// Check if anything else is set.
+		if dcl.AnySet(rawInitial.AzureServicesAuthentication) {
+			rawInitial.Client = dcl.String("")
+		}
+	}
+
+	if !dcl.IsZeroValue(rawInitial.AzureServicesAuthentication) {
+		// Check if anything else is set.
+		if dcl.AnySet(rawInitial.Client) {
+			rawInitial.AzureServicesAuthentication = EmptyClusterAzureServicesAuthentication
+		}
+	}
+
 	return rawInitial, nil
 }
 
@@ -655,6 +689,7 @@ func canonicalizeClusterDesiredState(rawDesired, rawInitial *Cluster, opts ...dc
 	if rawInitial == nil {
 		// Since the initial state is empty, the desired state is all we have.
 		// We canonicalize the remaining nested objects with nil to pick up defaults.
+		rawDesired.AzureServicesAuthentication = canonicalizeClusterAzureServicesAuthentication(rawDesired.AzureServicesAuthentication, nil, opts...)
 		rawDesired.Networking = canonicalizeClusterNetworking(rawDesired.Networking, nil, opts...)
 		rawDesired.ControlPlane = canonicalizeClusterControlPlane(rawDesired.ControlPlane, nil, opts...)
 		rawDesired.Authorization = canonicalizeClusterAuthorization(rawDesired.Authorization, nil, opts...)
@@ -692,6 +727,7 @@ func canonicalizeClusterDesiredState(rawDesired, rawInitial *Cluster, opts ...dc
 	} else {
 		canonicalDesired.Client = rawDesired.Client
 	}
+	canonicalDesired.AzureServicesAuthentication = canonicalizeClusterAzureServicesAuthentication(rawDesired.AzureServicesAuthentication, rawInitial.AzureServicesAuthentication, opts...)
 	canonicalDesired.Networking = canonicalizeClusterNetworking(rawDesired.Networking, rawInitial.Networking, opts...)
 	canonicalDesired.ControlPlane = canonicalizeClusterControlPlane(rawDesired.ControlPlane, rawInitial.ControlPlane, opts...)
 	canonicalDesired.Authorization = canonicalizeClusterAuthorization(rawDesired.Authorization, rawInitial.Authorization, opts...)
@@ -714,6 +750,20 @@ func canonicalizeClusterDesiredState(rawDesired, rawInitial *Cluster, opts ...dc
 	canonicalDesired.Fleet = canonicalizeClusterFleet(rawDesired.Fleet, rawInitial.Fleet, opts...)
 	canonicalDesired.LoggingConfig = canonicalizeClusterLoggingConfig(rawDesired.LoggingConfig, rawInitial.LoggingConfig, opts...)
 	canonicalDesired.MonitoringConfig = canonicalizeClusterMonitoringConfig(rawDesired.MonitoringConfig, rawInitial.MonitoringConfig, opts...)
+
+	if canonicalDesired.Client != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.AzureServicesAuthentication) {
+			canonicalDesired.Client = dcl.String("")
+		}
+	}
+
+	if canonicalDesired.AzureServicesAuthentication != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.Client) {
+			canonicalDesired.AzureServicesAuthentication = EmptyClusterAzureServicesAuthentication
+		}
+	}
 
 	return canonicalDesired, nil
 }
@@ -755,6 +805,12 @@ func canonicalizeClusterNewState(c *Client, rawNew, rawDesired *Cluster) (*Clust
 	if dcl.IsEmptyValueIndirect(rawNew.Client) && dcl.IsEmptyValueIndirect(rawDesired.Client) {
 		rawNew.Client = rawDesired.Client
 	} else {
+	}
+
+	if dcl.IsEmptyValueIndirect(rawNew.AzureServicesAuthentication) && dcl.IsEmptyValueIndirect(rawDesired.AzureServicesAuthentication) {
+		rawNew.AzureServicesAuthentication = rawDesired.AzureServicesAuthentication
+	} else {
+		rawNew.AzureServicesAuthentication = canonicalizeNewClusterAzureServicesAuthentication(c, rawDesired.AzureServicesAuthentication, rawNew.AzureServicesAuthentication)
 	}
 
 	if dcl.IsEmptyValueIndirect(rawNew.Networking) && dcl.IsEmptyValueIndirect(rawDesired.Networking) {
@@ -858,6 +914,132 @@ func canonicalizeClusterNewState(c *Client, rawNew, rawDesired *Cluster) (*Clust
 	return rawNew, nil
 }
 
+func canonicalizeClusterAzureServicesAuthentication(des, initial *ClusterAzureServicesAuthentication, opts ...dcl.ApplyOption) *ClusterAzureServicesAuthentication {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &ClusterAzureServicesAuthentication{}
+
+	if dcl.StringCanonicalize(des.TenantId, initial.TenantId) || dcl.IsZeroValue(des.TenantId) {
+		cDes.TenantId = initial.TenantId
+	} else {
+		cDes.TenantId = des.TenantId
+	}
+	if dcl.StringCanonicalize(des.ApplicationId, initial.ApplicationId) || dcl.IsZeroValue(des.ApplicationId) {
+		cDes.ApplicationId = initial.ApplicationId
+	} else {
+		cDes.ApplicationId = des.ApplicationId
+	}
+
+	return cDes
+}
+
+func canonicalizeClusterAzureServicesAuthenticationSlice(des, initial []ClusterAzureServicesAuthentication, opts ...dcl.ApplyOption) []ClusterAzureServicesAuthentication {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]ClusterAzureServicesAuthentication, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeClusterAzureServicesAuthentication(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]ClusterAzureServicesAuthentication, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeClusterAzureServicesAuthentication(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewClusterAzureServicesAuthentication(c *Client, des, nw *ClusterAzureServicesAuthentication) *ClusterAzureServicesAuthentication {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for ClusterAzureServicesAuthentication while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	if dcl.StringCanonicalize(des.TenantId, nw.TenantId) {
+		nw.TenantId = des.TenantId
+	}
+	if dcl.StringCanonicalize(des.ApplicationId, nw.ApplicationId) {
+		nw.ApplicationId = des.ApplicationId
+	}
+
+	return nw
+}
+
+func canonicalizeNewClusterAzureServicesAuthenticationSet(c *Client, des, nw []ClusterAzureServicesAuthentication) []ClusterAzureServicesAuthentication {
+	if des == nil {
+		return nw
+	}
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterAzureServicesAuthentication
+	for _, d := range des {
+		matchedIndex := -1
+		for i, n := range nw {
+			if diffs, _ := compareClusterAzureServicesAuthenticationNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedIndex = i
+				break
+			}
+		}
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterAzureServicesAuthentication(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
+		}
+	}
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
+
+	return items
+}
+
+func canonicalizeNewClusterAzureServicesAuthenticationSlice(c *Client, des, nw []ClusterAzureServicesAuthentication) []ClusterAzureServicesAuthentication {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []ClusterAzureServicesAuthentication
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewClusterAzureServicesAuthentication(c, &d, &n))
+	}
+
+	return items
+}
+
 func canonicalizeClusterNetworking(des, initial *ClusterNetworking, opts ...dcl.ApplyOption) *ClusterNetworking {
 	if des == nil {
 		return initial
@@ -950,23 +1132,26 @@ func canonicalizeNewClusterNetworkingSet(c *Client, des, nw []ClusterNetworking)
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterNetworking
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterNetworking
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterNetworkingNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterNetworking(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterNetworkingSlice(c *Client, des, nw []ClusterNetworking) []ClusterNetworking {
@@ -1099,23 +1284,26 @@ func canonicalizeNewClusterControlPlaneSet(c *Client, des, nw []ClusterControlPl
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterControlPlane
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterControlPlane
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterControlPlaneNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterControlPlane(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterControlPlaneSlice(c *Client, des, nw []ClusterControlPlane) []ClusterControlPlane {
@@ -1214,23 +1402,26 @@ func canonicalizeNewClusterControlPlaneSshConfigSet(c *Client, des, nw []Cluster
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterControlPlaneSshConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterControlPlaneSshConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterControlPlaneSshConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterControlPlaneSshConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterControlPlaneSshConfigSlice(c *Client, des, nw []ClusterControlPlaneSshConfig) []ClusterControlPlaneSshConfig {
@@ -1326,23 +1517,26 @@ func canonicalizeNewClusterControlPlaneRootVolumeSet(c *Client, des, nw []Cluste
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterControlPlaneRootVolume
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterControlPlaneRootVolume
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterControlPlaneRootVolumeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterControlPlaneRootVolume(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterControlPlaneRootVolumeSlice(c *Client, des, nw []ClusterControlPlaneRootVolume) []ClusterControlPlaneRootVolume {
@@ -1438,23 +1632,26 @@ func canonicalizeNewClusterControlPlaneMainVolumeSet(c *Client, des, nw []Cluste
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterControlPlaneMainVolume
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterControlPlaneMainVolume
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterControlPlaneMainVolumeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterControlPlaneMainVolume(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterControlPlaneMainVolumeSlice(c *Client, des, nw []ClusterControlPlaneMainVolume) []ClusterControlPlaneMainVolume {
@@ -1553,23 +1750,26 @@ func canonicalizeNewClusterControlPlaneDatabaseEncryptionSet(c *Client, des, nw 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterControlPlaneDatabaseEncryption
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterControlPlaneDatabaseEncryption
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterControlPlaneDatabaseEncryptionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterControlPlaneDatabaseEncryption(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterControlPlaneDatabaseEncryptionSlice(c *Client, des, nw []ClusterControlPlaneDatabaseEncryption) []ClusterControlPlaneDatabaseEncryption {
@@ -1676,23 +1876,26 @@ func canonicalizeNewClusterControlPlaneProxyConfigSet(c *Client, des, nw []Clust
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterControlPlaneProxyConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterControlPlaneProxyConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterControlPlaneProxyConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterControlPlaneProxyConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterControlPlaneProxyConfigSlice(c *Client, des, nw []ClusterControlPlaneProxyConfig) []ClusterControlPlaneProxyConfig {
@@ -1799,23 +2002,26 @@ func canonicalizeNewClusterControlPlaneReplicaPlacementsSet(c *Client, des, nw [
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterControlPlaneReplicaPlacements
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterControlPlaneReplicaPlacements
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterControlPlaneReplicaPlacementsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterControlPlaneReplicaPlacements(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterControlPlaneReplicaPlacementsSlice(c *Client, des, nw []ClusterControlPlaneReplicaPlacements) []ClusterControlPlaneReplicaPlacements {
@@ -1908,23 +2114,26 @@ func canonicalizeNewClusterAuthorizationSet(c *Client, des, nw []ClusterAuthoriz
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterAuthorization
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterAuthorization
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterAuthorizationNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterAuthorization(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterAuthorizationSlice(c *Client, des, nw []ClusterAuthorization) []ClusterAuthorization {
@@ -2023,23 +2232,26 @@ func canonicalizeNewClusterAuthorizationAdminUsersSet(c *Client, des, nw []Clust
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterAuthorizationAdminUsers
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterAuthorizationAdminUsers
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterAuthorizationAdminUsersNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterAuthorizationAdminUsers(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterAuthorizationAdminUsersSlice(c *Client, des, nw []ClusterAuthorizationAdminUsers) []ClusterAuthorizationAdminUsers {
@@ -2154,23 +2366,26 @@ func canonicalizeNewClusterWorkloadIdentityConfigSet(c *Client, des, nw []Cluste
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterWorkloadIdentityConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterWorkloadIdentityConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterWorkloadIdentityConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterWorkloadIdentityConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterWorkloadIdentityConfigSlice(c *Client, des, nw []ClusterWorkloadIdentityConfig) []ClusterWorkloadIdentityConfig {
@@ -2272,23 +2487,26 @@ func canonicalizeNewClusterFleetSet(c *Client, des, nw []ClusterFleet) []Cluster
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterFleet
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterFleet
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterFleetNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterFleet(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterFleetSlice(c *Client, des, nw []ClusterFleet) []ClusterFleet {
@@ -2381,23 +2599,26 @@ func canonicalizeNewClusterLoggingConfigSet(c *Client, des, nw []ClusterLoggingC
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterLoggingConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterLoggingConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterLoggingConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterLoggingConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterLoggingConfigSlice(c *Client, des, nw []ClusterLoggingConfig) []ClusterLoggingConfig {
@@ -2493,23 +2714,26 @@ func canonicalizeNewClusterLoggingConfigComponentConfigSet(c *Client, des, nw []
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterLoggingConfigComponentConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterLoggingConfigComponentConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterLoggingConfigComponentConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterLoggingConfigComponentConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterLoggingConfigComponentConfigSlice(c *Client, des, nw []ClusterLoggingConfigComponentConfig) []ClusterLoggingConfigComponentConfig {
@@ -2602,23 +2826,26 @@ func canonicalizeNewClusterMonitoringConfigSet(c *Client, des, nw []ClusterMonit
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterMonitoringConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterMonitoringConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterMonitoringConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterMonitoringConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterMonitoringConfigSlice(c *Client, des, nw []ClusterMonitoringConfig) []ClusterMonitoringConfig {
@@ -2717,23 +2944,26 @@ func canonicalizeNewClusterMonitoringConfigManagedPrometheusConfigSet(c *Client,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ClusterMonitoringConfigManagedPrometheusConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ClusterMonitoringConfigManagedPrometheusConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareClusterMonitoringConfigManagedPrometheusConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewClusterMonitoringConfigManagedPrometheusConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewClusterMonitoringConfigManagedPrometheusConfigSlice(c *Client, des, nw []ClusterMonitoringConfigManagedPrometheusConfig) []ClusterMonitoringConfigManagedPrometheusConfig {
@@ -2803,6 +3033,13 @@ func diffCluster(c *Client, desired, actual *Cluster, opts ...dcl.ApplyOption) (
 	}
 
 	if ds, err := dcl.Diff(desired.Client, actual.Client, dcl.DiffInfo{Type: "ReferenceType", OperationSelector: dcl.TriggersOperation("updateClusterUpdateAzureClusterOperation")}, fn.AddNest("AzureClient")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		newDiffs = append(newDiffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.AzureServicesAuthentication, actual.AzureServicesAuthentication, dcl.DiffInfo{ObjectFunction: compareClusterAzureServicesAuthenticationNewStyle, EmptyObject: EmptyClusterAzureServicesAuthentication, OperationSelector: dcl.TriggersOperation("updateClusterUpdateAzureClusterOperation")}, fn.AddNest("AzureServicesAuthentication")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -2928,8 +3165,47 @@ func diffCluster(c *Client, desired, actual *Cluster, opts ...dcl.ApplyOption) (
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
+func compareClusterAzureServicesAuthenticationNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*ClusterAzureServicesAuthentication)
+	if !ok {
+		desiredNotPointer, ok := d.(ClusterAzureServicesAuthentication)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterAzureServicesAuthentication or *ClusterAzureServicesAuthentication", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*ClusterAzureServicesAuthentication)
+	if !ok {
+		actualNotPointer, ok := a.(ClusterAzureServicesAuthentication)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a ClusterAzureServicesAuthentication", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.TenantId, actual.TenantId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateClusterUpdateAzureClusterOperation")}, fn.AddNest("TenantId")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.ApplicationId, actual.ApplicationId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateClusterUpdateAzureClusterOperation")}, fn.AddNest("ApplicationId")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
 func compareClusterNetworkingNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
 	var diffs []*dcl.FieldDiff
 
@@ -3591,6 +3867,11 @@ func expandCluster(c *Client, f *Cluster) (map[string]interface{}, error) {
 	if v := f.Client; dcl.ValueShouldBeSent(v) {
 		m["azureClient"] = v
 	}
+	if v, err := expandClusterAzureServicesAuthentication(c, f.AzureServicesAuthentication, res); err != nil {
+		return nil, fmt.Errorf("error expanding AzureServicesAuthentication into azureServicesAuthentication: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["azureServicesAuthentication"] = v
+	}
 	if v, err := expandClusterNetworking(c, f.Networking, res); err != nil {
 		return nil, fmt.Errorf("error expanding Networking into networking: %w", err)
 	} else if !dcl.IsEmptyValueIndirect(v) {
@@ -3655,6 +3936,7 @@ func flattenCluster(c *Client, i interface{}, res *Cluster) *Cluster {
 	resultRes.AzureRegion = dcl.FlattenString(m["azureRegion"])
 	resultRes.ResourceGroupId = dcl.FlattenString(m["resourceGroupId"])
 	resultRes.Client = dcl.FlattenString(m["azureClient"])
+	resultRes.AzureServicesAuthentication = flattenClusterAzureServicesAuthentication(c, m["azureServicesAuthentication"], res)
 	resultRes.Networking = flattenClusterNetworking(c, m["networking"], res)
 	resultRes.ControlPlane = flattenClusterControlPlane(c, m["controlPlane"], res)
 	resultRes.Authorization = flattenClusterAuthorization(c, m["authorization"], res)
@@ -3674,6 +3956,124 @@ func flattenCluster(c *Client, i interface{}, res *Cluster) *Cluster {
 	resultRes.MonitoringConfig = flattenClusterMonitoringConfig(c, m["monitoringConfig"], res)
 
 	return resultRes
+}
+
+// expandClusterAzureServicesAuthenticationMap expands the contents of ClusterAzureServicesAuthentication into a JSON
+// request object.
+func expandClusterAzureServicesAuthenticationMap(c *Client, f map[string]ClusterAzureServicesAuthentication, res *Cluster) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandClusterAzureServicesAuthentication(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandClusterAzureServicesAuthenticationSlice expands the contents of ClusterAzureServicesAuthentication into a JSON
+// request object.
+func expandClusterAzureServicesAuthenticationSlice(c *Client, f []ClusterAzureServicesAuthentication, res *Cluster) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandClusterAzureServicesAuthentication(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenClusterAzureServicesAuthenticationMap flattens the contents of ClusterAzureServicesAuthentication from a JSON
+// response object.
+func flattenClusterAzureServicesAuthenticationMap(c *Client, i interface{}, res *Cluster) map[string]ClusterAzureServicesAuthentication {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]ClusterAzureServicesAuthentication{}
+	}
+
+	if len(a) == 0 {
+		return map[string]ClusterAzureServicesAuthentication{}
+	}
+
+	items := make(map[string]ClusterAzureServicesAuthentication)
+	for k, item := range a {
+		items[k] = *flattenClusterAzureServicesAuthentication(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenClusterAzureServicesAuthenticationSlice flattens the contents of ClusterAzureServicesAuthentication from a JSON
+// response object.
+func flattenClusterAzureServicesAuthenticationSlice(c *Client, i interface{}, res *Cluster) []ClusterAzureServicesAuthentication {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []ClusterAzureServicesAuthentication{}
+	}
+
+	if len(a) == 0 {
+		return []ClusterAzureServicesAuthentication{}
+	}
+
+	items := make([]ClusterAzureServicesAuthentication, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenClusterAzureServicesAuthentication(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandClusterAzureServicesAuthentication expands an instance of ClusterAzureServicesAuthentication into a JSON
+// request object.
+func expandClusterAzureServicesAuthentication(c *Client, f *ClusterAzureServicesAuthentication, res *Cluster) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.TenantId; !dcl.IsEmptyValueIndirect(v) {
+		m["tenantId"] = v
+	}
+	if v := f.ApplicationId; !dcl.IsEmptyValueIndirect(v) {
+		m["applicationId"] = v
+	}
+
+	return m, nil
+}
+
+// flattenClusterAzureServicesAuthentication flattens an instance of ClusterAzureServicesAuthentication from a JSON
+// response object.
+func flattenClusterAzureServicesAuthentication(c *Client, i interface{}, res *Cluster) *ClusterAzureServicesAuthentication {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &ClusterAzureServicesAuthentication{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyClusterAzureServicesAuthentication
+	}
+	r.TenantId = dcl.FlattenString(m["tenantId"])
+	r.ApplicationId = dcl.FlattenString(m["applicationId"])
+
+	return r
 }
 
 // expandClusterNetworkingMap expands the contents of ClusterNetworking into a JSON
@@ -5777,6 +6177,17 @@ func convertOpNameToClusterApiOperation(opName string, fieldDiffs []*dcl.FieldDi
 }
 
 func extractClusterFields(r *Cluster) error {
+	vAzureServicesAuthentication := r.AzureServicesAuthentication
+	if vAzureServicesAuthentication == nil {
+		// note: explicitly not the empty object.
+		vAzureServicesAuthentication = &ClusterAzureServicesAuthentication{}
+	}
+	if err := extractClusterAzureServicesAuthenticationFields(r, vAzureServicesAuthentication); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vAzureServicesAuthentication) {
+		r.AzureServicesAuthentication = vAzureServicesAuthentication
+	}
 	vNetworking := r.Networking
 	if vNetworking == nil {
 		// note: explicitly not the empty object.
@@ -5854,6 +6265,9 @@ func extractClusterFields(r *Cluster) error {
 	if !dcl.IsEmptyValueIndirect(vMonitoringConfig) {
 		r.MonitoringConfig = vMonitoringConfig
 	}
+	return nil
+}
+func extractClusterAzureServicesAuthenticationFields(r *Cluster, o *ClusterAzureServicesAuthentication) error {
 	return nil
 }
 func extractClusterNetworkingFields(r *Cluster, o *ClusterNetworking) error {
@@ -5983,6 +6397,17 @@ func extractClusterMonitoringConfigManagedPrometheusConfigFields(r *Cluster, o *
 }
 
 func postReadExtractClusterFields(r *Cluster) error {
+	vAzureServicesAuthentication := r.AzureServicesAuthentication
+	if vAzureServicesAuthentication == nil {
+		// note: explicitly not the empty object.
+		vAzureServicesAuthentication = &ClusterAzureServicesAuthentication{}
+	}
+	if err := postReadExtractClusterAzureServicesAuthenticationFields(r, vAzureServicesAuthentication); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vAzureServicesAuthentication) {
+		r.AzureServicesAuthentication = vAzureServicesAuthentication
+	}
 	vNetworking := r.Networking
 	if vNetworking == nil {
 		// note: explicitly not the empty object.
@@ -6060,6 +6485,9 @@ func postReadExtractClusterFields(r *Cluster) error {
 	if !dcl.IsEmptyValueIndirect(vMonitoringConfig) {
 		r.MonitoringConfig = vMonitoringConfig
 	}
+	return nil
+}
+func postReadExtractClusterAzureServicesAuthenticationFields(r *Cluster, o *ClusterAzureServicesAuthentication) error {
 	return nil
 }
 func postReadExtractClusterNetworkingFields(r *Cluster, o *ClusterNetworking) error {

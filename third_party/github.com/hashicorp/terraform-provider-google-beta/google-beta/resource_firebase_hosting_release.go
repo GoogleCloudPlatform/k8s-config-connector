@@ -100,7 +100,7 @@ sites/SITE_ID/channels/CHANNEL_ID/releases/RELEASE_ID`,
 
 func resourceFirebaseHostingReleaseCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -132,7 +132,7 @@ func resourceFirebaseHostingReleaseCreate(d *schema.ResourceData, meta interface
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Release: %s", err)
 	}
@@ -161,7 +161,7 @@ func resourceFirebaseHostingReleaseCreate(d *schema.ResourceData, meta interface
 
 func resourceFirebaseHostingReleaseRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -178,7 +178,7 @@ func resourceFirebaseHostingReleaseRead(d *schema.ResourceData, meta interface{}
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("FirebaseHostingRelease %q", d.Id()))
 	}

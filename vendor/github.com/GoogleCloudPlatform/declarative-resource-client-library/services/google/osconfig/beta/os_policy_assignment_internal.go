@@ -880,7 +880,6 @@ func canonicalizeOSPolicyAssignmentDesiredState(rawDesired, rawInitial *OSPolicy
 	} else {
 		canonicalDesired.SkipAwaitRollout = rawDesired.SkipAwaitRollout
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -1091,23 +1090,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesSet(c *Client, des, nw []OSPolic
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPolicies
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPolicies
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPolicies(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesSlice(c *Client, des, nw []OSPolicyAssignmentOSPolicies) []OSPolicyAssignmentOSPolicies {
@@ -1202,23 +1204,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsSet(c *Client, des
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroups
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroups
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroups(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroups) []OSPolicyAssignmentOSPoliciesResourceGroups {
@@ -1325,23 +1330,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsInventoryFiltersSe
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsInventoryFilters
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsInventoryFilters
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsInventoryFiltersNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsInventoryFilters(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsInventoryFiltersSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsInventoryFilters) []OSPolicyAssignmentOSPoliciesResourceGroupsInventoryFilters {
@@ -1488,23 +1496,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesSet(c *Cl
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResources
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResources
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResources(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResources) []OSPolicyAssignmentOSPoliciesResourceGroupsResources {
@@ -1685,23 +1696,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgSet(c 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkg
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkg
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkg(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkg) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkg {
@@ -1800,23 +1814,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgAptSet
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgApt
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgApt
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgAptNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgApt(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgAptSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgApt) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgApt {
@@ -1917,23 +1934,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSet
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDeb
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDeb
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDeb(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDeb) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDeb {
@@ -2074,23 +2094,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSou
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSource
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSource
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSource(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSource) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSource {
@@ -2197,23 +2220,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSou
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceRemote
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceRemote
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceRemoteNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceRemote(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceRemoteSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceRemote) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceRemote {
@@ -2326,23 +2352,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSou
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceGcs
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceGcs
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceGcsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceGcs(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceGcsSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceGcs) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgDebSourceGcs {
@@ -2441,23 +2470,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgYumSet
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgYum
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgYum
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgYumNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgYum(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgYumSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgYum) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgYum {
@@ -2556,23 +2588,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgZypper
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgZypper
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgZypper
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgZypperNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgZypper(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgZypperSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgZypper) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgZypper {
@@ -2673,23 +2708,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSet
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpm
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpm
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpm(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpm) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpm {
@@ -2830,23 +2868,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSou
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSource
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSource
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSource(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSource) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSource {
@@ -2953,23 +2994,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSou
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceRemote
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceRemote
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceRemoteNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceRemote(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceRemoteSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceRemote) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceRemote {
@@ -3082,23 +3126,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSou
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceGcs
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceGcs
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceGcsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceGcs(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceGcsSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceGcs) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgRpmSourceGcs {
@@ -3197,23 +3244,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgGooget
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgGooget
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgGooget
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgGoogetNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgGooget(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgGoogetSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgGooget) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgGooget {
@@ -3314,23 +3364,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSet
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsi
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsi
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsi(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsi) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsi {
@@ -3471,23 +3524,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSou
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSource
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSource
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSource(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSource) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSource {
@@ -3594,23 +3650,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSou
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceRemote
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceRemote
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceRemoteNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceRemote(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceRemoteSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceRemote) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceRemote {
@@ -3723,23 +3782,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSou
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceGcs
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceGcs
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceGcsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceGcs(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceGcsSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceGcs) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesPkgMsiSourceGcs {
@@ -3878,23 +3940,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositor
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepository
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepository
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepository(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositorySlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepository) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepository {
@@ -4023,23 +4088,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositor
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryApt
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryApt
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryAptNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryApt(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryAptSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryApt) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryApt {
@@ -4162,23 +4230,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositor
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryYum
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryYum
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryYumNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryYum(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryYumSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryYum) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryYum {
@@ -4301,23 +4372,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositor
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryZypper
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryZypper
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryZypperNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryZypper(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryZypperSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryZypper) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryZypper {
@@ -4424,23 +4498,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositor
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryGoo
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryGoo
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryGooNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryGoo(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryGooSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryGoo) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesRepositoryGoo {
@@ -4535,23 +4612,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecSet(c
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExec
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExec
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExec(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExec) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExec {
@@ -4694,23 +4774,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValid
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidate
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidate
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidate(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidate) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidate {
@@ -4851,23 +4934,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValid
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFile
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFile
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFile(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFile) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFile {
@@ -4974,23 +5060,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValid
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileRemote
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileRemote
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileRemoteNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileRemote(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileRemoteSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileRemote) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileRemote {
@@ -5103,23 +5192,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValid
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileGcs
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileGcs
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileGcsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileGcs(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileGcsSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileGcs) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecValidateFileGcs {
@@ -5262,23 +5354,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnfor
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforce
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforce
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforce(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforce) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforce {
@@ -5419,23 +5514,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnfor
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFile
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFile
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFile(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFile) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFile {
@@ -5542,23 +5640,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnfor
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileRemote
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileRemote
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileRemoteNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileRemote(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileRemoteSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileRemote) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileRemote {
@@ -5671,23 +5772,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnfor
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileGcs
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileGcs
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileGcsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileGcs(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileGcsSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileGcs) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesExecEnforceFileGcs {
@@ -5825,23 +5929,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileSet(c
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFile
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFile
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFile(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFile) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFile {
@@ -5982,23 +6089,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileS
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFile
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFile
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFile(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFile) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFile {
@@ -6105,23 +6215,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileR
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileRemote
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileRemote
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileRemoteNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileRemote(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileRemoteSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileRemote) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileRemote {
@@ -6234,23 +6347,26 @@ func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileG
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileGcs
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileGcs
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileGcsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileGcs(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileGcsSlice(c *Client, des, nw []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileGcs) []OSPolicyAssignmentOSPoliciesResourceGroupsResourcesFileFileGcs {
@@ -6355,23 +6471,26 @@ func canonicalizeNewOSPolicyAssignmentInstanceFilterSet(c *Client, des, nw []OSP
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentInstanceFilter
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentInstanceFilter
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentInstanceFilterNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentInstanceFilter(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentInstanceFilterSlice(c *Client, des, nw []OSPolicyAssignmentInstanceFilter) []OSPolicyAssignmentInstanceFilter {
@@ -6467,23 +6586,26 @@ func canonicalizeNewOSPolicyAssignmentInstanceFilterInclusionLabelsSet(c *Client
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentInstanceFilterInclusionLabels
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentInstanceFilterInclusionLabels
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentInstanceFilterInclusionLabelsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentInstanceFilterInclusionLabels(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentInstanceFilterInclusionLabelsSlice(c *Client, des, nw []OSPolicyAssignmentInstanceFilterInclusionLabels) []OSPolicyAssignmentInstanceFilterInclusionLabels {
@@ -6579,23 +6701,26 @@ func canonicalizeNewOSPolicyAssignmentInstanceFilterExclusionLabelsSet(c *Client
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentInstanceFilterExclusionLabels
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentInstanceFilterExclusionLabels
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentInstanceFilterExclusionLabelsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentInstanceFilterExclusionLabels(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentInstanceFilterExclusionLabelsSlice(c *Client, des, nw []OSPolicyAssignmentInstanceFilterExclusionLabels) []OSPolicyAssignmentInstanceFilterExclusionLabels {
@@ -6702,23 +6827,26 @@ func canonicalizeNewOSPolicyAssignmentInstanceFilterInventoriesSet(c *Client, de
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentInstanceFilterInventories
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentInstanceFilterInventories
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentInstanceFilterInventoriesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentInstanceFilterInventories(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentInstanceFilterInventoriesSlice(c *Client, des, nw []OSPolicyAssignmentInstanceFilterInventories) []OSPolicyAssignmentInstanceFilterInventories {
@@ -6819,23 +6947,26 @@ func canonicalizeNewOSPolicyAssignmentRolloutSet(c *Client, des, nw []OSPolicyAs
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentRollout
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentRollout
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentRolloutNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentRollout(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentRolloutSlice(c *Client, des, nw []OSPolicyAssignmentRollout) []OSPolicyAssignmentRollout {
@@ -6957,23 +7088,26 @@ func canonicalizeNewOSPolicyAssignmentRolloutDisruptionBudgetSet(c *Client, des,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []OSPolicyAssignmentRolloutDisruptionBudget
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []OSPolicyAssignmentRolloutDisruptionBudget
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareOSPolicyAssignmentRolloutDisruptionBudgetNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewOSPolicyAssignmentRolloutDisruptionBudget(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewOSPolicyAssignmentRolloutDisruptionBudgetSlice(c *Client, des, nw []OSPolicyAssignmentRolloutDisruptionBudget) []OSPolicyAssignmentRolloutDisruptionBudget {
@@ -7126,6 +7260,9 @@ func diffOSPolicyAssignment(c *Client, desired, actual *OSPolicyAssignment, opts
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareOSPolicyAssignmentOSPoliciesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

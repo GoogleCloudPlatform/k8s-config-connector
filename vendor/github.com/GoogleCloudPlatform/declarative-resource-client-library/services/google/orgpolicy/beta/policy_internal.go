@@ -423,7 +423,6 @@ func canonicalizePolicyDesiredState(rawDesired, rawInitial *Policy, opts ...dcl.
 	} else {
 		canonicalDesired.Parent = rawDesired.Parent
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -522,7 +521,7 @@ func canonicalizeNewPolicySpec(c *Client, des, nw *PolicySpec) *PolicySpec {
 	if dcl.StringCanonicalize(des.Etag, nw.Etag) {
 		nw.Etag = des.Etag
 	}
-	nw.Rules = canonicalizeNewPolicySpecRulesSlice(c, des.Rules, nw.Rules)
+	nw.Rules = canonicalizeNewPolicySpecRulesSet(c, des.Rules, nw.Rules)
 	if dcl.BoolCanonicalize(des.InheritFromParent, nw.InheritFromParent) {
 		nw.InheritFromParent = des.InheritFromParent
 	}
@@ -537,23 +536,26 @@ func canonicalizeNewPolicySpecSet(c *Client, des, nw []PolicySpec) []PolicySpec 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []PolicySpec
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []PolicySpec
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := comparePolicySpecNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewPolicySpec(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewPolicySpecSlice(c *Client, des, nw []PolicySpec) []PolicySpec {
@@ -712,23 +714,26 @@ func canonicalizeNewPolicySpecRulesSet(c *Client, des, nw []PolicySpecRules) []P
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []PolicySpecRules
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []PolicySpecRules
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := comparePolicySpecRulesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewPolicySpecRules(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewPolicySpecRulesSlice(c *Client, des, nw []PolicySpecRules) []PolicySpecRules {
@@ -835,23 +840,26 @@ func canonicalizeNewPolicySpecRulesValuesSet(c *Client, des, nw []PolicySpecRule
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []PolicySpecRulesValues
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []PolicySpecRulesValues
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := comparePolicySpecRulesValuesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewPolicySpecRulesValues(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewPolicySpecRulesValuesSlice(c *Client, des, nw []PolicySpecRulesValues) []PolicySpecRulesValues {
@@ -974,23 +982,26 @@ func canonicalizeNewPolicySpecRulesConditionSet(c *Client, des, nw []PolicySpecR
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []PolicySpecRulesCondition
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []PolicySpecRulesCondition
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := comparePolicySpecRulesConditionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewPolicySpecRulesCondition(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewPolicySpecRulesConditionSlice(c *Client, des, nw []PolicySpecRulesCondition) []PolicySpecRulesCondition {
@@ -1052,6 +1063,9 @@ func diffPolicy(c *Client, desired, actual *Policy, opts ...dcl.ApplyOption) ([]
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func comparePolicySpecNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
@@ -1088,7 +1102,7 @@ func comparePolicySpecNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.Field
 		diffs = append(diffs, ds...)
 	}
 
-	if ds, err := dcl.Diff(desired.Rules, actual.Rules, dcl.DiffInfo{ObjectFunction: comparePolicySpecRulesNewStyle, EmptyObject: EmptyPolicySpecRules, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Rules")); len(ds) != 0 || err != nil {
+	if ds, err := dcl.Diff(desired.Rules, actual.Rules, dcl.DiffInfo{Type: "Set", ObjectFunction: comparePolicySpecRulesNewStyle, EmptyObject: EmptyPolicySpecRules, OperationSelector: dcl.TriggersOperation("updatePolicyUpdatePolicyOperation")}, fn.AddNest("Rules")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}

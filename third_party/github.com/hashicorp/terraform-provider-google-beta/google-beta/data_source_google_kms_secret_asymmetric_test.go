@@ -18,22 +18,22 @@ import (
 
 func TestAccKmsSecretAsymmetricBasic(t *testing.T) {
 	// Nested tests confuse VCR
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
-	projectOrg := getTestOrgFromEnv(t)
-	projectBillingAccount := getTestBillingAccountFromEnv(t)
+	projectOrg := GetTestOrgFromEnv(t)
+	projectBillingAccount := GetTestBillingAccountFromEnv(t)
 
-	projectID := "tf-test-" + randString(t, 10)
-	keyRingName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	cryptoKeyName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	projectID := "tf-test-" + RandString(t, 10)
+	keyRingName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	cryptoKeyName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	plaintext := fmt.Sprintf("secret-%s", randString(t, 10))
+	plaintext := fmt.Sprintf("secret-%s", RandString(t, 10))
 
 	// The first test creates resources needed to encrypt plaintext and produce ciphertext
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: kmsCryptoKeyAsymmetricDecryptBasic(projectID, projectOrg, projectBillingAccount, keyRingName, cryptoKeyName),
@@ -44,9 +44,9 @@ func TestAccKmsSecretAsymmetricBasic(t *testing.T) {
 					}
 
 					// The second test asserts that the data source has the correct plaintext, given the created ciphertext
-					vcrTest(t, resource.TestCase{
+					VcrTest(t, resource.TestCase{
 						PreCheck:  func() { testAccPreCheck(t) },
-						Providers: testAccProviders,
+						Providers: TestAccProviders,
 						Steps: []resource.TestStep{
 							{
 								Config: googleKmsSecretAsymmetricDatasource(cryptoKeyVersionID, ciphertext),

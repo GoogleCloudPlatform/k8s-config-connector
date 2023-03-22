@@ -408,7 +408,6 @@ func canonicalizeTagValueDesiredState(rawDesired, rawInitial *TagValue, opts ...
 	} else {
 		canonicalDesired.Description = rawDesired.Description
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -546,6 +545,9 @@ func diffTagValue(c *Client, desired, actual *TagValue, opts ...dcl.ApplyOption)
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

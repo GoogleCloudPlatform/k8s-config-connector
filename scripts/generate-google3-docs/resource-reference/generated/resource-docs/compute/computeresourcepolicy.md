@@ -80,6 +80,7 @@ description: string
 groupPlacementPolicy:
   availabilityDomainCount: integer
   collocation: string
+  maxDistance: integer
   vmCount: integer
 instanceSchedulePolicy:
   expirationTime: string
@@ -164,6 +165,16 @@ availability domain, they will not be put in the same low latency network.{% end
 Specify 'COLLOCATED' to enable collocation. Can only be specified with 'vm_count'. If compute instances are created
 with a COLLOCATED policy, then exactly 'vm_count' instances must be created at the same time with the resource policy
 attached. Possible values: ["COLLOCATED"].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>groupPlacementPolicy.maxDistance</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Specifies the number of max logical switches.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

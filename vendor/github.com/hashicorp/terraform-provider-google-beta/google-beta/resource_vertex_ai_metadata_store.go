@@ -113,7 +113,7 @@ Has the form: projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/
 
 func resourceVertexAIMetadataStoreCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -151,7 +151,7 @@ func resourceVertexAIMetadataStoreCreate(d *schema.ResourceData, meta interface{
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating MetadataStore: %s", err)
 	}
@@ -166,7 +166,7 @@ func resourceVertexAIMetadataStoreCreate(d *schema.ResourceData, meta interface{
 	// Use the resource in the operation response to populate
 	// identity fields and d.Id() before read
 	var opRes map[string]interface{}
-	err = vertexAIOperationWaitTimeWithResponse(
+	err = VertexAIOperationWaitTimeWithResponse(
 		config, res, &opRes, project, "Creating MetadataStore", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 	if err != nil {
@@ -190,7 +190,7 @@ func resourceVertexAIMetadataStoreCreate(d *schema.ResourceData, meta interface{
 
 func resourceVertexAIMetadataStoreRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -213,7 +213,7 @@ func resourceVertexAIMetadataStoreRead(d *schema.ResourceData, meta interface{})
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("VertexAIMetadataStore %q", d.Id()))
 	}
@@ -243,7 +243,7 @@ func resourceVertexAIMetadataStoreRead(d *schema.ResourceData, meta interface{})
 
 func resourceVertexAIMetadataStoreDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -269,12 +269,12 @@ func resourceVertexAIMetadataStoreDelete(d *schema.ResourceData, meta interface{
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "MetadataStore")
 	}
 
-	err = vertexAIOperationWaitTime(
+	err = VertexAIOperationWaitTime(
 		config, res, project, "Deleting MetadataStore", userAgent,
 		d.Timeout(schema.TimeoutDelete))
 

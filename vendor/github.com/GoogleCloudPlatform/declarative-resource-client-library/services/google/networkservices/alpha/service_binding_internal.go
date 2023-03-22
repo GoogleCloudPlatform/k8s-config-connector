@@ -391,7 +391,6 @@ func canonicalizeServiceBindingDesiredState(rawDesired, rawInitial *ServiceBindi
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -514,6 +513,9 @@ func diffServiceBinding(c *Client, desired, actual *ServiceBinding, opts ...dcl.
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

@@ -11,13 +11,13 @@ import (
 func TestAccComputeRegionBackendService_basic(t *testing.T) {
 	t.Parallel()
 
-	serviceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	checkName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	extraCheckName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	serviceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	checkName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	extraCheckName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeRegionBackendServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -44,13 +44,13 @@ func TestAccComputeRegionBackendService_basic(t *testing.T) {
 func TestAccComputeRegionBackendService_withBackendInternal(t *testing.T) {
 	t.Parallel()
 
-	serviceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	igName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	itName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	checkName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	vcrTest(t, resource.TestCase{
+	serviceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	igName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	itName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	checkName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeRegionBackendServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -83,12 +83,12 @@ func TestAccComputeRegionBackendService_withBackendInternal(t *testing.T) {
 func TestAccComputeRegionBackendService_withBackendInternalManaged(t *testing.T) {
 	t.Parallel()
 
-	serviceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	igmName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	hcName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	vcrTest(t, resource.TestCase{
+	serviceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	igmName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	hcName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeRegionBackendServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -106,15 +106,15 @@ func TestAccComputeRegionBackendService_withBackendInternalManaged(t *testing.T)
 func TestAccComputeRegionBackendService_withBackendMultiNic(t *testing.T) {
 	t.Parallel()
 
-	serviceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	net1Name := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	net2Name := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	igName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	itName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	checkName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	vcrTest(t, resource.TestCase{
+	serviceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	net1Name := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	net2Name := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	igName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	itName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	checkName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeRegionBackendServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -133,12 +133,12 @@ func TestAccComputeRegionBackendService_withBackendMultiNic(t *testing.T) {
 func TestAccComputeRegionBackendService_withConnectionDrainingAndUpdate(t *testing.T) {
 	t.Parallel()
 
-	serviceName := fmt.Sprintf("tf-test-%s", randString(t, 10))
-	checkName := fmt.Sprintf("tf-test-%s", randString(t, 10))
+	serviceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	checkName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeRegionBackendServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -164,12 +164,12 @@ func TestAccComputeRegionBackendService_withConnectionDrainingAndUpdate(t *testi
 func TestAccComputeRegionBackendService_ilbUpdateBasic(t *testing.T) {
 	t.Parallel()
 
-	backendName := fmt.Sprintf("foo-%s", randString(t, 10))
-	checkName := fmt.Sprintf("bar-%s", randString(t, 10))
+	backendName := fmt.Sprintf("foo-%s", RandString(t, 10))
+	checkName := fmt.Sprintf("bar-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeRegionBackendServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -195,16 +195,16 @@ func TestAccComputeRegionBackendService_ilbUpdateBasic(t *testing.T) {
 func TestAccComputeRegionBackendService_ilbUpdateFull(t *testing.T) {
 	t.Parallel()
 
-	randString := randString(t, 10)
+	randString := RandString(t, 10)
 
 	backendName := fmt.Sprintf("foo-%s", randString)
 	checkName := fmt.Sprintf("bar-%s", randString)
 	igName := fmt.Sprintf("tf-test-%s", randString)
 	instanceName := fmt.Sprintf("tf-test-%s", randString)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeRegionBackendServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -228,12 +228,12 @@ func TestAccComputeRegionBackendService_ilbUpdateFull(t *testing.T) {
 }
 
 func TestAccComputeRegionBackendService_withBackendAndIAP(t *testing.T) {
-	backendName := fmt.Sprintf("foo-%s", randString(t, 10))
-	checkName := fmt.Sprintf("bar-%s", randString(t, 10))
+	backendName := fmt.Sprintf("foo-%s", RandString(t, 10))
+	checkName := fmt.Sprintf("bar-%s", RandString(t, 10))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeRegionBackendServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -257,17 +257,56 @@ func TestAccComputeRegionBackendService_withBackendAndIAP(t *testing.T) {
 	})
 }
 
+func TestAccComputeRegionBackendService_UDPFailOverPolicyUpdate(t *testing.T) {
+	t.Parallel()
+
+	serviceName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+	checkName := fmt.Sprintf("tf-test-%s", RandString(t, 10))
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    TestAccProviders,
+		CheckDestroy: testAccCheckComputeRegionBackendServiceDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComputeRegionBackendService_UDPFailOverPolicyHasDrain(serviceName, "TCP", "true", checkName),
+			},
+			{
+				ResourceName:      "google_compute_region_backend_service.foobar",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccComputeRegionBackendService_UDPFailOverPolicyHasDrain(serviceName, "TCP", "false", checkName),
+			},
+			{
+				ResourceName:      "google_compute_region_backend_service.foobar",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccComputeRegionBackendService_UDPFailOverPolicy(serviceName, "UDP", "false", checkName),
+			},
+			{
+				ResourceName:      "google_compute_region_backend_service.foobar",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
 func TestAccComputeRegionBackendService_subsettingUpdate(t *testing.T) {
 	t.Parallel()
 
-	randString := randString(t, 10)
+	randString := RandString(t, 10)
 
 	backendName := fmt.Sprintf("foo-%s", randString)
 	checkName := fmt.Sprintf("bar-%s", randString)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeRegionBackendServiceDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -490,6 +529,59 @@ resource "google_compute_health_check" "health_check" {
   }
 }
 `, serviceName, igName, instanceName, checkName)
+}
+
+func testAccComputeRegionBackendService_UDPFailOverPolicy(serviceName, protocol, failover, checkName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_region_backend_service" "foobar" {
+  name          = "%s"
+  health_checks = [google_compute_health_check.zero.self_link]
+  region        = "us-central1"
+
+  protocol = "%s"
+  failover_policy {
+      # Disable connection drain on failover cannot be set when the protocol is UDP
+      drop_traffic_if_unhealthy = "%s"
+  }
+}
+
+resource "google_compute_health_check" "zero" {
+  name               = "%s"
+  check_interval_sec = 1
+  timeout_sec        = 1
+
+  tcp_health_check {
+    port = "80"
+  }
+}
+`, serviceName, protocol, failover, checkName)
+}
+
+func testAccComputeRegionBackendService_UDPFailOverPolicyHasDrain(serviceName, protocol, failover, checkName string) string {
+	return fmt.Sprintf(`
+resource "google_compute_region_backend_service" "foobar" {
+  name          = "%s"
+  health_checks = [google_compute_health_check.zero.self_link]
+  region        = "us-central1"
+
+  protocol = "%s"
+  failover_policy {
+      # Disable connection drain on failover cannot be set when the protocol is UDP
+      drop_traffic_if_unhealthy = "%s"
+      disable_connection_drain_on_failover = "%s"
+  }
+}
+
+resource "google_compute_health_check" "zero" {
+  name               = "%s"
+  check_interval_sec = 1
+  timeout_sec        = 1
+
+  tcp_health_check {
+    port = "80"
+  }
+}
+`, serviceName, protocol, failover, failover, checkName)
 }
 
 func testAccComputeRegionBackendService_basic(serviceName, checkName string) string {

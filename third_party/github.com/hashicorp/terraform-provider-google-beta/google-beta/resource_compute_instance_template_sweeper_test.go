@@ -20,7 +20,7 @@ func testSweepComputeInstanceTemplate(region string) error {
 	resourceName := "ComputeInstanceTemplate"
 	log.Printf("[INFO][SWEEPER_LOG] Starting sweeper for %s", resourceName)
 
-	config, err := sharedConfigForRegion(region)
+	config, err := SharedConfigForRegion(region)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error getting shared config for region: %s", err)
 		return err
@@ -32,7 +32,7 @@ func testSweepComputeInstanceTemplate(region string) error {
 		return err
 	}
 
-	instanceTemplates, err := config.NewComputeClient(config.userAgent).InstanceTemplates.List(config.Project).Do()
+	instanceTemplates, err := config.NewComputeClient(config.UserAgent).InstanceTemplates.List(config.Project).Do()
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] Error in response from request instance templates LIST: %s", err)
 		return nil
@@ -49,13 +49,13 @@ func testSweepComputeInstanceTemplate(region string) error {
 	nonPrefixCount := 0
 	for _, instanceTemplate := range instanceTemplates.Items {
 		// Increment count and skip if resource is not sweepable.
-		if !isSweepableTestResource(instanceTemplate.Name) {
+		if !IsSweepableTestResource(instanceTemplate.Name) {
 			nonPrefixCount++
 			continue
 		}
 
 		// Don't wait on operations as we may have a lot to delete
-		_, err := config.NewComputeClient(config.userAgent).InstanceTemplates.Delete(config.Project, instanceTemplate.Name).Do()
+		_, err := config.NewComputeClient(config.UserAgent).InstanceTemplates.Delete(config.Project, instanceTemplate.Name).Do()
 		if err != nil {
 			log.Printf("[INFO][SWEEPER_LOG] Error deleting instance template: %s", instanceTemplate.Name)
 		} else {

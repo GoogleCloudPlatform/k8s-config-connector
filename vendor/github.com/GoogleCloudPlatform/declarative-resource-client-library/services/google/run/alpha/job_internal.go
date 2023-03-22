@@ -696,7 +696,6 @@ func canonicalizeJobDesiredState(rawDesired, rawInitial *Job, opts ...dcl.ApplyO
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -943,23 +942,26 @@ func canonicalizeNewJobBinaryAuthorizationSet(c *Client, des, nw []JobBinaryAuth
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobBinaryAuthorization
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobBinaryAuthorization
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobBinaryAuthorizationNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobBinaryAuthorization(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobBinaryAuthorizationSlice(c *Client, des, nw []JobBinaryAuthorization) []JobBinaryAuthorization {
@@ -1076,23 +1078,26 @@ func canonicalizeNewJobTemplateSet(c *Client, des, nw []JobTemplate) []JobTempla
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTemplate
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTemplate
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTemplateNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTemplate(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTemplateSlice(c *Client, des, nw []JobTemplate) []JobTemplate {
@@ -1223,23 +1228,26 @@ func canonicalizeNewJobTemplateTemplateSet(c *Client, des, nw []JobTemplateTempl
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTemplateTemplate
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTemplateTemplate
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTemplateTemplateNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTemplateTemplate(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTemplateTemplateSlice(c *Client, des, nw []JobTemplateTemplate) []JobTemplateTemplate {
@@ -1370,23 +1378,26 @@ func canonicalizeNewJobTemplateTemplateContainersSet(c *Client, des, nw []JobTem
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTemplateTemplateContainers
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTemplateTemplateContainers
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTemplateTemplateContainersNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTemplateTemplateContainers(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTemplateTemplateContainersSlice(c *Client, des, nw []JobTemplateTemplateContainers) []JobTemplateTemplateContainers {
@@ -1515,23 +1526,26 @@ func canonicalizeNewJobTemplateTemplateContainersEnvSet(c *Client, des, nw []Job
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTemplateTemplateContainersEnv
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTemplateTemplateContainersEnv
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTemplateTemplateContainersEnvNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTemplateTemplateContainersEnv(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTemplateTemplateContainersEnvSlice(c *Client, des, nw []JobTemplateTemplateContainersEnv) []JobTemplateTemplateContainersEnv {
@@ -1624,23 +1638,26 @@ func canonicalizeNewJobTemplateTemplateContainersEnvValueSourceSet(c *Client, de
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTemplateTemplateContainersEnvValueSource
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTemplateTemplateContainersEnvValueSource
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTemplateTemplateContainersEnvValueSourceNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTemplateTemplateContainersEnvValueSource(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTemplateTemplateContainersEnvValueSourceSlice(c *Client, des, nw []JobTemplateTemplateContainersEnvValueSource) []JobTemplateTemplateContainersEnvValueSource {
@@ -1742,23 +1759,26 @@ func canonicalizeNewJobTemplateTemplateContainersEnvValueSourceSecretKeyRefSet(c
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTemplateTemplateContainersEnvValueSourceSecretKeyRef
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTemplateTemplateContainersEnvValueSourceSecretKeyRef
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTemplateTemplateContainersEnvValueSourceSecretKeyRefNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTemplateTemplateContainersEnvValueSourceSecretKeyRef(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTemplateTemplateContainersEnvValueSourceSecretKeyRefSlice(c *Client, des, nw []JobTemplateTemplateContainersEnvValueSourceSecretKeyRef) []JobTemplateTemplateContainersEnvValueSourceSecretKeyRef {
@@ -1863,23 +1883,26 @@ func canonicalizeNewJobTemplateTemplateContainersResourcesSet(c *Client, des, nw
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTemplateTemplateContainersResources
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTemplateTemplateContainersResources
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTemplateTemplateContainersResourcesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTemplateTemplateContainersResources(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTemplateTemplateContainersResourcesSlice(c *Client, des, nw []JobTemplateTemplateContainersResources) []JobTemplateTemplateContainersResources {
@@ -1984,23 +2007,26 @@ func canonicalizeNewJobTemplateTemplateContainersPortsSet(c *Client, des, nw []J
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTemplateTemplateContainersPorts
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTemplateTemplateContainersPorts
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTemplateTemplateContainersPortsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTemplateTemplateContainersPorts(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTemplateTemplateContainersPortsSlice(c *Client, des, nw []JobTemplateTemplateContainersPorts) []JobTemplateTemplateContainersPorts {
@@ -2107,23 +2133,26 @@ func canonicalizeNewJobTemplateTemplateContainersVolumeMountsSet(c *Client, des,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTemplateTemplateContainersVolumeMounts
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTemplateTemplateContainersVolumeMounts
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTemplateTemplateContainersVolumeMountsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTemplateTemplateContainersVolumeMounts(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTemplateTemplateContainersVolumeMountsSlice(c *Client, des, nw []JobTemplateTemplateContainersVolumeMounts) []JobTemplateTemplateContainersVolumeMounts {
@@ -2246,23 +2275,26 @@ func canonicalizeNewJobTemplateTemplateVolumesSet(c *Client, des, nw []JobTempla
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTemplateTemplateVolumes
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTemplateTemplateVolumes
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTemplateTemplateVolumesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTemplateTemplateVolumes(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTemplateTemplateVolumesSlice(c *Client, des, nw []JobTemplateTemplateVolumes) []JobTemplateTemplateVolumes {
@@ -2369,23 +2401,26 @@ func canonicalizeNewJobTemplateTemplateVolumesSecretSet(c *Client, des, nw []Job
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTemplateTemplateVolumesSecret
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTemplateTemplateVolumesSecret
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTemplateTemplateVolumesSecretNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTemplateTemplateVolumesSecret(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTemplateTemplateVolumesSecretSlice(c *Client, des, nw []JobTemplateTemplateVolumesSecret) []JobTemplateTemplateVolumesSecret {
@@ -2498,23 +2533,26 @@ func canonicalizeNewJobTemplateTemplateVolumesSecretItemsSet(c *Client, des, nw 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTemplateTemplateVolumesSecretItems
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTemplateTemplateVolumesSecretItems
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTemplateTemplateVolumesSecretItemsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTemplateTemplateVolumesSecretItems(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTemplateTemplateVolumesSecretItemsSlice(c *Client, des, nw []JobTemplateTemplateVolumesSecretItems) []JobTemplateTemplateVolumesSecretItems {
@@ -2613,23 +2651,26 @@ func canonicalizeNewJobTemplateTemplateVolumesCloudSqlInstanceSet(c *Client, des
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTemplateTemplateVolumesCloudSqlInstance
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTemplateTemplateVolumesCloudSqlInstance
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTemplateTemplateVolumesCloudSqlInstanceNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTemplateTemplateVolumesCloudSqlInstance(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTemplateTemplateVolumesCloudSqlInstanceSlice(c *Client, des, nw []JobTemplateTemplateVolumesCloudSqlInstance) []JobTemplateTemplateVolumesCloudSqlInstance {
@@ -2731,23 +2772,26 @@ func canonicalizeNewJobTemplateTemplateVPCAccessSet(c *Client, des, nw []JobTemp
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTemplateTemplateVPCAccess
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTemplateTemplateVPCAccess
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTemplateTemplateVPCAccessNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTemplateTemplateVPCAccess(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTemplateTemplateVPCAccessSlice(c *Client, des, nw []JobTemplateTemplateVPCAccess) []JobTemplateTemplateVPCAccess {
@@ -2952,23 +2996,26 @@ func canonicalizeNewJobTerminalConditionSet(c *Client, des, nw []JobTerminalCond
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTerminalCondition
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTerminalCondition
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTerminalConditionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTerminalCondition(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTerminalConditionSlice(c *Client, des, nw []JobTerminalCondition) []JobTerminalCondition {
@@ -3141,23 +3188,26 @@ func canonicalizeNewJobConditionsSet(c *Client, des, nw []JobConditions) []JobCo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobConditions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobConditions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobConditionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobConditions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobConditionsSlice(c *Client, des, nw []JobConditions) []JobConditions {
@@ -3259,23 +3309,26 @@ func canonicalizeNewJobLatestSucceededExecutionSet(c *Client, des, nw []JobLates
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobLatestSucceededExecution
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobLatestSucceededExecution
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobLatestSucceededExecutionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobLatestSucceededExecution(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobLatestSucceededExecutionSlice(c *Client, des, nw []JobLatestSucceededExecution) []JobLatestSucceededExecution {
@@ -3377,23 +3430,26 @@ func canonicalizeNewJobLatestCreatedExecutionSet(c *Client, des, nw []JobLatestC
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobLatestCreatedExecution
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobLatestCreatedExecution
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobLatestCreatedExecutionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobLatestCreatedExecution(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobLatestCreatedExecutionSlice(c *Client, des, nw []JobLatestCreatedExecution) []JobLatestCreatedExecution {
@@ -3616,6 +3672,9 @@ func diffJob(c *Client, desired, actual *Job, opts ...dcl.ApplyOption) ([]*dcl.F
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareJobBinaryAuthorizationNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

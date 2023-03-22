@@ -13,12 +13,12 @@ func TestAccRuntimeconfigConfig_basic(t *testing.T) {
 	t.Parallel()
 
 	var runtimeConfig runtimeconfig.RuntimeConfig
-	configName := fmt.Sprintf("runtimeconfig-test-%s", randString(t, 10))
+	configName := fmt.Sprintf("runtimeconfig-test-%s", RandString(t, 10))
 	description := "my test description"
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckRuntimeconfigConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -42,13 +42,13 @@ func TestAccRuntimeconfig_update(t *testing.T) {
 	t.Parallel()
 
 	var runtimeConfig runtimeconfig.RuntimeConfig
-	configName := fmt.Sprintf("runtimeconfig-test-%s", randString(t, 10))
+	configName := fmt.Sprintf("runtimeconfig-test-%s", RandString(t, 10))
 	firstDescription := "my test description"
 	secondDescription := "my updated test description"
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckRuntimeconfigConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -74,12 +74,12 @@ func TestAccRuntimeconfig_updateEmptyDescription(t *testing.T) {
 	t.Parallel()
 
 	var runtimeConfig runtimeconfig.RuntimeConfig
-	configName := fmt.Sprintf("runtimeconfig-test-%s", randString(t, 10))
+	configName := fmt.Sprintf("runtimeconfig-test-%s", RandString(t, 10))
 	description := "my test description"
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckRuntimeconfigConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -122,9 +122,9 @@ func testAccCheckRuntimeConfigExists(t *testing.T, resourceName string, runtimeC
 			return fmt.Errorf("No ID is set")
 		}
 
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
-		found, err := config.NewRuntimeconfigClient(config.userAgent).Projects.Configs.Get(rs.Primary.ID).Do()
+		found, err := config.NewRuntimeconfigClient(config.UserAgent).Projects.Configs.Get(rs.Primary.ID).Do()
 		if err != nil {
 			return err
 		}
@@ -137,14 +137,14 @@ func testAccCheckRuntimeConfigExists(t *testing.T, resourceName string, runtimeC
 
 func testAccCheckRuntimeconfigConfigDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
 		for _, rs := range s.RootModule().Resources {
 			if rs.Type != "google_runtimeconfig_config" {
 				continue
 			}
 
-			_, err := config.NewRuntimeconfigClient(config.userAgent).Projects.Configs.Get(rs.Primary.ID).Do()
+			_, err := config.NewRuntimeconfigClient(config.UserAgent).Projects.Configs.Get(rs.Primary.ID).Do()
 
 			if err == nil {
 				return fmt.Errorf("Runtimeconfig still exists")

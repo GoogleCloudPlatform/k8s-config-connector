@@ -24,3 +24,10 @@ spec:
   format: DOCKER
   location: us-west1
   description: "test repository description"
+  mode: VIRTUAL_REPOSITORY
+  virtualRepositoryConfig:
+    upstreamPolicies:
+      - id: "upstream-repo"
+        priority: 1
+        repositoryRef:
+          name: arrepository-${uniqueId}-2

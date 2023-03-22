@@ -30,6 +30,7 @@ func betaToGaPrivatePool(r *WorkerPool, c *WorkerPoolPrivatePoolV1Config) *Worke
 	}
 	if r.NetworkConfig != nil {
 		cfgNetworkConfig.PeeredNetwork = r.NetworkConfig.PeeredNetwork
+		cfgNetworkConfig.PeeredNetworkIPRange = r.NetworkConfig.PeeredNetworkIPRange
 	}
 
 	cfg := &WorkerPoolPrivatePoolV1Config{}
@@ -58,7 +59,8 @@ func gaToBetaPrivatePool(r *WorkerPool, c *WorkerPoolPrivatePoolV1Config) *Worke
 	}
 	if c.NetworkConfig != nil && c.NetworkConfig.PeeredNetwork != nil && r.NetworkConfig == nil {
 		r.NetworkConfig = &WorkerPoolNetworkConfig{
-			PeeredNetwork: c.NetworkConfig.PeeredNetwork,
+			PeeredNetwork:        c.NetworkConfig.PeeredNetwork,
+			PeeredNetworkIPRange: c.NetworkConfig.PeeredNetworkIPRange,
 		}
 	}
 

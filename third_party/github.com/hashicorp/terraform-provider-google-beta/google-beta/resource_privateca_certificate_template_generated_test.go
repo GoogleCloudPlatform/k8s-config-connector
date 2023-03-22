@@ -30,14 +30,14 @@ func TestAccPrivatecaCertificateTemplate_BasicCertificateTemplate(t *testing.T) 
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  getTestProjectFromEnv(),
-		"region":        getTestRegionFromEnv(),
-		"random_suffix": randString(t, 10),
+		"project_name":  GetTestProjectFromEnv(),
+		"region":        GetTestRegionFromEnv(),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckPrivatecaCertificateTemplateDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -246,7 +246,7 @@ func testAccCheckPrivatecaCertificateTemplateDestroyProducer(t *testing.T) func(
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			billingProject := ""
 			if config.BillingProject != "" {
@@ -262,7 +262,7 @@ func testAccCheckPrivatecaCertificateTemplateDestroyProducer(t *testing.T) func(
 				UpdateTime:  dcl.StringOrNil(rs.Primary.Attributes["update_time"]),
 			}
 
-			client := NewDCLPrivatecaClient(config, config.userAgent, billingProject, 0)
+			client := NewDCLPrivatecaClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetCertificateTemplate(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_privateca_certificate_template still exists %v", obj)

@@ -10,11 +10,11 @@ import (
 func TestAccDNSResponsePolicyRule_update(t *testing.T) {
 	t.Parallel()
 
-	responsePolicyRuleSuffix := randString(t, 10)
+	responsePolicyRuleSuffix := RandString(t, 10)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckDNSResponsePolicyRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -40,11 +40,11 @@ func TestAccDNSResponsePolicyRule_update(t *testing.T) {
 func TestAccDNSResponsePolicyRuleBehavior_update(t *testing.T) {
 	t.Parallel()
 
-	responsePolicyRuleSuffix := randString(t, 10)
+	responsePolicyRuleSuffix := RandString(t, 10)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckDNSResponsePolicyRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

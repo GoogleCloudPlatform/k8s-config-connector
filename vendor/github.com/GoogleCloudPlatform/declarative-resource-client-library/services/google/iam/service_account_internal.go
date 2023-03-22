@@ -446,7 +446,6 @@ func canonicalizeServiceAccountDesiredState(rawDesired, rawInitial *ServiceAccou
 		canonicalDesired.Description = rawDesired.Description
 	}
 	canonicalDesired.ActasResources = canonicalizeServiceAccountActasResources(rawDesired.ActasResources, rawInitial.ActasResources, opts...)
-
 	return canonicalDesired, nil
 }
 
@@ -592,23 +591,26 @@ func canonicalizeNewServiceAccountActasResourcesSet(c *Client, des, nw []Service
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceAccountActasResources
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceAccountActasResources
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceAccountActasResourcesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceAccountActasResources(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceAccountActasResourcesSlice(c *Client, des, nw []ServiceAccountActasResources) []ServiceAccountActasResources {
@@ -707,23 +709,26 @@ func canonicalizeNewServiceAccountActasResourcesResourcesSet(c *Client, des, nw 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceAccountActasResourcesResources
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceAccountActasResourcesResources
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceAccountActasResourcesResourcesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceAccountActasResourcesResources(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceAccountActasResourcesResourcesSlice(c *Client, des, nw []ServiceAccountActasResourcesResources) []ServiceAccountActasResourcesResources {
@@ -827,6 +832,9 @@ func diffServiceAccount(c *Client, desired, actual *ServiceAccount, opts ...dcl.
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareServiceAccountActasResourcesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

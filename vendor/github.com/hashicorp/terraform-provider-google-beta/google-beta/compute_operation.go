@@ -97,7 +97,7 @@ func (w *ComputeOperationWaiter) TargetStates() []string {
 	return []string{"DONE"}
 }
 
-func computeOperationWaitTime(config *Config, res interface{}, project, activity, userAgent string, timeout time.Duration) error {
+func ComputeOperationWaitTime(config *Config, res interface{}, project, activity, userAgent string, timeout time.Duration) error {
 	op := &compute.Operation{}
 	err := Convert(res, op)
 	if err != nil {
@@ -117,7 +117,7 @@ func computeOperationWaitTime(config *Config, res interface{}, project, activity
 	return OperationWait(w, activity, timeout, config.PollInterval)
 }
 
-func computeOrgOperationWaitTimeWithResponse(config *Config, res interface{}, response *map[string]interface{}, parent, activity, userAgent string, timeout time.Duration) error {
+func ComputeOrgOperationWaitTimeWithResponse(config *Config, res interface{}, response *map[string]interface{}, parent, activity, userAgent string, timeout time.Duration) error {
 	op := &compute.Operation{}
 	err := Convert(res, op)
 	if err != nil {

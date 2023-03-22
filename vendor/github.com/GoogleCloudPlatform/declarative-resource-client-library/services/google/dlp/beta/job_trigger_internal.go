@@ -947,7 +947,6 @@ func canonicalizeJobTriggerDesiredState(rawDesired, rawInitial *JobTrigger, opts
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -1107,23 +1106,26 @@ func canonicalizeNewJobTriggerInspectJobSet(c *Client, des, nw []JobTriggerInspe
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJob
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJob
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJob(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobSlice(c *Client, des, nw []JobTriggerInspectJob) []JobTriggerInspectJob {
@@ -1304,23 +1306,26 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigSet(c *Client, des, nw []Jo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobStorageConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobStorageConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobStorageConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobStorageConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobStorageConfigSlice(c *Client, des, nw []JobTriggerInspectJobStorageConfig) []JobTriggerInspectJobStorageConfig {
@@ -1415,23 +1420,26 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigDatastoreOptionsSet(c *Clie
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobStorageConfigDatastoreOptions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobStorageConfigDatastoreOptions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobStorageConfigDatastoreOptionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobStorageConfigDatastoreOptions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobStorageConfigDatastoreOptionsSlice(c *Client, des, nw []JobTriggerInspectJobStorageConfigDatastoreOptions) []JobTriggerInspectJobStorageConfigDatastoreOptions {
@@ -1536,23 +1544,26 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigDatastoreOptionsPartitionId
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobStorageConfigDatastoreOptionsPartitionId
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobStorageConfigDatastoreOptionsPartitionId
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobStorageConfigDatastoreOptionsPartitionIdNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobStorageConfigDatastoreOptionsPartitionId(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobStorageConfigDatastoreOptionsPartitionIdSlice(c *Client, des, nw []JobTriggerInspectJobStorageConfigDatastoreOptionsPartitionId) []JobTriggerInspectJobStorageConfigDatastoreOptionsPartitionId {
@@ -1651,23 +1662,26 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigDatastoreOptionsKindSet(c *
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobStorageConfigDatastoreOptionsKind
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobStorageConfigDatastoreOptionsKind
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobStorageConfigDatastoreOptionsKindNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobStorageConfigDatastoreOptionsKind(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobStorageConfigDatastoreOptionsKindSlice(c *Client, des, nw []JobTriggerInspectJobStorageConfigDatastoreOptionsKind) []JobTriggerInspectJobStorageConfigDatastoreOptionsKind {
@@ -1810,23 +1824,26 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigCloudStorageOptionsSet(c *C
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobStorageConfigCloudStorageOptions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobStorageConfigCloudStorageOptions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobStorageConfigCloudStorageOptionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobStorageConfigCloudStorageOptions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobStorageConfigCloudStorageOptionsSlice(c *Client, des, nw []JobTriggerInspectJobStorageConfigCloudStorageOptions) []JobTriggerInspectJobStorageConfigCloudStorageOptions {
@@ -1947,23 +1964,26 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetS
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobStorageConfigCloudStorageOptionsFileSet
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobStorageConfigCloudStorageOptionsFileSet
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSet(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetSlice(c *Client, des, nw []JobTriggerInspectJobStorageConfigCloudStorageOptionsFileSet) []JobTriggerInspectJobStorageConfigCloudStorageOptionsFileSet {
@@ -2076,23 +2096,26 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetR
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetRegexFileSet
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetRegexFileSet
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetRegexFileSetNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetRegexFileSet(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetRegexFileSetSlice(c *Client, des, nw []JobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetRegexFileSet) []JobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetRegexFileSet {
@@ -2249,23 +2272,26 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptionsSet(c *Clien
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobStorageConfigBigQueryOptions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobStorageConfigBigQueryOptions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobStorageConfigBigQueryOptionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptionsSlice(c *Client, des, nw []JobTriggerInspectJobStorageConfigBigQueryOptions) []JobTriggerInspectJobStorageConfigBigQueryOptions {
@@ -2373,23 +2399,26 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptionsTableReferen
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobStorageConfigBigQueryOptionsTableReference
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobStorageConfigBigQueryOptionsTableReference
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobStorageConfigBigQueryOptionsTableReferenceNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptionsTableReference(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptionsTableReferenceSlice(c *Client, des, nw []JobTriggerInspectJobStorageConfigBigQueryOptionsTableReference) []JobTriggerInspectJobStorageConfigBigQueryOptionsTableReference {
@@ -2488,23 +2517,26 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptionsIdentifyingF
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobStorageConfigBigQueryOptionsIdentifyingFields
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobStorageConfigBigQueryOptionsIdentifyingFields
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobStorageConfigBigQueryOptionsIdentifyingFieldsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptionsIdentifyingFields(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptionsIdentifyingFieldsSlice(c *Client, des, nw []JobTriggerInspectJobStorageConfigBigQueryOptionsIdentifyingFields) []JobTriggerInspectJobStorageConfigBigQueryOptionsIdentifyingFields {
@@ -2603,23 +2635,26 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptionsExcludedFiel
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobStorageConfigBigQueryOptionsExcludedFields
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobStorageConfigBigQueryOptionsExcludedFields
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobStorageConfigBigQueryOptionsExcludedFieldsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptionsExcludedFields(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptionsExcludedFieldsSlice(c *Client, des, nw []JobTriggerInspectJobStorageConfigBigQueryOptionsExcludedFields) []JobTriggerInspectJobStorageConfigBigQueryOptionsExcludedFields {
@@ -2718,23 +2753,26 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptionsIncludedFiel
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobStorageConfigBigQueryOptionsIncludedFields
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobStorageConfigBigQueryOptionsIncludedFields
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobStorageConfigBigQueryOptionsIncludedFieldsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptionsIncludedFields(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobStorageConfigBigQueryOptionsIncludedFieldsSlice(c *Client, des, nw []JobTriggerInspectJobStorageConfigBigQueryOptionsIncludedFields) []JobTriggerInspectJobStorageConfigBigQueryOptionsIncludedFields {
@@ -2849,23 +2887,26 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigHybridOptionsSet(c *Client,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobStorageConfigHybridOptions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobStorageConfigHybridOptions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobStorageConfigHybridOptionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobStorageConfigHybridOptions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobStorageConfigHybridOptionsSlice(c *Client, des, nw []JobTriggerInspectJobStorageConfigHybridOptions) []JobTriggerInspectJobStorageConfigHybridOptions {
@@ -2958,23 +2999,26 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigHybridOptionsTableOptionsSe
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobStorageConfigHybridOptionsTableOptions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobStorageConfigHybridOptionsTableOptions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobStorageConfigHybridOptionsTableOptionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobStorageConfigHybridOptionsTableOptions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobStorageConfigHybridOptionsTableOptionsSlice(c *Client, des, nw []JobTriggerInspectJobStorageConfigHybridOptionsTableOptions) []JobTriggerInspectJobStorageConfigHybridOptionsTableOptions {
@@ -3073,23 +3117,26 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigHybridOptionsTableOptionsId
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobStorageConfigHybridOptionsTableOptionsIdentifyingFields
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobStorageConfigHybridOptionsTableOptionsIdentifyingFields
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobStorageConfigHybridOptionsTableOptionsIdentifyingFieldsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobStorageConfigHybridOptionsTableOptionsIdentifyingFields(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobStorageConfigHybridOptionsTableOptionsIdentifyingFieldsSlice(c *Client, des, nw []JobTriggerInspectJobStorageConfigHybridOptionsTableOptionsIdentifyingFields) []JobTriggerInspectJobStorageConfigHybridOptionsTableOptionsIdentifyingFields {
@@ -3202,23 +3249,26 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigTimespanConfigSet(c *Client
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobStorageConfigTimespanConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobStorageConfigTimespanConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobStorageConfigTimespanConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobStorageConfigTimespanConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobStorageConfigTimespanConfigSlice(c *Client, des, nw []JobTriggerInspectJobStorageConfigTimespanConfig) []JobTriggerInspectJobStorageConfigTimespanConfig {
@@ -3317,23 +3367,26 @@ func canonicalizeNewJobTriggerInspectJobStorageConfigTimespanConfigTimestampFiel
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobStorageConfigTimespanConfigTimestampField
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobStorageConfigTimespanConfigTimestampField
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobStorageConfigTimespanConfigTimestampFieldNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobStorageConfigTimespanConfigTimestampField(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobStorageConfigTimespanConfigTimestampFieldSlice(c *Client, des, nw []JobTriggerInspectJobStorageConfigTimespanConfigTimestampField) []JobTriggerInspectJobStorageConfigTimespanConfigTimestampField {
@@ -3454,23 +3507,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigSet(c *Client, des, nw []Jo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfig) []JobTriggerInspectJobInspectConfig {
@@ -3569,23 +3625,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigInfoTypesSet(c *Client, des
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigInfoTypes
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigInfoTypes
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigInfoTypesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigInfoTypes(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigInfoTypesSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigInfoTypes) []JobTriggerInspectJobInspectConfigInfoTypes {
@@ -3690,23 +3749,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigLimitsSet(c *Client, des, n
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigLimits
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigLimits
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigLimitsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigLimits(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigLimitsSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigLimits) []JobTriggerInspectJobInspectConfigLimits {
@@ -3805,23 +3867,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTyp
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoType
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoType
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTypeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoType(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTypeSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoType) []JobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoType {
@@ -3928,23 +3993,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTyp
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTypeInfoType
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTypeInfoType
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTypeInfoTypeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTypeInfoType(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTypeInfoTypeSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTypeInfoType) []JobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTypeInfoType {
@@ -4099,23 +4167,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesSet(c *Clien
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigCustomInfoTypes
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigCustomInfoTypes
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigCustomInfoTypesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypes(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigCustomInfoTypes) []JobTriggerInspectJobInspectConfigCustomInfoTypes {
@@ -4222,23 +4293,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesInfoTypeSet(
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigCustomInfoTypesInfoType
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigCustomInfoTypesInfoType
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigCustomInfoTypesInfoTypeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesInfoType(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesInfoTypeSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigCustomInfoTypesInfoType) []JobTriggerInspectJobInspectConfigCustomInfoTypesInfoType {
@@ -4353,23 +4427,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDictionarySe
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigCustomInfoTypesDictionary
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigCustomInfoTypesDictionary
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDictionary(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDictionarySlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigCustomInfoTypesDictionary) []JobTriggerInspectJobInspectConfigCustomInfoTypesDictionary {
@@ -4468,23 +4545,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryWo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryWordList
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryWordList
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryWordListNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryWordList(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryWordListSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryWordList) []JobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryWordList {
@@ -4583,23 +4663,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryCl
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryCloudStoragePath
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryCloudStoragePath
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryCloudStoragePathNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryCloudStoragePath(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryCloudStoragePathSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryCloudStoragePath) []JobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryCloudStoragePath {
@@ -4704,23 +4787,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesRegexSet(c *
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigCustomInfoTypesRegex
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigCustomInfoTypesRegex
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigCustomInfoTypesRegexNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesRegex(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesRegexSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigCustomInfoTypesRegex) []JobTriggerInspectJobInspectConfigCustomInfoTypesRegex {
@@ -4808,23 +4894,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesSurrogateTyp
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigCustomInfoTypesSurrogateType
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigCustomInfoTypesSurrogateType
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigCustomInfoTypesSurrogateTypeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesSurrogateType(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesSurrogateTypeSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigCustomInfoTypesSurrogateType) []JobTriggerInspectJobInspectConfigCustomInfoTypesSurrogateType {
@@ -4920,23 +5009,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesStoredTypeSe
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigCustomInfoTypesStoredType
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigCustomInfoTypesStoredType
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigCustomInfoTypesStoredTypeNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesStoredType(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesStoredTypeSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigCustomInfoTypesStoredType) []JobTriggerInspectJobInspectConfigCustomInfoTypesStoredType {
@@ -5039,23 +5131,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRul
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRules
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRules
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRules(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRules) []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRules {
@@ -5152,23 +5247,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRul
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRule
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRule
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRule(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRule) []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRule {
@@ -5273,23 +5371,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRul
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleHotwordRegex
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleHotwordRegex
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleHotwordRegexNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleHotwordRegex(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleHotwordRegexSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleHotwordRegex) []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleHotwordRegex {
@@ -5391,23 +5492,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRul
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleProximity
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleProximity
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleProximityNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleProximity(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleProximitySlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleProximity) []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleProximity {
@@ -5529,23 +5633,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRul
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustment
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustment
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustmentNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustment(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustmentSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustment) []JobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustment {
@@ -5640,23 +5747,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetSet(c *Client, des, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigRuleSet
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigRuleSet
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigRuleSetNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigRuleSet(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigRuleSet) []JobTriggerInspectJobInspectConfigRuleSet {
@@ -5763,23 +5873,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetInfoTypesSet(c *Clie
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigRuleSetInfoTypes
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigRuleSetInfoTypes
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigRuleSetInfoTypesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetInfoTypes(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetInfoTypesSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigRuleSetInfoTypes) []JobTriggerInspectJobInspectConfigRuleSetInfoTypes {
@@ -5894,23 +6007,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesSet(c *Client, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigRuleSetRules
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigRuleSetRules
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigRuleSetRulesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRules(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigRuleSetRules) []JobTriggerInspectJobInspectConfigRuleSetRules {
@@ -6007,23 +6123,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleSet(
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRule
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRule
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRule(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRule) []JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRule {
@@ -6128,23 +6247,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleHotw
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleHotwordRegex
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleHotwordRegex
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleHotwordRegexNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleHotwordRegex(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleHotwordRegexSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleHotwordRegex) []JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleHotwordRegex {
@@ -6246,23 +6368,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleProx
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleProximity
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleProximity
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleProximityNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleProximity(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleProximitySlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleProximity) []JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleProximity {
@@ -6384,23 +6509,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLike
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustment
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustment
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustment(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustment) []JobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustment {
@@ -6533,23 +6661,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleSe
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRule
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRule
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRule(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRule) []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRule {
@@ -6664,23 +6795,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDi
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionary
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionary
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionary(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionarySlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionary) []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionary {
@@ -6779,23 +6913,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDi
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryWordList
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryWordList
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryWordListNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryWordList(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryWordListSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryWordList) []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryWordList {
@@ -6894,23 +7031,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDi
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePath
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePath
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePathNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePath(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePathSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePath) []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePath {
@@ -7015,23 +7155,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleRe
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleRegex
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleRegex
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleRegexNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleRegex(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleRegexSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleRegex) []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleRegex {
@@ -7124,23 +7267,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleEx
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypes
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypes
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypes(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypes) []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypes {
@@ -7247,23 +7393,26 @@ func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleEx
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypes
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypes
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypes(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypesSlice(c *Client, des, nw []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypes) []JobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypes {
@@ -7426,23 +7575,26 @@ func canonicalizeNewJobTriggerInspectJobActionsSet(c *Client, des, nw []JobTrigg
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobActions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobActions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobActionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobActions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobActionsSlice(c *Client, des, nw []JobTriggerInspectJobActions) []JobTriggerInspectJobActions {
@@ -7535,23 +7687,26 @@ func canonicalizeNewJobTriggerInspectJobActionsSaveFindingsSet(c *Client, des, n
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobActionsSaveFindings
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobActionsSaveFindings
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobActionsSaveFindingsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobActionsSaveFindings(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobActionsSaveFindingsSlice(c *Client, des, nw []JobTriggerInspectJobActionsSaveFindings) []JobTriggerInspectJobActionsSaveFindings {
@@ -7672,23 +7827,26 @@ func canonicalizeNewJobTriggerInspectJobActionsSaveFindingsOutputConfigSet(c *Cl
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobActionsSaveFindingsOutputConfig
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobActionsSaveFindingsOutputConfig
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobActionsSaveFindingsOutputConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobActionsSaveFindingsOutputConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobActionsSaveFindingsOutputConfigSlice(c *Client, des, nw []JobTriggerInspectJobActionsSaveFindingsOutputConfig) []JobTriggerInspectJobActionsSaveFindingsOutputConfig {
@@ -7796,23 +7954,26 @@ func canonicalizeNewJobTriggerInspectJobActionsSaveFindingsOutputConfigTableSet(
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobActionsSaveFindingsOutputConfigTable
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobActionsSaveFindingsOutputConfigTable
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobActionsSaveFindingsOutputConfigTableNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobActionsSaveFindingsOutputConfigTable(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobActionsSaveFindingsOutputConfigTableSlice(c *Client, des, nw []JobTriggerInspectJobActionsSaveFindingsOutputConfigTable) []JobTriggerInspectJobActionsSaveFindingsOutputConfigTable {
@@ -7900,23 +8061,26 @@ func canonicalizeNewJobTriggerInspectJobActionsSaveFindingsOutputConfigDlpStorag
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobActionsSaveFindingsOutputConfigDlpStorage
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobActionsSaveFindingsOutputConfigDlpStorage
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobActionsSaveFindingsOutputConfigDlpStorageNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobActionsSaveFindingsOutputConfigDlpStorage(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobActionsSaveFindingsOutputConfigDlpStorageSlice(c *Client, des, nw []JobTriggerInspectJobActionsSaveFindingsOutputConfigDlpStorage) []JobTriggerInspectJobActionsSaveFindingsOutputConfigDlpStorage {
@@ -8012,23 +8176,26 @@ func canonicalizeNewJobTriggerInspectJobActionsPubSubSet(c *Client, des, nw []Jo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobActionsPubSub
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobActionsPubSub
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobActionsPubSubNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobActionsPubSub(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobActionsPubSubSlice(c *Client, des, nw []JobTriggerInspectJobActionsPubSub) []JobTriggerInspectJobActionsPubSub {
@@ -8116,23 +8283,26 @@ func canonicalizeNewJobTriggerInspectJobActionsPublishSummaryToCsccSet(c *Client
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobActionsPublishSummaryToCscc
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobActionsPublishSummaryToCscc
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobActionsPublishSummaryToCsccNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobActionsPublishSummaryToCscc(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobActionsPublishSummaryToCsccSlice(c *Client, des, nw []JobTriggerInspectJobActionsPublishSummaryToCscc) []JobTriggerInspectJobActionsPublishSummaryToCscc {
@@ -8220,23 +8390,26 @@ func canonicalizeNewJobTriggerInspectJobActionsPublishFindingsToCloudDataCatalog
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobActionsPublishFindingsToCloudDataCatalog
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobActionsPublishFindingsToCloudDataCatalog
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobActionsPublishFindingsToCloudDataCatalogNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobActionsPublishFindingsToCloudDataCatalog(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobActionsPublishFindingsToCloudDataCatalogSlice(c *Client, des, nw []JobTriggerInspectJobActionsPublishFindingsToCloudDataCatalog) []JobTriggerInspectJobActionsPublishFindingsToCloudDataCatalog {
@@ -8324,23 +8497,26 @@ func canonicalizeNewJobTriggerInspectJobActionsJobNotificationEmailsSet(c *Clien
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobActionsJobNotificationEmails
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobActionsJobNotificationEmails
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobActionsJobNotificationEmailsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobActionsJobNotificationEmails(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobActionsJobNotificationEmailsSlice(c *Client, des, nw []JobTriggerInspectJobActionsJobNotificationEmails) []JobTriggerInspectJobActionsJobNotificationEmails {
@@ -8428,23 +8604,26 @@ func canonicalizeNewJobTriggerInspectJobActionsPublishToStackdriverSet(c *Client
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerInspectJobActionsPublishToStackdriver
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerInspectJobActionsPublishToStackdriver
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerInspectJobActionsPublishToStackdriverNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerInspectJobActionsPublishToStackdriver(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerInspectJobActionsPublishToStackdriverSlice(c *Client, des, nw []JobTriggerInspectJobActionsPublishToStackdriver) []JobTriggerInspectJobActionsPublishToStackdriver {
@@ -8559,23 +8738,26 @@ func canonicalizeNewJobTriggerTriggersSet(c *Client, des, nw []JobTriggerTrigger
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerTriggers
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerTriggers
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerTriggersNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerTriggers(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerTriggersSlice(c *Client, des, nw []JobTriggerTriggers) []JobTriggerTriggers {
@@ -8674,23 +8856,26 @@ func canonicalizeNewJobTriggerTriggersScheduleSet(c *Client, des, nw []JobTrigge
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerTriggersSchedule
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerTriggersSchedule
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerTriggersScheduleNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerTriggersSchedule(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerTriggersScheduleSlice(c *Client, des, nw []JobTriggerTriggersSchedule) []JobTriggerTriggersSchedule {
@@ -8778,23 +8963,26 @@ func canonicalizeNewJobTriggerTriggersManualSet(c *Client, des, nw []JobTriggerT
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerTriggersManual
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerTriggersManual
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerTriggersManualNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerTriggersManual(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerTriggersManualSlice(c *Client, des, nw []JobTriggerTriggersManual) []JobTriggerTriggersManual {
@@ -8893,23 +9081,26 @@ func canonicalizeNewJobTriggerErrorsSet(c *Client, des, nw []JobTriggerErrors) [
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerErrors
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerErrors
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerErrorsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerErrors(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerErrorsSlice(c *Client, des, nw []JobTriggerErrors) []JobTriggerErrors {
@@ -9016,23 +9207,26 @@ func canonicalizeNewJobTriggerErrorsDetailsSet(c *Client, des, nw []JobTriggerEr
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerErrorsDetails
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerErrorsDetails
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerErrorsDetailsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerErrorsDetails(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerErrorsDetailsSlice(c *Client, des, nw []JobTriggerErrorsDetails) []JobTriggerErrorsDetails {
@@ -9139,23 +9333,26 @@ func canonicalizeNewJobTriggerErrorsDetailsDetailsSet(c *Client, des, nw []JobTr
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []JobTriggerErrorsDetailsDetails
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []JobTriggerErrorsDetailsDetails
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareJobTriggerErrorsDetailsDetailsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewJobTriggerErrorsDetailsDetails(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewJobTriggerErrorsDetailsDetailsSlice(c *Client, des, nw []JobTriggerErrorsDetailsDetails) []JobTriggerErrorsDetailsDetails {
@@ -9287,6 +9484,9 @@ func diffJobTrigger(c *Client, desired, actual *JobTrigger, opts ...dcl.ApplyOpt
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareJobTriggerInspectJobNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

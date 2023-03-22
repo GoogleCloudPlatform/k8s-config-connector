@@ -159,6 +159,8 @@ transferSpec:
     rootDirectory: string
   posixDataSource:
     rootDirectory: string
+  sinkAgentPoolName: string
+  sourceAgentPoolName: string
   transferOptions:
     deleteObjectsFromSourceAfterTransfer: boolean
     deleteObjectsUniqueInSink: boolean
@@ -961,6 +963,26 @@ transferSpec:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Root directory path to the filesystem.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>transferSpec.sinkAgentPoolName</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Specifies the agent pool name associated with the posix data source. When unspecified, the default name is used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>transferSpec.sourceAgentPoolName</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Specifies the agent pool name associated with the posix data source. When unspecified, the default name is used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

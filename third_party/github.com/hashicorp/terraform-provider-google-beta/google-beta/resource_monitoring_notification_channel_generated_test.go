@@ -27,12 +27,12 @@ func TestAccMonitoringNotificationChannel_notificationChannelBasicExample(t *tes
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckMonitoringNotificationChannelDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -71,7 +71,7 @@ func testAccCheckMonitoringNotificationChannelDestroyProducer(t *testing.T) func
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{MonitoringBasePath}}v3/{{name}}")
 			if err != nil {
@@ -84,7 +84,7 @@ func testAccCheckMonitoringNotificationChannelDestroyProducer(t *testing.T) func
 				billingProject = config.BillingProject
 			}
 
-			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil, isMonitoringConcurrentEditError)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, isMonitoringConcurrentEditError)
 			if err == nil {
 				return fmt.Errorf("MonitoringNotificationChannel still exists at %s", url)
 			}

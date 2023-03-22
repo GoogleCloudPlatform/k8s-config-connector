@@ -85,18 +85,18 @@ diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/goo
 index d251e7654..b14937a19 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster_test.go
-@@ -3445,30 +3445,6 @@ func TestAccContainerCluster_withGatewayApiConfig(t *testing.T) {
+@@ -3453,30 +3453,6 @@ func TestAccContainerCluster_withGatewayApiConfig(t *testing.T) {
  	})
  }
  
 -func TestAccContainerCluster_withTPUConfig(t *testing.T) {
 -	t.Parallel()
 -
--	clusterName := fmt.Sprintf("tf-test-cluster-%s", randString(t, 10))
--	containerNetName := fmt.Sprintf("tf-test-container-net-%s", randString(t, 10))
--	vcrTest(t, resource.TestCase{
+-	clusterName := fmt.Sprintf("tf-test-cluster-%s", RandString(t, 10))
+-	containerNetName := fmt.Sprintf("tf-test-container-net-%s", RandString(t, 10))
+-	VcrTest(t, resource.TestCase{
 -		PreCheck:     func() { testAccPreCheck(t) },
--		Providers:    testAccProviders,
+-		Providers:    TestAccProviders,
 -		CheckDestroy: testAccCheckContainerClusterDestroyProducer(t),
 -		Steps: []resource.TestStep{
 -			{
@@ -113,9 +113,9 @@ index d251e7654..b14937a19 100644
 -	})
 -}
 -
- func testAccContainerCluster_masterAuthorizedNetworksDisabled(t *testing.T, resource_name string) resource.TestCheckFunc {
- 	return func(s *terraform.State) error {
- 		rs, ok := s.RootModule().Resources[resource_name]
+ func TestAccContainerCluster_withProtectConfig(t *testing.T) {
+ 	t.Parallel()
+ 
 @@ -7134,62 +7110,6 @@ resource "google_container_cluster" "primary" {
  `, name, name, name)
  }

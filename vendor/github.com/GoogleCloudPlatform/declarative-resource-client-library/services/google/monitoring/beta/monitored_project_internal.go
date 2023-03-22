@@ -337,7 +337,6 @@ func canonicalizeMonitoredProjectDesiredState(rawDesired, rawInitial *MonitoredP
 	} else {
 		canonicalDesired.MetricsScope = rawDesired.MetricsScope
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -400,6 +399,9 @@ func diffMonitoredProject(c *Client, desired, actual *MonitoredProject, opts ...
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

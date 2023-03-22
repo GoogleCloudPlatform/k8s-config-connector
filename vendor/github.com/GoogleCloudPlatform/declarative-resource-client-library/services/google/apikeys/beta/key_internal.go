@@ -483,7 +483,6 @@ func canonicalizeKeyDesiredState(rawDesired, rawInitial *Key, opts ...dcl.ApplyO
 	} else {
 		canonicalDesired.Project = rawDesired.Project
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -644,23 +643,26 @@ func canonicalizeNewKeyRestrictionsSet(c *Client, des, nw []KeyRestrictions) []K
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []KeyRestrictions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []KeyRestrictions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareKeyRestrictionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewKeyRestrictions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewKeyRestrictionsSlice(c *Client, des, nw []KeyRestrictions) []KeyRestrictions {
@@ -759,23 +761,26 @@ func canonicalizeNewKeyRestrictionsBrowserKeyRestrictionsSet(c *Client, des, nw 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []KeyRestrictionsBrowserKeyRestrictions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []KeyRestrictionsBrowserKeyRestrictions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareKeyRestrictionsBrowserKeyRestrictionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewKeyRestrictionsBrowserKeyRestrictions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewKeyRestrictionsBrowserKeyRestrictionsSlice(c *Client, des, nw []KeyRestrictionsBrowserKeyRestrictions) []KeyRestrictionsBrowserKeyRestrictions {
@@ -874,23 +879,26 @@ func canonicalizeNewKeyRestrictionsServerKeyRestrictionsSet(c *Client, des, nw [
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []KeyRestrictionsServerKeyRestrictions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []KeyRestrictionsServerKeyRestrictions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareKeyRestrictionsServerKeyRestrictionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewKeyRestrictionsServerKeyRestrictions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewKeyRestrictionsServerKeyRestrictionsSlice(c *Client, des, nw []KeyRestrictionsServerKeyRestrictions) []KeyRestrictionsServerKeyRestrictions {
@@ -983,23 +991,26 @@ func canonicalizeNewKeyRestrictionsAndroidKeyRestrictionsSet(c *Client, des, nw 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []KeyRestrictionsAndroidKeyRestrictions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []KeyRestrictionsAndroidKeyRestrictions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareKeyRestrictionsAndroidKeyRestrictionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewKeyRestrictionsAndroidKeyRestrictions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewKeyRestrictionsAndroidKeyRestrictionsSlice(c *Client, des, nw []KeyRestrictionsAndroidKeyRestrictions) []KeyRestrictionsAndroidKeyRestrictions {
@@ -1106,23 +1117,26 @@ func canonicalizeNewKeyRestrictionsAndroidKeyRestrictionsAllowedApplicationsSet(
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []KeyRestrictionsAndroidKeyRestrictionsAllowedApplications
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []KeyRestrictionsAndroidKeyRestrictionsAllowedApplications
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareKeyRestrictionsAndroidKeyRestrictionsAllowedApplicationsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewKeyRestrictionsAndroidKeyRestrictionsAllowedApplications(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewKeyRestrictionsAndroidKeyRestrictionsAllowedApplicationsSlice(c *Client, des, nw []KeyRestrictionsAndroidKeyRestrictionsAllowedApplications) []KeyRestrictionsAndroidKeyRestrictionsAllowedApplications {
@@ -1221,23 +1235,26 @@ func canonicalizeNewKeyRestrictionsIosKeyRestrictionsSet(c *Client, des, nw []Ke
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []KeyRestrictionsIosKeyRestrictions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []KeyRestrictionsIosKeyRestrictions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareKeyRestrictionsIosKeyRestrictionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewKeyRestrictionsIosKeyRestrictions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewKeyRestrictionsIosKeyRestrictionsSlice(c *Client, des, nw []KeyRestrictionsIosKeyRestrictions) []KeyRestrictionsIosKeyRestrictions {
@@ -1344,23 +1361,26 @@ func canonicalizeNewKeyRestrictionsApiTargetsSet(c *Client, des, nw []KeyRestric
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []KeyRestrictionsApiTargets
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []KeyRestrictionsApiTargets
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareKeyRestrictionsApiTargetsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewKeyRestrictionsApiTargets(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewKeyRestrictionsApiTargetsSlice(c *Client, des, nw []KeyRestrictionsApiTargets) []KeyRestrictionsApiTargets {
@@ -1443,6 +1463,9 @@ func diffKey(c *Client, desired, actual *Key, opts ...dcl.ApplyOption) ([]*dcl.F
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareKeyRestrictionsNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

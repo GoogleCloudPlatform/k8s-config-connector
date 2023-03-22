@@ -333,7 +333,6 @@ func canonicalizeFeatureMembershipDesiredState(rawDesired, rawInitial *FeatureMe
 	} else {
 		canonicalDesired.Membership = rawDesired.Membership
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -441,23 +440,26 @@ func canonicalizeNewFeatureMembershipMeshSet(c *Client, des, nw []FeatureMembers
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []FeatureMembershipMesh
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []FeatureMembershipMesh
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareFeatureMembershipMeshNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewFeatureMembershipMesh(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewFeatureMembershipMeshSlice(c *Client, des, nw []FeatureMembershipMesh) []FeatureMembershipMesh {
@@ -564,23 +566,26 @@ func canonicalizeNewFeatureMembershipConfigmanagementSet(c *Client, des, nw []Fe
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []FeatureMembershipConfigmanagement
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []FeatureMembershipConfigmanagement
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareFeatureMembershipConfigmanagementNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewFeatureMembershipConfigmanagement(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewFeatureMembershipConfigmanagementSlice(c *Client, des, nw []FeatureMembershipConfigmanagement) []FeatureMembershipConfigmanagement {
@@ -691,23 +696,26 @@ func canonicalizeNewFeatureMembershipConfigmanagementConfigSyncSet(c *Client, de
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []FeatureMembershipConfigmanagementConfigSync
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []FeatureMembershipConfigmanagementConfigSync
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareFeatureMembershipConfigmanagementConfigSyncNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewFeatureMembershipConfigmanagementConfigSync(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewFeatureMembershipConfigmanagementConfigSyncSlice(c *Client, des, nw []FeatureMembershipConfigmanagementConfigSync) []FeatureMembershipConfigmanagementConfigSync {
@@ -860,23 +868,26 @@ func canonicalizeNewFeatureMembershipConfigmanagementConfigSyncGitSet(c *Client,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []FeatureMembershipConfigmanagementConfigSyncGit
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []FeatureMembershipConfigmanagementConfigSyncGit
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareFeatureMembershipConfigmanagementConfigSyncGitNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewFeatureMembershipConfigmanagementConfigSyncGit(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewFeatureMembershipConfigmanagementConfigSyncGitSlice(c *Client, des, nw []FeatureMembershipConfigmanagementConfigSyncGit) []FeatureMembershipConfigmanagementConfigSyncGit {
@@ -1005,23 +1016,26 @@ func canonicalizeNewFeatureMembershipConfigmanagementConfigSyncOciSet(c *Client,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []FeatureMembershipConfigmanagementConfigSyncOci
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []FeatureMembershipConfigmanagementConfigSyncOci
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareFeatureMembershipConfigmanagementConfigSyncOciNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewFeatureMembershipConfigmanagementConfigSyncOci(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewFeatureMembershipConfigmanagementConfigSyncOciSlice(c *Client, des, nw []FeatureMembershipConfigmanagementConfigSyncOci) []FeatureMembershipConfigmanagementConfigSyncOci {
@@ -1170,23 +1184,26 @@ func canonicalizeNewFeatureMembershipConfigmanagementPolicyControllerSet(c *Clie
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []FeatureMembershipConfigmanagementPolicyController
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []FeatureMembershipConfigmanagementPolicyController
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareFeatureMembershipConfigmanagementPolicyControllerNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewFeatureMembershipConfigmanagementPolicyController(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewFeatureMembershipConfigmanagementPolicyControllerSlice(c *Client, des, nw []FeatureMembershipConfigmanagementPolicyController) []FeatureMembershipConfigmanagementPolicyController {
@@ -1282,23 +1299,26 @@ func canonicalizeNewFeatureMembershipConfigmanagementPolicyControllerMonitoringS
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []FeatureMembershipConfigmanagementPolicyControllerMonitoring
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []FeatureMembershipConfigmanagementPolicyControllerMonitoring
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareFeatureMembershipConfigmanagementPolicyControllerMonitoringNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewFeatureMembershipConfigmanagementPolicyControllerMonitoring(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewFeatureMembershipConfigmanagementPolicyControllerMonitoringSlice(c *Client, des, nw []FeatureMembershipConfigmanagementPolicyControllerMonitoring) []FeatureMembershipConfigmanagementPolicyControllerMonitoring {
@@ -1397,23 +1417,26 @@ func canonicalizeNewFeatureMembershipConfigmanagementBinauthzSet(c *Client, des,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []FeatureMembershipConfigmanagementBinauthz
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []FeatureMembershipConfigmanagementBinauthz
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareFeatureMembershipConfigmanagementBinauthzNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewFeatureMembershipConfigmanagementBinauthz(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewFeatureMembershipConfigmanagementBinauthzSlice(c *Client, des, nw []FeatureMembershipConfigmanagementBinauthz) []FeatureMembershipConfigmanagementBinauthz {
@@ -1528,23 +1551,26 @@ func canonicalizeNewFeatureMembershipConfigmanagementHierarchyControllerSet(c *C
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []FeatureMembershipConfigmanagementHierarchyController
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []FeatureMembershipConfigmanagementHierarchyController
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareFeatureMembershipConfigmanagementHierarchyControllerNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewFeatureMembershipConfigmanagementHierarchyController(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewFeatureMembershipConfigmanagementHierarchyControllerSlice(c *Client, des, nw []FeatureMembershipConfigmanagementHierarchyController) []FeatureMembershipConfigmanagementHierarchyController {
@@ -1627,6 +1653,9 @@ func diffFeatureMembership(c *Client, desired, actual *FeatureMembership, opts .
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareFeatureMembershipMeshNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

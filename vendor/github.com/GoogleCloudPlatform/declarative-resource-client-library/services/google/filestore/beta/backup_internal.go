@@ -479,7 +479,6 @@ func canonicalizeBackupDesiredState(rawDesired, rawInitial *Backup, opts ...dcl.
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -659,6 +658,9 @@ func diffBackup(c *Client, desired, actual *Backup, opts ...dcl.ApplyOption) ([]
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

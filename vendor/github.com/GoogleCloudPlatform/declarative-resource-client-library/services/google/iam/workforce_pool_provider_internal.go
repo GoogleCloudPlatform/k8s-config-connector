@@ -478,23 +478,6 @@ func canonicalizeWorkforcePoolProviderDesiredState(rawDesired, rawInitial *Workf
 
 		return rawDesired, nil
 	}
-
-	if rawDesired.Saml != nil || rawInitial.Saml != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.Oidc) {
-			rawDesired.Saml = nil
-			rawInitial.Saml = nil
-		}
-	}
-
-	if rawDesired.Oidc != nil || rawInitial.Oidc != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.Saml) {
-			rawDesired.Oidc = nil
-			rawInitial.Oidc = nil
-		}
-	}
-
 	canonicalDesired := &WorkforcePoolProvider{}
 	if dcl.PartialSelfLinkToSelfLink(rawDesired.Name, rawInitial.Name) {
 		canonicalDesired.Name = rawInitial.Name
@@ -538,6 +521,20 @@ func canonicalizeWorkforcePoolProviderDesiredState(rawDesired, rawInitial *Workf
 		canonicalDesired.WorkforcePool = rawInitial.WorkforcePool
 	} else {
 		canonicalDesired.WorkforcePool = rawDesired.WorkforcePool
+	}
+
+	if canonicalDesired.Saml != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.Oidc) {
+			canonicalDesired.Saml = EmptyWorkforcePoolProviderSaml
+		}
+	}
+
+	if canonicalDesired.Oidc != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.Saml) {
+			canonicalDesired.Oidc = EmptyWorkforcePoolProviderOidc
+		}
 	}
 
 	return canonicalDesired, nil
@@ -690,23 +687,26 @@ func canonicalizeNewWorkforcePoolProviderSamlSet(c *Client, des, nw []WorkforceP
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkforcePoolProviderSaml
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkforcePoolProviderSaml
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkforcePoolProviderSamlNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkforcePoolProviderSaml(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkforcePoolProviderSamlSlice(c *Client, des, nw []WorkforcePoolProviderSaml) []WorkforcePoolProviderSaml {
@@ -813,23 +813,26 @@ func canonicalizeNewWorkforcePoolProviderOidcSet(c *Client, des, nw []WorkforceP
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []WorkforcePoolProviderOidc
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkforcePoolProviderOidc
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareWorkforcePoolProviderOidcNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkforcePoolProviderOidc(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewWorkforcePoolProviderOidcSlice(c *Client, des, nw []WorkforcePoolProviderOidc) []WorkforcePoolProviderOidc {
@@ -947,6 +950,9 @@ func diffWorkforcePoolProvider(c *Client, desired, actual *WorkforcePoolProvider
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareWorkforcePoolProviderSamlNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

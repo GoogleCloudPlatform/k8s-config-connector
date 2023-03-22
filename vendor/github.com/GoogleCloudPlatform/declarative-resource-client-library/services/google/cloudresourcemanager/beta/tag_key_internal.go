@@ -420,7 +420,6 @@ func canonicalizeTagKeyDesiredState(rawDesired, rawInitial *TagKey, opts ...dcl.
 	} else {
 		canonicalDesired.PurposeData = rawDesired.PurposeData
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -582,6 +581,9 @@ func diffTagKey(c *Client, desired, actual *TagKey, opts ...dcl.ApplyOption) ([]
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

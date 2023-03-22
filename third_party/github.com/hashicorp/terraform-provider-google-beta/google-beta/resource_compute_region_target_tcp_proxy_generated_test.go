@@ -27,12 +27,12 @@ func TestAccComputeRegionTargetTcpProxy_regionTargetTcpProxyBasicExample(t *test
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckComputeRegionTargetTcpProxyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -89,7 +89,7 @@ func testAccCheckComputeRegionTargetTcpProxyDestroyProducer(t *testing.T) func(s
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{ComputeBasePath}}projects/{{project}}/regions/{{region}}/targetTcpProxies/{{name}}")
 			if err != nil {
@@ -102,7 +102,7 @@ func testAccCheckComputeRegionTargetTcpProxyDestroyProducer(t *testing.T) func(s
 				billingProject = config.BillingProject
 			}
 
-			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("ComputeRegionTargetTcpProxy still exists at %s", url)
 			}

@@ -24,13 +24,13 @@ func TestAccFirestoreDatabase_firestoreDatabaseExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        getTestOrgFromEnv(t),
-		"random_suffix": randString(t, 10),
+		"org_id":        GetTestOrgFromEnv(t),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProviders,
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -52,8 +52,6 @@ func TestAccFirestoreDatabase_firestoreDatabaseExample(t *testing.T) {
 func testAccFirestoreDatabase_firestoreDatabaseExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_project" "project" {
-  provider = "google-beta"
-
   project_id = "tf-test%{random_suffix}"
   name       = "tf-test%{random_suffix}"
   org_id     = "%{org_id}"
@@ -66,8 +64,6 @@ resource "time_sleep" "wait_60_seconds" {
 }
 
 resource "google_project_service" "firestore" {
-  provider = "google-beta"
-
   project = google_project.project.project_id
   service = "firestore.googleapis.com"
 
@@ -76,8 +72,6 @@ resource "google_project_service" "firestore" {
 }
 
 resource "google_firestore_database" "database" {
-  provider = "google-beta"
-
   project                     = google_project.project.project_id
   name                        = "(default)"
   location_id                 = "nam5"
@@ -94,13 +88,13 @@ func TestAccFirestoreDatabase_firestoreDatabaseDatastoreModeExample(t *testing.T
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        getTestOrgFromEnv(t),
-		"random_suffix": randString(t, 10),
+		"org_id":        GetTestOrgFromEnv(t),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProviders,
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -122,8 +116,6 @@ func TestAccFirestoreDatabase_firestoreDatabaseDatastoreModeExample(t *testing.T
 func testAccFirestoreDatabase_firestoreDatabaseDatastoreModeExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_project" "project" {
-  provider = "google-beta"
-
   project_id = "tf-test%{random_suffix}"
   name       = "tf-test%{random_suffix}"
   org_id     = "%{org_id}"
@@ -136,8 +128,6 @@ resource "time_sleep" "wait_60_seconds" {
 }
 
 resource "google_project_service" "firestore" {
-  provider = "google-beta"
-
   project = google_project.project.project_id
   service = "firestore.googleapis.com"
 
@@ -146,8 +136,6 @@ resource "google_project_service" "firestore" {
 }
 
 resource "google_firestore_database" "datastore_mode_database" {
-  provider = "google-beta"
-
   project = google_project.project.project_id
 
   name = "(default)"

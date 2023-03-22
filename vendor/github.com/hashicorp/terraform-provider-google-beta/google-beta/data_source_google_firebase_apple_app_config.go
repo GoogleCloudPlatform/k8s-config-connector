@@ -38,7 +38,7 @@ func DataSourceGoogleFirebaseAppleAppConfig() *schema.Resource {
 
 func dataSourceGoogleFirebaseAppleAppConfigRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -55,7 +55,7 @@ func dataSourceGoogleFirebaseAppleAppConfigRead(d *schema.ResourceData, meta int
 		return err
 	}
 
-	res, err := sendRequest(config, "GET", project, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", project, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("FirebaseAppleApp config %q", d.Id()))
 	}

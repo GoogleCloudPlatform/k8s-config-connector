@@ -163,7 +163,7 @@ For example, you could add a Google group to the deniedPrincipals, then exclude 
 
 func resourceIAM2DenyPolicyCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -201,7 +201,7 @@ func resourceIAM2DenyPolicyCreate(d *schema.ResourceData, meta interface{}) erro
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating DenyPolicy: %s", err)
 	}
@@ -213,7 +213,7 @@ func resourceIAM2DenyPolicyCreate(d *schema.ResourceData, meta interface{}) erro
 	}
 	d.SetId(id)
 
-	err = iAM2OperationWaitTime(
+	err = IAM2OperationWaitTime(
 		config, res, "Creating DenyPolicy", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 
@@ -230,7 +230,7 @@ func resourceIAM2DenyPolicyCreate(d *schema.ResourceData, meta interface{}) erro
 
 func resourceIAM2DenyPolicyRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -247,7 +247,7 @@ func resourceIAM2DenyPolicyRead(d *schema.ResourceData, meta interface{}) error 
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("IAM2DenyPolicy %q", d.Id()))
 	}
@@ -267,7 +267,7 @@ func resourceIAM2DenyPolicyRead(d *schema.ResourceData, meta interface{}) error 
 
 func resourceIAM2DenyPolicyUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -306,7 +306,7 @@ func resourceIAM2DenyPolicyUpdate(d *schema.ResourceData, meta interface{}) erro
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := SendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating DenyPolicy %q: %s", d.Id(), err)
@@ -314,7 +314,7 @@ func resourceIAM2DenyPolicyUpdate(d *schema.ResourceData, meta interface{}) erro
 		log.Printf("[DEBUG] Finished updating DenyPolicy %q: %#v", d.Id(), res)
 	}
 
-	err = iAM2OperationWaitTime(
+	err = IAM2OperationWaitTime(
 		config, res, "Updating DenyPolicy", userAgent,
 		d.Timeout(schema.TimeoutUpdate))
 
@@ -327,7 +327,7 @@ func resourceIAM2DenyPolicyUpdate(d *schema.ResourceData, meta interface{}) erro
 
 func resourceIAM2DenyPolicyDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -347,12 +347,12 @@ func resourceIAM2DenyPolicyDelete(d *schema.ResourceData, meta interface{}) erro
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "DenyPolicy")
 	}
 
-	err = iAM2OperationWaitTime(
+	err = IAM2OperationWaitTime(
 		config, res, "Deleting DenyPolicy", userAgent,
 		d.Timeout(schema.TimeoutDelete))
 

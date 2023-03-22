@@ -10,25 +10,25 @@ import (
 
 func TestAccComputeRegionPerInstanceConfig_statefulBasic(t *testing.T) {
 	// Multiple fine-grained resources
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
-	suffix := randString(t, 10)
+	suffix := RandString(t, 10)
 	rigmName := fmt.Sprintf("tf-test-rigm-%s", suffix)
 	context := map[string]interface{}{
 		"rigm_name":     rigmName,
 		"random_suffix": suffix,
-		"config_name":   fmt.Sprintf("instance-%s", randString(t, 10)),
-		"config_name2":  fmt.Sprintf("instance-%s", randString(t, 10)),
-		"config_name3":  fmt.Sprintf("instance-%s", randString(t, 10)),
-		"config_name4":  fmt.Sprintf("instance-%s", randString(t, 10)),
+		"config_name":   fmt.Sprintf("instance-%s", RandString(t, 10)),
+		"config_name2":  fmt.Sprintf("instance-%s", RandString(t, 10)),
+		"config_name3":  fmt.Sprintf("instance-%s", RandString(t, 10)),
+		"config_name4":  fmt.Sprintf("instance-%s", RandString(t, 10)),
 	}
 	rigmId := fmt.Sprintf("projects/%s/regions/%s/instanceGroupManagers/%s",
-		getTestProjectFromEnv(), getTestRegionFromEnv(), rigmName)
+		GetTestProjectFromEnv(), GetTestRegionFromEnv(), rigmName)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				// Create one endpoint
@@ -92,14 +92,14 @@ func TestAccComputeRegionPerInstanceConfig_update(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
-		"rigm_name":     fmt.Sprintf("tf-test-rigm-%s", randString(t, 10)),
-		"config_name":   fmt.Sprintf("instance-%s", randString(t, 10)),
+		"random_suffix": RandString(t, 10),
+		"rigm_name":     fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10)),
+		"config_name":   fmt.Sprintf("instance-%s", RandString(t, 10)),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				// Create one config
@@ -114,6 +114,46 @@ func TestAccComputeRegionPerInstanceConfig_update(t *testing.T) {
 			{
 				// Update an existing config
 				Config: testAccComputeRegionPerInstanceConfig_update(context),
+			},
+			{
+				ResourceName:            "google_compute_region_per_instance_config.default",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"remove_instance_state_on_destroy", "region"},
+			},
+		},
+	})
+}
+func TestAccComputeRegionPerInstanceConfig_statefulIps(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": RandString(t, 10),
+		"rigm_name":     fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10)),
+		"config_name":   fmt.Sprintf("instance-%s", RandString(t, 10)),
+		"network":       fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10)),
+		"subnetwork":    fmt.Sprintf("tf-test-rigm-%s", RandString(t, 10)),
+		"address1":      fmt.Sprintf("tf-test-rigm-address%s", RandString(t, 10)),
+		"address2":      fmt.Sprintf("tf-test-rigm-address%s", RandString(t, 10)),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: TestAccProviders,
+		Steps: []resource.TestStep{
+			{
+				// Create one config
+				Config: testAccComputeRegionPerInstanceConfig_statefulIpsBasic(context),
+			},
+			{
+				ResourceName:            "google_compute_region_per_instance_config.default",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"remove_instance_state_on_destroy", "region"},
+			},
+			{
+				// Update an existing config
+				Config: testAccComputeRegionPerInstanceConfig_statefulIpsUpdate(context),
 			},
 			{
 				ResourceName:            "google_compute_region_per_instance_config.default",
@@ -301,6 +341,157 @@ resource "google_compute_region_instance_group_manager" "rigm" {
   }
 }
 `, context)
+}
+func testAccComputeRegionPerInstanceConfig_statefulIpsBasic(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_compute_network" "default" {
+  name = "%{network}"
+}
+
+resource "google_compute_subnetwork" "default" {
+  name          = "%{subnetwork}"
+  ip_cidr_range = "10.0.0.0/16"
+  region        = "us-central1"
+  network       = google_compute_network.default.id
+}
+
+resource "google_compute_address" "static_internal_ip" {
+  name         = "%{address1}"
+  address_type = "INTERNAL"
+}
+
+resource "google_compute_address" "static_external_ip" {
+  name         = "%{address2}"
+  address_type = "EXTERNAL"
+}
+
+resource "google_compute_region_per_instance_config" "default" {
+  region = google_compute_region_instance_group_manager.rigm.region
+  region_instance_group_manager = google_compute_region_instance_group_manager.rigm.name
+  name = "%{config_name}"
+  remove_instance_state_on_destroy = true
+  preserved_state {
+    metadata = {
+      asdf = "asdf"
+    }
+    disk {
+      device_name = "my-stateful-disk1"
+      source      = google_compute_disk.disk.id
+    }
+
+    disk {
+      device_name = "my-stateful-disk2"
+      source      = google_compute_disk.disk1.id
+    }
+    internal_ip {
+      ip_address {
+	    address = google_compute_address.static_internal_ip.self_link
+      }
+      auto_delete    = "NEVER"
+      interface_name = "nic0"
+    }
+    external_ip {
+      ip_address {
+        address = google_compute_address.static_external_ip.self_link
+      }
+      auto_delete    = "NEVER"
+      interface_name = "nic0"
+    }
+  }
+}
+
+resource "google_compute_disk" "disk" {
+  name  = "test-disk-%{random_suffix}"
+  type  = "pd-ssd"
+  zone  = "us-central1-c"
+  image = "debian-8-jessie-v20170523"
+  physical_block_size_bytes = 4096
+}
+
+resource "google_compute_disk" "disk1" {
+  name  = "test-disk2-%{random_suffix}"
+  type  = "pd-ssd"
+  zone  = "us-central1-c"
+  image = "debian-cloud/debian-11"
+  physical_block_size_bytes = 4096
+}
+`, context) + testAccComputeRegionPerInstanceConfig_rigm(context)
+}
+
+func testAccComputeRegionPerInstanceConfig_statefulIpsUpdate(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_compute_network" "default" {
+  name = "%{network}"
+}
+
+resource "google_compute_subnetwork" "default" {
+  name          = "%{subnetwork}"
+  ip_cidr_range = "10.0.0.0/16"
+  region        = "us-central1"
+  network       = google_compute_network.default.id
+}
+
+resource "google_compute_address" "static_internal_ip" {
+  name         = "%{address1}"
+  address_type = "INTERNAL"
+}
+
+resource "google_compute_address" "static_external_ip" {
+  name         = "%{address2}"
+  address_type = "EXTERNAL"
+}
+
+resource "google_compute_region_per_instance_config" "default" {
+  region = google_compute_region_instance_group_manager.rigm.region
+  region_instance_group_manager = google_compute_region_instance_group_manager.rigm.name
+  name = "%{config_name}"
+  remove_instance_state_on_destroy = true
+  preserved_state {
+    metadata = {
+      asdf = "asdf"
+    }
+    disk {
+      device_name = "my-stateful-disk1"
+      source      = google_compute_disk.disk.id
+    }
+
+    disk {
+      device_name = "my-stateful-disk2"
+      source      = google_compute_disk.disk1.id
+    }
+    internal_ip {
+      ip_address {
+	    address = google_compute_address.static_internal_ip.self_link
+      }
+      auto_delete    = "ON_PERMANENT_INSTANCE_DELETION"
+      interface_name = "nic0"
+    }
+    external_ip {
+      ip_address {
+        address = google_compute_address.static_external_ip.self_link
+      }
+      auto_delete    = "ON_PERMANENT_INSTANCE_DELETION"
+      interface_name = "nic0"
+    }
+  }
+}
+
+resource "google_compute_disk" "disk" {
+  name  = "test-disk-%{random_suffix}"
+  type  = "pd-ssd"
+  zone  = "us-central1-c"
+  image = "debian-8-jessie-v20170523"
+  physical_block_size_bytes = 4096
+}
+
+resource "google_compute_disk" "disk1" {
+  name  = "test-disk2-%{random_suffix}"
+  type  = "pd-ssd"
+  zone  = "us-central1-c"
+  image = "debian-cloud/debian-11"
+  physical_block_size_bytes = 4096
+}
+`, context) + testAccComputeRegionPerInstanceConfig_rigm(context)
 }
 
 // Checks that the per instance config with the given name was destroyed

@@ -405,7 +405,6 @@ func canonicalizeLogExclusionDesiredState(rawDesired, rawInitial *LogExclusion, 
 
 		return rawDesired, nil
 	}
-
 	canonicalDesired := &LogExclusion{}
 	if dcl.StringCanonicalize(rawDesired.Name, rawInitial.Name) {
 		canonicalDesired.Name = rawInitial.Name
@@ -552,6 +551,9 @@ func diffLogExclusion(c *Client, desired, actual *LogExclusion, opts ...dcl.Appl
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

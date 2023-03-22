@@ -73,19 +73,18 @@ type ComputeInterconnectAttachmentSpec struct {
 	EdgeAvailabilityDomain *string `json:"edgeAvailabilityDomain,omitempty"`
 
 	/* Immutable. Indicates the user-supplied encryption option of this interconnect
-	attachment:
+	attachment. Can only be specified at attachment creation for PARTNER or
+	DEDICATED attachments.
 
-	NONE is the default value, which means that the attachment carries
-	unencrypted traffic. VMs can send traffic to, or receive traffic
-	from, this type of attachment.
+	* NONE - This is the default value, which means that the VLAN attachment
+	carries unencrypted traffic. VMs are able to send traffic to, or receive
+	traffic from, such a VLAN attachment.
 
-	IPSEC indicates that the attachment carries only traffic encrypted by
-	an IPsec device such as an HA VPN gateway. VMs cannot directly send
-	traffic to, or receive traffic from, such an attachment. To use
-	IPsec-encrypted Cloud Interconnect create the attachment using this
-	option.
-
-	Not currently available publicly. Default value: "NONE" Possible values: ["NONE", "IPSEC"]. */
+	* IPSEC - The VLAN attachment carries only encrypted traffic that is
+	encrypted by an IPsec device, such as an HA VPN gateway or third-party
+	IPsec VPN. VMs cannot directly send traffic to, or receive traffic from,
+	such a VLAN attachment. To use HA VPN over Cloud Interconnect, the VLAN
+	attachment must be created with this option. Default value: "NONE" Possible values: ["NONE", "IPSEC"]. */
 	// +optional
 	Encryption *string `json:"encryption,omitempty"`
 

@@ -402,7 +402,6 @@ func canonicalizeReleaseDesiredState(rawDesired, rawInitial *Release, opts ...dc
 	} else {
 		canonicalDesired.Project = rawDesired.Project
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -507,6 +506,9 @@ func diffRelease(c *Client, desired, actual *Release, opts ...dcl.ApplyOption) (
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

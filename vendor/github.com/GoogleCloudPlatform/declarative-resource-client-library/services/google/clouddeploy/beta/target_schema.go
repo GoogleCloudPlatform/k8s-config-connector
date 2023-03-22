@@ -129,6 +129,7 @@ func DCLTargetSchema() *dcl.Schema {
 								Conflicts: []string{
 									"gke",
 									"run",
+									"multiTarget",
 								},
 								Properties: map[string]*dcl.Property{
 									"membership": &dcl.Property{
@@ -234,6 +235,7 @@ func DCLTargetSchema() *dcl.Schema {
 								Conflicts: []string{
 									"anthosCluster",
 									"run",
+									"multiTarget",
 								},
 								Properties: map[string]*dcl.Property{
 									"cluster": &dcl.Property{
@@ -268,6 +270,33 @@ func DCLTargetSchema() *dcl.Schema {
 								Description: "The location for the resource",
 								Immutable:   true,
 							},
+							"multiTarget": &dcl.Property{
+								Type:        "object",
+								GoName:      "MultiTarget",
+								GoType:      "TargetMultiTarget",
+								Description: "Information specifying a multiTarget.",
+								Conflicts: []string{
+									"gke",
+									"anthosCluster",
+									"run",
+								},
+								Required: []string{
+									"targetIds",
+								},
+								Properties: map[string]*dcl.Property{
+									"targetIds": &dcl.Property{
+										Type:        "array",
+										GoName:      "TargetIds",
+										Description: "Required. The target_ids of this multiTarget.",
+										SendEmpty:   true,
+										ListType:    "list",
+										Items: &dcl.Property{
+											Type:   "string",
+											GoType: "string",
+										},
+									},
+								},
+							},
 							"name": &dcl.Property{
 								Type:        "string",
 								GoName:      "Name",
@@ -300,6 +329,7 @@ func DCLTargetSchema() *dcl.Schema {
 								Conflicts: []string{
 									"gke",
 									"anthosCluster",
+									"multiTarget",
 								},
 								Required: []string{
 									"location",

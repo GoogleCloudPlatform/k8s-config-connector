@@ -12,11 +12,11 @@ import (
 func TestAccServiceAccountIamBinding(t *testing.T) {
 	t.Parallel()
 
-	account := fmt.Sprintf("tf-test-%d", randInt(t))
+	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccServiceAccountIamBinding_basic(account),
@@ -35,13 +35,13 @@ func TestAccServiceAccountIamBinding(t *testing.T) {
 func TestAccServiceAccountIamBinding_withCondition(t *testing.T) {
 	t.Parallel()
 
-	account := fmt.Sprintf("tf-test-%d", randInt(t))
+	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 	conditionExpr := `request.time < timestamp(\"2020-01-01T00:00:00Z\")`
 	conditionTitle := "expires_after_2019_12_31"
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccServiceAccountIamBinding_withCondition(account, "user:admin@hashicorptest.com", conditionTitle, conditionExpr),
@@ -59,16 +59,16 @@ func TestAccServiceAccountIamBinding_withCondition(t *testing.T) {
 
 func TestAccServiceAccountIamBinding_withAndWithoutCondition(t *testing.T) {
 	// Resource creation race condition
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
-	account := fmt.Sprintf("tf-test-%d", randInt(t))
+	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 	conditionExpr := `request.time < timestamp(\"2020-01-01T00:00:00Z\")`
 	conditionTitle := "expires_after_2019_12_31"
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccServiceAccountIamBinding_withAndWithoutCondition(account, "user:admin@hashicorptest.com", conditionTitle, conditionExpr),
@@ -93,13 +93,13 @@ func TestAccServiceAccountIamBinding_withAndWithoutCondition(t *testing.T) {
 func TestAccServiceAccountIamMember(t *testing.T) {
 	t.Parallel()
 
-	account := fmt.Sprintf("tf-test-%d", randInt(t))
+	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 	email := serviceAccountCanonicalEmail(account)
 	identity := fmt.Sprintf("serviceAccount:%s", email)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccServiceAccountIamMember_basic(account, email),
@@ -126,13 +126,13 @@ func TestAccServiceAccountIamMember(t *testing.T) {
 func TestAccServiceAccountIamMember_withCondition(t *testing.T) {
 	t.Parallel()
 
-	account := fmt.Sprintf("tf-test-%d", randInt(t))
+	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 	identity := fmt.Sprintf("serviceAccount:%s", serviceAccountCanonicalEmail(account))
 	conditionTitle := "expires_after_2019_12_31"
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccServiceAccountIamMember_withCondition(account, conditionTitle),
@@ -150,16 +150,16 @@ func TestAccServiceAccountIamMember_withCondition(t *testing.T) {
 
 func TestAccServiceAccountIamMember_withAndWithoutCondition(t *testing.T) {
 	// Resource creation race condition
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
-	account := fmt.Sprintf("tf-test-%d", randInt(t))
+	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 	identity := fmt.Sprintf("serviceAccount:%s", serviceAccountCanonicalEmail(account))
 	conditionTitle := "expires_after_2019_12_31"
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccServiceAccountIamMember_withAndWithoutCondition(account, conditionTitle),
@@ -184,11 +184,11 @@ func TestAccServiceAccountIamMember_withAndWithoutCondition(t *testing.T) {
 func TestAccServiceAccountIamPolicy(t *testing.T) {
 	t.Parallel()
 
-	account := fmt.Sprintf("tf-test-%d", randInt(t))
+	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccServiceAccountIamPolicy_basic(account),
@@ -206,11 +206,11 @@ func TestAccServiceAccountIamPolicy(t *testing.T) {
 func TestAccServiceAccountIamPolicy_withCondition(t *testing.T) {
 	t.Parallel()
 
-	account := fmt.Sprintf("tf-test-%d", randInt(t))
+	account := fmt.Sprintf("tf-test-%d", RandInt(t))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccServiceAccountIamPolicy_withCondition(account),
@@ -229,12 +229,12 @@ func TestAccServiceAccountIamPolicy_withCondition(t *testing.T) {
 func TestAccServiceAccountIamMember_federatedIdentity(t *testing.T) {
 	t.Parallel()
 
-	account := fmt.Sprintf("tf-test-%d", randInt(t))
-	pool := fmt.Sprintf("tf-test-%d", randInt(t))
+	account := fmt.Sprintf("tf-test-%d", RandInt(t))
+	pool := fmt.Sprintf("tf-test-%d", RandInt(t))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccServiceAccountIamMember_federatedIdentity(account, pool),
@@ -252,12 +252,12 @@ func TestAccServiceAccountIamMember_federatedIdentity(t *testing.T) {
 func TestAccServiceAccountIamBinding_federatedIdentity(t *testing.T) {
 	t.Parallel()
 
-	account := fmt.Sprintf("tf-test-%d", randInt(t))
-	pool := fmt.Sprintf("tf-test-%d", randInt(t))
+	account := fmt.Sprintf("tf-test-%d", RandInt(t))
+	pool := fmt.Sprintf("tf-test-%d", RandInt(t))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccServiceAccountIamBinding_federatedIdentity(account, pool),
@@ -276,12 +276,12 @@ func TestAccServiceAccountIamBinding_federatedIdentity(t *testing.T) {
 func TestAccServiceAccountIamPolicy_federatedIdentity(t *testing.T) {
 	t.Parallel()
 
-	account := fmt.Sprintf("tf-test-%d", randInt(t))
-	pool := fmt.Sprintf("tf-test-%d", randInt(t))
+	account := fmt.Sprintf("tf-test-%d", RandInt(t))
+	pool := fmt.Sprintf("tf-test-%d", RandInt(t))
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccServiceAccountIamPolicy_federatedIdentity(account, pool),
@@ -313,8 +313,8 @@ func testAccServiceAccountIamMember_generateFederatedIdentityStateId(state *terr
 // The content of the binding is tested in the import tests.
 func testAccCheckGoogleServiceAccountIam(t *testing.T, account string, numBindings int) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
-		config := googleProviderConfig(t)
-		p, err := config.NewIamClient(config.userAgent).Projects.ServiceAccounts.GetIamPolicy(serviceAccountCanonicalId(account)).OptionsRequestedPolicyVersion(iamPolicyVersion).Do()
+		config := GoogleProviderConfig(t)
+		p, err := config.NewIamClient(config.UserAgent).Projects.ServiceAccounts.GetIamPolicy(serviceAccountCanonicalId(account)).OptionsRequestedPolicyVersion(IamPolicyVersion).Do()
 		if err != nil {
 			return err
 		}
@@ -328,11 +328,11 @@ func testAccCheckGoogleServiceAccountIam(t *testing.T, account string, numBindin
 }
 
 func serviceAccountCanonicalId(account string) string {
-	return fmt.Sprintf("projects/%s/serviceAccounts/%s@%s.iam.gserviceaccount.com", getTestProjectFromEnv(), account, getTestProjectFromEnv())
+	return fmt.Sprintf("projects/%s/serviceAccounts/%s@%s.iam.gserviceaccount.com", GetTestProjectFromEnv(), account, GetTestProjectFromEnv())
 }
 
 func serviceAccountCanonicalEmail(account string) string {
-	return fmt.Sprintf("%s@%s.iam.gserviceaccount.com", account, getTestProjectFromEnv())
+	return fmt.Sprintf("%s@%s.iam.gserviceaccount.com", account, GetTestProjectFromEnv())
 }
 
 func testAccServiceAccountIamBinding_basic(account string) string {

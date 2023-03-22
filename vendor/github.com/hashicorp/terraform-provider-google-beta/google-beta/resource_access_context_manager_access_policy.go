@@ -85,7 +85,7 @@ Format: folders/{{folder_id}} or projects/{{project_id}}`,
 
 func resourceAccessContextManagerAccessPolicyCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -123,7 +123,7 @@ func resourceAccessContextManagerAccessPolicyCreate(d *schema.ResourceData, meta
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating AccessPolicy: %s", err)
 	}
@@ -138,7 +138,7 @@ func resourceAccessContextManagerAccessPolicyCreate(d *schema.ResourceData, meta
 	// Use the resource in the operation response to populate
 	// identity fields and d.Id() before read
 	var opRes map[string]interface{}
-	err = accessContextManagerOperationWaitTimeWithResponse(
+	err = AccessContextManagerOperationWaitTimeWithResponse(
 		config, res, &opRes, "Creating AccessPolicy", userAgent,
 		d.Timeout(schema.TimeoutCreate))
 	if err != nil {
@@ -178,7 +178,7 @@ func resourceAccessContextManagerAccessPolicyCreate(d *schema.ResourceData, meta
 
 func resourceAccessContextManagerAccessPolicyRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -195,7 +195,7 @@ func resourceAccessContextManagerAccessPolicyRead(d *schema.ResourceData, meta i
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("AccessContextManagerAccessPolicy %q", d.Id()))
 	}
@@ -224,7 +224,7 @@ func resourceAccessContextManagerAccessPolicyRead(d *schema.ResourceData, meta i
 
 func resourceAccessContextManagerAccessPolicyUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -272,7 +272,7 @@ func resourceAccessContextManagerAccessPolicyUpdate(d *schema.ResourceData, meta
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating AccessPolicy %q: %s", d.Id(), err)
@@ -280,7 +280,7 @@ func resourceAccessContextManagerAccessPolicyUpdate(d *schema.ResourceData, meta
 		log.Printf("[DEBUG] Finished updating AccessPolicy %q: %#v", d.Id(), res)
 	}
 
-	err = accessContextManagerOperationWaitTime(
+	err = AccessContextManagerOperationWaitTime(
 		config, res, "Updating AccessPolicy", userAgent,
 		d.Timeout(schema.TimeoutUpdate))
 
@@ -293,7 +293,7 @@ func resourceAccessContextManagerAccessPolicyUpdate(d *schema.ResourceData, meta
 
 func resourceAccessContextManagerAccessPolicyDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -313,12 +313,12 @@ func resourceAccessContextManagerAccessPolicyDelete(d *schema.ResourceData, meta
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "AccessPolicy")
 	}
 
-	err = accessContextManagerOperationWaitTime(
+	err = AccessContextManagerOperationWaitTime(
 		config, res, "Deleting AccessPolicy", userAgent,
 		d.Timeout(schema.TimeoutDelete))
 

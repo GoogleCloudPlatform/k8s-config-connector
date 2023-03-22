@@ -522,7 +522,6 @@ func canonicalizeVpnTunnelDesiredState(rawDesired, rawInitial *VpnTunnel, opts .
 	} else {
 		canonicalDesired.Project = rawDesired.Project
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -843,6 +842,9 @@ func diffVpnTunnel(c *Client, desired, actual *VpnTunnel, opts ...dcl.ApplyOptio
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

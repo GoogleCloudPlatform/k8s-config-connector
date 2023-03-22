@@ -2163,7 +2163,7 @@ func resourceDataprocWorkflowTemplateCreate(d *schema.ResourceData, meta interfa
 	}
 	d.SetId(id)
 	directive := CreateDirective
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -2213,7 +2213,7 @@ func resourceDataprocWorkflowTemplateRead(d *schema.ResourceData, meta interface
 		Version:    dcl.Int64OrNil(int64(d.Get("version").(int))),
 	}
 
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -2292,7 +2292,7 @@ func resourceDataprocWorkflowTemplateDelete(d *schema.ResourceData, meta interfa
 	}
 
 	log.Printf("[DEBUG] Deleting WorkflowTemplate %q", d.Id())
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}

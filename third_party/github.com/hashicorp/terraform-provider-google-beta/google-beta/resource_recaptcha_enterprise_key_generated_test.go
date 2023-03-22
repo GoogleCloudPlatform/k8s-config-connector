@@ -30,13 +30,13 @@ func TestAccRecaptchaEnterpriseKey_AndroidKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  getTestProjectFromEnv(),
-		"random_suffix": randString(t, 10),
+		"project_name":  GetTestProjectFromEnv(),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckRecaptchaEnterpriseKeyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -62,13 +62,13 @@ func TestAccRecaptchaEnterpriseKey_IosKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  getTestProjectFromEnv(),
-		"random_suffix": randString(t, 10),
+		"project_name":  GetTestProjectFromEnv(),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckRecaptchaEnterpriseKeyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -94,13 +94,13 @@ func TestAccRecaptchaEnterpriseKey_MinimalKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  getTestProjectFromEnv(),
-		"random_suffix": randString(t, 10),
+		"project_name":  GetTestProjectFromEnv(),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckRecaptchaEnterpriseKeyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -118,13 +118,13 @@ func TestAccRecaptchaEnterpriseKey_WebKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  getTestProjectFromEnv(),
-		"random_suffix": randString(t, 10),
+		"project_name":  GetTestProjectFromEnv(),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckRecaptchaEnterpriseKeyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -150,13 +150,13 @@ func TestAccRecaptchaEnterpriseKey_WebScoreKey(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_name":  getTestProjectFromEnv(),
-		"random_suffix": randString(t, 10),
+		"project_name":  GetTestProjectFromEnv(),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckRecaptchaEnterpriseKeyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -416,7 +416,7 @@ func testAccCheckRecaptchaEnterpriseKeyDestroyProducer(t *testing.T) func(s *ter
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			billingProject := ""
 			if config.BillingProject != "" {
@@ -430,7 +430,7 @@ func testAccCheckRecaptchaEnterpriseKeyDestroyProducer(t *testing.T) func(s *ter
 				Name:        dcl.StringOrNil(rs.Primary.Attributes["name"]),
 			}
 
-			client := NewDCLRecaptchaEnterpriseClient(config, config.userAgent, billingProject, 0)
+			client := NewDCLRecaptchaEnterpriseClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetKey(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_recaptcha_enterprise_key still exists %v", obj)

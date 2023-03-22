@@ -633,7 +633,6 @@ func canonicalizeHttpRouteDesiredState(rawDesired, rawInitial *HttpRoute, opts .
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -787,23 +786,26 @@ func canonicalizeNewHttpRouteRulesSet(c *Client, des, nw []HttpRouteRules) []Htt
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []HttpRouteRules
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []HttpRouteRules
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareHttpRouteRulesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewHttpRouteRules(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewHttpRouteRulesSlice(c *Client, des, nw []HttpRouteRules) []HttpRouteRules {
@@ -960,23 +962,26 @@ func canonicalizeNewHttpRouteRulesMatchesSet(c *Client, des, nw []HttpRouteRules
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []HttpRouteRulesMatches
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []HttpRouteRulesMatches
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareHttpRouteRulesMatchesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewHttpRouteRulesMatches(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewHttpRouteRulesMatchesSlice(c *Client, des, nw []HttpRouteRulesMatches) []HttpRouteRulesMatches {
@@ -1185,23 +1190,26 @@ func canonicalizeNewHttpRouteRulesMatchesHeadersSet(c *Client, des, nw []HttpRou
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []HttpRouteRulesMatchesHeaders
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []HttpRouteRulesMatchesHeaders
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareHttpRouteRulesMatchesHeadersNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewHttpRouteRulesMatchesHeaders(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewHttpRouteRulesMatchesHeadersSlice(c *Client, des, nw []HttpRouteRulesMatchesHeaders) []HttpRouteRulesMatchesHeaders {
@@ -1303,23 +1311,26 @@ func canonicalizeNewHttpRouteRulesMatchesHeadersRangeMatchSet(c *Client, des, nw
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []HttpRouteRulesMatchesHeadersRangeMatch
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []HttpRouteRulesMatchesHeadersRangeMatch
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareHttpRouteRulesMatchesHeadersRangeMatchNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewHttpRouteRulesMatchesHeadersRangeMatch(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewHttpRouteRulesMatchesHeadersRangeMatchSlice(c *Client, des, nw []HttpRouteRulesMatchesHeadersRangeMatch) []HttpRouteRulesMatchesHeadersRangeMatch {
@@ -1472,23 +1483,26 @@ func canonicalizeNewHttpRouteRulesMatchesQueryParametersSet(c *Client, des, nw [
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []HttpRouteRulesMatchesQueryParameters
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []HttpRouteRulesMatchesQueryParameters
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareHttpRouteRulesMatchesQueryParametersNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewHttpRouteRulesMatchesQueryParameters(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewHttpRouteRulesMatchesQueryParametersSlice(c *Client, des, nw []HttpRouteRulesMatchesQueryParameters) []HttpRouteRulesMatchesQueryParameters {
@@ -1605,23 +1619,26 @@ func canonicalizeNewHttpRouteRulesActionSet(c *Client, des, nw []HttpRouteRulesA
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []HttpRouteRulesAction
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []HttpRouteRulesAction
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareHttpRouteRulesActionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewHttpRouteRulesAction(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewHttpRouteRulesActionSlice(c *Client, des, nw []HttpRouteRulesAction) []HttpRouteRulesAction {
@@ -1723,23 +1740,26 @@ func canonicalizeNewHttpRouteRulesActionDestinationsSet(c *Client, des, nw []Htt
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []HttpRouteRulesActionDestinations
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []HttpRouteRulesActionDestinations
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareHttpRouteRulesActionDestinationsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewHttpRouteRulesActionDestinations(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewHttpRouteRulesActionDestinationsSlice(c *Client, des, nw []HttpRouteRulesActionDestinations) []HttpRouteRulesActionDestinations {
@@ -1882,23 +1902,26 @@ func canonicalizeNewHttpRouteRulesActionRedirectSet(c *Client, des, nw []HttpRou
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []HttpRouteRulesActionRedirect
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []HttpRouteRulesActionRedirect
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareHttpRouteRulesActionRedirectNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewHttpRouteRulesActionRedirect(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewHttpRouteRulesActionRedirectSlice(c *Client, des, nw []HttpRouteRulesActionRedirect) []HttpRouteRulesActionRedirect {
@@ -1993,23 +2016,26 @@ func canonicalizeNewHttpRouteRulesActionFaultInjectionPolicySet(c *Client, des, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []HttpRouteRulesActionFaultInjectionPolicy
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []HttpRouteRulesActionFaultInjectionPolicy
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareHttpRouteRulesActionFaultInjectionPolicyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewHttpRouteRulesActionFaultInjectionPolicy(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewHttpRouteRulesActionFaultInjectionPolicySlice(c *Client, des, nw []HttpRouteRulesActionFaultInjectionPolicy) []HttpRouteRulesActionFaultInjectionPolicy {
@@ -2114,23 +2140,26 @@ func canonicalizeNewHttpRouteRulesActionFaultInjectionPolicyDelaySet(c *Client, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []HttpRouteRulesActionFaultInjectionPolicyDelay
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []HttpRouteRulesActionFaultInjectionPolicyDelay
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareHttpRouteRulesActionFaultInjectionPolicyDelayNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewHttpRouteRulesActionFaultInjectionPolicyDelay(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewHttpRouteRulesActionFaultInjectionPolicyDelaySlice(c *Client, des, nw []HttpRouteRulesActionFaultInjectionPolicyDelay) []HttpRouteRulesActionFaultInjectionPolicyDelay {
@@ -2232,23 +2261,26 @@ func canonicalizeNewHttpRouteRulesActionFaultInjectionPolicyAbortSet(c *Client, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []HttpRouteRulesActionFaultInjectionPolicyAbort
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []HttpRouteRulesActionFaultInjectionPolicyAbort
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareHttpRouteRulesActionFaultInjectionPolicyAbortNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewHttpRouteRulesActionFaultInjectionPolicyAbort(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewHttpRouteRulesActionFaultInjectionPolicyAbortSlice(c *Client, des, nw []HttpRouteRulesActionFaultInjectionPolicyAbort) []HttpRouteRulesActionFaultInjectionPolicyAbort {
@@ -2359,23 +2391,26 @@ func canonicalizeNewHttpRouteRulesActionRequestHeaderModifierSet(c *Client, des,
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []HttpRouteRulesActionRequestHeaderModifier
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []HttpRouteRulesActionRequestHeaderModifier
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareHttpRouteRulesActionRequestHeaderModifierNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewHttpRouteRulesActionRequestHeaderModifier(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewHttpRouteRulesActionRequestHeaderModifierSlice(c *Client, des, nw []HttpRouteRulesActionRequestHeaderModifier) []HttpRouteRulesActionRequestHeaderModifier {
@@ -2486,23 +2521,26 @@ func canonicalizeNewHttpRouteRulesActionResponseHeaderModifierSet(c *Client, des
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []HttpRouteRulesActionResponseHeaderModifier
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []HttpRouteRulesActionResponseHeaderModifier
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareHttpRouteRulesActionResponseHeaderModifierNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewHttpRouteRulesActionResponseHeaderModifier(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewHttpRouteRulesActionResponseHeaderModifierSlice(c *Client, des, nw []HttpRouteRulesActionResponseHeaderModifier) []HttpRouteRulesActionResponseHeaderModifier {
@@ -2609,23 +2647,26 @@ func canonicalizeNewHttpRouteRulesActionUrlRewriteSet(c *Client, des, nw []HttpR
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []HttpRouteRulesActionUrlRewrite
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []HttpRouteRulesActionUrlRewrite
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareHttpRouteRulesActionUrlRewriteNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewHttpRouteRulesActionUrlRewrite(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewHttpRouteRulesActionUrlRewriteSlice(c *Client, des, nw []HttpRouteRulesActionUrlRewrite) []HttpRouteRulesActionUrlRewrite {
@@ -2738,23 +2779,26 @@ func canonicalizeNewHttpRouteRulesActionRetryPolicySet(c *Client, des, nw []Http
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []HttpRouteRulesActionRetryPolicy
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []HttpRouteRulesActionRetryPolicy
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareHttpRouteRulesActionRetryPolicyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewHttpRouteRulesActionRetryPolicy(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewHttpRouteRulesActionRetryPolicySlice(c *Client, des, nw []HttpRouteRulesActionRetryPolicy) []HttpRouteRulesActionRetryPolicy {
@@ -2847,23 +2891,26 @@ func canonicalizeNewHttpRouteRulesActionRequestMirrorPolicySet(c *Client, des, n
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []HttpRouteRulesActionRequestMirrorPolicy
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []HttpRouteRulesActionRequestMirrorPolicy
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareHttpRouteRulesActionRequestMirrorPolicyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewHttpRouteRulesActionRequestMirrorPolicy(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewHttpRouteRulesActionRequestMirrorPolicySlice(c *Client, des, nw []HttpRouteRulesActionRequestMirrorPolicy) []HttpRouteRulesActionRequestMirrorPolicy {
@@ -2965,23 +3012,26 @@ func canonicalizeNewHttpRouteRulesActionRequestMirrorPolicyDestinationSet(c *Cli
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []HttpRouteRulesActionRequestMirrorPolicyDestination
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []HttpRouteRulesActionRequestMirrorPolicyDestination
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareHttpRouteRulesActionRequestMirrorPolicyDestinationNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewHttpRouteRulesActionRequestMirrorPolicyDestination(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewHttpRouteRulesActionRequestMirrorPolicyDestinationSlice(c *Client, des, nw []HttpRouteRulesActionRequestMirrorPolicyDestination) []HttpRouteRulesActionRequestMirrorPolicyDestination {
@@ -3136,23 +3186,26 @@ func canonicalizeNewHttpRouteRulesActionCorsPolicySet(c *Client, des, nw []HttpR
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []HttpRouteRulesActionCorsPolicy
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []HttpRouteRulesActionCorsPolicy
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareHttpRouteRulesActionCorsPolicyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewHttpRouteRulesActionCorsPolicy(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewHttpRouteRulesActionCorsPolicySlice(c *Client, des, nw []HttpRouteRulesActionCorsPolicy) []HttpRouteRulesActionCorsPolicy {
@@ -3277,6 +3330,9 @@ func diffHttpRoute(c *Client, desired, actual *HttpRoute, opts ...dcl.ApplyOptio
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareHttpRouteRulesNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

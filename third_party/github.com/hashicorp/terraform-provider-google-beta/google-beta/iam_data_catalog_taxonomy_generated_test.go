@@ -24,13 +24,13 @@ func TestAccDataCatalogTaxonomyIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataCatalogTaxonomyIamBinding_basicGenerated(context),
@@ -47,13 +47,13 @@ func TestAccDataCatalogTaxonomyIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -67,13 +67,13 @@ func TestAccDataCatalogTaxonomyIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataCatalogTaxonomyIamPolicy_basicGenerated(context),
@@ -88,15 +88,12 @@ func TestAccDataCatalogTaxonomyIamPolicyGenerated(t *testing.T) {
 func testAccDataCatalogTaxonomyIamMember_basicGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_data_catalog_taxonomy" "basic_taxonomy" {
-  provider = google-beta
-  region = "us"
-  display_name =  "tf_test_my_display_name%{random_suffix}"
+  display_name =  "tf_test_my_taxonomy%{random_suffix}"
   description = "A collection of policy tags"
   activated_policy_types = ["FINE_GRAINED_ACCESS_CONTROL"]
 }
 
 resource "google_data_catalog_taxonomy_iam_member" "foo" {
-  provider = google-beta
   taxonomy = google_data_catalog_taxonomy.basic_taxonomy.name
   role = "%{role}"
   member = "user:admin@hashicorptest.com"
@@ -107,15 +104,12 @@ resource "google_data_catalog_taxonomy_iam_member" "foo" {
 func testAccDataCatalogTaxonomyIamPolicy_basicGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_data_catalog_taxonomy" "basic_taxonomy" {
-  provider = google-beta
-  region = "us"
-  display_name =  "tf_test_my_display_name%{random_suffix}"
+  display_name =  "tf_test_my_taxonomy%{random_suffix}"
   description = "A collection of policy tags"
   activated_policy_types = ["FINE_GRAINED_ACCESS_CONTROL"]
 }
 
 data "google_iam_policy" "foo" {
-  provider = google-beta
   binding {
     role = "%{role}"
     members = ["user:admin@hashicorptest.com"]
@@ -123,7 +117,6 @@ data "google_iam_policy" "foo" {
 }
 
 resource "google_data_catalog_taxonomy_iam_policy" "foo" {
-  provider = google-beta
   taxonomy = google_data_catalog_taxonomy.basic_taxonomy.name
   policy_data = data.google_iam_policy.foo.policy_data
 }
@@ -133,19 +126,15 @@ resource "google_data_catalog_taxonomy_iam_policy" "foo" {
 func testAccDataCatalogTaxonomyIamPolicy_emptyBinding(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_data_catalog_taxonomy" "basic_taxonomy" {
-  provider = google-beta
-  region = "us"
-  display_name =  "tf_test_my_display_name%{random_suffix}"
+  display_name =  "tf_test_my_taxonomy%{random_suffix}"
   description = "A collection of policy tags"
   activated_policy_types = ["FINE_GRAINED_ACCESS_CONTROL"]
 }
 
 data "google_iam_policy" "foo" {
-  provider = google-beta
 }
 
 resource "google_data_catalog_taxonomy_iam_policy" "foo" {
-  provider = google-beta
   taxonomy = google_data_catalog_taxonomy.basic_taxonomy.name
   policy_data = data.google_iam_policy.foo.policy_data
 }
@@ -155,15 +144,12 @@ resource "google_data_catalog_taxonomy_iam_policy" "foo" {
 func testAccDataCatalogTaxonomyIamBinding_basicGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_data_catalog_taxonomy" "basic_taxonomy" {
-  provider = google-beta
-  region = "us"
-  display_name =  "tf_test_my_display_name%{random_suffix}"
+  display_name =  "tf_test_my_taxonomy%{random_suffix}"
   description = "A collection of policy tags"
   activated_policy_types = ["FINE_GRAINED_ACCESS_CONTROL"]
 }
 
 resource "google_data_catalog_taxonomy_iam_binding" "foo" {
-  provider = google-beta
   taxonomy = google_data_catalog_taxonomy.basic_taxonomy.name
   role = "%{role}"
   members = ["user:admin@hashicorptest.com"]
@@ -174,15 +160,12 @@ resource "google_data_catalog_taxonomy_iam_binding" "foo" {
 func testAccDataCatalogTaxonomyIamBinding_updateGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_data_catalog_taxonomy" "basic_taxonomy" {
-  provider = google-beta
-  region = "us"
-  display_name =  "tf_test_my_display_name%{random_suffix}"
+  display_name =  "tf_test_my_taxonomy%{random_suffix}"
   description = "A collection of policy tags"
   activated_policy_types = ["FINE_GRAINED_ACCESS_CONTROL"]
 }
 
 resource "google_data_catalog_taxonomy_iam_binding" "foo" {
-  provider = google-beta
   taxonomy = google_data_catalog_taxonomy.basic_taxonomy.name
   role = "%{role}"
   members = ["user:admin@hashicorptest.com", "user:gterraformtest1@gmail.com"]

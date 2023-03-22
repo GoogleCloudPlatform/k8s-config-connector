@@ -537,7 +537,6 @@ func canonicalizeServiceAttachmentDesiredState(rawDesired, rawInitial *ServiceAt
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -735,23 +734,26 @@ func canonicalizeNewServiceAttachmentConnectedEndpointsSet(c *Client, des, nw []
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceAttachmentConnectedEndpoints
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceAttachmentConnectedEndpoints
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceAttachmentConnectedEndpointsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceAttachmentConnectedEndpoints(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceAttachmentConnectedEndpointsSlice(c *Client, des, nw []ServiceAttachmentConnectedEndpoints) []ServiceAttachmentConnectedEndpoints {
@@ -853,23 +855,26 @@ func canonicalizeNewServiceAttachmentConsumerAcceptListsSet(c *Client, des, nw [
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceAttachmentConsumerAcceptLists
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceAttachmentConsumerAcceptLists
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceAttachmentConsumerAcceptListsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceAttachmentConsumerAcceptLists(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceAttachmentConsumerAcceptListsSlice(c *Client, des, nw []ServiceAttachmentConsumerAcceptLists) []ServiceAttachmentConsumerAcceptLists {
@@ -958,23 +963,26 @@ func canonicalizeNewServiceAttachmentPscServiceAttachmentIdSet(c *Client, des, n
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []ServiceAttachmentPscServiceAttachmentId
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []ServiceAttachmentPscServiceAttachmentId
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareServiceAttachmentPscServiceAttachmentIdNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewServiceAttachmentPscServiceAttachmentId(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewServiceAttachmentPscServiceAttachmentIdSlice(c *Client, des, nw []ServiceAttachmentPscServiceAttachmentId) []ServiceAttachmentPscServiceAttachmentId {
@@ -1127,6 +1135,9 @@ func diffServiceAttachment(c *Client, desired, actual *ServiceAttachment, opts .
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareServiceAttachmentConnectedEndpointsNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

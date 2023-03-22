@@ -201,7 +201,7 @@ which means the scan will be scheduled to start immediately.`,
 
 func resourceSecurityScannerScanConfigCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -281,7 +281,7 @@ func resourceSecurityScannerScanConfigCreate(d *schema.ResourceData, meta interf
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating ScanConfig: %s", err)
 	}
@@ -321,7 +321,7 @@ func resourceSecurityScannerScanConfigCreate(d *schema.ResourceData, meta interf
 
 func resourceSecurityScannerScanConfigRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -344,7 +344,7 @@ func resourceSecurityScannerScanConfigRead(d *schema.ResourceData, meta interfac
 		billingProject = bp
 	}
 
-	res, err := sendRequest(config, "GET", billingProject, url, userAgent, nil)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("SecurityScannerScanConfig %q", d.Id()))
 	}
@@ -389,7 +389,7 @@ func resourceSecurityScannerScanConfigRead(d *schema.ResourceData, meta interfac
 
 func resourceSecurityScannerScanConfigUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -513,7 +513,7 @@ func resourceSecurityScannerScanConfigUpdate(d *schema.ResourceData, meta interf
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
+	res, err := SendRequestWithTimeout(config, "PATCH", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate))
 
 	if err != nil {
 		return fmt.Errorf("Error updating ScanConfig %q: %s", d.Id(), err)
@@ -526,7 +526,7 @@ func resourceSecurityScannerScanConfigUpdate(d *schema.ResourceData, meta interf
 
 func resourceSecurityScannerScanConfigDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -552,7 +552,7 @@ func resourceSecurityScannerScanConfigDelete(d *schema.ResourceData, meta interf
 		billingProject = bp
 	}
 
-	res, err := sendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete))
 	if err != nil {
 		return handleNotFoundError(err, d, "ScanConfig")
 	}
@@ -584,7 +584,7 @@ func flattenSecurityScannerScanConfigDisplayName(v interface{}, d *schema.Resour
 func flattenSecurityScannerScanConfigMaxQps(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}
@@ -699,7 +699,7 @@ func flattenSecurityScannerScanConfigScheduleScheduleTime(v interface{}, d *sche
 func flattenSecurityScannerScanConfigScheduleIntervalDurationDays(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	// Handles the string fixed64 format
 	if strVal, ok := v.(string); ok {
-		if intVal, err := stringToFixed64(strVal); err == nil {
+		if intVal, err := StringToFixed64(strVal); err == nil {
 			return intVal
 		}
 	}

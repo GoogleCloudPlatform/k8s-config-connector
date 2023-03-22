@@ -513,7 +513,6 @@ func canonicalizeLogMetricDesiredState(rawDesired, rawInitial *LogMetric, opts .
 	} else {
 		canonicalDesired.Project = rawDesired.Project
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -712,23 +711,26 @@ func canonicalizeNewLogMetricMetricDescriptorSet(c *Client, des, nw []LogMetricM
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []LogMetricMetricDescriptor
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []LogMetricMetricDescriptor
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareLogMetricMetricDescriptorNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewLogMetricMetricDescriptor(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewLogMetricMetricDescriptorSlice(c *Client, des, nw []LogMetricMetricDescriptor) []LogMetricMetricDescriptor {
@@ -843,23 +845,26 @@ func canonicalizeNewLogMetricMetricDescriptorLabelsSet(c *Client, des, nw []LogM
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []LogMetricMetricDescriptorLabels
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []LogMetricMetricDescriptorLabels
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareLogMetricMetricDescriptorLabelsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewLogMetricMetricDescriptorLabels(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewLogMetricMetricDescriptorLabelsSlice(c *Client, des, nw []LogMetricMetricDescriptorLabels) []LogMetricMetricDescriptorLabels {
@@ -966,23 +971,26 @@ func canonicalizeNewLogMetricMetricDescriptorMetadataSet(c *Client, des, nw []Lo
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []LogMetricMetricDescriptorMetadata
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []LogMetricMetricDescriptorMetadata
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareLogMetricMetricDescriptorMetadataNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewLogMetricMetricDescriptorMetadata(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewLogMetricMetricDescriptorMetadataSlice(c *Client, des, nw []LogMetricMetricDescriptorMetadata) []LogMetricMetricDescriptorMetadata {
@@ -1109,23 +1117,26 @@ func canonicalizeNewLogMetricBucketOptionsSet(c *Client, des, nw []LogMetricBuck
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []LogMetricBucketOptions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []LogMetricBucketOptions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareLogMetricBucketOptionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewLogMetricBucketOptions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewLogMetricBucketOptionsSlice(c *Client, des, nw []LogMetricBucketOptions) []LogMetricBucketOptions {
@@ -1233,23 +1244,26 @@ func canonicalizeNewLogMetricBucketOptionsLinearBucketsSet(c *Client, des, nw []
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []LogMetricBucketOptionsLinearBuckets
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []LogMetricBucketOptionsLinearBuckets
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareLogMetricBucketOptionsLinearBucketsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewLogMetricBucketOptionsLinearBuckets(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewLogMetricBucketOptionsLinearBucketsSlice(c *Client, des, nw []LogMetricBucketOptionsLinearBuckets) []LogMetricBucketOptionsLinearBuckets {
@@ -1357,23 +1371,26 @@ func canonicalizeNewLogMetricBucketOptionsExponentialBucketsSet(c *Client, des, 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []LogMetricBucketOptionsExponentialBuckets
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []LogMetricBucketOptionsExponentialBuckets
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareLogMetricBucketOptionsExponentialBucketsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewLogMetricBucketOptionsExponentialBuckets(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewLogMetricBucketOptionsExponentialBucketsSlice(c *Client, des, nw []LogMetricBucketOptionsExponentialBuckets) []LogMetricBucketOptionsExponentialBuckets {
@@ -1469,23 +1486,26 @@ func canonicalizeNewLogMetricBucketOptionsExplicitBucketsSet(c *Client, des, nw 
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []LogMetricBucketOptionsExplicitBuckets
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []LogMetricBucketOptionsExplicitBuckets
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareLogMetricBucketOptionsExplicitBucketsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewLogMetricBucketOptionsExplicitBuckets(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewLogMetricBucketOptionsExplicitBucketsSlice(c *Client, des, nw []LogMetricBucketOptionsExplicitBuckets) []LogMetricBucketOptionsExplicitBuckets {
@@ -1603,6 +1623,9 @@ func diffLogMetric(c *Client, desired, actual *LogMetric, opts ...dcl.ApplyOptio
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareLogMetricMetricDescriptorNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

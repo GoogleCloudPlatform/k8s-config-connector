@@ -10,11 +10,11 @@ import (
 func TestAccContainerAnalysisNote_basic(t *testing.T) {
 	t.Parallel()
 
-	name := randString(t, 10)
-	readableName := randString(t, 10)
-	vcrTest(t, resource.TestCase{
+	name := RandString(t, 10)
+	readableName := RandString(t, 10)
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerAnalysisNoteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -32,12 +32,12 @@ func TestAccContainerAnalysisNote_basic(t *testing.T) {
 func TestAccContainerAnalysisNote_update(t *testing.T) {
 	t.Parallel()
 
-	name := randString(t, 10)
-	readableName := randString(t, 10)
-	readableName2 := randString(t, 10)
-	vcrTest(t, resource.TestCase{
+	name := RandString(t, 10)
+	readableName := RandString(t, 10)
+	readableName2 := RandString(t, 10)
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerAnalysisNoteDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

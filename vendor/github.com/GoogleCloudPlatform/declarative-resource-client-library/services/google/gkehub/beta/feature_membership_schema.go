@@ -402,7 +402,7 @@ func DCLFeatureMembershipSchema() *dcl.Schema {
 										Type:        "string",
 										GoName:      "ControlPlane",
 										GoType:      "FeatureMembershipMeshControlPlaneEnum",
-										Description: "Whether to automatically manage Service Mesh control planes. Possible values: CONTROL_PLANE_MANAGEMENT_UNSPECIFIED, AUTOMATIC, MANUAL",
+										Description: "**DEPRECATED** Whether to automatically manage Service Mesh control planes. Possible values: CONTROL_PLANE_MANAGEMENT_UNSPECIFIED, AUTOMATIC, MANUAL",
 										Enum: []string{
 											"CONTROL_PLANE_MANAGEMENT_UNSPECIFIED",
 											"AUTOMATIC",

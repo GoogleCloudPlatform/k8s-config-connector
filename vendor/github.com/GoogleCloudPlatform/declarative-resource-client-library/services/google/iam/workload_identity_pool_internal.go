@@ -426,7 +426,6 @@ func canonicalizeWorkloadIdentityPoolDesiredState(rawDesired, rawInitial *Worklo
 	} else {
 		canonicalDesired.Location = rawDesired.Location
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -543,6 +542,9 @@ func diffWorkloadIdentityPool(c *Client, desired, actual *WorkloadIdentityPool, 
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

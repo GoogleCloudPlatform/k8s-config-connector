@@ -35,6 +35,12 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type RepositoryDockerRepository struct {
+	/* Immutable. Address of the remote repository. Default value: "DOCKER_HUB" Possible values: ["DOCKER_HUB"]. */
+	// +optional
+	PublicRepository *string `json:"publicRepository,omitempty"`
+}
+
 type RepositoryMavenConfig struct {
 	/* Immutable. The repository with this flag will allow publishing the same
 	snapshot versions. */
@@ -44,6 +50,68 @@ type RepositoryMavenConfig struct {
 	/* Immutable. Version policy defines the versions that the registry will accept. Default value: "VERSION_POLICY_UNSPECIFIED" Possible values: ["VERSION_POLICY_UNSPECIFIED", "RELEASE", "SNAPSHOT"]. */
 	// +optional
 	VersionPolicy *string `json:"versionPolicy,omitempty"`
+}
+
+type RepositoryMavenRepository struct {
+	/* Immutable. Address of the remote repository. Default value: "MAVEN_CENTRAL" Possible values: ["MAVEN_CENTRAL"]. */
+	// +optional
+	PublicRepository *string `json:"publicRepository,omitempty"`
+}
+
+type RepositoryNpmRepository struct {
+	/* Immutable. Address of the remote repository. Default value: "NPMJS" Possible values: ["NPMJS"]. */
+	// +optional
+	PublicRepository *string `json:"publicRepository,omitempty"`
+}
+
+type RepositoryPythonRepository struct {
+	/* Immutable. Address of the remote repository. Default value: "PYPI" Possible values: ["PYPI"]. */
+	// +optional
+	PublicRepository *string `json:"publicRepository,omitempty"`
+}
+
+type RepositoryRemoteRepositoryConfig struct {
+	/* Immutable. The description of the remote source. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	/* Immutable. Specific settings for a Docker remote repository. */
+	// +optional
+	DockerRepository *RepositoryDockerRepository `json:"dockerRepository,omitempty"`
+
+	/* Immutable. Specific settings for a Maven remote repository. */
+	// +optional
+	MavenRepository *RepositoryMavenRepository `json:"mavenRepository,omitempty"`
+
+	/* Immutable. Specific settings for an Npm remote repository. */
+	// +optional
+	NpmRepository *RepositoryNpmRepository `json:"npmRepository,omitempty"`
+
+	/* Immutable. Specific settings for a Python remote repository. */
+	// +optional
+	PythonRepository *RepositoryPythonRepository `json:"pythonRepository,omitempty"`
+}
+
+type RepositoryUpstreamPolicies struct {
+	/* The user-provided ID of the upstream policy. */
+	// +optional
+	Id *string `json:"id,omitempty"`
+
+	/* Entries with a greater priority value take precedence in the pull order. */
+	// +optional
+	Priority *int `json:"priority,omitempty"`
+
+	/* A reference to the repository resource, for example:
+	"projects/p1/locations/us-central1/repositories/repo1". */
+	// +optional
+	RepositoryRef *v1alpha1.ResourceRef `json:"repositoryRef,omitempty"`
+}
+
+type RepositoryVirtualRepositoryConfig struct {
+	/* Policies that configure the upstream artifacts distributed by the Virtual
+	Repository. Upstream policies cannot be set on a standard repository. */
+	// +optional
+	UpstreamPolicies []RepositoryUpstreamPolicies `json:"upstreamPolicies,omitempty"`
 }
 
 type ArtifactRegistryRepositorySpec struct {
@@ -71,9 +139,21 @@ type ArtifactRegistryRepositorySpec struct {
 	// +optional
 	MavenConfig *RepositoryMavenConfig `json:"mavenConfig,omitempty"`
 
+	/* Immutable. The mode configures the repository to serve artifacts from different sources. Default value: "STANDARD_REPOSITORY" Possible values: ["STANDARD_REPOSITORY", "VIRTUAL_REPOSITORY", "REMOTE_REPOSITORY"]. */
+	// +optional
+	Mode *string `json:"mode,omitempty"`
+
+	/* Immutable. Configuration specific for a Remote Repository. */
+	// +optional
+	RemoteRepositoryConfig *RepositoryRemoteRepositoryConfig `json:"remoteRepositoryConfig,omitempty"`
+
 	/* Immutable. Optional. The repositoryId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Configuration specific for a Virtual Repository. */
+	// +optional
+	VirtualRepositoryConfig *RepositoryVirtualRepositoryConfig `json:"virtualRepositoryConfig,omitempty"`
 }
 
 type ArtifactRegistryRepositoryStatus struct {

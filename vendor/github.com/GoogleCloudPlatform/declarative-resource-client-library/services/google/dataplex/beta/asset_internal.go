@@ -626,7 +626,6 @@ func canonicalizeAssetDesiredState(rawDesired, rawInitial *Asset, opts ...dcl.Ap
 	} else {
 		canonicalDesired.DataplexZone = rawDesired.DataplexZone
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -807,23 +806,26 @@ func canonicalizeNewAssetResourceSpecSet(c *Client, des, nw []AssetResourceSpec)
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []AssetResourceSpec
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []AssetResourceSpec
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareAssetResourceSpecNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewAssetResourceSpec(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewAssetResourceSpecSlice(c *Client, des, nw []AssetResourceSpec) []AssetResourceSpec {
@@ -934,23 +936,26 @@ func canonicalizeNewAssetResourceStatusSet(c *Client, des, nw []AssetResourceSta
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []AssetResourceStatus
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []AssetResourceStatus
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareAssetResourceStatusNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewAssetResourceStatus(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewAssetResourceStatusSlice(c *Client, des, nw []AssetResourceStatus) []AssetResourceStatus {
@@ -1061,23 +1066,26 @@ func canonicalizeNewAssetSecurityStatusSet(c *Client, des, nw []AssetSecuritySta
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []AssetSecurityStatus
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []AssetSecurityStatus
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareAssetSecurityStatusNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewAssetSecurityStatus(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewAssetSecurityStatusSlice(c *Client, des, nw []AssetSecurityStatus) []AssetSecurityStatus {
@@ -1204,23 +1212,26 @@ func canonicalizeNewAssetDiscoverySpecSet(c *Client, des, nw []AssetDiscoverySpe
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []AssetDiscoverySpec
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []AssetDiscoverySpec
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareAssetDiscoverySpecNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewAssetDiscoverySpec(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewAssetDiscoverySpecSlice(c *Client, des, nw []AssetDiscoverySpec) []AssetDiscoverySpec {
@@ -1341,23 +1352,26 @@ func canonicalizeNewAssetDiscoverySpecCsvOptionsSet(c *Client, des, nw []AssetDi
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []AssetDiscoverySpecCsvOptions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []AssetDiscoverySpecCsvOptions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareAssetDiscoverySpecCsvOptionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewAssetDiscoverySpecCsvOptions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewAssetDiscoverySpecCsvOptionsSlice(c *Client, des, nw []AssetDiscoverySpecCsvOptions) []AssetDiscoverySpecCsvOptions {
@@ -1464,23 +1478,26 @@ func canonicalizeNewAssetDiscoverySpecJsonOptionsSet(c *Client, des, nw []AssetD
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []AssetDiscoverySpecJsonOptions
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []AssetDiscoverySpecJsonOptions
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareAssetDiscoverySpecJsonOptionsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewAssetDiscoverySpecJsonOptions(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewAssetDiscoverySpecJsonOptionsSlice(c *Client, des, nw []AssetDiscoverySpecJsonOptions) []AssetDiscoverySpecJsonOptions {
@@ -1607,23 +1624,26 @@ func canonicalizeNewAssetDiscoveryStatusSet(c *Client, des, nw []AssetDiscoveryS
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []AssetDiscoveryStatus
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []AssetDiscoveryStatus
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareAssetDiscoveryStatusNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewAssetDiscoveryStatus(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewAssetDiscoveryStatusSlice(c *Client, des, nw []AssetDiscoveryStatus) []AssetDiscoveryStatus {
@@ -1737,23 +1757,26 @@ func canonicalizeNewAssetDiscoveryStatusStatsSet(c *Client, des, nw []AssetDisco
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []AssetDiscoveryStatusStats
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []AssetDiscoveryStatusStats
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareAssetDiscoveryStatusStatsNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewAssetDiscoveryStatusStats(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewAssetDiscoveryStatusStatsSlice(c *Client, des, nw []AssetDiscoveryStatusStats) []AssetDiscoveryStatusStats {
@@ -1913,6 +1936,9 @@ func diffAsset(c *Client, desired, actual *Asset, opts ...dcl.ApplyOption) ([]*d
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareAssetResourceSpecNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

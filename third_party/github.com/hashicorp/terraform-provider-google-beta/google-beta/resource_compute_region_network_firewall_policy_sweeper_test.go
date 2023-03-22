@@ -34,7 +34,7 @@ func init() {
 func testSweepComputeRegionNetworkFirewallPolicy(region string) error {
 	log.Print("[INFO][SWEEPER_LOG] Starting sweeper for ComputeRegionNetworkFirewallPolicy")
 
-	config, err := sharedConfigForRegion(region)
+	config, err := SharedConfigForRegion(region)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error getting shared config for region: %s", err)
 		return err
@@ -47,7 +47,7 @@ func testSweepComputeRegionNetworkFirewallPolicy(region string) error {
 	}
 
 	t := &testing.T{}
-	billingId := getTestBillingAccountFromEnv(t)
+	billingId := GetTestBillingAccountFromEnv(t)
 
 	// Setup variables to be used for Delete arguments.
 	d := map[string]string{
@@ -58,7 +58,7 @@ func testSweepComputeRegionNetworkFirewallPolicy(region string) error {
 		"billing_account": billingId,
 	}
 
-	client := NewDCLComputeClient(config, config.userAgent, "", 0)
+	client := NewDCLComputeClient(config, config.UserAgent, "", 0)
 	err = client.DeleteAllNetworkFirewallPolicy(context.Background(), d["project"], d["location"], isDeletableComputeRegionNetworkFirewallPolicy)
 	if err != nil {
 		return err
@@ -67,5 +67,5 @@ func testSweepComputeRegionNetworkFirewallPolicy(region string) error {
 }
 
 func isDeletableComputeRegionNetworkFirewallPolicy(r *compute.NetworkFirewallPolicy) bool {
-	return isSweepableTestResource(*r.Name)
+	return IsSweepableTestResource(*r.Name)
 }

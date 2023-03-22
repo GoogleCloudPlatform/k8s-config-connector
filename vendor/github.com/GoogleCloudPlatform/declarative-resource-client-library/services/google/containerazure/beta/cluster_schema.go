@@ -117,7 +117,6 @@ func DCLClusterSchema() *dcl.Schema {
 							"name",
 							"azureRegion",
 							"resourceGroupId",
-							"client",
 							"networking",
 							"controlPlane",
 							"authorization",
@@ -173,10 +172,38 @@ func DCLClusterSchema() *dcl.Schema {
 								Description: "The Azure region where the cluster runs. Each Google Cloud region supports a subset of nearby Azure regions. You can call to list all supported Azure regions within a given Google Cloud region.",
 								Immutable:   true,
 							},
+							"azureServicesAuthentication": &dcl.Property{
+								Type:        "object",
+								GoName:      "AzureServicesAuthentication",
+								GoType:      "ClusterAzureServicesAuthentication",
+								Description: "Azure authentication configuration for management of Azure resources",
+								Conflicts: []string{
+									"client",
+								},
+								Required: []string{
+									"tenantId",
+									"applicationId",
+								},
+								Properties: map[string]*dcl.Property{
+									"applicationId": &dcl.Property{
+										Type:        "string",
+										GoName:      "ApplicationId",
+										Description: "The Azure Active Directory Application ID for Authentication configuration.",
+									},
+									"tenantId": &dcl.Property{
+										Type:        "string",
+										GoName:      "TenantId",
+										Description: "The Azure Active Directory Tenant ID for Authentication configuration.",
+									},
+								},
+							},
 							"client": &dcl.Property{
 								Type:        "string",
 								GoName:      "Client",
 								Description: "Name of the AzureClient. The `AzureClient` resource must reside on the same GCP project and region as the `AzureCluster`. `AzureClient` names are formatted as `projects/<project-number>/locations/<region>/azureClients/<client-id>`. See Resource Names (https:cloud.google.com/apis/design/resource_names) for more details on Google Cloud resource names.",
+								Conflicts: []string{
+									"azureServicesAuthentication",
+								},
 								ResourceReferences: []*dcl.PropertyResourceReference{
 									&dcl.PropertyResourceReference{
 										Resource: "ContainerAzure/AzureClient",

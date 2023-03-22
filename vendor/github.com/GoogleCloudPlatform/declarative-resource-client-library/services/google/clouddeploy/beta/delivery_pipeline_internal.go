@@ -587,7 +587,6 @@ func canonicalizeDeliveryPipelineDesiredState(rawDesired, rawInitial *DeliveryPi
 	} else {
 		canonicalDesired.Suspended = rawDesired.Suspended
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -736,23 +735,26 @@ func canonicalizeNewDeliveryPipelineSerialPipelineSet(c *Client, des, nw []Deliv
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []DeliveryPipelineSerialPipeline
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []DeliveryPipelineSerialPipeline
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareDeliveryPipelineSerialPipelineNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewDeliveryPipelineSerialPipeline(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewDeliveryPipelineSerialPipelineSlice(c *Client, des, nw []DeliveryPipelineSerialPipeline) []DeliveryPipelineSerialPipeline {
@@ -861,23 +863,26 @@ func canonicalizeNewDeliveryPipelineSerialPipelineStagesSet(c *Client, des, nw [
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []DeliveryPipelineSerialPipelineStages
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []DeliveryPipelineSerialPipelineStages
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareDeliveryPipelineSerialPipelineStagesNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewDeliveryPipelineSerialPipelineStages(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewDeliveryPipelineSerialPipelineStagesSlice(c *Client, des, nw []DeliveryPipelineSerialPipelineStages) []DeliveryPipelineSerialPipelineStages {
@@ -970,23 +975,26 @@ func canonicalizeNewDeliveryPipelineSerialPipelineStagesStrategySet(c *Client, d
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []DeliveryPipelineSerialPipelineStagesStrategy
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []DeliveryPipelineSerialPipelineStagesStrategy
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareDeliveryPipelineSerialPipelineStagesStrategyNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewDeliveryPipelineSerialPipelineStagesStrategy(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewDeliveryPipelineSerialPipelineStagesStrategySlice(c *Client, des, nw []DeliveryPipelineSerialPipelineStagesStrategy) []DeliveryPipelineSerialPipelineStagesStrategy {
@@ -1085,23 +1093,26 @@ func canonicalizeNewDeliveryPipelineSerialPipelineStagesStrategyStandardSet(c *C
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []DeliveryPipelineSerialPipelineStagesStrategyStandard
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []DeliveryPipelineSerialPipelineStagesStrategyStandard
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareDeliveryPipelineSerialPipelineStagesStrategyStandardNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewDeliveryPipelineSerialPipelineStagesStrategyStandard(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewDeliveryPipelineSerialPipelineStagesStrategyStandardSlice(c *Client, des, nw []DeliveryPipelineSerialPipelineStagesStrategyStandard) []DeliveryPipelineSerialPipelineStagesStrategyStandard {
@@ -1196,23 +1207,26 @@ func canonicalizeNewDeliveryPipelineConditionSet(c *Client, des, nw []DeliveryPi
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []DeliveryPipelineCondition
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []DeliveryPipelineCondition
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareDeliveryPipelineConditionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewDeliveryPipelineCondition(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewDeliveryPipelineConditionSlice(c *Client, des, nw []DeliveryPipelineCondition) []DeliveryPipelineCondition {
@@ -1317,23 +1331,26 @@ func canonicalizeNewDeliveryPipelineConditionPipelineReadyConditionSet(c *Client
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []DeliveryPipelineConditionPipelineReadyCondition
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []DeliveryPipelineConditionPipelineReadyCondition
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareDeliveryPipelineConditionPipelineReadyConditionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewDeliveryPipelineConditionPipelineReadyCondition(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewDeliveryPipelineConditionPipelineReadyConditionSlice(c *Client, des, nw []DeliveryPipelineConditionPipelineReadyCondition) []DeliveryPipelineConditionPipelineReadyCondition {
@@ -1446,23 +1463,26 @@ func canonicalizeNewDeliveryPipelineConditionTargetsPresentConditionSet(c *Clien
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []DeliveryPipelineConditionTargetsPresentCondition
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []DeliveryPipelineConditionTargetsPresentCondition
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareDeliveryPipelineConditionTargetsPresentConditionNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewDeliveryPipelineConditionTargetsPresentCondition(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewDeliveryPipelineConditionTargetsPresentConditionSlice(c *Client, des, nw []DeliveryPipelineConditionTargetsPresentCondition) []DeliveryPipelineConditionTargetsPresentCondition {
@@ -1594,6 +1614,9 @@ func diffDeliveryPipeline(c *Client, desired, actual *DeliveryPipeline, opts ...
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareDeliveryPipelineSerialPipelineNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

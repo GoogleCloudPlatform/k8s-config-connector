@@ -297,7 +297,7 @@ var healthCheckedTargetSchema *schema.Resource = &schema.Resource{
 
 func resourceDnsRecordSetCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -377,7 +377,7 @@ func resourceDnsRecordSetCreate(d *schema.ResourceData, meta interface{}) error 
 
 func resourceDnsRecordSetRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -438,7 +438,7 @@ func resourceDnsRecordSetRead(d *schema.ResourceData, meta interface{}) error {
 
 func resourceDnsRecordSetDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -511,7 +511,7 @@ func resourceDnsRecordSetDelete(d *schema.ResourceData, meta interface{}) error 
 
 func resourceDnsRecordSetUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}

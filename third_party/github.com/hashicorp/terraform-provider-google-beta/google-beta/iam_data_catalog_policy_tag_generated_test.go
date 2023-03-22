@@ -24,13 +24,13 @@ func TestAccDataCatalogPolicyTagIamBindingGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataCatalogPolicyTagIamBinding_basicGenerated(context),
@@ -47,13 +47,13 @@ func TestAccDataCatalogPolicyTagIamMemberGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -67,13 +67,13 @@ func TestAccDataCatalogPolicyTagIamPolicyGenerated(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 		"role":          "roles/viewer",
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProvidersOiCS,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataCatalogPolicyTagIamPolicy_basicGenerated(context),
@@ -88,22 +88,18 @@ func TestAccDataCatalogPolicyTagIamPolicyGenerated(t *testing.T) {
 func testAccDataCatalogPolicyTagIamMember_basicGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_data_catalog_policy_tag" "basic_policy_tag" {
-  provider = google-beta
   taxonomy = google_data_catalog_taxonomy.my_taxonomy.id
   display_name = "Low security"
   description = "A policy tag normally associated with low security items"
 }
 
 resource "google_data_catalog_taxonomy" "my_taxonomy" {
-  provider = google-beta
-  region = "us"
   display_name =  "tf_test_taxonomy_display_name%{random_suffix}"
   description = "A collection of policy tags"
   activated_policy_types = ["FINE_GRAINED_ACCESS_CONTROL"]
 }
 
 resource "google_data_catalog_policy_tag_iam_member" "foo" {
-  provider = google-beta
   policy_tag = google_data_catalog_policy_tag.basic_policy_tag.name
   role = "%{role}"
   member = "user:admin@hashicorptest.com"
@@ -114,22 +110,18 @@ resource "google_data_catalog_policy_tag_iam_member" "foo" {
 func testAccDataCatalogPolicyTagIamPolicy_basicGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_data_catalog_policy_tag" "basic_policy_tag" {
-  provider = google-beta
   taxonomy = google_data_catalog_taxonomy.my_taxonomy.id
   display_name = "Low security"
   description = "A policy tag normally associated with low security items"
 }
 
 resource "google_data_catalog_taxonomy" "my_taxonomy" {
-  provider = google-beta
-  region = "us"
   display_name =  "tf_test_taxonomy_display_name%{random_suffix}"
   description = "A collection of policy tags"
   activated_policy_types = ["FINE_GRAINED_ACCESS_CONTROL"]
 }
 
 data "google_iam_policy" "foo" {
-  provider = google-beta
   binding {
     role = "%{role}"
     members = ["user:admin@hashicorptest.com"]
@@ -137,7 +129,6 @@ data "google_iam_policy" "foo" {
 }
 
 resource "google_data_catalog_policy_tag_iam_policy" "foo" {
-  provider = google-beta
   policy_tag = google_data_catalog_policy_tag.basic_policy_tag.name
   policy_data = data.google_iam_policy.foo.policy_data
 }
@@ -147,26 +138,21 @@ resource "google_data_catalog_policy_tag_iam_policy" "foo" {
 func testAccDataCatalogPolicyTagIamPolicy_emptyBinding(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_data_catalog_policy_tag" "basic_policy_tag" {
-  provider = google-beta
   taxonomy = google_data_catalog_taxonomy.my_taxonomy.id
   display_name = "Low security"
   description = "A policy tag normally associated with low security items"
 }
 
 resource "google_data_catalog_taxonomy" "my_taxonomy" {
-  provider = google-beta
-  region = "us"
   display_name =  "tf_test_taxonomy_display_name%{random_suffix}"
   description = "A collection of policy tags"
   activated_policy_types = ["FINE_GRAINED_ACCESS_CONTROL"]
 }
 
 data "google_iam_policy" "foo" {
-  provider = google-beta
 }
 
 resource "google_data_catalog_policy_tag_iam_policy" "foo" {
-  provider = google-beta
   policy_tag = google_data_catalog_policy_tag.basic_policy_tag.name
   policy_data = data.google_iam_policy.foo.policy_data
 }
@@ -176,22 +162,18 @@ resource "google_data_catalog_policy_tag_iam_policy" "foo" {
 func testAccDataCatalogPolicyTagIamBinding_basicGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_data_catalog_policy_tag" "basic_policy_tag" {
-  provider = google-beta
   taxonomy = google_data_catalog_taxonomy.my_taxonomy.id
   display_name = "Low security"
   description = "A policy tag normally associated with low security items"
 }
 
 resource "google_data_catalog_taxonomy" "my_taxonomy" {
-  provider = google-beta
-  region = "us"
   display_name =  "tf_test_taxonomy_display_name%{random_suffix}"
   description = "A collection of policy tags"
   activated_policy_types = ["FINE_GRAINED_ACCESS_CONTROL"]
 }
 
 resource "google_data_catalog_policy_tag_iam_binding" "foo" {
-  provider = google-beta
   policy_tag = google_data_catalog_policy_tag.basic_policy_tag.name
   role = "%{role}"
   members = ["user:admin@hashicorptest.com"]
@@ -202,22 +184,18 @@ resource "google_data_catalog_policy_tag_iam_binding" "foo" {
 func testAccDataCatalogPolicyTagIamBinding_updateGenerated(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_data_catalog_policy_tag" "basic_policy_tag" {
-  provider = google-beta
   taxonomy = google_data_catalog_taxonomy.my_taxonomy.id
   display_name = "Low security"
   description = "A policy tag normally associated with low security items"
 }
 
 resource "google_data_catalog_taxonomy" "my_taxonomy" {
-  provider = google-beta
-  region = "us"
   display_name =  "tf_test_taxonomy_display_name%{random_suffix}"
   description = "A collection of policy tags"
   activated_policy_types = ["FINE_GRAINED_ACCESS_CONTROL"]
 }
 
 resource "google_data_catalog_policy_tag_iam_binding" "foo" {
-  provider = google-beta
   policy_tag = google_data_catalog_policy_tag.basic_policy_tag.name
   role = "%{role}"
   members = ["user:admin@hashicorptest.com", "user:gterraformtest1@gmail.com"]

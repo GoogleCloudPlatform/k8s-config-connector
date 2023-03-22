@@ -10,8 +10,8 @@ func TestAccDataSourceGoogleFirebaseAppleApp(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"project_id":   getTestProjectFromEnv(),
-		"bundle_id":    "apple.app." + randString(t, 5),
+		"project_id":   GetTestProjectFromEnv(),
+		"bundle_id":    "apple.app." + RandString(t, 5),
 		"display_name": "tf-test Display Name AppleApp DataSource",
 		"app_store_id": 12345,
 		"team_id":      1234567890,
@@ -19,9 +19,9 @@ func TestAccDataSourceGoogleFirebaseAppleApp(t *testing.T) {
 
 	resourceName := "data.google_firebase_apple_app.my_app"
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceGoogleFirebaseAppleApp(context),
@@ -50,6 +50,11 @@ resource "google_firebase_apple_app" "my_app" {
 }
 
 data "google_firebase_apple_app" "my_app" {
+  app_id = google_firebase_apple_app.my_app.app_id
+}
+
+data "google_firebase_apple_app" "my_app_project" {
+  project = "%{project_id}"
   app_id = google_firebase_apple_app.my_app.app_id
 }
 `, context)

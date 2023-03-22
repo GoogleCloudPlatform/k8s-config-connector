@@ -291,7 +291,6 @@ func canonicalizeBrandDesiredState(rawDesired, rawInitial *Brand, opts ...dcl.Ap
 	} else {
 		canonicalDesired.Project = rawDesired.Project
 	}
-
 	return canonicalDesired, nil
 }
 
@@ -384,6 +383,9 @@ func diffBrand(c *Client, desired, actual *Brand, opts ...dcl.ApplyOption) ([]*d
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 

@@ -401,47 +401,6 @@ func canonicalizeRouteDesiredState(rawDesired, rawInitial *Route, opts ...dcl.Ap
 
 		return rawDesired, nil
 	}
-
-	if rawDesired.NextHopVpnTunnel != nil || rawInitial.NextHopVpnTunnel != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.NextHopIP, rawDesired.NextHopInstance, rawDesired.NextHopGateway, rawDesired.NextHopIlb) {
-			rawDesired.NextHopVpnTunnel = nil
-			rawInitial.NextHopVpnTunnel = nil
-		}
-	}
-
-	if rawDesired.NextHopIP != nil || rawInitial.NextHopIP != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.NextHopVpnTunnel, rawDesired.NextHopInstance, rawDesired.NextHopGateway, rawDesired.NextHopIlb) {
-			rawDesired.NextHopIP = nil
-			rawInitial.NextHopIP = nil
-		}
-	}
-
-	if rawDesired.NextHopInstance != nil || rawInitial.NextHopInstance != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.NextHopVpnTunnel, rawDesired.NextHopIP, rawDesired.NextHopGateway, rawDesired.NextHopIlb) {
-			rawDesired.NextHopInstance = nil
-			rawInitial.NextHopInstance = nil
-		}
-	}
-
-	if rawDesired.NextHopGateway != nil || rawInitial.NextHopGateway != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.NextHopVpnTunnel, rawDesired.NextHopIP, rawDesired.NextHopInstance, rawDesired.NextHopIlb) {
-			rawDesired.NextHopGateway = nil
-			rawInitial.NextHopGateway = nil
-		}
-	}
-
-	if rawDesired.NextHopIlb != nil || rawInitial.NextHopIlb != nil {
-		// Check if anything else is set.
-		if dcl.AnySet(rawDesired.NextHopVpnTunnel, rawDesired.NextHopIP, rawDesired.NextHopInstance, rawDesired.NextHopGateway) {
-			rawDesired.NextHopIlb = nil
-			rawInitial.NextHopIlb = nil
-		}
-	}
-
 	canonicalDesired := &Route{}
 	if dcl.StringCanonicalize(rawDesired.Name, rawInitial.Name) {
 		canonicalDesired.Name = rawInitial.Name
@@ -503,6 +462,41 @@ func canonicalizeRouteDesiredState(rawDesired, rawInitial *Route, opts ...dcl.Ap
 		canonicalDesired.Project = rawInitial.Project
 	} else {
 		canonicalDesired.Project = rawDesired.Project
+	}
+
+	if canonicalDesired.NextHopVpnTunnel != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.NextHopIP, rawDesired.NextHopInstance, rawDesired.NextHopGateway, rawDesired.NextHopIlb) {
+			canonicalDesired.NextHopVpnTunnel = dcl.String("")
+		}
+	}
+
+	if canonicalDesired.NextHopIP != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.NextHopVpnTunnel, rawDesired.NextHopInstance, rawDesired.NextHopGateway, rawDesired.NextHopIlb) {
+			canonicalDesired.NextHopIP = dcl.String("")
+		}
+	}
+
+	if canonicalDesired.NextHopInstance != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.NextHopVpnTunnel, rawDesired.NextHopIP, rawDesired.NextHopGateway, rawDesired.NextHopIlb) {
+			canonicalDesired.NextHopInstance = dcl.String("")
+		}
+	}
+
+	if canonicalDesired.NextHopGateway != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.NextHopVpnTunnel, rawDesired.NextHopIP, rawDesired.NextHopInstance, rawDesired.NextHopIlb) {
+			canonicalDesired.NextHopGateway = dcl.String("")
+		}
+	}
+
+	if canonicalDesired.NextHopIlb != nil {
+		// Check if anything else is set.
+		if dcl.AnySet(rawDesired.NextHopVpnTunnel, rawDesired.NextHopIP, rawDesired.NextHopInstance, rawDesired.NextHopGateway) {
+			canonicalDesired.NextHopIlb = dcl.String("")
+		}
 	}
 
 	return canonicalDesired, nil
@@ -705,23 +699,26 @@ func canonicalizeNewRouteWarningSet(c *Client, des, nw []RouteWarning) []RouteWa
 	if des == nil {
 		return nw
 	}
-	var reorderedNew []RouteWarning
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []RouteWarning
 	for _, d := range des {
-		matchedNew := -1
-		for idx, n := range nw {
+		matchedIndex := -1
+		for i, n := range nw {
 			if diffs, _ := compareRouteWarningNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
-				matchedNew = idx
+				matchedIndex = i
 				break
 			}
 		}
-		if matchedNew != -1 {
-			reorderedNew = append(reorderedNew, nw[matchedNew])
-			nw = append(nw[:matchedNew], nw[matchedNew+1:]...)
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewRouteWarning(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
 		}
 	}
-	reorderedNew = append(reorderedNew, nw...)
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
 
-	return reorderedNew
+	return items
 }
 
 func canonicalizeNewRouteWarningSlice(c *Client, des, nw []RouteWarning) []RouteWarning {
@@ -881,6 +878,9 @@ func diffRoute(c *Client, desired, actual *Route, opts ...dcl.ApplyOption) ([]*d
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if len(newDiffs) > 0 {
+		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
+	}
 	return newDiffs, nil
 }
 func compareRouteWarningNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {

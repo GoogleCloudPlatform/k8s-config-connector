@@ -179,7 +179,7 @@ func ResourceBigtableGCPolicy() *schema.Resource {
 
 func resourceBigtableGCPolicyUpsert(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -241,7 +241,7 @@ func resourceBigtableGCPolicyUpsert(d *schema.ResourceData, meta interface{}) er
 
 func resourceBigtableGCPolicyRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -385,7 +385,7 @@ func resourceBigtableGCPolicyDestroy(d *schema.ResourceData, meta interface{}) e
 		return nil
 	}
 
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}

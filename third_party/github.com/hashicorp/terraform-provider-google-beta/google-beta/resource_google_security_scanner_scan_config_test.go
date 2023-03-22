@@ -9,8 +9,8 @@ import (
 func TestAccSecurityScannerScanConfig_scanConfigUpdate(t *testing.T) {
 	t.Parallel()
 
-	firstAddressSuffix := randString(t, 10)
-	secondAddressSuffix := randString(t, 10)
+	firstAddressSuffix := RandString(t, 10)
+	secondAddressSuffix := RandString(t, 10)
 	context := map[string]interface{}{
 		"random_suffix":       firstAddressSuffix,
 		"random_suffix2":      secondAddressSuffix,
@@ -28,9 +28,9 @@ func TestAccSecurityScannerScanConfig_scanConfigUpdate(t *testing.T) {
 		"max_qps":             20,
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckSecurityScannerScanConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

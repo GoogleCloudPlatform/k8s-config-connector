@@ -27,12 +27,12 @@ func TestAccHealthcareDataset_healthcareDatasetBasicExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckHealthcareDatasetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -68,7 +68,7 @@ func testAccCheckHealthcareDatasetDestroyProducer(t *testing.T) func(s *terrafor
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{HealthcareBasePath}}projects/{{project}}/locations/{{location}}/datasets/{{name}}")
 			if err != nil {
@@ -81,7 +81,7 @@ func testAccCheckHealthcareDatasetDestroyProducer(t *testing.T) func(s *terrafor
 				billingProject = config.BillingProject
 			}
 
-			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil, healthcareDatasetNotInitialized)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, healthcareDatasetNotInitialized)
 			if err == nil {
 				return fmt.Errorf("HealthcareDataset still exists at %s", url)
 			}

@@ -38,15 +38,15 @@ func TestAccContainerAwsNodePool_BasicHandWritten(t *testing.T) {
 		"aws_vol_key":    "00000000-0000-0000-0000-17aad2f0f61f",
 		"aws_vpc":        "vpc-0b3f63cb91b247628",
 		"byo_prefix":     "mmv2",
-		"project_name":   getTestProjectFromEnv(),
+		"project_name":   GetTestProjectFromEnv(),
 		"project_number": getTestProjectNumberFromEnv(),
-		"service_acct":   getTestServiceAccountFromEnv(t),
-		"random_suffix":  randString(t, 10),
+		"service_acct":   GetTestServiceAccountFromEnv(t),
+		"random_suffix":  RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckContainerAwsNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -82,16 +82,16 @@ func TestAccContainerAwsNodePool_BetaBasicHandWritten(t *testing.T) {
 		"aws_vol_key":    "00000000-0000-0000-0000-17aad2f0f61f",
 		"aws_vpc":        "vpc-0b3f63cb91b247628",
 		"byo_prefix":     "mmv2",
-		"project_name":   getTestProjectFromEnv(),
+		"project_name":   GetTestProjectFromEnv(),
 		"project_number": getTestProjectNumberFromEnv(),
-		"service_acct":   getTestServiceAccountFromEnv(t),
-		"random_suffix":  randString(t, 10),
+		"service_acct":   GetTestServiceAccountFromEnv(t),
+		"random_suffix":  RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck: func() { testAccPreCheck(t) },
 
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckContainerAwsNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -770,7 +770,7 @@ func testAccCheckContainerAwsNodePoolDestroyProducer(t *testing.T) func(s *terra
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			billingProject := ""
 			if config.BillingProject != "" {
@@ -792,7 +792,7 @@ func testAccCheckContainerAwsNodePoolDestroyProducer(t *testing.T) func(s *terra
 				UpdateTime:  dcl.StringOrNil(rs.Primary.Attributes["update_time"]),
 			}
 
-			client := NewDCLContainerAwsClient(config, config.userAgent, billingProject, 0)
+			client := NewDCLContainerAwsClient(config, config.UserAgent, billingProject, 0)
 			_, err := client.GetNodePool(context.Background(), obj)
 			if err == nil {
 				return fmt.Errorf("google_container_aws_node_pool still exists %v", obj)

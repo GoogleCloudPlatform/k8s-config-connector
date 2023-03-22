@@ -10,22 +10,22 @@ import (
 
 func TestAccComputeNetworkEndpoint_networkEndpointsBasic(t *testing.T) {
 	// Multiple fine-grained resources
-	skipIfVcr(t)
+	SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"random_suffix": randString(t, 10),
+		"random_suffix": RandString(t, 10),
 		"default_port":  90,
 		"modified_port": 100,
 		"add1_port":     101,
 		"add2_port":     102,
 	}
 	negId := fmt.Sprintf("projects/%s/zones/%s/networkEndpointGroups/tf-test-neg-%s",
-		getTestProjectFromEnv(), getTestZoneFromEnv(), context["random_suffix"])
+		GetTestProjectFromEnv(), GetTestZoneFromEnv(), context["random_suffix"])
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: testAccProviders,
+		Providers: TestAccProviders,
 		Steps: []resource.TestStep{
 			{
 				// Create one endpoint
@@ -201,10 +201,10 @@ func testAccCheckComputeNetworkEndpointWithPortsDestroyed(t *testing.T, negId st
 }
 
 func testAccComputeNetworkEndpointsListEndpointPorts(t *testing.T, negId string) (map[string]struct{}, error) {
-	config := googleProviderConfig(t)
+	config := GoogleProviderConfig(t)
 
 	url := fmt.Sprintf("https://www.googleapis.com/compute/beta/%s/listNetworkEndpoints", negId)
-	res, err := sendRequest(config, "POST", "", url, config.userAgent, nil)
+	res, err := SendRequest(config, "POST", "", url, config.UserAgent, nil)
 	if err != nil {
 		return nil, err
 	}

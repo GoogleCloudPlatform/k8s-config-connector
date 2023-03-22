@@ -11,13 +11,13 @@ func TestAccServiceUsageConsumerQuotaOverride_consumerQuotaOverrideCustomIncorre
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"org_id":        getTestOrgFromEnv(t),
-		"random_suffix": randString(t, 10),
+		"org_id":        GetTestOrgFromEnv(t),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProvidersOiCS,
+		Providers:    TestAccProvidersOiCS,
 		CheckDestroy: testAccCheckServiceUsageConsumerQuotaOverrideDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{

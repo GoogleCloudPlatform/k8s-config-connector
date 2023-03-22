@@ -12,9 +12,9 @@ func TestAccStorageDefaultObjectAcl_basic(t *testing.T) {
 	t.Parallel()
 
 	bucketName := testBucketName(t)
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccStorageDefaultObjectAclDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -32,9 +32,9 @@ func TestAccStorageDefaultObjectAcl_noRoleEntity(t *testing.T) {
 	t.Parallel()
 
 	bucketName := testBucketName(t)
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccStorageDefaultObjectAclDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -49,9 +49,9 @@ func TestAccStorageDefaultObjectAcl_upgrade(t *testing.T) {
 
 	bucketName := testBucketName(t)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccStorageDefaultObjectAclDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -87,9 +87,9 @@ func TestAccStorageDefaultObjectAcl_downgrade(t *testing.T) {
 
 	bucketName := testBucketName(t)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccStorageDefaultObjectAclDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -126,9 +126,9 @@ func TestAccStorageDefaultObjectAcl_unordered(t *testing.T) {
 
 	bucketName := testBucketName(t)
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccStorageDefaultObjectAclDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -141,9 +141,9 @@ func TestAccStorageDefaultObjectAcl_unordered(t *testing.T) {
 func testAccCheckGoogleStorageDefaultObjectAcl(t *testing.T, bucket, roleEntityS string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		roleEntity, _ := getRoleEntityPair(roleEntityS)
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
-		res, err := config.NewStorageClient(config.userAgent).DefaultObjectAccessControls.Get(bucket,
+		res, err := config.NewStorageClient(config.UserAgent).DefaultObjectAccessControls.Get(bucket,
 			roleEntity.Entity).Do()
 
 		if err != nil {
@@ -160,7 +160,7 @@ func testAccCheckGoogleStorageDefaultObjectAcl(t *testing.T, bucket, roleEntityS
 
 func testAccStorageDefaultObjectAclDestroyProducer(t *testing.T) func(s *terraform.State) error {
 	return func(s *terraform.State) error {
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
 		for _, rs := range s.RootModule().Resources {
 
@@ -170,7 +170,7 @@ func testAccStorageDefaultObjectAclDestroyProducer(t *testing.T) func(s *terrafo
 
 			bucket := rs.Primary.Attributes["bucket"]
 
-			_, err := config.NewStorageClient(config.userAgent).DefaultObjectAccessControls.List(bucket).Do()
+			_, err := config.NewStorageClient(config.UserAgent).DefaultObjectAccessControls.List(bucket).Do()
 			if err == nil {
 				return fmt.Errorf("Default Storage Object Acl for bucket %s still exists", bucket)
 			}
@@ -182,9 +182,9 @@ func testAccStorageDefaultObjectAclDestroyProducer(t *testing.T) func(s *terrafo
 func testAccCheckGoogleStorageDefaultObjectAclDelete(t *testing.T, bucket, roleEntityS string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		roleEntity, _ := getRoleEntityPair(roleEntityS)
-		config := googleProviderConfig(t)
+		config := GoogleProviderConfig(t)
 
-		_, err := config.NewStorageClient(config.userAgent).DefaultObjectAccessControls.Get(bucket, roleEntity.Entity).Do()
+		_, err := config.NewStorageClient(config.UserAgent).DefaultObjectAccessControls.Get(bucket, roleEntity.Entity).Do()
 
 		if err != nil {
 			return nil

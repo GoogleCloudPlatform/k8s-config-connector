@@ -972,6 +972,48 @@ func ResourceContainerCluster() *schema.Resource {
 				},
 			},
 
+			"protect_config": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Computed:    true,
+				MaxItems:    1,
+				Description: `The notification config for sending cluster upgrade notifications`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"workload_config": {
+							Type:        schema.TypeList,
+							Optional:    true,
+							Computed:    true,
+							MaxItems:    1,
+							Description: `WorkloadConfig defines the flags to enable or disable the workload configurations for the cluster.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"audit_mode": {
+										Type:        schema.TypeString,
+										Required:    true,
+										Description: `Mode defines how to audit the workload configs. Accepted values are MODE_UNSPECIFIED, DISABLED, BASIC.`,
+									},
+								},
+							},
+							AtLeastOneOf: []string{
+								"protect_config.0.workload_config",
+								"protect_config.0.workload_vulnerability_mode",
+							},
+						},
+						"workload_vulnerability_mode": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Computed:    true,
+							Description: `WorkloadVulnerabilityMode defines mode to perform vulnerability scanning. Accepted values are WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED, DISABLED, BASIC.`,
+							AtLeastOneOf: []string{
+								"protect_config.0.workload_config",
+								"protect_config.0.workload_vulnerability_mode",
+							},
+						},
+					},
+				},
+			},
+
 			"monitoring_config": {
 				Type:        schema.TypeList,
 				Optional:    true,
@@ -1856,7 +1898,7 @@ func resourceNodeConfigEmptyGuestAccelerator(_ context.Context, diff *schema.Res
 
 func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -1920,6 +1962,7 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		ConfidentialNodes:    expandConfidentialNodes(d.Get("confidential_nodes")),
 		ResourceLabels:       expandStringMap(d, "resource_labels"),
 		NodePoolAutoConfig:   expandNodePoolAutoConfig(d.Get("node_pool_auto_config")),
+		ProtectConfig:        expandProtectConfig(d.Get("protect_config")),
 		CostManagementConfig: expandCostManagementConfig(d.Get("cost_management_config")),
 	}
 
@@ -2154,7 +2197,7 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 
 func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -2443,12 +2486,16 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 		return err
 	}
 
+	if err := d.Set("protect_config", flattenProtectConfig(cluster.ProtectConfig)); err != nil {
+		return err
+	}
+
 	return nil
 }
 
 func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -3432,7 +3479,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		}
 		op, err := clusterNodePoolDeleteCall.Do()
 		if err != nil {
-			if !isGoogleApiErrorWithCode(err, 404) {
+			if !IsGoogleApiErrorWithCode(err, 404) {
 				return errwrap.Wrapf("Error deleting default node pool: {{err}}", err)
 			}
 			log.Printf("[WARN] Container cluster %q default node pool already removed, no change", d.Id())
@@ -3592,12 +3639,26 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 		return err
 	}
 
+	if d.HasChange("protect_config") {
+		req := &container.UpdateClusterRequest{
+			Update: &container.ClusterUpdate{
+				DesiredProtectConfig: expandProtectConfig(d.Get("protect_config")),
+			},
+		}
+		updateF := updateFunc(req, "updating GKE cluster master protect_config")
+		if err := lockedCall(lockKey, updateF); err != nil {
+			return err
+		}
+
+		log.Printf("[INFO] GKE cluster %s Protect Config has been updated to %#v", d.Id(), req.Update.DesiredProtectConfig)
+	}
+
 	return resourceContainerClusterRead(d, meta)
 }
 
 func resourceContainerClusterDelete(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -3615,7 +3676,7 @@ func resourceContainerClusterDelete(d *schema.ResourceData, meta interface{}) er
 	clusterName := d.Get("name").(string)
 
 	if _, err := containerClusterAwaitRestingState(config, project, location, clusterName, userAgent, d.Timeout(schema.TimeoutDelete)); err != nil {
-		if isGoogleApiErrorWithCode(err, 404) {
+		if IsGoogleApiErrorWithCode(err, 404) {
 			log.Printf("[INFO] GKE cluster %s doesn't exist to delete", d.Id())
 			return nil
 		}
@@ -3683,7 +3744,7 @@ func cleanFailedContainerCluster(d *schema.ResourceData, meta interface{}) error
 		return err
 	}
 
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return err
 	}
@@ -3885,7 +3946,7 @@ func expandMaintenancePolicy(d *schema.ResourceData, meta interface{}) *containe
 	location, _ := getLocation(d, config)
 	clusterName := d.Get("name").(string)
 	name := containerClusterFullName(project, location, clusterName)
-	userAgent, err := generateUserAgentString(d, config.userAgent)
+	userAgent, err := generateUserAgentString(d, config.UserAgent)
 	if err != nil {
 		return nil
 	}
@@ -4151,6 +4212,56 @@ func expandAuthenticatorGroupsConfig(configured interface{}) *container.Authenti
 		result.SecurityGroup = securityGroup.(string)
 	}
 	return result
+}
+
+func expandProtectConfig(configured interface{}) *container.ProtectConfig {
+	l := configured.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil
+	}
+
+	pc := &container.ProtectConfig{}
+	protectConfig := l[0].(map[string]interface{})
+	pc.WorkloadConfig = expandProtectConfigWorkloadConfig(protectConfig["workload_config"])
+	if v, ok := protectConfig["workload_vulnerability_mode"]; ok {
+		pc.WorkloadVulnerabilityMode = v.(string)
+	}
+	return pc
+}
+
+func expandProtectConfigWorkloadConfig(configured interface{}) *container.WorkloadConfig {
+	l := configured.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil
+	}
+	workloadConfig := l[0].(map[string]interface{})
+	return &container.WorkloadConfig{
+		AuditMode: workloadConfig["audit_mode"].(string),
+	}
+}
+
+func flattenProtectConfig(pc *container.ProtectConfig) []map[string]interface{} {
+	if pc == nil {
+		return nil
+	}
+
+	result := make(map[string]interface{})
+
+	result["workload_config"] = flattenProtectConfigWorkloadConfig(pc.WorkloadConfig)
+	result["workload_vulnerability_mode"] = pc.WorkloadVulnerabilityMode
+
+	return []map[string]interface{}{result}
+}
+
+func flattenProtectConfigWorkloadConfig(wc *container.WorkloadConfig) []map[string]interface{} {
+	if wc == nil {
+		return nil
+	}
+
+	result := make(map[string]interface{})
+	result["audit_mode"] = wc.AuditMode
+
+	return []map[string]interface{}{result}
 }
 
 func expandNotificationConfig(configured interface{}) *container.NotificationConfig {
@@ -5332,7 +5443,7 @@ func flattenNodePoolAutoConfigNetworkTags(c *container.NetworkTags) []map[string
 func resourceContainerClusterStateImporter(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
 
-	// userAgent, err := generateUserAgentString(d, config.userAgent)
+	// userAgent, err := generateUserAgentString(d, config.UserAgent)
 	// if err != nil {
 	// 	return nil, err
 	// }

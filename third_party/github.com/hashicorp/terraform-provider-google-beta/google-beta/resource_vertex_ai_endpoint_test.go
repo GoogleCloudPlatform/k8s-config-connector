@@ -27,15 +27,15 @@ func TestAccVertexAIEndpoint_vertexAiEndpointNetwork(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
-		"endpoint_name": fmt.Sprint(randInt(t) % 9999999999),
+		"endpoint_name": fmt.Sprint(RandInt(t) % 9999999999),
 		"kms_key_name":  BootstrapKMSKeyInLocation(t, "us-central1").CryptoKey.Name,
-		"network_name":  BootstrapSharedTestNetwork(t, "vertex"),
-		"random_suffix": randString(t, 10),
+		"network_name":  BootstrapSharedTestNetwork(t, "vertex-ai-endpoint-update"),
+		"random_suffix": RandString(t, 10),
 	}
 
-	vcrTest(t, resource.TestCase{
+	VcrTest(t, resource.TestCase{
 		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
+		Providers:    TestAccProviders,
 		CheckDestroy: testAccCheckVertexAIEndpointDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
@@ -164,7 +164,7 @@ func testAccCheckVertexAIEndpointDestroyProducer(t *testing.T) func(s *terraform
 				continue
 			}
 
-			config := googleProviderConfig(t)
+			config := GoogleProviderConfig(t)
 
 			url, err := replaceVarsForTest(config, rs, "{{VertexAIBasePath}}projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
 			if err != nil {
@@ -177,7 +177,7 @@ func testAccCheckVertexAIEndpointDestroyProducer(t *testing.T) func(s *terraform
 				billingProject = config.BillingProject
 			}
 
-			_, err = sendRequest(config, "GET", billingProject, url, config.userAgent, nil)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil)
 			if err == nil {
 				return fmt.Errorf("VertexAIEndpoint still exists at %s", url)
 			}
