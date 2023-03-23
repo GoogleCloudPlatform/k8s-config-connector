@@ -5,7 +5,7 @@ data:
   cnrm.recorder: gcr.io/gke-release/cnrm/recorder:411c879
   cnrm.unmanageddetector: gcr.io/gke-release/cnrm/unmanageddetector:411c879
   cnrm.webhook: gcr.io/gke-release/cnrm/webhook:411c879
-  prom-to-sd: gke.gcr.io/prometheus-to-sd:v0.9.1
+  prom-to-sd: k8s.gcr.io/prometheus-to-sd:v0.9.1
 kind: ConfigMap
 metadata:
   annotations:
