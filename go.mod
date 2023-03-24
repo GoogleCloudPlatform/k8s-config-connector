@@ -6,9 +6,9 @@ replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
 require (
 	cloud.google.com/go/profiler v0.1.0
-	github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp v0.0.0-00010101000000-000000000000
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.34.0
+	github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp v0.0.0-00010101000000-000000000000
 	github.com/Masterminds/sprig v2.22.0+incompatible
 	github.com/appscode/jsonpatch v0.0.0-20190108182946-7c0e3b262f30
 	github.com/blang/semver v3.5.1+incompatible
@@ -72,7 +72,7 @@ require (
 	cloud.google.com/go/security v1.10.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20210617225240-d185dfc1b5a1 // indirect
 	github.com/MakeNowJust/heredoc v1.0.0 // indirect
-	github.com/Masterminds/goutils v1.1.0 // indirect
+	github.com/Masterminds/goutils v1.1.1 // indirect
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/Microsoft/go-winio v0.4.16 // indirect
 	github.com/ProtonMail/go-crypto v0.0.0-20210428141323-04723f9f07d7 // indirect
