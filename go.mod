@@ -6,9 +6,9 @@ replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
 require (
 	cloud.google.com/go/profiler v0.1.0
-	github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp v0.0.0-00010101000000-000000000000
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.34.0
+	github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp v0.0.0-00010101000000-000000000000
 	github.com/Masterminds/sprig v2.22.0+incompatible
 	github.com/appscode/jsonpatch v0.0.0-20190108182946-7c0e3b262f30
 	github.com/blang/semver v3.5.1+incompatible
@@ -188,10 +188,10 @@ require (
 	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/crypto v0.0.0-20220517005047-85d78b3ac167 // indirect
 	golang.org/x/mod v0.7.0 // indirect
-	golang.org/x/net v0.2.0 // indirect
-	golang.org/x/sys v0.2.0 // indirect
-	golang.org/x/term v0.2.0 // indirect
-	golang.org/x/text v0.5.0 // indirect
+	golang.org/x/net v0.7.0 // indirect
+	golang.org/x/sys v0.5.0 // indirect
+	golang.org/x/term v0.5.0 // indirect
+	golang.org/x/text v0.7.0 // indirect
 	golang.org/x/tools v0.3.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.2.0 // indirect
