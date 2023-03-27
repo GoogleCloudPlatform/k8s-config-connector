@@ -143,7 +143,9 @@ func TestMain(m *testing.M) {
 	log.Info("Setting up a project for E2E tests...")
 	deleteProject, err := setupProject(organization, f.projectID, billingAccount, SERVICE_ACC_ID, log)
 	if err != nil {
-		log.Error(err, "error setting up project")
+		log.Error(err, "error setting up project\r\n",
+			"Organization", organization, "ProjectID", f.projectID, 
+			"BillingAccount", billingAccount, "ServiceID", SERVICE_ACC_ID)
 		cleanUpProject(deleteProject, f.cleanup, log)
 		os.Exit(1)
 	}
