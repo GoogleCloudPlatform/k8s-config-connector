@@ -144,7 +144,7 @@ func TestMain(m *testing.M) {
 	deleteProject, err := setupProject(organization, f.projectID, billingAccount, SERVICE_ACC_ID, log)
 	if err != nil {
 		log.Error(err, "error setting up project\r\n",
-			"Organization", organization, "ProjectID", f.projectID, 
+			"Organization", organization, "ProjectID", f.projectID,
 			"BillingAccount", billingAccount, "ServiceID", SERVICE_ACC_ID)
 		cleanUpProject(deleteProject, f.cleanup, log)
 		os.Exit(1)

@@ -300,6 +300,13 @@ func externalizeReference(t *testing.T, value map[string]interface{}, tc v1alpha
 			}
 			externalVal = strings.ReplaceAll(externalVal, "{{project}}", project)
 		}
+		if strings.Contains(externalVal, "{{location}}") {
+			location, found, _ := unstructured.NestedString(resource.Object, strings.Split("spec.location", ".")...)
+			if !found {
+				t.Fatalf("unsupported location value template resolution")
+			}
+			externalVal = strings.ReplaceAll(externalVal, "{{location}}", location)
+		}
 		if strings.Contains(externalVal, "{{") {
 			t.Fatalf("test does not support template expansion required for value template '%v'", tc.ValueTemplate)
 		}
