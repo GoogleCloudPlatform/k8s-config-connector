@@ -247,6 +247,11 @@ func main() {
 	if err := os.RemoveAll(staleManifestDir); err != nil {
 		log.Fatalf("error deleting dir %v: %v", staleManifestDir, err)
 	}
+	staleManifestDir = path.Join(operatorSrcRoot, "autopilot-channels", "packages", "configconnector", currentVersion.Version)
+	log.Printf("removing stale manifest %v", staleManifestDir)
+	if err := os.RemoveAll(staleManifestDir); err != nil {
+		log.Fatalf("error deleting dir %v: %v", staleManifestDir, err)
+	}
 }
 
 func kustomizeBuild(operatorSrcRoot string) {
