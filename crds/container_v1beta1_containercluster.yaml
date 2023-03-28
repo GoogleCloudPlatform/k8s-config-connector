@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.101.0
+    cnrm.cloud.google.com/version: 1.102.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -1025,6 +1025,10 @@ spec:
                       cpuManagerPolicy:
                         description: Control the CPU management policy on the node.
                         type: string
+                      podPidsLimit:
+                        description: Controls the maximum number of processes allowed
+                          to run in a pod.
+                        type: integer
                     required:
                     - cpuManagerPolicy
                     type: object
@@ -1436,6 +1440,26 @@ spec:
                   By default, no private IPv6 access to or from Google Services (all
                   access will be via IPv4).
                 type: string
+              protectConfig:
+                description: The notification config for sending cluster upgrade notifications.
+                properties:
+                  workloadConfig:
+                    description: WorkloadConfig defines the flags to enable or disable
+                      the workload configurations for the cluster.
+                    properties:
+                      auditMode:
+                        description: Mode defines how to audit the workload configs.
+                          Accepted values are MODE_UNSPECIFIED, DISABLED, BASIC.
+                        type: string
+                    required:
+                    - auditMode
+                    type: object
+                  workloadVulnerabilityMode:
+                    description: WorkloadVulnerabilityMode defines mode to perform
+                      vulnerability scanning. Accepted values are WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED,
+                      DISABLED, BASIC.
+                    type: string
+                type: object
               releaseChannel:
                 description: Configuration options for the Release channel feature,
                   which provide more control over automatic upgrades of your GKE clusters.
