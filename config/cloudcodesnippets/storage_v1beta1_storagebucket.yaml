@@ -13,16 +13,17 @@ insertText: |
         type: \${4:Delete}
       condition:
         age: \${5:7}
+        withState: \${6:ANY}
     versioning:
-      enabled: \${6:true}
+      enabled: \${7:true}
     cors:
     - origin:
-      - \${7:http://example.appspot.com}
+      - \${8:http://example.appspot.com}
       responseHeader:
-      - \${8:Content-Type}
+      - \${9:Content-Type}
       method:
-      - \${9:GET}
-      - \${10:HEAD}
-      - \${11:DELETE}
-      maxAgeSeconds: \${12:3600}
-    uniformBucketLevelAccess: \${13:true}
+      - \${10:GET}
+      - \${11:HEAD}
+      - \${12:DELETE}
+      maxAgeSeconds: \${13:3600}
+    uniformBucketLevelAccess: \${14:true}

@@ -1,0 +1,20 @@
+label: Config Connector IAMAccessBoundaryPolicy
+markdownDescription: Creates yaml for a IAMAccessBoundaryPolicy resource
+insertText: |
+  apiVersion: iam.cnrm.cloud.google.com/v1beta1
+  kind: IAMAccessBoundaryPolicy
+  metadata:
+    name: \${1:iamaccessboundarypolicy-name}
+  spec:
+    projectRef:
+      external: \${2:cloudresourcemanager.googleapis.com%2Fprojects%2F[PROJECT_ID?]}
+    displayName: \${3:Access Boundary Sample}
+    rules:
+    - description: \${4:Sample access boundary rule}
+      accessBoundaryRule:
+        availableResource: \${5:*}
+        availablePermissions:
+        - \${6:*}
+        availabilityCondition:
+          title: \${7:Access level expr}
+          expression: \${8:request.matchAccessLevels('[ORG_ID?]', ['[ACCESS_LEVEL?]'])}
