@@ -204,7 +204,7 @@ func main() {
 		log.Fatalf("error deleting dir %v: %v", outputDir, err)
 	}
 
-	// update the operator version
+	// update the operator version for default kustomization
 	kustomizationFilePath := path.Join(operatorSrcRoot, "config", "default", "kustomization.yaml")
 	b, err := ioutil.ReadFile(kustomizationFilePath)
 	if err != nil {
@@ -216,7 +216,21 @@ func main() {
 	if err := ioutil.WriteFile(kustomizationFilePath, []byte(kustomization), fileMode); err != nil {
 		log.Fatalf("error updating file %v", kustomizationFilePath)
 	}
-	log.Printf("successfully updated the version annotation in %v\n", kustomizationFilePath)
+	log.Printf("successfully updated the version annotation in %v for default kustomization\n", kustomizationFilePath)
+
+	// update the operator version for autopilot kustomization
+	kustomizationFilePath = path.Join(operatorSrcRoot, "config", "autopilot", "kustomization.yaml")
+	b, err = ioutil.ReadFile(kustomizationFilePath)
+	if err != nil {
+		log.Fatalf("error reading %v: %v", kustomizationFilePath, err)
+	}
+	kustomization = string(b)
+	m = regexp.MustCompile("cnrm.cloud.google.com/operator-version: (\".*\")")
+	kustomization = m.ReplaceAllString(kustomization, fmt.Sprintf("cnrm.cloud.google.com/operator-version: \"%v\"", version))
+	if err := ioutil.WriteFile(kustomizationFilePath, []byte(kustomization), fileMode); err != nil {
+		log.Fatalf("error updating file %v", kustomizationFilePath)
+	}
+	log.Printf("successfully updated the version annotation in %v for autopilot kustomization\n", kustomizationFilePath)
 
 	//remove the stale manifest
 	r := loaders.NewFSRepository(path.Join(operatorSrcRoot, loaders.FlagChannel))
@@ -242,6 +256,17 @@ func main() {
 	if err := ioutil.WriteFile(stableFilePath, []byte(stable), fileMode); err != nil {
 		log.Fatalf("error updating file %v", stableFilePath)
 	}
+	stableFilePath = path.Join(operatorSrcRoot, "autopilot-channels", "stable")
+	b, err = ioutil.ReadFile(stableFilePath)
+	if err != nil {
+		log.Fatalf("error reading %v: %v", stableFilePath, err)
+	}
+	stable = string(b)
+	stable = strings.ReplaceAll(stable, fmt.Sprintf("- version: %v", currentVersion.Version), fmt.Sprintf("- version: %v", version))
+	if err := ioutil.WriteFile(stableFilePath, []byte(stable), fileMode); err != nil {
+		log.Fatalf("error updating file %v", stableFilePath)
+	}
+
 	staleManifestDir := path.Join(operatorSrcRoot, "channels", "packages", "configconnector", currentVersion.Version)
 	log.Printf("removing stale manifest %v", staleManifestDir)
 	if err := os.RemoveAll(staleManifestDir); err != nil {
