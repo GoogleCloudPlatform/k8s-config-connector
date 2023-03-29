@@ -105,6 +105,7 @@ config/installbundle/components/webhook/webhook_image_patch.yaml
 config/installbundle/components/deletiondefender/deletiondefender_image_patch.yaml
 config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
 operator/config/manager/manager_image_patch.yaml
+operator/config/autopilot-manager/manager_image_patch.yaml
 
 ### Go ###
 # Binaries for programs and plugins
