@@ -17,6 +17,7 @@ package configconnector
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -108,6 +109,7 @@ func newReconciler(mgr ctrl.Manager, repoPath string) (*ConfigConnectorReconcile
 		declarative.WithOwner(declarative.SourceAsOwner),
 		declarative.WithObjectTransform(r.transformForClusterMode()),
 		declarative.WithObjectTransform(r.handleConfigConnectorLifecycle()),
+		declarative.WithObjectTransform(r.installV1Beta1CRDsOnly()),
 		declarative.WithStatus(&declarative.StatusBuilder{
 			PreflightImpl: preflight,
 		}),
@@ -522,4 +524,83 @@ func (r *ConfigConnectorReconciler) updateConfigConnectorStatus(ctx context.Cont
 
 func (r *ConfigConnectorReconciler) recordEvent(cc *corev1beta1.ConfigConnector, eventtype, reason, message string) {
 	r.recorder.Event(cc, eventtype, reason, message)
+}
+
+func (r *ConfigConnectorReconciler) installV1Beta1CRDsOnly() declarative.ObjectTransform {
+	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
+		if err := r.selectCRDsByVersion(m, "v1beta1"); err != nil {
+			return fmt.Errorf("error installing v1beta1 CRDs only: error selecting CRDs by version v1beta1: %v", err)
+		}
+		return nil
+	}
+}
+
+func (r *ConfigConnectorReconciler) selectCRDsByVersion(m *manifest.Objects, version string) error {
+	transformed := make([]*manifest.Object, 0, len(m.Items))
+	r.log.Info("selecting CRDs by version", "Desired CRD version", version)
+	for _, obj := range m.Items {
+		if obj.Kind == "CustomResourceDefinition" {
+			if !isKCCCRD(obj) {
+				return fmt.Errorf("installation manifests contain non-KCC CRDs %v", obj.UnstructuredObject().GetName())
+			}
+			hasVersion, err := containsVersion(obj, version)
+			if err != nil {
+				return fmt.Errorf("error checking if CRD %v contains version %v: %v", obj.UnstructuredObject().GetName(), version, err)
+			}
+			if hasVersion {
+				transformed = append(transformed, obj)
+			}
+		} else {
+			transformed = append(transformed, obj)
+		}
+	}
+	m.Items = transformed
+	return nil
+}
+
+func isKCCCRD(object *manifest.Object) bool {
+	u := object.UnstructuredObject()
+	if strings.HasSuffix(u.GetName(), k8s.CNRMDomain) {
+		return true
+	}
+	return false
+}
+
+func containsVersion(object *manifest.Object, version string) (bool, error) {
+	spec := object.UnstructuredObject().UnstructuredContent()["spec"]
+	if spec == nil {
+		return false, fmt.Errorf("CRD spec not found for %v", object.UnstructuredObject().GetName())
+	}
+	specMap, ok := spec.(map[string]interface{})
+	if !ok {
+		return false, fmt.Errorf("expected the CRD spec value to be map[string]interface{} but was actually %T", spec)
+	}
+
+	crdVersions := specMap["versions"]
+	if crdVersions == nil {
+		return false, fmt.Errorf("CRD spec.versions not found for %v", object.UnstructuredObject().GetName())
+	}
+	crdVersionsList, ok := crdVersions.([]interface{})
+	if !ok {
+		return false, fmt.Errorf("expected the CRD spec.versions value to be []interface{} but was actually %T", crdVersions)
+	}
+
+	for i, crdVersion := range crdVersionsList {
+		crdVersionMap, ok := crdVersion.(map[string]interface{})
+		if !ok {
+			return false, fmt.Errorf("expected the CRD spec.versions[%v] value to be map[string]interface{} but was actually %T", i, crdVersion)
+		}
+		name := crdVersionMap["name"]
+		if name == nil {
+			return false, fmt.Errorf("CRD spec.versions[%v].name not found for %v", i, object.UnstructuredObject().GetName())
+		}
+		nameStr, ok := name.(string)
+		if !ok {
+			return false, fmt.Errorf("expected the CRD spec.versions[%v].name value to be string but was actually %T", i, name)
+		}
+		if nameStr == version {
+			return true, nil
+		}
+	}
+	return false, nil
 }

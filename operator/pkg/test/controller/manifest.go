@@ -133,6 +133,69 @@ spec:
     storage: true
 `
 
+var barCRD = `
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: bars.test.cnrm.cloud.google.com
+  labels:
+    cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+spec:
+  scope: Namespaced
+  group: test.cnrm.cloud.google.com
+  names:
+    kind: bar
+    plural: bars
+  versions:
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        type: object
+    served: true
+    storage: true
+`
+
+var nonKCCCRD = `
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: bars.test.nonkcc.cloud.google.com
+  labels:
+    cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+spec:
+  scope: Namespaced
+  group: test.nonkcc.cloud.google.com
+  names:
+    kind: bar
+    plural: bars
+  versions:
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        type: object
+    served: true
+    storage: true
+`
+
+var defectiveCRD = `
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: bars.test.nonkcc.cloud.google.com
+  labels:
+    cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+spec:
+  scope: Namespaced
+  group: test.nonkcc.cloud.google.com
+  names:
+    kind: bar
+    plural: bars
+  versions: nil
+`
+
 var SystemNs = `apiVersion: v1
 kind: Namespace
 metadata:
@@ -252,6 +315,42 @@ func GetSharedComponentsManifest() []string {
 	return res
 }
 
+func GetManifestsWithAlphaAndBetaCRDs() []string {
+	res := make([]string, 0)
+	res = append(res, FooCRD, barCRD, SystemNs)
+	return res
+}
+
+func GetManifestsWithAlphaCRD() []string {
+	res := make([]string, 0)
+	res = append(res, FooCRD, SystemNs)
+	return res
+}
+
+func GetManifestsWithBetaCRD() []string {
+	res := make([]string, 0)
+	res = append(res, barCRD, SystemNs)
+	return res
+}
+
+func GetManifestsWithNoCRD() []string {
+	res := make([]string, 0)
+	res = append(res, SystemNs)
+	return res
+}
+
+func GetManifestsWithNonKCCCRD() []string {
+	res := make([]string, 0)
+	res = append(res, nonKCCCRD, FooCRD, SystemNs)
+	return res
+}
+
+func GetManifestsWithDefectiveCRD() []string {
+	res := make([]string, 0)
+	res = append(res, defectiveCRD, SystemNs)
+	return res
+}
+
 func GetClusterModeGCPManifest() []string {
 	res := make([]string, 0)
 	res = append(res, GetSharedComponentsManifest()...)
@@ -272,7 +371,7 @@ func GetPerNamespaceManifest() []string {
 	return res
 }
 
-func ManuallyReplaceGSA(t *testing.T, components []string, saName string) []string {
+func ManuallyReplaceGSA(components []string, saName string) []string {
 	res := make([]string, 0)
 	for _, s := range components {
 		s = strings.ReplaceAll(s, "${SERVICE_ACCOUNT?}", saName)
@@ -281,7 +380,7 @@ func ManuallyReplaceGSA(t *testing.T, components []string, saName string) []stri
 	return res
 }
 
-func ManuallyReplaceSecretVolume(t *testing.T, components []string, secretName string) []string {
+func ManuallyReplaceSecretVolume(components []string, secretName string) []string {
 	res := make([]string, 0)
 	for _, s := range components {
 		s = strings.ReplaceAll(s, "gcp-key", secretName)

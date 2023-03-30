@@ -203,7 +203,7 @@ func TestHandleConfigConnectorCreate(t *testing.T) {
 			},
 			loadedManifest: testcontroller.GetClusterModeWorkloadIdentityManifest(),
 			resultsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyReplaceGSA(t, testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
+				return testcontroller.ManuallyReplaceGSA(testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
 			},
 		},
 		{
@@ -219,7 +219,7 @@ func TestHandleConfigConnectorCreate(t *testing.T) {
 			},
 			loadedManifest: testcontroller.GetClusterModeGCPManifest(),
 			resultsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyReplaceSecretVolume(t, testcontroller.GetClusterModeGCPManifest(), "my-key")
+				return testcontroller.ManuallyReplaceSecretVolume(testcontroller.GetClusterModeGCPManifest(), "my-key")
 			},
 		},
 		{
@@ -246,7 +246,7 @@ func TestHandleConfigConnectorCreate(t *testing.T) {
 			},
 			loadedManifest: testcontroller.GetClusterModeWorkloadIdentityManifest(),
 			resultsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyReplaceGSA(t, testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
+				return testcontroller.ManuallyReplaceGSA(testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
 			},
 		},
 	}
@@ -341,7 +341,7 @@ func TestHandleConfigConnectorDelete(t *testing.T) {
 				},
 			},
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyReplaceGSA(t, testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
+				return testcontroller.ManuallyReplaceGSA(testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
 			},
 			resultsFunc: func(t *testing.T, c client.Client) []string {
 				return nil
@@ -360,7 +360,7 @@ func TestHandleConfigConnectorDelete(t *testing.T) {
 				},
 			},
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyReplaceSecretVolume(t, testcontroller.GetClusterModeGCPManifest(), "my-key")
+				return testcontroller.ManuallyReplaceSecretVolume(testcontroller.GetClusterModeGCPManifest(), "my-key")
 			},
 			resultsFunc: func(t *testing.T, c client.Client) []string {
 				return nil
@@ -526,10 +526,10 @@ func TestConfigConnectorUpdate(t *testing.T) {
 				},
 			},
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyReplaceGSA(t, testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
+				return testcontroller.ManuallyReplaceGSA(testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
 			},
 			toDeleteObjectsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyReplaceGSA(t, testcontroller.ClusterModeOnlyWorkloadIdentityComponents, "foo@bar.iam.gserviceaccount.com")
+				return testcontroller.ManuallyReplaceGSA(testcontroller.ClusterModeOnlyWorkloadIdentityComponents, "foo@bar.iam.gserviceaccount.com")
 			},
 			manifest: testcontroller.GetSharedComponentsManifest(),
 			resultsFunc: func(t *testing.T, c client.Client) []string {
@@ -569,10 +569,10 @@ func TestConfigConnectorUpdate(t *testing.T) {
 				},
 			},
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyReplaceSecretVolume(t, testcontroller.GetClusterModeGCPManifest(), "my-key")
+				return testcontroller.ManuallyReplaceSecretVolume(testcontroller.GetClusterModeGCPManifest(), "my-key")
 			},
 			toDeleteObjectsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyReplaceSecretVolume(t, testcontroller.ClusterModeOnlyGCPComponents, "my-key")
+				return testcontroller.ManuallyReplaceSecretVolume(testcontroller.ClusterModeOnlyGCPComponents, "my-key")
 			},
 			manifest: testcontroller.GetSharedComponentsManifest(),
 			resultsFunc: func(t *testing.T, c client.Client) []string {
@@ -622,7 +622,7 @@ func TestConfigConnectorUpdate(t *testing.T) {
 			},
 			manifest: testcontroller.GetClusterModeWorkloadIdentityManifest(),
 			resultsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyReplaceGSA(t, testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
+				return testcontroller.ManuallyReplaceGSA(testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
 			},
 		},
 		{
@@ -667,7 +667,7 @@ func TestConfigConnectorUpdate(t *testing.T) {
 			},
 			manifest: testcontroller.GetClusterModeGCPManifest(),
 			resultsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyReplaceSecretVolume(t, testcontroller.GetClusterModeGCPManifest(), "my-key ")
+				return testcontroller.ManuallyReplaceSecretVolume(testcontroller.GetClusterModeGCPManifest(), "my-key ")
 			},
 		},
 		{
@@ -691,14 +691,14 @@ func TestConfigConnectorUpdate(t *testing.T) {
 				},
 			},
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyReplaceGSA(t, testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
+				return testcontroller.ManuallyReplaceGSA(testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
 			},
 			toDeleteObjectsFunc: func(t *testing.T, c client.Client) []string {
 				return nil
 			},
 			manifest: testcontroller.GetClusterModeGCPManifest(),
 			resultsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyReplaceSecretVolume(t, testcontroller.GetClusterModeGCPManifest(), "my-key ")
+				return testcontroller.ManuallyReplaceSecretVolume(testcontroller.GetClusterModeGCPManifest(), "my-key ")
 			},
 		},
 		{
@@ -722,14 +722,14 @@ func TestConfigConnectorUpdate(t *testing.T) {
 				},
 			},
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyReplaceSecretVolume(t, testcontroller.GetClusterModeGCPManifest(), "my-key ")
+				return testcontroller.ManuallyReplaceSecretVolume(testcontroller.GetClusterModeGCPManifest(), "my-key ")
 			},
 			toDeleteObjectsFunc: func(t *testing.T, c client.Client) []string {
 				return nil
 			},
 			manifest: testcontroller.GetClusterModeWorkloadIdentityManifest(),
 			resultsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyReplaceGSA(t, testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
+				return testcontroller.ManuallyReplaceGSA(testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
 			},
 		},
 	}
@@ -838,5 +838,75 @@ func newConfigConnectorReconciler(c client.Client) *ConfigConnectorReconciler {
 	return &ConfigConnectorReconciler{
 		client: c,
 		log:    logr.Discard(),
+	}
+}
+
+func TestSelectingCRDsByVersion(t *testing.T) {
+	tests := []struct {
+		name              string
+		manifests         []string
+		version           string
+		expectedManifests []string
+		hasError          bool
+	}{
+		{
+			name:              "select v1alpha1 CRD from v1alpha1 and v1beta1 CRDs",
+			manifests:         testcontroller.GetManifestsWithAlphaAndBetaCRDs(),
+			version:           "v1alpha1",
+			expectedManifests: testcontroller.GetManifestsWithAlphaCRD(),
+		},
+		{
+			name:              "select v1alpha1 CRD from v1beta1 CRDs",
+			manifests:         testcontroller.GetManifestsWithBetaCRD(),
+			version:           "v1alpha1",
+			expectedManifests: testcontroller.GetManifestsWithNoCRD(),
+		},
+		{
+			name:      "select v1alpha1 CRD from non-KCC CRD",
+			manifests: testcontroller.GetManifestsWithNonKCCCRD(),
+			version:   "v1alpha1",
+			hasError:  true,
+		},
+		{
+			name:      "select v1alpha1 CRD from defective CRD",
+			manifests: testcontroller.GetManifestsWithDefectiveCRD(),
+			version:   "v1alpha1",
+			hasError:  true,
+		},
+	}
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			ctx := context.TODO()
+			mgr, stop := testmain.StartTestManagerFromNewTestEnv()
+			defer stop()
+			c := mgr.GetClient()
+			manifests := testcontroller.ParseObjects(t, ctx, tc.manifests)
+			r := newConfigConnectorReconciler(c)
+
+			err := r.selectCRDsByVersion(manifests, tc.version)
+			if tc.hasError {
+				if err == nil {
+					t.Fatalf("got nil, want an error")
+				}
+				return
+			} else if err != nil {
+				t.Fatalf("error selecting CRDs by version: %v", err)
+			}
+
+			processedJSON, err := manifests.JSONManifest()
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			expectedManifests := testcontroller.ParseObjects(t, ctx, tc.expectedManifests)
+			expectedJSON, err := expectedManifests.JSONManifest()
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if !reflect.DeepEqual(processedJSON, expectedJSON) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(processedJSON, expectedJSON))
+			}
+		})
 	}
 }
