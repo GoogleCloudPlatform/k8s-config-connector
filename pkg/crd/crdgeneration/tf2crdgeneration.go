@@ -53,7 +53,9 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 	}
 	openAPIV3Schema := crdboilerplate.GetOpenAPIV3SchemaSkeleton()
 	specJSONSchema := tfObjectSchemaToJSONSchema(specFields)
-	removeIgnoredAndOverwrittenFields(resourceConfig, specJSONSchema)
+	statusJSONSchema := tfObjectSchemaToJSONSchema(statusFields)
+	removeIgnoredFields(resourceConfig, specJSONSchema, statusJSONSchema)
+	removeOverwrittenFields(resourceConfig, specJSONSchema)
 	markRequiredLocationalFieldsRequired(resourceConfig, specJSONSchema)
 	addResourceIDFieldIfSupported(resourceConfig, specJSONSchema)
 	handleHierarchicalReferences(resourceConfig, specJSONSchema)
@@ -64,8 +66,7 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 			openAPIV3Schema.Required = slice.IncludeString(openAPIV3Schema.Required, "spec")
 		}
 	}
-	statusSchema := tfObjectSchemaToJSONSchema(statusFields)
-	for k, v := range statusSchema.Properties {
+	for k, v := range statusJSONSchema.Properties {
 		openAPIV3Schema.Properties["status"].Properties[k] = v
 	}
 
@@ -193,7 +194,7 @@ func tfSchemaToJSONSchema(tfSchema *schema.Schema) *apiextensions.JSONSchemaProp
 	return &jsonSchema
 }
 
-func removeIgnoredAndOverwrittenFields(rc *corekccv1alpha1.ResourceConfig, s *apiextensions.JSONSchemaProps) {
+func removeOverwrittenFields(rc *corekccv1alpha1.ResourceConfig, s *apiextensions.JSONSchemaProps) {
 	if rc.MetadataMapping.Name != "" {
 		removeField(rc.MetadataMapping.Name, s)
 	}
@@ -206,9 +207,6 @@ func removeIgnoredAndOverwrittenFields(rc *corekccv1alpha1.ResourceConfig, s *ap
 	for _, d := range rc.Directives {
 		removeField(d, s)
 	}
-	for _, f := range rc.IgnoredFields {
-		removeField(f, s)
-	}
 	if !krmtotf.SupportsHierarchicalReferences(rc) {
 		// TODO(b/193177782): Delete this if-block once all resources support
 		// hierarchical references.
@@ -216,6 +214,30 @@ func removeIgnoredAndOverwrittenFields(rc *corekccv1alpha1.ResourceConfig, s *ap
 			removeField(c.TFField, s)
 		}
 	}
+}
+
+func removeIgnoredFields(rc *corekccv1alpha1.ResourceConfig, specJSONSchema, statusJSONSchema *apiextensions.JSONSchemaProps) {
+	for _, f := range rc.IgnoredFields {
+		removedInSpec := removeFieldIfExist(f, specJSONSchema)
+		removedInStatus := removeFieldIfExist(f, statusJSONSchema)
+		if removedInSpec && removedInStatus {
+			panic(fmt.Errorf("found ignored field %s in both spec and status JSON schema for resource %s", f, rc.Name))
+		}
+		if !removedInSpec && !removedInStatus {
+			panic(fmt.Errorf("cannot find ignored field %s in either spec or status JSON schema for resource %s", f, rc.Name))
+		}
+	}
+}
+
+// removeFieldIfExist attempts to remove a field from the provided json schema.
+// The function is no-op if a field is not found.
+// Returns true if a field is found and removed, returns false if a field is not found.
+func removeFieldIfExist(f string, s *apiextensions.JSONSchemaProps) bool {
+	if !fieldExists(f, s) {
+		return false
+	}
+	removeField(f, s)
+	return true
 }
 
 func markRequiredLocationalFieldsRequired(rc *corekccv1alpha1.ResourceConfig, s *apiextensions.JSONSchemaProps) {
@@ -324,6 +346,32 @@ func getDescriptionForExternalRef(typeConfig corekccv1alpha1.TypeConfig) string 
 func GetResourceReferenceSchemaFromTypeConfig(typeConfig corekccv1alpha1.TypeConfig) *apiextensions.JSONSchemaProps {
 	description := getDescriptionForExternalRef(typeConfig)
 	return crdboilerplate.GetResourceReferenceSchemaBoilerplate(description)
+}
+
+func fieldExists(f string, s *apiextensions.JSONSchemaProps) bool {
+	path := strings.Split(f, ".")
+	return nestedFieldExists(path, s)
+}
+
+func nestedFieldExists(path []string, s *apiextensions.JSONSchemaProps) bool {
+	if len(path) == 0 {
+		panic("unexpected empty field path")
+	}
+	// check current level
+	field := text.SnakeCaseToLowerCamelCase(path[0])
+	subSchema, exists := s.Properties[field]
+	if len(path) == 1 {
+		return exists
+	}
+	// go to next level
+	switch subSchema.Type {
+	case "array":
+		return nestedFieldExists(path[1:], subSchema.Items.Schema)
+	case "object":
+		return nestedFieldExists(path[1:], &subSchema)
+	default:
+		return false
+	}
 }
 
 func removeField(tfField string, s *apiextensions.JSONSchemaProps) {
