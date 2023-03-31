@@ -119,6 +119,12 @@ rules:
   - patch
   - update
 - apiGroups:
+  - core.cnrm.cloud.google.com
+  resources:
+  - configconnectors/finalizers
+  verbs:
+  - update
+- apiGroups:
   - rbac.authorization.k8s.io
   resources:
   - clusterrolebindings
