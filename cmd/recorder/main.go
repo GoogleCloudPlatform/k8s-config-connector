@@ -39,6 +39,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
+	"k8s.io/klog/v2/klogr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	klog "sigs.k8s.io/controller-runtime/pkg/log"
@@ -71,7 +72,7 @@ func main() {
 	flag.Parse()
 	kccVersion := os.Getenv("CONFIG_CONNECTOR_VERSION")
 
-	logging.SetupLogger()
+	klog.SetLogger(klogr.New())
 
 	logger.Info("Recording the stats of Config Connector resources")
 
