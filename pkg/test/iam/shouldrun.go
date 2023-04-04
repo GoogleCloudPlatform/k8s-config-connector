@@ -16,6 +16,16 @@ package testiam
 
 import "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 
+func ShouldRunWithNoProjectKind(fixture resourcefixture.ResourceFixture) bool {
+	// A temporary should run function to skip testing kind project as it requires dynamically associating Billing Account
+	switch fixture.GVK.Kind {
+	case "Project":
+		return false
+	default:
+		return true
+	}
+}
+
 func ShouldRunWithExternalRef(fixture resourcefixture.ResourceFixture) bool {
 	// We only need to test the case of "IAMPolicy (or IAMPolicyMember) having
 	// an external reference" for a few resources. We could test both cases
@@ -27,8 +37,7 @@ func ShouldRunWithExternalRef(fixture resourcefixture.ResourceFixture) bool {
 	// NewExternalRef() cannot generate external references to resources with
 	// server-generated IDs (e.g. Folder).
 	switch fixture.GVK.Kind {
-	case "Project", // Commonly referenced resource for IAMPolicy/IAMPolicyMember
-		"PubSubTopic",     // Basic resource with no dependencies
+	case "PubSubTopic", // Basic resource with no dependencies
 		"SpannerDatabase": // Resource whose IAMPolicy/IAMPolicyMember spec must contain info about a dependency (name of the SpannerInstance)
 		return true
 	default:
@@ -42,8 +51,7 @@ func ShouldRunWithIAMConditions(fixture resourcefixture.ResourceFixture) bool {
 	// resourcs that support conditions, but this is very expensive and not
 	// really necessary.
 	switch fixture.GVK.Kind {
-	case "Project", // Commonly referenced resource for IAMPolicy/IAMPolicyMember
-		"KMSKeyRing": // Basic resource that supports IAM conditions
+	case "KMSKeyRing": // Basic resource that supports IAM conditions
 		return true
 	default:
 		return false
@@ -53,7 +61,7 @@ func ShouldRunWithIAMConditions(fixture resourcefixture.ResourceFixture) bool {
 func ShouldRunWithAuditConfigs(fixture resourcefixture.ResourceFixture) bool {
 	// Only the following resources support IAM audit configs in KCC currently
 	switch fixture.GVK.Kind {
-	case "Project", "Folder":
+	case "Folder":
 		return true
 	default:
 		return false
@@ -72,7 +80,7 @@ func ShouldRunAcquire(fixture resourcefixture.ResourceFixture) bool {
 
 func ShouldRunWithTFResourcesOnly(fixture resourcefixture.ResourceFixture) bool {
 	switch fixture.GVK.Kind {
-	case "BigtableInstance", "KMSKeyRing", "Project", "Folder",
+	case "BigtableInstance", "KMSKeyRing", "Folder",
 		"PubSubTopic", "PubSubSubscription", "SpannerInstance", "StorageBucket", "IAMServiceAccount":
 		return true
 	default:

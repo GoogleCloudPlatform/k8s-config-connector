@@ -246,7 +246,7 @@ var resourceLevelIAMPartialPolicyTestFunc = func(t *testing.T, _ string, mgr man
 }
 
 func TestReconcileIAMPartialPolicyResourceLevelCreateNoChangesUpdateDelete(t *testing.T) {
-	testiam.RunResourceLevelTest(t, mgr, resourceLevelIAMPartialPolicyTestFunc, nil)
+	testiam.RunResourceLevelTest(t, mgr, resourceLevelIAMPartialPolicyTestFunc, testiam.ShouldRunWithNoProjectKind)
 }
 
 func TestReconcileIAMPartialPolicyResourceLevelCreateNoChangesUpdateDeleteWithExternalRef(t *testing.T) {

@@ -74,7 +74,7 @@ func TestUnsupportedResourceShouldFail(t *testing.T) {
 func TestAll(t *testing.T) {
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		switch fixture.GVK.Kind {
-		case "Project", "PubSubTopic":
+		case "PubSubTopic":
 			return true
 		default:
 			return false
