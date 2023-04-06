@@ -64,7 +64,7 @@ resource "google_privateca_certificate" "default" {
   location = "us-central1"
   pool = google_privateca_ca_pool.default.name
   certificate_authority = google_privateca_certificate_authority.default.certificate_authority_id
-  lifetime = "860s"
+  lifetime = "86000s"
   name = "my-certificate"
   config {
     subject_config  {
@@ -85,7 +85,7 @@ resource "google_privateca_certificate" "default" {
     }
     x509_config {
       ca_options {
-        is_ca = false
+        is_ca = true
       }
       key_usage {
         base_key_usage {
@@ -95,6 +95,17 @@ resource "google_privateca_certificate" "default" {
         extended_key_usage {
           server_auth = false
         }
+      }
+      name_constraints {
+        critical                  = true
+        permitted_dns_names       = ["*.example.com"]
+        excluded_dns_names        = ["*.deny.example.com"]
+        permitted_ip_ranges       = ["10.0.0.0/8"]
+        excluded_ip_ranges        = ["10.1.1.0/24"]
+        permitted_email_addresses = [".example.com"]
+        excluded_email_addresses  = [".deny.example.com"]
+        permitted_uris            = [".example.com"]
+        excluded_uris             = [".deny.example.com"]
       }
     }
     public_key {

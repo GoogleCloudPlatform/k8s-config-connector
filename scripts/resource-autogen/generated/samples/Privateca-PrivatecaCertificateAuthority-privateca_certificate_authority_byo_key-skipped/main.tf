@@ -70,6 +70,17 @@ resource "google_privateca_certificate_authority" "default" {
           server_auth = false
         }
       }
+      name_constraints {
+        critical                  = true
+        permitted_dns_names       = ["*.example.com"]
+        excluded_dns_names        = ["*.deny.example.com"]
+        permitted_ip_ranges       = ["10.0.0.0/8"]
+        excluded_ip_ranges        = ["10.1.1.0/24"]
+        permitted_email_addresses = [".example.com"]
+        excluded_email_addresses  = [".deny.example.com"]
+        permitted_uris            = [".example.com"]
+        excluded_uris             = [".deny.example.com"]
+      }
     }
   }
 

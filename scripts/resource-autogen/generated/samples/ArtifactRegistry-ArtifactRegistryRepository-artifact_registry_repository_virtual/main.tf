@@ -16,7 +16,6 @@
 
 ```hcl
 resource "google_artifact_registry_repository" "my-repo-upstream" {
-  provider      = google-beta
   location      = "us-central1"
   repository_id = "my-repository-upstream"
   description   = "example docker repository (upstream source)"
@@ -25,7 +24,6 @@ resource "google_artifact_registry_repository" "my-repo-upstream" {
 
 resource "google_artifact_registry_repository" "my-repo" {
   depends_on    = []
-  provider      = google-beta
   location      = "us-central1"
   repository_id = "my-repository"
   description   = "example virtual docker repository"

@@ -35,6 +35,10 @@ resource "google_data_fusion_instance" "extended_instance" {
     ip_allocation = "${google_compute_global_address.private_ip_alloc.address}/${google_compute_global_address.private_ip_alloc.prefix_length}"
   }
 
+  accelerators {
+    accelerator_type = "CDC"
+    state = "ENABLED"
+  }
   
 }
 
