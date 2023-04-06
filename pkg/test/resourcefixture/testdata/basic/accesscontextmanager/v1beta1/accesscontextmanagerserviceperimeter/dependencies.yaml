@@ -15,11 +15,14 @@
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
 metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   labels:
     label-one: "value-one"
   name: project-${uniqueId}
 spec:
-  name: KCC ${uniqueId}
+  resourceID: ${TEST_DEPENDENT_FOLDER_PROJECT_ID}
+  name: "Dependent Project"
   folderRef:
     external: ${TEST_FOLDER_ID}
   billingAccountRef:

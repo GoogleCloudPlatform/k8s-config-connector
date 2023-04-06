@@ -17,10 +17,12 @@ kind: Project
 metadata:
   annotations:
     cnrm.cloud.google.com/auto-create-network: "false"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: project-${uniqueId}
 spec:
+  resourceID: ${TEST_DEPENDENT_NO_NETWORK_PROJECT_ID}
   folderRef:
     external: ${TEST_FOLDER_ID}
-  name: Project ${uniqueId}
+  name: "Dependent Project"
   billingAccountRef:
     external: ${TEST_BILLING_ACCOUNT_ID}

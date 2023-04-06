@@ -37,6 +37,9 @@ const (
 	TestFolderId                            = "TEST_FOLDER_ID"
 	TestFolder2Id                           = "TEST_FOLDER_2_ID"
 	TestOrgId                               = "TEST_ORG_ID"
+	TestDependentOrgProjectId               = "TEST_DEPENDENT_ORG_PROJECT_ID"
+	TestDependentFolderProjectId            = "TEST_DEPENDENT_FOLDER_PROJECT_ID"
+	TestDependentNoNetworkProjectId         = "TEST_DEPENDENT_NO_NETWORK_PROJECT_ID" // A dependent project with default network disabled
 	IAMIntegrationTestsOrganizationId       = "IAM_INTEGRATION_TESTS_ORGANIZATION_ID"
 	IsolatedTestOrgName                     = "ISOLATED_TEST_ORG_NAME"
 	TestBillingAccountId                    = "TEST_BILLING_ACCOUNT_ID"
@@ -55,6 +58,9 @@ var (
 	testFolderID                            = os.Getenv(TestFolderId)
 	testFolder2Id                           = os.Getenv(TestFolder2Id)
 	testOrgID                               = os.Getenv(TestOrgId)
+	testDependentOrgProjectId               = os.Getenv(TestDependentOrgProjectId)
+	testDependentFolderProjectId            = os.Getenv(TestDependentFolderProjectId)
+	testDependentNoNetworkProjectId         = os.Getenv(TestDependentNoNetworkProjectId)
 	isolatedTestOrgName                     = os.Getenv(IsolatedTestOrgName)
 	iamIntegrationTestsOrganizationId       = os.Getenv(IAMIntegrationTestsOrganizationId)
 	testBillingAccountID                    = os.Getenv(TestBillingAccountId)
@@ -154,6 +160,18 @@ func GetTestBillingAccountIDForBillingResources(t *testing.T) string {
 
 func GetOrgID(t *testing.T) string {
 	return testOrgID
+}
+
+func GetDependentOrgProjectID(t *testing.T) string {
+	return testDependentOrgProjectId
+}
+
+func GetDependentFolderProjectID(t *testing.T) string {
+	return testDependentFolderProjectId
+}
+
+func GetDependentNoNetworkProjectID(t *testing.T) string {
+	return testDependentNoNetworkProjectId
 }
 
 func GetIsolatedTestOrgName(t *testing.T) string {
