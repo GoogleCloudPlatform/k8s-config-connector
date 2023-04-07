@@ -206,6 +206,20 @@ var testDisabledList = map[string]bool{
 	// This sample test is failing because configconnector.net GCP org is not allowlisted.
 	// Disable the test until we have fixed b/267510222.
 	"calendar-budget": true,
+	// Temporary list to disable because of billing policy change. To be recovered in b/276980291
+	"anthos-config-management-feature":        true,
+	"anthos-service-mesh-feature":             true,
+	"billing-account-log-bucket":              true,
+	"billing-exclusion":                       true,
+	"cluster-policy":                          true,
+	"external-project-level-policy":           true,
+	"multi-cluster-service-discovery-feature": true,
+	"organization-policy-for-project":         true,
+	"project-exclusion":                       true,
+	"project-in-folder":                       true,
+	"project-in-org":                          true,
+	"project-level-policy":                    true,
+	"project-sink":                            true,
 }
 
 func TestAll(t *testing.T) {
