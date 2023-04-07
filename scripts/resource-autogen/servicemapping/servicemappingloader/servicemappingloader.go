@@ -19,6 +19,7 @@ import (
 	"io"
 	"path"
 	"sort"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
@@ -31,14 +32,14 @@ import (
 var emptyIAMConfig v1alpha1.IAMConfig
 
 func GetServiceMappingMap() (map[string]v1alpha1.ServiceMapping, error) {
-	generatedSMMap, err := getGeneratedSMMap()
+	generatedSMMap, err := GetGeneratedSMMap()
 	if err != nil {
 		return nil, fmt.Errorf("error getting all the generated ServiceMapping map: %w", err)
 	}
 	return getAllowlistedSMMap(generatedSMMap)
 }
 
-func getGeneratedSMMap() (map[string]v1alpha1.ServiceMapping, error) {
+func GetGeneratedSMMap() (map[string]v1alpha1.ServiceMapping, error) {
 	baseDirName := "/"
 	generatedSMDir, err := generatedembed.Assets.Open(baseDirName)
 	if err != nil {
@@ -63,21 +64,21 @@ func getGeneratedSMMap() (map[string]v1alpha1.ServiceMapping, error) {
 }
 
 func getAllowlistedSMMap(generatedSMMap map[string]v1alpha1.ServiceMapping) (map[string]v1alpha1.ServiceMapping, error) {
-	autoGenAllowlist, err := allowlist.LoadAutoGenAllowList()
+	autoGenAllowlist, err := allowlist.LoadAutoGenAllowList(generatedSMMap)
 	if err != nil {
-		return nil, fmt.Errorf("error loading allowlist for autogen resources: %w", err)
+		return nil, err
 	}
 
 	allowlistedSMMap := make(map[string]v1alpha1.ServiceMapping)
 	for _, sm := range generatedSMMap {
-		if !autoGenAllowlist.HasService(sm.Spec.Name) {
+		if !autoGenAllowlist.HasService(strings.ToLower(sm.Spec.Name)) {
 			continue
 		}
 
 		allowlistedSM := deepcopy.DeepCopy(sm).(v1alpha1.ServiceMapping)
 		rcList := []v1alpha1.ResourceConfig{}
 		for _, rc := range sm.Spec.Resources {
-			autoGenType, ok := autoGenAllowlist.GetTFTypeInService(sm.Spec.Name, rc.Name)
+			autoGenType, ok := autoGenAllowlist.GetTFTypeInService(strings.ToLower(sm.Spec.Name), rc.Name)
 			if !ok {
 				continue
 			}

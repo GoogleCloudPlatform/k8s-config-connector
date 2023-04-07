@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/fileutil"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/resource-autogen/allowlist"
+	autogenloader "github.com/GoogleCloudPlatform/k8s-config-connector/scripts/resource-autogen/servicemapping/servicemappingloader"
 
 	"github.com/hashicorp/go-multierror"
 	"github.com/tmccombs/hcl2json/convert"
@@ -113,7 +114,11 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("error getting new service mapping loader: %w", err)
 	}
-	autoGenAllowlist, err := allowlist.LoadAutoGenAllowList()
+	generatedSMMap, err := autogenloader.GetGeneratedSMMap()
+	if err != nil {
+		return fmt.Errorf("error getting the generated ServiceMapping map: %w", err)
+	}
+	autoGenAllowlist, err := allowlist.LoadAutoGenAllowList(generatedSMMap)
 	if err != nil {
 		return fmt.Errorf("error loading allowlist for autogen resources: %w", err)
 	}
@@ -690,8 +695,8 @@ func insertTestData(createConfig map[string]interface{}, dependenciesConfig []ma
 }
 
 func getTestDataFolderPath(autoGenType *allowlist.AutoGenType) string {
-	serviceFolderName := strings.ToLower(autoGenType.ServiceName)
-	kindFolderName := strings.ToLower(autoGenType.ToKRMKind())
+	serviceFolderName := autoGenType.ServiceNameInLC
+	kindFolderName := strings.ToLower(autoGenType.KRMKindName)
 	return filepath.Join(repo.GetBasicIntegrationTestDataPath(), serviceFolderName, autoGenType.Version, kindFolderName)
 }
 

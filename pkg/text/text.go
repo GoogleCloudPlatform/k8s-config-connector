@@ -150,6 +150,11 @@ func IsPascalCase(s string) bool {
 	return sampleRegex.Match([]byte(s))
 }
 
+func IsSnakeCase(s string) bool {
+	stringRegex := regexp.MustCompile("^[a-z1-9]+(_[a-z1-9]+)*$")
+	return stringRegex.Match([]byte(s))
+}
+
 func RemoveSpecialCharacters(s string) string {
 	specialCharRegex := regexp.MustCompile(`[^0-9A-Za-z ]+`)
 	return specialCharRegex.ReplaceAllString(s, "")
