@@ -12,14 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resources:
-- 0-cnrm-system.yaml
-
-patchesJson6902:
-- target:
-    group: apps
-    version: v1
-    kind: Deployment
-    name: cnrm-resource-stats-recorder
-    namespace: cnrm-system
-  path: recorder_remove_hostport_patch.yaml
+- op: remove
+  path: /spec/template/spec/containers/0/ports/0/hostPort

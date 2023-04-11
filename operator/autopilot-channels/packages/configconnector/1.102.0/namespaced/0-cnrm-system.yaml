@@ -1657,7 +1657,6 @@ spec:
         name: recorder
         ports:
         - containerPort: 48797
-          hostPort: 48797
           protocol: TCP
         - containerPort: 23232
         readinessProbe:

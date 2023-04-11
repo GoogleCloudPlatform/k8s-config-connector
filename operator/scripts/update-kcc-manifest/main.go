@@ -42,7 +42,8 @@ const (
 	recorderPatch  = "recorder_sidecar_patch.yaml"
 	finalizerPatch = "finalizer_patch.yaml"
 
-	autopilotChannelDir = "autopilot-channels/packages/configconnector"
+	autopilotChannelDir    = "autopilot-channels/packages/configconnector"
+	autopilotRecorderPatch = "recorder_remove_hostport_patch.yaml"
 )
 
 var (
@@ -296,6 +297,32 @@ func kustomizeBuild(operatorSrcRoot string) {
 		log.Fatalf("error running kustomize build: %v", err)
 	}
 
+	// autopilot workload-identity cluster mode
+	buildPath = path.Join(operatorSrcRoot, baseDir, "kcc", "install-bundle-autopilot-workload-identity")
+	if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, "kustomizations", "kustomization_autopilot_workload-identity.yaml"), path.Join(buildPath, "kustomization.yaml")); err != nil {
+		log.Fatalf("error copying kustomization: %v", err)
+	}
+	if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, autopilotRecorderPatch), path.Join(buildPath, autopilotRecorderPatch)); err != nil {
+		log.Fatalf("error copying %v: %v", autopilotRecorderPatch, err)
+	}
+	output = path.Join(buildPath, "0-cnrm-system.yaml")
+	if err := utils.KustomizeBuild(buildPath, output); err != nil {
+		log.Fatalf("error running kustomize build: %v", err)
+	}
+
+	// autopilot gcp-identity cluster mode
+	buildPath = path.Join(operatorSrcRoot, baseDir, "kcc", "install-bundle-autopilot-gcp-identity")
+	if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, "kustomizations", "kustomization_autopilot_gcp-identity.yaml"), path.Join(buildPath, "kustomization.yaml")); err != nil {
+		log.Fatalf("error copying kustomization: %v", err)
+	}
+	if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, autopilotRecorderPatch), path.Join(buildPath, autopilotRecorderPatch)); err != nil {
+		log.Fatalf("error copying %v: %v", autopilotRecorderPatch, err)
+	}
+	output = path.Join(buildPath, "0-cnrm-system.yaml")
+	if err := utils.KustomizeBuild(buildPath, output); err != nil {
+		log.Fatalf("error running kustomize build: %v", err)
+	}
+
 	// namespaced mode
 	buildPath = path.Join(operatorSrcRoot, baseDir, "kcc", "install-bundle-namespaced")
 	buildNamespacedMode(operatorSrcRoot, buildPath, output, false)
@@ -312,6 +339,10 @@ func buildNamespacedMode(operatorSrcRoot, buildPath, output string, autopilot bo
 		}
 		if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, recorderPatch), path.Join(buildPath, recorderPatch)); err != nil {
 			log.Fatalf("error copying %v: %v", recorderPatch, err)
+		}
+	} else {
+		if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, autopilotRecorderPatch), path.Join(buildPath, autopilotRecorderPatch)); err != nil {
+			log.Fatalf("error copying %v: %v", autopilotRecorderPatch, err)
 		}
 	}
 	if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, finalizerPatch), path.Join(buildPath, finalizerPatch)); err != nil {
