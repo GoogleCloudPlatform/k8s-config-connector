@@ -31,12 +31,17 @@ import (
 
 type RunV1beta1Interface interface {
 	RESTClient() rest.Interface
+	RunJobsGetter
 	RunServicesGetter
 }
 
 // RunV1beta1Client is used to interact with features provided by the run.cnrm.cloud.google.com group.
 type RunV1beta1Client struct {
 	restClient rest.Interface
+}
+
+func (c *RunV1beta1Client) RunJobs(namespace string) RunJobInterface {
+	return newRunJobs(c, namespace)
 }
 
 func (c *RunV1beta1Client) RunServices(namespace string) RunServiceInterface {

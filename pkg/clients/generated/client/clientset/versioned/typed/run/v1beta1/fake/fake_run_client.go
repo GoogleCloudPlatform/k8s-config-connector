@@ -31,6 +31,10 @@ type FakeRunV1beta1 struct {
 	*testing.Fake
 }
 
+func (c *FakeRunV1beta1) RunJobs(namespace string) v1beta1.RunJobInterface {
+	return &FakeRunJobs{c, namespace}
+}
+
 func (c *FakeRunV1beta1) RunServices(namespace string) v1beta1.RunServiceInterface {
 	return &FakeRunServices{c, namespace}
 }

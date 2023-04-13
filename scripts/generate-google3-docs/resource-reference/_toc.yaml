@@ -448,6 +448,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/resourcemanager/resourcemanagerpolicy.md
 - title: "Cloud Run"
   section:
+  - title: "RunJob"
+    path: /config-connector/docs/reference/resource-docs/run/runjob.md
   - title: "RunService"
     path: /config-connector/docs/reference/resource-docs/run/runservice.md
 - title: "SecretManager"

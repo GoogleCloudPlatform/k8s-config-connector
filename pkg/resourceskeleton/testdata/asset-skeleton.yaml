@@ -972,6 +972,8 @@
 # assumptions about mapping asset names to import IDs.
 - resourceConfigId: ResourceManagerPolicy
 # not supported by asset inventory
+- resourceConfigId: RunJob
+# not supported by asset inventory
 - resourceConfigId: SQLDatabase
 - asset:
     ancestors:

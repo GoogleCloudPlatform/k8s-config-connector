@@ -21,4 +21,6 @@
 
 package v1beta1
 
+type RunJobExpansion interface{}
+
 type RunServiceExpansion interface{}

@@ -224,6 +224,10 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td></td>
     </tr>
     <tr>
+        <td><code>RunJob</code></td>
+        <td></td>
+    </tr>
+    <tr>
         <td><code>RunService</code></td>
         <td>Y</td>
     </tr>
@@ -497,6 +501,14 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td>
             
             <p><code>{% verbatim %}projects/{{project}}/topics/{{name}}{% endverbatim %}</code></p>
+            
+        </td>
+    </tr>
+    <tr>
+        <td><code>RunJob</code></td>
+        <td>
+            
+            <p><code>{% verbatim %}projects/{{project}}/locations/{{location}}/jobs/{{name}}{% endverbatim %}</code></p>
             
         </td>
     </tr>
