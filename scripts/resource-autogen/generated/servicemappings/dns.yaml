@@ -124,5 +124,5 @@ spec:
             kind: DNSResponsePolicy
             version: v1beta1
             group: dns.cnrm.cloud.google.com
-          targetField: responsePolicyName
+          targetField: response_policy_name
           parent: true

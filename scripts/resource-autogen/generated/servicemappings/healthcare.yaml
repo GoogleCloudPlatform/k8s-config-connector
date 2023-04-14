@@ -47,7 +47,7 @@ spec:
             kind: HealthcareDataset
             version: v1beta1
             group: healthcare.cnrm.cloud.google.com
-          targetField: selfLink
+          targetField: self_link
           parent: true
     - name: google_healthcare_dataset
       kind: HealthcareDataset
@@ -89,7 +89,7 @@ spec:
             kind: HealthcareDataset
             version: v1beta1
             group: healthcare.cnrm.cloud.google.com
-          targetField: selfLink
+          targetField: self_link
           parent: true
     - name: google_healthcare_fhir_store
       kind: HealthcareFHIRStore
@@ -109,7 +109,7 @@ spec:
             kind: HealthcareDataset
             version: v1beta1
             group: healthcare.cnrm.cloud.google.com
-          targetField: selfLink
+          targetField: self_link
           parent: true
     - name: google_healthcare_hl7_v2_store
       kind: HealthcareHL7V2Store
@@ -129,5 +129,5 @@ spec:
             kind: HealthcareDataset
             version: v1beta1
             group: healthcare.cnrm.cloud.google.com
-          targetField: selfLink
+          targetField: self_link
           parent: true

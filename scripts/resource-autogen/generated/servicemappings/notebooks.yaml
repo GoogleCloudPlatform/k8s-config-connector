@@ -87,7 +87,7 @@ spec:
             kind: NotebooksLocation
             version: v1beta1
             group: notebooks.cnrm.cloud.google.com
-          targetField: selfLink
+          targetField: self_link
           parent: true
     - name: google_notebooks_location
       kind: NotebooksLocation
@@ -146,5 +146,5 @@ spec:
             kind: NotebooksLocation
             version: v1beta1
             group: notebooks.cnrm.cloud.google.com
-          targetField: selfLink
+          targetField: self_link
           parent: true
