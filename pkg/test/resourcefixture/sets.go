@@ -53,7 +53,12 @@ func GetBasicTypeSetCover(t *testing.T) []ResourceFixture {
 	lightFilter := func(name string, testType TestType) bool {
 		return testType == Basic
 	}
-	return GetFilteredSetCover(t, lightFilter, nil)
+	heavyFilter := func(fixture ResourceFixture) bool {
+		// Skip v1alpha1 CRDs when testing set cover as they may not yet be
+		// correctly supported.
+		return fixture.GVK.Version == k8s.KCCAPIVersion
+	}
+	return GetFilteredSetCover(t, lightFilter, heavyFilter)
 }
 
 // returns all the resource config ids in use by the resources defined for a given fixture

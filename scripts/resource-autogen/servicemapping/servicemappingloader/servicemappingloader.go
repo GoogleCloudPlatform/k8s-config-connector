@@ -23,6 +23,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/resource-autogen/allowlist"
 	generatedembed "github.com/GoogleCloudPlatform/k8s-config-connector/scripts/resource-autogen/servicemapping/embed/generated"
 
@@ -86,7 +87,7 @@ func getAllowlistedSMMap(generatedSMMap map[string]v1alpha1.ServiceMapping) (map
 			rc.Version = &autoGenType.Version
 			allowlistedRC := deepcopy.DeepCopy(rc).(v1alpha1.ResourceConfig)
 			// Remove IAM config for v1alpha1 resources.
-			if autoGenType.Version == allowlist.AlphaVersion {
+			if autoGenType.Version == k8s.KCCAPIVersionV1Alpha1 {
 				allowlistedRC.IAMConfig = emptyIAMConfig
 			}
 			// Remove the resource references of the allowlisted resource if the
@@ -94,7 +95,7 @@ func getAllowlistedSMMap(generatedSMMap map[string]v1alpha1.ServiceMapping) (map
 			var resourceReferences []v1alpha1.ReferenceConfig
 			for _, rr := range allowlistedRC.ResourceReferences {
 				autoGenType, ok := autoGenAllowlist.GetKRMKind(rr.GVK.Kind)
-				if ok && autoGenType.Version == allowlist.AlphaVersion {
+				if ok && autoGenType.Version == k8s.KCCAPIVersionV1Alpha1 {
 					continue
 				}
 				resourceReferences = append(resourceReferences, rr)

@@ -15,7 +15,31 @@ rules:
   - list
   - watch
 - apiGroups:
+  - alloydb.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apigateway.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - apigee.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - appengine.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -31,7 +55,55 @@ rules:
   - list
   - watch
 - apiGroups:
+  - beyondcorp.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - bigquery.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - bigqueryanalyticshub.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - bigqueryconnection.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - bigquerydatapolicy.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - bigquerydatatransfer.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - bigqueryreservation.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -63,6 +135,22 @@ rules:
   - list
   - watch
 - apiGroups:
+  - certificatemanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cloudasset.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - cloudbuild.cnrm.cloud.google.com
   resources:
   - '*'
@@ -79,6 +167,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - cloudfunctions2.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - cloudidentity.cnrm.cloud.google.com
   resources:
   - '*'
@@ -87,7 +183,31 @@ rules:
   - list
   - watch
 - apiGroups:
+  - cloudids.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cloudiot.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - cloudscheduler.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cloudtasks.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -143,6 +263,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - dataform.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - datafusion.cnrm.cloud.google.com
   resources:
   - '*'
@@ -152,6 +280,46 @@ rules:
   - watch
 - apiGroups:
   - dataproc.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - datastore.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - datastream.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - deploymentmanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - dialogflow.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - dialogflowcx.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -175,6 +343,22 @@ rules:
   - list
   - watch
 - apiGroups:
+  - documentai.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - essentialcontacts.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - eventarc.cnrm.cloud.google.com
   resources:
   - '*'
@@ -191,6 +375,38 @@ rules:
   - list
   - watch
 - apiGroups:
+  - firebase.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - firebasedatabase.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - firebasehosting.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - firebasestorage.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - firestore.cnrm.cloud.google.com
   resources:
   - '*'
@@ -199,7 +415,23 @@ rules:
   - list
   - watch
 - apiGroups:
+  - gkebackup.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - gkehub.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - healthcare.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -255,6 +487,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - mlengine.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - monitoring.cnrm.cloud.google.com
   resources:
   - '*'
@@ -264,6 +504,14 @@ rules:
   - watch
 - apiGroups:
   - networkconnectivity.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - networkmanagement.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -287,7 +535,31 @@ rules:
   - list
   - watch
 - apiGroups:
+  - notebooks.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - orgpolicy.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - osconfig.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - oslogin.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -352,6 +624,14 @@ rules:
   - watch
 - apiGroups:
   - secretmanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - securitycenter.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -431,7 +711,39 @@ rules:
   - list
   - watch
 - apiGroups:
+  - tpu.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - vertexai.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - vpcaccess.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - workflows.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - workstations.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

@@ -31,12 +31,22 @@ import (
 
 type AccesscontextmanagerV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	AccessContextManagerAccessLevelConditionsGetter
+	AccessContextManagerGCPUserAccessBindingsGetter
 	AccessContextManagerServicePerimeterResourcesGetter
 }
 
 // AccesscontextmanagerV1alpha1Client is used to interact with features provided by the accesscontextmanager.cnrm.cloud.google.com group.
 type AccesscontextmanagerV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *AccesscontextmanagerV1alpha1Client) AccessContextManagerAccessLevelConditions(namespace string) AccessContextManagerAccessLevelConditionInterface {
+	return newAccessContextManagerAccessLevelConditions(c, namespace)
+}
+
+func (c *AccesscontextmanagerV1alpha1Client) AccessContextManagerGCPUserAccessBindings(namespace string) AccessContextManagerGCPUserAccessBindingInterface {
+	return newAccessContextManagerGCPUserAccessBindings(c, namespace)
 }
 
 func (c *AccesscontextmanagerV1alpha1Client) AccessContextManagerServicePerimeterResources(namespace string) AccessContextManagerServicePerimeterResourceInterface {

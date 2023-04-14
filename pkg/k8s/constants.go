@@ -93,7 +93,8 @@ const (
 	StabilityLevelStable = "stable"
 	StabilityLevelAlpha  = "alpha"
 
-	KCCAPIVersion = "v1beta1"
+	KCCAPIVersion         = "v1beta1"
+	KCCAPIVersionV1Alpha1 = "v1alpha1"
 )
 
 var (

@@ -21,4 +21,8 @@
 
 package v1alpha1
 
+type AccessContextManagerAccessLevelConditionExpansion interface{}
+
+type AccessContextManagerGCPUserAccessBindingExpansion interface{}
+
 type AccessContextManagerServicePerimeterResourceExpansion interface{}

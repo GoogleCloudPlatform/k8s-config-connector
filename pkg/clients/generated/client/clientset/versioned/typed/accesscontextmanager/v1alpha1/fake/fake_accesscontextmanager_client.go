@@ -31,6 +31,14 @@ type FakeAccesscontextmanagerV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeAccesscontextmanagerV1alpha1) AccessContextManagerAccessLevelConditions(namespace string) v1alpha1.AccessContextManagerAccessLevelConditionInterface {
+	return &FakeAccessContextManagerAccessLevelConditions{c, namespace}
+}
+
+func (c *FakeAccesscontextmanagerV1alpha1) AccessContextManagerGCPUserAccessBindings(namespace string) v1alpha1.AccessContextManagerGCPUserAccessBindingInterface {
+	return &FakeAccessContextManagerGCPUserAccessBindings{c, namespace}
+}
+
 func (c *FakeAccesscontextmanagerV1alpha1) AccessContextManagerServicePerimeterResources(namespace string) v1alpha1.AccessContextManagerServicePerimeterResourceInterface {
 	return &FakeAccessContextManagerServicePerimeterResources{c, namespace}
 }
