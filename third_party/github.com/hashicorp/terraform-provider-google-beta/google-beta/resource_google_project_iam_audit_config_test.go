@@ -25,19 +25,19 @@ func TestAccProjectIamAuditConfig_basic(t *testing.T) {
 	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
 	service := "cloudkms.googleapis.com"
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
-				Config: testAccProject_create(pid, pname, org),
+				Config: testAccProject_create(pid, org),
 				Check: resource.ComposeTestCheckFunc(
 					testAccProjectExistingPolicy(t, pid),
 				),
 			},
 			// Apply an IAM audit config
 			{
-				Config: testAccProjectAssociateAuditConfigBasic(pid, pname, org, service),
+				Config: testAccProjectAssociateAuditConfigBasic(pid, org, service),
 			},
 			projectIamAuditConfigImportStep("google_project_iam_audit_config.acceptance", pid, service),
 		},
@@ -54,23 +54,23 @@ func TestAccProjectIamAuditConfig_multiple(t *testing.T) {
 	service2 := "cloudsql.googleapis.com"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
-				Config: testAccProject_create(pid, pname, org),
+				Config: testAccProject_create(pid, org),
 				Check: resource.ComposeTestCheckFunc(
 					testAccProjectExistingPolicy(t, pid),
 				),
 			},
 			// Apply an IAM audit config
 			{
-				Config: testAccProjectAssociateAuditConfigBasic(pid, pname, org, service),
+				Config: testAccProjectAssociateAuditConfigBasic(pid, org, service),
 			},
 			// Apply another IAM audit config
 			{
-				Config: testAccProjectAssociateAuditConfigMultiple(pid, pname, org, service, service2),
+				Config: testAccProjectAssociateAuditConfigMultiple(pid, org, service, service2),
 			},
 			projectIamAuditConfigImportStep("google_project_iam_audit_config.acceptance", pid, service),
 			projectIamAuditConfigImportStep("google_project_iam_audit_config.multiple", pid, service2),
@@ -90,19 +90,19 @@ func TestAccProjectIamAuditConfig_multipleAtOnce(t *testing.T) {
 	service2 := "cloudsql.googleapis.com"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
-				Config: testAccProject_create(pid, pname, org),
+				Config: testAccProject_create(pid, org),
 				Check: resource.ComposeTestCheckFunc(
 					testAccProjectExistingPolicy(t, pid),
 				),
 			},
 			// Apply an IAM audit config
 			{
-				Config: testAccProjectAssociateAuditConfigMultiple(pid, pname, org, service, service2),
+				Config: testAccProjectAssociateAuditConfigMultiple(pid, org, service, service2),
 			},
 			projectIamAuditConfigImportStep("google_project_iam_audit_config.acceptance", pid, service),
 			projectIamAuditConfigImportStep("google_project_iam_audit_config.multiple", pid, service2),
@@ -119,31 +119,31 @@ func TestAccProjectIamAuditConfig_update(t *testing.T) {
 	service := "cloudkms.googleapis.com"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
-				Config: testAccProject_create(pid, pname, org),
+				Config: testAccProject_create(pid, org),
 				Check: resource.ComposeTestCheckFunc(
 					testAccProjectExistingPolicy(t, pid),
 				),
 			},
 			// Apply an IAM audit config
 			{
-				Config: testAccProjectAssociateAuditConfigBasic(pid, pname, org, service),
+				Config: testAccProjectAssociateAuditConfigBasic(pid, org, service),
 			},
 			projectIamAuditConfigImportStep("google_project_iam_audit_config.acceptance", pid, service),
 
 			// Apply an updated IAM audit config
 			{
-				Config: testAccProjectAssociateAuditConfigUpdated(pid, pname, org, service),
+				Config: testAccProjectAssociateAuditConfigUpdated(pid, org, service),
 			},
 			projectIamAuditConfigImportStep("google_project_iam_audit_config.acceptance", pid, service),
 
 			// Drop the original member
 			{
-				Config: testAccProjectAssociateAuditConfigDropMemberFromBasic(pid, pname, org, service),
+				Config: testAccProjectAssociateAuditConfigDropMemberFromBasic(pid, org, service),
 			},
 			projectIamAuditConfigImportStep("google_project_iam_audit_config.acceptance", pid, service),
 		},
@@ -162,26 +162,26 @@ func TestAccProjectIamAuditConfig_remove(t *testing.T) {
 	service2 := "cloudsql.googleapis.com"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
-				Config: testAccProject_create(pid, pname, org),
+				Config: testAccProject_create(pid, org),
 				Check: resource.ComposeTestCheckFunc(
 					testAccProjectExistingPolicy(t, pid),
 				),
 			},
 			// Apply multiple IAM audit configs
 			{
-				Config: testAccProjectAssociateAuditConfigMultiple(pid, pname, org, service, service2),
+				Config: testAccProjectAssociateAuditConfigMultiple(pid, org, service, service2),
 			},
 			projectIamAuditConfigImportStep("google_project_iam_audit_config.acceptance", pid, service),
 			projectIamAuditConfigImportStep("google_project_iam_audit_config.multiple", pid, service2),
 
 			// Remove the audit configs
 			{
-				Config: testAccProject_create(pid, pname, org),
+				Config: testAccProject_create(pid, org),
 				Check: resource.ComposeTestCheckFunc(
 					testAccProjectExistingPolicy(t, pid),
 				),
@@ -201,25 +201,25 @@ func TestAccProjectIamAuditConfig_addFirstExemptMember(t *testing.T) {
 	members2 := []string{"user:gterraformtest1@gmail.com"}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
-				Config: testAccProject_create(pid, pname, org),
+				Config: testAccProject_create(pid, org),
 				Check: resource.ComposeTestCheckFunc(
 					testAccProjectExistingPolicy(t, pid),
 				),
 			},
 			// Apply IAM audit config with no members
 			{
-				Config: testAccProjectAssociateAuditConfigMembers(pid, pname, org, service, members),
+				Config: testAccProjectAssociateAuditConfigMembers(pid, org, service, members),
 			},
 			projectIamAuditConfigImportStep("google_project_iam_audit_config.acceptance", pid, service),
 
 			// Apply IAM audit config with one member
 			{
-				Config: testAccProjectAssociateAuditConfigMembers(pid, pname, org, service, members2),
+				Config: testAccProjectAssociateAuditConfigMembers(pid, org, service, members2),
 			},
 			projectIamAuditConfigImportStep("google_project_iam_audit_config.acceptance", pid, service),
 		},
@@ -237,25 +237,25 @@ func TestAccProjectIamAuditConfig_removeLastExemptMember(t *testing.T) {
 	members := []string{"user:gterraformtest1@gmail.com"}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
-				Config: testAccProject_create(pid, pname, org),
+				Config: testAccProject_create(pid, org),
 				Check: resource.ComposeTestCheckFunc(
 					testAccProjectExistingPolicy(t, pid),
 				),
 			},
 			// Apply IAM audit config with member
 			{
-				Config: testAccProjectAssociateAuditConfigMembers(pid, pname, org, service, members),
+				Config: testAccProjectAssociateAuditConfigMembers(pid, org, service, members),
 			},
 			projectIamAuditConfigImportStep("google_project_iam_audit_config.acceptance", pid, service),
 
 			// Apply IAM audit config with no members
 			{
-				Config: testAccProjectAssociateAuditConfigMembers(pid, pname, org, service, members2),
+				Config: testAccProjectAssociateAuditConfigMembers(pid, org, service, members2),
 			},
 			projectIamAuditConfigImportStep("google_project_iam_audit_config.acceptance", pid, service),
 		},
@@ -273,32 +273,32 @@ func TestAccProjectIamAuditConfig_updateNoExemptMembers(t *testing.T) {
 	service := "cloudkms.googleapis.com"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
-				Config: testAccProject_create(pid, pname, org),
+				Config: testAccProject_create(pid, org),
 				Check: resource.ComposeTestCheckFunc(
 					testAccProjectExistingPolicy(t, pid),
 				),
 			},
 			// Apply IAM audit config with DATA_READ
 			{
-				Config: testAccProjectAssociateAuditConfigLogType(pid, pname, org, service, logType),
+				Config: testAccProjectAssociateAuditConfigLogType(pid, org, service, logType),
 			},
 			projectIamAuditConfigImportStep("google_project_iam_audit_config.acceptance", pid, service),
 
 			// Apply IAM audit config with DATA_WRITE
 			{
-				Config: testAccProjectAssociateAuditConfigLogType(pid, pname, org, service, logType2),
+				Config: testAccProjectAssociateAuditConfigLogType(pid, org, service, logType2),
 			},
 			projectIamAuditConfigImportStep("google_project_iam_audit_config.acceptance", pid, service),
 		},
 	})
 }
 
-func testAccProjectAssociateAuditConfigBasic(pid, name, org, service string) string {
+func testAccProjectAssociateAuditConfigBasic(pid, org, service string) string {
 	return fmt.Sprintf(`
 resource "google_project" "acceptance" {
   project_id = "%s"
@@ -317,10 +317,10 @@ resource "google_project_iam_audit_config" "acceptance" {
     ]
   }
 }
-`, pid, name, org, service)
+`, pid, pid, org, service)
 }
 
-func testAccProjectAssociateAuditConfigMultiple(pid, name, org, service, service2 string) string {
+func testAccProjectAssociateAuditConfigMultiple(pid, org, service, service2 string) string {
 	return fmt.Sprintf(`
 resource "google_project" "acceptance" {
   project_id = "%s"
@@ -347,10 +347,10 @@ resource "google_project_iam_audit_config" "multiple" {
     log_type = "DATA_WRITE"
   }
 }
-`, pid, name, org, service, service2)
+`, pid, pid, org, service, service2)
 }
 
-func testAccProjectAssociateAuditConfigUpdated(pid, name, org, service string) string {
+func testAccProjectAssociateAuditConfigUpdated(pid, org, service string) string {
 	return fmt.Sprintf(`
 resource "google_project" "acceptance" {
   project_id = "%s"
@@ -369,10 +369,10 @@ resource "google_project_iam_audit_config" "acceptance" {
     ]
   }
 }
-`, pid, name, org, service)
+`, pid, pid, org, service)
 }
 
-func testAccProjectAssociateAuditConfigDropMemberFromBasic(pid, name, org, service string) string {
+func testAccProjectAssociateAuditConfigDropMemberFromBasic(pid, org, service string) string {
 	return fmt.Sprintf(`
 resource "google_project" "acceptance" {
   project_id = "%s"
@@ -390,10 +390,10 @@ resource "google_project_iam_audit_config" "acceptance" {
     ]
   }
 }
-`, pid, name, org, service)
+`, pid, pid, org, service)
 }
 
-func testAccProjectAssociateAuditConfigMembers(pid, name, org, service string, members []string) string {
+func testAccProjectAssociateAuditConfigMembers(pid, org, service string, members []string) string {
 	var memberStr string
 	if len(members) > 0 {
 		for pos, member := range members {
@@ -415,10 +415,10 @@ resource "google_project_iam_audit_config" "acceptance" {
     log_type = "DATA_READ"%s
   }
 }
-`, pid, name, org, service, memberStr)
+`, pid, pid, org, service, memberStr)
 }
 
-func testAccProjectAssociateAuditConfigLogType(pid, name, org, service, logType string) string {
+func testAccProjectAssociateAuditConfigLogType(pid, org, service, logType string) string {
 	return fmt.Sprintf(`
 resource "google_project" "acceptance" {
   project_id = "%s"
@@ -433,5 +433,5 @@ resource "google_project_iam_audit_config" "acceptance" {
     log_type = "%s"
   }
 }
-`, pid, name, org, service, logType)
+`, pid, pid, org, service, logType)
 }

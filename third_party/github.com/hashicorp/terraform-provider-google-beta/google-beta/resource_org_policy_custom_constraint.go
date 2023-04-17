@@ -154,7 +154,7 @@ func resourceOrgPolicyCustomConstraintCreate(d *schema.ResourceData, meta interf
 		obj["resourceTypes"] = resourceTypesProp
 	}
 
-	url, err := replaceVars(d, config, "{{OrgPolicyBasePath}}{{parent}}/customConstraints")
+	url, err := ReplaceVars(d, config, "{{OrgPolicyBasePath}}{{parent}}/customConstraints")
 	if err != nil {
 		return err
 	}
@@ -173,7 +173,7 @@ func resourceOrgPolicyCustomConstraintCreate(d *schema.ResourceData, meta interf
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "{{parent}}/customConstraints/{{name}}")
+	id, err := ReplaceVars(d, config, "{{parent}}/customConstraints/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -191,7 +191,7 @@ func resourceOrgPolicyCustomConstraintRead(d *schema.ResourceData, meta interfac
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{OrgPolicyBasePath}}{{parent}}/customConstraints/{{name}}")
+	url, err := ReplaceVars(d, config, "{{OrgPolicyBasePath}}{{parent}}/customConstraints/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -282,7 +282,7 @@ func resourceOrgPolicyCustomConstraintUpdate(d *schema.ResourceData, meta interf
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{OrgPolicyBasePath}}{{parent}}/customConstraints/{{name}}")
+	url, err := ReplaceVars(d, config, "{{OrgPolicyBasePath}}{{parent}}/customConstraints/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -314,7 +314,7 @@ func resourceOrgPolicyCustomConstraintDelete(d *schema.ResourceData, meta interf
 
 	billingProject := ""
 
-	url, err := replaceVars(d, config, "{{OrgPolicyBasePath}}{{parent}}/customConstraints/{{name}}")
+	url, err := ReplaceVars(d, config, "{{OrgPolicyBasePath}}{{parent}}/customConstraints/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -338,14 +338,14 @@ func resourceOrgPolicyCustomConstraintDelete(d *schema.ResourceData, meta interf
 
 func resourceOrgPolicyCustomConstraintImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"(?P<parent>.+)/customConstraints/(?P<name>[^/]+)",
 	}, d, config); err != nil {
 		return nil, err
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "{{parent}}/customConstraints/{{name}}")
+	id, err := ReplaceVars(d, config, "{{parent}}/customConstraints/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -390,7 +390,7 @@ func flattenOrgPolicyCustomConstraintUpdateTime(v interface{}, d *schema.Resourc
 }
 
 func expandOrgPolicyCustomConstraintName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	return replaceVars(d, config, "{{parent}}/customConstraints/{{name}}")
+	return ReplaceVars(d, config, "{{parent}}/customConstraints/{{name}}")
 }
 
 func expandOrgPolicyCustomConstraintDisplayName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {

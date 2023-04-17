@@ -31,9 +31,9 @@ func TestAccFilestoreBackup_filestoreBackupBasicExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckFilestoreBackupDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckFilestoreBackupDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFilestoreBackup_filestoreBackupBasicExample(context),
@@ -106,7 +106,7 @@ func testAccCheckFilestoreBackupDestroyProducer(t *testing.T) func(s *terraform.
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, isNotFilestoreQuotaError)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, IsNotFilestoreQuotaError)
 			if err == nil {
 				return fmt.Errorf("FilestoreBackup still exists at %s", url)
 			}

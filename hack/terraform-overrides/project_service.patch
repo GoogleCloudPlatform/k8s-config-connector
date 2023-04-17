@@ -29,7 +29,7 @@ index e89a6f4c1..07614a3b9 100644
 -		return nil, fmt.Errorf("Error setting project: %s", err)
 +func resourceGoogleProjectServiceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 +	config := meta.(*Config)
-+	if err := parseImportId([]string{
++	if err := ParseImportId([]string{
 +		"projects/(?P<project>[^/]+)/services/(?P<service>[^/]+)",
 +		"(?P<project>[^/]+)/(?P<service>[^/]+)",
 +	}, d, config); err != nil {
@@ -39,7 +39,7 @@ index e89a6f4c1..07614a3b9 100644
 -		return nil, fmt.Errorf("Error setting service: %s", err)
 +
 +	// Replace import id for the resource id
-+	id, err := replaceVars(d, config, "projects/{{project}}/services/{{name}}")
++	id, err := ReplaceVars(d, config, "projects/{{project}}/services/{{name}}")
 +	if err != nil {
 +		return nil, fmt.Errorf("Error constructing id: %s", err)
  	}

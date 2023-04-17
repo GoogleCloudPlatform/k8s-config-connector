@@ -191,7 +191,7 @@ func resourceFirebaseHostingVersionCreate(d *schema.ResourceData, meta interface
 		obj["config"] = configProp
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/versions")
+	url, err := ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/versions")
 	if err != nil {
 		return err
 	}
@@ -213,7 +213,7 @@ func resourceFirebaseHostingVersionCreate(d *schema.ResourceData, meta interface
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "sites/{{site_id}}/versions/{{version_id}}")
+	id, err := ReplaceVars(d, config, "sites/{{site_id}}/versions/{{version_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -229,7 +229,7 @@ func resourceFirebaseHostingVersionCreate(d *schema.ResourceData, meta interface
 	obj = make(map[string]interface{})
 	obj["status"] = "FINALIZED"
 
-	url, err = replaceVars(d, config, "{{FirebaseHostingBasePath}}{{name}}")
+	url, err = ReplaceVars(d, config, "{{FirebaseHostingBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -238,7 +238,7 @@ func resourceFirebaseHostingVersionCreate(d *schema.ResourceData, meta interface
 	updateMask := []string{}
 
 	updateMask = append(updateMask, "status")
-	url, err = addQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -263,7 +263,7 @@ func resourceFirebaseHostingVersionRead(d *schema.ResourceData, meta interface{}
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/versions/{{version_id}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/versions/{{version_id}}")
 	if err != nil {
 		return err
 	}
@@ -313,7 +313,7 @@ func resourceFirebaseHostingVersionDelete(d *schema.ResourceData, meta interface
 
 func resourceFirebaseHostingVersionImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"sites/(?P<site_id>[^/]+)/versions/(?P<version_id>[^/]+)",
 		"(?P<site_id>[^/]+)/(?P<version_id>[^/]+)",
 	}, d, config); err != nil {
@@ -321,7 +321,7 @@ func resourceFirebaseHostingVersionImport(d *schema.ResourceData, meta interface
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "sites/{{site_id}}/versions/{{version_id}}")
+	id, err := ReplaceVars(d, config, "sites/{{site_id}}/versions/{{version_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

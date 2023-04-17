@@ -918,7 +918,7 @@ func resourceOSConfigGuestPoliciesCreate(d *schema.ResourceData, meta interface{
 		obj["etag"] = etagProp
 	}
 
-	url, err := replaceVars(d, config, "{{OSConfigBasePath}}projects/{{project}}/guestPolicies?guestPolicyId={{guest_policy_id}}")
+	url, err := ReplaceVars(d, config, "{{OSConfigBasePath}}projects/{{project}}/guestPolicies?guestPolicyId={{guest_policy_id}}")
 	if err != nil {
 		return err
 	}
@@ -943,7 +943,7 @@ func resourceOSConfigGuestPoliciesCreate(d *schema.ResourceData, meta interface{
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "projects/{{project}}/guestPolicies/{{guest_policy_id}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/guestPolicies/{{guest_policy_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -979,7 +979,7 @@ func resourceOSConfigGuestPoliciesRead(d *schema.ResourceData, meta interface{})
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{OSConfigBasePath}}projects/{{project}}/guestPolicies/{{guest_policy_id}}")
+	url, err := ReplaceVars(d, config, "{{OSConfigBasePath}}projects/{{project}}/guestPolicies/{{guest_policy_id}}")
 	if err != nil {
 		return err
 	}
@@ -1090,7 +1090,7 @@ func resourceOSConfigGuestPoliciesUpdate(d *schema.ResourceData, meta interface{
 		obj["etag"] = etagProp
 	}
 
-	url, err := replaceVars(d, config, "{{OSConfigBasePath}}projects/{{project}}/guestPolicies/{{guest_policy_id}}")
+	url, err := ReplaceVars(d, config, "{{OSConfigBasePath}}projects/{{project}}/guestPolicies/{{guest_policy_id}}")
 	if err != nil {
 		return err
 	}
@@ -1128,7 +1128,7 @@ func resourceOSConfigGuestPoliciesDelete(d *schema.ResourceData, meta interface{
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{OSConfigBasePath}}projects/{{project}}/guestPolicies/{{guest_policy_id}}")
+	url, err := ReplaceVars(d, config, "{{OSConfigBasePath}}projects/{{project}}/guestPolicies/{{guest_policy_id}}")
 	if err != nil {
 		return err
 	}
@@ -1152,7 +1152,7 @@ func resourceOSConfigGuestPoliciesDelete(d *schema.ResourceData, meta interface{
 
 func resourceOSConfigGuestPoliciesImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/guestPolicies/(?P<guest_policy_id>[^/]+)",
 		"(?P<project>[^/]+)/(?P<guest_policy_id>[^/]+)",
 		"(?P<guest_policy_id>[^/]+)",
@@ -1161,7 +1161,7 @@ func resourceOSConfigGuestPoliciesImport(d *schema.ResourceData, meta interface{
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "projects/{{project}}/guestPolicies/{{guest_policy_id}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/guestPolicies/{{guest_policy_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

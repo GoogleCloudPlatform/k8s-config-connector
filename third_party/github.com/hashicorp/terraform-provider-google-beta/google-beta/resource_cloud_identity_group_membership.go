@@ -202,7 +202,7 @@ func resourceCloudIdentityGroupMembershipCreate(d *schema.ResourceData, meta int
 		obj["roles"] = rolesProp
 	}
 
-	url, err := replaceVars(d, config, "{{CloudIdentityBasePath}}{{group}}/memberships")
+	url, err := ReplaceVars(d, config, "{{CloudIdentityBasePath}}{{group}}/memberships")
 	if err != nil {
 		return err
 	}
@@ -224,7 +224,7 @@ func resourceCloudIdentityGroupMembershipCreate(d *schema.ResourceData, meta int
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "{{name}}")
+	id, err := ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -260,7 +260,7 @@ func resourceCloudIdentityGroupMembershipRead(d *schema.ResourceData, meta inter
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{CloudIdentityBasePath}}{{name}}")
+	url, err := ReplaceVars(d, config, "{{CloudIdentityBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -328,7 +328,7 @@ func resourceCloudIdentityGroupMembershipUpdate(d *schema.ResourceData, meta int
 			return err
 		}
 
-		url, err := replaceVars(d, config, "{{CloudIdentityBasePath}}{{name}}:modifyMembershipRoles")
+		url, err := ReplaceVars(d, config, "{{CloudIdentityBasePath}}{{name}}:modifyMembershipRoles")
 		if err != nil {
 			return err
 		}
@@ -361,7 +361,7 @@ func resourceCloudIdentityGroupMembershipDelete(d *schema.ResourceData, meta int
 
 	billingProject := ""
 
-	url, err := replaceVars(d, config, "{{CloudIdentityBasePath}}{{name}}")
+	url, err := ReplaceVars(d, config, "{{CloudIdentityBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -385,14 +385,14 @@ func resourceCloudIdentityGroupMembershipDelete(d *schema.ResourceData, meta int
 
 func resourceCloudIdentityGroupMembershipImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"(?P<name>.+)",
 	}, d, config); err != nil {
 		return nil, err
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "{{name}}")
+	id, err := ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

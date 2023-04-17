@@ -29,8 +29,8 @@ func TestAccFirebaseHostingVersion_firebasehostingVersionRedirectExample(t *test
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProvidersOiCS,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFirebaseHostingVersion_firebasehostingVersionRedirectExample(context),
@@ -83,8 +83,8 @@ func TestAccFirebaseHostingVersion_firebasehostingVersionCloudRunExample(t *test
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProvidersOiCS,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFirebaseHostingVersion_firebasehostingVersionCloudRunExample(context),
@@ -156,8 +156,8 @@ func TestAccFirebaseHostingVersion_firebasehostingVersionCloudFunctionsExample(t
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProvidersOiCS,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFirebaseHostingVersion_firebasehostingVersionCloudFunctionsExample(context),

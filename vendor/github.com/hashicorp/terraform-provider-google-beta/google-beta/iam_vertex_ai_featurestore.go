@@ -203,7 +203,7 @@ func (u *VertexAIFeaturestoreIamUpdater) SetResourceIamPolicy(policy *cloudresou
 
 func (u *VertexAIFeaturestoreIamUpdater) qualifyFeaturestoreUrl(methodIdentifier string) (string, error) {
 	urlTemplate := fmt.Sprintf("{{VertexAIBasePath}}%s:%s", fmt.Sprintf("projects/%s/locations/%s/featurestores/%s", u.project, u.region, u.featurestore), methodIdentifier)
-	url, err := replaceVars(u.d, u.Config, urlTemplate)
+	url, err := ReplaceVars(u.d, u.Config, urlTemplate)
 	if err != nil {
 		return "", err
 	}

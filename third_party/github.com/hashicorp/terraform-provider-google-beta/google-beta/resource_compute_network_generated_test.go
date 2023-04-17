@@ -31,9 +31,9 @@ func TestAccComputeNetwork_networkBasicExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckComputeNetworkDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckComputeNetworkDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeNetwork_networkBasicExample(context),
@@ -64,9 +64,9 @@ func TestAccComputeNetwork_networkCustomMtuExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckComputeNetworkDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckComputeNetworkDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeNetwork_networkCustomMtuExample(context),
@@ -87,6 +87,42 @@ resource "google_compute_network" "vpc_network" {
   name                    = "tf-test-vpc-network%{random_suffix}"
   auto_create_subnetworks = true
   mtu                     = 1460
+}
+`, context)
+}
+
+func TestAccComputeNetwork_networkCustomFirewallEnforcementOrderExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"project":       GetTestProjectFromEnv(),
+		"random_suffix": RandString(t, 10),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckComputeNetworkDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccComputeNetwork_networkCustomFirewallEnforcementOrderExample(context),
+			},
+			{
+				ResourceName:      "google_compute_network.vpc_network",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+
+func testAccComputeNetwork_networkCustomFirewallEnforcementOrderExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_compute_network" "vpc_network" {
+  project                 = "%{project}"
+  name                    = "tf-test-vpc-network%{random_suffix}"
+  auto_create_subnetworks = true
+  network_firewall_policy_enforcement_order = "BEFORE_CLASSIC_FIREWALL"
 }
 `, context)
 }

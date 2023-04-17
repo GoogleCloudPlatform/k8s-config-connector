@@ -17,9 +17,9 @@ func TestAccApigeeEnvironment_apigeeEnvironmentNodeconfigTestExampleUpdate(t *te
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProvidersOiCS,
-		CheckDestroy: testAccCheckApigeeEnvironmentDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckApigeeEnvironmentDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccApigeeEnvironment_apigeeEnvironmentNodeconfigTestExample(context),

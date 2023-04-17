@@ -147,7 +147,7 @@ func (u *ServiceDirectoryNamespaceIamUpdater) SetResourceIamPolicy(policy *cloud
 
 func (u *ServiceDirectoryNamespaceIamUpdater) qualifyNamespaceUrl(methodIdentifier string) (string, error) {
 	urlTemplate := fmt.Sprintf("{{ServiceDirectoryBasePath}}%s:%s", fmt.Sprintf("%s", u.name), methodIdentifier)
-	url, err := replaceVars(u.d, u.Config, urlTemplate)
+	url, err := ReplaceVars(u.d, u.Config, urlTemplate)
 	if err != nil {
 		return "", err
 	}

@@ -14,7 +14,7 @@ func TestAccNotebooksInstance_create_vm_image(t *testing.T) {
 	name := fmt.Sprintf("tf-%s", prefix)
 
 	VcrTest(t, resource.TestCase{
-		Providers: TestAccProviders,
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccNotebooksInstance_create_vm_image(name),
@@ -35,7 +35,7 @@ func TestAccNotebooksInstance_update(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		Providers: TestAccProviders,
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccNotebooksInstance_basic(context),

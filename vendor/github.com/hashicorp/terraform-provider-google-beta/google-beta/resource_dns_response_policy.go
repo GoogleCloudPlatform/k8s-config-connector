@@ -131,7 +131,7 @@ func resourceDNSResponsePolicyCreate(d *schema.ResourceData, meta interface{}) e
 		obj["gkeClusters"] = gkeClustersProp
 	}
 
-	url, err := replaceVars(d, config, "{{DNSBasePath}}projects/{{project}}/responsePolicies")
+	url, err := ReplaceVars(d, config, "{{DNSBasePath}}projects/{{project}}/responsePolicies")
 	if err != nil {
 		return err
 	}
@@ -156,7 +156,7 @@ func resourceDNSResponsePolicyCreate(d *schema.ResourceData, meta interface{}) e
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "projects/{{project}}/responsePolicies/{{response_policy_name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/responsePolicies/{{response_policy_name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -174,7 +174,7 @@ func resourceDNSResponsePolicyRead(d *schema.ResourceData, meta interface{}) err
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{DNSBasePath}}projects/{{project}}/responsePolicies/{{response_policy_name}}")
+	url, err := ReplaceVars(d, config, "{{DNSBasePath}}projects/{{project}}/responsePolicies/{{response_policy_name}}")
 	if err != nil {
 		return err
 	}
@@ -252,7 +252,7 @@ func resourceDNSResponsePolicyUpdate(d *schema.ResourceData, meta interface{}) e
 		obj["gkeClusters"] = gkeClustersProp
 	}
 
-	url, err := replaceVars(d, config, "{{DNSBasePath}}projects/{{project}}/responsePolicies/{{response_policy_name}}")
+	url, err := ReplaceVars(d, config, "{{DNSBasePath}}projects/{{project}}/responsePolicies/{{response_policy_name}}")
 	if err != nil {
 		return err
 	}
@@ -290,7 +290,7 @@ func resourceDNSResponsePolicyDelete(d *schema.ResourceData, meta interface{}) e
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{DNSBasePath}}projects/{{project}}/responsePolicies/{{response_policy_name}}")
+	url, err := ReplaceVars(d, config, "{{DNSBasePath}}projects/{{project}}/responsePolicies/{{response_policy_name}}")
 	if err != nil {
 		return err
 	}
@@ -301,7 +301,7 @@ func resourceDNSResponsePolicyDelete(d *schema.ResourceData, meta interface{}) e
 		patched := make(map[string]interface{})
 		patched["gkeClusters"] = nil
 
-		url, err := replaceVars(d, config, "{{DNSBasePath}}projects/{{project}}/responsePolicies/{{response_policy_name}}")
+		url, err := ReplaceVars(d, config, "{{DNSBasePath}}projects/{{project}}/responsePolicies/{{response_policy_name}}")
 		if err != nil {
 			return err
 		}
@@ -317,7 +317,7 @@ func resourceDNSResponsePolicyDelete(d *schema.ResourceData, meta interface{}) e
 		patched := make(map[string]interface{})
 		patched["networks"] = nil
 
-		url, err := replaceVars(d, config, "{{DNSBasePath}}projects/{{project}}/responsePolicies/{{response_policy_name}}")
+		url, err := ReplaceVars(d, config, "{{DNSBasePath}}projects/{{project}}/responsePolicies/{{response_policy_name}}")
 		if err != nil {
 			return err
 		}
@@ -345,7 +345,7 @@ func resourceDNSResponsePolicyDelete(d *schema.ResourceData, meta interface{}) e
 
 func resourceDNSResponsePolicyImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/responsePolicies/(?P<response_policy_name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<response_policy_name>[^/]+)",
 		"(?P<response_policy_name>[^/]+)",
@@ -354,7 +354,7 @@ func resourceDNSResponsePolicyImport(d *schema.ResourceData, meta interface{}) (
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "projects/{{project}}/responsePolicies/{{response_policy_name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/responsePolicies/{{response_policy_name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -451,7 +451,7 @@ func expandDNSResponsePolicyNetworksNetworkUrl(v interface{}, d TerraformResourc
 	} else if strings.HasPrefix(v.(string), "https://") {
 		return v, nil
 	}
-	url, err := replaceVars(d, config, "{{ComputeBasePath}}"+v.(string))
+	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}"+v.(string))
 	if err != nil {
 		return "", err
 	}

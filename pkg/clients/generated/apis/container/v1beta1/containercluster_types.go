@@ -81,6 +81,11 @@ type ClusterAddonsConfig struct {
 	NetworkPolicyConfig *ClusterNetworkPolicyConfig `json:"networkPolicyConfig,omitempty"`
 }
 
+type ClusterAdvancedMachineFeatures struct {
+	/* Immutable. The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed. */
+	ThreadsPerCore int `json:"threadsPerCore"`
+}
+
 type ClusterAuthenticatorGroupsConfig struct {
 	/* The name of the RBAC security group for use with Google security groups in Kubernetes RBAC. Group name must be in format gke-security-groups@yourdomain.com. */
 	SecurityGroup string `json:"securityGroup"`
@@ -249,7 +254,12 @@ type ClusterDnsConfig struct {
 }
 
 type ClusterEphemeralStorageConfig struct {
-	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD is 375 GB in size. */
+	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
+	LocalSsdCount int `json:"localSsdCount"`
+}
+
+type ClusterEphemeralStorageLocalSsdConfig struct {
+	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
 	LocalSsdCount int `json:"localSsdCount"`
 }
 
@@ -337,6 +347,10 @@ type ClusterIpAllocationPolicy struct {
 	// +optional
 	ClusterSecondaryRangeName *string `json:"clusterSecondaryRangeName,omitempty"`
 
+	/* Immutable. Configuration for cluster level pod cidr overprovision. Default is disabled=false. */
+	// +optional
+	PodCidrOverprovisionConfig *ClusterPodCidrOverprovisionConfig `json:"podCidrOverprovisionConfig,omitempty"`
+
 	/* Immutable. The IP address range of the services IPs in this cluster. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use. */
 	// +optional
 	ServicesIpv4CidrBlock *string `json:"servicesIpv4CidrBlock,omitempty"`
@@ -344,6 +358,10 @@ type ClusterIpAllocationPolicy struct {
 	/* Immutable. The name of the existing secondary range in the cluster's subnetwork to use for service ClusterIPs. Alternatively, services_ipv4_cidr_block can be used to automatically create a GKE-managed one. */
 	// +optional
 	ServicesSecondaryRangeName *string `json:"servicesSecondaryRangeName,omitempty"`
+
+	/* Immutable. The IP Stack type of the cluster. Choose between IPV4 and IPV4_IPV6. Default type is IPV4 Only if not set. */
+	// +optional
+	StackType *string `json:"stackType,omitempty"`
 }
 
 type ClusterIstioConfig struct {
@@ -379,6 +397,11 @@ type ClusterKubeletConfig struct {
 type ClusterLinuxNodeConfig struct {
 	/* The Linux kernel parameters to be applied to the nodes and all pods running on the nodes. */
 	Sysctls map[string]string `json:"sysctls"`
+}
+
+type ClusterLocalNvmeSsdBlockConfig struct {
+	/* Immutable. Number of raw-block local NVMe SSD disks to be attached to the node. Each local SSD is 375 GB in size. */
+	LocalSsdCount int `json:"localSsdCount"`
 }
 
 type ClusterLoggingConfig struct {
@@ -507,6 +530,10 @@ type ClusterNetworkTags struct {
 }
 
 type ClusterNodeConfig struct {
+	/* Immutable. Specifies options for controlling advanced machine features. */
+	// +optional
+	AdvancedMachineFeatures *ClusterAdvancedMachineFeatures `json:"advancedMachineFeatures,omitempty"`
+
 	// +optional
 	BootDiskKMSCryptoKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSCryptoKeyRef,omitempty"`
 
@@ -518,9 +545,13 @@ type ClusterNodeConfig struct {
 	// +optional
 	DiskType *string `json:"diskType,omitempty"`
 
-	/* Immutable. Parameters for the ephemeral storage filesystem. */
+	/* Immutable. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk. */
 	// +optional
 	EphemeralStorageConfig *ClusterEphemeralStorageConfig `json:"ephemeralStorageConfig,omitempty"`
+
+	/* Immutable. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk. */
+	// +optional
+	EphemeralStorageLocalSsdConfig *ClusterEphemeralStorageLocalSsdConfig `json:"ephemeralStorageLocalSsdConfig,omitempty"`
 
 	/* Immutable. GCFS configuration for this node. */
 	// +optional
@@ -549,6 +580,10 @@ type ClusterNodeConfig struct {
 	/* Parameters that can be configured on Linux nodes. */
 	// +optional
 	LinuxNodeConfig *ClusterLinuxNodeConfig `json:"linuxNodeConfig,omitempty"`
+
+	/* Immutable. Parameters for raw-block local NVMe SSDs. */
+	// +optional
+	LocalNvmeSsdBlockConfig *ClusterLocalNvmeSsdBlockConfig `json:"localNvmeSsdBlockConfig,omitempty"`
 
 	/* Immutable. The number of local SSD disks to be attached to the node. */
 	// +optional
@@ -657,6 +692,10 @@ type ClusterPassword struct {
 	ValueFrom *ClusterValueFrom `json:"valueFrom,omitempty"`
 }
 
+type ClusterPodCidrOverprovisionConfig struct {
+	Disabled bool `json:"disabled"`
+}
+
 type ClusterPodSecurityPolicyConfig struct {
 	/* Enable the PodSecurityPolicy controller for this cluster. If enabled, pods must be valid under a PodSecurityPolicy to be created. */
 	Enabled bool `json:"enabled"`
@@ -698,11 +737,11 @@ type ClusterPrivateClusterConfig struct {
 }
 
 type ClusterProtectConfig struct {
-	/* WorkloadConfig defines the flags to enable or disable the workload configurations for the cluster. */
+	/* WorkloadConfig defines which actions are enabled for a cluster's workload configurations. */
 	// +optional
 	WorkloadConfig *ClusterWorkloadConfig `json:"workloadConfig,omitempty"`
 
-	/* WorkloadVulnerabilityMode defines mode to perform vulnerability scanning. Accepted values are WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED, DISABLED, BASIC. */
+	/* Sets which mode to use for Protect workload vulnerability scanning feature. Accepted values are DISABLED, BASIC. */
 	// +optional
 	WorkloadVulnerabilityMode *string `json:"workloadVulnerabilityMode,omitempty"`
 }
@@ -863,7 +902,7 @@ type ClusterVerticalPodAutoscaling struct {
 }
 
 type ClusterWorkloadConfig struct {
-	/* Mode defines how to audit the workload configs. Accepted values are MODE_UNSPECIFIED, DISABLED, BASIC. */
+	/* Sets which mode of auditing should be used for the cluster's workloads. Accepted values are DISABLED, BASIC. */
 	AuditMode string `json:"auditMode"`
 }
 
@@ -1078,7 +1117,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	PrivateIpv6GoogleAccess *string `json:"privateIpv6GoogleAccess,omitempty"`
 
-	/* The notification config for sending cluster upgrade notifications. */
+	/* Enable/Disable Protect API features for the cluster. */
 	// +optional
 	ProtectConfig *ClusterProtectConfig `json:"protectConfig,omitempty"`
 

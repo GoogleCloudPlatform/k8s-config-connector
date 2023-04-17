@@ -61,6 +61,16 @@ spec:
               description:
                 description: The user-provided description of the repository.
                 type: string
+              dockerConfig:
+                description: Docker repository config contains repository level configuration
+                  for the repositories of docker type.
+                properties:
+                  immutableTags:
+                    description: The repository which enabled this flag prevents all
+                      tags from being modified, moved or deleted. This does not prevent
+                      tags from being created.
+                    type: boolean
+                type: object
               format:
                 description: |-
                   Immutable. The format of packages that are stored in the repository. Supported formats
@@ -259,7 +269,7 @@ spec:
               name:
                 description: |-
                   The name of the repository, for example:
-                  "projects/p1/locations/us-central1/repositories/repo1".
+                  "repo1".
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource

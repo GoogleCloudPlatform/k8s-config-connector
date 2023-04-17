@@ -100,9 +100,13 @@ namePrefix: string
 networkConfig:
   createPodRange: boolean
   enablePrivateNodes: boolean
+  podCidrOverprovisionConfig:
+    disabled: boolean
   podIpv4CidrBlock: string
   podRange: string
 nodeConfig:
+  advancedMachineFeatures:
+    threadsPerCore: integer
   bootDiskKMSCryptoKeyRef:
     external: string
     name: string
@@ -110,6 +114,8 @@ nodeConfig:
   diskSizeGb: integer
   diskType: string
   ephemeralStorageConfig:
+    localSsdCount: integer
+  ephemeralStorageLocalSsdConfig:
     localSsdCount: integer
   gcfsConfig:
     enabled: boolean
@@ -133,6 +139,8 @@ nodeConfig:
   linuxNodeConfig:
     sysctls:
       string: string
+  localNvmeSsdBlockConfig:
+    localSsdCount: integer
   localSsdCount: integer
   loggingVariant: string
   machineType: string
@@ -400,6 +408,26 @@ version: string
     </tr>
     <tr>
         <td>
+            <p><code>networkConfig.podCidrOverprovisionConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Configuration for node-pool level pod cidr overprovision. If not set, the cluster level setting will be inherited.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.podCidrOverprovisionConfig.disabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>networkConfig.podIpv4CidrBlock</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -426,6 +454,26 @@ version: string
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Immutable. The configuration of the nodepool.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.advancedMachineFeatures</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Specifies options for controlling advanced machine features.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.advancedMachineFeatures.threadsPerCore</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -495,7 +543,7 @@ version: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Parameters for the ephemeral storage filesystem.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -505,7 +553,27 @@ version: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD is 375 GB in size.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.ephemeralStorageLocalSsdConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.ephemeralStorageLocalSsdConfig.localSsdCount</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -716,6 +784,26 @@ version: string
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
             <p>{% verbatim %}The Linux kernel parameters to be applied to the nodes and all pods running on the nodes.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.localNvmeSsdBlockConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Parameters for raw-block local NVMe SSDs.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.localNvmeSsdBlockConfig.localSsdCount</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Number of raw-block local NVMe SSD disks to be attached to the node. Each local SSD is 375 GB in size.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

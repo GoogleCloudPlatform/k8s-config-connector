@@ -51,38 +51,38 @@ type UpdateMetadata struct {
 // IsListenerResource returns true if the provider URL corresponds to an xDS
 // Listener resource.
 func IsListenerResource(url string) bool {
-	return url == version.V2ListenerURL || url == version.V3ListenerURL
+	return url == version.V3ListenerURL
 }
 
 // IsHTTPConnManagerResource returns true if the provider URL corresponds to an xDS
 // HTTPConnManager resource.
 func IsHTTPConnManagerResource(url string) bool {
-	return url == version.V2HTTPConnManagerURL || url == version.V3HTTPConnManagerURL
+	return url == version.V3HTTPConnManagerURL
 }
 
 // IsRouteConfigResource returns true if the provider URL corresponds to an xDS
 // RouteConfig resource.
 func IsRouteConfigResource(url string) bool {
-	return url == version.V2RouteConfigURL || url == version.V3RouteConfigURL
+	return url == version.V3RouteConfigURL
 }
 
 // IsClusterResource returns true if the provider URL corresponds to an xDS
 // Cluster resource.
 func IsClusterResource(url string) bool {
-	return url == version.V2ClusterURL || url == version.V3ClusterURL
+	return url == version.V3ClusterURL
 }
 
 // IsEndpointsResource returns true if the provider URL corresponds to an xDS
 // Endpoints resource.
 func IsEndpointsResource(url string) bool {
-	return url == version.V2EndpointsURL || url == version.V3EndpointsURL
+	return url == version.V3EndpointsURL
 }
 
 // unwrapResource unwraps and returns the inner resource if it's in a resource
 // wrapper. The original resource is returned if it's not wrapped.
 func unwrapResource(r *anypb.Any) (*anypb.Any, error) {
 	url := r.GetTypeUrl()
-	if url != version.V2ResourceWrapperURL && url != version.V3ResourceWrapperURL {
+	if url != version.V3ResourceWrapperURL {
 		// Not wrapped.
 		return r, nil
 	}

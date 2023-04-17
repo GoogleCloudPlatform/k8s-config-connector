@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC.
+// Copyright 2023 Google LLC.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -71,6 +71,7 @@ var _ = errors.New
 var _ = strings.Replace
 var _ = context.Canceled
 var _ = internaloption.WithDefaultEndpoint
+var _ = internal.Version
 
 const apiId = "storagetransfer:v1"
 const apiName = "storagetransfer"
@@ -2011,6 +2012,9 @@ type TransferOperation struct {
 	// ErrorBreakdowns: Summarizes errors encountered with sample error log
 	// entries.
 	ErrorBreakdowns []*ErrorSummary `json:"errorBreakdowns,omitempty"`
+
+	// LoggingConfig: Cloud Logging configuration.
+	LoggingConfig *LoggingConfig `json:"loggingConfig,omitempty"`
 
 	// Name: A globally unique ID assigned by the system.
 	Name string `json:"name,omitempty"`

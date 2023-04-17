@@ -32,8 +32,8 @@ func TestAccKmsSecretAsymmetricBasic(t *testing.T) {
 
 	// The first test creates resources needed to encrypt plaintext and produce ciphertext
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: kmsCryptoKeyAsymmetricDecryptBasic(projectID, projectOrg, projectBillingAccount, keyRingName, cryptoKeyName),
@@ -45,8 +45,8 @@ func TestAccKmsSecretAsymmetricBasic(t *testing.T) {
 
 					// The second test asserts that the data source has the correct plaintext, given the created ciphertext
 					VcrTest(t, resource.TestCase{
-						PreCheck:  func() { testAccPreCheck(t) },
-						Providers: TestAccProviders,
+						PreCheck:                 func() { AccTestPreCheck(t) },
+						ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 						Steps: []resource.TestStep{
 							{
 								Config: googleKmsSecretAsymmetricDatasource(cryptoKeyVersionID, ciphertext),

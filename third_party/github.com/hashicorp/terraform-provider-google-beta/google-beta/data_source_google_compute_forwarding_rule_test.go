@@ -14,12 +14,12 @@ func TestAccDataSourceGoogleForwardingRule(t *testing.T) {
 	ruleName := fmt.Sprintf("tf-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceGoogleForwardingRuleConfig(poolName, ruleName),
-				Check:  checkDataSourceStateMatchesResourceStateWithIgnores("data.google_compute_forwarding_rule.my_forwarding_rule", "google_compute_forwarding_rule.foobar-fr", map[string]struct{}{"port_range": {}, "target": {}}),
+				Check:  CheckDataSourceStateMatchesResourceStateWithIgnores("data.google_compute_forwarding_rule.my_forwarding_rule", "google_compute_forwarding_rule.foobar-fr", map[string]struct{}{"port_range": {}, "target": {}}),
 			},
 		},
 	})

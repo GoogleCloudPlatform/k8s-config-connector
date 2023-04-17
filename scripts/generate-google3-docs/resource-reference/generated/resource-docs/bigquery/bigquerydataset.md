@@ -111,6 +111,7 @@ access:
     datasetId: string
     projectId: string
     tableId: string
+defaultCollation: string
 defaultEncryptionConfiguration:
   kmsKeyRef:
     external: string
@@ -120,6 +121,7 @@ defaultPartitionExpirationMs: integer
 defaultTableExpirationMs: integer
 description: string
 friendlyName: string
+isCaseInsensitive: boolean
 location: string
 maxTimeTravelHours: string
 projectRef:
@@ -333,6 +335,25 @@ is 1,024 characters.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>defaultCollation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Defines the default collation specification of future tables created
+in the dataset. If a table is created in this dataset without table-level
+default collation, then the table inherits the dataset default collation,
+which is applied to the string fields that do not have explicit collation
+specified. A change to this field affects only tables created afterwards,
+and does not alter the existing tables.
+
+The following values are supported:
+- 'und:ci': undetermined locale, case insensitive.
+- '': empty string. Default to case-sensitive behavior.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>defaultEncryptionConfiguration</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -449,6 +470,18 @@ expiration time indicated by this property.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}A descriptive name for the dataset.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>isCaseInsensitive</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}TRUE if the dataset and its table names are case-insensitive, otherwise FALSE.
+By default, this is FALSE, which means the dataset and its table names are
+case-sensitive. This field does not affect routine references.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

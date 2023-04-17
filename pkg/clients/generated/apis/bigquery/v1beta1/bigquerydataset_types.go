@@ -120,6 +120,19 @@ type BigQueryDatasetSpec struct {
 	// +optional
 	Access []DatasetAccess `json:"access,omitempty"`
 
+	/* Defines the default collation specification of future tables created
+	in the dataset. If a table is created in this dataset without table-level
+	default collation, then the table inherits the dataset default collation,
+	which is applied to the string fields that do not have explicit collation
+	specified. A change to this field affects only tables created afterwards,
+	and does not alter the existing tables.
+
+	The following values are supported:
+	- 'und:ci': undetermined locale, case insensitive.
+	- '': empty string. Default to case-sensitive behavior. */
+	// +optional
+	DefaultCollation *string `json:"defaultCollation,omitempty"`
+
 	/* The default encryption key for all tables in the dataset. Once this property is set,
 	all newly-created partitioned tables in the dataset will have encryption key set to
 	this value, unless table creation request (or query) overrides the key. */
@@ -167,6 +180,12 @@ type BigQueryDatasetSpec struct {
 	/* A descriptive name for the dataset. */
 	// +optional
 	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	/* TRUE if the dataset and its table names are case-insensitive, otherwise FALSE.
+	By default, this is FALSE, which means the dataset and its table names are
+	case-sensitive. This field does not affect routine references. */
+	// +optional
+	IsCaseInsensitive *bool `json:"isCaseInsensitive,omitempty"`
 
 	/* Immutable. The geographic location where the dataset should reside.
 	See [official docs](https://cloud.google.com/bigquery/docs/dataset-locations).

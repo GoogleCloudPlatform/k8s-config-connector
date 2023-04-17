@@ -119,7 +119,7 @@ func resourceFirebaseHostingReleaseCreate(d *schema.ResourceData, meta interface
 		obj["message"] = messageProp
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}/releases?versionName={{version_name}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}/releases?versionName={{version_name}}")
 	if err != nil {
 		return err
 	}
@@ -141,7 +141,7 @@ func resourceFirebaseHostingReleaseCreate(d *schema.ResourceData, meta interface
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "sites/{{site_id}}/channels/{{channel_id}}/releases/{{release_id}}")
+	id, err := ReplaceVars(d, config, "sites/{{site_id}}/channels/{{channel_id}}/releases/{{release_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -166,7 +166,7 @@ func resourceFirebaseHostingReleaseRead(d *schema.ResourceData, meta interface{}
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}/releases/{{release_id}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}/releases/{{release_id}}")
 	if err != nil {
 		return err
 	}
@@ -219,7 +219,7 @@ func resourceFirebaseHostingReleaseDelete(d *schema.ResourceData, meta interface
 
 func resourceFirebaseHostingReleaseImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"sites/(?P<site_id>[^/]+)/channels/(?P<channel_id>[^/]+)/releases/(?P<release_id>[^/]+)",
 		"sites/(?P<site_id>[^/]+)/releases/(?P<release_id>[^/]+)",
 		"(?P<site_id>[^/]+)/(?P<channel_id>[^/]+)/(?P<release_id>[^/]+)",
@@ -229,7 +229,7 @@ func resourceFirebaseHostingReleaseImport(d *schema.ResourceData, meta interface
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "sites/{{site_id}}/channels/{{channel_id}}/releases/{{release_id}}")
+	id, err := ReplaceVars(d, config, "sites/{{site_id}}/channels/{{channel_id}}/releases/{{release_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

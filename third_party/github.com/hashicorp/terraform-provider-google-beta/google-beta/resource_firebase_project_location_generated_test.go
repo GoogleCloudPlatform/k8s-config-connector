@@ -29,8 +29,8 @@ func TestAccFirebaseProjectLocation_firebaseProjectLocationBasicExample(t *testi
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProvidersOiCS,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFirebaseProjectLocation_firebaseProjectLocationBasicExample(context),

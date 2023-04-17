@@ -314,6 +314,10 @@ type InstanceScheduling struct {
 type InstanceScratchDisk struct {
 	/* The disk interface used for attaching this disk. One of SCSI or NVME. */
 	Interface string `json:"interface"`
+
+	/* Immutable. The size of the disk in gigabytes. One of 375 or 3000. */
+	// +optional
+	Size *int `json:"size,omitempty"`
 }
 
 type InstanceServiceAccount struct {

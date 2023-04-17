@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC.
+// Copyright 2023 Google LLC.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -73,6 +73,7 @@ var _ = errors.New
 var _ = strings.Replace
 var _ = context.Canceled
 var _ = internaloption.WithDefaultEndpoint
+var _ = internal.Version
 
 const apiId = "redis:v1"
 const apiName = "redis"
@@ -487,6 +488,10 @@ type Instance struct {
 	// will be used.
 	AuthorizedNetwork string `json:"authorizedNetwork,omitempty"`
 
+	// AvailableMaintenanceVersions: Optional. The available maintenance
+	// versions that an instance could update to.
+	AvailableMaintenanceVersions []string `json:"availableMaintenanceVersions,omitempty"`
+
 	// ConnectMode: Optional. The network connect mode of the Redis
 	// instance. If not provided, the connect mode defaults to
 	// DIRECT_PEERING.
@@ -540,6 +545,10 @@ type Instance struct {
 	// MaintenanceSchedule: Output only. Date and time of upcoming
 	// maintenance events which have been scheduled.
 	MaintenanceSchedule *MaintenanceSchedule `json:"maintenanceSchedule,omitempty"`
+
+	// MaintenanceVersion: Optional. The self service update maintenance
+	// version. The version is date based such as "20210712_00_00".
+	MaintenanceVersion string `json:"maintenanceVersion,omitempty"`
 
 	// MemorySizeGb: Required. Redis memory size in GiB.
 	MemorySizeGb int64 `json:"memorySizeGb,omitempty"`
@@ -1162,7 +1171,7 @@ type PersistenceConfig struct {
 	//   "ONE_HOUR" - Snapshot every 1 hour.
 	//   "SIX_HOURS" - Snapshot every 6 hours.
 	//   "TWELVE_HOURS" - Snapshot every 12 hours.
-	//   "TWENTY_FOUR_HOURS" - Snapshot every 24 horus.
+	//   "TWENTY_FOUR_HOURS" - Snapshot every 24 hours.
 	RdbSnapshotPeriod string `json:"rdbSnapshotPeriod,omitempty"`
 
 	// RdbSnapshotStartTime: Optional. Date and time that the first snapshot
@@ -1206,9 +1215,7 @@ type ReconciliationOperationMetadata struct {
 	//   "UNKNOWN_REPAIR_ACTION" - Unknown repair action.
 	//   "DELETE" - The resource has to be deleted. When using this bit, the
 	// CLH should fail the operation. DEPRECATED. Instead use
-	// DELETE_RESOURCE OperationSignal in SideChannel. For more information
-	// - go/ccfe-delete-on-upsert,
-	// go/ccfe-reconciliation-protocol-ug#apply_delete
+	// DELETE_RESOURCE OperationSignal in SideChannel.
 	//   "RETRY" - This resource could not be repaired but the repair should
 	// be tried again at a later time. This can happen if there is a
 	// dependency that needs to be resolved first- e.g. if a parent resource
@@ -3989,14 +3996,7 @@ type ProjectsLocationsOperationsListCall struct {
 
 // List: Lists operations that match the specified filter in the
 // request. If the server doesn't support this method, it returns
-// `UNIMPLEMENTED`. NOTE: the `name` binding allows API services to
-// override the binding to use different resource name schemes, such as
-// `users/*/operations`. To override the binding, API services can add a
-// binding such as "/v1/{name=users/*}/operations" to their service
-// configuration. For backwards compatibility, the default name includes
-// the operations collection id, however overriding users must ensure
-// the name binding is the parent resource, without the operations
-// collection id.
+// `UNIMPLEMENTED`.
 //
 // - name: The name of the operation's parent resource.
 func (r *ProjectsLocationsOperationsService) List(name string) *ProjectsLocationsOperationsListCall {
@@ -4125,7 +4125,7 @@ func (c *ProjectsLocationsOperationsListCall) Do(opts ...googleapi.CallOption) (
 	}
 	return ret, nil
 	// {
-	//   "description": "Lists operations that match the specified filter in the request. If the server doesn't support this method, it returns `UNIMPLEMENTED`. NOTE: the `name` binding allows API services to override the binding to use different resource name schemes, such as `users/*/operations`. To override the binding, API services can add a binding such as `\"/v1/{name=users/*}/operations\"` to their service configuration. For backwards compatibility, the default name includes the operations collection id, however overriding users must ensure the name binding is the parent resource, without the operations collection id.",
+	//   "description": "Lists operations that match the specified filter in the request. If the server doesn't support this method, it returns `UNIMPLEMENTED`.",
 	//   "flatPath": "v1/projects/{projectsId}/locations/{locationsId}/operations",
 	//   "httpMethod": "GET",
 	//   "id": "redis.projects.locations.operations.list",

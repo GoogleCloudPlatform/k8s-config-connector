@@ -31,9 +31,9 @@ func TestAccComputeServiceAttachment_serviceAttachmentBasicExample(t *testing.T)
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckComputeServiceAttachmentDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckComputeServiceAttachmentDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeServiceAttachment_serviceAttachmentBasicExample(context),
@@ -140,9 +140,9 @@ func TestAccComputeServiceAttachment_serviceAttachmentExplicitProjectsExample(t 
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckComputeServiceAttachmentDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckComputeServiceAttachmentDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeServiceAttachment_serviceAttachmentExplicitProjectsExample(context),
@@ -184,7 +184,6 @@ resource "google_compute_address" "psc_ilb_consumer_address" {
 
   subnetwork   = "default"
   address_type = "INTERNAL"
-  address      = "10.168.1.17"
 }
 
 resource "google_compute_forwarding_rule" "psc_ilb_consumer" {

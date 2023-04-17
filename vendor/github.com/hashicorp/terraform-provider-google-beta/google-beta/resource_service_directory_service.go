@@ -90,7 +90,7 @@ func resourceServiceDirectoryServiceCreate(d *schema.ResourceData, meta interfac
 		obj["metadata"] = metadataProp
 	}
 
-	url, err := replaceVars(d, config, "{{ServiceDirectoryBasePath}}{{namespace}}/services?serviceId={{service_id}}")
+	url, err := ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{namespace}}/services?serviceId={{service_id}}")
 	if err != nil {
 		return err
 	}
@@ -112,7 +112,7 @@ func resourceServiceDirectoryServiceCreate(d *schema.ResourceData, meta interfac
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "{{name}}")
+	id, err := ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -130,7 +130,7 @@ func resourceServiceDirectoryServiceRead(d *schema.ResourceData, meta interface{
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
+	url, err := ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -174,7 +174,7 @@ func resourceServiceDirectoryServiceUpdate(d *schema.ResourceData, meta interfac
 		obj["metadata"] = metadataProp
 	}
 
-	url, err := replaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
+	url, err := ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -185,9 +185,9 @@ func resourceServiceDirectoryServiceUpdate(d *schema.ResourceData, meta interfac
 	if d.HasChange("metadata") {
 		updateMask = append(updateMask, "metadata")
 	}
-	// updateMask is a URL parameter but not present in the schema, so replaceVars
+	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = addQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -217,7 +217,7 @@ func resourceServiceDirectoryServiceDelete(d *schema.ResourceData, meta interfac
 
 	billingProject := ""
 
-	url, err := replaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
+	url, err := ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -243,7 +243,7 @@ func resourceServiceDirectoryServiceImport(d *schema.ResourceData, meta interfac
 	config := meta.(*Config)
 
 	// current import_formats cannot import fields with forward slashes in their value
-	if err := parseImportId([]string{"(?P<name>.+)"}, d, config); err != nil {
+	if err := ParseImportId([]string{"(?P<name>.+)"}, d, config); err != nil {
 		return nil, err
 	}
 

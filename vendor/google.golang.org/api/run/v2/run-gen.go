@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC.
+// Copyright 2023 Google LLC.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -71,6 +71,7 @@ var _ = errors.New
 var _ = strings.Replace
 var _ = context.Canceled
 var _ = internaloption.WithDefaultEndpoint
+var _ = internal.Version
 
 const apiId = "run:v2"
 const apiName = "run"
@@ -269,8 +270,10 @@ func (s *GoogleCloudRunV2BinaryAuthorization) MarshalJSON() ([]byte, error) {
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
 
-// GoogleCloudRunV2CloudSqlInstance: Represents a specific Cloud SQL
-// instance.
+// GoogleCloudRunV2CloudSqlInstance: Represents a set of Cloud SQL
+// instances. Each one will be available under /cloudsql/[instance].
+// Visit https://cloud.google.com/sql/docs/mysql/connect-run for more
+// information on how to connect Cloud SQL and Cloud Run.
 type GoogleCloudRunV2CloudSqlInstance struct {
 	// Instances: The Cloud SQL instance connection names, as can be found
 	// in https://console.cloud.google.com/sql/instances. Visit
@@ -314,6 +317,7 @@ type GoogleCloudRunV2Condition struct {
 	// attempt failed due to the user container exiting with a non-zero exit
 	// code.
 	//   "CANCELLED" - The execution was cancelled by users.
+	//   "CANCELLING" - The execution is in the process of being cancelled.
 	ExecutionReason string `json:"executionReason,omitempty"`
 
 	// LastTransitionTime: Last time the condition transitioned from one
@@ -466,8 +470,9 @@ type GoogleCloudRunV2Container struct {
 	// Env: List of environment variables to set in the container.
 	Env []*GoogleCloudRunV2EnvVar `json:"env,omitempty"`
 
-	// Image: Required. URL of the Container image in Google Container
-	// Registry or Google Artifact Registry. More info:
+	// Image: Required. Name of the container image in Dockerhub, Google
+	// Artifact Registry, or Google Container Registry. If the host is not
+	// provided, Dockerhub is assumed. More info:
 	// https://kubernetes.io/docs/concepts/containers/images
 	Image string `json:"image,omitempty"`
 
@@ -476,7 +481,7 @@ type GoogleCloudRunV2Container struct {
 	// https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
 	LivenessProbe *GoogleCloudRunV2Probe `json:"livenessProbe,omitempty"`
 
-	// Name: Name of the container specified as a DNS_LABEL.
+	// Name: Name of the container specified as a DNS_LABEL (RFC 1123).
 	Name string `json:"name,omitempty"`
 
 	// Ports: List of ports to expose from the container. Only a single port
@@ -642,6 +647,10 @@ type GoogleCloudRunV2Execution struct {
 	// Annotations: KRM-style annotations for the resource.
 	Annotations map[string]string `json:"annotations,omitempty"`
 
+	// CancelledCount: Output only. The number of tasks which reached phase
+	// Cancelled.
+	CancelledCount int64 `json:"cancelledCount,omitempty"`
+
 	// CompletionTime: Output only. Represents time when the execution was
 	// completed. It is not guaranteed to be set in happens-before order
 	// across separate operations.
@@ -690,11 +699,13 @@ type GoogleCloudRunV2Execution struct {
 	// or https://cloud.google.com/run/docs/configuring/labels
 	Labels map[string]string `json:"labels,omitempty"`
 
-	// LaunchStage: Set the launch stage to a preview stage on write to
-	// allow use of preview features in that stage. On read, describes
-	// whether the resource uses preview features. Launch Stages are defined
-	// at Google Cloud Platform Launch Stages
-	// (https://cloud.google.com/terms/launch-stages).
+	// LaunchStage: The least stable launch stage needed to create this
+	// resource, as defined by Google Cloud Platform Launch Stages
+	// (https://cloud.google.com/terms/launch-stages). Cloud Run supports
+	// `ALPHA`, `BETA`, and `GA`. Note that this value might not be what was
+	// used as input. For example, if ALPHA was provided as input in the
+	// parent resource, but only BETA and GA-level features are were, this
+	// field will be BETA.
 	//
 	// Possible values:
 	//   "LAUNCH_STAGE_UNSPECIFIED" - Do not use this default value.
@@ -731,6 +742,10 @@ type GoogleCloudRunV2Execution struct {
 	// Policy](https://cloud.google.com/terms/deprecation) documentation.
 	LaunchStage string `json:"launchStage,omitempty"`
 
+	// LogUri: Output only. URI where logs for this execution can be found
+	// in Cloud Console.
+	LogUri string `json:"logUri,omitempty"`
+
 	// Name: Output only. The unique name of this Execution.
 	Name string `json:"name,omitempty"`
 
@@ -754,8 +769,15 @@ type GoogleCloudRunV2Execution struct {
 	// process in Cloud Run.
 	Reconciling bool `json:"reconciling,omitempty"`
 
+	// RetriedCount: Output only. The number of tasks which have retried at
+	// least once.
+	RetriedCount int64 `json:"retriedCount,omitempty"`
+
 	// RunningCount: Output only. The number of actively running tasks.
 	RunningCount int64 `json:"runningCount,omitempty"`
+
+	// SatisfiesPzs: Output only. Reserved for future use.
+	SatisfiesPzs bool `json:"satisfiesPzs,omitempty"`
 
 	// StartTime: Output only. Represents time when the execution started to
 	// run. It is not guaranteed to be set in happens-before order across
@@ -878,8 +900,8 @@ type GoogleCloudRunV2ExecutionTemplate struct {
 
 	// TaskCount: Specifies the desired number of tasks the execution should
 	// run. Setting to 1 means that parallelism is limited to 1 and the
-	// success of that task signals the success of the execution. More info:
-	// https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/
+	// success of that task signals the success of the execution. Defaults
+	// to 1.
 	TaskCount int64 `json:"taskCount,omitempty"`
 
 	// Template: Required. Describes the task(s) that will be created when
@@ -913,7 +935,8 @@ func (s *GoogleCloudRunV2ExecutionTemplate) MarshalJSON() ([]byte, error) {
 // a GRPC port.
 type GoogleCloudRunV2GRPCAction struct {
 	// Port: Port number of the gRPC service. Number must be in the range 1
-	// to 65535. If not specified, defaults to 8080.
+	// to 65535. If not specified, defaults to the exposed port of the
+	// container, which is the value of container.ports[0].containerPort.
 	Port int64 `json:"port,omitempty"`
 
 	// Service: Service is the name of the service to place in the gRPC
@@ -954,6 +977,11 @@ type GoogleCloudRunV2HTTPGetAction struct {
 
 	// Path: Path to access on the HTTP server. Defaults to '/'.
 	Path string `json:"path,omitempty"`
+
+	// Port: Port number to access on the container. Must be in the range 1
+	// to 65535. If not specified, defaults to the exposed port of the
+	// container, which is the value of container.ports[0].containerPort.
+	Port int64 `json:"port,omitempty"`
 
 	// ForceSendFields is a list of field names (e.g. "HttpHeaders") to
 	// unconditionally include in API requests. By default, fields with
@@ -1090,7 +1118,11 @@ type GoogleCloudRunV2Job struct {
 	// LaunchStage: The launch stage as defined by Google Cloud Platform
 	// Launch Stages (https://cloud.google.com/terms/launch-stages). Cloud
 	// Run supports `ALPHA`, `BETA`, and `GA`. If no value is specified, GA
-	// is assumed.
+	// is assumed. Set the launch stage to a preview stage on input to allow
+	// use of preview features in that stage. On read (or output), describes
+	// whether the resource uses preview features. For example, if ALPHA is
+	// provided as input, but only BETA and GA-level features are used, this
+	// field will be BETA on output.
 	//
 	// Possible values:
 	//   "LAUNCH_STAGE_UNSPECIFIED" - Do not use this default value.
@@ -1156,6 +1188,9 @@ type GoogleCloudRunV2Job struct {
 	// information on the failure can be found in `terminal_condition` and
 	// `conditions`.
 	Reconciling bool `json:"reconciling,omitempty"`
+
+	// SatisfiesPzs: Output only. Reserved for future use.
+	SatisfiesPzs bool `json:"satisfiesPzs,omitempty"`
 
 	// Template: Required. The template used to create executions for this
 	// Job.
@@ -1515,6 +1550,21 @@ type GoogleCloudRunV2Revision struct {
 	// go to https://cloud.google.com/run/docs/securing/using-cmek
 	EncryptionKey string `json:"encryptionKey,omitempty"`
 
+	// EncryptionKeyRevocationAction: The action to take if the encryption
+	// key is revoked.
+	//
+	// Possible values:
+	//   "ENCRYPTION_KEY_REVOCATION_ACTION_UNSPECIFIED" - Unspecified
+	//   "PREVENT_NEW" - Prevents the creation of new instances.
+	//   "SHUTDOWN" - Shuts down existing instances, and prevents creation
+	// of new ones.
+	EncryptionKeyRevocationAction string `json:"encryptionKeyRevocationAction,omitempty"`
+
+	// EncryptionKeyShutdownDuration: If encryption_key_revocation_action is
+	// SHUTDOWN, the duration before shutting down all instances. The
+	// minimum increment is 1 hour.
+	EncryptionKeyShutdownDuration string `json:"encryptionKeyShutdownDuration,omitempty"`
+
 	// Etag: Output only. A system-generated fingerprint for this version of
 	// the resource. May be used to detect modification conflict during
 	// updates.
@@ -1547,11 +1597,13 @@ type GoogleCloudRunV2Revision struct {
 	// or https://cloud.google.com/run/docs/configuring/labels
 	Labels map[string]string `json:"labels,omitempty"`
 
-	// LaunchStage: Set the launch stage to a preview stage on write to
-	// allow use of preview features in that stage. On read, describes
-	// whether the resource uses preview features. Launch Stages are defined
-	// at Google Cloud Platform Launch Stages
-	// (https://cloud.google.com/terms/launch-stages).
+	// LaunchStage: The least stable launch stage needed to create this
+	// resource, as defined by Google Cloud Platform Launch Stages
+	// (https://cloud.google.com/terms/launch-stages). Cloud Run supports
+	// `ALPHA`, `BETA`, and `GA`. Note that this value might not be what was
+	// used as input. For example, if ALPHA was provided as input in the
+	// parent resource, but only BETA and GA-level features are were, this
+	// field will be BETA.
 	//
 	// Possible values:
 	//   "LAUNCH_STAGE_UNSPECIFIED" - Do not use this default value.
@@ -1609,6 +1661,9 @@ type GoogleCloudRunV2Revision struct {
 	// `Service.reconciling` for additional information on reconciliation
 	// process in Cloud Run.
 	Reconciling bool `json:"reconciling,omitempty"`
+
+	// SatisfiesPzs: Output only. Reserved for future use.
+	SatisfiesPzs bool `json:"satisfiesPzs,omitempty"`
 
 	// Scaling: Scaling settings for this revision.
 	Scaling *GoogleCloudRunV2RevisionScaling `json:"scaling,omitempty"`
@@ -2023,7 +2078,11 @@ type GoogleCloudRunV2Service struct {
 	// LaunchStage: The launch stage as defined by Google Cloud Platform
 	// Launch Stages (https://cloud.google.com/terms/launch-stages). Cloud
 	// Run supports `ALPHA`, `BETA`, and `GA`. If no value is specified, GA
-	// is assumed.
+	// is assumed. Set the launch stage to a preview stage on input to allow
+	// use of preview features in that stage. On read (or output), describes
+	// whether the resource uses preview features. For example, if ALPHA is
+	// provided as input, but only BETA and GA-level features are used, this
+	// field will be BETA on output.
 	//
 	// Possible values:
 	//   "LAUNCH_STAGE_UNSPECIFIED" - Do not use this default value.
@@ -2095,6 +2154,9 @@ type GoogleCloudRunV2Service struct {
 	// on the failure can be found in `terminal_condition` and `conditions`.
 	Reconciling bool `json:"reconciling,omitempty"`
 
+	// SatisfiesPzs: Output only. Reserved for future use.
+	SatisfiesPzs bool `json:"satisfiesPzs,omitempty"`
+
 	// Template: Required. The template used to create revisions for this
 	// Service.
 	Template *GoogleCloudRunV2RevisionTemplate `json:"template,omitempty"`
@@ -2158,7 +2220,8 @@ func (s *GoogleCloudRunV2Service) MarshalJSON() ([]byte, error) {
 // based on opening a socket
 type GoogleCloudRunV2TCPSocketAction struct {
 	// Port: Port number to access on the container. Must be in the range 1
-	// to 65535. If not specified, defaults to 8080.
+	// to 65535. If not specified, defaults to the exposed port of the
+	// container, which is the value of container.ports[0].containerPort.
 	Port int64 `json:"port,omitempty"`
 
 	// ForceSendFields is a list of field names (e.g. "Port") to
@@ -2265,6 +2328,10 @@ type GoogleCloudRunV2Task struct {
 	// Task.
 	LastAttemptResult *GoogleCloudRunV2TaskAttemptResult `json:"lastAttemptResult,omitempty"`
 
+	// LogUri: Output only. URI where logs for this execution can be found
+	// in Cloud Console.
+	LogUri string `json:"logUri,omitempty"`
+
 	// MaxRetries: Number of retries allowed per Task, before marking this
 	// Task failed.
 	MaxRetries int64 `json:"maxRetries,omitempty"`
@@ -2286,6 +2353,9 @@ type GoogleCloudRunV2Task struct {
 	// Retried: Output only. The number of times this Task was retried.
 	// Tasks are retried when they fail up to the maxRetries limit.
 	Retried int64 `json:"retried,omitempty"`
+
+	// SatisfiesPzs: Output only. Reserved for future use.
+	SatisfiesPzs bool `json:"satisfiesPzs,omitempty"`
 
 	// ServiceAccount: Email address of the IAM service account associated
 	// with the Task of a Job. The service account represents the identity
@@ -2405,7 +2475,7 @@ type GoogleCloudRunV2TaskTemplate struct {
 	ExecutionEnvironment string `json:"executionEnvironment,omitempty"`
 
 	// MaxRetries: Number of retries allowed per Task, before marking this
-	// Task failed.
+	// Task failed. Defaults to 3.
 	MaxRetries int64 `json:"maxRetries,omitempty"`
 
 	// ServiceAccount: Email address of the IAM service account associated
@@ -2418,7 +2488,7 @@ type GoogleCloudRunV2TaskTemplate struct {
 	// Timeout: Max allowed time duration the Task may be active before the
 	// system will actively try to mark it failed and kill associated
 	// containers. This applies per attempt of a task, meaning each retry
-	// can run for the full timeout.
+	// can run for the full timeout. Defaults to 600 seconds.
 	Timeout string `json:"timeout,omitempty"`
 
 	// Volumes: A list of Volumes to make available to containers.
@@ -2849,7 +2919,9 @@ type GoogleIamV1Binding struct {
 	// (https://cloud.google.com/kubernetes-engine/docs/how-to/kubernetes-service-accounts).
 	// For example, `my-project.svc.id.goog[my-namespace/my-kubernetes-sa]`.
 	// * `group:{emailid}`: An email address that represents a Google group.
-	// For example, `admins@example.com`. *
+	// For example, `admins@example.com`. * `domain:{domain}`: The G Suite
+	// domain (primary) that represents all the users of that domain. For
+	// example, `google.com` or `example.com`. *
 	// `deleted:user:{emailid}?uid={uniqueid}`: An email address (plus
 	// unique identifier) representing a user that has been recently
 	// deleted. For example, `alice@example.com?uid=123456789012345678901`.
@@ -2866,9 +2938,7 @@ type GoogleIamV1Binding struct {
 	// that has been recently deleted. For example,
 	// `admins@example.com?uid=123456789012345678901`. If the group is
 	// recovered, this value reverts to `group:{emailid}` and the recovered
-	// group retains the role in the binding. * `domain:{domain}`: The G
-	// Suite domain (primary) that represents all the users of that domain.
-	// For example, `google.com` or `example.com`.
+	// group retains the role in the binding.
 	Members []string `json:"members,omitempty"`
 
 	// Role: Role that is assigned to the list of `members`, or principals.
@@ -3207,6 +3277,38 @@ type GoogleLongrunningOperation struct {
 
 func (s *GoogleLongrunningOperation) MarshalJSON() ([]byte, error) {
 	type NoMethod GoogleLongrunningOperation
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// GoogleLongrunningWaitOperationRequest: The request message for
+// Operations.WaitOperation.
+type GoogleLongrunningWaitOperationRequest struct {
+	// Timeout: The maximum duration to wait before timing out. If left
+	// blank, the wait will be at most the time permitted by the underlying
+	// HTTP/RPC protocol. If RPC context deadline is also specified, the
+	// shorter one will be used.
+	Timeout string `json:"timeout,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "Timeout") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "Timeout") to include in
+	// API requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *GoogleLongrunningWaitOperationRequest) MarshalJSON() ([]byte, error) {
+	type NoMethod GoogleLongrunningWaitOperationRequest
 	raw := NoMethod(*s)
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
@@ -5966,14 +6068,7 @@ type ProjectsLocationsOperationsListCall struct {
 
 // List: Lists operations that match the specified filter in the
 // request. If the server doesn't support this method, it returns
-// `UNIMPLEMENTED`. NOTE: the `name` binding allows API services to
-// override the binding to use different resource name schemes, such as
-// `users/*/operations`. To override the binding, API services can add a
-// binding such as "/v1/{name=users/*}/operations" to their service
-// configuration. For backwards compatibility, the default name includes
-// the operations collection id, however overriding users must ensure
-// the name binding is the parent resource, without the operations
-// collection id.
+// `UNIMPLEMENTED`.
 //
 // - name: To query for all of the operations for a project.
 func (r *ProjectsLocationsOperationsService) List(name string) *ProjectsLocationsOperationsListCall {
@@ -6109,7 +6204,7 @@ func (c *ProjectsLocationsOperationsListCall) Do(opts ...googleapi.CallOption) (
 	}
 	return ret, nil
 	// {
-	//   "description": "Lists operations that match the specified filter in the request. If the server doesn't support this method, it returns `UNIMPLEMENTED`. NOTE: the `name` binding allows API services to override the binding to use different resource name schemes, such as `users/*/operations`. To override the binding, API services can add a binding such as `\"/v1/{name=users/*}/operations\"` to their service configuration. For backwards compatibility, the default name includes the operations collection id, however overriding users must ensure the name binding is the parent resource, without the operations collection id.",
+	//   "description": "Lists operations that match the specified filter in the request. If the server doesn't support this method, it returns `UNIMPLEMENTED`.",
 	//   "flatPath": "v2/projects/{projectsId}/locations/{locationsId}/operations",
 	//   "httpMethod": "GET",
 	//   "id": "run.projects.locations.operations.list",
@@ -6171,6 +6266,157 @@ func (c *ProjectsLocationsOperationsListCall) Pages(ctx context.Context, f func(
 		}
 		c.PageToken(x.NextPageToken)
 	}
+}
+
+// method id "run.projects.locations.operations.wait":
+
+type ProjectsLocationsOperationsWaitCall struct {
+	s                                     *Service
+	name                                  string
+	googlelongrunningwaitoperationrequest *GoogleLongrunningWaitOperationRequest
+	urlParams_                            gensupport.URLParams
+	ctx_                                  context.Context
+	header_                               http.Header
+}
+
+// Wait: Waits until the specified long-running operation is done or
+// reaches at most a specified timeout, returning the latest state. If
+// the operation is already done, the latest state is immediately
+// returned. If the timeout specified is greater than the default
+// HTTP/RPC timeout, the HTTP/RPC timeout is used. If the server does
+// not support this method, it returns `google.rpc.Code.UNIMPLEMENTED`.
+// Note that this method is on a best-effort basis. It may return the
+// latest state before the specified timeout (including immediately),
+// meaning even an immediate response is no guarantee that the operation
+// is done.
+//
+// - name: The name of the operation resource to wait on.
+func (r *ProjectsLocationsOperationsService) Wait(name string, googlelongrunningwaitoperationrequest *GoogleLongrunningWaitOperationRequest) *ProjectsLocationsOperationsWaitCall {
+	c := &ProjectsLocationsOperationsWaitCall{s: r.s, urlParams_: make(gensupport.URLParams)}
+	c.name = name
+	c.googlelongrunningwaitoperationrequest = googlelongrunningwaitoperationrequest
+	return c
+}
+
+// Fields allows partial responses to be retrieved. See
+// https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *ProjectsLocationsOperationsWaitCall) Fields(s ...googleapi.Field) *ProjectsLocationsOperationsWaitCall {
+	c.urlParams_.Set("fields", googleapi.CombineFields(s))
+	return c
+}
+
+// Context sets the context to be used in this call's Do method. Any
+// pending HTTP request will be aborted if the provided context is
+// canceled.
+func (c *ProjectsLocationsOperationsWaitCall) Context(ctx context.Context) *ProjectsLocationsOperationsWaitCall {
+	c.ctx_ = ctx
+	return c
+}
+
+// Header returns an http.Header that can be modified by the caller to
+// add HTTP headers to the request.
+func (c *ProjectsLocationsOperationsWaitCall) Header() http.Header {
+	if c.header_ == nil {
+		c.header_ = make(http.Header)
+	}
+	return c.header_
+}
+
+func (c *ProjectsLocationsOperationsWaitCall) doRequest(alt string) (*http.Response, error) {
+	reqHeaders := make(http.Header)
+	reqHeaders.Set("x-goog-api-client", "gl-go/"+gensupport.GoVersion()+" gdcl/"+internal.Version)
+	for k, v := range c.header_ {
+		reqHeaders[k] = v
+	}
+	reqHeaders.Set("User-Agent", c.s.userAgent())
+	var body io.Reader = nil
+	body, err := googleapi.WithoutDataWrapper.JSONReader(c.googlelongrunningwaitoperationrequest)
+	if err != nil {
+		return nil, err
+	}
+	reqHeaders.Set("Content-Type", "application/json")
+	c.urlParams_.Set("alt", alt)
+	c.urlParams_.Set("prettyPrint", "false")
+	urls := googleapi.ResolveRelative(c.s.BasePath, "v2/{+name}:wait")
+	urls += "?" + c.urlParams_.Encode()
+	req, err := http.NewRequest("POST", urls, body)
+	if err != nil {
+		return nil, err
+	}
+	req.Header = reqHeaders
+	googleapi.Expand(req.URL, map[string]string{
+		"name": c.name,
+	})
+	return gensupport.SendRequest(c.ctx_, c.s.client, req)
+}
+
+// Do executes the "run.projects.locations.operations.wait" call.
+// Exactly one of *GoogleLongrunningOperation or error will be non-nil.
+// Any non-2xx status code is an error. Response headers are in either
+// *GoogleLongrunningOperation.ServerResponse.Header or (if a response
+// was returned at all) in error.(*googleapi.Error).Header. Use
+// googleapi.IsNotModified to check whether the returned error was
+// because http.StatusNotModified was returned.
+func (c *ProjectsLocationsOperationsWaitCall) Do(opts ...googleapi.CallOption) (*GoogleLongrunningOperation, error) {
+	gensupport.SetOptions(c.urlParams_, opts...)
+	res, err := c.doRequest("json")
+	if res != nil && res.StatusCode == http.StatusNotModified {
+		if res.Body != nil {
+			res.Body.Close()
+		}
+		return nil, gensupport.WrapError(&googleapi.Error{
+			Code:   res.StatusCode,
+			Header: res.Header,
+		})
+	}
+	if err != nil {
+		return nil, err
+	}
+	defer googleapi.CloseBody(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
+	}
+	ret := &GoogleLongrunningOperation{
+		ServerResponse: googleapi.ServerResponse{
+			Header:         res.Header,
+			HTTPStatusCode: res.StatusCode,
+		},
+	}
+	target := &ret
+	if err := gensupport.DecodeResponse(target, res); err != nil {
+		return nil, err
+	}
+	return ret, nil
+	// {
+	//   "description": "Waits until the specified long-running operation is done or reaches at most a specified timeout, returning the latest state. If the operation is already done, the latest state is immediately returned. If the timeout specified is greater than the default HTTP/RPC timeout, the HTTP/RPC timeout is used. If the server does not support this method, it returns `google.rpc.Code.UNIMPLEMENTED`. Note that this method is on a best-effort basis. It may return the latest state before the specified timeout (including immediately), meaning even an immediate response is no guarantee that the operation is done.",
+	//   "flatPath": "v2/projects/{projectsId}/locations/{locationsId}/operations/{operationsId}:wait",
+	//   "httpMethod": "POST",
+	//   "id": "run.projects.locations.operations.wait",
+	//   "parameterOrder": [
+	//     "name"
+	//   ],
+	//   "parameters": {
+	//     "name": {
+	//       "description": "The name of the operation resource to wait on.",
+	//       "location": "path",
+	//       "pattern": "^projects/[^/]+/locations/[^/]+/operations/[^/]+$",
+	//       "required": true,
+	//       "type": "string"
+	//     }
+	//   },
+	//   "path": "v2/{+name}:wait",
+	//   "request": {
+	//     "$ref": "GoogleLongrunningWaitOperationRequest"
+	//   },
+	//   "response": {
+	//     "$ref": "GoogleLongrunningOperation"
+	//   },
+	//   "scopes": [
+	//     "https://www.googleapis.com/auth/cloud-platform"
+	//   ]
+	// }
+
 }
 
 // method id "run.projects.locations.services.create":
@@ -7063,10 +7309,9 @@ func (r *ProjectsLocationsServicesService) Patch(name string, googlecloudrunv2se
 	return c
 }
 
-// AllowMissing sets the optional parameter "allowMissing": If set to
-// true, and if the Service does not exist, it will create a new one.
-// Caller must have both create and update permissions for this call if
-// this is set to true.
+// AllowMissing sets the optional parameter "allowMissing": This field
+// is currently not used by Cloud Run; setting it does not have any
+// effect.
 func (c *ProjectsLocationsServicesPatchCall) AllowMissing(allowMissing bool) *ProjectsLocationsServicesPatchCall {
 	c.urlParams_.Set("allowMissing", fmt.Sprint(allowMissing))
 	return c
@@ -7180,7 +7425,7 @@ func (c *ProjectsLocationsServicesPatchCall) Do(opts ...googleapi.CallOption) (*
 	//   ],
 	//   "parameters": {
 	//     "allowMissing": {
-	//       "description": "If set to true, and if the Service does not exist, it will create a new one. Caller must have both create and update permissions for this call if this is set to true.",
+	//       "description": "This field is currently not used by Cloud Run; setting it does not have any effect.",
 	//       "location": "query",
 	//       "type": "boolean"
 	//     },

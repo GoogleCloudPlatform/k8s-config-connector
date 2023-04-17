@@ -62,7 +62,7 @@ and all following characters must be a dash, underscore, letter or digit.`,
 							Required:    true,
 							Description: `The list of hostRules to match against. These rules define which hostnames the EdgeCacheService will match against, and which route configurations apply.`,
 							MinItems:    1,
-							MaxItems:    5,
+							MaxItems:    10,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"hosts": {
@@ -123,7 +123,7 @@ When multiple hosts are specified, hosts are matched in the following priority:
 										Required:    true,
 										Description: `The routeRules to match against. routeRules support advanced routing behaviour, and can match on paths, headers and query parameters, as well as status codes and HTTP methods.`,
 										MinItems:    1,
-										MaxItems:    64,
+										MaxItems:    200,
 										Elem: &schema.Resource{
 											Schema: map[string]*schema.Schema{
 												"match_rule": {
@@ -263,7 +263,7 @@ to which you could add rules numbered from 6 to 8, 10 to 11, and 13 to 15 in the
 																Optional:    true,
 																Description: `Describes a header to add.`,
 																MinItems:    1,
-																MaxItems:    5,
+																MaxItems:    25,
 																Elem: &schema.Resource{
 																	Schema: map[string]*schema.Schema{
 																		"header_name": {
@@ -290,7 +290,7 @@ to which you could add rules numbered from 6 to 8, 10 to 11, and 13 to 15 in the
 																Optional:    true,
 																Description: `A list of header names for headers that need to be removed from the request prior to forwarding the request to the origin.`,
 																MinItems:    1,
-																MaxItems:    10,
+																MaxItems:    25,
 																Elem: &schema.Resource{
 																	Schema: map[string]*schema.Schema{
 																		"header_name": {
@@ -308,7 +308,7 @@ to which you could add rules numbered from 6 to 8, 10 to 11, and 13 to 15 in the
 
 Response headers are only sent to the client, and do not have an effect on the cache serving the response.`,
 																MinItems: 1,
-																MaxItems: 5,
+																MaxItems: 25,
 																Elem: &schema.Resource{
 																	Schema: map[string]*schema.Schema{
 																		"header_name": {
@@ -335,7 +335,7 @@ Response headers are only sent to the client, and do not have an effect on the c
 																Optional:    true,
 																Description: `A list of header names for headers that need to be removed from the request prior to forwarding the request to the origin.`,
 																MinItems:    1,
-																MaxItems:    10,
+																MaxItems:    25,
 																Elem: &schema.Resource{
 																	Schema: map[string]*schema.Schema{
 																		"header_name": {
@@ -729,7 +729,7 @@ This translates to the Access-Control-Allow-Credentials response header.`,
 																			Type:        schema.TypeList,
 																			Optional:    true,
 																			Description: `Specifies the content for the Access-Control-Allow-Headers response header.`,
-																			MaxItems:    5,
+																			MaxItems:    25,
 																			Elem: &schema.Schema{
 																				Type: schema.TypeString,
 																			},
@@ -763,7 +763,7 @@ This translates to the Access-Control-Allow-Origin response header.`,
 																			Type:        schema.TypeList,
 																			Optional:    true,
 																			Description: `Specifies the content for the Access-Control-Allow-Headers response header.`,
-																			MaxItems:    5,
+																			MaxItems:    25,
 																			Elem: &schema.Schema{
 																				Type: schema.TypeString,
 																			},
@@ -1063,7 +1063,7 @@ func resourceNetworkServicesEdgeCacheServiceCreate(d *schema.ResourceData, meta 
 		obj["edgeSecurityPolicy"] = edgeSecurityPolicyProp
 	}
 
-	url, err := replaceVars(d, config, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/edgeCacheServices?edgeCacheServiceId={{name}}")
+	url, err := ReplaceVars(d, config, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/edgeCacheServices?edgeCacheServiceId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -1088,7 +1088,7 @@ func resourceNetworkServicesEdgeCacheServiceCreate(d *schema.ResourceData, meta 
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "projects/{{project}}/locations/global/edgeCacheServices/{{name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/global/edgeCacheServices/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -1116,7 +1116,7 @@ func resourceNetworkServicesEdgeCacheServiceRead(d *schema.ResourceData, meta in
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/edgeCacheServices/{{name}}")
+	url, err := ReplaceVars(d, config, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/edgeCacheServices/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -1260,7 +1260,7 @@ func resourceNetworkServicesEdgeCacheServiceUpdate(d *schema.ResourceData, meta 
 		obj["edgeSecurityPolicy"] = edgeSecurityPolicyProp
 	}
 
-	url, err := replaceVars(d, config, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/edgeCacheServices/{{name}}")
+	url, err := ReplaceVars(d, config, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/edgeCacheServices/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -1307,9 +1307,9 @@ func resourceNetworkServicesEdgeCacheServiceUpdate(d *schema.ResourceData, meta 
 	if d.HasChange("edge_security_policy") {
 		updateMask = append(updateMask, "edgeSecurityPolicy")
 	}
-	// updateMask is a URL parameter but not present in the schema, so replaceVars
+	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = addQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -1353,7 +1353,7 @@ func resourceNetworkServicesEdgeCacheServiceDelete(d *schema.ResourceData, meta 
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/edgeCacheServices/{{name}}")
+	url, err := ReplaceVars(d, config, "{{NetworkServicesBasePath}}projects/{{project}}/locations/global/edgeCacheServices/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -1385,7 +1385,7 @@ func resourceNetworkServicesEdgeCacheServiceDelete(d *schema.ResourceData, meta 
 
 func resourceNetworkServicesEdgeCacheServiceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/global/edgeCacheServices/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<name>[^/]+)",
 		"(?P<name>[^/]+)",
@@ -1394,7 +1394,7 @@ func resourceNetworkServicesEdgeCacheServiceImport(d *schema.ResourceData, meta 
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "projects/{{project}}/locations/global/edgeCacheServices/{{name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/global/edgeCacheServices/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

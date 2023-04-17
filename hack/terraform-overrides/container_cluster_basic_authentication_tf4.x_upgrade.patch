@@ -89,7 +89,7 @@ index 8cd1a7495..dcd838cb2 100644
 +			}
 +
 +			// Wait until it's updated
-+			return containerOperationWait(config, op, project, location, "updating master auth", userAgent, d.Timeout(schema.TimeoutUpdate))
++			return ContainerOperationWait(config, op, project, location, "updating master auth", userAgent, d.Timeout(schema.TimeoutUpdate))
 +		}
 +
 +		// Call update serially.

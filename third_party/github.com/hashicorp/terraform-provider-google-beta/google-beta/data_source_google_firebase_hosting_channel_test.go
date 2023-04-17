@@ -15,13 +15,13 @@ func TestAccDataSourceGoogleFirebaseHostingChannel(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceGoogleFirebaseHostingChannel(context),
 				Check: resource.ComposeTestCheckFunc(
-					checkDataSourceStateMatchesResourceState(
+					CheckDataSourceStateMatchesResourceState(
 						"data.google_firebase_hosting_channel.channel",
 						"google_firebase_hosting_channel.channel",
 					),

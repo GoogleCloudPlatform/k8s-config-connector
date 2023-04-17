@@ -124,7 +124,7 @@ func resourceComputeOrganizationSecurityPolicyCreate(d *schema.ResourceData, met
 		obj["parent"] = parentProp
 	}
 
-	url, err := replaceVars(d, config, "{{ComputeBasePath}}locations/global/securityPolicies?parentId={{parent}}")
+	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}locations/global/securityPolicies?parentId={{parent}}")
 	if err != nil {
 		return err
 	}
@@ -143,7 +143,7 @@ func resourceComputeOrganizationSecurityPolicyCreate(d *schema.ResourceData, met
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "locations/global/securityPolicies/{{policy_id}}")
+	id, err := ReplaceVars(d, config, "locations/global/securityPolicies/{{policy_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -170,7 +170,7 @@ func resourceComputeOrganizationSecurityPolicyCreate(d *schema.ResourceData, met
 	}
 
 	// Store the ID now.
-	id, err = replaceVars(d, config, "locations/global/securityPolicies/{{policy_id}}")
+	id, err = ReplaceVars(d, config, "locations/global/securityPolicies/{{policy_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -188,7 +188,7 @@ func resourceComputeOrganizationSecurityPolicyRead(d *schema.ResourceData, meta 
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{ComputeBasePath}}locations/global/securityPolicies/{{policy_id}}")
+	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}locations/global/securityPolicies/{{policy_id}}")
 	if err != nil {
 		return err
 	}
@@ -250,7 +250,7 @@ func resourceComputeOrganizationSecurityPolicyUpdate(d *schema.ResourceData, met
 		obj["fingerprint"] = fingerprintProp
 	}
 
-	url, err := replaceVars(d, config, "{{ComputeBasePath}}locations/global/securityPolicies/{{policy_id}}")
+	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}locations/global/securityPolicies/{{policy_id}}")
 	if err != nil {
 		return err
 	}
@@ -292,7 +292,7 @@ func resourceComputeOrganizationSecurityPolicyDelete(d *schema.ResourceData, met
 
 	billingProject := ""
 
-	url, err := replaceVars(d, config, "{{ComputeBasePath}}locations/global/securityPolicies/{{policy_id}}")
+	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}locations/global/securityPolicies/{{policy_id}}")
 	if err != nil {
 		return err
 	}
@@ -327,7 +327,7 @@ func resourceComputeOrganizationSecurityPolicyDelete(d *schema.ResourceData, met
 
 func resourceComputeOrganizationSecurityPolicyImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"locations/global/securityPolicies/(?P<policy_id>[^/]+)",
 		"(?P<policy_id>[^/]+)",
 	}, d, config); err != nil {
@@ -335,7 +335,7 @@ func resourceComputeOrganizationSecurityPolicyImport(d *schema.ResourceData, met
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "locations/global/securityPolicies/{{policy_id}}")
+	id, err := ReplaceVars(d, config, "locations/global/securityPolicies/{{policy_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

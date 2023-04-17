@@ -24,7 +24,7 @@ func TestValidateIAMBetaWorkloadIdentityPoolId(t *testing.T) {
 		{TestName: "too long", Value: strings.Repeat("f", 33), ExpectError: true},
 	}
 
-	es := testStringValidationCases(x, validateWorkloadIdentityPoolId)
+	es := testStringValidationCases(x, ValidateWorkloadIdentityPoolId)
 	if len(es) > 0 {
 		t.Errorf("Failed to validate WorkloadIdentityPool names: %v", es)
 	}

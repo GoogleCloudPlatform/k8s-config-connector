@@ -13,8 +13,6 @@ import (
 	googleoauth "golang.org/x/oauth2/google"
 )
 
-const TestEnvVar = "TF_ACC"
-
 // Global MutexKV
 var mutexKV = NewMutexKV()
 
@@ -50,9 +48,6 @@ func Provider() *schema.Provider {
 			"impersonate_service_account": {
 				Type:     schema.TypeString,
 				Optional: true,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_IMPERSONATE_SERVICE_ACCOUNT",
-				}, nil),
 			},
 
 			"impersonate_service_account_delegates": {
@@ -64,40 +59,21 @@ func Provider() *schema.Provider {
 			"project": {
 				Type:     schema.TypeString,
 				Optional: true,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_PROJECT",
-					"GOOGLE_CLOUD_PROJECT",
-					"GCLOUD_PROJECT",
-					"CLOUDSDK_CORE_PROJECT",
-				}, nil),
 			},
 
 			"billing_project": {
 				Type:     schema.TypeString,
 				Optional: true,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_BILLING_PROJECT",
-				}, nil),
 			},
 
 			"region": {
 				Type:     schema.TypeString,
 				Optional: true,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_REGION",
-					"GCLOUD_REGION",
-					"CLOUDSDK_COMPUTE_REGION",
-				}, nil),
 			},
 
 			"zone": {
 				Type:     schema.TypeString,
 				Optional: true,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_ZONE",
-					"GCLOUD_ZONE",
-					"CLOUDSDK_COMPUTE_ZONE",
-				}, nil),
 			},
 
 			"scopes": {
@@ -115,13 +91,11 @@ func Provider() *schema.Provider {
 						"send_after": {
 							Type:         schema.TypeString,
 							Optional:     true,
-							Default:      "10s",
 							ValidateFunc: validateNonNegativeDuration(),
 						},
 						"enable_batching": {
 							Type:     schema.TypeBool,
 							Optional: true,
-							Default:  true,
 						},
 					},
 				},
@@ -130,9 +104,6 @@ func Provider() *schema.Provider {
 			"user_project_override": {
 				Type:     schema.TypeBool,
 				Optional: true,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"USER_PROJECT_OVERRIDE",
-				}, nil),
 			},
 
 			"request_timeout": {
@@ -143,9 +114,6 @@ func Provider() *schema.Provider {
 			"request_reason": {
 				Type:     schema.TypeString,
 				Optional: true,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"CLOUDSDK_CORE_REQUEST_REASON",
-				}, nil),
 			},
 
 			// Generated Products
@@ -153,777 +121,496 @@ func Provider() *schema.Provider {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_ACCESS_APPROVAL_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[AccessApprovalBasePathKey]),
 			},
 			"access_context_manager_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_ACCESS_CONTEXT_MANAGER_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[AccessContextManagerBasePathKey]),
 			},
 			"active_directory_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_ACTIVE_DIRECTORY_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[ActiveDirectoryBasePathKey]),
 			},
 			"alloydb_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_ALLOYDB_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[AlloydbBasePathKey]),
 			},
 			"api_gateway_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_API_GATEWAY_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[ApiGatewayBasePathKey]),
 			},
 			"apigee_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_APIGEE_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[ApigeeBasePathKey]),
 			},
 			"app_engine_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_APP_ENGINE_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[AppEngineBasePathKey]),
 			},
 			"artifact_registry_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_ARTIFACT_REGISTRY_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[ArtifactRegistryBasePathKey]),
 			},
 			"beyondcorp_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_BEYONDCORP_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[BeyondcorpBasePathKey]),
 			},
 			"big_query_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_BIG_QUERY_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[BigQueryBasePathKey]),
 			},
 			"bigquery_analytics_hub_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_BIGQUERY_ANALYTICS_HUB_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[BigqueryAnalyticsHubBasePathKey]),
 			},
 			"bigquery_connection_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_BIGQUERY_CONNECTION_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[BigqueryConnectionBasePathKey]),
 			},
 			"bigquery_datapolicy_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_BIGQUERY_DATAPOLICY_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[BigqueryDatapolicyBasePathKey]),
 			},
 			"bigquery_data_transfer_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_BIGQUERY_DATA_TRANSFER_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[BigqueryDataTransferBasePathKey]),
 			},
 			"bigquery_reservation_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_BIGQUERY_RESERVATION_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[BigqueryReservationBasePathKey]),
 			},
 			"bigtable_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_BIGTABLE_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[BigtableBasePathKey]),
 			},
 			"billing_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_BILLING_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[BillingBasePathKey]),
 			},
 			"binary_authorization_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_BINARY_AUTHORIZATION_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[BinaryAuthorizationBasePathKey]),
 			},
 			"certificate_manager_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_CERTIFICATE_MANAGER_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[CertificateManagerBasePathKey]),
 			},
 			"cloud_asset_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_CLOUD_ASSET_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[CloudAssetBasePathKey]),
 			},
 			"cloud_build_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_CLOUD_BUILD_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[CloudBuildBasePathKey]),
 			},
 			"cloudbuildv2_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_CLOUDBUILDV2_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[Cloudbuildv2BasePathKey]),
 			},
 			"cloud_functions_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_CLOUD_FUNCTIONS_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[CloudFunctionsBasePathKey]),
 			},
 			"cloudfunctions2_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_CLOUDFUNCTIONS2_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[Cloudfunctions2BasePathKey]),
 			},
 			"cloud_identity_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_CLOUD_IDENTITY_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[CloudIdentityBasePathKey]),
 			},
 			"cloud_ids_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_CLOUD_IDS_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[CloudIdsBasePathKey]),
 			},
 			"cloud_iot_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_CLOUD_IOT_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[CloudIotBasePathKey]),
 			},
 			"cloud_run_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_CLOUD_RUN_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[CloudRunBasePathKey]),
 			},
 			"cloud_run_v2_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_CLOUD_RUN_V2_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[CloudRunV2BasePathKey]),
 			},
 			"cloud_scheduler_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_CLOUD_SCHEDULER_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[CloudSchedulerBasePathKey]),
 			},
 			"cloud_tasks_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_CLOUD_TASKS_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[CloudTasksBasePathKey]),
 			},
 			"compute_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_COMPUTE_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[ComputeBasePathKey]),
 			},
 			"container_analysis_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_CONTAINER_ANALYSIS_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[ContainerAnalysisBasePathKey]),
 			},
 			"container_attached_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_CONTAINER_ATTACHED_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[ContainerAttachedBasePathKey]),
 			},
 			"data_catalog_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_DATA_CATALOG_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[DataCatalogBasePathKey]),
 			},
 			"dataform_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_DATAFORM_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[DataformBasePathKey]),
 			},
 			"data_fusion_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_DATA_FUSION_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[DataFusionBasePathKey]),
 			},
 			"data_loss_prevention_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_DATA_LOSS_PREVENTION_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[DataLossPreventionBasePathKey]),
+			},
+			"dataplex_custom_endpoint": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				ValidateFunc: validateCustomEndpoint,
 			},
 			"dataproc_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_DATAPROC_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[DataprocBasePathKey]),
 			},
 			"dataproc_metastore_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_DATAPROC_METASTORE_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[DataprocMetastoreBasePathKey]),
 			},
 			"datastore_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_DATASTORE_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[DatastoreBasePathKey]),
 			},
 			"datastream_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_DATASTREAM_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[DatastreamBasePathKey]),
 			},
 			"deployment_manager_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_DEPLOYMENT_MANAGER_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[DeploymentManagerBasePathKey]),
 			},
 			"dialogflow_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_DIALOGFLOW_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[DialogflowBasePathKey]),
 			},
 			"dialogflow_cx_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_DIALOGFLOW_CX_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[DialogflowCXBasePathKey]),
 			},
 			"dns_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_DNS_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[DNSBasePathKey]),
 			},
 			"document_ai_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_DOCUMENT_AI_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[DocumentAIBasePathKey]),
 			},
 			"essential_contacts_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_ESSENTIAL_CONTACTS_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[EssentialContactsBasePathKey]),
 			},
 			"filestore_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_FILESTORE_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[FilestoreBasePathKey]),
 			},
 			"firebase_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_FIREBASE_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[FirebaseBasePathKey]),
 			},
 			"firebase_database_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_FIREBASE_DATABASE_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[FirebaseDatabaseBasePathKey]),
 			},
 			"firebase_hosting_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_FIREBASE_HOSTING_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[FirebaseHostingBasePathKey]),
 			},
 			"firebase_storage_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_FIREBASE_STORAGE_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[FirebaseStorageBasePathKey]),
 			},
 			"firestore_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_FIRESTORE_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[FirestoreBasePathKey]),
 			},
 			"game_services_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_GAME_SERVICES_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[GameServicesBasePathKey]),
 			},
 			"gke_backup_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_GKE_BACKUP_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[GKEBackupBasePathKey]),
 			},
 			"gke_hub_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_GKE_HUB_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[GKEHubBasePathKey]),
 			},
 			"healthcare_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_HEALTHCARE_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[HealthcareBasePathKey]),
 			},
 			"iam2_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_IAM2_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[IAM2BasePathKey]),
 			},
 			"iam_beta_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_IAM_BETA_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[IAMBetaBasePathKey]),
 			},
 			"iam_workforce_pool_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_IAM_WORKFORCE_POOL_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[IAMWorkforcePoolBasePathKey]),
 			},
 			"iap_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_IAP_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[IapBasePathKey]),
 			},
 			"identity_platform_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_IDENTITY_PLATFORM_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[IdentityPlatformBasePathKey]),
 			},
 			"kms_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_KMS_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[KMSBasePathKey]),
 			},
 			"logging_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_LOGGING_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[LoggingBasePathKey]),
 			},
 			"memcache_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_MEMCACHE_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[MemcacheBasePathKey]),
 			},
 			"ml_engine_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_ML_ENGINE_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[MLEngineBasePathKey]),
 			},
 			"monitoring_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_MONITORING_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[MonitoringBasePathKey]),
 			},
 			"network_management_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_NETWORK_MANAGEMENT_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[NetworkManagementBasePathKey]),
+			},
+			"network_security_custom_endpoint": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				ValidateFunc: validateCustomEndpoint,
 			},
 			"network_services_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_NETWORK_SERVICES_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[NetworkServicesBasePathKey]),
 			},
 			"notebooks_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_NOTEBOOKS_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[NotebooksBasePathKey]),
 			},
 			"org_policy_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_ORG_POLICY_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[OrgPolicyBasePathKey]),
 			},
 			"os_config_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_OS_CONFIG_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[OSConfigBasePathKey]),
 			},
 			"os_login_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_OS_LOGIN_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[OSLoginBasePathKey]),
 			},
 			"privateca_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_PRIVATECA_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[PrivatecaBasePathKey]),
 			},
 			"pubsub_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_PUBSUB_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[PubsubBasePathKey]),
 			},
 			"pubsub_lite_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_PUBSUB_LITE_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[PubsubLiteBasePathKey]),
 			},
 			"redis_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_REDIS_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[RedisBasePathKey]),
 			},
 			"resource_manager_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_RESOURCE_MANAGER_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[ResourceManagerBasePathKey]),
 			},
 			"runtime_config_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_RUNTIME_CONFIG_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[RuntimeConfigBasePathKey]),
 			},
 			"secret_manager_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_SECRET_MANAGER_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[SecretManagerBasePathKey]),
 			},
 			"security_center_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_SECURITY_CENTER_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[SecurityCenterBasePathKey]),
 			},
 			"security_scanner_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_SECURITY_SCANNER_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[SecurityScannerBasePathKey]),
 			},
 			"service_directory_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_SERVICE_DIRECTORY_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[ServiceDirectoryBasePathKey]),
 			},
 			"service_management_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_SERVICE_MANAGEMENT_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[ServiceManagementBasePathKey]),
 			},
 			"service_usage_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_SERVICE_USAGE_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[ServiceUsageBasePathKey]),
 			},
 			"source_repo_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_SOURCE_REPO_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[SourceRepoBasePathKey]),
 			},
 			"spanner_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_SPANNER_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[SpannerBasePathKey]),
 			},
 			"sql_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_SQL_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[SQLBasePathKey]),
 			},
 			"storage_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_STORAGE_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[StorageBasePathKey]),
 			},
 			"storage_transfer_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_STORAGE_TRANSFER_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[StorageTransferBasePathKey]),
 			},
 			"tags_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_TAGS_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[TagsBasePathKey]),
 			},
 			"tpu_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_TPU_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[TPUBasePathKey]),
 			},
 			"vertex_ai_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_VERTEX_AI_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[VertexAIBasePathKey]),
 			},
 			"vpc_access_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_VPC_ACCESS_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[VPCAccessBasePathKey]),
 			},
 			"workflows_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_WORKFLOWS_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[WorkflowsBasePathKey]),
 			},
 			"workstations_custom_endpoint": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				ValidateFunc: validateCustomEndpoint,
-				DefaultFunc: schema.MultiEnvDefaultFunc([]string{
-					"GOOGLE_WORKSTATIONS_CUSTOM_ENDPOINT",
-				}, DefaultBasePaths[WorkstationsBasePathKey]),
 			},
 
 			// Handwritten Products / Versioned / Atypical Entries
@@ -936,8 +623,6 @@ func Provider() *schema.Provider {
 			RuntimeConfigCustomEndpointEntryKey:     RuntimeConfigCustomEndpointEntry,
 			IAMCustomEndpointEntryKey:               IAMCustomEndpointEntry,
 			ServiceNetworkingCustomEndpointEntryKey: ServiceNetworkingCustomEndpointEntry,
-			ServiceUsageCustomEndpointEntryKey:      ServiceUsageCustomEndpointEntry,
-			BigtableAdminCustomEndpointEntryKey:     BigtableAdminCustomEndpointEntry,
 			TagsLocationCustomEndpointEntryKey:      TagsLocationCustomEndpointEntry,
 
 			// dcl
@@ -965,8 +650,6 @@ func Provider() *schema.Provider {
 			"google_beyondcorp_app_gateway":                       DataSourceGoogleBeyondcorpAppGateway(),
 			"google_billing_account":                              DataSourceGoogleBillingAccount(),
 			"google_bigquery_default_service_account":             DataSourceGoogleBigqueryDefaultServiceAccount(),
-			"google_client_config":                                DataSourceGoogleClientConfig(),
-			"google_client_openid_userinfo":                       DataSourceGoogleClientOpenIDUserinfo(),
 			"google_cloudbuild_trigger":                           DataSourceGoogleCloudBuildTrigger(),
 			"google_cloudfunctions_function":                      DataSourceGoogleCloudFunctionsFunction(),
 			"google_cloudfunctions2_function":                     DataSourceGoogleCloudFunctions2Function(),
@@ -1002,6 +685,8 @@ func Provider() *schema.Provider {
 			"google_compute_regions":                              DataSourceGoogleComputeRegions(),
 			"google_compute_region_network_endpoint_group":        DataSourceGoogleComputeRegionNetworkEndpointGroup(),
 			"google_compute_region_instance_group":                DataSourceGoogleComputeRegionInstanceGroup(),
+
+			"google_compute_region_instance_template":             DataSourceGoogleComputeRegionInstanceTemplate(),
 			"google_compute_region_ssl_certificate":               DataSourceGoogleRegionComputeSslCertificate(),
 			"google_compute_resource_policy":                      DataSourceGoogleComputeResourcePolicy(),
 			"google_compute_router":                               DataSourceGoogleComputeRouter(),
@@ -1022,9 +707,6 @@ func Provider() *schema.Provider {
 			"google_container_registry_image":                     DataSourceGoogleContainerImage(),
 			"google_container_registry_repository":                DataSourceGoogleContainerRepo(),
 			"google_dataproc_metastore_service":                   DataSourceDataprocMetastoreService(),
-			"google_dns_keys":                                     DataSourceDNSKeys(),
-			"google_dns_managed_zone":                             DataSourceDnsManagedZone(),
-			"google_dns_record_set":                               DataSourceDnsRecordSet(),
 			"google_game_services_game_server_deployment_rollout": DataSourceGameServicesGameServerDeploymentRollout(),
 			"google_iam_policy":                                   DataSourceGoogleIamPolicy(),
 			"google_iam_role":                                     DataSourceGoogleIamRole(),
@@ -1040,10 +722,8 @@ func Provider() *schema.Provider {
 			"google_kms_secret_asymmetric":                        DataSourceGoogleKmsSecretAsymmetric(),
 			"google_firebase_android_app":                         DataSourceGoogleFirebaseAndroidApp(),
 			"google_firebase_apple_app":                           DataSourceGoogleFirebaseAppleApp(),
-			"google_firebase_apple_app_config":                    DataSourceGoogleFirebaseAppleAppConfig(),
 			"google_firebase_hosting_channel":                     DataSourceGoogleFirebaseHostingChannel(),
 			"google_firebase_web_app":                             DataSourceGoogleFirebaseWebApp(),
-			"google_firebase_web_app_config":                      DataSourceGoogleFirebaseWebappConfig(),
 			"google_folder":                                       DataSourceGoogleFolder(),
 			"google_folders":                                      DataSourceGoogleFolders(),
 			"google_folder_organization_policy":                   DataSourceGoogleFolderOrganizationPolicy(),
@@ -1108,9 +788,9 @@ func Provider() *schema.Provider {
 	return provider
 }
 
-// Generated resources: 310
-// Generated IAM resources: 204
-// Total generated resources: 514
+// Generated resources: 318
+// Generated IAM resources: 213
+// Total generated resources: 531
 func ResourceMap() map[string]*schema.Resource {
 	resourceMap, _ := ResourceMapWithErrors()
 	return resourceMap
@@ -1164,6 +844,7 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_apigee_environment_iam_policy":                         ResourceIamPolicy(ApigeeEnvironmentIamSchema, ApigeeEnvironmentIamUpdaterProducer, ApigeeEnvironmentIdParseFunc),
 			"google_apigee_instance":                                       ResourceApigeeInstance(),
 			"google_apigee_instance_attachment":                            ResourceApigeeInstanceAttachment(),
+			"google_apigee_keystores_aliases_self_signed_cert":             ResourceApigeeKeystoresAliasesSelfSignedCert(),
 			"google_apigee_nat_address":                                    ResourceApigeeNatAddress(),
 			"google_apigee_organization":                                   ResourceApigeeOrganization(),
 			"google_apigee_sync_authorization":                             ResourceApigeeSyncAuthorization(),
@@ -1387,6 +1068,15 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_data_loss_prevention_inspect_template":                 ResourceDataLossPreventionInspectTemplate(),
 			"google_data_loss_prevention_job_trigger":                      ResourceDataLossPreventionJobTrigger(),
 			"google_data_loss_prevention_stored_info_type":                 ResourceDataLossPreventionStoredInfoType(),
+			"google_dataplex_asset_iam_binding":                            ResourceIamBinding(DataplexAssetIamSchema, DataplexAssetIamUpdaterProducer, DataplexAssetIdParseFunc),
+			"google_dataplex_asset_iam_member":                             ResourceIamMember(DataplexAssetIamSchema, DataplexAssetIamUpdaterProducer, DataplexAssetIdParseFunc),
+			"google_dataplex_asset_iam_policy":                             ResourceIamPolicy(DataplexAssetIamSchema, DataplexAssetIamUpdaterProducer, DataplexAssetIdParseFunc),
+			"google_dataplex_lake_iam_binding":                             ResourceIamBinding(DataplexLakeIamSchema, DataplexLakeIamUpdaterProducer, DataplexLakeIdParseFunc),
+			"google_dataplex_lake_iam_member":                              ResourceIamMember(DataplexLakeIamSchema, DataplexLakeIamUpdaterProducer, DataplexLakeIdParseFunc),
+			"google_dataplex_lake_iam_policy":                              ResourceIamPolicy(DataplexLakeIamSchema, DataplexLakeIamUpdaterProducer, DataplexLakeIdParseFunc),
+			"google_dataplex_zone_iam_binding":                             ResourceIamBinding(DataplexZoneIamSchema, DataplexZoneIamUpdaterProducer, DataplexZoneIdParseFunc),
+			"google_dataplex_zone_iam_member":                              ResourceIamMember(DataplexZoneIamSchema, DataplexZoneIamUpdaterProducer, DataplexZoneIdParseFunc),
+			"google_dataplex_zone_iam_policy":                              ResourceIamPolicy(DataplexZoneIamSchema, DataplexZoneIamUpdaterProducer, DataplexZoneIdParseFunc),
 			"google_dataproc_autoscaling_policy":                           ResourceDataprocAutoscalingPolicy(),
 			"google_dataproc_autoscaling_policy_iam_binding":               ResourceIamBinding(DataprocAutoscalingPolicyIamSchema, DataprocAutoscalingPolicyIamUpdaterProducer, DataprocAutoscalingPolicyIdParseFunc),
 			"google_dataproc_autoscaling_policy_iam_member":                ResourceIamMember(DataprocAutoscalingPolicyIamSchema, DataprocAutoscalingPolicyIamUpdaterProducer, DataprocAutoscalingPolicyIdParseFunc),
@@ -1509,6 +1199,8 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_kms_key_ring":                                          ResourceKMSKeyRing(),
 			"google_kms_key_ring_import_job":                               ResourceKMSKeyRingImportJob(),
 			"google_kms_secret_ciphertext":                                 ResourceKMSSecretCiphertext(),
+			"google_logging_linked_dataset":                                ResourceLoggingLinkedDataset(),
+			"google_logging_log_view":                                      ResourceLoggingLogView(),
 			"google_logging_metric":                                        ResourceLoggingMetric(),
 			"google_memcache_instance":                                     ResourceMemcacheInstance(),
 			"google_ml_engine_model":                                       ResourceMLEngineModel(),
@@ -1521,9 +1213,14 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 			"google_monitoring_slo":                                        ResourceMonitoringSlo(),
 			"google_monitoring_uptime_check_config":                        ResourceMonitoringUptimeCheckConfig(),
 			"google_network_management_connectivity_test":                  ResourceNetworkManagementConnectivityTest(),
+			"google_network_security_gateway_security_policy":              ResourceNetworkSecurityGatewaySecurityPolicy(),
+			"google_network_security_gateway_security_policy_rule":         ResourceNetworkSecurityGatewaySecurityPolicyRule(),
+			"google_network_security_url_lists":                            ResourceNetworkSecurityUrlLists(),
 			"google_network_services_edge_cache_keyset":                    ResourceNetworkServicesEdgeCacheKeyset(),
 			"google_network_services_edge_cache_origin":                    ResourceNetworkServicesEdgeCacheOrigin(),
 			"google_network_services_edge_cache_service":                   ResourceNetworkServicesEdgeCacheService(),
+			"google_network_services_gateway":                              ResourceNetworkServicesGateway(),
+			"google_network_services_mesh":                                 ResourceNetworkServicesMesh(),
 			"google_notebooks_environment":                                 ResourceNotebooksEnvironment(),
 			"google_notebooks_instance":                                    ResourceNotebooksInstance(),
 			"google_notebooks_instance_iam_binding":                        ResourceIamBinding(NotebooksInstanceIamSchema, NotebooksInstanceIamUpdaterProducer, NotebooksInstanceIdParseFunc),
@@ -1637,29 +1334,33 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 		},
 		map[string]*schema.Resource{
 			// ####### START handwritten resources ###########
-			"google_app_engine_application":                ResourceAppEngineApplication(),
-			"google_apigee_sharedflow":                     ResourceApigeeSharedFlow(),
-			"google_apigee_sharedflow_deployment":          ResourceApigeeSharedFlowDeployment(),
-			"google_apigee_flowhook":                       ResourceApigeeFlowhook(),
-			"google_bigquery_table":                        ResourceBigQueryTable(),
-			"google_bigtable_gc_policy":                    ResourceBigtableGCPolicy(),
-			"google_bigtable_instance":                     ResourceBigtableInstance(),
-			"google_bigtable_table":                        ResourceBigtableTable(),
-			"google_billing_subaccount":                    ResourceBillingSubaccount(),
-			"google_cloudfunctions_function":               ResourceCloudFunctionsFunction(),
-			"google_composer_environment":                  ResourceComposerEnvironment(),
-			"google_compute_attached_disk":                 ResourceComputeAttachedDisk(),
-			"google_compute_instance":                      ResourceComputeInstance(),
-			"google_compute_instance_from_machine_image":   ResourceComputeInstanceFromMachineImage(),
-			"google_compute_instance_from_template":        ResourceComputeInstanceFromTemplate(),
-			"google_compute_instance_group":                ResourceComputeInstanceGroup(),
-			"google_compute_instance_group_manager":        ResourceComputeInstanceGroupManager(),
-			"google_compute_instance_template":             ResourceComputeInstanceTemplate(),
-			"google_compute_network_peering":               ResourceComputeNetworkPeering(),
-			"google_compute_project_default_network_tier":  ResourceComputeProjectDefaultNetworkTier(),
-			"google_compute_project_metadata":              ResourceComputeProjectMetadata(),
-			"google_compute_project_metadata_item":         ResourceComputeProjectMetadataItem(),
-			"google_compute_region_instance_group_manager": ResourceComputeRegionInstanceGroupManager(),
+			"google_app_engine_application":                 ResourceAppEngineApplication(),
+			"google_apigee_sharedflow":                      ResourceApigeeSharedFlow(),
+			"google_apigee_sharedflow_deployment":           ResourceApigeeSharedFlowDeployment(),
+			"google_apigee_flowhook":                        ResourceApigeeFlowhook(),
+			"google_apigee_keystores_aliases_pkcs12":        ResourceApigeeKeystoresAliasesPkcs12(),
+			"google_apigee_keystores_aliases_key_cert_file": ResourceApigeeKeystoresAliasesKeyCertFile(),
+			"google_bigquery_table":                         ResourceBigQueryTable(),
+			"google_bigtable_gc_policy":                     ResourceBigtableGCPolicy(),
+			"google_bigtable_instance":                      ResourceBigtableInstance(),
+			"google_bigtable_table":                         ResourceBigtableTable(),
+			"google_billing_subaccount":                     ResourceBillingSubaccount(),
+			"google_cloudfunctions_function":                ResourceCloudFunctionsFunction(),
+			"google_composer_environment":                   ResourceComposerEnvironment(),
+			"google_compute_attached_disk":                  ResourceComputeAttachedDisk(),
+			"google_compute_instance":                       ResourceComputeInstance(),
+			"google_compute_instance_from_machine_image":    ResourceComputeInstanceFromMachineImage(),
+			"google_compute_instance_from_template":         ResourceComputeInstanceFromTemplate(),
+			"google_compute_instance_group":                 ResourceComputeInstanceGroup(),
+			"google_compute_instance_group_manager":         ResourceComputeInstanceGroupManager(),
+			"google_compute_instance_template":              ResourceComputeInstanceTemplate(),
+			"google_compute_network_peering":                ResourceComputeNetworkPeering(),
+			"google_compute_project_default_network_tier":   ResourceComputeProjectDefaultNetworkTier(),
+			"google_compute_project_metadata":               ResourceComputeProjectMetadata(),
+			"google_compute_project_metadata_item":          ResourceComputeProjectMetadataItem(),
+			"google_compute_region_instance_group_manager":  ResourceComputeRegionInstanceGroupManager(),
+
+			"google_compute_region_instance_template":      ResourceComputeRegionInstanceTemplate(),
 			"google_compute_router_interface":              ResourceComputeRouterInterface(),
 			"google_compute_security_policy":               ResourceComputeSecurityPolicy(),
 			"google_compute_shared_vpc_host_project":       ResourceComputeSharedVpcHostProject(),
@@ -1790,6 +1491,12 @@ func ResourceMapWithErrors() (map[string]*schema.Resource, error) {
 }
 
 func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Provider) (interface{}, diag.Diagnostics) {
+	err := HandleSDKDefaults(d)
+	if err != nil {
+		return nil, diag.FromErr(err)
+	}
+	HandleDCLCustomEndpointDefaults(d)
+
 	config := Config{
 		Project:             d.Get("project").(string),
 		Region:              d.Get("region").(string),
@@ -1908,6 +1615,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
 	config.DataformBasePath = d.Get("dataform_custom_endpoint").(string)
 	config.DataFusionBasePath = d.Get("data_fusion_custom_endpoint").(string)
 	config.DataLossPreventionBasePath = d.Get("data_loss_prevention_custom_endpoint").(string)
+	config.DataplexBasePath = d.Get("dataplex_custom_endpoint").(string)
 	config.DataprocBasePath = d.Get("dataproc_custom_endpoint").(string)
 	config.DataprocMetastoreBasePath = d.Get("dataproc_metastore_custom_endpoint").(string)
 	config.DatastoreBasePath = d.Get("datastore_custom_endpoint").(string)
@@ -1939,6 +1647,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
 	config.MLEngineBasePath = d.Get("ml_engine_custom_endpoint").(string)
 	config.MonitoringBasePath = d.Get("monitoring_custom_endpoint").(string)
 	config.NetworkManagementBasePath = d.Get("network_management_custom_endpoint").(string)
+	config.NetworkSecurityBasePath = d.Get("network_security_custom_endpoint").(string)
 	config.NetworkServicesBasePath = d.Get("network_services_custom_endpoint").(string)
 	config.NotebooksBasePath = d.Get("notebooks_custom_endpoint").(string)
 	config.OrgPolicyBasePath = d.Get("org_policy_custom_endpoint").(string)
@@ -2012,4 +1721,26 @@ func validateCredentials(v interface{}, k string) (warnings []string, errors []e
 	}
 
 	return
+}
+
+func mergeResourceMaps(ms ...map[string]*schema.Resource) (map[string]*schema.Resource, error) {
+	merged := make(map[string]*schema.Resource)
+	duplicates := []string{}
+
+	for _, m := range ms {
+		for k, v := range m {
+			if _, ok := merged[k]; ok {
+				duplicates = append(duplicates, k)
+			}
+
+			merged[k] = v
+		}
+	}
+
+	var err error
+	if len(duplicates) > 0 {
+		err = fmt.Errorf("saw duplicates in mergeResourceMaps: %v", duplicates)
+	}
+
+	return merged, err
 }

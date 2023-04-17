@@ -122,7 +122,7 @@ func resourceApiGatewayGatewayCreate(d *schema.ResourceData, meta interface{}) e
 		obj["labels"] = labelsProp
 	}
 
-	url, err := replaceVars(d, config, "{{ApiGatewayBasePath}}projects/{{project}}/locations/{{region}}/gateways?gatewayId={{gateway_id}}")
+	url, err := ReplaceVars(d, config, "{{ApiGatewayBasePath}}projects/{{project}}/locations/{{region}}/gateways?gatewayId={{gateway_id}}")
 	if err != nil {
 		return err
 	}
@@ -147,7 +147,7 @@ func resourceApiGatewayGatewayCreate(d *schema.ResourceData, meta interface{}) e
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "projects/{{project}}/locations/{{region}}/gateways/{{gateway_id}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/gateways/{{gateway_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -167,7 +167,7 @@ func resourceApiGatewayGatewayCreate(d *schema.ResourceData, meta interface{}) e
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = replaceVars(d, config, "projects/{{project}}/locations/{{region}}/gateways/{{gateway_id}}")
+	id, err = ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/gateways/{{gateway_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -185,7 +185,7 @@ func resourceApiGatewayGatewayRead(d *schema.ResourceData, meta interface{}) err
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{ApiGatewayBasePath}}projects/{{project}}/locations/{{region}}/gateways/{{gateway_id}}")
+	url, err := ReplaceVars(d, config, "{{ApiGatewayBasePath}}projects/{{project}}/locations/{{region}}/gateways/{{gateway_id}}")
 	if err != nil {
 		return err
 	}
@@ -266,7 +266,7 @@ func resourceApiGatewayGatewayUpdate(d *schema.ResourceData, meta interface{}) e
 		obj["labels"] = labelsProp
 	}
 
-	url, err := replaceVars(d, config, "{{ApiGatewayBasePath}}projects/{{project}}/locations/{{region}}/gateways/{{gateway_id}}")
+	url, err := ReplaceVars(d, config, "{{ApiGatewayBasePath}}projects/{{project}}/locations/{{region}}/gateways/{{gateway_id}}")
 	if err != nil {
 		return err
 	}
@@ -285,9 +285,9 @@ func resourceApiGatewayGatewayUpdate(d *schema.ResourceData, meta interface{}) e
 	if d.HasChange("labels") {
 		updateMask = append(updateMask, "labels")
 	}
-	// updateMask is a URL parameter but not present in the schema, so replaceVars
+	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = addQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -331,7 +331,7 @@ func resourceApiGatewayGatewayDelete(d *schema.ResourceData, meta interface{}) e
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{ApiGatewayBasePath}}projects/{{project}}/locations/{{region}}/gateways/{{gateway_id}}")
+	url, err := ReplaceVars(d, config, "{{ApiGatewayBasePath}}projects/{{project}}/locations/{{region}}/gateways/{{gateway_id}}")
 	if err != nil {
 		return err
 	}
@@ -363,7 +363,7 @@ func resourceApiGatewayGatewayDelete(d *schema.ResourceData, meta interface{}) e
 
 func resourceApiGatewayGatewayImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<region>[^/]+)/gateways/(?P<gateway_id>[^/]+)",
 		"(?P<project>[^/]+)/(?P<region>[^/]+)/(?P<gateway_id>[^/]+)",
 		"(?P<region>[^/]+)/(?P<gateway_id>[^/]+)",
@@ -373,7 +373,7 @@ func resourceApiGatewayGatewayImport(d *schema.ResourceData, meta interface{}) (
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "projects/{{project}}/locations/{{region}}/gateways/{{gateway_id}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/gateways/{{gateway_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

@@ -194,7 +194,7 @@ func (u *ApiGatewayApiConfigIamUpdater) SetResourceIamPolicy(policy *cloudresour
 
 func (u *ApiGatewayApiConfigIamUpdater) qualifyApiConfigUrl(methodIdentifier string) (string, error) {
 	urlTemplate := fmt.Sprintf("{{ApiGatewayBasePath}}%s:%s", fmt.Sprintf("projects/%s/locations/global/apis/%s/configs/%s", u.project, u.api, u.apiConfig), methodIdentifier)
-	url, err := replaceVars(u.d, u.Config, urlTemplate)
+	url, err := ReplaceVars(u.d, u.Config, urlTemplate)
 	if err != nil {
 		return "", err
 	}

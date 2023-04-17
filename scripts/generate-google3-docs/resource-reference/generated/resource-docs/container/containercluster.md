@@ -194,8 +194,11 @@ initialNodeCount: integer
 ipAllocationPolicy:
   clusterIpv4CidrBlock: string
   clusterSecondaryRangeName: string
+  podCidrOverprovisionConfig:
+    disabled: boolean
   servicesIpv4CidrBlock: string
   servicesSecondaryRangeName: string
+  stackType: string
 location: string
 loggingConfig:
   enableComponents:
@@ -251,6 +254,8 @@ networkRef:
   namespace: string
 networkingMode: string
 nodeConfig:
+  advancedMachineFeatures:
+    threadsPerCore: integer
   bootDiskKMSCryptoKeyRef:
     external: string
     name: string
@@ -258,6 +263,8 @@ nodeConfig:
   diskSizeGb: integer
   diskType: string
   ephemeralStorageConfig:
+    localSsdCount: integer
+  ephemeralStorageLocalSsdConfig:
     localSsdCount: integer
   gcfsConfig:
     enabled: boolean
@@ -281,6 +288,8 @@ nodeConfig:
   linuxNodeConfig:
     sysctls:
       string: string
+  localNvmeSsdBlockConfig:
+    localSsdCount: integer
   localSsdCount: integer
   loggingVariant: string
   machineType: string
@@ -1467,6 +1476,26 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>ipAllocationPolicy.podCidrOverprovisionConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Configuration for cluster level pod cidr overprovision. Default is disabled=false.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.podCidrOverprovisionConfig.disabled</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>ipAllocationPolicy.servicesIpv4CidrBlock</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1483,6 +1512,16 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The name of the existing secondary range in the cluster's subnetwork to use for service ClusterIPs. Alternatively, services_ipv4_cidr_block can be used to automatically create a GKE-managed one.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipAllocationPolicy.stackType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. The IP Stack type of the cluster. Choose between IPV4 and IPV4_IPV6. Default type is IPV4 Only if not set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2057,6 +2096,26 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>nodeConfig.advancedMachineFeatures</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Specifies options for controlling advanced machine features.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.advancedMachineFeatures.threadsPerCore</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>nodeConfig.bootDiskKMSCryptoKeyRef</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -2122,7 +2181,7 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Parameters for the ephemeral storage filesystem.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2132,7 +2191,27 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD is 375 GB in size.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.ephemeralStorageLocalSsdConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.ephemeralStorageLocalSsdConfig.localSsdCount</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2343,6 +2422,26 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
             <p>{% verbatim %}The Linux kernel parameters to be applied to the nodes and all pods running on the nodes.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.localNvmeSsdBlockConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Parameters for raw-block local NVMe SSDs.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>nodeConfig.localNvmeSsdBlockConfig.localSsdCount</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. Number of raw-block local NVMe SSD disks to be attached to the node. Each local SSD is 375 GB in size.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3115,7 +3214,7 @@ will be provisioned.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The notification config for sending cluster upgrade notifications.{% endverbatim %}</p>
+            <p>{% verbatim %}Enable/Disable Protect API features for the cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3125,7 +3224,7 @@ will be provisioned.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}WorkloadConfig defines the flags to enable or disable the workload configurations for the cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}WorkloadConfig defines which actions are enabled for a cluster's workload configurations.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3135,7 +3234,7 @@ will be provisioned.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Mode defines how to audit the workload configs. Accepted values are MODE_UNSPECIFIED, DISABLED, BASIC.{% endverbatim %}</p>
+            <p>{% verbatim %}Sets which mode of auditing should be used for the cluster's workloads. Accepted values are DISABLED, BASIC.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3145,7 +3244,7 @@ will be provisioned.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}WorkloadVulnerabilityMode defines mode to perform vulnerability scanning. Accepted values are WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED, DISABLED, BASIC.{% endverbatim %}</p>
+            <p>{% verbatim %}Sets which mode to use for Protect workload vulnerability scanning feature. Accepted values are DISABLED, BASIC.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

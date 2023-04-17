@@ -33,9 +33,9 @@ func TestAccIapClient_iapClientExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckIapClientDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckIapClientDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccIapClient_iapClientExample(context),
@@ -99,7 +99,7 @@ func testAccCheckIapClientDestroyProducer(t *testing.T) func(s *terraform.State)
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, iapClient409Operation)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, IapClient409Operation)
 			if err == nil {
 				return fmt.Errorf("IapClient still exists at %s", url)
 			}

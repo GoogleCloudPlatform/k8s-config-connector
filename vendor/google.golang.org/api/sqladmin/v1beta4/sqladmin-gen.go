@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC.
+// Copyright 2023 Google LLC.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -75,6 +75,7 @@ var _ = errors.New
 var _ = strings.Replace
 var _ = context.Canceled
 var _ = internaloption.WithDefaultEndpoint
+var _ = internal.Version
 
 const apiId = "sqladmin:v1beta4"
 const apiName = "sqladmin"
@@ -310,6 +311,36 @@ type AclEntry struct {
 
 func (s *AclEntry) MarshalJSON() ([]byte, error) {
 	type NoMethod AclEntry
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// AdvancedMachineFeatures: Specifies options for controlling advanced
+// machine features.
+type AdvancedMachineFeatures struct {
+	// ThreadsPerCore: The number of threads per physical core.
+	ThreadsPerCore int64 `json:"threadsPerCore,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "ThreadsPerCore") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "ThreadsPerCore") to
+	// include in API requests with the JSON null value. By default, fields
+	// with empty values are omitted from API requests. However, any field
+	// with an empty value appearing in NullFields will be sent to the
+	// server as null. It is an error if a field in this list has a
+	// non-empty value. This may be used to include null fields in Patch
+	// requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *AdvancedMachineFeatures) MarshalJSON() ([]byte, error) {
+	type NoMethod AdvancedMachineFeatures
 	raw := NoMethod(*s)
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
@@ -805,6 +836,10 @@ type ConnectSettings struct {
 	// minor version is 29.
 	//   "MYSQL_8_0_30" - The database major version is MySQL 8.0 and the
 	// minor version is 30.
+	//   "MYSQL_8_0_31" - The database major version is MySQL 8.0 and the
+	// minor version is 31.
+	//   "MYSQL_8_0_32" - The database major version is MySQL 8.0 and the
+	// minor version is 32.
 	//   "SQLSERVER_2019_STANDARD" - The database version is SQL Server 2019
 	// Standard.
 	//   "SQLSERVER_2019_ENTERPRISE" - The database version is SQL Server
@@ -953,8 +988,8 @@ func (s *DatabaseFlags) MarshalJSON() ([]byte, error) {
 
 // DatabaseInstance: A Cloud SQL instance resource.
 type DatabaseInstance struct {
-	// AvailableMaintenanceVersions: List all maintenance versions
-	// applicable on the instance
+	// AvailableMaintenanceVersions: Output only. List all maintenance
+	// versions applicable on the instance
 	AvailableMaintenanceVersions []string `json:"availableMaintenanceVersions,omitempty"`
 
 	// BackendType: The backend type. `SECOND_GEN`: Cloud SQL database
@@ -1028,6 +1063,10 @@ type DatabaseInstance struct {
 	// minor version is 29.
 	//   "MYSQL_8_0_30" - The database major version is MySQL 8.0 and the
 	// minor version is 30.
+	//   "MYSQL_8_0_31" - The database major version is MySQL 8.0 and the
+	// minor version is 31.
+	//   "MYSQL_8_0_32" - The database major version is MySQL 8.0 and the
+	// minor version is 32.
 	//   "SQLSERVER_2019_STANDARD" - The database version is SQL Server 2019
 	// Standard.
 	//   "SQLSERVER_2019_ENTERPRISE" - The database version is SQL Server
@@ -1842,6 +1881,10 @@ type Flag struct {
 	// minor version is 29.
 	//   "MYSQL_8_0_30" - The database major version is MySQL 8.0 and the
 	// minor version is 30.
+	//   "MYSQL_8_0_31" - The database major version is MySQL 8.0 and the
+	// minor version is 31.
+	//   "MYSQL_8_0_32" - The database major version is MySQL 8.0 and the
+	// minor version is 32.
 	//   "SQLSERVER_2019_STANDARD" - The database version is SQL Server 2019
 	// Standard.
 	//   "SQLSERVER_2019_ENTERPRISE" - The database version is SQL Server
@@ -3062,6 +3105,7 @@ type Operation struct {
 	//   "LOG_CLEANUP" - Recovers logs from an instance's old data disk.
 	//   "AUTO_RESTART" - Performs auto-restart of an HA-enabled Cloud SQL
 	// database for auto recovery.
+	//   "REENCRYPT" - Re-encrypts CMEK instances with latest key version.
 	OperationType string `json:"operationType,omitempty"`
 
 	// SelfLink: The URI of this resource.
@@ -3187,6 +3231,58 @@ func (s *OperationErrors) MarshalJSON() ([]byte, error) {
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
 
+// OperationMetadata: Represents the metadata of the long-running
+// operation.
+type OperationMetadata struct {
+	// ApiVersion: Output only. API version used to start the operation.
+	ApiVersion string `json:"apiVersion,omitempty"`
+
+	// CancelRequested: Output only. Identifies whether the user has
+	// requested cancellation of the operation. Operations that have been
+	// cancelled successfully have Operation.error value with a
+	// google.rpc.Status.code of 1, corresponding to `Code.CANCELLED`.
+	CancelRequested bool `json:"cancelRequested,omitempty"`
+
+	// CreateTime: Output only. The time the operation was created.
+	CreateTime string `json:"createTime,omitempty"`
+
+	// EndTime: Output only. The time the operation finished running.
+	EndTime string `json:"endTime,omitempty"`
+
+	// StatusDetail: Output only. Human-readable status of the operation, if
+	// any.
+	StatusDetail string `json:"statusDetail,omitempty"`
+
+	// Target: Output only. Server-defined resource path for the target of
+	// the operation.
+	Target string `json:"target,omitempty"`
+
+	// Verb: Output only. Name of the verb executed by the operation.
+	Verb string `json:"verb,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "ApiVersion") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "ApiVersion") to include in
+	// API requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *OperationMetadata) MarshalJSON() ([]byte, error) {
+	type NoMethod OperationMetadata
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
 // OperationsListResponse: Operations list response.
 type OperationsListResponse struct {
 	// Items: List of operation resources.
@@ -3305,6 +3401,34 @@ type PasswordValidationPolicy struct {
 
 func (s *PasswordValidationPolicy) MarshalJSON() ([]byte, error) {
 	type NoMethod PasswordValidationPolicy
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// PerformDiskShrinkContext: Perform disk shrink context.
+type PerformDiskShrinkContext struct {
+	// TargetSizeGb: The target disk shrink size in GigaBytes.
+	TargetSizeGb int64 `json:"targetSizeGb,omitempty,string"`
+
+	// ForceSendFields is a list of field names (e.g. "TargetSizeGb") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "TargetSizeGb") to include
+	// in API requests with the JSON null value. By default, fields with
+	// empty values are omitted from API requests. However, any field with
+	// an empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *PerformDiskShrinkContext) MarshalJSON() ([]byte, error) {
+	type NoMethod PerformDiskShrinkContext
 	raw := NoMethod(*s)
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
@@ -3489,6 +3613,10 @@ type Settings struct {
 	// ActiveDirectoryConfig: Active Directory configuration, relevant only
 	// for Cloud SQL for SQL Server.
 	ActiveDirectoryConfig *SqlActiveDirectoryConfig `json:"activeDirectoryConfig,omitempty"`
+
+	// AdvancedMachineFeatures: Specifies advance machine configuration for
+	// the instance relevant only for SQL Server.
+	AdvancedMachineFeatures *AdvancedMachineFeatures `json:"advancedMachineFeatures,omitempty"`
 
 	// AuthorizedGaeApplications: The App Engine app IDs that can access
 	// this instance. (Deprecated) Applied to First Generation instances
@@ -3771,7 +3899,9 @@ type SqlExternalSyncSettingError struct {
 	//   "UNSUPPORTED_STORAGE_ENGINE" - The primary instance has tables with
 	// unsupported storage engine.
 	//   "LIMITED_SUPPORT_TABLES" - Source has tables with limited support
-	// eg: PostgreSQL tables without primary keys
+	// eg: PostgreSQL tables without primary keys.
+	//   "EXISTING_DATA_IN_REPLICA" - The replica instance contains existing
+	// data.
 	Type string `json:"type,omitempty"`
 
 	// ForceSendFields is a list of field names (e.g. "Detail") to
@@ -3793,6 +3923,43 @@ type SqlExternalSyncSettingError struct {
 
 func (s *SqlExternalSyncSettingError) MarshalJSON() ([]byte, error) {
 	type NoMethod SqlExternalSyncSettingError
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// SqlInstancesGetDiskShrinkConfigResponse: Instance get disk shrink
+// config response.
+type SqlInstancesGetDiskShrinkConfigResponse struct {
+	// Kind: This is always `sql#getDiskShrinkConfig`.
+	Kind string `json:"kind,omitempty"`
+
+	// MinimalTargetSizeGb: The minimum size to which a disk can be shrunk
+	// in GigaBytes.
+	MinimalTargetSizeGb int64 `json:"minimalTargetSizeGb,omitempty,string"`
+
+	// ServerResponse contains the HTTP response code and headers from the
+	// server.
+	googleapi.ServerResponse `json:"-"`
+
+	// ForceSendFields is a list of field names (e.g. "Kind") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "Kind") to include in API
+	// requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *SqlInstancesGetDiskShrinkConfigResponse) MarshalJSON() ([]byte, error) {
+	type NoMethod SqlInstancesGetDiskShrinkConfigResponse
 	raw := NoMethod(*s)
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
@@ -3824,6 +3991,11 @@ func (s *SqlInstancesRescheduleMaintenanceRequestBody) MarshalJSON() ([]byte, er
 	type NoMethod SqlInstancesRescheduleMaintenanceRequestBody
 	raw := NoMethod(*s)
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// SqlInstancesResetReplicaSizeRequest: Instance reset replica size
+// request.
+type SqlInstancesResetReplicaSizeRequest struct {
 }
 
 type SqlInstancesStartExternalSyncRequest struct {
@@ -4656,9 +4828,7 @@ type UsersListResponse struct {
 	// Kind: This is always *sql#usersList*.
 	Kind string `json:"kind,omitempty"`
 
-	// NextPageToken: An identifier that uniquely identifies the operation.
-	// You can use this identifier to retrieve the Operations resource that
-	// has information about the operation.
+	// NextPageToken: Unused.
 	NextPageToken string `json:"nextPageToken,omitempty"`
 
 	// ServerResponse contains the HTTP response code and headers from the
@@ -10435,6 +10605,319 @@ func (c *OperationsListCall) Pages(ctx context.Context, f func(*OperationsListRe
 	}
 }
 
+// method id "sql.projects.instances.getDiskShrinkConfig":
+
+type ProjectsInstancesGetDiskShrinkConfigCall struct {
+	s            *Service
+	project      string
+	instance     string
+	urlParams_   gensupport.URLParams
+	ifNoneMatch_ string
+	ctx_         context.Context
+	header_      http.Header
+}
+
+// GetDiskShrinkConfig: Get Disk Shrink Config for a given instance.
+//
+//   - instance: Cloud SQL instance ID. This does not include the project
+//     ID.
+//   - project: Project ID of the project that contains the instance.
+func (r *ProjectsInstancesService) GetDiskShrinkConfig(project string, instance string) *ProjectsInstancesGetDiskShrinkConfigCall {
+	c := &ProjectsInstancesGetDiskShrinkConfigCall{s: r.s, urlParams_: make(gensupport.URLParams)}
+	c.project = project
+	c.instance = instance
+	return c
+}
+
+// Fields allows partial responses to be retrieved. See
+// https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *ProjectsInstancesGetDiskShrinkConfigCall) Fields(s ...googleapi.Field) *ProjectsInstancesGetDiskShrinkConfigCall {
+	c.urlParams_.Set("fields", googleapi.CombineFields(s))
+	return c
+}
+
+// IfNoneMatch sets the optional parameter which makes the operation
+// fail if the object's ETag matches the given value. This is useful for
+// getting updates only after the object has changed since the last
+// request. Use googleapi.IsNotModified to check whether the response
+// error from Do is the result of In-None-Match.
+func (c *ProjectsInstancesGetDiskShrinkConfigCall) IfNoneMatch(entityTag string) *ProjectsInstancesGetDiskShrinkConfigCall {
+	c.ifNoneMatch_ = entityTag
+	return c
+}
+
+// Context sets the context to be used in this call's Do method. Any
+// pending HTTP request will be aborted if the provided context is
+// canceled.
+func (c *ProjectsInstancesGetDiskShrinkConfigCall) Context(ctx context.Context) *ProjectsInstancesGetDiskShrinkConfigCall {
+	c.ctx_ = ctx
+	return c
+}
+
+// Header returns an http.Header that can be modified by the caller to
+// add HTTP headers to the request.
+func (c *ProjectsInstancesGetDiskShrinkConfigCall) Header() http.Header {
+	if c.header_ == nil {
+		c.header_ = make(http.Header)
+	}
+	return c.header_
+}
+
+func (c *ProjectsInstancesGetDiskShrinkConfigCall) doRequest(alt string) (*http.Response, error) {
+	reqHeaders := make(http.Header)
+	reqHeaders.Set("x-goog-api-client", "gl-go/"+gensupport.GoVersion()+" gdcl/"+internal.Version)
+	for k, v := range c.header_ {
+		reqHeaders[k] = v
+	}
+	reqHeaders.Set("User-Agent", c.s.userAgent())
+	if c.ifNoneMatch_ != "" {
+		reqHeaders.Set("If-None-Match", c.ifNoneMatch_)
+	}
+	var body io.Reader = nil
+	c.urlParams_.Set("alt", alt)
+	c.urlParams_.Set("prettyPrint", "false")
+	urls := googleapi.ResolveRelative(c.s.BasePath, "sql/v1beta4/projects/{project}/instances/{instance}/getDiskShrinkConfig")
+	urls += "?" + c.urlParams_.Encode()
+	req, err := http.NewRequest("GET", urls, body)
+	if err != nil {
+		return nil, err
+	}
+	req.Header = reqHeaders
+	googleapi.Expand(req.URL, map[string]string{
+		"project":  c.project,
+		"instance": c.instance,
+	})
+	return gensupport.SendRequest(c.ctx_, c.s.client, req)
+}
+
+// Do executes the "sql.projects.instances.getDiskShrinkConfig" call.
+// Exactly one of *SqlInstancesGetDiskShrinkConfigResponse or error will
+// be non-nil. Any non-2xx status code is an error. Response headers are
+// in either
+// *SqlInstancesGetDiskShrinkConfigResponse.ServerResponse.Header or (if
+// a response was returned at all) in error.(*googleapi.Error).Header.
+// Use googleapi.IsNotModified to check whether the returned error was
+// because http.StatusNotModified was returned.
+func (c *ProjectsInstancesGetDiskShrinkConfigCall) Do(opts ...googleapi.CallOption) (*SqlInstancesGetDiskShrinkConfigResponse, error) {
+	gensupport.SetOptions(c.urlParams_, opts...)
+	res, err := c.doRequest("json")
+	if res != nil && res.StatusCode == http.StatusNotModified {
+		if res.Body != nil {
+			res.Body.Close()
+		}
+		return nil, gensupport.WrapError(&googleapi.Error{
+			Code:   res.StatusCode,
+			Header: res.Header,
+		})
+	}
+	if err != nil {
+		return nil, err
+	}
+	defer googleapi.CloseBody(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
+	}
+	ret := &SqlInstancesGetDiskShrinkConfigResponse{
+		ServerResponse: googleapi.ServerResponse{
+			Header:         res.Header,
+			HTTPStatusCode: res.StatusCode,
+		},
+	}
+	target := &ret
+	if err := gensupport.DecodeResponse(target, res); err != nil {
+		return nil, err
+	}
+	return ret, nil
+	// {
+	//   "description": "Get Disk Shrink Config for a given instance.",
+	//   "flatPath": "sql/v1beta4/projects/{project}/instances/{instance}/getDiskShrinkConfig",
+	//   "httpMethod": "GET",
+	//   "id": "sql.projects.instances.getDiskShrinkConfig",
+	//   "parameterOrder": [
+	//     "project",
+	//     "instance"
+	//   ],
+	//   "parameters": {
+	//     "instance": {
+	//       "description": "Cloud SQL instance ID. This does not include the project ID.",
+	//       "location": "path",
+	//       "required": true,
+	//       "type": "string"
+	//     },
+	//     "project": {
+	//       "description": "Project ID of the project that contains the instance.",
+	//       "location": "path",
+	//       "required": true,
+	//       "type": "string"
+	//     }
+	//   },
+	//   "path": "sql/v1beta4/projects/{project}/instances/{instance}/getDiskShrinkConfig",
+	//   "response": {
+	//     "$ref": "SqlInstancesGetDiskShrinkConfigResponse"
+	//   },
+	//   "scopes": [
+	//     "https://www.googleapis.com/auth/cloud-platform",
+	//     "https://www.googleapis.com/auth/sqlservice.admin"
+	//   ]
+	// }
+
+}
+
+// method id "sql.projects.instances.performDiskShrink":
+
+type ProjectsInstancesPerformDiskShrinkCall struct {
+	s                        *Service
+	project                  string
+	instance                 string
+	performdiskshrinkcontext *PerformDiskShrinkContext
+	urlParams_               gensupport.URLParams
+	ctx_                     context.Context
+	header_                  http.Header
+}
+
+// PerformDiskShrink: Perform Disk Shrink on primary instance.
+//
+//   - instance: Cloud SQL instance ID. This does not include the project
+//     ID.
+//   - project: Project ID of the project that contains the instance.
+func (r *ProjectsInstancesService) PerformDiskShrink(project string, instance string, performdiskshrinkcontext *PerformDiskShrinkContext) *ProjectsInstancesPerformDiskShrinkCall {
+	c := &ProjectsInstancesPerformDiskShrinkCall{s: r.s, urlParams_: make(gensupport.URLParams)}
+	c.project = project
+	c.instance = instance
+	c.performdiskshrinkcontext = performdiskshrinkcontext
+	return c
+}
+
+// Fields allows partial responses to be retrieved. See
+// https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *ProjectsInstancesPerformDiskShrinkCall) Fields(s ...googleapi.Field) *ProjectsInstancesPerformDiskShrinkCall {
+	c.urlParams_.Set("fields", googleapi.CombineFields(s))
+	return c
+}
+
+// Context sets the context to be used in this call's Do method. Any
+// pending HTTP request will be aborted if the provided context is
+// canceled.
+func (c *ProjectsInstancesPerformDiskShrinkCall) Context(ctx context.Context) *ProjectsInstancesPerformDiskShrinkCall {
+	c.ctx_ = ctx
+	return c
+}
+
+// Header returns an http.Header that can be modified by the caller to
+// add HTTP headers to the request.
+func (c *ProjectsInstancesPerformDiskShrinkCall) Header() http.Header {
+	if c.header_ == nil {
+		c.header_ = make(http.Header)
+	}
+	return c.header_
+}
+
+func (c *ProjectsInstancesPerformDiskShrinkCall) doRequest(alt string) (*http.Response, error) {
+	reqHeaders := make(http.Header)
+	reqHeaders.Set("x-goog-api-client", "gl-go/"+gensupport.GoVersion()+" gdcl/"+internal.Version)
+	for k, v := range c.header_ {
+		reqHeaders[k] = v
+	}
+	reqHeaders.Set("User-Agent", c.s.userAgent())
+	var body io.Reader = nil
+	body, err := googleapi.WithoutDataWrapper.JSONReader(c.performdiskshrinkcontext)
+	if err != nil {
+		return nil, err
+	}
+	reqHeaders.Set("Content-Type", "application/json")
+	c.urlParams_.Set("alt", alt)
+	c.urlParams_.Set("prettyPrint", "false")
+	urls := googleapi.ResolveRelative(c.s.BasePath, "sql/v1beta4/projects/{project}/instances/{instance}/performDiskShrink")
+	urls += "?" + c.urlParams_.Encode()
+	req, err := http.NewRequest("POST", urls, body)
+	if err != nil {
+		return nil, err
+	}
+	req.Header = reqHeaders
+	googleapi.Expand(req.URL, map[string]string{
+		"project":  c.project,
+		"instance": c.instance,
+	})
+	return gensupport.SendRequest(c.ctx_, c.s.client, req)
+}
+
+// Do executes the "sql.projects.instances.performDiskShrink" call.
+// Exactly one of *Operation or error will be non-nil. Any non-2xx
+// status code is an error. Response headers are in either
+// *Operation.ServerResponse.Header or (if a response was returned at
+// all) in error.(*googleapi.Error).Header. Use googleapi.IsNotModified
+// to check whether the returned error was because
+// http.StatusNotModified was returned.
+func (c *ProjectsInstancesPerformDiskShrinkCall) Do(opts ...googleapi.CallOption) (*Operation, error) {
+	gensupport.SetOptions(c.urlParams_, opts...)
+	res, err := c.doRequest("json")
+	if res != nil && res.StatusCode == http.StatusNotModified {
+		if res.Body != nil {
+			res.Body.Close()
+		}
+		return nil, gensupport.WrapError(&googleapi.Error{
+			Code:   res.StatusCode,
+			Header: res.Header,
+		})
+	}
+	if err != nil {
+		return nil, err
+	}
+	defer googleapi.CloseBody(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
+	}
+	ret := &Operation{
+		ServerResponse: googleapi.ServerResponse{
+			Header:         res.Header,
+			HTTPStatusCode: res.StatusCode,
+		},
+	}
+	target := &ret
+	if err := gensupport.DecodeResponse(target, res); err != nil {
+		return nil, err
+	}
+	return ret, nil
+	// {
+	//   "description": "Perform Disk Shrink on primary instance.",
+	//   "flatPath": "sql/v1beta4/projects/{project}/instances/{instance}/performDiskShrink",
+	//   "httpMethod": "POST",
+	//   "id": "sql.projects.instances.performDiskShrink",
+	//   "parameterOrder": [
+	//     "project",
+	//     "instance"
+	//   ],
+	//   "parameters": {
+	//     "instance": {
+	//       "description": "Cloud SQL instance ID. This does not include the project ID.",
+	//       "location": "path",
+	//       "required": true,
+	//       "type": "string"
+	//     },
+	//     "project": {
+	//       "description": "Project ID of the project that contains the instance.",
+	//       "location": "path",
+	//       "required": true,
+	//       "type": "string"
+	//     }
+	//   },
+	//   "path": "sql/v1beta4/projects/{project}/instances/{instance}/performDiskShrink",
+	//   "request": {
+	//     "$ref": "PerformDiskShrinkContext"
+	//   },
+	//   "response": {
+	//     "$ref": "Operation"
+	//   },
+	//   "scopes": [
+	//     "https://www.googleapis.com/auth/cloud-platform",
+	//     "https://www.googleapis.com/auth/sqlservice.admin"
+	//   ]
+	// }
+
+}
+
 // method id "sql.projects.instances.rescheduleMaintenance":
 
 type ProjectsInstancesRescheduleMaintenanceCall struct {
@@ -10578,6 +11061,159 @@ func (c *ProjectsInstancesRescheduleMaintenanceCall) Do(opts ...googleapi.CallOp
 	//   "path": "sql/v1beta4/projects/{project}/instances/{instance}/rescheduleMaintenance",
 	//   "request": {
 	//     "$ref": "SqlInstancesRescheduleMaintenanceRequestBody"
+	//   },
+	//   "response": {
+	//     "$ref": "Operation"
+	//   },
+	//   "scopes": [
+	//     "https://www.googleapis.com/auth/cloud-platform",
+	//     "https://www.googleapis.com/auth/sqlservice.admin"
+	//   ]
+	// }
+
+}
+
+// method id "sql.projects.instances.resetReplicaSize":
+
+type ProjectsInstancesResetReplicaSizeCall struct {
+	s                                   *Service
+	project                             string
+	instance                            string
+	sqlinstancesresetreplicasizerequest *SqlInstancesResetReplicaSizeRequest
+	urlParams_                          gensupport.URLParams
+	ctx_                                context.Context
+	header_                             http.Header
+}
+
+// ResetReplicaSize: Reset Replica Size to primary instance disk size.
+//
+// - instance: Cloud SQL read replica instance name.
+// - project: ID of the project that contains the read replica.
+func (r *ProjectsInstancesService) ResetReplicaSize(project string, instance string, sqlinstancesresetreplicasizerequest *SqlInstancesResetReplicaSizeRequest) *ProjectsInstancesResetReplicaSizeCall {
+	c := &ProjectsInstancesResetReplicaSizeCall{s: r.s, urlParams_: make(gensupport.URLParams)}
+	c.project = project
+	c.instance = instance
+	c.sqlinstancesresetreplicasizerequest = sqlinstancesresetreplicasizerequest
+	return c
+}
+
+// Fields allows partial responses to be retrieved. See
+// https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *ProjectsInstancesResetReplicaSizeCall) Fields(s ...googleapi.Field) *ProjectsInstancesResetReplicaSizeCall {
+	c.urlParams_.Set("fields", googleapi.CombineFields(s))
+	return c
+}
+
+// Context sets the context to be used in this call's Do method. Any
+// pending HTTP request will be aborted if the provided context is
+// canceled.
+func (c *ProjectsInstancesResetReplicaSizeCall) Context(ctx context.Context) *ProjectsInstancesResetReplicaSizeCall {
+	c.ctx_ = ctx
+	return c
+}
+
+// Header returns an http.Header that can be modified by the caller to
+// add HTTP headers to the request.
+func (c *ProjectsInstancesResetReplicaSizeCall) Header() http.Header {
+	if c.header_ == nil {
+		c.header_ = make(http.Header)
+	}
+	return c.header_
+}
+
+func (c *ProjectsInstancesResetReplicaSizeCall) doRequest(alt string) (*http.Response, error) {
+	reqHeaders := make(http.Header)
+	reqHeaders.Set("x-goog-api-client", "gl-go/"+gensupport.GoVersion()+" gdcl/"+internal.Version)
+	for k, v := range c.header_ {
+		reqHeaders[k] = v
+	}
+	reqHeaders.Set("User-Agent", c.s.userAgent())
+	var body io.Reader = nil
+	body, err := googleapi.WithoutDataWrapper.JSONReader(c.sqlinstancesresetreplicasizerequest)
+	if err != nil {
+		return nil, err
+	}
+	reqHeaders.Set("Content-Type", "application/json")
+	c.urlParams_.Set("alt", alt)
+	c.urlParams_.Set("prettyPrint", "false")
+	urls := googleapi.ResolveRelative(c.s.BasePath, "sql/v1beta4/projects/{project}/instances/{instance}/resetReplicaSize")
+	urls += "?" + c.urlParams_.Encode()
+	req, err := http.NewRequest("POST", urls, body)
+	if err != nil {
+		return nil, err
+	}
+	req.Header = reqHeaders
+	googleapi.Expand(req.URL, map[string]string{
+		"project":  c.project,
+		"instance": c.instance,
+	})
+	return gensupport.SendRequest(c.ctx_, c.s.client, req)
+}
+
+// Do executes the "sql.projects.instances.resetReplicaSize" call.
+// Exactly one of *Operation or error will be non-nil. Any non-2xx
+// status code is an error. Response headers are in either
+// *Operation.ServerResponse.Header or (if a response was returned at
+// all) in error.(*googleapi.Error).Header. Use googleapi.IsNotModified
+// to check whether the returned error was because
+// http.StatusNotModified was returned.
+func (c *ProjectsInstancesResetReplicaSizeCall) Do(opts ...googleapi.CallOption) (*Operation, error) {
+	gensupport.SetOptions(c.urlParams_, opts...)
+	res, err := c.doRequest("json")
+	if res != nil && res.StatusCode == http.StatusNotModified {
+		if res.Body != nil {
+			res.Body.Close()
+		}
+		return nil, gensupport.WrapError(&googleapi.Error{
+			Code:   res.StatusCode,
+			Header: res.Header,
+		})
+	}
+	if err != nil {
+		return nil, err
+	}
+	defer googleapi.CloseBody(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
+	}
+	ret := &Operation{
+		ServerResponse: googleapi.ServerResponse{
+			Header:         res.Header,
+			HTTPStatusCode: res.StatusCode,
+		},
+	}
+	target := &ret
+	if err := gensupport.DecodeResponse(target, res); err != nil {
+		return nil, err
+	}
+	return ret, nil
+	// {
+	//   "description": "Reset Replica Size to primary instance disk size.",
+	//   "flatPath": "sql/v1beta4/projects/{project}/instances/{instance}/resetReplicaSize",
+	//   "httpMethod": "POST",
+	//   "id": "sql.projects.instances.resetReplicaSize",
+	//   "parameterOrder": [
+	//     "project",
+	//     "instance"
+	//   ],
+	//   "parameters": {
+	//     "instance": {
+	//       "description": "Cloud SQL read replica instance name.",
+	//       "location": "path",
+	//       "required": true,
+	//       "type": "string"
+	//     },
+	//     "project": {
+	//       "description": "ID of the project that contains the read replica.",
+	//       "location": "path",
+	//       "required": true,
+	//       "type": "string"
+	//     }
+	//   },
+	//   "path": "sql/v1beta4/projects/{project}/instances/{instance}/resetReplicaSize",
+	//   "request": {
+	//     "$ref": "SqlInstancesResetReplicaSizeRequest"
 	//   },
 	//   "response": {
 	//     "$ref": "Operation"

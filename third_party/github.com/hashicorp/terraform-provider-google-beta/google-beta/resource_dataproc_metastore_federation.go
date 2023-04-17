@@ -155,7 +155,7 @@ func resourceDataprocMetastoreFederationCreate(d *schema.ResourceData, meta inte
 		obj["backendMetastores"] = backendMetastoresProp
 	}
 
-	url, err := replaceVars(d, config, "{{DataprocMetastoreBasePath}}projects/{{project}}/locations/{{location}}/federations?federationId={{federation_id}}")
+	url, err := ReplaceVars(d, config, "{{DataprocMetastoreBasePath}}projects/{{project}}/locations/{{location}}/federations?federationId={{federation_id}}")
 	if err != nil {
 		return err
 	}
@@ -180,7 +180,7 @@ func resourceDataprocMetastoreFederationCreate(d *schema.ResourceData, meta inte
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "projects/{{project}}/locations/{{location}}/federations/{{federation_id}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/federations/{{federation_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -208,7 +208,7 @@ func resourceDataprocMetastoreFederationRead(d *schema.ResourceData, meta interf
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{DataprocMetastoreBasePath}}projects/{{project}}/locations/{{location}}/federations/{{federation_id}}")
+	url, err := ReplaceVars(d, config, "{{DataprocMetastoreBasePath}}projects/{{project}}/locations/{{location}}/federations/{{federation_id}}")
 	if err != nil {
 		return err
 	}
@@ -292,7 +292,7 @@ func resourceDataprocMetastoreFederationUpdate(d *schema.ResourceData, meta inte
 		obj["backendMetastores"] = backendMetastoresProp
 	}
 
-	url, err := replaceVars(d, config, "{{DataprocMetastoreBasePath}}projects/{{project}}/locations/{{location}}/federations/{{federation_id}}")
+	url, err := ReplaceVars(d, config, "{{DataprocMetastoreBasePath}}projects/{{project}}/locations/{{location}}/federations/{{federation_id}}")
 	if err != nil {
 		return err
 	}
@@ -307,9 +307,9 @@ func resourceDataprocMetastoreFederationUpdate(d *schema.ResourceData, meta inte
 	if d.HasChange("backend_metastores") {
 		updateMask = append(updateMask, "backendMetastores")
 	}
-	// updateMask is a URL parameter but not present in the schema, so replaceVars
+	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = addQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -353,7 +353,7 @@ func resourceDataprocMetastoreFederationDelete(d *schema.ResourceData, meta inte
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{DataprocMetastoreBasePath}}projects/{{project}}/locations/{{location}}/federations/{{federation_id}}")
+	url, err := ReplaceVars(d, config, "{{DataprocMetastoreBasePath}}projects/{{project}}/locations/{{location}}/federations/{{federation_id}}")
 	if err != nil {
 		return err
 	}
@@ -385,7 +385,7 @@ func resourceDataprocMetastoreFederationDelete(d *schema.ResourceData, meta inte
 
 func resourceDataprocMetastoreFederationImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/federations/(?P<federation_id>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<federation_id>[^/]+)",
 		"(?P<location>[^/]+)/(?P<federation_id>[^/]+)",
@@ -394,7 +394,7 @@ func resourceDataprocMetastoreFederationImport(d *schema.ResourceData, meta inte
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "projects/{{project}}/locations/{{location}}/federations/{{federation_id}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/federations/{{federation_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

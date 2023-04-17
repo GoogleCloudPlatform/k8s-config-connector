@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC.
+// Copyright 2023 Google LLC.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -77,6 +77,7 @@ var _ = errors.New
 var _ = strings.Replace
 var _ = context.Canceled
 var _ = internaloption.WithDefaultEndpoint
+var _ = internal.Version
 
 const apiId = "spanner:v1"
 const apiName = "spanner"
@@ -347,7 +348,7 @@ type Backup struct {
 	// Possible values:
 	//   "DATABASE_DIALECT_UNSPECIFIED" - Default value. This value will
 	// create a database with the GOOGLE_STANDARD_SQL dialect.
-	//   "GOOGLE_STANDARD_SQL" - Google standard SQL.
+	//   "GOOGLE_STANDARD_SQL" - GoogleSQL supported SQL.
 	//   "POSTGRESQL" - PostgreSQL supported SQL.
 	DatabaseDialect string `json:"databaseDialect,omitempty"`
 
@@ -613,7 +614,9 @@ type Binding struct {
 	// (https://cloud.google.com/kubernetes-engine/docs/how-to/kubernetes-service-accounts).
 	// For example, `my-project.svc.id.goog[my-namespace/my-kubernetes-sa]`.
 	// * `group:{emailid}`: An email address that represents a Google group.
-	// For example, `admins@example.com`. *
+	// For example, `admins@example.com`. * `domain:{domain}`: The G Suite
+	// domain (primary) that represents all the users of that domain. For
+	// example, `google.com` or `example.com`. *
 	// `deleted:user:{emailid}?uid={uniqueid}`: An email address (plus
 	// unique identifier) representing a user that has been recently
 	// deleted. For example, `alice@example.com?uid=123456789012345678901`.
@@ -630,9 +633,7 @@ type Binding struct {
 	// that has been recently deleted. For example,
 	// `admins@example.com?uid=123456789012345678901`. If the group is
 	// recovered, this value reverts to `group:{emailid}` and the recovered
-	// group retains the role in the binding. * `domain:{domain}`: The G
-	// Suite domain (primary) that represents all the users of that domain.
-	// For example, `google.com` or `example.com`.
+	// group retains the role in the binding.
 	Members []string `json:"members,omitempty"`
 
 	// Role: Role that is assigned to the list of `members`, or principals.
@@ -1128,7 +1129,7 @@ type CreateDatabaseRequest struct {
 	// Possible values:
 	//   "DATABASE_DIALECT_UNSPECIFIED" - Default value. This value will
 	// create a database with the GOOGLE_STANDARD_SQL dialect.
-	//   "GOOGLE_STANDARD_SQL" - Google standard SQL.
+	//   "GOOGLE_STANDARD_SQL" - GoogleSQL supported SQL.
 	//   "POSTGRESQL" - PostgreSQL supported SQL.
 	DatabaseDialect string `json:"databaseDialect,omitempty"`
 
@@ -1376,7 +1377,7 @@ type Database struct {
 	// Possible values:
 	//   "DATABASE_DIALECT_UNSPECIFIED" - Default value. This value will
 	// create a database with the GOOGLE_STANDARD_SQL dialect.
-	//   "GOOGLE_STANDARD_SQL" - Google standard SQL.
+	//   "GOOGLE_STANDARD_SQL" - GoogleSQL supported SQL.
 	//   "POSTGRESQL" - PostgreSQL supported SQL.
 	DatabaseDialect string `json:"databaseDialect,omitempty"`
 
@@ -1394,6 +1395,10 @@ type Database struct {
 	// time from the moment when the value is queried to the moment when you
 	// initiate the recovery.
 	EarliestVersionTime string `json:"earliestVersionTime,omitempty"`
+
+	// EnableDropProtection: Whether drop protection is enabled for this
+	// database. Defaults to false, if not set.
+	EnableDropProtection bool `json:"enableDropProtection,omitempty"`
 
 	// EncryptionConfig: Output only. For databases that are using customer
 	// managed encryption, this field contains the encryption configuration
@@ -1416,6 +1421,10 @@ type Database struct {
 	// `CREATE DATABASE` statement. This name can be passed to other API
 	// methods to identify the database.
 	Name string `json:"name,omitempty"`
+
+	// Reconciling: Output only. If true, the database is being updated. If
+	// false, there are no ongoing update operations for the database.
+	Reconciling bool `json:"reconciling,omitempty"`
 
 	// RestoreInfo: Output only. Applicable only for restored databases.
 	// Contains information about the restore source.
@@ -1824,6 +1833,13 @@ func (s *ExecuteBatchDmlResponse) MarshalJSON() ([]byte, error) {
 // ExecuteSqlRequest: The request for ExecuteSql and
 // ExecuteStreamingSql.
 type ExecuteSqlRequest struct {
+	// DataBoostEnabled: If this is for a partitioned query and this field
+	// is set to `true`, the request will be executed via Spanner
+	// independent compute resources. If the field is set to `true` but the
+	// request does not set `partition_token`, the API will return an
+	// `INVALID_ARGUMENT` error.
+	DataBoostEnabled bool `json:"dataBoostEnabled,omitempty"`
+
 	// ParamTypes: It is not always possible for Cloud Spanner to infer the
 	// right SQL type from a JSON value. For example, values of type `BYTES`
 	// and values of type `STRING` both appear in params as JSON strings. In
@@ -1901,7 +1917,7 @@ type ExecuteSqlRequest struct {
 	// Partitioned DML transaction ID.
 	Transaction *TransactionSelector `json:"transaction,omitempty"`
 
-	// ForceSendFields is a list of field names (e.g. "ParamTypes") to
+	// ForceSendFields is a list of field names (e.g. "DataBoostEnabled") to
 	// unconditionally include in API requests. By default, fields with
 	// empty or default values are omitted from API requests. However, any
 	// non-pointer, non-interface field appearing in ForceSendFields will be
@@ -1909,12 +1925,13 @@ type ExecuteSqlRequest struct {
 	// This may be used to include empty fields in Patch requests.
 	ForceSendFields []string `json:"-"`
 
-	// NullFields is a list of field names (e.g. "ParamTypes") to include in
-	// API requests with the JSON null value. By default, fields with empty
-	// values are omitted from API requests. However, any field with an
-	// empty value appearing in NullFields will be sent to the server as
-	// null. It is an error if a field in this list has a non-empty value.
-	// This may be used to include null fields in Patch requests.
+	// NullFields is a list of field names (e.g. "DataBoostEnabled") to
+	// include in API requests with the JSON null value. By default, fields
+	// with empty values are omitted from API requests. However, any field
+	// with an empty value appearing in NullFields will be sent to the
+	// server as null. It is an error if a field in this list has a
+	// non-empty value. This may be used to include null fields in Patch
+	// requests.
 	NullFields []string `json:"-"`
 }
 
@@ -2306,16 +2323,20 @@ type Instance struct {
 
 	// NodeCount: The number of nodes allocated to this instance. At most
 	// one of either node_count or processing_units should be present in the
-	// message. This may be zero in API responses for instances that are not
-	// yet in state `READY`. See the documentation
+	// message. Users can set the node_count field to specify the target
+	// number of nodes allocated to the instance. This may be zero in API
+	// responses for instances that are not yet in state `READY`. See the
+	// documentation
 	// (https://cloud.google.com/spanner/docs/compute-capacity) for more
 	// information about nodes and processing units.
 	NodeCount int64 `json:"nodeCount,omitempty"`
 
 	// ProcessingUnits: The number of processing units allocated to this
 	// instance. At most one of processing_units or node_count should be
-	// present in the message. This may be zero in API responses for
-	// instances that are not yet in state `READY`. See the documentation
+	// present in the message. Users can set the processing_units field to
+	// specify the target number of processing units allocated to the
+	// instance. This may be zero in API responses for instances that are
+	// not yet in state `READY`. See the documentation
 	// (https://cloud.google.com/spanner/docs/compute-capacity) for more
 	// information about nodes and processing units.
 	ProcessingUnits int64 `json:"processingUnits,omitempty"`
@@ -4282,6 +4303,13 @@ type ReadRequest struct {
 	// matching this request.
 	Columns []string `json:"columns,omitempty"`
 
+	// DataBoostEnabled: If this is for a partitioned read and this field is
+	// set to `true`, the request will be executed via Spanner independent
+	// compute resources. If the field is set to `true` but the request does
+	// not set `partition_token`, the API will return an `INVALID_ARGUMENT`
+	// error.
+	DataBoostEnabled bool `json:"dataBoostEnabled,omitempty"`
+
 	// Index: If non-empty, the name of an index on table. This index is
 	// used instead of the table primary key when interpreting key_set and
 	// sorting result rows. See key_set for further information.
@@ -5726,7 +5754,7 @@ type UpdateDatabaseDdlMetadata struct {
 	Statements []string `json:"statements,omitempty"`
 
 	// Throttled: Output only. When true, indicates that the operation is
-	// throttled e.g due to resource constraints. When resources become
+	// throttled e.g. due to resource constraints. When resources become
 	// available the operation will resume and this field will be false
 	// again.
 	Throttled bool `json:"throttled,omitempty"`
@@ -5817,6 +5845,76 @@ type UpdateDatabaseDdlRequest struct {
 
 func (s *UpdateDatabaseDdlRequest) MarshalJSON() ([]byte, error) {
 	type NoMethod UpdateDatabaseDdlRequest
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// UpdateDatabaseMetadata: Metadata type for the operation returned by
+// UpdateDatabase.
+type UpdateDatabaseMetadata struct {
+	// CancelTime: The time at which this operation was cancelled. If set,
+	// this operation is in the process of undoing itself (which is
+	// best-effort).
+	CancelTime string `json:"cancelTime,omitempty"`
+
+	// Progress: The progress of the UpdateDatabase operation.
+	Progress *OperationProgress `json:"progress,omitempty"`
+
+	// Request: The request for UpdateDatabase.
+	Request *UpdateDatabaseRequest `json:"request,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "CancelTime") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "CancelTime") to include in
+	// API requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *UpdateDatabaseMetadata) MarshalJSON() ([]byte, error) {
+	type NoMethod UpdateDatabaseMetadata
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// UpdateDatabaseRequest: The request for UpdateDatabase.
+type UpdateDatabaseRequest struct {
+	// Database: Required. The database to update. The `name` field of the
+	// database is of the form `projects//instances//databases/`.
+	Database *Database `json:"database,omitempty"`
+
+	// UpdateMask: Required. The list of fields to update. Currently, only
+	// `enable_drop_protection` field can be updated.
+	UpdateMask string `json:"updateMask,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "Database") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "Database") to include in
+	// API requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *UpdateDatabaseRequest) MarshalJSON() ([]byte, error) {
+	type NoMethod UpdateDatabaseRequest
 	raw := NoMethod(*s)
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
@@ -7610,14 +7708,7 @@ type ProjectsInstanceConfigsOperationsListCall struct {
 
 // List: Lists operations that match the specified filter in the
 // request. If the server doesn't support this method, it returns
-// `UNIMPLEMENTED`. NOTE: the `name` binding allows API services to
-// override the binding to use different resource name schemes, such as
-// `users/*/operations`. To override the binding, API services can add a
-// binding such as "/v1/{name=users/*}/operations" to their service
-// configuration. For backwards compatibility, the default name includes
-// the operations collection id, however overriding users must ensure
-// the name binding is the parent resource, without the operations
-// collection id.
+// `UNIMPLEMENTED`.
 //
 // - name: The name of the operation's parent resource.
 func (r *ProjectsInstanceConfigsOperationsService) List(name string) *ProjectsInstanceConfigsOperationsListCall {
@@ -7746,7 +7837,7 @@ func (c *ProjectsInstanceConfigsOperationsListCall) Do(opts ...googleapi.CallOpt
 	}
 	return ret, nil
 	// {
-	//   "description": "Lists operations that match the specified filter in the request. If the server doesn't support this method, it returns `UNIMPLEMENTED`. NOTE: the `name` binding allows API services to override the binding to use different resource name schemes, such as `users/*/operations`. To override the binding, API services can add a binding such as `\"/v1/{name=users/*}/operations\"` to their service configuration. For backwards compatibility, the default name includes the operations collection id, however overriding users must ensure the name binding is the parent resource, without the operations collection id.",
+	//   "description": "Lists operations that match the specified filter in the request. If the server doesn't support this method, it returns `UNIMPLEMENTED`.",
 	//   "flatPath": "v1/projects/{projectsId}/instanceConfigs/{instanceConfigsId}/operations",
 	//   "httpMethod": "GET",
 	//   "id": "spanner.projects.instanceConfigs.operations.list",
@@ -11335,14 +11426,7 @@ type ProjectsInstancesBackupsOperationsListCall struct {
 
 // List: Lists operations that match the specified filter in the
 // request. If the server doesn't support this method, it returns
-// `UNIMPLEMENTED`. NOTE: the `name` binding allows API services to
-// override the binding to use different resource name schemes, such as
-// `users/*/operations`. To override the binding, API services can add a
-// binding such as "/v1/{name=users/*}/operations" to their service
-// configuration. For backwards compatibility, the default name includes
-// the operations collection id, however overriding users must ensure
-// the name binding is the parent resource, without the operations
-// collection id.
+// `UNIMPLEMENTED`.
 //
 // - name: The name of the operation's parent resource.
 func (r *ProjectsInstancesBackupsOperationsService) List(name string) *ProjectsInstancesBackupsOperationsListCall {
@@ -11471,7 +11555,7 @@ func (c *ProjectsInstancesBackupsOperationsListCall) Do(opts ...googleapi.CallOp
 	}
 	return ret, nil
 	// {
-	//   "description": "Lists operations that match the specified filter in the request. If the server doesn't support this method, it returns `UNIMPLEMENTED`. NOTE: the `name` binding allows API services to override the binding to use different resource name schemes, such as `users/*/operations`. To override the binding, API services can add a binding such as `\"/v1/{name=users/*}/operations\"` to their service configuration. For backwards compatibility, the default name includes the operations collection id, however overriding users must ensure the name binding is the parent resource, without the operations collection id.",
+	//   "description": "Lists operations that match the specified filter in the request. If the server doesn't support this method, it returns `UNIMPLEMENTED`.",
 	//   "flatPath": "v1/projects/{projectsId}/instances/{instancesId}/backups/{backupsId}/operations",
 	//   "httpMethod": "GET",
 	//   "id": "spanner.projects.instances.backups.operations.list",
@@ -12924,6 +13008,183 @@ func (c *ProjectsInstancesDatabasesListCall) Pages(ctx context.Context, f func(*
 	}
 }
 
+// method id "spanner.projects.instances.databases.patch":
+
+type ProjectsInstancesDatabasesPatchCall struct {
+	s          *Service
+	name       string
+	database   *Database
+	urlParams_ gensupport.URLParams
+	ctx_       context.Context
+	header_    http.Header
+}
+
+// Patch: Updates a Cloud Spanner database. The returned long-running
+// operation can be used to track the progress of updating the database.
+// If the named database does not exist, returns `NOT_FOUND`. While the
+// operation is pending: * The database's reconciling field is set to
+// true. * Cancelling the operation is best-effort. If the cancellation
+// succeeds, the operation metadata's cancel_time is set, the updates
+// are reverted, and the operation terminates with a `CANCELLED` status.
+// * New UpdateDatabase requests will return a `FAILED_PRECONDITION`
+// error until the pending operation is done (returns successfully or
+// with error). * Reading the database via the API continues to give the
+// pre-request values. Upon completion of the returned operation: * The
+// new values are in effect and readable via the API. * The database's
+// reconciling field becomes false. The returned long-running operation
+// will have a name of the format
+// `projects//instances//databases//operations/` and can be used to
+// track the database modification. The metadata field type is
+// UpdateDatabaseMetadata. The response field type is Database, if
+// successful.
+//
+//   - name: The name of the database. Values are of the form
+//     `projects//instances//databases/`, where “ is as specified in the
+//     `CREATE DATABASE` statement. This name can be passed to other API
+//     methods to identify the database.
+func (r *ProjectsInstancesDatabasesService) Patch(name string, database *Database) *ProjectsInstancesDatabasesPatchCall {
+	c := &ProjectsInstancesDatabasesPatchCall{s: r.s, urlParams_: make(gensupport.URLParams)}
+	c.name = name
+	c.database = database
+	return c
+}
+
+// UpdateMask sets the optional parameter "updateMask": Required. The
+// list of fields to update. Currently, only `enable_drop_protection`
+// field can be updated.
+func (c *ProjectsInstancesDatabasesPatchCall) UpdateMask(updateMask string) *ProjectsInstancesDatabasesPatchCall {
+	c.urlParams_.Set("updateMask", updateMask)
+	return c
+}
+
+// Fields allows partial responses to be retrieved. See
+// https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
+// for more information.
+func (c *ProjectsInstancesDatabasesPatchCall) Fields(s ...googleapi.Field) *ProjectsInstancesDatabasesPatchCall {
+	c.urlParams_.Set("fields", googleapi.CombineFields(s))
+	return c
+}
+
+// Context sets the context to be used in this call's Do method. Any
+// pending HTTP request will be aborted if the provided context is
+// canceled.
+func (c *ProjectsInstancesDatabasesPatchCall) Context(ctx context.Context) *ProjectsInstancesDatabasesPatchCall {
+	c.ctx_ = ctx
+	return c
+}
+
+// Header returns an http.Header that can be modified by the caller to
+// add HTTP headers to the request.
+func (c *ProjectsInstancesDatabasesPatchCall) Header() http.Header {
+	if c.header_ == nil {
+		c.header_ = make(http.Header)
+	}
+	return c.header_
+}
+
+func (c *ProjectsInstancesDatabasesPatchCall) doRequest(alt string) (*http.Response, error) {
+	reqHeaders := make(http.Header)
+	reqHeaders.Set("x-goog-api-client", "gl-go/"+gensupport.GoVersion()+" gdcl/"+internal.Version)
+	for k, v := range c.header_ {
+		reqHeaders[k] = v
+	}
+	reqHeaders.Set("User-Agent", c.s.userAgent())
+	var body io.Reader = nil
+	body, err := googleapi.WithoutDataWrapper.JSONReader(c.database)
+	if err != nil {
+		return nil, err
+	}
+	reqHeaders.Set("Content-Type", "application/json")
+	c.urlParams_.Set("alt", alt)
+	c.urlParams_.Set("prettyPrint", "false")
+	urls := googleapi.ResolveRelative(c.s.BasePath, "v1/{+name}")
+	urls += "?" + c.urlParams_.Encode()
+	req, err := http.NewRequest("PATCH", urls, body)
+	if err != nil {
+		return nil, err
+	}
+	req.Header = reqHeaders
+	googleapi.Expand(req.URL, map[string]string{
+		"name": c.name,
+	})
+	return gensupport.SendRequest(c.ctx_, c.s.client, req)
+}
+
+// Do executes the "spanner.projects.instances.databases.patch" call.
+// Exactly one of *Operation or error will be non-nil. Any non-2xx
+// status code is an error. Response headers are in either
+// *Operation.ServerResponse.Header or (if a response was returned at
+// all) in error.(*googleapi.Error).Header. Use googleapi.IsNotModified
+// to check whether the returned error was because
+// http.StatusNotModified was returned.
+func (c *ProjectsInstancesDatabasesPatchCall) Do(opts ...googleapi.CallOption) (*Operation, error) {
+	gensupport.SetOptions(c.urlParams_, opts...)
+	res, err := c.doRequest("json")
+	if res != nil && res.StatusCode == http.StatusNotModified {
+		if res.Body != nil {
+			res.Body.Close()
+		}
+		return nil, gensupport.WrapError(&googleapi.Error{
+			Code:   res.StatusCode,
+			Header: res.Header,
+		})
+	}
+	if err != nil {
+		return nil, err
+	}
+	defer googleapi.CloseBody(res)
+	if err := googleapi.CheckResponse(res); err != nil {
+		return nil, gensupport.WrapError(err)
+	}
+	ret := &Operation{
+		ServerResponse: googleapi.ServerResponse{
+			Header:         res.Header,
+			HTTPStatusCode: res.StatusCode,
+		},
+	}
+	target := &ret
+	if err := gensupport.DecodeResponse(target, res); err != nil {
+		return nil, err
+	}
+	return ret, nil
+	// {
+	//   "description": "Updates a Cloud Spanner database. The returned long-running operation can be used to track the progress of updating the database. If the named database does not exist, returns `NOT_FOUND`. While the operation is pending: * The database's reconciling field is set to true. * Cancelling the operation is best-effort. If the cancellation succeeds, the operation metadata's cancel_time is set, the updates are reverted, and the operation terminates with a `CANCELLED` status. * New UpdateDatabase requests will return a `FAILED_PRECONDITION` error until the pending operation is done (returns successfully or with error). * Reading the database via the API continues to give the pre-request values. Upon completion of the returned operation: * The new values are in effect and readable via the API. * The database's reconciling field becomes false. The returned long-running operation will have a name of the format `projects//instances//databases//operations/` and can be used to track the database modification. The metadata field type is UpdateDatabaseMetadata. The response field type is Database, if successful.",
+	//   "flatPath": "v1/projects/{projectsId}/instances/{instancesId}/databases/{databasesId}",
+	//   "httpMethod": "PATCH",
+	//   "id": "spanner.projects.instances.databases.patch",
+	//   "parameterOrder": [
+	//     "name"
+	//   ],
+	//   "parameters": {
+	//     "name": {
+	//       "description": "Required. The name of the database. Values are of the form `projects//instances//databases/`, where `` is as specified in the `CREATE DATABASE` statement. This name can be passed to other API methods to identify the database.",
+	//       "location": "path",
+	//       "pattern": "^projects/[^/]+/instances/[^/]+/databases/[^/]+$",
+	//       "required": true,
+	//       "type": "string"
+	//     },
+	//     "updateMask": {
+	//       "description": "Required. The list of fields to update. Currently, only `enable_drop_protection` field can be updated.",
+	//       "format": "google-fieldmask",
+	//       "location": "query",
+	//       "type": "string"
+	//     }
+	//   },
+	//   "path": "v1/{+name}",
+	//   "request": {
+	//     "$ref": "Database"
+	//   },
+	//   "response": {
+	//     "$ref": "Operation"
+	//   },
+	//   "scopes": [
+	//     "https://www.googleapis.com/auth/cloud-platform",
+	//     "https://www.googleapis.com/auth/spanner.admin"
+	//   ]
+	// }
+
+}
+
 // method id "spanner.projects.instances.databases.restore":
 
 type ProjectsInstancesDatabasesRestoreCall struct {
@@ -14322,14 +14583,7 @@ type ProjectsInstancesDatabasesOperationsListCall struct {
 
 // List: Lists operations that match the specified filter in the
 // request. If the server doesn't support this method, it returns
-// `UNIMPLEMENTED`. NOTE: the `name` binding allows API services to
-// override the binding to use different resource name schemes, such as
-// `users/*/operations`. To override the binding, API services can add a
-// binding such as "/v1/{name=users/*}/operations" to their service
-// configuration. For backwards compatibility, the default name includes
-// the operations collection id, however overriding users must ensure
-// the name binding is the parent resource, without the operations
-// collection id.
+// `UNIMPLEMENTED`.
 //
 // - name: The name of the operation's parent resource.
 func (r *ProjectsInstancesDatabasesOperationsService) List(name string) *ProjectsInstancesDatabasesOperationsListCall {
@@ -14458,7 +14712,7 @@ func (c *ProjectsInstancesDatabasesOperationsListCall) Do(opts ...googleapi.Call
 	}
 	return ret, nil
 	// {
-	//   "description": "Lists operations that match the specified filter in the request. If the server doesn't support this method, it returns `UNIMPLEMENTED`. NOTE: the `name` binding allows API services to override the binding to use different resource name schemes, such as `users/*/operations`. To override the binding, API services can add a binding such as `\"/v1/{name=users/*}/operations\"` to their service configuration. For backwards compatibility, the default name includes the operations collection id, however overriding users must ensure the name binding is the parent resource, without the operations collection id.",
+	//   "description": "Lists operations that match the specified filter in the request. If the server doesn't support this method, it returns `UNIMPLEMENTED`.",
 	//   "flatPath": "v1/projects/{projectsId}/instances/{instancesId}/databases/{databasesId}/operations",
 	//   "httpMethod": "GET",
 	//   "id": "spanner.projects.instances.databases.operations.list",
@@ -17261,14 +17515,7 @@ type ProjectsInstancesOperationsListCall struct {
 
 // List: Lists operations that match the specified filter in the
 // request. If the server doesn't support this method, it returns
-// `UNIMPLEMENTED`. NOTE: the `name` binding allows API services to
-// override the binding to use different resource name schemes, such as
-// `users/*/operations`. To override the binding, API services can add a
-// binding such as "/v1/{name=users/*}/operations" to their service
-// configuration. For backwards compatibility, the default name includes
-// the operations collection id, however overriding users must ensure
-// the name binding is the parent resource, without the operations
-// collection id.
+// `UNIMPLEMENTED`.
 //
 // - name: The name of the operation's parent resource.
 func (r *ProjectsInstancesOperationsService) List(name string) *ProjectsInstancesOperationsListCall {
@@ -17397,7 +17644,7 @@ func (c *ProjectsInstancesOperationsListCall) Do(opts ...googleapi.CallOption) (
 	}
 	return ret, nil
 	// {
-	//   "description": "Lists operations that match the specified filter in the request. If the server doesn't support this method, it returns `UNIMPLEMENTED`. NOTE: the `name` binding allows API services to override the binding to use different resource name schemes, such as `users/*/operations`. To override the binding, API services can add a binding such as `\"/v1/{name=users/*}/operations\"` to their service configuration. For backwards compatibility, the default name includes the operations collection id, however overriding users must ensure the name binding is the parent resource, without the operations collection id.",
+	//   "description": "Lists operations that match the specified filter in the request. If the server doesn't support this method, it returns `UNIMPLEMENTED`.",
 	//   "flatPath": "v1/projects/{projectsId}/instances/{instancesId}/operations",
 	//   "httpMethod": "GET",
 	//   "id": "spanner.projects.instances.operations.list",

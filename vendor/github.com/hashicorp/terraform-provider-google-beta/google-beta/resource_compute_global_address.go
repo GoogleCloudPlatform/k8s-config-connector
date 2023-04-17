@@ -67,7 +67,7 @@ address or omitted to allow GCP to choose a valid one for you.`,
 				Optional:         true,
 				ForceNew:         true,
 				ValidateFunc:     validateEnum([]string{"EXTERNAL", "INTERNAL", ""}),
-				DiffSuppressFunc: emptyOrDefaultStringSuppress("EXTERNAL"),
+				DiffSuppressFunc: EmptyOrDefaultStringSuppress("EXTERNAL"),
 				Description: `The type of the address to reserve.
 
 * EXTERNAL indicates public/external single IP address.
@@ -85,7 +85,7 @@ address or omitted to allow GCP to choose a valid one for you.`,
 				Optional:         true,
 				ForceNew:         true,
 				ValidateFunc:     validateEnum([]string{"IPV4", "IPV6", ""}),
-				DiffSuppressFunc: emptyOrDefaultStringSuppress("IPV4"),
+				DiffSuppressFunc: EmptyOrDefaultStringSuppress("IPV4"),
 				Description:      `The IP Version that will be used by this address. The default value is 'IPV4'. Possible values: ["IPV4", "IPV6"]. This field can only be specified for a global address.`,
 			},
 			"labels": {
@@ -220,7 +220,7 @@ func resourceComputeGlobalAddressCreate(d *schema.ResourceData, meta interface{}
 		obj["network"] = networkProp
 	}
 
-	url, err := replaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses")
+	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses")
 	if err != nil {
 		return err
 	}
@@ -245,7 +245,7 @@ func resourceComputeGlobalAddressCreate(d *schema.ResourceData, meta interface{}
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "projects/{{project}}/global/addresses/{{name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/global/addresses/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -278,7 +278,7 @@ func resourceComputeGlobalAddressCreate(d *schema.ResourceData, meta interface{}
 		labelFingerprintProp := d.Get("label_fingerprint")
 		obj["labelFingerprint"] = labelFingerprintProp
 
-		url, err = replaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses/{{name}}/setLabels")
+		url, err = ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses/{{name}}/setLabels")
 		if err != nil {
 			return err
 		}
@@ -309,7 +309,7 @@ func resourceComputeGlobalAddressRead(d *schema.ResourceData, meta interface{}) 
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses/{{name}}")
+	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -409,7 +409,7 @@ func resourceComputeGlobalAddressUpdate(d *schema.ResourceData, meta interface{}
 			obj["labelFingerprint"] = labelFingerprintProp
 		}
 
-		url, err := replaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses/{{name}}/setLabels")
+		url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses/{{name}}/setLabels")
 		if err != nil {
 			return err
 		}
@@ -454,7 +454,7 @@ func resourceComputeGlobalAddressDelete(d *schema.ResourceData, meta interface{}
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses/{{name}}")
+	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/addresses/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -486,7 +486,7 @@ func resourceComputeGlobalAddressDelete(d *schema.ResourceData, meta interface{}
 
 func resourceComputeGlobalAddressImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/global/addresses/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<name>[^/]+)",
 		"(?P<name>[^/]+)",
@@ -495,7 +495,7 @@ func resourceComputeGlobalAddressImport(d *schema.ResourceData, meta interface{}
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "projects/{{project}}/global/addresses/{{name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/global/addresses/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

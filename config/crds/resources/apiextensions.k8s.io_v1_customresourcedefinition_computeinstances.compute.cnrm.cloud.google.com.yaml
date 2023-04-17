@@ -823,6 +823,10 @@ spec:
                       description: The disk interface used for attaching this disk.
                         One of SCSI or NVME.
                       type: string
+                    size:
+                      description: Immutable. The size of the disk in gigabytes. One
+                        of 375 or 3000.
+                      type: integer
                   required:
                   - interface
                   type: object

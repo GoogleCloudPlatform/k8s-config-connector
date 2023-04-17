@@ -257,7 +257,7 @@ func resourceComputeOrganizationSecurityPolicyRuleCreate(d *schema.ResourceData,
 		obj["targetServiceAccounts"] = targetServiceAccountsProp
 	}
 
-	url, err := replaceVars(d, config, "{{ComputeBasePath}}{{policy_id}}/addRule?priority={{priority}}")
+	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}{{policy_id}}/addRule?priority={{priority}}")
 	if err != nil {
 		return err
 	}
@@ -276,7 +276,7 @@ func resourceComputeOrganizationSecurityPolicyRuleCreate(d *schema.ResourceData,
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "{{policy_id}}/priority/{{priority}}")
+	id, err := ReplaceVars(d, config, "{{policy_id}}/priority/{{priority}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -285,7 +285,7 @@ func resourceComputeOrganizationSecurityPolicyRuleCreate(d *schema.ResourceData,
 	// `parent` is needed to poll the asynchronous operations but its available only on the policy.
 
 	policyUrl := fmt.Sprintf("{{ComputeBasePath}}%s", d.Get("policy_id"))
-	url, err = replaceVars(d, config, policyUrl)
+	url, err = ReplaceVars(d, config, policyUrl)
 	if err != nil {
 		return err
 	}
@@ -319,7 +319,7 @@ func resourceComputeOrganizationSecurityPolicyRuleRead(d *schema.ResourceData, m
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{ComputeBasePath}}{{policy_id}}/getRule?priority={{priority}}")
+	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}{{policy_id}}/getRule?priority={{priority}}")
 	if err != nil {
 		return err
 	}
@@ -432,7 +432,7 @@ func resourceComputeOrganizationSecurityPolicyRuleUpdate(d *schema.ResourceData,
 		obj["targetServiceAccounts"] = targetServiceAccountsProp
 	}
 
-	url, err := replaceVars(d, config, "{{ComputeBasePath}}{{policy_id}}/patchRule?priority={{priority}}")
+	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}{{policy_id}}/patchRule?priority={{priority}}")
 	if err != nil {
 		return err
 	}
@@ -455,7 +455,7 @@ func resourceComputeOrganizationSecurityPolicyRuleUpdate(d *schema.ResourceData,
 	// `parent` is needed to poll the asynchronous operations but its available only on the policy.
 
 	policyUrl := fmt.Sprintf("{{ComputeBasePath}}%s", d.Get("policy_id"))
-	url, err = replaceVars(d, config, policyUrl)
+	url, err = ReplaceVars(d, config, policyUrl)
 	if err != nil {
 		return err
 	}
@@ -488,7 +488,7 @@ func resourceComputeOrganizationSecurityPolicyRuleDelete(d *schema.ResourceData,
 
 	billingProject := ""
 
-	url, err := replaceVars(d, config, "{{ComputeBasePath}}{{policy_id}}/removeRule?priority={{priority}}")
+	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}{{policy_id}}/removeRule?priority={{priority}}")
 	if err != nil {
 		return err
 	}
@@ -509,7 +509,7 @@ func resourceComputeOrganizationSecurityPolicyRuleDelete(d *schema.ResourceData,
 	// `parent` is needed to poll the asynchronous operations but its available only on the policy.
 
 	policyUrl := fmt.Sprintf("{{ComputeBasePath}}%s", d.Get("policy_id"))
-	url, err = replaceVars(d, config, policyUrl)
+	url, err = ReplaceVars(d, config, policyUrl)
 	if err != nil {
 		return err
 	}
@@ -537,14 +537,14 @@ func resourceComputeOrganizationSecurityPolicyRuleDelete(d *schema.ResourceData,
 
 func resourceComputeOrganizationSecurityPolicyRuleImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"(?P<policy_id>.+)/priority/(?P<priority>[^/]+)",
 	}, d, config); err != nil {
 		return nil, err
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "{{policy_id}}/priority/{{priority}}")
+	id, err := ReplaceVars(d, config, "{{policy_id}}/priority/{{priority}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

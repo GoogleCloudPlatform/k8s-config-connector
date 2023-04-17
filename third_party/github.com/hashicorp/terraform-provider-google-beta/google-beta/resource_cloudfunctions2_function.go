@@ -533,7 +533,7 @@ func resourceCloudfunctions2functionCreate(d *schema.ResourceData, meta interfac
 		obj["labels"] = labelsProp
 	}
 
-	url, err := replaceVars(d, config, "{{Cloudfunctions2BasePath}}projects/{{project}}/locations/{{location}}/functions?functionId={{name}}")
+	url, err := ReplaceVars(d, config, "{{Cloudfunctions2BasePath}}projects/{{project}}/locations/{{location}}/functions?functionId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -558,7 +558,7 @@ func resourceCloudfunctions2functionCreate(d *schema.ResourceData, meta interfac
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "projects/{{project}}/locations/{{location}}/functions/{{name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/functions/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -582,7 +582,7 @@ func resourceCloudfunctions2functionCreate(d *schema.ResourceData, meta interfac
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = replaceVars(d, config, "projects/{{project}}/locations/{{location}}/functions/{{name}}")
+	id, err = ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/functions/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -600,7 +600,7 @@ func resourceCloudfunctions2functionRead(d *schema.ResourceData, meta interface{
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{Cloudfunctions2BasePath}}projects/{{project}}/locations/{{location}}/functions/{{name}}")
+	url, err := ReplaceVars(d, config, "{{Cloudfunctions2BasePath}}projects/{{project}}/locations/{{location}}/functions/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -705,7 +705,7 @@ func resourceCloudfunctions2functionUpdate(d *schema.ResourceData, meta interfac
 		obj["labels"] = labelsProp
 	}
 
-	url, err := replaceVars(d, config, "{{Cloudfunctions2BasePath}}projects/{{project}}/locations/{{location}}/functions/{{name}}")
+	url, err := ReplaceVars(d, config, "{{Cloudfunctions2BasePath}}projects/{{project}}/locations/{{location}}/functions/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -732,9 +732,9 @@ func resourceCloudfunctions2functionUpdate(d *schema.ResourceData, meta interfac
 	if d.HasChange("labels") {
 		updateMask = append(updateMask, "labels")
 	}
-	// updateMask is a URL parameter but not present in the schema, so replaceVars
+	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = addQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -778,7 +778,7 @@ func resourceCloudfunctions2functionDelete(d *schema.ResourceData, meta interfac
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{Cloudfunctions2BasePath}}projects/{{project}}/locations/{{location}}/functions/{{name}}")
+	url, err := ReplaceVars(d, config, "{{Cloudfunctions2BasePath}}projects/{{project}}/locations/{{location}}/functions/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -810,7 +810,7 @@ func resourceCloudfunctions2functionDelete(d *schema.ResourceData, meta interfac
 
 func resourceCloudfunctions2functionImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/functions/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)",
 		"(?P<location>[^/]+)/(?P<name>[^/]+)",
@@ -819,7 +819,7 @@ func resourceCloudfunctions2functionImport(d *schema.ResourceData, meta interfac
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "projects/{{project}}/locations/{{location}}/functions/{{name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/functions/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -1059,9 +1059,9 @@ func flattenCloudfunctions2functionServiceConfig(v interface{}, d *schema.Resour
 	transformed["min_instance_count"] =
 		flattenCloudfunctions2functionServiceConfigMinInstanceCount(original["minInstanceCount"], d, config)
 	transformed["vpc_connector"] =
-		flattenCloudfunctions2functionServiceConfigVPCConnector(original["vpcConnector"], d, config)
+		flattenCloudfunctions2functionServiceConfigVpcConnector(original["vpcConnector"], d, config)
 	transformed["vpc_connector_egress_settings"] =
-		flattenCloudfunctions2functionServiceConfigVPCConnectorEgressSettings(original["vpcConnectorEgressSettings"], d, config)
+		flattenCloudfunctions2functionServiceConfigVpcConnectorEgressSettings(original["vpcConnectorEgressSettings"], d, config)
 	transformed["ingress_settings"] =
 		flattenCloudfunctions2functionServiceConfigIngressSettings(original["ingressSettings"], d, config)
 	transformed["uri"] =
@@ -1162,11 +1162,11 @@ func flattenCloudfunctions2functionServiceConfigMinInstanceCount(v interface{}, 
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudfunctions2functionServiceConfigVPCConnector(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudfunctions2functionServiceConfigVpcConnector(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	return v
 }
 
-func flattenCloudfunctions2functionServiceConfigVPCConnectorEgressSettings(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudfunctions2functionServiceConfigVpcConnectorEgressSettings(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	return v
 }
 
@@ -1377,7 +1377,7 @@ func flattenCloudfunctions2functionLabels(v interface{}, d *schema.ResourceData,
 }
 
 func expandCloudfunctions2functionName(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	return replaceVars(d, config, "projects/{{project}}/locations/{{location}}/functions/{{name}}")
+	return ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/functions/{{name}}")
 }
 
 func expandCloudfunctions2functionDescription(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
@@ -1701,18 +1701,18 @@ func expandCloudfunctions2functionServiceConfig(v interface{}, d TerraformResour
 		transformed["minInstanceCount"] = transformedMinInstanceCount
 	}
 
-	transformedVPCConnector, err := expandCloudfunctions2functionServiceConfigVPCConnector(original["vpc_connector"], d, config)
+	transformedVpcConnector, err := expandCloudfunctions2functionServiceConfigVpcConnector(original["vpc_connector"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedVPCConnector); val.IsValid() && !isEmptyValue(val) {
-		transformed["vpcConnector"] = transformedVPCConnector
+	} else if val := reflect.ValueOf(transformedVpcConnector); val.IsValid() && !isEmptyValue(val) {
+		transformed["vpcConnector"] = transformedVpcConnector
 	}
 
-	transformedVPCConnectorEgressSettings, err := expandCloudfunctions2functionServiceConfigVPCConnectorEgressSettings(original["vpc_connector_egress_settings"], d, config)
+	transformedVpcConnectorEgressSettings, err := expandCloudfunctions2functionServiceConfigVpcConnectorEgressSettings(original["vpc_connector_egress_settings"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedVPCConnectorEgressSettings); val.IsValid() && !isEmptyValue(val) {
-		transformed["vpcConnectorEgressSettings"] = transformedVPCConnectorEgressSettings
+	} else if val := reflect.ValueOf(transformedVpcConnectorEgressSettings); val.IsValid() && !isEmptyValue(val) {
+		transformed["vpcConnectorEgressSettings"] = transformedVpcConnectorEgressSettings
 	}
 
 	transformedIngressSettings, err := expandCloudfunctions2functionServiceConfigIngressSettings(original["ingress_settings"], d, config)
@@ -1806,11 +1806,11 @@ func expandCloudfunctions2functionServiceConfigMinInstanceCount(v interface{}, d
 	return v, nil
 }
 
-func expandCloudfunctions2functionServiceConfigVPCConnector(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudfunctions2functionServiceConfigVpcConnector(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudfunctions2functionServiceConfigVPCConnectorEgressSettings(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudfunctions2functionServiceConfigVpcConnectorEgressSettings(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
 

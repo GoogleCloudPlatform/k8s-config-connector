@@ -1,8 +1,8 @@
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/config.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/config.go
-index 0c316de30..06c46ba0e 100644
+index 67b3cb7fa..67fe21955 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/config.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/config.go
-@@ -518,6 +518,14 @@ var DefaultClientScopes = []string{
+@@ -527,6 +527,14 @@ var DefaultClientScopes = []string{
  	"https://www.googleapis.com/auth/userinfo.email",
  }
  
@@ -14,10 +14,10 @@ index 0c316de30..06c46ba0e 100644
 +// This is very handy in tests, for example.
 +var OAuth2HTTPClientTransformer func(ctx context.Context, inner *http.Client) *http.Client = nil
 +
- func (c *Config) LoadAndValidate(ctx context.Context) error {
- 	if len(c.Scopes) == 0 {
- 		c.Scopes = DefaultClientScopes
-@@ -532,13 +540,20 @@ func (c *Config) LoadAndValidate(ctx context.Context) error {
+ func HandleSDKDefaults(d *schema.ResourceData) error {
+ 	if d.Get("impersonate_service_account") == "" {
+ 		d.Set("impersonate_service_account", MultiEnvDefault([]string{
+@@ -1171,13 +1179,20 @@ func (c *Config) LoadAndValidate(ctx context.Context) error {
  
  	c.tokenSource = tokenSource
  

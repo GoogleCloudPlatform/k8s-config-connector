@@ -957,7 +957,7 @@ func resourceCloudRunV2ServiceCreate(d *schema.ResourceData, meta interface{}) e
 		obj["traffic"] = trafficProp
 	}
 
-	url, err := replaceVars(d, config, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services?serviceId={{name}}")
+	url, err := ReplaceVars(d, config, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services?serviceId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -982,7 +982,7 @@ func resourceCloudRunV2ServiceCreate(d *schema.ResourceData, meta interface{}) e
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "projects/{{project}}/locations/{{location}}/services/{{name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/services/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -1002,7 +1002,7 @@ func resourceCloudRunV2ServiceCreate(d *schema.ResourceData, meta interface{}) e
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = replaceVars(d, config, "projects/{{project}}/locations/{{location}}/services/{{name}}")
+	id, err = ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/services/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -1020,7 +1020,7 @@ func resourceCloudRunV2ServiceRead(d *schema.ResourceData, meta interface{}) err
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services/{{name}}")
+	url, err := ReplaceVars(d, config, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -1191,7 +1191,7 @@ func resourceCloudRunV2ServiceUpdate(d *schema.ResourceData, meta interface{}) e
 		obj["traffic"] = trafficProp
 	}
 
-	url, err := replaceVars(d, config, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services/{{name}}")
+	url, err := ReplaceVars(d, config, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -1237,7 +1237,7 @@ func resourceCloudRunV2ServiceDelete(d *schema.ResourceData, meta interface{}) e
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services/{{name}}")
+	url, err := ReplaceVars(d, config, "{{CloudRunV2BasePath}}projects/{{project}}/locations/{{location}}/services/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -1269,7 +1269,7 @@ func resourceCloudRunV2ServiceDelete(d *schema.ResourceData, meta interface{}) e
 
 func resourceCloudRunV2ServiceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/services/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)",
 		"(?P<location>[^/]+)/(?P<name>[^/]+)",
@@ -1278,7 +1278,7 @@ func resourceCloudRunV2ServiceImport(d *schema.ResourceData, meta interface{}) (
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "projects/{{project}}/locations/{{location}}/services/{{name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/services/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -1364,7 +1364,7 @@ func flattenCloudRunV2ServiceTemplate(v interface{}, d *schema.ResourceData, con
 	transformed["scaling"] =
 		flattenCloudRunV2ServiceTemplateScaling(original["scaling"], d, config)
 	transformed["vpc_access"] =
-		flattenCloudRunV2ServiceTemplateVPCAccess(original["vpcAccess"], d, config)
+		flattenCloudRunV2ServiceTemplateVpcAccess(original["vpcAccess"], d, config)
 	transformed["timeout"] =
 		flattenCloudRunV2ServiceTemplateTimeout(original["timeout"], d, config)
 	transformed["service_account"] =
@@ -1442,7 +1442,7 @@ func flattenCloudRunV2ServiceTemplateScalingMaxInstanceCount(v interface{}, d *s
 	return v // let terraform core handle it otherwise
 }
 
-func flattenCloudRunV2ServiceTemplateVPCAccess(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateVpcAccess(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	if v == nil {
 		return nil
 	}
@@ -1452,16 +1452,16 @@ func flattenCloudRunV2ServiceTemplateVPCAccess(v interface{}, d *schema.Resource
 	}
 	transformed := make(map[string]interface{})
 	transformed["connector"] =
-		flattenCloudRunV2ServiceTemplateVPCAccessConnector(original["connector"], d, config)
+		flattenCloudRunV2ServiceTemplateVpcAccessConnector(original["connector"], d, config)
 	transformed["egress"] =
-		flattenCloudRunV2ServiceTemplateVPCAccessEgress(original["egress"], d, config)
+		flattenCloudRunV2ServiceTemplateVpcAccessEgress(original["egress"], d, config)
 	return []interface{}{transformed}
 }
-func flattenCloudRunV2ServiceTemplateVPCAccessConnector(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateVpcAccessConnector(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	return v
 }
 
-func flattenCloudRunV2ServiceTemplateVPCAccessEgress(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+func flattenCloudRunV2ServiceTemplateVpcAccessEgress(v interface{}, d *schema.ResourceData, config *Config) interface{} {
 	return v
 }
 
@@ -2574,11 +2574,11 @@ func expandCloudRunV2ServiceTemplate(v interface{}, d TerraformResourceData, con
 		transformed["scaling"] = transformedScaling
 	}
 
-	transformedVPCAccess, err := expandCloudRunV2ServiceTemplateVPCAccess(original["vpc_access"], d, config)
+	transformedVpcAccess, err := expandCloudRunV2ServiceTemplateVpcAccess(original["vpc_access"], d, config)
 	if err != nil {
 		return nil, err
-	} else if val := reflect.ValueOf(transformedVPCAccess); val.IsValid() && !isEmptyValue(val) {
-		transformed["vpcAccess"] = transformedVPCAccess
+	} else if val := reflect.ValueOf(transformedVpcAccess); val.IsValid() && !isEmptyValue(val) {
+		transformed["vpcAccess"] = transformedVpcAccess
 	}
 
 	transformedTimeout, err := expandCloudRunV2ServiceTemplateTimeout(original["timeout"], d, config)
@@ -2693,7 +2693,7 @@ func expandCloudRunV2ServiceTemplateScalingMaxInstanceCount(v interface{}, d Ter
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateVPCAccess(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateVpcAccess(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	l := v.([]interface{})
 	if len(l) == 0 || l[0] == nil {
 		return nil, nil
@@ -2702,14 +2702,14 @@ func expandCloudRunV2ServiceTemplateVPCAccess(v interface{}, d TerraformResource
 	original := raw.(map[string]interface{})
 	transformed := make(map[string]interface{})
 
-	transformedConnector, err := expandCloudRunV2ServiceTemplateVPCAccessConnector(original["connector"], d, config)
+	transformedConnector, err := expandCloudRunV2ServiceTemplateVpcAccessConnector(original["connector"], d, config)
 	if err != nil {
 		return nil, err
 	} else if val := reflect.ValueOf(transformedConnector); val.IsValid() && !isEmptyValue(val) {
 		transformed["connector"] = transformedConnector
 	}
 
-	transformedEgress, err := expandCloudRunV2ServiceTemplateVPCAccessEgress(original["egress"], d, config)
+	transformedEgress, err := expandCloudRunV2ServiceTemplateVpcAccessEgress(original["egress"], d, config)
 	if err != nil {
 		return nil, err
 	} else if val := reflect.ValueOf(transformedEgress); val.IsValid() && !isEmptyValue(val) {
@@ -2719,11 +2719,11 @@ func expandCloudRunV2ServiceTemplateVPCAccess(v interface{}, d TerraformResource
 	return transformed, nil
 }
 
-func expandCloudRunV2ServiceTemplateVPCAccessConnector(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateVpcAccessConnector(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
 
-func expandCloudRunV2ServiceTemplateVPCAccessEgress(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+func expandCloudRunV2ServiceTemplateVpcAccessEgress(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
 

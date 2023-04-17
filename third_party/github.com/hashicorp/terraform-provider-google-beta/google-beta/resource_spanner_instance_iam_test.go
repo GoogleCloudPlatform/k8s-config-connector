@@ -16,8 +16,8 @@ func TestAccSpannerInstanceIamBinding(t *testing.T) {
 	instance := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSpannerInstanceIamBinding_basic(account, instance, role),
@@ -27,7 +27,7 @@ func TestAccSpannerInstanceIamBinding(t *testing.T) {
 				ImportStateId: fmt.Sprintf("%s %s", spannerInstanceId{
 					Project:  project,
 					Instance: instance,
-				}.terraformId(), role),
+				}.TerraformId(), role),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -40,7 +40,7 @@ func TestAccSpannerInstanceIamBinding(t *testing.T) {
 				ImportStateId: fmt.Sprintf("%s %s", spannerInstanceId{
 					Project:  project,
 					Instance: instance,
-				}.terraformId(), role),
+				}.TerraformId(), role),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -58,8 +58,8 @@ func TestAccSpannerInstanceIamMember(t *testing.T) {
 	conditionTitle := "Access only database one"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -70,7 +70,7 @@ func TestAccSpannerInstanceIamMember(t *testing.T) {
 				ImportStateId: fmt.Sprintf("%s %s serviceAccount:%s@%s.iam.gserviceaccount.com %s", spannerInstanceId{
 					Instance: instance,
 					Project:  project,
-				}.terraformId(), role, account, project, conditionTitle),
+				}.TerraformId(), role, account, project, conditionTitle),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -87,8 +87,8 @@ func TestAccSpannerInstanceIamPolicy(t *testing.T) {
 	instance := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSpannerInstanceIamPolicy_basic(account, instance, role),
@@ -99,7 +99,7 @@ func TestAccSpannerInstanceIamPolicy(t *testing.T) {
 				ImportStateId: spannerInstanceId{
 					Instance: instance,
 					Project:  project,
-				}.terraformId(),
+				}.TerraformId(),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},

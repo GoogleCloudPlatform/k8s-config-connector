@@ -31,9 +31,9 @@ func TestAccComputeGlobalAddress_globalAddressBasicExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckComputeGlobalAddressDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckComputeGlobalAddressDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeGlobalAddress_globalAddressBasicExample(context),
@@ -64,9 +64,9 @@ func TestAccComputeGlobalAddress_globalAddressPrivateServicesConnectExample(t *t
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProvidersOiCS,
-		CheckDestroy: testAccCheckComputeGlobalAddressDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckComputeGlobalAddressDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeGlobalAddress_globalAddressPrivateServicesConnectExample(context),
@@ -94,7 +94,7 @@ resource "google_compute_global_address" "default" {
 
 resource "google_compute_network" "network" {
   provider      = google-beta
-  name          = "tf-test%{random_suffix}"
+  name          = "tf-test-my-network-name%{random_suffix}"
   auto_create_subnetworks = false
 }
 `, context)

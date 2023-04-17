@@ -31,9 +31,9 @@ func TestAccApiGatewayApi_apigatewayApiBasicExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProvidersOiCS,
-		CheckDestroy: testAccCheckApiGatewayApiDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckApiGatewayApiDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccApiGatewayApi_apigatewayApiBasicExample(context),
@@ -52,7 +52,7 @@ func testAccApiGatewayApi_apigatewayApiBasicExample(context map[string]interface
 	return Nprintf(`
 resource "google_api_gateway_api" "api" {
   provider = google-beta
-  api_id = "api%{random_suffix}"
+  api_id = "tf-test-my-api%{random_suffix}"
 }
 `, context)
 }
@@ -65,9 +65,9 @@ func TestAccApiGatewayApi_apigatewayApiFullExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProvidersOiCS,
-		CheckDestroy: testAccCheckApiGatewayApiDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckApiGatewayApiDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccApiGatewayApi_apigatewayApiFullExample(context),
@@ -86,7 +86,7 @@ func testAccApiGatewayApi_apigatewayApiFullExample(context map[string]interface{
 	return Nprintf(`
 resource "google_api_gateway_api" "api" {
   provider = google-beta
-  api_id = "api%{random_suffix}"
+  api_id = "tf-test-my-api%{random_suffix}"
   display_name = "MM Dev API"
   labels = {
     environment = "dev"

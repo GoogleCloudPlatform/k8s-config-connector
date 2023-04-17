@@ -428,7 +428,7 @@ tags:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. The size of the image in gigabytes. If not specified, it will inherit the size of its base image. For SCRATCH disks, the size must be exactly 375GB.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The size of the image in gigabytes. If not specified, it will inherit the size of its base image. For SCRATCH disks, the size must be one of 375 or 3000 GB, with a default of 375 GB.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1780,6 +1780,7 @@ conditions:
 metadataFingerprint: string
 observedGeneration: integer
 selfLink: string
+selfLinkUnique: string
 tagsFingerprint: string
 ```
 
@@ -1858,6 +1859,13 @@ tagsFingerprint: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The URI of the created resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>selfLinkUnique</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A special URI of the created resource that uniquely identifies this instance template.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC.
+// Copyright 2023 Google LLC.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -75,6 +75,7 @@ var _ = errors.New
 var _ = strings.Replace
 var _ = context.Canceled
 var _ = internaloption.WithDefaultEndpoint
+var _ = internal.Version
 
 const apiId = "servicenetworking:v1"
 const apiName = "servicenetworking"
@@ -323,7 +324,8 @@ type AddDnsZoneRequest struct {
 	ConsumerNetwork string `json:"consumerNetwork,omitempty"`
 
 	// DnsSuffix: Required. The DNS name suffix for the zones e.g.
-	// `example.com`.
+	// `example.com.`. Cloud DNS requires that a DNS suffix ends with a
+	// trailing dot.
 	DnsSuffix string `json:"dnsSuffix,omitempty"`
 
 	// Name: Required. The name for both the private zone in the shared
@@ -467,6 +469,12 @@ func (s *AddRolesResponse) MarshalJSON() ([]byte, error) {
 // AddSubnetworkRequest: Request to create a subnetwork in a previously
 // peered service network.
 type AddSubnetworkRequest struct {
+	// AllowSubnetCidrRoutesOverlap: Optional. Defines the
+	// allowSubnetCidrRoutesOverlap field of the subnet, e.g. Available in
+	// alpha and beta according to Compute API documentation
+	// (https://cloud.google.com/compute/docs/reference/rest/beta/subnetworks/insert)
+	AllowSubnetCidrRoutesOverlap bool `json:"allowSubnetCidrRoutesOverlap,omitempty"`
+
 	// CheckServiceNetworkingUsePermission: Optional. The IAM permission
 	// check determines whether the consumer project has
 	// 'servicenetworking.services.use' permission or not.
@@ -505,10 +513,10 @@ type AddSubnetworkRequest struct {
 	Description string `json:"description,omitempty"`
 
 	// IpPrefixLength: Required. The prefix length of the subnet's IP
-	// address range. Use CIDR range notation, such as `30` to provision a
-	// subnet with an `x.x.x.x/30` CIDR range. The IP address range is drawn
+	// address range. Use CIDR range notation, such as `29` to provision a
+	// subnet with an `x.x.x.x/29` CIDR range. The IP address range is drawn
 	// from a pool of available ranges in the service consumer's allocated
-	// range.
+	// range. GCE disallows subnets with prefix_length > 29
 	IpPrefixLength int64 `json:"ipPrefixLength,omitempty"`
 
 	// OutsideAllocationPublicIpRange: Optional. Enable outside allocation
@@ -551,6 +559,13 @@ type AddSubnetworkRequest struct {
 	// call fails.
 	RequestedRanges []string `json:"requestedRanges,omitempty"`
 
+	// Role: Optional. Defines the role field of the subnet, e.g. 'ACTIVE'.
+	// For information about the roles that can be set using this field, see
+	// subnetwork
+	// (https://cloud.google.com/compute/docs/reference/rest/v1/subnetworks)
+	// in the Compute API documentation.
+	Role string `json:"role,omitempty"`
+
 	// SecondaryIpRangeSpecs: Optional. A list of secondary IP ranges to be
 	// created within the new subnetwork.
 	SecondaryIpRangeSpecs []*SecondaryIpRangeSpec `json:"secondaryIpRangeSpecs,omitempty"`
@@ -575,21 +590,21 @@ type AddSubnetworkRequest struct {
 	UseCustomComputeIdempotencyWindow bool `json:"useCustomComputeIdempotencyWindow,omitempty"`
 
 	// ForceSendFields is a list of field names (e.g.
-	// "CheckServiceNetworkingUsePermission") to unconditionally include in
-	// API requests. By default, fields with empty or default values are
-	// omitted from API requests. However, any non-pointer, non-interface
-	// field appearing in ForceSendFields will be sent to the server
-	// regardless of whether the field is empty or not. This may be used to
-	// include empty fields in Patch requests.
+	// "AllowSubnetCidrRoutesOverlap") to unconditionally include in API
+	// requests. By default, fields with empty or default values are omitted
+	// from API requests. However, any non-pointer, non-interface field
+	// appearing in ForceSendFields will be sent to the server regardless of
+	// whether the field is empty or not. This may be used to include empty
+	// fields in Patch requests.
 	ForceSendFields []string `json:"-"`
 
 	// NullFields is a list of field names (e.g.
-	// "CheckServiceNetworkingUsePermission") to include in API requests
-	// with the JSON null value. By default, fields with empty values are
-	// omitted from API requests. However, any field with an empty value
-	// appearing in NullFields will be sent to the server as null. It is an
-	// error if a field in this list has a non-empty value. This may be used
-	// to include null fields in Patch requests.
+	// "AllowSubnetCidrRoutesOverlap") to include in API requests with the
+	// JSON null value. By default, fields with empty values are omitted
+	// from API requests. However, any field with an empty value appearing
+	// in NullFields will be sent to the server as null. It is an error if a
+	// field in this list has a non-empty value. This may be used to include
+	// null fields in Patch requests.
 	NullFields []string `json:"-"`
 }
 
@@ -631,6 +646,7 @@ type Api struct {
 	// Possible values:
 	//   "SYNTAX_PROTO2" - Syntax `proto2`.
 	//   "SYNTAX_PROTO3" - Syntax `proto3`.
+	//   "SYNTAX_EDITIONS" - Syntax `editions`.
 	Syntax string `json:"syntax,omitempty"`
 
 	// Version: A version string for this interface. If specified, must have
@@ -956,6 +972,10 @@ type BackendRule struct {
 	// of a long running operation. The default is no deadline.
 	OperationDeadline float64 `json:"operationDeadline,omitempty"`
 
+	// OverridesByRequestProtocol: The map between request protocol and the
+	// backend address.
+	OverridesByRequestProtocol map[string]BackendRule `json:"overridesByRequestProtocol,omitempty"`
+
 	// Possible values:
 	//   "PATH_TRANSLATION_UNSPECIFIED"
 	//   "CONSTANT_ADDRESS" - Use the backend address as-is, with no
@@ -1198,7 +1218,10 @@ type ClientLibrarySettings struct {
 	// RubySettings: Settings for Ruby client libraries.
 	RubySettings *RubySettings `json:"rubySettings,omitempty"`
 
-	// Version: Version of the API to apply these settings to.
+	// Version: Version of the API to apply these settings to. This is the
+	// full protobuf package for the API, ending in the version element.
+	// Examples: "google.cloud.speech.v1" and
+	// "google.spanner.admin.database.v1".
 	Version string `json:"version,omitempty"`
 
 	// ForceSendFields is a list of field names (e.g. "CppSettings") to
@@ -1817,7 +1840,8 @@ type DnsRecordSet struct {
 	Data []string `json:"data,omitempty"`
 
 	// Domain: Required. The DNS or domain name of the record set, e.g.
-	// `test.example.com`.
+	// `test.example.com`. Cloud DNS requires that a DNS suffix ends with a
+	// trailing dot.
 	Domain string `json:"domain,omitempty"`
 
 	// Ttl: Required. The period of time for which this RecordSet can be
@@ -1853,6 +1877,7 @@ func (s *DnsRecordSet) MarshalJSON() ([]byte, error) {
 // DnsZone: Represents a DNS zone resource.
 type DnsZone struct {
 	// DnsSuffix: The DNS name suffix of this zone e.g. `example.com.`.
+	// Cloud DNS requires that a DNS suffix ends with a trailing dot.
 	DnsSuffix string `json:"dnsSuffix,omitempty"`
 
 	// Name: User assigned name for this resource. Must be unique within the
@@ -2025,6 +2050,35 @@ type DotnetSettings struct {
 	// Common: Some settings.
 	Common *CommonLanguageSettings `json:"common,omitempty"`
 
+	// ForcedNamespaceAliases: Namespaces which must be aliased in snippets
+	// due to a known (but non-generator-predictable) naming collision
+	ForcedNamespaceAliases []string `json:"forcedNamespaceAliases,omitempty"`
+
+	// HandwrittenSignatures: Method signatures (in the form
+	// "service.method(signature)") which are provided separately, so
+	// shouldn't be generated. Snippets *calling* these methods are still
+	// generated, however.
+	HandwrittenSignatures []string `json:"handwrittenSignatures,omitempty"`
+
+	// IgnoredResources: List of full resource types to ignore during
+	// generation. This is typically used for API-specific Location
+	// resources, which should be handled by the generator as if they were
+	// actually the common Location resources. Example entry:
+	// "documentai.googleapis.com/Location"
+	IgnoredResources []string `json:"ignoredResources,omitempty"`
+
+	// RenamedResources: Map from full resource types to the effective short
+	// name for the resource. This is used when otherwise resource named
+	// from different services would cause naming collisions. Example entry:
+	// "datalabeling.googleapis.com/Dataset": "DataLabelingDataset"
+	RenamedResources map[string]string `json:"renamedResources,omitempty"`
+
+	// RenamedServices: Map from original service names to renamed versions.
+	// This is used when the default generated types would cause a naming
+	// conflict. (Neither name is fully-qualified.) Example: Subscriber to
+	// SubscriberServiceApi.
+	RenamedServices map[string]string `json:"renamedServices,omitempty"`
+
 	// ForceSendFields is a list of field names (e.g. "Common") to
 	// unconditionally include in API requests. By default, fields with
 	// empty or default values are omitted from API requests. However, any
@@ -2156,6 +2210,10 @@ func (s *Endpoint) MarshalJSON() ([]byte, error) {
 
 // Enum: Enum type definition.
 type Enum struct {
+	// Edition: The source edition string, only valid when syntax is
+	// SYNTAX_EDITIONS.
+	Edition string `json:"edition,omitempty"`
+
 	// Enumvalue: Enum value definitions.
 	Enumvalue []*EnumValue `json:"enumvalue,omitempty"`
 
@@ -2173,9 +2231,10 @@ type Enum struct {
 	// Possible values:
 	//   "SYNTAX_PROTO2" - Syntax `proto2`.
 	//   "SYNTAX_PROTO3" - Syntax `proto3`.
+	//   "SYNTAX_EDITIONS" - Syntax `editions`.
 	Syntax string `json:"syntax,omitempty"`
 
-	// ForceSendFields is a list of field names (e.g. "Enumvalue") to
+	// ForceSendFields is a list of field names (e.g. "Edition") to
 	// unconditionally include in API requests. By default, fields with
 	// empty or default values are omitted from API requests. However, any
 	// non-pointer, non-interface field appearing in ForceSendFields will be
@@ -2183,7 +2242,7 @@ type Enum struct {
 	// This may be used to include empty fields in Patch requests.
 	ForceSendFields []string `json:"-"`
 
-	// NullFields is a list of field names (e.g. "Enumvalue") to include in
+	// NullFields is a list of field names (e.g. "Edition") to include in
 	// API requests with the JSON null value. By default, fields with empty
 	// values are omitted from API requests. However, any field with an
 	// empty value appearing in NullFields will be sent to the server as
@@ -3194,6 +3253,7 @@ type Method struct {
 	// Possible values:
 	//   "SYNTAX_PROTO2" - Syntax `proto2`.
 	//   "SYNTAX_PROTO3" - Syntax `proto3`.
+	//   "SYNTAX_EDITIONS" - Syntax `editions`.
 	Syntax string `json:"syntax,omitempty"`
 
 	// ForceSendFields is a list of field names (e.g. "Name") to
@@ -3224,10 +3284,11 @@ type MethodSettings struct {
 	// LongRunning: Describes settings to use for long-running operations
 	// when generating API methods for RPCs. Complements RPCs that use the
 	// annotations in google/longrunning/operations.proto. Example of a YAML
-	// configuration:: publishing: method_behavior: - selector:
-	// CreateAdDomain long_running: initial_poll_delay: seconds: 60 # 1
-	// minute poll_delay_multiplier: 1.5 max_poll_delay: seconds: 360 # 6
-	// minutes total_poll_timeout: seconds: 54000 # 90 minutes
+	// configuration:: publishing: method_settings: - selector:
+	// google.cloud.speech.v2.Speech.BatchRecognize long_running:
+	// initial_poll_delay: seconds: 60 # 1 minute poll_delay_multiplier: 1.5
+	// max_poll_delay: seconds: 360 # 6 minutes total_poll_timeout: seconds:
+	// 54000 # 90 minutes
 	LongRunning *LongRunning `json:"longRunning,omitempty"`
 
 	// Selector: The fully qualified name of the method, for which the
@@ -3585,7 +3646,7 @@ func (s *MetricRule) MarshalJSON() ([]byte, error) {
 // The mixin construct implies that all methods in `AccessControl` are
 // also declared with same name and request/response types in `Storage`.
 // A documentation generator or annotation processor will see the
-// effective `Storage.GetAcl` method after inheriting documentation and
+// effective `Storage.GetAcl` method after inherting documentation and
 // annotations as follows: service Storage { // Get the underlying ACL
 // object. rpc GetAcl(GetAclRequest) returns (Acl) { option
 // (google.api.http).get = "/v2/{resource=**}:getAcl"; } ... } Note how
@@ -4221,6 +4282,11 @@ type Publishing struct {
 	//   "STREET_VIEW" - Street View Org.
 	Organization string `json:"organization,omitempty"`
 
+	// ProtoReferenceDocumentationUri: Optional link to proto reference
+	// documentation. Example:
+	// https://cloud.google.com/pubsub/lite/docs/reference/rpc
+	ProtoReferenceDocumentationUri string `json:"protoReferenceDocumentationUri,omitempty"`
+
 	// ForceSendFields is a list of field names (e.g. "ApiShortName") to
 	// unconditionally include in API requests. By default, fields with
 	// empty or default values are omitted from API requests. However, any
@@ -4457,9 +4523,10 @@ func (s *Range) MarshalJSON() ([]byte, error) {
 // RangeReservation: Represents a range reservation.
 type RangeReservation struct {
 	// IpPrefixLength: Required. The size of the desired subnet. Use usual
-	// CIDR range notation. For example, '30' to find unused x.x.x.x/30 CIDR
+	// CIDR range notation. For example, '29' to find unused x.x.x.x/29 CIDR
 	// range. The goal is to determine if one of the allocated ranges has
-	// enough free space for a subnet of the requested size.
+	// enough free space for a subnet of the requested size. GCE disallows
+	// subnets with prefix_length > 29
 	IpPrefixLength int64 `json:"ipPrefixLength,omitempty"`
 
 	// RequestedRanges: Optional. The name of one or more allocated IP
@@ -4472,9 +4539,10 @@ type RangeReservation struct {
 
 	// SecondaryRangeIpPrefixLengths: Optional. The size of the desired
 	// secondary ranges for the subnet. Use usual CIDR range notation. For
-	// example, '30' to find unused x.x.x.x/30 CIDR range. The goal is to
+	// example, '29' to find unused x.x.x.x/29 CIDR range. The goal is to
 	// determine that the allocated ranges have enough free space for all
-	// the requested secondary ranges.
+	// the requested secondary ranges. GCE disallows subnets with
+	// prefix_length > 29
 	SecondaryRangeIpPrefixLengths []int64 `json:"secondaryRangeIpPrefixLengths,omitempty"`
 
 	// SubnetworkCandidates: Optional. List of subnetwork candidates to
@@ -5228,6 +5296,10 @@ func (s *SystemParameters) MarshalJSON() ([]byte, error) {
 
 // Type: A protocol buffer message type.
 type Type struct {
+	// Edition: The source edition string, only valid when syntax is
+	// SYNTAX_EDITIONS.
+	Edition string `json:"edition,omitempty"`
+
 	// Fields: The list of fields.
 	Fields []*Field `json:"fields,omitempty"`
 
@@ -5249,9 +5321,10 @@ type Type struct {
 	// Possible values:
 	//   "SYNTAX_PROTO2" - Syntax `proto2`.
 	//   "SYNTAX_PROTO3" - Syntax `proto3`.
+	//   "SYNTAX_EDITIONS" - Syntax `editions`.
 	Syntax string `json:"syntax,omitempty"`
 
-	// ForceSendFields is a list of field names (e.g. "Fields") to
+	// ForceSendFields is a list of field names (e.g. "Edition") to
 	// unconditionally include in API requests. By default, fields with
 	// empty or default values are omitted from API requests. However, any
 	// non-pointer, non-interface field appearing in ForceSendFields will be
@@ -5259,8 +5332,8 @@ type Type struct {
 	// This may be used to include empty fields in Patch requests.
 	ForceSendFields []string `json:"-"`
 
-	// NullFields is a list of field names (e.g. "Fields") to include in API
-	// requests with the JSON null value. By default, fields with empty
+	// NullFields is a list of field names (e.g. "Edition") to include in
+	// API requests with the JSON null value. By default, fields with empty
 	// values are omitted from API requests. However, any field with an
 	// empty value appearing in NullFields will be sent to the server as
 	// null. It is an error if a field in this list has a non-empty value.
@@ -6039,14 +6112,7 @@ type OperationsListCall struct {
 
 // List: Lists operations that match the specified filter in the
 // request. If the server doesn't support this method, it returns
-// `UNIMPLEMENTED`. NOTE: the `name` binding allows API services to
-// override the binding to use different resource name schemes, such as
-// `users/*/operations`. To override the binding, API services can add a
-// binding such as "/v1/{name=users/*}/operations" to their service
-// configuration. For backwards compatibility, the default name includes
-// the operations collection id, however overriding users must ensure
-// the name binding is the parent resource, without the operations
-// collection id.
+// `UNIMPLEMENTED`.
 //
 // - name: The name of the operation's parent resource.
 func (r *OperationsService) List(name string) *OperationsListCall {
@@ -6175,7 +6241,7 @@ func (c *OperationsListCall) Do(opts ...googleapi.CallOption) (*ListOperationsRe
 	}
 	return ret, nil
 	// {
-	//   "description": "Lists operations that match the specified filter in the request. If the server doesn't support this method, it returns `UNIMPLEMENTED`. NOTE: the `name` binding allows API services to override the binding to use different resource name schemes, such as `users/*/operations`. To override the binding, API services can add a binding such as `\"/v1/{name=users/*}/operations\"` to their service configuration. For backwards compatibility, the default name includes the operations collection id, however overriding users must ensure the name binding is the parent resource, without the operations collection id.",
+	//   "description": "Lists operations that match the specified filter in the request. If the server doesn't support this method, it returns `UNIMPLEMENTED`.",
 	//   "flatPath": "v1/operations",
 	//   "httpMethod": "GET",
 	//   "id": "servicenetworking.operations.list",

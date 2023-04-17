@@ -132,6 +132,7 @@ scheduling:
   provisioningModel: string
 scratchDisk:
 - interface: string
+  size: integer
 serviceAccount:
   scopes:
   - string

@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"log"
 	"reflect"
+	"regexp"
 	"strings"
 	"time"
 
@@ -78,6 +79,20 @@ func waitForDatastreamStreamReady(d *schema.ResourceData, config *Config, timeou
 	})
 }
 
+func resourceDatastreamStreamDatabaseIdDiffSuppress(_, old, new string, _ *schema.ResourceData) bool {
+	re := regexp.MustCompile(`projects/(.+)/datasets/([^\.\?\#]+)`)
+	paths := re.FindStringSubmatch(new)
+
+	// db returns value in form <project>:<dataset_id>
+	if len(paths) == 3 {
+		project := paths[1]
+		datasetId := paths[2]
+		new = fmt.Sprintf("%s:%s", project, datasetId)
+	}
+
+	return old == new
+}
+
 func ResourceDatastreamStream() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceDatastreamStreamCreate,
@@ -109,7 +124,7 @@ func ResourceDatastreamStream() *schema.Resource {
 							Type:             schema.TypeString,
 							Required:         true,
 							ForceNew:         true,
-							DiffSuppressFunc: projectNumberDiffSuppress,
+							DiffSuppressFunc: ProjectNumberDiffSuppress,
 							Description:      `Destination connection profile resource. Format: projects/{project}/locations/{location}/connectionProfiles/{name}`,
 						},
 						"bigquery_destination_config": {
@@ -135,9 +150,11 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
 										Elem: &schema.Resource{
 											Schema: map[string]*schema.Schema{
 												"dataset_id": {
-													Type:        schema.TypeString,
-													Required:    true,
-													Description: `Dataset ID in the format projects/{project}/datasets/{dataset_id}`,
+													Type:             schema.TypeString,
+													Required:         true,
+													DiffSuppressFunc: resourceDatastreamStreamDatabaseIdDiffSuppress,
+													Description: `Dataset ID in the format projects/{project}/datasets/{dataset_id} or
+{project}:{dataset_id}`,
 												},
 											},
 										},
@@ -276,7 +293,7 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
 							Type:             schema.TypeString,
 							Required:         true,
 							ForceNew:         true,
-							DiffSuppressFunc: projectNumberDiffSuppress,
+							DiffSuppressFunc: ProjectNumberDiffSuppress,
 							Description:      `Source connection profile resource. Format: projects/{project}/locations/{location}/connectionProfiles/{name}`,
 						},
 						"mysql_source_config": {
@@ -1319,7 +1336,7 @@ func resourceDatastreamStreamCreate(d *schema.ResourceData, meta interface{}) er
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{DatastreamBasePath}}projects/{{project}}/locations/{{location}}/streams?streamId={{stream_id}}")
+	url, err := ReplaceVars(d, config, "{{DatastreamBasePath}}projects/{{project}}/locations/{{location}}/streams?streamId={{stream_id}}")
 	if err != nil {
 		return err
 	}
@@ -1344,7 +1361,7 @@ func resourceDatastreamStreamCreate(d *schema.ResourceData, meta interface{}) er
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "projects/{{project}}/locations/{{location}}/streams/{{stream_id}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/streams/{{stream_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -1368,7 +1385,7 @@ func resourceDatastreamStreamCreate(d *schema.ResourceData, meta interface{}) er
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = replaceVars(d, config, "projects/{{project}}/locations/{{location}}/streams/{{stream_id}}")
+	id, err = ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/streams/{{stream_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -1397,7 +1414,7 @@ func resourceDatastreamStreamRead(d *schema.ResourceData, meta interface{}) erro
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{DatastreamBasePath}}projects/{{project}}/locations/{{location}}/streams/{{stream_id}}")
+	url, err := ReplaceVars(d, config, "{{DatastreamBasePath}}projects/{{project}}/locations/{{location}}/streams/{{stream_id}}")
 	if err != nil {
 		return err
 	}
@@ -1519,7 +1536,7 @@ func resourceDatastreamStreamUpdate(d *schema.ResourceData, meta interface{}) er
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{DatastreamBasePath}}projects/{{project}}/locations/{{location}}/streams/{{stream_id}}")
+	url, err := ReplaceVars(d, config, "{{DatastreamBasePath}}projects/{{project}}/locations/{{location}}/streams/{{stream_id}}")
 	if err != nil {
 		return err
 	}
@@ -1550,9 +1567,9 @@ func resourceDatastreamStreamUpdate(d *schema.ResourceData, meta interface{}) er
 	if d.HasChange("backfill_none") {
 		updateMask = append(updateMask, "backfillNone")
 	}
-	// updateMask is a URL parameter but not present in the schema, so replaceVars
+	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = addQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -1562,9 +1579,9 @@ func resourceDatastreamStreamUpdate(d *schema.ResourceData, meta interface{}) er
 	}
 
 	// Override the previous setting of updateMask to include state.
-	// updateMask is a URL parameter but not present in the schema, so replaceVars
+	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = addQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -1615,7 +1632,7 @@ func resourceDatastreamStreamDelete(d *schema.ResourceData, meta interface{}) er
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{DatastreamBasePath}}projects/{{project}}/locations/{{location}}/streams/{{stream_id}}")
+	url, err := ReplaceVars(d, config, "{{DatastreamBasePath}}projects/{{project}}/locations/{{location}}/streams/{{stream_id}}")
 	if err != nil {
 		return err
 	}
@@ -1647,7 +1664,7 @@ func resourceDatastreamStreamDelete(d *schema.ResourceData, meta interface{}) er
 
 func resourceDatastreamStreamImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/streams/(?P<stream_id>[^/]+)",
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<stream_id>[^/]+)",
 		"(?P<location>[^/]+)/(?P<stream_id>[^/]+)",
@@ -1656,7 +1673,7 @@ func resourceDatastreamStreamImport(d *schema.ResourceData, meta interface{}) ([
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "projects/{{project}}/locations/{{location}}/streams/{{stream_id}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/streams/{{stream_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -5086,7 +5103,16 @@ func expandDatastreamStreamDestinationConfigBigqueryDestinationConfigSingleTarge
 }
 
 func expandDatastreamStreamDestinationConfigBigqueryDestinationConfigSingleTargetDatasetDatasetId(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
-	return v, nil
+	s := v.(string)
+	re := regexp.MustCompile(`projects/(.+)/datasets/([^\.\?\#]+)`)
+	paths := re.FindStringSubmatch(s)
+	if len(paths) == 3 {
+		project := paths[1]
+		datasetId := paths[2]
+		return fmt.Sprintf("%s:%s", project, datasetId), nil
+	}
+
+	return s, nil
 }
 
 func expandDatastreamStreamDestinationConfigBigqueryDestinationConfigSourceHierarchyDatasets(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {

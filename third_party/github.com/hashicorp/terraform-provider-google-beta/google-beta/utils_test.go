@@ -95,7 +95,7 @@ func TestIpCidrRangeDiffSuppress(t *testing.T) {
 	}
 
 	for tn, tc := range cases {
-		if ipCidrRangeDiffSuppress("ip_cidr_range", tc.Old, tc.New, nil) != tc.ExpectDiffSuppress {
+		if IpCidrRangeDiffSuppress("ip_cidr_range", tc.Old, tc.New, nil) != tc.ExpectDiffSuppress {
 			t.Fatalf("bad: %s, '%s' => '%s' expect %t", tn, tc.Old, tc.New, tc.ExpectDiffSuppress)
 		}
 	}
@@ -138,61 +138,207 @@ func TestRfc3339TimeDiffSuppress(t *testing.T) {
 		},
 	}
 	for tn, tc := range cases {
-		if rfc3339TimeDiffSuppress("time", tc.Old, tc.New, nil) != tc.ExpectDiffSuppress {
+		if Rfc3339TimeDiffSuppress("time", tc.Old, tc.New, nil) != tc.ExpectDiffSuppress {
 			t.Errorf("bad: %s, '%s' => '%s' expect DiffSuppress to return %t", tn, tc.Old, tc.New, tc.ExpectDiffSuppress)
 		}
 	}
 }
 
+func TestGetProject(t *testing.T) {
+	cases := map[string]struct {
+		ResourceProject string
+		ProviderProject string
+		ExpectedProject string
+		ExpectedError   bool
+	}{
+		"project is pulled from resource config instead of provider config": {
+			ResourceProject: "foo",
+			ProviderProject: "bar",
+			ExpectedProject: "foo",
+		},
+		"project is pulled from provider config when not set on resource": {
+			ProviderProject: "bar",
+			ExpectedProject: "bar",
+		},
+		"error returned when project not set on either provider or resource": {
+			ExpectedError: true,
+		},
+	}
+	for tn, tc := range cases {
+		t.Run(tn, func(t *testing.T) {
+			// Arrange
+
+			// Create provider config
+			var config Config
+			if tc.ProviderProject != "" {
+				config.Project = tc.ProviderProject
+			}
+
+			// Create resource config
+			// Here use ResourceComputeDisk schema as example
+			emptyConfigMap := map[string]interface{}{}
+			d := schema.TestResourceDataRaw(t, ResourceComputeDisk().Schema, emptyConfigMap)
+			if tc.ResourceProject != "" {
+				if err := d.Set("project", tc.ResourceProject); err != nil {
+					t.Fatalf("Cannot set project: %s", err)
+				}
+			}
+
+			// Act
+			project, err := getProject(d, &config)
+
+			// Assert
+			if err != nil {
+				if tc.ExpectedError {
+					return
+				}
+				t.Fatalf("Unexpected error using test: %s", err)
+			}
+
+			if project != tc.ExpectedProject {
+				t.Fatalf("Incorrect project: got %s, want %s", project, tc.ExpectedProject)
+			}
+		})
+	}
+}
+
 func TestGetZone(t *testing.T) {
-	d := schema.TestResourceDataRaw(t, ResourceComputeDisk().Schema, map[string]interface{}{
-		"zone": "foo",
-	})
-	var config Config
-	if err := d.Set("zone", "foo"); err != nil {
-		t.Fatalf("Cannot set zone: %s", err)
+	cases := map[string]struct {
+		ResourceZone  string
+		ProviderZone  string
+		ExpectedZone  string
+		ExpectedError bool
+	}{
+		"zone is pulled from resource config instead of provider config": {
+			ResourceZone: "foo",
+			ProviderZone: "bar",
+			ExpectedZone: "foo",
+		},
+		"zone is pulled from provider config when not set on resource": {
+			ProviderZone: "bar",
+			ExpectedZone: "bar",
+		},
+		"zone value from resource is retrieved by splitting on slashes and selecting last element": {
+			// Unclear why this is the case - documenting this behaviour in a test case
+			ResourceZone: "this/is/foo/bar",
+			ExpectedZone: "bar",
+		},
+		"error returned when zone not set on either provider or resource": {
+			ExpectedError: true,
+		},
 	}
-	if zone, err := getZone(d, &config); err != nil || zone != "foo" {
-		t.Fatalf("Zone '%s' != 'foo', %s", zone, err)
-	}
-	config.Zone = "bar"
-	if zone, err := getZone(d, &config); err != nil || zone != "foo" {
-		t.Fatalf("Zone '%s' != 'foo', %s", zone, err)
-	}
-	if err := d.Set("zone", ""); err != nil {
-		t.Fatalf("Error setting zone: %s", err)
-	}
-	if zone, err := getZone(d, &config); err != nil || zone != "bar" {
-		t.Fatalf("Zone '%s' != 'bar', %s", zone, err)
-	}
-	config.Zone = ""
-	if zone, err := getZone(d, &config); err == nil || zone != "" {
-		t.Fatalf("Zone '%s' != '', err=%s", zone, err)
+	for tn, tc := range cases {
+		t.Run(tn, func(t *testing.T) {
+			// Arrange
+
+			// Create provider config
+			var config Config
+			if tc.ProviderZone != "" {
+				config.Zone = tc.ProviderZone
+			}
+
+			// Create resource config
+			// Here use ResourceComputeDisk schema as example - because it has a zone field in schema
+			emptyConfigMap := map[string]interface{}{}
+			d := schema.TestResourceDataRaw(t, ResourceComputeDisk().Schema, emptyConfigMap)
+			if tc.ResourceZone != "" {
+				if err := d.Set("zone", tc.ResourceZone); err != nil {
+					t.Fatalf("Cannot set zone: %s", err)
+				}
+			}
+
+			// Act
+			zone, err := getZone(d, &config)
+
+			// Assert
+			if err != nil {
+				if tc.ExpectedError {
+					return
+				}
+				t.Fatalf("Unexpected error using test: %s", err)
+			}
+
+			if zone != tc.ExpectedZone {
+				t.Fatalf("Incorrect zone: got %s, want %s", zone, tc.ExpectedZone)
+			}
+		})
 	}
 }
 
 func TestGetRegion(t *testing.T) {
-	d := schema.TestResourceDataRaw(t, ResourceComputeDisk().Schema, map[string]interface{}{
-		"zone": "foo",
-	})
-	var config Config
-	barRegionName := getRegionFromZone("bar")
-	fooRegionName := getRegionFromZone("foo")
+	cases := map[string]struct {
+		ResourceRegion string
+		ProviderRegion string
+		ProviderZone   string
+		ExpectedRegion string
+		ExpectedZone   string
+		ExpectedError  bool
+	}{
+		"region is pulled from resource config instead of provider config": {
+			ResourceRegion: "foo",
+			ProviderRegion: "bar",
+			ProviderZone:   "lol-a",
+			ExpectedRegion: "foo",
+		},
+		"region is pulled from region on provider config when region unset in resource config": {
+			ProviderRegion: "bar",
+			ProviderZone:   "lol-a",
+			ExpectedRegion: "bar",
+		},
+		"region is pulled from zone on provider config when region unset in both resource and provider config": {
+			ProviderZone:   "lol-a",
+			ExpectedRegion: "lol",
+		},
+		"error returned when region not set on resource and neither region or zone set on provider": {
+			ExpectedError: true,
+		},
+	}
+	for tn, tc := range cases {
+		t.Run(tn, func(t *testing.T) {
+			// Arrange
 
-	if region, err := getRegion(d, &config); err != nil || region != fooRegionName {
-		t.Fatalf("Zone '%s' != '%s', %s", region, fooRegionName, err)
-	}
+			// Create provider config
+			var config Config
+			if tc.ProviderRegion != "" {
+				config.Region = tc.ProviderRegion
+			}
+			if tc.ProviderZone != "" {
+				config.Zone = tc.ProviderZone
+			}
 
-	config.Zone = "bar"
-	if err := d.Set("zone", ""); err != nil {
-		t.Fatalf("Error setting zone: %s", err)
+			// Create resource config
+			// Here use ResourceComputeSubnetwork schema as example - because it has a region field in schema
+			emptyConfigMap := map[string]interface{}{}
+			d := schema.TestResourceDataRaw(t, ResourceComputeSubnetwork().Schema, emptyConfigMap)
+			if tc.ResourceRegion != "" {
+				if err := d.Set("region", tc.ResourceRegion); err != nil {
+					t.Fatalf("Cannot set region: %s", err)
+				}
+			}
+
+			// Act
+			region, err := getRegion(d, &config)
+
+			// Assert
+			if err != nil {
+				if tc.ExpectedError {
+					return
+				}
+				t.Fatalf("Unexpected error using test: %s", err)
+			}
+
+			if region != tc.ExpectedRegion {
+				t.Fatalf("Incorrect region: got %s, want %s", region, tc.ExpectedRegion)
+			}
+		})
 	}
-	if region, err := getRegion(d, &config); err != nil || region != barRegionName {
-		t.Fatalf("Zone '%s' != '%s', %s", region, barRegionName, err)
-	}
-	config.Region = "something-else"
-	if region, err := getRegion(d, &config); err != nil || region != config.Region {
-		t.Fatalf("Zone '%s' != '%s', %s", region, config.Region, err)
+}
+
+func TestGetRegionFromZone(t *testing.T) {
+	expected := "us-central1"
+	actual := getRegionFromZone("us-central1-f")
+	if expected != actual {
+		t.Fatalf("Region (%s) did not match expected value: %s", actual, expected)
 	}
 }
 
@@ -417,7 +563,7 @@ func TestDatasourceSchemaFromResourceSchema(t *testing.T) {
 }
 
 func TestEmptyOrDefaultStringSuppress(t *testing.T) {
-	testFunc := emptyOrDefaultStringSuppress("default value")
+	testFunc := EmptyOrDefaultStringSuppress("default value")
 
 	cases := map[string]struct {
 		Old, New           string
@@ -544,18 +690,6 @@ func TestRetryTimeDuration_noretry(t *testing.T) {
 	if i != 1 {
 		t.Errorf("expected error function to be called exactly once, but was called %d times", i)
 	}
-}
-
-type TimeoutError struct {
-	timeout bool
-}
-
-func (e *TimeoutError) Timeout() bool {
-	return e.timeout
-}
-
-func (e *TimeoutError) Error() string {
-	return "timeout error"
 }
 
 func TestRetryTimeDuration_URLTimeoutsShouldRetry(t *testing.T) {

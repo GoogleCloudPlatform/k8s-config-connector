@@ -22,9 +22,9 @@ func TestAccEventarcGoogleChannelConfig_basic(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckEventarcGoogleChannelConfigDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckEventarcGoogleChannelConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccEventarcGoogleChannelConfig_basic(context),
@@ -55,9 +55,9 @@ func TestAccEventarcGoogleChannelConfig_cryptoKeyUpdate(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckEventarcGoogleChannelConfigDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckEventarcGoogleChannelConfigDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccEventarcGoogleChannelConfig_setCryptoKey(context),
@@ -74,6 +74,9 @@ func TestAccEventarcGoogleChannelConfig_cryptoKeyUpdate(t *testing.T) {
 				ResourceName:      "google_eventarc_google_channel_config.primary",
 				ImportState:       true,
 				ImportStateVerify: true,
+			},
+			{
+				Config: testAccEventarcGoogleChannelConfig_deleteCryptoKey(context),
 			},
 		},
 	})
@@ -148,6 +151,16 @@ resource "google_eventarc_google_channel_config" "primary" {
 	name     = "projects/%{project_name}/locations/%{region}/googleChannelConfig"
 	crypto_key_name =  data.google_kms_crypto_key.key2.id
 	depends_on =[google_kms_crypto_key_iam_member.key2_member]
+}
+	`, context)
+}
+
+func testAccEventarcGoogleChannelConfig_deleteCryptoKey(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_eventarc_google_channel_config" "primary" {
+	location = "%{region}"
+	name     = "projects/%{project_name}/locations/%{region}/googleChannelConfig"
+	crypto_key_name = ""
 }
 	`, context)
 }

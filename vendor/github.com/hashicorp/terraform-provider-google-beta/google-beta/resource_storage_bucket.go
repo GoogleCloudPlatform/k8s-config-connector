@@ -562,7 +562,7 @@ func resourceStorageBucketCreate(d *schema.ResourceData, meta interface{}) error
 	err = RetryTimeDuration(func() (operr error) {
 		_, retryErr := config.NewStorageClient(userAgent).Buckets.Get(res.Name).Do()
 		return retryErr
-	}, d.Timeout(schema.TimeoutCreate), isNotFoundRetryableError("bucket creation"))
+	}, d.Timeout(schema.TimeoutCreate), IsNotFoundRetryableError("bucket creation"))
 
 	if err != nil {
 		return fmt.Errorf("Error reading bucket after creation: %s", err)
@@ -710,7 +710,7 @@ func resourceStorageBucketUpdate(d *schema.ResourceData, meta interface{}) error
 	err = RetryTimeDuration(func() (operr error) {
 		_, retryErr := config.NewStorageClient(userAgent).Buckets.Get(res.Name).Do()
 		return retryErr
-	}, d.Timeout(schema.TimeoutUpdate), isNotFoundRetryableError("bucket update"))
+	}, d.Timeout(schema.TimeoutUpdate), IsNotFoundRetryableError("bucket update"))
 
 	if err != nil {
 		return fmt.Errorf("Error reading bucket after update: %s", err)

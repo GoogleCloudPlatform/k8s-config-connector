@@ -35,6 +35,12 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type RepositoryDockerConfig struct {
+	/* The repository which enabled this flag prevents all tags from being modified, moved or deleted. This does not prevent tags from being created. */
+	// +optional
+	ImmutableTags *bool `json:"immutableTags,omitempty"`
+}
+
 type RepositoryDockerRepository struct {
 	/* Immutable. Address of the remote repository. Default value: "DOCKER_HUB" Possible values: ["DOCKER_HUB"]. */
 	// +optional
@@ -119,6 +125,10 @@ type ArtifactRegistryRepositorySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* Docker repository config contains repository level configuration for the repositories of docker type. */
+	// +optional
+	DockerConfig *RepositoryDockerConfig `json:"dockerConfig,omitempty"`
+
 	/* Immutable. The format of packages that are stored in the repository. Supported formats
 	can be found [here](https://cloud.google.com/artifact-registry/docs/supported-formats).
 	You can only create alpha formats if you are a member of the
@@ -165,7 +175,7 @@ type ArtifactRegistryRepositoryStatus struct {
 	CreateTime *string `json:"createTime,omitempty"`
 
 	/* The name of the repository, for example:
-	"projects/p1/locations/us-central1/repositories/repo1". */
+	"repo1". */
 	// +optional
 	Name *string `json:"name,omitempty"`
 

@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC.
+// Copyright 2023 Google LLC.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -71,6 +71,7 @@ var _ = errors.New
 var _ = strings.Replace
 var _ = context.Canceled
 var _ = internaloption.WithDefaultEndpoint
+var _ = internal.Version
 
 const apiId = "datastream:v1"
 const apiName = "datastream"
@@ -339,6 +340,7 @@ func (s *BackfillJob) MarshalJSON() ([]byte, error) {
 type BackfillNoneStrategy struct {
 }
 
+// BigQueryDestinationConfig: BigQuery destination configuration
 type BigQueryDestinationConfig struct {
 	// DataFreshness: The guaranteed data freshness (in seconds) when
 	// querying tables created by the stream. Editing this field will only
@@ -1422,6 +1424,11 @@ type MysqlSourceConfig struct {
 	// IncludeObjects: MySQL objects to retrieve from the source.
 	IncludeObjects *MysqlRdbms `json:"includeObjects,omitempty"`
 
+	// MaxConcurrentBackfillTasks: Maximum number of concurrent backfill
+	// tasks. The number should be non negative. If not set (or set to 0),
+	// the system's default value will be used.
+	MaxConcurrentBackfillTasks int64 `json:"maxConcurrentBackfillTasks,omitempty"`
+
 	// MaxConcurrentCdcTasks: Maximum number of concurrent CDC tasks. The
 	// number should be non negative. If not set (or set to 0), the system's
 	// default value will be used.
@@ -1851,9 +1858,14 @@ type OracleSourceConfig struct {
 	// IncludeObjects: Oracle objects to include in the stream.
 	IncludeObjects *OracleRdbms `json:"includeObjects,omitempty"`
 
+	// MaxConcurrentBackfillTasks: Maximum number of concurrent backfill
+	// tasks. The number should be non-negative. If not set (or set to 0),
+	// the system's default value is used.
+	MaxConcurrentBackfillTasks int64 `json:"maxConcurrentBackfillTasks,omitempty"`
+
 	// MaxConcurrentCdcTasks: Maximum number of concurrent CDC tasks. The
-	// number should be non negative. If not set (or set to 0), the system's
-	// default value will be used.
+	// number should be non-negative. If not set (or set to 0), the system's
+	// default value is used.
 	MaxConcurrentCdcTasks int64 `json:"maxConcurrentCdcTasks,omitempty"`
 
 	// StreamLargeObjects: Stream large object values. NOTE: This feature is
@@ -2105,6 +2117,11 @@ type PostgresqlSourceConfig struct {
 	// IncludeObjects: PostgreSQL objects to include in the stream.
 	IncludeObjects *PostgresqlRdbms `json:"includeObjects,omitempty"`
 
+	// MaxConcurrentBackfillTasks: Maximum number of concurrent backfill
+	// tasks. The number should be non negative. If not set (or set to 0),
+	// the system's default value will be used.
+	MaxConcurrentBackfillTasks int64 `json:"maxConcurrentBackfillTasks,omitempty"`
+
 	// Publication: Required. The name of the publication that includes the
 	// set of all tables that are defined in the stream's include_objects.
 	Publication string `json:"publication,omitempty"`
@@ -2322,6 +2339,7 @@ func (s *Route) MarshalJSON() ([]byte, error) {
 // SingleTargetDataset: A single target dataset to which all data will
 // be streamed.
 type SingleTargetDataset struct {
+	// DatasetId: The dataset ID of the target dataset.
 	DatasetId string `json:"datasetId,omitempty"`
 
 	// ForceSendFields is a list of field names (e.g. "DatasetId") to
@@ -2391,6 +2409,8 @@ func (s *SourceConfig) MarshalJSON() ([]byte, error) {
 // hierarchy of the destination data objects matches the source
 // hierarchy.
 type SourceHierarchyDatasets struct {
+	// DatasetTemplate: The dataset template to use for dynamic dataset
+	// creation.
 	DatasetTemplate *DatasetTemplate `json:"datasetTemplate,omitempty"`
 
 	// ForceSendFields is a list of field names (e.g. "DatasetTemplate") to
@@ -2491,7 +2511,10 @@ func (s *StartBackfillJobResponse) MarshalJSON() ([]byte, error) {
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
 
-// StaticServiceIpConnectivity: Static IP address connectivity.
+// StaticServiceIpConnectivity: Static IP address connectivity. Used
+// when the source database is configured to allow incoming connections
+// from the Datastream public IP addresses for the region specified in
+// the connection profile.
 type StaticServiceIpConnectivity struct {
 }
 
@@ -4940,14 +4963,7 @@ type ProjectsLocationsOperationsListCall struct {
 
 // List: Lists operations that match the specified filter in the
 // request. If the server doesn't support this method, it returns
-// `UNIMPLEMENTED`. NOTE: the `name` binding allows API services to
-// override the binding to use different resource name schemes, such as
-// `users/*/operations`. To override the binding, API services can add a
-// binding such as "/v1/{name=users/*}/operations" to their service
-// configuration. For backwards compatibility, the default name includes
-// the operations collection id, however overriding users must ensure
-// the name binding is the parent resource, without the operations
-// collection id.
+// `UNIMPLEMENTED`.
 //
 // - name: The name of the operation's parent resource.
 func (r *ProjectsLocationsOperationsService) List(name string) *ProjectsLocationsOperationsListCall {
@@ -5076,7 +5092,7 @@ func (c *ProjectsLocationsOperationsListCall) Do(opts ...googleapi.CallOption) (
 	}
 	return ret, nil
 	// {
-	//   "description": "Lists operations that match the specified filter in the request. If the server doesn't support this method, it returns `UNIMPLEMENTED`. NOTE: the `name` binding allows API services to override the binding to use different resource name schemes, such as `users/*/operations`. To override the binding, API services can add a binding such as `\"/v1/{name=users/*}/operations\"` to their service configuration. For backwards compatibility, the default name includes the operations collection id, however overriding users must ensure the name binding is the parent resource, without the operations collection id.",
+	//   "description": "Lists operations that match the specified filter in the request. If the server doesn't support this method, it returns `UNIMPLEMENTED`.",
 	//   "flatPath": "v1/projects/{projectsId}/locations/{locationsId}/operations",
 	//   "httpMethod": "GET",
 	//   "id": "datastream.projects.locations.operations.list",
@@ -5159,6 +5175,13 @@ func (r *ProjectsLocationsPrivateConnectionsService) Create(parent string, priva
 	c := &ProjectsLocationsPrivateConnectionsCreateCall{s: r.s, urlParams_: make(gensupport.URLParams)}
 	c.parent = parent
 	c.privateconnection = privateconnection
+	return c
+}
+
+// Force sets the optional parameter "force": If set to true, will skip
+// validations.
+func (c *ProjectsLocationsPrivateConnectionsCreateCall) Force(force bool) *ProjectsLocationsPrivateConnectionsCreateCall {
+	c.urlParams_.Set("force", fmt.Sprint(force))
 	return c
 }
 
@@ -5285,6 +5308,11 @@ func (c *ProjectsLocationsPrivateConnectionsCreateCall) Do(opts ...googleapi.Cal
 	//     "parent"
 	//   ],
 	//   "parameters": {
+	//     "force": {
+	//       "description": "Optional. If set to true, will skip validations.",
+	//       "location": "query",
+	//       "type": "boolean"
+	//     },
 	//     "parent": {
 	//       "description": "Required. The parent that owns the collection of PrivateConnections.",
 	//       "location": "path",

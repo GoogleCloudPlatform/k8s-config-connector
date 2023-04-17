@@ -15,8 +15,8 @@ func TestAccFirebaseAppleApp_update(t *testing.T) {
 		"display_name":  "tf-test Display Name N",
 	}
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProvidersOiCS,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFirebaseAppleApp(context, 12345, "1"),

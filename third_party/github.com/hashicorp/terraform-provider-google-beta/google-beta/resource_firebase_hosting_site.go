@@ -98,7 +98,7 @@ func resourceFirebaseHostingSiteCreate(d *schema.ResourceData, meta interface{})
 		obj["appId"] = appIdProp
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseHostingBasePath}}projects/{{project}}/sites?siteId={{site_id}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseHostingBasePath}}projects/{{project}}/sites?siteId={{site_id}}")
 	if err != nil {
 		return err
 	}
@@ -126,7 +126,7 @@ func resourceFirebaseHostingSiteCreate(d *schema.ResourceData, meta interface{})
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "projects/{{project}}/sites/{{site_id}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/sites/{{site_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -144,7 +144,7 @@ func resourceFirebaseHostingSiteRead(d *schema.ResourceData, meta interface{}) e
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseHostingBasePath}}projects/{{project}}/sites/{{site_id}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseHostingBasePath}}projects/{{project}}/sites/{{site_id}}")
 	if err != nil {
 		return err
 	}
@@ -207,7 +207,7 @@ func resourceFirebaseHostingSiteUpdate(d *schema.ResourceData, meta interface{})
 		obj["appId"] = appIdProp
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseHostingBasePath}}projects/{{project}}/sites/{{site_id}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseHostingBasePath}}projects/{{project}}/sites/{{site_id}}")
 	if err != nil {
 		return err
 	}
@@ -218,9 +218,9 @@ func resourceFirebaseHostingSiteUpdate(d *schema.ResourceData, meta interface{})
 	if d.HasChange("app_id") {
 		updateMask = append(updateMask, "appId")
 	}
-	// updateMask is a URL parameter but not present in the schema, so replaceVars
+	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = addQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -256,7 +256,7 @@ func resourceFirebaseHostingSiteDelete(d *schema.ResourceData, meta interface{})
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{FirebaseHostingBasePath}}projects/{{project}}/sites/{{site_id}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseHostingBasePath}}projects/{{project}}/sites/{{site_id}}")
 	if err != nil {
 		return err
 	}
@@ -280,7 +280,7 @@ func resourceFirebaseHostingSiteDelete(d *schema.ResourceData, meta interface{})
 
 func resourceFirebaseHostingSiteImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/sites/(?P<site_id>[^/]+)",
 		"(?P<project>[^/]+)/(?P<site_id>[^/]+)",
 		"sites/(?P<site_id>[^/]+)",
@@ -290,7 +290,7 @@ func resourceFirebaseHostingSiteImport(d *schema.ResourceData, meta interface{})
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "projects/{{project}}/sites/{{site_id}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/sites/{{site_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

@@ -1,33 +1,19 @@
-# Copyright 2022 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
-index 8a9511d18..19ef9dad7 100644
+index 31f824ff4..441a1e206 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
-@@ -3578,7 +3578,13 @@ func resourceContainerClusterStateImporter(d *schema.ResourceData, meta interfac
- 	// 	return nil, err
- 	// }
-
--	if err := parseImportId([]string{"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)", "(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)", "(?P<location>[^/]+)/(?P<name>[^/]+)"}, d, config); err != nil {
+@@ -5560,7 +5560,13 @@ func resourceContainerClusterStateImporter(d *schema.ResourceData, meta interfac
+ 	//	return nil, err
+ 	//}
+ 
+-	if err := ParseImportId([]string{"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)", "(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)", "(?P<location>[^/]+)/(?P<name>[^/]+)"}, d, config); err != nil {
 +	idRegexes := []string{
 +		"projects/(?P<project>[^/]+)/zones/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)",
 +		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)",
 +		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)",
 +		"(?P<location>[^/]+)/(?P<name>[^/]+)",
 +	}
-+	if err := parseImportId(idRegexes, d, config); err != nil {
++	if err := ParseImportId(idRegexes, d, config); err != nil {
  		return nil, err
  	}
  	project, err := getProject(d, config)

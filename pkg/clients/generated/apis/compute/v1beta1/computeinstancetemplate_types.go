@@ -97,7 +97,7 @@ type InstancetemplateDisk struct {
 	// +optional
 	DiskName *string `json:"diskName,omitempty"`
 
-	/* Immutable. The size of the image in gigabytes. If not specified, it will inherit the size of its base image. For SCRATCH disks, the size must be exactly 375GB. */
+	/* Immutable. The size of the image in gigabytes. If not specified, it will inherit the size of its base image. For SCRATCH disks, the size must be one of 375 or 3000 GB, with a default of 375 GB. */
 	// +optional
 	DiskSizeGb *int `json:"diskSizeGb,omitempty"`
 
@@ -466,6 +466,10 @@ type ComputeInstanceTemplateStatus struct {
 	/* The URI of the created resource. */
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
+
+	/* A special URI of the created resource that uniquely identifies this instance template. */
+	// +optional
+	SelfLinkUnique *string `json:"selfLinkUnique,omitempty"`
 
 	/* The unique fingerprint of the tags. */
 	// +optional

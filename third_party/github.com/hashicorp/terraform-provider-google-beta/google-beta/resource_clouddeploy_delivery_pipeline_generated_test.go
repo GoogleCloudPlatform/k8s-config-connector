@@ -26,6 +26,108 @@ import (
 	"testing"
 )
 
+func TestAccClouddeployDeliveryPipeline_CanaryDeliveryPipeline(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"project_name":  GetTestProjectFromEnv(),
+		"region":        GetTestRegionFromEnv(),
+		"random_suffix": RandString(t, 10),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck: func() { AccTestPreCheck(t) },
+
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckClouddeployDeliveryPipelineDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccClouddeployDeliveryPipeline_CanaryDeliveryPipeline(context),
+			},
+			{
+				ResourceName:      "google_clouddeploy_delivery_pipeline.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccClouddeployDeliveryPipeline_CanaryDeliveryPipelineUpdate0(context),
+			},
+			{
+				ResourceName:      "google_clouddeploy_delivery_pipeline.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+func TestAccClouddeployDeliveryPipeline_CanaryServiceNetworkingDeliveryPipeline(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"project_name":  GetTestProjectFromEnv(),
+		"region":        GetTestRegionFromEnv(),
+		"random_suffix": RandString(t, 10),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck: func() { AccTestPreCheck(t) },
+
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckClouddeployDeliveryPipelineDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccClouddeployDeliveryPipeline_CanaryServiceNetworkingDeliveryPipeline(context),
+			},
+			{
+				ResourceName:      "google_clouddeploy_delivery_pipeline.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccClouddeployDeliveryPipeline_CanaryServiceNetworkingDeliveryPipelineUpdate0(context),
+			},
+			{
+				ResourceName:      "google_clouddeploy_delivery_pipeline.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
+func TestAccClouddeployDeliveryPipeline_CanaryrunDeliveryPipeline(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"project_name":  GetTestProjectFromEnv(),
+		"region":        GetTestRegionFromEnv(),
+		"random_suffix": RandString(t, 10),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck: func() { AccTestPreCheck(t) },
+
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckClouddeployDeliveryPipelineDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccClouddeployDeliveryPipeline_CanaryrunDeliveryPipeline(context),
+			},
+			{
+				ResourceName:      "google_clouddeploy_delivery_pipeline.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
+				Config: testAccClouddeployDeliveryPipeline_CanaryrunDeliveryPipelineUpdate0(context),
+			},
+			{
+				ResourceName:      "google_clouddeploy_delivery_pipeline.primary",
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+		},
+	})
+}
 func TestAccClouddeployDeliveryPipeline_DeliveryPipeline(t *testing.T) {
 	t.Parallel()
 
@@ -36,9 +138,9 @@ func TestAccClouddeployDeliveryPipeline_DeliveryPipeline(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckClouddeployDeliveryPipelineDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckClouddeployDeliveryPipelineDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccClouddeployDeliveryPipeline_DeliveryPipeline(context),
@@ -69,10 +171,10 @@ func TestAccClouddeployDeliveryPipeline_VerifyDeliveryPipeline(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck: func() { testAccPreCheck(t) },
+		PreCheck: func() { AccTestPreCheck(t) },
 
-		Providers:    TestAccProvidersOiCS,
-		CheckDestroy: testAccCheckClouddeployDeliveryPipelineDestroyProducer(t),
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckClouddeployDeliveryPipelineDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccClouddeployDeliveryPipeline_VerifyDeliveryPipeline(context),
@@ -92,6 +194,314 @@ func TestAccClouddeployDeliveryPipeline_VerifyDeliveryPipeline(t *testing.T) {
 			},
 		},
 	})
+}
+
+func testAccClouddeployDeliveryPipeline_CanaryDeliveryPipeline(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_clouddeploy_delivery_pipeline" "primary" {
+  location = "%{region}"
+  name     = "tf-test-pipeline%{random_suffix}"
+
+  annotations = {
+    my_first_annotation = "example-annotation-1"
+
+    my_second_annotation = "example-annotation-2"
+  }
+
+  description = "basic description"
+
+  labels = {
+    my_first_label = "example-label-1"
+
+    my_second_label = "example-label-2"
+  }
+
+  project = "%{project_name}"
+
+  serial_pipeline {
+    stages {
+      profiles  = ["example-profile-one", "example-profile-two"]
+      target_id = "example-target-one"
+    }
+
+    stages {
+      profiles  = []
+      target_id = "example-target-two"
+    }
+  }
+  provider = google-beta
+}
+
+`, context)
+}
+
+func testAccClouddeployDeliveryPipeline_CanaryDeliveryPipelineUpdate0(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_clouddeploy_delivery_pipeline" "primary" {
+  location = "%{region}"
+  name     = "tf-test-pipeline%{random_suffix}"
+
+  annotations = {
+    my_second_annotation = "updated-example-annotation-2"
+
+    my_third_annotation = "example-annotation-3"
+  }
+
+  description = "updated description"
+
+  labels = {
+    my_second_label = "updated-example-label-2"
+
+    my_third_label = "example-label-3"
+  }
+
+  project = "%{project_name}"
+
+  serial_pipeline {
+    stages {
+      profiles = ["new-example-profile"]
+
+      strategy {
+        canary {
+          custom_canary_deployment {
+            phase_configs {
+              percentage = 50
+              phase_id   = "first"
+              verify     = true
+            }
+
+            phase_configs {
+              percentage = 100
+              phase_id   = "stable"
+              verify     = false
+            }
+          }
+
+          runtime_config {
+            kubernetes {
+              gateway_service_mesh {
+                deployment = "example-deployment"
+                http_route = "example-http-route"
+                service    = "example-service"
+              }
+            }
+          }
+        }
+      }
+
+      target_id = "example-target-two"
+    }
+
+    stages {
+      profiles = ["example-profile-four", "example-profile-five"]
+
+      strategy {
+        canary {
+          canary_deployment {
+            percentages = [0, 5, 20]
+            verify      = true
+          }
+
+          runtime_config {
+            kubernetes {
+              gateway_service_mesh {
+                deployment = "example-deployment"
+                http_route = "example-http-route"
+                service    = "example-service"
+              }
+            }
+          }
+        }
+      }
+
+      target_id = "example-target-three"
+    }
+  }
+  provider = google-beta
+}
+
+`, context)
+}
+
+func testAccClouddeployDeliveryPipeline_CanaryServiceNetworkingDeliveryPipeline(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_clouddeploy_delivery_pipeline" "primary" {
+  location = "%{region}"
+  name     = "tf-test-pipeline%{random_suffix}"
+
+  annotations = {
+    my_first_annotation = "example-annotation-1"
+
+    my_second_annotation = "example-annotation-2"
+  }
+
+  description = "basic description"
+
+  labels = {
+    my_first_label = "example-label-1"
+
+    my_second_label = "example-label-2"
+  }
+
+  project = "%{project_name}"
+
+  serial_pipeline {
+    stages {
+      profiles  = ["example-profile-one", "example-profile-two"]
+      target_id = "example-target-one"
+    }
+
+    stages {
+      profiles  = []
+      target_id = "example-target-two"
+    }
+  }
+  provider = google-beta
+}
+
+`, context)
+}
+
+func testAccClouddeployDeliveryPipeline_CanaryServiceNetworkingDeliveryPipelineUpdate0(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_clouddeploy_delivery_pipeline" "primary" {
+  location = "%{region}"
+  name     = "tf-test-pipeline%{random_suffix}"
+
+  annotations = {
+    my_second_annotation = "updated-example-annotation-2"
+
+    my_third_annotation = "example-annotation-3"
+  }
+
+  description = "updated description"
+
+  labels = {
+    my_second_label = "updated-example-label-2"
+
+    my_third_label = "example-label-3"
+  }
+
+  project = "%{project_name}"
+
+  serial_pipeline {
+    stages {
+      profiles = ["new-example-profile"]
+
+      strategy {
+        canary {
+          canary_deployment {
+            percentages = [25]
+            verify      = true
+          }
+
+          runtime_config {
+            kubernetes {
+              service_networking {
+                deployment = "example-deployment"
+                service    = "example-service"
+              }
+            }
+          }
+        }
+      }
+
+      target_id = "example-target-two"
+    }
+  }
+  provider = google-beta
+}
+
+`, context)
+}
+
+func testAccClouddeployDeliveryPipeline_CanaryrunDeliveryPipeline(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_clouddeploy_delivery_pipeline" "primary" {
+  location = "%{region}"
+  name     = "tf-test-pipeline%{random_suffix}"
+
+  annotations = {
+    my_first_annotation = "example-annotation-1"
+
+    my_second_annotation = "example-annotation-2"
+  }
+
+  description = "basic description"
+
+  labels = {
+    my_first_label = "example-label-1"
+
+    my_second_label = "example-label-2"
+  }
+
+  project = "%{project_name}"
+
+  serial_pipeline {
+    stages {
+      profiles  = ["example-profile-one", "example-profile-two"]
+      target_id = "example-target-one"
+    }
+
+    stages {
+      profiles  = []
+      target_id = "example-target-two"
+    }
+  }
+  provider = google-beta
+}
+
+`, context)
+}
+
+func testAccClouddeployDeliveryPipeline_CanaryrunDeliveryPipelineUpdate0(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_clouddeploy_delivery_pipeline" "primary" {
+  location = "%{region}"
+  name     = "tf-test-pipeline%{random_suffix}"
+
+  annotations = {
+    my_second_annotation = "updated-example-annotation-2"
+
+    my_third_annotation = "example-annotation-3"
+  }
+
+  description = "updated description"
+
+  labels = {
+    my_second_label = "updated-example-label-2"
+
+    my_third_label = "example-label-3"
+  }
+
+  project = "%{project_name}"
+
+  serial_pipeline {
+    stages {
+      profiles = ["new-example-profile"]
+
+      strategy {
+        canary {
+          canary_deployment {
+            percentages = [25]
+            verify      = true
+          }
+
+          runtime_config {
+            cloud_run {
+              automatic_traffic_control = true
+            }
+          }
+        }
+      }
+
+      target_id = "example-target-two"
+    }
+  }
+  provider = google-beta
+}
+
+`, context)
 }
 
 func testAccClouddeployDeliveryPipeline_DeliveryPipeline(context map[string]interface{}) string {

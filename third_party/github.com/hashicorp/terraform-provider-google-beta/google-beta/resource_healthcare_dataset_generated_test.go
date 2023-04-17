@@ -31,9 +31,9 @@ func TestAccHealthcareDataset_healthcareDatasetBasicExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckHealthcareDatasetDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckHealthcareDatasetDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccHealthcareDataset_healthcareDatasetBasicExample(context),
@@ -81,7 +81,7 @@ func testAccCheckHealthcareDatasetDestroyProducer(t *testing.T) func(s *terrafor
 				billingProject = config.BillingProject
 			}
 
-			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, healthcareDatasetNotInitialized)
+			_, err = SendRequest(config, "GET", billingProject, url, config.UserAgent, nil, HealthcareDatasetNotInitialized)
 			if err == nil {
 				return fmt.Errorf("HealthcareDataset still exists at %s", url)
 			}

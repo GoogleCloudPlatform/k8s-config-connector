@@ -22,7 +22,7 @@ func DataSourceGoogleFirebaseHostingChannel() *schema.Resource {
 func dataSourceGoogleFirebaseHostingChannelRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
 
-	id, err := replaceVars(d, config, "sites/{{site_id}}/channels/{{channel_id}}")
+	id, err := ReplaceVars(d, config, "sites/{{site_id}}/channels/{{channel_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}

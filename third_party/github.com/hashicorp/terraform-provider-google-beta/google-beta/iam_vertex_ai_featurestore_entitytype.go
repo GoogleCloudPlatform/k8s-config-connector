@@ -162,7 +162,7 @@ func (u *VertexAIFeaturestoreEntitytypeIamUpdater) SetResourceIamPolicy(policy *
 
 func (u *VertexAIFeaturestoreEntitytypeIamUpdater) qualifyFeaturestoreEntitytypeUrl(methodIdentifier string) (string, error) {
 	urlTemplate := fmt.Sprintf("{{VertexAIBasePath}}%s:%s", fmt.Sprintf("%s/entityTypes/%s", u.featurestore, u.entitytype), methodIdentifier)
-	url, err := replaceVars(u.d, u.Config, urlTemplate)
+	url, err := ReplaceVars(u.d, u.Config, urlTemplate)
 	if err != nil {
 		return "", err
 	}

@@ -283,7 +283,7 @@ func resourceDataflowJobCreate(d *schema.ResourceData, meta interface{}) error {
 		Environment: &env,
 	}
 
-	id, err := replaceVars(d, config, "{{project}}/{{region}}/{{name}}")
+	id, err := ReplaceVars(d, config, "{{project}}/{{region}}/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -440,7 +440,7 @@ func resourceDataflowJobUpdateByReplacement(d *schema.ResourceData, meta interfa
 	err = RetryTimeDuration(func() (updateErr error) {
 		response, updateErr = resourceDataflowJobLaunchTemplate(config, project, region, userAgent, d.Get("template_gcs_path").(string), &request)
 		return updateErr
-	}, time.Minute*time.Duration(5), isDataflowJobUpdateRetryableError)
+	}, time.Minute*time.Duration(5), IsDataflowJobUpdateRetryableError)
 	if err != nil {
 		return err
 	}
@@ -735,7 +735,7 @@ func toSubnetworkSelfLink(subnetwork string, d *schema.ResourceData, config *Con
 	// Dataflow only respects the legacy compute base path with domain www.googleapis.com, not
 	// compute.googleapis.com
 	legacyComputeBasePath := "https://www.googleapis.com/compute/beta/"
-	url, err := replaceVars(d, config, legacyComputeBasePath+fv.RelativeLink())
+	url, err := ReplaceVars(d, config, legacyComputeBasePath+fv.RelativeLink())
 	if err != nil {
 		return "", err
 	}

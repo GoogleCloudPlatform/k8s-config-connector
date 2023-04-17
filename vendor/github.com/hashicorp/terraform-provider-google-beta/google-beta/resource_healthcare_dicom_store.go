@@ -163,7 +163,7 @@ func resourceHealthcareDicomStoreCreate(d *schema.ResourceData, meta interface{}
 		obj["streamConfigs"] = streamConfigsProp
 	}
 
-	url, err := replaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/dicomStores?dicomStoreId={{name}}")
+	url, err := ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/dicomStores?dicomStoreId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -182,7 +182,7 @@ func resourceHealthcareDicomStoreCreate(d *schema.ResourceData, meta interface{}
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "{{dataset}}/dicomStores/{{name}}")
+	id, err := ReplaceVars(d, config, "{{dataset}}/dicomStores/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -200,7 +200,7 @@ func resourceHealthcareDicomStoreRead(d *schema.ResourceData, meta interface{}) 
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/dicomStores/{{name}}")
+	url, err := ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/dicomStores/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -274,7 +274,7 @@ func resourceHealthcareDicomStoreUpdate(d *schema.ResourceData, meta interface{}
 		obj["streamConfigs"] = streamConfigsProp
 	}
 
-	url, err := replaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/dicomStores/{{name}}")
+	url, err := ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/dicomStores/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -293,9 +293,9 @@ func resourceHealthcareDicomStoreUpdate(d *schema.ResourceData, meta interface{}
 	if d.HasChange("stream_configs") {
 		updateMask = append(updateMask, "streamConfigs")
 	}
-	// updateMask is a URL parameter but not present in the schema, so replaceVars
+	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = addQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -325,7 +325,7 @@ func resourceHealthcareDicomStoreDelete(d *schema.ResourceData, meta interface{}
 
 	billingProject := ""
 
-	url, err := replaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/dicomStores/{{name}}")
+	url, err := ReplaceVars(d, config, "{{HealthcareBasePath}}{{dataset}}/dicomStores/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -351,12 +351,12 @@ func resourceHealthcareDicomStoreImport(d *schema.ResourceData, meta interface{}
 
 	config := meta.(*Config)
 
-	dicomStoreId, err := parseHealthcareDicomStoreId(d.Id(), config)
+	dicomStoreId, err := ParseHealthcareDicomStoreId(d.Id(), config)
 	if err != nil {
 		return nil, err
 	}
 
-	if err := d.Set("dataset", dicomStoreId.DatasetId.datasetId()); err != nil {
+	if err := d.Set("dataset", dicomStoreId.DatasetId.DatasetId()); err != nil {
 		return nil, fmt.Errorf("Error setting dataset: %s", err)
 	}
 	if err := d.Set("name", dicomStoreId.Name); err != nil {

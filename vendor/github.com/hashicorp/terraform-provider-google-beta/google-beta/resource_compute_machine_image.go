@@ -169,7 +169,7 @@ func resourceComputeMachineImageCreate(d *schema.ResourceData, meta interface{})
 		obj["machineImageEncryptionKey"] = machineImageEncryptionKeyProp
 	}
 
-	url, err := replaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/machineImages")
+	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/machineImages")
 	if err != nil {
 		return err
 	}
@@ -194,7 +194,7 @@ func resourceComputeMachineImageCreate(d *schema.ResourceData, meta interface{})
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "projects/{{project}}/global/machineImages/{{name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/global/machineImages/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -222,7 +222,7 @@ func resourceComputeMachineImageRead(d *schema.ResourceData, meta interface{}) e
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/machineImages/{{name}}")
+	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/machineImages/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -289,7 +289,7 @@ func resourceComputeMachineImageDelete(d *schema.ResourceData, meta interface{})
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/machineImages/{{name}}")
+	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}projects/{{project}}/global/machineImages/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -321,7 +321,7 @@ func resourceComputeMachineImageDelete(d *schema.ResourceData, meta interface{})
 
 func resourceComputeMachineImageImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/global/machineImages/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<name>[^/]+)",
 		"(?P<name>[^/]+)",
@@ -330,7 +330,7 @@ func resourceComputeMachineImageImport(d *schema.ResourceData, meta interface{})
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "projects/{{project}}/global/machineImages/{{name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/global/machineImages/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

@@ -62,7 +62,7 @@ func testSweepApiGatewayGateway(region string) error {
 	}
 
 	listTemplate := strings.Split("https://apigateway.googleapis.com/v1beta/projects/{{project}}/locations/{{region}}/gateways", "?")[0]
-	listUrl, err := replaceVars(d, config, listTemplate)
+	listUrl, err := ReplaceVars(d, config, listTemplate)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error preparing sweeper list url: %s", err)
 		return nil
@@ -104,7 +104,7 @@ func testSweepApiGatewayGateway(region string) error {
 		}
 
 		deleteTemplate := "https://apigateway.googleapis.com/v1beta/projects/{{project}}/locations/{{region}}/gateways/{{gateway_id}}"
-		deleteUrl, err := replaceVars(d, config, deleteTemplate)
+		deleteUrl, err := ReplaceVars(d, config, deleteTemplate)
 		if err != nil {
 			log.Printf("[INFO][SWEEPER_LOG] error preparing delete url: %s", err)
 			return nil

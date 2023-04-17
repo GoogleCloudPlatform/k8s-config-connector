@@ -16,10 +16,10 @@ func TestAccStorageBucketAccessControl_update(t *testing.T) {
 			if errObjectAcl != nil {
 				panic(errObjectAcl)
 			}
-			testAccPreCheck(t)
+			AccTestPreCheck(t)
 		},
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckStorageObjectAccessControlDestroyProducer(t),
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckStorageObjectAccessControlDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testGoogleStorageBucketAccessControlBasic(bucketName, "READER", "allUsers"),

@@ -203,7 +203,7 @@ func (u *Cloudbuildv2ConnectionIamUpdater) SetResourceIamPolicy(policy *cloudres
 
 func (u *Cloudbuildv2ConnectionIamUpdater) qualifyConnectionUrl(methodIdentifier string) (string, error) {
 	urlTemplate := fmt.Sprintf("{{Cloudbuildv2BasePath}}%s:%s", fmt.Sprintf("projects/%s/locations/%s/connections/%s", u.project, u.location, u.name), methodIdentifier)
-	url, err := replaceVars(u.d, u.Config, urlTemplate)
+	url, err := ReplaceVars(u.d, u.Config, urlTemplate)
 	if err != nil {
 		return "", err
 	}

@@ -21,7 +21,7 @@ func DataSourceGoogleRuntimeconfigConfig() *schema.Resource {
 func dataSourceGoogleRuntimeconfigConfigRead(d *schema.ResourceData, meta interface{}) error {
 	config := meta.(*Config)
 
-	id, err := replaceVars(d, config, "projects/{{project}}/configs/{{name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/configs/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}

@@ -129,7 +129,7 @@ func resourceFirebaseHostingChannelCreate(d *schema.ResourceData, meta interface
 		obj["ttl"] = ttlProp
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels?channelId={{channel_id}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels?channelId={{channel_id}}")
 	if err != nil {
 		return err
 	}
@@ -151,7 +151,7 @@ func resourceFirebaseHostingChannelCreate(d *schema.ResourceData, meta interface
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "sites/{{site_id}}/channels/{{channel_id}}")
+	id, err := ReplaceVars(d, config, "sites/{{site_id}}/channels/{{channel_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -169,7 +169,7 @@ func resourceFirebaseHostingChannelRead(d *schema.ResourceData, meta interface{}
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}")
 	if err != nil {
 		return err
 	}
@@ -231,7 +231,7 @@ func resourceFirebaseHostingChannelUpdate(d *schema.ResourceData, meta interface
 		obj["expireTime"] = expireTimeProp
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}")
 	if err != nil {
 		return err
 	}
@@ -250,9 +250,9 @@ func resourceFirebaseHostingChannelUpdate(d *schema.ResourceData, meta interface
 	if d.HasChange("expire_time") {
 		updateMask = append(updateMask, "expireTime")
 	}
-	// updateMask is a URL parameter but not present in the schema, so replaceVars
+	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = addQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -282,7 +282,7 @@ func resourceFirebaseHostingChannelDelete(d *schema.ResourceData, meta interface
 
 	billingProject := ""
 
-	url, err := replaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseHostingBasePath}}sites/{{site_id}}/channels/{{channel_id}}")
 	if err != nil {
 		return err
 	}
@@ -306,7 +306,7 @@ func resourceFirebaseHostingChannelDelete(d *schema.ResourceData, meta interface
 
 func resourceFirebaseHostingChannelImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"sites/(?P<site_id>[^/]+)/channels/(?P<channel_id>[^/]+)",
 		"(?P<site_id>[^/]+)/(?P<channel_id>[^/]+)",
 	}, d, config); err != nil {
@@ -314,7 +314,7 @@ func resourceFirebaseHostingChannelImport(d *schema.ResourceData, meta interface
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "sites/{{site_id}}/channels/{{channel_id}}")
+	id, err := ReplaceVars(d, config, "sites/{{site_id}}/channels/{{channel_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

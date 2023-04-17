@@ -14,14 +14,14 @@ func TestAccDataSourceIAMBetaWorkloadIdentityPool_basic(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckIAMBetaWorkloadIdentityPoolDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckIAMBetaWorkloadIdentityPoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceIAMBetaWorkloadIdentityPoolBasic(context),
 				Check: resource.ComposeTestCheckFunc(
-					checkDataSourceStateMatchesResourceState("data.google_iam_workload_identity_pool.foo", "google_iam_workload_identity_pool.bar"),
+					CheckDataSourceStateMatchesResourceState("data.google_iam_workload_identity_pool.foo", "google_iam_workload_identity_pool.bar"),
 				),
 			},
 		},

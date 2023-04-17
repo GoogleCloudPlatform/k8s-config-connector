@@ -50,7 +50,7 @@ func ResourceComputeInstanceGroupManager() *schema.Resource {
 						"instance_template": {
 							Type:             schema.TypeString,
 							Required:         true,
-							DiffSuppressFunc: compareSelfLinkRelativePaths,
+							DiffSuppressFunc: compareSelfLinkRelativePathsIgnoreParams,
 							Description:      `The full URL to an instance template from which all new instances of this version will be created.`,
 						},
 
@@ -268,7 +268,7 @@ func ResourceComputeInstanceGroupManager() *schema.Resource {
 							Type:             schema.TypeString,
 							Optional:         true,
 							ValidateFunc:     validation.StringInSlice([]string{"RECREATE", "SUBSTITUTE", ""}, false),
-							DiffSuppressFunc: emptyOrDefaultStringSuppress("SUBSTITUTE"),
+							DiffSuppressFunc: EmptyOrDefaultStringSuppress("SUBSTITUTE"),
 							Description:      `The instance replacement method for managed instance groups. Valid values are: "RECREATE", "SUBSTITUTE". If SUBSTITUTE (default), the group replaces VM instances with new instances that have randomly generated names. If RECREATE, instance names are preserved.  You must also set max_unavailable_fixed or max_unavailable_percent to be greater than 0.`,
 						},
 					},
@@ -476,6 +476,33 @@ func ResourceComputeInstanceGroupManager() *schema.Resource {
 	}
 }
 
+func parseUniqueId(s string) (string, string) {
+	splits := strings.SplitN(s, "?uniqueId=", 2)
+	if len(splits) == 2 {
+		return splits[0], splits[1]
+	}
+	return s, ""
+}
+
+func compareSelfLinkRelativePathsIgnoreParams(_unused1, old, new string, _unused2 *schema.ResourceData) bool {
+	oldName, oldUniqueId := parseUniqueId(old)
+	newName, newUniqueId := parseUniqueId(new)
+	if oldUniqueId != "" && newUniqueId != "" && oldUniqueId != newUniqueId {
+		return false
+	}
+	return compareSelfLinkRelativePaths(_unused1, oldName, newName, _unused2)
+}
+
+func ConvertToUniqueIdWhenPresent(s string) string {
+	original, uniqueId := parseUniqueId(s)
+	if uniqueId != "" {
+		splits := strings.Split(original, "/")
+		splits[len(splits)-1] = uniqueId
+		return strings.Join(splits, "/")
+	}
+	return s
+}
+
 func getNamedPorts(nps []interface{}) []*compute.NamedPort {
 	namedPorts := make([]*compute.NamedPort, 0, len(nps))
 	for _, v := range nps {
@@ -548,7 +575,7 @@ func resourceComputeInstanceGroupManagerCreate(d *schema.ResourceData, meta inte
 	}
 
 	// It probably maybe worked, so store the ID now
-	id, err := replaceVars(d, config, "projects/{{project}}/zones/{{zone}}/instanceGroupManagers/{{name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/zones/{{zone}}/instanceGroupManagers/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -1112,7 +1139,7 @@ func expandVersions(configured []interface{}) []*compute.InstanceGroupManagerVer
 
 		version := compute.InstanceGroupManagerVersion{
 			Name:             data["name"].(string),
-			InstanceTemplate: data["instance_template"].(string),
+			InstanceTemplate: ConvertToUniqueIdWhenPresent(data["instance_template"].(string)),
 			TargetSize:       expandFixedOrPercent(data["target_size"].([]interface{})),
 		}
 
@@ -1407,12 +1434,12 @@ func resourceInstanceGroupManagerStateImporter(d *schema.ResourceData, meta inte
 		return nil, fmt.Errorf("Error setting wait_for_instances_status: %s", err)
 	}
 	config := meta.(*Config)
-	if err := parseImportId([]string{"projects/(?P<project>[^/]+)/zones/(?P<zone>[^/]+)/instanceGroupManagers/(?P<name>[^/]+)", "(?P<project>[^/]+)/(?P<zone>[^/]+)/(?P<name>[^/]+)", "(?P<project>[^/]+)/(?P<name>[^/]+)", "(?P<name>[^/]+)"}, d, config); err != nil {
+	if err := ParseImportId([]string{"projects/(?P<project>[^/]+)/zones/(?P<zone>[^/]+)/instanceGroupManagers/(?P<name>[^/]+)", "(?P<project>[^/]+)/(?P<zone>[^/]+)/(?P<name>[^/]+)", "(?P<project>[^/]+)/(?P<name>[^/]+)", "(?P<name>[^/]+)"}, d, config); err != nil {
 		return nil, err
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "projects/{{project}}/zones/{{zone}}/instanceGroupManagers/{{name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/zones/{{zone}}/instanceGroupManagers/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

@@ -19,12 +19,12 @@ func TestAccProjectIamPolicy_basic(t *testing.T) {
 	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
 	member := "user:evanbrown@google.com"
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
-				Config: testAccProject_create(pid, pname, org),
+				Config: testAccProject_create(pid, org),
 				Check: resource.ComposeTestCheckFunc(
 					testAccProjectExistingPolicy(t, pid),
 				),
@@ -32,7 +32,7 @@ func TestAccProjectIamPolicy_basic(t *testing.T) {
 			// Apply an IAM policy from a data source. The application
 			// merges policies, so we validate the expected state.
 			{
-				Config: testAccProjectAssociatePolicyBasic(pid, pname, org, member),
+				Config: testAccProjectAssociatePolicyBasic(pid, org, member),
 			},
 			{
 				ResourceName: "google_project_iam_policy.acceptance",
@@ -49,11 +49,11 @@ func TestAccProjectIamPolicy_emptyMembers(t *testing.T) {
 	org := GetTestOrgFromEnv(t)
 	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccProjectIamPolicyEmptyMembers(pid, pname, org),
+				Config: testAccProjectIamPolicyEmptyMembers(pid, org),
 			},
 		},
 	})
@@ -66,11 +66,11 @@ func TestAccProjectIamPolicy_expanded(t *testing.T) {
 	org := GetTestOrgFromEnv(t)
 	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccProjectAssociatePolicyExpanded(pid, pname, org),
+				Config: testAccProjectAssociatePolicyExpanded(pid, org),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckGoogleProjectIamPolicyExists("google_project_iam_policy.acceptance", "data.google_iam_policy.expanded", pid),
 				),
@@ -86,12 +86,12 @@ func TestAccProjectIamPolicy_basicAuditConfig(t *testing.T) {
 	org := GetTestOrgFromEnv(t)
 	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
-				Config: testAccProject_create(pid, pname, org),
+				Config: testAccProject_create(pid, org),
 				Check: resource.ComposeTestCheckFunc(
 					testAccProjectExistingPolicy(t, pid),
 				),
@@ -99,7 +99,7 @@ func TestAccProjectIamPolicy_basicAuditConfig(t *testing.T) {
 			// Apply an IAM policy from a data source. The application
 			// merges policies, so we validate the expected state.
 			{
-				Config: testAccProjectAssociatePolicyAuditConfigBasic(pid, pname, org),
+				Config: testAccProjectAssociatePolicyAuditConfigBasic(pid, org),
 			},
 			{
 				ResourceName: "google_project_iam_policy.acceptance",
@@ -116,11 +116,11 @@ func TestAccProjectIamPolicy_expandedAuditConfig(t *testing.T) {
 	org := GetTestOrgFromEnv(t)
 	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccProjectAssociatePolicyAuditConfigExpanded(pid, pname, org),
+				Config: testAccProjectAssociatePolicyAuditConfigExpanded(pid, org),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckGoogleProjectIamPolicyExists("google_project_iam_policy.acceptance", "data.google_iam_policy.expanded", pid),
 				),
@@ -135,12 +135,12 @@ func TestAccProjectIamPolicy_withCondition(t *testing.T) {
 	org := GetTestOrgFromEnv(t)
 	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			// Create a new project
 			{
-				Config: testAccProject_create(pid, pname, org),
+				Config: testAccProject_create(pid, org),
 				Check: resource.ComposeTestCheckFunc(
 					testAccProjectExistingPolicy(t, pid),
 				),
@@ -148,7 +148,7 @@ func TestAccProjectIamPolicy_withCondition(t *testing.T) {
 			// Apply an IAM policy from a data source. The application
 			// merges policies, so we validate the expected state.
 			{
-				Config: testAccProjectAssociatePolicy_withCondition(pid, pname, org),
+				Config: testAccProjectAssociatePolicy_withCondition(pid, org),
 			},
 			{
 				ResourceName: "google_project_iam_policy.acceptance",
@@ -166,15 +166,15 @@ func TestAccProjectIamPolicy_invalidMembers(t *testing.T) {
 	pid := fmt.Sprintf("tf-test-%d", RandInt(t))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
-				Config:      testAccProjectAssociatePolicyBasic(pid, pname, org, "admin@hashicorptest.com"),
+				Config:      testAccProjectAssociatePolicyBasic(pid, org, "admin@hashicorptest.com"),
 				ExpectError: regexp.MustCompile("invalid value for bindings\\.1\\.members\\.0 \\(IAM members must have one of the values outlined here: https://cloud.google.com/billing/docs/reference/rest/v1/Policy#Binding\\)"),
 			},
 			{
-				Config: testAccProjectAssociatePolicyBasic(pid, pname, org, "user:admin@hashicorptest.com"),
+				Config: testAccProjectAssociatePolicyBasic(pid, org, "user:admin@hashicorptest.com"),
 			},
 		},
 	})
@@ -241,7 +241,7 @@ func testAccProjectExistingPolicy(t *testing.T, pid string) resource.TestCheckFu
 	return func(s *terraform.State) error {
 		c := GoogleProviderConfig(t)
 		var err error
-		OriginalPolicy, err = getProjectIamPolicy(pid, c)
+		OriginalPolicy, err := getProjectIamPolicy(pid, c)
 		if err != nil {
 			return fmt.Errorf("Failed to retrieve IAM Policy for project %q: %s", pid, err)
 		}
@@ -252,7 +252,7 @@ func testAccProjectExistingPolicy(t *testing.T, pid string) resource.TestCheckFu
 	}
 }
 
-func testAccProjectAssociatePolicyBasic(pid, name, org, member string) string {
+func testAccProjectAssociatePolicyBasic(pid, org, member string) string {
 	return fmt.Sprintf(`
 resource "google_project" "acceptance" {
   project_id = "%s"
@@ -280,10 +280,10 @@ data "google_iam_policy" "admin" {
     ]
   }
 }
-`, pid, name, org, member)
+`, pid, pid, org, member)
 }
 
-func testAccProjectAssociatePolicyAuditConfigBasic(pid, name, org string) string {
+func testAccProjectAssociatePolicyAuditConfigBasic(pid, org string) string {
 	return fmt.Sprintf(`
 resource "google_project" "acceptance" {
   project_id = "%s"
@@ -333,20 +333,20 @@ data "google_iam_policy" "admin" {
     }
   }
 }
-`, pid, name, org)
+`, pid, pid, org)
 }
 
-func testAccProject_create(pid, name, org string) string {
+func testAccProject_create(pid, org string) string {
 	return fmt.Sprintf(`
 resource "google_project" "acceptance" {
   project_id = "%s"
   name       = "%s"
   org_id     = "%s"
 }
-`, pid, name, org)
+`, pid, pid, org)
 }
 
-func testAccProjectIamPolicyEmptyMembers(pid, name, org string) string {
+func testAccProjectIamPolicyEmptyMembers(pid, org string) string {
 	return fmt.Sprintf(`
 resource "google_project" "acceptance" {
   project_id = "%s"
@@ -365,10 +365,10 @@ data "google_iam_policy" "expanded" {
     members = []
   }
 }
-`, pid, name, org)
+`, pid, pid, org)
 }
 
-func testAccProjectAssociatePolicyExpanded(pid, name, org string) string {
+func testAccProjectAssociatePolicyExpanded(pid, org string) string {
 	return fmt.Sprintf(`
 resource "google_project" "acceptance" {
   project_id = "%s"
@@ -396,10 +396,10 @@ data "google_iam_policy" "expanded" {
     ]
   }
 }
-`, pid, name, org)
+`, pid, pid, org)
 }
 
-func testAccProjectAssociatePolicyAuditConfigExpanded(pid, name, org string) string {
+func testAccProjectAssociatePolicyAuditConfigExpanded(pid, org string) string {
 	return fmt.Sprintf(`
 resource "google_project" "acceptance" {
   project_id = "%s"
@@ -449,10 +449,10 @@ data "google_iam_policy" "expanded" {
     }
   }
 }
-`, pid, name, org)
+`, pid, pid, org)
 }
 
-func testAccProjectAssociatePolicy_withCondition(pid, name, org string) string {
+func testAccProjectAssociatePolicy_withCondition(pid, org string) string {
 	return fmt.Sprintf(`
 resource "google_project" "acceptance" {
   project_id = "%s"
@@ -485,5 +485,5 @@ data "google_iam_policy" "admin" {
     }
   }
 }
-`, pid, name, org)
+`, pid, pid, org)
 }

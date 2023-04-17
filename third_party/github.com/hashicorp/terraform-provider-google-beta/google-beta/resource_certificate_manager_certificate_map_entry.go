@@ -45,7 +45,7 @@ func ResourceCertificateManagerCertificateMapEntry() *schema.Resource {
 			"certificates": {
 				Type:             schema.TypeList,
 				Required:         true,
-				DiffSuppressFunc: projectNumberDiffSuppress,
+				DiffSuppressFunc: ProjectNumberDiffSuppress,
 				Description: `A set of Certificates defines for the given hostname.
 There can be defined up to fifteen certificates in each Certificate Map Entry.
 Each certificate must match pattern projects/*/locations/*/certificates/*.`,
@@ -76,6 +76,7 @@ names must be unique globally and match pattern
 			"hostname": {
 				Type:     schema.TypeString,
 				Optional: true,
+				ForceNew: true,
 				Description: `A Hostname (FQDN, e.g. example.com) or a wildcard hostname expression (*.example.com)
 for a set of hostnames with common suffix. Used as Server Name Indication (SNI) for
 selecting a proper certificate.`,
@@ -93,6 +94,7 @@ Example: { "name": "wrench", "mass": "1.3kg", "count": "3" }.`,
 			"matcher": {
 				Type:         schema.TypeString,
 				Optional:     true,
+				ForceNew:     true,
 				Description:  `A predefined matcher for particular cases, other than SNI selection`,
 				ExactlyOneOf: []string{"hostname", "matcher"},
 			},
@@ -171,7 +173,7 @@ func resourceCertificateManagerCertificateMapEntryCreate(d *schema.ResourceData,
 		obj["name"] = nameProp
 	}
 
-	url, err := replaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificateMaps/{{map}}/certificateMapEntries?certificateMapEntryId={{name}}")
+	url, err := ReplaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificateMaps/{{map}}/certificateMapEntries?certificateMapEntryId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -196,7 +198,7 @@ func resourceCertificateManagerCertificateMapEntryCreate(d *schema.ResourceData,
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "projects/{{project}}/locations/global/certificateMaps/{{map}}/certificateMapEntries/{{name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/global/certificateMaps/{{map}}/certificateMapEntries/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -224,7 +226,7 @@ func resourceCertificateManagerCertificateMapEntryRead(d *schema.ResourceData, m
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificateMaps/{{map}}/certificateMapEntries/{{name}}")
+	url, err := ReplaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificateMaps/{{map}}/certificateMapEntries/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -316,20 +318,8 @@ func resourceCertificateManagerCertificateMapEntryUpdate(d *schema.ResourceData,
 	} else if v, ok := d.GetOkExists("certificates"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, certificatesProp)) {
 		obj["certificates"] = certificatesProp
 	}
-	hostnameProp, err := expandCertificateManagerCertificateMapEntryHostname(d.Get("hostname"), d, config)
-	if err != nil {
-		return err
-	} else if v, ok := d.GetOkExists("hostname"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, hostnameProp)) {
-		obj["hostname"] = hostnameProp
-	}
-	matcherProp, err := expandCertificateManagerCertificateMapEntryMatcher(d.Get("matcher"), d, config)
-	if err != nil {
-		return err
-	} else if v, ok := d.GetOkExists("matcher"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, matcherProp)) {
-		obj["matcher"] = matcherProp
-	}
 
-	url, err := replaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificateMaps/{{map}}/certificateMapEntries/{{name}}")
+	url, err := ReplaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificateMaps/{{map}}/certificateMapEntries/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -348,17 +338,9 @@ func resourceCertificateManagerCertificateMapEntryUpdate(d *schema.ResourceData,
 	if d.HasChange("certificates") {
 		updateMask = append(updateMask, "certificates")
 	}
-
-	if d.HasChange("hostname") {
-		updateMask = append(updateMask, "hostname")
-	}
-
-	if d.HasChange("matcher") {
-		updateMask = append(updateMask, "matcher")
-	}
-	// updateMask is a URL parameter but not present in the schema, so replaceVars
+	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = addQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -402,7 +384,7 @@ func resourceCertificateManagerCertificateMapEntryDelete(d *schema.ResourceData,
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificateMaps/{{map}}/certificateMapEntries/{{name}}")
+	url, err := ReplaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificateMaps/{{map}}/certificateMapEntries/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -434,7 +416,7 @@ func resourceCertificateManagerCertificateMapEntryDelete(d *schema.ResourceData,
 
 func resourceCertificateManagerCertificateMapEntryImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/global/certificateMaps/(?P<map>[^/]+)/certificateMapEntries/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<map>[^/]+)/(?P<name>[^/]+)",
 		"(?P<map>[^/]+)/(?P<name>[^/]+)",
@@ -443,7 +425,7 @@ func resourceCertificateManagerCertificateMapEntryImport(d *schema.ResourceData,
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "projects/{{project}}/locations/global/certificateMaps/{{map}}/certificateMapEntries/{{name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/global/certificateMaps/{{map}}/certificateMapEntries/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

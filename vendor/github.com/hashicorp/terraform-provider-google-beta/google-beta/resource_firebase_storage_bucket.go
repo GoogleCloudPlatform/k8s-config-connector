@@ -69,7 +69,7 @@ func resourceFirebaseStorageBucketCreate(d *schema.ResourceData, meta interface{
 
 	obj := make(map[string]interface{})
 
-	url, err := replaceVars(d, config, "{{FirebaseStorageBasePath}}projects/{{project}}/buckets/{{bucket_id}}:addFirebase")
+	url, err := ReplaceVars(d, config, "{{FirebaseStorageBasePath}}projects/{{project}}/buckets/{{bucket_id}}:addFirebase")
 	if err != nil {
 		return err
 	}
@@ -97,7 +97,7 @@ func resourceFirebaseStorageBucketCreate(d *schema.ResourceData, meta interface{
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "projects/{{project}}/buckets/{{bucket_id}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/buckets/{{bucket_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -115,7 +115,7 @@ func resourceFirebaseStorageBucketRead(d *schema.ResourceData, meta interface{})
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseStorageBasePath}}projects/{{project}}/buckets/{{bucket_id}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseStorageBasePath}}projects/{{project}}/buckets/{{bucket_id}}")
 	if err != nil {
 		return err
 	}
@@ -164,7 +164,7 @@ func resourceFirebaseStorageBucketDelete(d *schema.ResourceData, meta interface{
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{FirebaseStorageBasePath}}projects/{{project}}/buckets/{{bucket_id}}:removeFirebase")
+	url, err := ReplaceVars(d, config, "{{FirebaseStorageBasePath}}projects/{{project}}/buckets/{{bucket_id}}:removeFirebase")
 	if err != nil {
 		return err
 	}
@@ -188,7 +188,7 @@ func resourceFirebaseStorageBucketDelete(d *schema.ResourceData, meta interface{
 
 func resourceFirebaseStorageBucketImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/buckets/(?P<bucket_id>[^/]+)",
 		"(?P<project>[^/]+)/(?P<bucket_id>[^/]+)",
 		"(?P<bucket_id>[^/]+)",
@@ -197,7 +197,7 @@ func resourceFirebaseStorageBucketImport(d *schema.ResourceData, meta interface{
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "projects/{{project}}/buckets/{{bucket_id}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/buckets/{{bucket_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

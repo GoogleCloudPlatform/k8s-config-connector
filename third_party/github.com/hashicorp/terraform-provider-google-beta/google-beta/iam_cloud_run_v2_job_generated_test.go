@@ -30,8 +30,8 @@ func TestAccCloudRunV2JobIamBindingGenerated(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCloudRunV2JobIamBinding_basicGenerated(context),
@@ -65,8 +65,8 @@ func TestAccCloudRunV2JobIamMemberGenerated(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -91,8 +91,8 @@ func TestAccCloudRunV2JobIamPolicyGenerated(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccCloudRunV2JobIamPolicy_basicGenerated(context),
@@ -130,6 +130,12 @@ resource "google_cloud_run_v2_job" "default" {
       }
     }
   }
+
+  lifecycle {
+    ignore_changes = [
+      launch_stage,
+    ]
+  }
 }
 
 resource "google_cloud_run_v2_job_iam_member" "foo" {
@@ -155,6 +161,12 @@ resource "google_cloud_run_v2_job" "default" {
         image = "us-docker.pkg.dev/cloudrun/container/hello"
       }
     }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      launch_stage,
+    ]
   }
 }
 
@@ -188,6 +200,12 @@ resource "google_cloud_run_v2_job" "default" {
       }
     }
   }
+
+  lifecycle {
+    ignore_changes = [
+      launch_stage,
+    ]
+  }
 }
 
 data "google_iam_policy" "foo" {
@@ -216,6 +234,12 @@ resource "google_cloud_run_v2_job" "default" {
       }
     }
   }
+
+  lifecycle {
+    ignore_changes = [
+      launch_stage,
+    ]
+  }
 }
 
 resource "google_cloud_run_v2_job_iam_binding" "foo" {
@@ -241,6 +265,12 @@ resource "google_cloud_run_v2_job" "default" {
         image = "us-docker.pkg.dev/cloudrun/container/hello"
       }
     }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      launch_stage,
+    ]
   }
 }
 

@@ -203,7 +203,7 @@ func (u *DataprocMetastoreFederationIamUpdater) SetResourceIamPolicy(policy *clo
 
 func (u *DataprocMetastoreFederationIamUpdater) qualifyFederationUrl(methodIdentifier string) (string, error) {
 	urlTemplate := fmt.Sprintf("{{DataprocMetastoreBasePath}}%s:%s", fmt.Sprintf("projects/%s/locations/%s/federations/%s", u.project, u.location, u.federationId), methodIdentifier)
-	url, err := replaceVars(u.d, u.Config, urlTemplate)
+	url, err := ReplaceVars(u.d, u.Config, urlTemplate)
 	if err != nil {
 		return "", err
 	}

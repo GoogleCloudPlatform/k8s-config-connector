@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC.
+// Copyright 2023 Google LLC.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -75,6 +75,7 @@ var _ = errors.New
 var _ = strings.Replace
 var _ = context.Canceled
 var _ = internaloption.WithDefaultEndpoint
+var _ = internal.Version
 
 const apiId = "dataflow:v1b3"
 const apiName = "dataflow"
@@ -224,7 +225,6 @@ func NewProjectsLocationsService(s *Service) *ProjectsLocationsService {
 	rs.FlexTemplates = NewProjectsLocationsFlexTemplatesService(s)
 	rs.Jobs = NewProjectsLocationsJobsService(s)
 	rs.Snapshots = NewProjectsLocationsSnapshotsService(s)
-	rs.Sql = NewProjectsLocationsSqlService(s)
 	rs.Templates = NewProjectsLocationsTemplatesService(s)
 	return rs
 }
@@ -237,8 +237,6 @@ type ProjectsLocationsService struct {
 	Jobs *ProjectsLocationsJobsService
 
 	Snapshots *ProjectsLocationsSnapshotsService
-
-	Sql *ProjectsLocationsSqlService
 
 	Templates *ProjectsLocationsTemplatesService
 }
@@ -327,15 +325,6 @@ func NewProjectsLocationsSnapshotsService(s *Service) *ProjectsLocationsSnapshot
 }
 
 type ProjectsLocationsSnapshotsService struct {
-	s *Service
-}
-
-func NewProjectsLocationsSqlService(s *Service) *ProjectsLocationsSqlService {
-	rs := &ProjectsLocationsSqlService{s: s}
-	return rs
-}
-
-type ProjectsLocationsSqlService struct {
 	s *Service
 }
 
@@ -3240,6 +3229,10 @@ type JobMetadata struct {
 	// Dataflow job.
 	SpannerDetails []*SpannerIODetails `json:"spannerDetails,omitempty"`
 
+	// UserDisplayProperties: List of display properties to help UI filter
+	// jobs.
+	UserDisplayProperties map[string]string `json:"userDisplayProperties,omitempty"`
+
 	// ForceSendFields is a list of field names (e.g. "BigTableDetails") to
 	// unconditionally include in API requests. By default, fields with
 	// empty or default values are omitted from API requests. However, any
@@ -3266,10 +3259,12 @@ func (s *JobMetadata) MarshalJSON() ([]byte, error) {
 
 // JobMetrics: JobMetrics contains a collection of metrics describing
 // the detailed progress of a Dataflow job. Metrics correspond to
-// user-defined and system-defined metrics in the job. This resource
-// captures only the most recent values of each metric; time-series data
-// can be queried for them (under the same metric names) from Cloud
-// Monitoring.
+// user-defined and system-defined metrics in the job. For more
+// information, see [Dataflow job metrics]
+// (https://cloud.google.com/dataflow/docs/guides/using-monitoring-intf).
+// This resource captures only the most recent values of each metric;
+// time-series data can be queried for them (under the same metric
+// names) from Cloud Monitoring.
 type JobMetrics struct {
 	// MetricTime: Timestamp as of which metric values are current.
 	MetricTime string `json:"metricTime,omitempty"`
@@ -4331,6 +4326,12 @@ type ParameterMetadata struct {
 	// parameter.
 	CustomMetadata map[string]string `json:"customMetadata,omitempty"`
 
+	// GroupName: Optional. Specifies a group name for this parameter to be
+	// rendered under. Group header text will be rendered exactly as
+	// specified in this field. Only considered when parent_name is NOT
+	// provided.
+	GroupName string `json:"groupName,omitempty"`
+
 	// HelpText: Required. The help text to display for the parameter.
 	HelpText string `json:"helpText,omitempty"`
 
@@ -4366,7 +4367,22 @@ type ParameterMetadata struct {
 	//   "PUBSUB_SUBSCRIPTION" - The parameter specifies a Pub/Sub
 	// Subscription.
 	//   "BIGQUERY_TABLE" - The parameter specifies a BigQuery table.
+	//   "JAVASCRIPT_UDF_FILE" - The parameter specifies a JavaScript UDF in
+	// Cloud Storage.
 	ParamType string `json:"paramType,omitempty"`
+
+	// ParentName: Optional. Specifies the name of the parent parameter.
+	// Used in conjunction with 'parent_trigger_values' to make this
+	// parameter conditional (will only be rendered conditionally). Should
+	// be mappable to a ParameterMetadata.name field.
+	ParentName string `json:"parentName,omitempty"`
+
+	// ParentTriggerValues: Optional. The value(s) of the 'parent_name'
+	// parameter which will trigger this parameter to be shown. If left
+	// empty, ANY non-empty value in parent_name will trigger this parameter
+	// to be shown. Only considered when this parameter is conditional (when
+	// 'parent_name' has been provided).
+	ParentTriggerValues []string `json:"parentTriggerValues,omitempty"`
 
 	// Regexes: Optional. Regexes that the parameter must match.
 	Regexes []string `json:"regexes,omitempty"`
@@ -4750,40 +4766,6 @@ func (s *PubsubSnapshotMetadata) MarshalJSON() ([]byte, error) {
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
 
-// QueryInfo: Information about a validated query.
-type QueryInfo struct {
-	// QueryProperty: Includes an entry for each satisfied QueryProperty.
-	//
-	// Possible values:
-	//   "QUERY_PROPERTY_UNSPECIFIED" - The query property is unknown or
-	// unspecified.
-	//   "HAS_UNBOUNDED_SOURCE" - Indicates this query reads from >= 1
-	// unbounded source.
-	QueryProperty []string `json:"queryProperty,omitempty"`
-
-	// ForceSendFields is a list of field names (e.g. "QueryProperty") to
-	// unconditionally include in API requests. By default, fields with
-	// empty or default values are omitted from API requests. However, any
-	// non-pointer, non-interface field appearing in ForceSendFields will be
-	// sent to the server regardless of whether the field is empty or not.
-	// This may be used to include empty fields in Patch requests.
-	ForceSendFields []string `json:"-"`
-
-	// NullFields is a list of field names (e.g. "QueryProperty") to include
-	// in API requests with the JSON null value. By default, fields with
-	// empty values are omitted from API requests. However, any field with
-	// an empty value appearing in NullFields will be sent to the server as
-	// null. It is an error if a field in this list has a non-empty value.
-	// This may be used to include null fields in Patch requests.
-	NullFields []string `json:"-"`
-}
-
-func (s *QueryInfo) MarshalJSON() ([]byte, error) {
-	type NoMethod QueryInfo
-	raw := NoMethod(*s)
-	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
-}
-
 // ReadInstruction: An instruction that reads records. Takes no inputs,
 // produces one output.
 type ReadInstruction struct {
@@ -4998,27 +4980,27 @@ type ResourceUtilizationReportResponse struct {
 
 // RuntimeEnvironment: The environment values to set at runtime.
 type RuntimeEnvironment struct {
-	// AdditionalExperiments: Additional experiment flags for the job,
-	// specified with the `--experiments` option.
+	// AdditionalExperiments: Optional. Additional experiment flags for the
+	// job, specified with the `--experiments` option.
 	AdditionalExperiments []string `json:"additionalExperiments,omitempty"`
 
-	// AdditionalUserLabels: Additional user labels to be specified for the
-	// job. Keys and values should follow the restrictions specified in the
-	// labeling restrictions
+	// AdditionalUserLabels: Optional. Additional user labels to be
+	// specified for the job. Keys and values should follow the restrictions
+	// specified in the labeling restrictions
 	// (https://cloud.google.com/compute/docs/labeling-resources#restrictions)
 	// page. An object containing a list of "key": value pairs. Example: {
 	// "name": "wrench", "mass": "1kg", "count": "3" }.
 	AdditionalUserLabels map[string]string `json:"additionalUserLabels,omitempty"`
 
-	// BypassTempDirValidation: Whether to bypass the safety checks for the
-	// job's temporary directory. Use with caution.
+	// BypassTempDirValidation: Optional. Whether to bypass the safety
+	// checks for the job's temporary directory. Use with caution.
 	BypassTempDirValidation bool `json:"bypassTempDirValidation,omitempty"`
 
-	// EnableStreamingEngine: Whether to enable Streaming Engine for the
-	// job.
+	// EnableStreamingEngine: Optional. Whether to enable Streaming Engine
+	// for the job.
 	EnableStreamingEngine bool `json:"enableStreamingEngine,omitempty"`
 
-	// IpConfiguration: Configuration for VM IPs.
+	// IpConfiguration: Optional. Configuration for VM IPs.
 	//
 	// Possible values:
 	//   "WORKER_IP_UNSPECIFIED" - The configuration is unknown, or
@@ -5027,51 +5009,52 @@ type RuntimeEnvironment struct {
 	//   "WORKER_IP_PRIVATE" - Workers should have private IP addresses.
 	IpConfiguration string `json:"ipConfiguration,omitempty"`
 
-	// KmsKeyName: Name for the Cloud KMS key for the job. Key format is:
-	// projects//locations//keyRings//cryptoKeys/
+	// KmsKeyName: Optional. Name for the Cloud KMS key for the job. Key
+	// format is: projects//locations//keyRings//cryptoKeys/
 	KmsKeyName string `json:"kmsKeyName,omitempty"`
 
-	// MachineType: The machine type to use for the job. Defaults to the
-	// value from the template if not specified.
+	// MachineType: Optional. The machine type to use for the job. Defaults
+	// to the value from the template if not specified.
 	MachineType string `json:"machineType,omitempty"`
 
-	// MaxWorkers: The maximum number of Google Compute Engine instances to
-	// be made available to your pipeline during execution, from 1 to 1000.
+	// MaxWorkers: Optional. The maximum number of Google Compute Engine
+	// instances to be made available to your pipeline during execution,
+	// from 1 to 1000. The default value is 1.
 	MaxWorkers int64 `json:"maxWorkers,omitempty"`
 
-	// Network: Network to which VMs will be assigned. If empty or
+	// Network: Optional. Network to which VMs will be assigned. If empty or
 	// unspecified, the service will use the network "default".
 	Network string `json:"network,omitempty"`
 
-	// NumWorkers: The initial number of Google Compute Engine instances for
-	// the job.
+	// NumWorkers: Optional. The initial number of Google Compute Engine
+	// instances for the job. The default value is 11.
 	NumWorkers int64 `json:"numWorkers,omitempty"`
 
-	// ServiceAccountEmail: The email address of the service account to run
-	// the job as.
+	// ServiceAccountEmail: Optional. The email address of the service
+	// account to run the job as.
 	ServiceAccountEmail string `json:"serviceAccountEmail,omitempty"`
 
-	// Subnetwork: Subnetwork to which VMs will be assigned, if desired. You
-	// can specify a subnetwork using either a complete URL or an
-	// abbreviated path. Expected to be of the form
+	// Subnetwork: Optional. Subnetwork to which VMs will be assigned, if
+	// desired. You can specify a subnetwork using either a complete URL or
+	// an abbreviated path. Expected to be of the form
 	// "https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/region
 	// s/REGION/subnetworks/SUBNETWORK" or
 	// "regions/REGION/subnetworks/SUBNETWORK". If the subnetwork is located
 	// in a Shared VPC network, you must use the complete URL.
 	Subnetwork string `json:"subnetwork,omitempty"`
 
-	// TempLocation: The Cloud Storage path to use for temporary files. Must
-	// be a valid Cloud Storage URL, beginning with `gs://`.
+	// TempLocation: Required. The Cloud Storage path to use for temporary
+	// files. Must be a valid Cloud Storage URL, beginning with `gs://`.
 	TempLocation string `json:"tempLocation,omitempty"`
 
-	// WorkerRegion: The Compute Engine region
+	// WorkerRegion: Required. The Compute Engine region
 	// (https://cloud.google.com/compute/docs/regions-zones/regions-zones)
 	// in which worker processing should occur, e.g. "us-west1". Mutually
 	// exclusive with worker_zone. If neither worker_region nor worker_zone
 	// is specified, default to the control plane's region.
 	WorkerRegion string `json:"workerRegion,omitempty"`
 
-	// WorkerZone: The Compute Engine zone
+	// WorkerZone: Optional. The Compute Engine zone
 	// (https://cloud.google.com/compute/docs/regions-zones/regions-zones)
 	// in which worker processing should occur, e.g. "us-west1-a". Mutually
 	// exclusive with worker_region. If neither worker_region nor
@@ -5080,7 +5063,7 @@ type RuntimeEnvironment struct {
 	// are set, `worker_zone` takes precedence.
 	WorkerZone string `json:"workerZone,omitempty"`
 
-	// Zone: The Compute Engine availability zone
+	// Zone: Optional. The Compute Engine availability zone
 	// (https://cloud.google.com/compute/docs/regions-zones/regions-zones)
 	// for launching worker instances to run your pipeline. In the future,
 	// worker_zone will take precedence.
@@ -6467,6 +6450,40 @@ func (s *Step) MarshalJSON() ([]byte, error) {
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
 
+// Straggler: Information for a straggler.
+type Straggler struct {
+	// BatchStraggler: Batch straggler identification and debugging
+	// information.
+	BatchStraggler *StragglerInfo `json:"batchStraggler,omitempty"`
+
+	// StreamingStraggler: Streaming straggler identification and debugging
+	// information.
+	StreamingStraggler *StreamingStragglerInfo `json:"streamingStraggler,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "BatchStraggler") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "BatchStraggler") to
+	// include in API requests with the JSON null value. By default, fields
+	// with empty values are omitted from API requests. However, any field
+	// with an empty value appearing in NullFields will be sent to the
+	// server as null. It is an error if a field in this list has a
+	// non-empty value. This may be used to include null fields in Patch
+	// requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *Straggler) MarshalJSON() ([]byte, error) {
+	type NoMethod Straggler
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
 // StragglerDebuggingInfo: Information useful for debugging a straggler.
 // Each type will provide specialized debugging information relevant for
 // a particular cause. The StragglerDebuggingInfo will be 1:1 mapping to
@@ -6534,6 +6551,9 @@ func (s *StragglerInfo) MarshalJSON() ([]byte, error) {
 
 // StragglerSummary: Summarized straggler identification details.
 type StragglerSummary struct {
+	// RecentStragglers: The most recent stragglers.
+	RecentStragglers []*Straggler `json:"recentStragglers,omitempty"`
+
 	// StragglerCauseCount: Aggregated counts of straggler causes, keyed by
 	// the string representation of the StragglerCause enum.
 	StragglerCauseCount map[string]string `json:"stragglerCauseCount,omitempty"`
@@ -6541,15 +6561,15 @@ type StragglerSummary struct {
 	// TotalStragglerCount: The total count of stragglers.
 	TotalStragglerCount int64 `json:"totalStragglerCount,omitempty,string"`
 
-	// ForceSendFields is a list of field names (e.g. "StragglerCauseCount")
-	// to unconditionally include in API requests. By default, fields with
+	// ForceSendFields is a list of field names (e.g. "RecentStragglers") to
+	// unconditionally include in API requests. By default, fields with
 	// empty or default values are omitted from API requests. However, any
 	// non-pointer, non-interface field appearing in ForceSendFields will be
 	// sent to the server regardless of whether the field is empty or not.
 	// This may be used to include empty fields in Patch requests.
 	ForceSendFields []string `json:"-"`
 
-	// NullFields is a list of field names (e.g. "StragglerCauseCount") to
+	// NullFields is a list of field names (e.g. "RecentStragglers") to
 	// include in API requests with the JSON null value. By default, fields
 	// with empty values are omitted from API requests. However, any field
 	// with an empty value appearing in NullFields will be sent to the
@@ -6927,6 +6947,50 @@ func (s *StreamingStageLocation) MarshalJSON() ([]byte, error) {
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
 
+// StreamingStragglerInfo: Information useful for streaming straggler
+// identification and debugging.
+type StreamingStragglerInfo struct {
+	// DataWatermarkLag: The event-time watermark lag at the time of the
+	// straggler detection.
+	DataWatermarkLag string `json:"dataWatermarkLag,omitempty"`
+
+	// EndTime: End time of this straggler.
+	EndTime string `json:"endTime,omitempty"`
+
+	// StartTime: Start time of this straggler.
+	StartTime string `json:"startTime,omitempty"`
+
+	// SystemWatermarkLag: The system watermark lag at the time of the
+	// straggler detection.
+	SystemWatermarkLag string `json:"systemWatermarkLag,omitempty"`
+
+	// WorkerName: Name of the worker where the straggler was detected.
+	WorkerName string `json:"workerName,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "DataWatermarkLag") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "DataWatermarkLag") to
+	// include in API requests with the JSON null value. By default, fields
+	// with empty values are omitted from API requests. However, any field
+	// with an empty value appearing in NullFields will be sent to the
+	// server as null. It is an error if a field in this list has a
+	// non-empty value. This may be used to include null fields in Patch
+	// requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *StreamingStragglerInfo) MarshalJSON() ([]byte, error) {
+	type NoMethod StreamingStragglerInfo
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
 // StringList: A metric value representing a list of strings.
 type StringList struct {
 	// Elements: Elements of the list.
@@ -7227,42 +7291,6 @@ type TransformSummary struct {
 
 func (s *TransformSummary) MarshalJSON() ([]byte, error) {
 	type NoMethod TransformSummary
-	raw := NoMethod(*s)
-	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
-}
-
-// ValidateResponse: Response to the validation request.
-type ValidateResponse struct {
-	// ErrorMessage: Will be empty if validation succeeds.
-	ErrorMessage string `json:"errorMessage,omitempty"`
-
-	// QueryInfo: Information about the validated query. Not defined if
-	// validation fails.
-	QueryInfo *QueryInfo `json:"queryInfo,omitempty"`
-
-	// ServerResponse contains the HTTP response code and headers from the
-	// server.
-	googleapi.ServerResponse `json:"-"`
-
-	// ForceSendFields is a list of field names (e.g. "ErrorMessage") to
-	// unconditionally include in API requests. By default, fields with
-	// empty or default values are omitted from API requests. However, any
-	// non-pointer, non-interface field appearing in ForceSendFields will be
-	// sent to the server regardless of whether the field is empty or not.
-	// This may be used to include empty fields in Patch requests.
-	ForceSendFields []string `json:"-"`
-
-	// NullFields is a list of field names (e.g. "ErrorMessage") to include
-	// in API requests with the JSON null value. By default, fields with
-	// empty values are omitted from API requests. However, any field with
-	// an empty value appearing in NullFields will be sent to the server as
-	// null. It is an error if a field in this list has a non-empty value.
-	// This may be used to include null fields in Patch requests.
-	NullFields []string `json:"-"`
-}
-
-func (s *ValidateResponse) MarshalJSON() ([]byte, error) {
-	type NoMethod ValidateResponse
 	raw := NoMethod(*s)
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
@@ -7808,6 +7836,10 @@ type WorkerMessage struct {
 	// WorkerShutdownNotice: Shutdown notice by workers.
 	WorkerShutdownNotice *WorkerShutdownNotice `json:"workerShutdownNotice,omitempty"`
 
+	// WorkerThreadScalingReport: Thread scaling information reported by
+	// workers.
+	WorkerThreadScalingReport *WorkerThreadScalingReport `json:"workerThreadScalingReport,omitempty"`
+
 	// ForceSendFields is a list of field names (e.g. "Labels") to
 	// unconditionally include in API requests. By default, fields with
 	// empty or default values are omitted from API requests. However, any
@@ -7899,6 +7931,10 @@ type WorkerMessageResponse struct {
 	// WorkerShutdownNoticeResponse: Service's response to shutdown notice
 	// (currently empty).
 	WorkerShutdownNoticeResponse *WorkerShutdownNoticeResponse `json:"workerShutdownNoticeResponse,omitempty"`
+
+	// WorkerThreadScalingReportResponse: Service's thread scaling
+	// recommendation for workers.
+	WorkerThreadScalingReportResponse *WorkerThreadScalingReportResponse `json:"workerThreadScalingReportResponse,omitempty"`
 
 	// ForceSendFields is a list of field names (e.g.
 	// "WorkerHealthReportResponse") to unconditionally include in API
@@ -8170,6 +8206,67 @@ func (s *WorkerShutdownNotice) MarshalJSON() ([]byte, error) {
 // WorkerShutdownNoticeResponse: Service-side response to WorkerMessage
 // issuing shutdown notice.
 type WorkerShutdownNoticeResponse struct {
+}
+
+// WorkerThreadScalingReport: Contains information about the thread
+// scaling information of a worker.
+type WorkerThreadScalingReport struct {
+	// CurrentThreadCount: Current number of active threads in a worker.
+	CurrentThreadCount int64 `json:"currentThreadCount,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "CurrentThreadCount")
+	// to unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "CurrentThreadCount") to
+	// include in API requests with the JSON null value. By default, fields
+	// with empty values are omitted from API requests. However, any field
+	// with an empty value appearing in NullFields will be sent to the
+	// server as null. It is an error if a field in this list has a
+	// non-empty value. This may be used to include null fields in Patch
+	// requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *WorkerThreadScalingReport) MarshalJSON() ([]byte, error) {
+	type NoMethod WorkerThreadScalingReport
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// WorkerThreadScalingReportResponse: Contains the thread scaling
+// recommendation for a worker from the backend.
+type WorkerThreadScalingReportResponse struct {
+	// RecommendedThreadCount: Recommended number of threads for a worker.
+	RecommendedThreadCount int64 `json:"recommendedThreadCount,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g.
+	// "RecommendedThreadCount") to unconditionally include in API requests.
+	// By default, fields with empty or default values are omitted from API
+	// requests. However, any non-pointer, non-interface field appearing in
+	// ForceSendFields will be sent to the server regardless of whether the
+	// field is empty or not. This may be used to include empty fields in
+	// Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "RecommendedThreadCount")
+	// to include in API requests with the JSON null value. By default,
+	// fields with empty values are omitted from API requests. However, any
+	// field with an empty value appearing in NullFields will be sent to the
+	// server as null. It is an error if a field in this list has a
+	// non-empty value. This may be used to include null fields in Patch
+	// requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *WorkerThreadScalingReportResponse) MarshalJSON() ([]byte, error) {
+	type NoMethod WorkerThreadScalingReportResponse
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
 
 // WriteInstruction: An instruction that writes records. Takes one
@@ -8602,6 +8699,14 @@ func (c *ProjectsJobsAggregatedCall) PageToken(pageToken string) *ProjectsJobsAg
 // version details.
 //
 //	"JOB_VIEW_ALL" - Request all information available for this job.
+//
+// When the job is in `JOB_STATE_PENDING`, the job has been created but
+// is not yet running, and not all job information is available. For
+// complete job information, wait until the job in is
+// `JOB_STATE_RUNNING`. For more information, see
+// [JobState](https://cloud.google.com/dataflow/docs/reference/rest/v1b3/
+// projects.jobs#jobstate).
+//
 //	"JOB_VIEW_DESCRIPTION" - Request summary info and limited job
 //
 // description data for steps, labels and environment.
@@ -8772,7 +8877,7 @@ func (c *ProjectsJobsAggregatedCall) Do(opts ...googleapi.CallOption) (*ListJobs
 	//       "enumDescriptions": [
 	//         "The job view to return isn't specified, or is unknown. Responses will contain at least the `JOB_VIEW_SUMMARY` information, and may contain additional information.",
 	//         "Request summary information only: Project ID, Job ID, job name, job type, job status, start/end time, and Cloud SDK version details.",
-	//         "Request all information available for this job.",
+	//         "Request all information available for this job. When the job is in `JOB_STATE_PENDING`, the job has been created but is not yet running, and not all job information is available. For complete job information, wait until the job in is `JOB_STATE_RUNNING`. For more information, see [JobState](https://cloud.google.com/dataflow/docs/reference/rest/v1b3/projects.jobs#jobstate).",
 	//         "Request summary info and limited job description data for steps, labels and environment."
 	//       ],
 	//       "location": "query",
@@ -8873,6 +8978,14 @@ func (c *ProjectsJobsCreateCall) ReplaceJobId(replaceJobId string) *ProjectsJobs
 // version details.
 //
 //	"JOB_VIEW_ALL" - Request all information available for this job.
+//
+// When the job is in `JOB_STATE_PENDING`, the job has been created but
+// is not yet running, and not all job information is available. For
+// complete job information, wait until the job in is
+// `JOB_STATE_RUNNING`. For more information, see
+// [JobState](https://cloud.google.com/dataflow/docs/reference/rest/v1b3/
+// projects.jobs#jobstate).
+//
 //	"JOB_VIEW_DESCRIPTION" - Request summary info and limited job
 //
 // description data for steps, labels and environment.
@@ -9007,7 +9120,7 @@ func (c *ProjectsJobsCreateCall) Do(opts ...googleapi.CallOption) (*Job, error) 
 	//       "enumDescriptions": [
 	//         "The job view to return isn't specified, or is unknown. Responses will contain at least the `JOB_VIEW_SUMMARY` information, and may contain additional information.",
 	//         "Request summary information only: Project ID, Job ID, job name, job type, job status, start/end time, and Cloud SDK version details.",
-	//         "Request all information available for this job.",
+	//         "Request all information available for this job. When the job is in `JOB_STATE_PENDING`, the job has been created but is not yet running, and not all job information is available. For complete job information, wait until the job in is `JOB_STATE_RUNNING`. For more information, see [JobState](https://cloud.google.com/dataflow/docs/reference/rest/v1b3/projects.jobs#jobstate).",
 	//         "Request summary info and limited job description data for steps, labels and environment."
 	//       ],
 	//       "location": "query",
@@ -9085,6 +9198,14 @@ func (c *ProjectsJobsGetCall) Location(location string) *ProjectsJobsGetCall {
 // version details.
 //
 //	"JOB_VIEW_ALL" - Request all information available for this job.
+//
+// When the job is in `JOB_STATE_PENDING`, the job has been created but
+// is not yet running, and not all job information is available. For
+// complete job information, wait until the job in is
+// `JOB_STATE_RUNNING`. For more information, see
+// [JobState](https://cloud.google.com/dataflow/docs/reference/rest/v1b3/
+// projects.jobs#jobstate).
+//
 //	"JOB_VIEW_DESCRIPTION" - Request summary info and limited job
 //
 // description data for steps, labels and environment.
@@ -9230,7 +9351,7 @@ func (c *ProjectsJobsGetCall) Do(opts ...googleapi.CallOption) (*Job, error) {
 	//       "enumDescriptions": [
 	//         "The job view to return isn't specified, or is unknown. Responses will contain at least the `JOB_VIEW_SUMMARY` information, and may contain additional information.",
 	//         "Request summary information only: Project ID, Job ID, job name, job type, job status, start/end time, and Cloud SDK version details.",
-	//         "Request all information available for this job.",
+	//         "Request all information available for this job. When the job is in `JOB_STATE_PENDING`, the job has been created but is not yet running, and not all job information is available. For complete job information, wait until the job in is `JOB_STATE_RUNNING`. For more information, see [JobState](https://cloud.google.com/dataflow/docs/reference/rest/v1b3/projects.jobs#jobstate).",
 	//         "Request summary info and limited job description data for steps, labels and environment."
 	//       ],
 	//       "location": "query",
@@ -9545,6 +9666,14 @@ func (c *ProjectsJobsListCall) PageToken(pageToken string) *ProjectsJobsListCall
 // version details.
 //
 //	"JOB_VIEW_ALL" - Request all information available for this job.
+//
+// When the job is in `JOB_STATE_PENDING`, the job has been created but
+// is not yet running, and not all job information is available. For
+// complete job information, wait until the job in is
+// `JOB_STATE_RUNNING`. For more information, see
+// [JobState](https://cloud.google.com/dataflow/docs/reference/rest/v1b3/
+// projects.jobs#jobstate).
+//
 //	"JOB_VIEW_DESCRIPTION" - Request summary info and limited job
 //
 // description data for steps, labels and environment.
@@ -9715,7 +9844,7 @@ func (c *ProjectsJobsListCall) Do(opts ...googleapi.CallOption) (*ListJobsRespon
 	//       "enumDescriptions": [
 	//         "The job view to return isn't specified, or is unknown. Responses will contain at least the `JOB_VIEW_SUMMARY` information, and may contain additional information.",
 	//         "Request summary information only: Project ID, Job ID, job name, job type, job status, start/end time, and Cloud SDK version details.",
-	//         "Request all information available for this job.",
+	//         "Request all information available for this job. When the job is in `JOB_STATE_PENDING`, the job has been created but is not yet running, and not all job information is available. For complete job information, wait until the job in is `JOB_STATE_RUNNING`. For more information, see [JobState](https://cloud.google.com/dataflow/docs/reference/rest/v1b3/projects.jobs#jobstate).",
 	//         "Request summary info and limited job description data for steps, labels and environment."
 	//       ],
 	//       "location": "query",
@@ -9951,6 +10080,18 @@ func (c *ProjectsJobsUpdateCall) Location(location string) *ProjectsJobsUpdateCa
 	return c
 }
 
+// UpdateMask sets the optional parameter "updateMask": The list of
+// fields to update relative to Job. If empty, only RequestedJobState
+// will be considered for update. If the FieldMask is not empty and
+// RequestedJobState is none/empty, The fields specified in the update
+// mask will be the only ones considered for update. If both
+// RequestedJobState and update_mask are specified, we will first handle
+// RequestedJobState and then the update_mask fields.
+func (c *ProjectsJobsUpdateCall) UpdateMask(updateMask string) *ProjectsJobsUpdateCall {
+	c.urlParams_.Set("updateMask", updateMask)
+	return c
+}
+
 // Fields allows partial responses to be retrieved. See
 // https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
 // for more information.
@@ -10067,6 +10208,12 @@ func (c *ProjectsJobsUpdateCall) Do(opts ...googleapi.CallOption) (*Job, error) 
 	//       "description": "The ID of the Cloud Platform project that the job belongs to.",
 	//       "location": "path",
 	//       "required": true,
+	//       "type": "string"
+	//     },
+	//     "updateMask": {
+	//       "description": "The list of fields to update relative to Job. If empty, only RequestedJobState will be considered for update. If the FieldMask is not empty and RequestedJobState is none/empty, The fields specified in the update mask will be the only ones considered for update. If both RequestedJobState and update_mask are specified, we will first handle RequestedJobState and then the update_mask fields.",
+	//       "format": "google-fieldmask",
+	//       "location": "query",
 	//       "type": "string"
 	//     }
 	//   },
@@ -11402,6 +11549,14 @@ func (c *ProjectsLocationsJobsCreateCall) ReplaceJobId(replaceJobId string) *Pro
 // version details.
 //
 //	"JOB_VIEW_ALL" - Request all information available for this job.
+//
+// When the job is in `JOB_STATE_PENDING`, the job has been created but
+// is not yet running, and not all job information is available. For
+// complete job information, wait until the job in is
+// `JOB_STATE_RUNNING`. For more information, see
+// [JobState](https://cloud.google.com/dataflow/docs/reference/rest/v1b3/
+// projects.jobs#jobstate).
+//
 //	"JOB_VIEW_DESCRIPTION" - Request summary info and limited job
 //
 // description data for steps, labels and environment.
@@ -11539,7 +11694,7 @@ func (c *ProjectsLocationsJobsCreateCall) Do(opts ...googleapi.CallOption) (*Job
 	//       "enumDescriptions": [
 	//         "The job view to return isn't specified, or is unknown. Responses will contain at least the `JOB_VIEW_SUMMARY` information, and may contain additional information.",
 	//         "Request summary information only: Project ID, Job ID, job name, job type, job status, start/end time, and Cloud SDK version details.",
-	//         "Request all information available for this job.",
+	//         "Request all information available for this job. When the job is in `JOB_STATE_PENDING`, the job has been created but is not yet running, and not all job information is available. For complete job information, wait until the job in is `JOB_STATE_RUNNING`. For more information, see [JobState](https://cloud.google.com/dataflow/docs/reference/rest/v1b3/projects.jobs#jobstate).",
 	//         "Request summary info and limited job description data for steps, labels and environment."
 	//       ],
 	//       "location": "query",
@@ -11613,6 +11768,14 @@ func (r *ProjectsLocationsJobsService) Get(projectId string, location string, jo
 // version details.
 //
 //	"JOB_VIEW_ALL" - Request all information available for this job.
+//
+// When the job is in `JOB_STATE_PENDING`, the job has been created but
+// is not yet running, and not all job information is available. For
+// complete job information, wait until the job in is
+// `JOB_STATE_RUNNING`. For more information, see
+// [JobState](https://cloud.google.com/dataflow/docs/reference/rest/v1b3/
+// projects.jobs#jobstate).
+//
 //	"JOB_VIEW_DESCRIPTION" - Request summary info and limited job
 //
 // description data for steps, labels and environment.
@@ -11761,7 +11924,7 @@ func (c *ProjectsLocationsJobsGetCall) Do(opts ...googleapi.CallOption) (*Job, e
 	//       "enumDescriptions": [
 	//         "The job view to return isn't specified, or is unknown. Responses will contain at least the `JOB_VIEW_SUMMARY` information, and may contain additional information.",
 	//         "Request summary information only: Project ID, Job ID, job name, job type, job status, start/end time, and Cloud SDK version details.",
-	//         "Request all information available for this job.",
+	//         "Request all information available for this job. When the job is in `JOB_STATE_PENDING`, the job has been created but is not yet running, and not all job information is available. For complete job information, wait until the job in is `JOB_STATE_RUNNING`. For more information, see [JobState](https://cloud.google.com/dataflow/docs/reference/rest/v1b3/projects.jobs#jobstate).",
 	//         "Request summary info and limited job description data for steps, labels and environment."
 	//       ],
 	//       "location": "query",
@@ -12294,6 +12457,14 @@ func (c *ProjectsLocationsJobsListCall) PageToken(pageToken string) *ProjectsLoc
 // version details.
 //
 //	"JOB_VIEW_ALL" - Request all information available for this job.
+//
+// When the job is in `JOB_STATE_PENDING`, the job has been created but
+// is not yet running, and not all job information is available. For
+// complete job information, wait until the job in is
+// `JOB_STATE_RUNNING`. For more information, see
+// [JobState](https://cloud.google.com/dataflow/docs/reference/rest/v1b3/
+// projects.jobs#jobstate).
+//
 //	"JOB_VIEW_DESCRIPTION" - Request summary info and limited job
 //
 // description data for steps, labels and environment.
@@ -12467,7 +12638,7 @@ func (c *ProjectsLocationsJobsListCall) Do(opts ...googleapi.CallOption) (*ListJ
 	//       "enumDescriptions": [
 	//         "The job view to return isn't specified, or is unknown. Responses will contain at least the `JOB_VIEW_SUMMARY` information, and may contain additional information.",
 	//         "Request summary information only: Project ID, Job ID, job name, job type, job status, start/end time, and Cloud SDK version details.",
-	//         "Request all information available for this job.",
+	//         "Request all information available for this job. When the job is in `JOB_STATE_PENDING`, the job has been created but is not yet running, and not all job information is available. For complete job information, wait until the job in is `JOB_STATE_RUNNING`. For more information, see [JobState](https://cloud.google.com/dataflow/docs/reference/rest/v1b3/projects.jobs#jobstate).",
 	//         "Request summary info and limited job description data for steps, labels and environment."
 	//       ],
 	//       "location": "query",
@@ -12710,6 +12881,18 @@ func (r *ProjectsLocationsJobsService) Update(projectId string, location string,
 	return c
 }
 
+// UpdateMask sets the optional parameter "updateMask": The list of
+// fields to update relative to Job. If empty, only RequestedJobState
+// will be considered for update. If the FieldMask is not empty and
+// RequestedJobState is none/empty, The fields specified in the update
+// mask will be the only ones considered for update. If both
+// RequestedJobState and update_mask are specified, we will first handle
+// RequestedJobState and then the update_mask fields.
+func (c *ProjectsLocationsJobsUpdateCall) UpdateMask(updateMask string) *ProjectsLocationsJobsUpdateCall {
+	c.urlParams_.Set("updateMask", updateMask)
+	return c
+}
+
 // Fields allows partial responses to be retrieved. See
 // https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
 // for more information.
@@ -12829,6 +13012,12 @@ func (c *ProjectsLocationsJobsUpdateCall) Do(opts ...googleapi.CallOption) (*Job
 	//       "description": "The ID of the Cloud Platform project that the job belongs to.",
 	//       "location": "path",
 	//       "required": true,
+	//       "type": "string"
+	//     },
+	//     "updateMask": {
+	//       "description": "The list of fields to update relative to Job. If empty, only RequestedJobState will be considered for update. If the FieldMask is not empty and RequestedJobState is none/empty, The fields specified in the update mask will be the only ones considered for update. If both RequestedJobState and update_mask are specified, we will first handle RequestedJobState and then the update_mask fields.",
+	//       "format": "google-fieldmask",
+	//       "location": "query",
 	//       "type": "string"
 	//     }
 	//   },
@@ -14768,180 +14957,6 @@ func (c *ProjectsLocationsSnapshotsListCall) Do(opts ...googleapi.CallOption) (*
 	//     "https://www.googleapis.com/auth/cloud-platform",
 	//     "https://www.googleapis.com/auth/compute",
 	//     "https://www.googleapis.com/auth/compute.readonly",
-	//     "https://www.googleapis.com/auth/userinfo.email"
-	//   ]
-	// }
-
-}
-
-// method id "dataflow.projects.locations.sql.validate":
-
-type ProjectsLocationsSqlValidateCall struct {
-	s            *Service
-	projectId    string
-	location     string
-	urlParams_   gensupport.URLParams
-	ifNoneMatch_ string
-	ctx_         context.Context
-	header_      http.Header
-}
-
-// Validate: Validates a GoogleSQL query for Cloud Dataflow syntax. Will
-// always confirm the given query parses correctly, and if able to look
-// up schema information from DataCatalog, will validate that the query
-// analyzes properly as well.
-//
-//   - location: The [regional endpoint]
-//     (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
-//     to which to direct the request.
-//   - projectId: The ID of the Cloud Platform project that the job
-//     belongs to.
-func (r *ProjectsLocationsSqlService) Validate(projectId string, location string) *ProjectsLocationsSqlValidateCall {
-	c := &ProjectsLocationsSqlValidateCall{s: r.s, urlParams_: make(gensupport.URLParams)}
-	c.projectId = projectId
-	c.location = location
-	return c
-}
-
-// Query sets the optional parameter "query": The sql query to validate.
-func (c *ProjectsLocationsSqlValidateCall) Query(query string) *ProjectsLocationsSqlValidateCall {
-	c.urlParams_.Set("query", query)
-	return c
-}
-
-// Fields allows partial responses to be retrieved. See
-// https://developers.google.com/gdata/docs/2.0/basics#PartialResponse
-// for more information.
-func (c *ProjectsLocationsSqlValidateCall) Fields(s ...googleapi.Field) *ProjectsLocationsSqlValidateCall {
-	c.urlParams_.Set("fields", googleapi.CombineFields(s))
-	return c
-}
-
-// IfNoneMatch sets the optional parameter which makes the operation
-// fail if the object's ETag matches the given value. This is useful for
-// getting updates only after the object has changed since the last
-// request. Use googleapi.IsNotModified to check whether the response
-// error from Do is the result of In-None-Match.
-func (c *ProjectsLocationsSqlValidateCall) IfNoneMatch(entityTag string) *ProjectsLocationsSqlValidateCall {
-	c.ifNoneMatch_ = entityTag
-	return c
-}
-
-// Context sets the context to be used in this call's Do method. Any
-// pending HTTP request will be aborted if the provided context is
-// canceled.
-func (c *ProjectsLocationsSqlValidateCall) Context(ctx context.Context) *ProjectsLocationsSqlValidateCall {
-	c.ctx_ = ctx
-	return c
-}
-
-// Header returns an http.Header that can be modified by the caller to
-// add HTTP headers to the request.
-func (c *ProjectsLocationsSqlValidateCall) Header() http.Header {
-	if c.header_ == nil {
-		c.header_ = make(http.Header)
-	}
-	return c.header_
-}
-
-func (c *ProjectsLocationsSqlValidateCall) doRequest(alt string) (*http.Response, error) {
-	reqHeaders := make(http.Header)
-	reqHeaders.Set("x-goog-api-client", "gl-go/"+gensupport.GoVersion()+" gdcl/"+internal.Version)
-	for k, v := range c.header_ {
-		reqHeaders[k] = v
-	}
-	reqHeaders.Set("User-Agent", c.s.userAgent())
-	if c.ifNoneMatch_ != "" {
-		reqHeaders.Set("If-None-Match", c.ifNoneMatch_)
-	}
-	var body io.Reader = nil
-	c.urlParams_.Set("alt", alt)
-	c.urlParams_.Set("prettyPrint", "false")
-	urls := googleapi.ResolveRelative(c.s.BasePath, "v1b3/projects/{projectId}/locations/{location}/sql:validate")
-	urls += "?" + c.urlParams_.Encode()
-	req, err := http.NewRequest("GET", urls, body)
-	if err != nil {
-		return nil, err
-	}
-	req.Header = reqHeaders
-	googleapi.Expand(req.URL, map[string]string{
-		"projectId": c.projectId,
-		"location":  c.location,
-	})
-	return gensupport.SendRequest(c.ctx_, c.s.client, req)
-}
-
-// Do executes the "dataflow.projects.locations.sql.validate" call.
-// Exactly one of *ValidateResponse or error will be non-nil. Any
-// non-2xx status code is an error. Response headers are in either
-// *ValidateResponse.ServerResponse.Header or (if a response was
-// returned at all) in error.(*googleapi.Error).Header. Use
-// googleapi.IsNotModified to check whether the returned error was
-// because http.StatusNotModified was returned.
-func (c *ProjectsLocationsSqlValidateCall) Do(opts ...googleapi.CallOption) (*ValidateResponse, error) {
-	gensupport.SetOptions(c.urlParams_, opts...)
-	res, err := c.doRequest("json")
-	if res != nil && res.StatusCode == http.StatusNotModified {
-		if res.Body != nil {
-			res.Body.Close()
-		}
-		return nil, gensupport.WrapError(&googleapi.Error{
-			Code:   res.StatusCode,
-			Header: res.Header,
-		})
-	}
-	if err != nil {
-		return nil, err
-	}
-	defer googleapi.CloseBody(res)
-	if err := googleapi.CheckResponse(res); err != nil {
-		return nil, gensupport.WrapError(err)
-	}
-	ret := &ValidateResponse{
-		ServerResponse: googleapi.ServerResponse{
-			Header:         res.Header,
-			HTTPStatusCode: res.StatusCode,
-		},
-	}
-	target := &ret
-	if err := gensupport.DecodeResponse(target, res); err != nil {
-		return nil, err
-	}
-	return ret, nil
-	// {
-	//   "description": "Validates a GoogleSQL query for Cloud Dataflow syntax. Will always confirm the given query parses correctly, and if able to look up schema information from DataCatalog, will validate that the query analyzes properly as well.",
-	//   "flatPath": "v1b3/projects/{projectId}/locations/{location}/sql:validate",
-	//   "httpMethod": "GET",
-	//   "id": "dataflow.projects.locations.sql.validate",
-	//   "parameterOrder": [
-	//     "projectId",
-	//     "location"
-	//   ],
-	//   "parameters": {
-	//     "location": {
-	//       "description": "The [regional endpoint] (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) to which to direct the request.",
-	//       "location": "path",
-	//       "required": true,
-	//       "type": "string"
-	//     },
-	//     "projectId": {
-	//       "description": "Required. The ID of the Cloud Platform project that the job belongs to.",
-	//       "location": "path",
-	//       "required": true,
-	//       "type": "string"
-	//     },
-	//     "query": {
-	//       "description": "The sql query to validate.",
-	//       "location": "query",
-	//       "type": "string"
-	//     }
-	//   },
-	//   "path": "v1b3/projects/{projectId}/locations/{location}/sql:validate",
-	//   "response": {
-	//     "$ref": "ValidateResponse"
-	//   },
-	//   "scopes": [
-	//     "https://www.googleapis.com/auth/cloud-platform",
 	//     "https://www.googleapis.com/auth/userinfo.email"
 	//   ]
 	// }

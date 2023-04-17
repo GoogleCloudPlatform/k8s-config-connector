@@ -79,10 +79,11 @@ automatically, for as long as it's authorized to do so.`,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"dns_authorizations": {
-							Type:        schema.TypeList,
-							Optional:    true,
-							ForceNew:    true,
-							Description: `Authorizations that will be used for performing domain authorization`,
+							Type:             schema.TypeList,
+							Optional:         true,
+							ForceNew:         true,
+							DiffSuppressFunc: ProjectNumberDiffSuppress,
+							Description:      `Authorizations that will be used for performing domain authorization`,
 							Elem: &schema.Schema{
 								Type: schema.TypeString,
 							},
@@ -271,7 +272,7 @@ func resourceCertificateManagerCertificateCreate(d *schema.ResourceData, meta in
 		obj["managed"] = managedProp
 	}
 
-	url, err := replaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificates?certificateId={{name}}")
+	url, err := ReplaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificates?certificateId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -296,7 +297,7 @@ func resourceCertificateManagerCertificateCreate(d *schema.ResourceData, meta in
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "projects/{{project}}/locations/global/certificates/{{name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/global/certificates/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -324,7 +325,7 @@ func resourceCertificateManagerCertificateRead(d *schema.ResourceData, meta inte
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificates/{{name}}")
+	url, err := ReplaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificates/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -396,7 +397,7 @@ func resourceCertificateManagerCertificateUpdate(d *schema.ResourceData, meta in
 		obj["labels"] = labelsProp
 	}
 
-	url, err := replaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificates/{{name}}")
+	url, err := ReplaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificates/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -411,9 +412,9 @@ func resourceCertificateManagerCertificateUpdate(d *schema.ResourceData, meta in
 	if d.HasChange("labels") {
 		updateMask = append(updateMask, "labels")
 	}
-	// updateMask is a URL parameter but not present in the schema, so replaceVars
+	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = addQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -457,7 +458,7 @@ func resourceCertificateManagerCertificateDelete(d *schema.ResourceData, meta in
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificates/{{name}}")
+	url, err := ReplaceVars(d, config, "{{CertificateManagerBasePath}}projects/{{project}}/locations/global/certificates/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -489,7 +490,7 @@ func resourceCertificateManagerCertificateDelete(d *schema.ResourceData, meta in
 
 func resourceCertificateManagerCertificateImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/global/certificates/(?P<name>[^/]+)",
 		"(?P<project>[^/]+)/(?P<name>[^/]+)",
 		"(?P<name>[^/]+)",
@@ -498,7 +499,7 @@ func resourceCertificateManagerCertificateImport(d *schema.ResourceData, meta in
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "projects/{{project}}/locations/global/certificates/{{name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/global/certificates/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -545,7 +546,7 @@ func flattenCertificateManagerCertificateManagedDomains(v interface{}, d *schema
 }
 
 func flattenCertificateManagerCertificateManagedDnsAuthorizations(v interface{}, d *schema.ResourceData, config *Config) interface{} {
-	return d.Get("managed.0.dns_authorizations")
+	return v
 }
 
 func flattenCertificateManagerCertificateManagedState(v interface{}, d *schema.ResourceData, config *Config) interface{} {

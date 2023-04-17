@@ -126,7 +126,7 @@ func resourceFirebaseAppleAppCreate(d *schema.ResourceData, meta interface{}) er
 		obj["teamId"] = teamIdProp
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}/iosApps")
+	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}/iosApps")
 	if err != nil {
 		return err
 	}
@@ -151,7 +151,7 @@ func resourceFirebaseAppleAppCreate(d *schema.ResourceData, meta interface{}) er
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "{{name}}")
+	id, err := ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -175,7 +175,7 @@ func resourceFirebaseAppleAppCreate(d *schema.ResourceData, meta interface{}) er
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = replaceVars(d, config, "{{name}}")
+	id, err = ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -193,7 +193,7 @@ func resourceFirebaseAppleAppRead(d *schema.ResourceData, meta interface{}) erro
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseBasePath}}{{name}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -289,7 +289,7 @@ func resourceFirebaseAppleAppUpdate(d *schema.ResourceData, meta interface{}) er
 		obj["teamId"] = teamIdProp
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseBasePath}}{{name}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -312,9 +312,9 @@ func resourceFirebaseAppleAppUpdate(d *schema.ResourceData, meta interface{}) er
 	if d.HasChange("team_id") {
 		updateMask = append(updateMask, "teamId")
 	}
-	// updateMask is a URL parameter but not present in the schema, so replaceVars
+	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = addQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -359,7 +359,7 @@ func resourceFirebaseAppleAppDelete(d *schema.ResourceData, meta interface{}) er
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{FirebaseBasePath}}{{name}}:remove")
+	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}{{name}}:remove")
 	if err != nil {
 		return err
 	}
@@ -398,7 +398,7 @@ func resourceFirebaseAppleAppImport(d *schema.ResourceData, meta interface{}) ([
 	config := meta.(*Config)
 
 	// current import_formats can't import fields with forward slashes in their value
-	if err := parseImportId([]string{"(?P<project>[^ ]+) (?P<name>[^ ]+)", "(?P<name>[^ ]+)"}, d, config); err != nil {
+	if err := ParseImportId([]string{"(?P<project>[^ ]+) (?P<name>[^ ]+)", "(?P<name>[^ ]+)"}, d, config); err != nil {
 		return nil, err
 	}
 

@@ -15,6 +15,7 @@
 package google
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -29,15 +30,27 @@ func TestAccApiGatewayApiIamBindingGenerated(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProvidersOiCS,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccApiGatewayApiIamBinding_basicGenerated(context),
 			},
 			{
+				ResourceName:      "google_api_gateway_api_iam_binding.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/global/apis/%s roles/apigateway.viewer", GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-api%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
 				// Test Iam Binding update
 				Config: testAccApiGatewayApiIamBinding_updateGenerated(context),
+			},
+			{
+				ResourceName:      "google_api_gateway_api_iam_binding.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/global/apis/%s roles/apigateway.viewer", GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-api%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})
@@ -52,12 +65,18 @@ func TestAccApiGatewayApiIamMemberGenerated(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProvidersOiCS,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
 				Config: testAccApiGatewayApiIamMember_basicGenerated(context),
+			},
+			{
+				ResourceName:      "google_api_gateway_api_iam_member.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/global/apis/%s roles/apigateway.viewer user:admin@hashicorptest.com", GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-api%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})
@@ -72,14 +91,26 @@ func TestAccApiGatewayApiIamPolicyGenerated(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProvidersOiCS,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccApiGatewayApiIamPolicy_basicGenerated(context),
 			},
 			{
+				ResourceName:      "google_api_gateway_api_iam_policy.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/global/apis/%s", GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-api%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
+			},
+			{
 				Config: testAccApiGatewayApiIamPolicy_emptyBinding(context),
+			},
+			{
+				ResourceName:      "google_api_gateway_api_iam_policy.foo",
+				ImportStateId:     fmt.Sprintf("projects/%s/locations/global/apis/%s", GetTestProjectFromEnv(), fmt.Sprintf("tf-test-my-api%s", context["random_suffix"])),
+				ImportState:       true,
+				ImportStateVerify: true,
 			},
 		},
 	})
@@ -89,7 +120,7 @@ func testAccApiGatewayApiIamMember_basicGenerated(context map[string]interface{}
 	return Nprintf(`
 resource "google_api_gateway_api" "api" {
   provider = google-beta
-  api_id = "api%{random_suffix}"
+  api_id = "tf-test-my-api%{random_suffix}"
 }
 
 resource "google_api_gateway_api_iam_member" "foo" {
@@ -106,7 +137,7 @@ func testAccApiGatewayApiIamPolicy_basicGenerated(context map[string]interface{}
 	return Nprintf(`
 resource "google_api_gateway_api" "api" {
   provider = google-beta
-  api_id = "api%{random_suffix}"
+  api_id = "tf-test-my-api%{random_suffix}"
 }
 
 data "google_iam_policy" "foo" {
@@ -130,7 +161,7 @@ func testAccApiGatewayApiIamPolicy_emptyBinding(context map[string]interface{}) 
 	return Nprintf(`
 resource "google_api_gateway_api" "api" {
   provider = google-beta
-  api_id = "api%{random_suffix}"
+  api_id = "tf-test-my-api%{random_suffix}"
 }
 
 data "google_iam_policy" "foo" {
@@ -150,7 +181,7 @@ func testAccApiGatewayApiIamBinding_basicGenerated(context map[string]interface{
 	return Nprintf(`
 resource "google_api_gateway_api" "api" {
   provider = google-beta
-  api_id = "api%{random_suffix}"
+  api_id = "tf-test-my-api%{random_suffix}"
 }
 
 resource "google_api_gateway_api_iam_binding" "foo" {
@@ -167,7 +198,7 @@ func testAccApiGatewayApiIamBinding_updateGenerated(context map[string]interface
 	return Nprintf(`
 resource "google_api_gateway_api" "api" {
   provider = google-beta
-  api_id = "api%{random_suffix}"
+  api_id = "tf-test-my-api%{random_suffix}"
 }
 
 resource "google_api_gateway_api_iam_binding" "foo" {

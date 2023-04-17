@@ -39,15 +39,15 @@ func TestAccContainerAwsNodePool_BasicHandWritten(t *testing.T) {
 		"aws_vpc":        "vpc-0b3f63cb91b247628",
 		"byo_prefix":     "mmv2",
 		"project_name":   GetTestProjectFromEnv(),
-		"project_number": getTestProjectNumberFromEnv(),
+		"project_number": GetTestProjectNumberFromEnv(),
 		"service_acct":   GetTestServiceAccountFromEnv(t),
 		"random_suffix":  RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckContainerAwsNodePoolDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckContainerAwsNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccContainerAwsNodePool_BasicHandWritten(context),
@@ -83,16 +83,16 @@ func TestAccContainerAwsNodePool_BetaBasicHandWritten(t *testing.T) {
 		"aws_vpc":        "vpc-0b3f63cb91b247628",
 		"byo_prefix":     "mmv2",
 		"project_name":   GetTestProjectFromEnv(),
-		"project_number": getTestProjectNumberFromEnv(),
+		"project_number": GetTestProjectNumberFromEnv(),
 		"service_acct":   GetTestServiceAccountFromEnv(t),
 		"random_suffix":  RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck: func() { testAccPreCheck(t) },
+		PreCheck: func() { AccTestPreCheck(t) },
 
-		Providers:    TestAccProvidersOiCS,
-		CheckDestroy: testAccCheckContainerAwsNodePoolDestroyProducer(t),
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckContainerAwsNodePoolDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccContainerAwsNodePool_BetaBasicHandWritten(context),

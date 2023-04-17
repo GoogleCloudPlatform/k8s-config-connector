@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -12,32 +13,12 @@ import (
 	"strings"
 	"time"
 
+	"github.com/hashicorp/errwrap"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"google.golang.org/api/googleapi"
 )
 
 var DefaultRequestTimeout = 5 * time.Minute
-
-func isEmptyValue(v reflect.Value) bool {
-	if !v.IsValid() {
-		return true
-	}
-
-	switch v.Kind() {
-	case reflect.Array, reflect.Map, reflect.Slice, reflect.String:
-		return v.Len() == 0
-	case reflect.Bool:
-		return !v.Bool()
-	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		return v.Int() == 0
-	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-		return v.Uint() == 0
-	case reflect.Float32, reflect.Float64:
-		return v.Float() == 0
-	case reflect.Interface, reflect.Ptr:
-		return v.IsNil()
-	}
-	return false
-}
 
 func SendRequest(config *Config, method, project, rawurl, userAgent string, body map[string]interface{}, errorRetryPredicates ...RetryErrorPredicateFunc) (map[string]interface{}, error) {
 	return SendRequestWithTimeout(config, method, project, rawurl, userAgent, body, DefaultRequestTimeout, errorRetryPredicates...)
@@ -75,7 +56,7 @@ func SendRequestWithTimeout(config *Config, method, project, rawurl, userAgent s
 				}
 			}
 
-			u, err := addQueryParams(rawurl, map[string]string{"alt": "json"})
+			u, err := AddQueryParams(rawurl, map[string]string{"alt": "json"})
 			if err != nil {
 				return err
 			}
@@ -124,7 +105,7 @@ func SendRequestWithTimeout(config *Config, method, project, rawurl, userAgent s
 	return result, nil
 }
 
-func addQueryParams(rawurl string, params map[string]string) (string, error) {
+func AddQueryParams(rawurl string, params map[string]string) (string, error) {
 	u, err := url.Parse(rawurl)
 	if err != nil {
 		return "", err
@@ -137,7 +118,7 @@ func addQueryParams(rawurl string, params map[string]string) (string, error) {
 	return u.String(), nil
 }
 
-func replaceVars(d TerraformResourceData, config *Config, linkTmpl string) (string, error) {
+func ReplaceVars(d TerraformResourceData, config *Config, linkTmpl string) (string, error) {
 	return replaceVarsRecursive(d, config, linkTmpl, false, 0)
 }
 
@@ -153,7 +134,7 @@ func replaceVarsForId(d TerraformResourceData, config *Config, linkTmpl string) 
 	return replaceVarsRecursive(d, config, linkTmpl, true, 0)
 }
 
-// replaceVars must be done recursively because there are baseUrls that can contain references to regions
+// ReplaceVars must be done recursively because there are baseUrls that can contain references to regions
 // (eg cloudrun service) there aren't any cases known for 2+ recursion but we will track a run away
 // substitution as 10+ calls to allow for future use cases.
 func replaceVarsRecursive(d TerraformResourceData, config *Config, linkTmpl string, shorten bool, depth int) (string, error) {
@@ -262,4 +243,41 @@ func buildReplacementFunc(re *regexp.Regexp, d TerraformResourceData, config *Co
 	}
 
 	return f, nil
+}
+
+func handleNotFoundError(err error, d *schema.ResourceData, resource string) error {
+	if IsGoogleApiErrorWithCode(err, 404) {
+		log.Printf("[WARN] Removing %s because it's gone", resource)
+		// The resource doesn't exist anymore
+		d.SetId("")
+
+		return nil
+	}
+
+	return errwrap.Wrapf(
+		fmt.Sprintf("Error when reading or editing %s: {{err}}", resource), err)
+}
+
+func IsGoogleApiErrorWithCode(err error, errCode int) bool {
+	gerr, ok := errwrap.GetType(err, &googleapi.Error{}).(*googleapi.Error)
+	return ok && gerr != nil && gerr.Code == errCode
+}
+
+func isApiNotEnabledError(err error) bool {
+	gerr, ok := errwrap.GetType(err, &googleapi.Error{}).(*googleapi.Error)
+	if !ok {
+		return false
+	}
+	if gerr == nil {
+		return false
+	}
+	if gerr.Code != 403 {
+		return false
+	}
+	for _, e := range gerr.Errors {
+		if e.Reason == "accessNotConfigured" {
+			return true
+		}
+	}
+	return false
 }

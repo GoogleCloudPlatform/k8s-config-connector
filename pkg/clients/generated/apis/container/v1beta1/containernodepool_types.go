@@ -35,6 +35,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type NodepoolAdvancedMachineFeatures struct {
+	/* Immutable. The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed. */
+	ThreadsPerCore int `json:"threadsPerCore"`
+}
+
 type NodepoolAutoscaling struct {
 	/* Location policy specifies the algorithm used when scaling-up the node pool. "BALANCED" - Is a best effort policy that aims to balance the sizes of available zones. "ANY" - Instructs the cluster autoscaler to prioritize utilization of unused reservations, and reduces preemption risk for Spot VMs. */
 	// +optional
@@ -67,7 +72,12 @@ type NodepoolBlueGreenSettings struct {
 }
 
 type NodepoolEphemeralStorageConfig struct {
-	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD is 375 GB in size. */
+	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
+	LocalSsdCount int `json:"localSsdCount"`
+}
+
+type NodepoolEphemeralStorageLocalSsdConfig struct {
+	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
 	LocalSsdCount int `json:"localSsdCount"`
 }
 
@@ -127,6 +137,11 @@ type NodepoolLinuxNodeConfig struct {
 	Sysctls map[string]string `json:"sysctls"`
 }
 
+type NodepoolLocalNvmeSsdBlockConfig struct {
+	/* Immutable. Number of raw-block local NVMe SSD disks to be attached to the node. Each local SSD is 375 GB in size. */
+	LocalSsdCount int `json:"localSsdCount"`
+}
+
 type NodepoolManagement struct {
 	/* Whether the nodes will be automatically repaired. */
 	// +optional
@@ -146,6 +161,10 @@ type NodepoolNetworkConfig struct {
 	// +optional
 	EnablePrivateNodes *bool `json:"enablePrivateNodes,omitempty"`
 
+	/* Immutable. Configuration for node-pool level pod cidr overprovision. If not set, the cluster level setting will be inherited. */
+	// +optional
+	PodCidrOverprovisionConfig *NodepoolPodCidrOverprovisionConfig `json:"podCidrOverprovisionConfig,omitempty"`
+
 	/* Immutable. The IP address range for pod IPs in this node pool. Only applicable if create_pod_range is true. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) to pick a specific range to use. */
 	// +optional
 	PodIpv4CidrBlock *string `json:"podIpv4CidrBlock,omitempty"`
@@ -156,6 +175,10 @@ type NodepoolNetworkConfig struct {
 }
 
 type NodepoolNodeConfig struct {
+	/* Immutable. Specifies options for controlling advanced machine features. */
+	// +optional
+	AdvancedMachineFeatures *NodepoolAdvancedMachineFeatures `json:"advancedMachineFeatures,omitempty"`
+
 	// +optional
 	BootDiskKMSCryptoKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSCryptoKeyRef,omitempty"`
 
@@ -167,9 +190,13 @@ type NodepoolNodeConfig struct {
 	// +optional
 	DiskType *string `json:"diskType,omitempty"`
 
-	/* Immutable. Parameters for the ephemeral storage filesystem. */
+	/* Immutable. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk. */
 	// +optional
 	EphemeralStorageConfig *NodepoolEphemeralStorageConfig `json:"ephemeralStorageConfig,omitempty"`
+
+	/* Immutable. Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk. */
+	// +optional
+	EphemeralStorageLocalSsdConfig *NodepoolEphemeralStorageLocalSsdConfig `json:"ephemeralStorageLocalSsdConfig,omitempty"`
 
 	/* Immutable. GCFS configuration for this node. */
 	// +optional
@@ -198,6 +225,10 @@ type NodepoolNodeConfig struct {
 	/* Parameters that can be configured on Linux nodes. */
 	// +optional
 	LinuxNodeConfig *NodepoolLinuxNodeConfig `json:"linuxNodeConfig,omitempty"`
+
+	/* Immutable. Parameters for raw-block local NVMe SSDs. */
+	// +optional
+	LocalNvmeSsdBlockConfig *NodepoolLocalNvmeSsdBlockConfig `json:"localNvmeSsdBlockConfig,omitempty"`
 
 	/* Immutable. The number of local SSD disks to be attached to the node. */
 	// +optional
@@ -272,6 +303,10 @@ type NodepoolNodeConfig struct {
 type NodepoolPlacementPolicy struct {
 	/* Type defines the type of placement policy. */
 	Type string `json:"type"`
+}
+
+type NodepoolPodCidrOverprovisionConfig struct {
+	Disabled bool `json:"disabled"`
 }
 
 type NodepoolReservationAffinity struct {

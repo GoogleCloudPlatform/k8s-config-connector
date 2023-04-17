@@ -161,7 +161,8 @@ spec:
                     diskSizeGb:
                       description: Immutable. The size of the image in gigabytes.
                         If not specified, it will inherit the size of its base image.
-                        For SCRATCH disks, the size must be exactly 375GB.
+                        For SCRATCH disks, the size must be one of 375 or 3000 GB,
+                        with a default of 375 GB.
                       type: integer
                     diskType:
                       description: Immutable. The Google Compute Engine disk type.
@@ -958,6 +959,10 @@ spec:
                 type: integer
               selfLink:
                 description: The URI of the created resource.
+                type: string
+              selfLinkUnique:
+                description: A special URI of the created resource that uniquely identifies
+                  this instance template.
                 type: string
               tagsFingerprint:
                 description: The unique fingerprint of the tags.

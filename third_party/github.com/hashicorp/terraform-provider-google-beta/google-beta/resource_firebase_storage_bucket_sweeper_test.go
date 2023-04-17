@@ -62,7 +62,7 @@ func testSweepFirebaseStorageBucket(region string) error {
 	}
 
 	listTemplate := strings.Split("https://firebasestorage.googleapis.com/v1beta/projects/{{project}}/buckets", "?")[0]
-	listUrl, err := replaceVars(d, config, listTemplate)
+	listUrl, err := ReplaceVars(d, config, listTemplate)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error preparing sweeper list url: %s", err)
 		return nil
@@ -104,7 +104,7 @@ func testSweepFirebaseStorageBucket(region string) error {
 		}
 
 		deleteTemplate := "https://firebasestorage.googleapis.com/v1beta/projects/{{project}}/buckets/{{bucket_id}}:removeFirebase"
-		deleteUrl, err := replaceVars(d, config, deleteTemplate)
+		deleteUrl, err := ReplaceVars(d, config, deleteTemplate)
 		if err != nil {
 			log.Printf("[INFO][SWEEPER_LOG] error preparing delete url: %s", err)
 			return nil

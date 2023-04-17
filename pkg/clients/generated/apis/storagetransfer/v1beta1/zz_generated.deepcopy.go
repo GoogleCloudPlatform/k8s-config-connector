@@ -233,6 +233,16 @@ func (in *JobObjectConditions) DeepCopyInto(out *JobObjectConditions) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
+	if in.LastModifiedBefore != nil {
+		in, out := &in.LastModifiedBefore, &out.LastModifiedBefore
+		*out = new(string)
+		**out = **in
+	}
+	if in.LastModifiedSince != nil {
+		in, out := &in.LastModifiedSince, &out.LastModifiedSince
+		*out = new(string)
+		**out = **in
+	}
 	if in.MaxTimeElapsedSinceLastModification != nil {
 		in, out := &in.MaxTimeElapsedSinceLastModification, &out.MaxTimeElapsedSinceLastModification
 		*out = new(string)

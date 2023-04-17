@@ -31,8 +31,8 @@ func TestAccBigqueryReservationCapacityCommitment_bigqueryReservationCapacityCom
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {},
 			"time":   {},
@@ -55,9 +55,12 @@ func TestAccBigqueryReservationCapacityCommitment_bigqueryReservationCapacityCom
 func testAccBigqueryReservationCapacityCommitment_bigqueryReservationCapacityCommitmentBasicExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_bigquery_capacity_commitment" "commitment" {
-	location   = "us-west1"
+	capacity_commitment_id = "capacity-tf-test%{random_suffix}"
+
+	location   = "us-west2"
 	slot_count = 100
-	plan       = "FLEX"
+	plan       = "FLEX_FLAT_RATE"
+	edition    = "ENTERPRISE"
 }
 
 resource "time_sleep" "wait_61_seconds" {
@@ -81,7 +84,7 @@ func testAccCheckBigqueryReservationCapacityCommitmentDestroyProducer(t *testing
 
 			config := GoogleProviderConfig(t)
 
-			url, err := replaceVarsForTest(config, rs, "{{BigqueryReservationBasePath}}{{name}}")
+			url, err := replaceVarsForTest(config, rs, "{{BigqueryReservationBasePath}}projects/{{project}}/locations/{{location}}/capacityCommitments/{{capacity_commitment_id}}")
 			if err != nil {
 				return err
 			}

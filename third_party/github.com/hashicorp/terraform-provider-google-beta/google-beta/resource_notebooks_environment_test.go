@@ -14,7 +14,7 @@ func TestAccNotebooksEnvironment_create(t *testing.T) {
 	name := fmt.Sprintf("tf-env-%s", prefix)
 
 	VcrTest(t, resource.TestCase{
-		Providers: TestAccProviders,
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccNotebooksEnvironment_create(name),

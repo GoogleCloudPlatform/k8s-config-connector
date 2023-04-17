@@ -88,7 +88,7 @@ func resourceComputeOrganizationSecurityPolicyAssociationCreate(d *schema.Resour
 		obj["attachmentId"] = attachmentIdProp
 	}
 
-	url, err := replaceVars(d, config, "{{ComputeBasePath}}{{policy_id}}/addAssociation")
+	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}{{policy_id}}/addAssociation")
 	if err != nil {
 		return err
 	}
@@ -107,7 +107,7 @@ func resourceComputeOrganizationSecurityPolicyAssociationCreate(d *schema.Resour
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "{{policy_id}}/association/{{name}}")
+	id, err := ReplaceVars(d, config, "{{policy_id}}/association/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -116,7 +116,7 @@ func resourceComputeOrganizationSecurityPolicyAssociationCreate(d *schema.Resour
 	// `parent` is needed to poll the asynchronous operations but its available only on the policy.
 
 	policyUrl := fmt.Sprintf("{{ComputeBasePath}}%s", d.Get("policy_id"))
-	url, err = replaceVars(d, config, policyUrl)
+	url, err = ReplaceVars(d, config, policyUrl)
 	if err != nil {
 		return err
 	}
@@ -150,7 +150,7 @@ func resourceComputeOrganizationSecurityPolicyAssociationRead(d *schema.Resource
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{ComputeBasePath}}{{policy_id}}/getAssociation?name={{name}}")
+	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}{{policy_id}}/getAssociation?name={{name}}")
 	if err != nil {
 		return err
 	}
@@ -189,7 +189,7 @@ func resourceComputeOrganizationSecurityPolicyAssociationDelete(d *schema.Resour
 
 	billingProject := ""
 
-	url, err := replaceVars(d, config, "{{ComputeBasePath}}{{policy_id}}/removeAssociation?name={{name}}")
+	url, err := ReplaceVars(d, config, "{{ComputeBasePath}}{{policy_id}}/removeAssociation?name={{name}}")
 	if err != nil {
 		return err
 	}
@@ -210,7 +210,7 @@ func resourceComputeOrganizationSecurityPolicyAssociationDelete(d *schema.Resour
 	// `parent` is needed to poll the asynchronous operations but its available only on the policy.
 
 	policyUrl := fmt.Sprintf("{{ComputeBasePath}}%s", d.Get("policy_id"))
-	url, err = replaceVars(d, config, policyUrl)
+	url, err = ReplaceVars(d, config, policyUrl)
 	if err != nil {
 		return err
 	}
@@ -238,14 +238,14 @@ func resourceComputeOrganizationSecurityPolicyAssociationDelete(d *schema.Resour
 
 func resourceComputeOrganizationSecurityPolicyAssociationImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"(?P<policy_id>.+)/association/(?P<name>[^/]+)",
 	}, d, config); err != nil {
 		return nil, err
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "{{policy_id}}/association/{{name}}")
+	id, err := ReplaceVars(d, config, "{{policy_id}}/association/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

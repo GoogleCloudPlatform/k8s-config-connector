@@ -152,7 +152,7 @@ func iamPolicyReadModifyWrite(updater ResourceIamUpdater, modify iamPolicyModify
 
 		// retry in the case that a service account is not found. This can happen when a service account is deleted
 		// out of band.
-		if isServiceAccountNotFoundError, _ := iamServiceAccountNotFound(err); isServiceAccountNotFoundError {
+		if isServiceAccountNotFoundError, _ := IamServiceAccountNotFound(err); isServiceAccountNotFoundError {
 			// calling a retryable function within a retry loop is not
 			// strictly the _best_ idea, but this error only happens in
 			// high-traffic projects anyways
@@ -468,4 +468,16 @@ func IamWithDeprecationMessage(message string) func(s *IamSettings) {
 
 func IamWithGAResourceDeprecation() func(s *IamSettings) {
 	return IamWithDeprecationMessage("")
+}
+
+// Util to deref and print auditConfigs
+func debugPrintAuditConfigs(bs []*cloudresourcemanager.AuditConfig) string {
+	v, _ := json.MarshalIndent(bs, "", "\t")
+	return string(v)
+}
+
+// Util to deref and print bindings
+func debugPrintBindings(bs []*cloudresourcemanager.Binding) string {
+	v, _ := json.MarshalIndent(bs, "", "\t")
+	return string(v)
 }

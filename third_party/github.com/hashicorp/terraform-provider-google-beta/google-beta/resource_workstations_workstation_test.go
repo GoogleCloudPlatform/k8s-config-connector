@@ -14,9 +14,9 @@ func TestAccWorkstationsWorkstation_update(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckWorkstationsWorkstationDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckWorkstationsWorkstationDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccWorkstationsWorkstation_basic(context),

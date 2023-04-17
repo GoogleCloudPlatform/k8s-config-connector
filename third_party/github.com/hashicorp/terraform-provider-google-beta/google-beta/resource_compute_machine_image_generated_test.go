@@ -31,9 +31,9 @@ func TestAccComputeMachineImage_machineImageBasicExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProvidersOiCS,
-		CheckDestroy: testAccCheckComputeMachineImageDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckComputeMachineImageDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeMachineImage_machineImageBasicExample(context),
@@ -52,7 +52,7 @@ func testAccComputeMachineImage_machineImageBasicExample(context map[string]inte
 	return Nprintf(`
 resource "google_compute_instance" "vm" {
   provider     = google-beta
-  name         = "vm%{random_suffix}"
+  name         = "tf-test-my-vm%{random_suffix}"
   machine_type = "e2-medium"
 
   boot_disk {
@@ -68,7 +68,7 @@ resource "google_compute_instance" "vm" {
 
 resource "google_compute_machine_image" "image" {
   provider        = google-beta
-  name            = "image%{random_suffix}"
+  name            = "tf-test-my-image%{random_suffix}"
   source_instance = google_compute_instance.vm.self_link
 }
 `, context)
@@ -78,13 +78,14 @@ func TestAccComputeMachineImage_computeMachineImageKmsExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
+		"policyChanged": BootstrapPSARole(t, "service-", "compute-system", "roles/cloudkms.cryptoKeyEncrypterDecrypter"),
 		"random_suffix": RandString(t, 10),
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProvidersOiCS,
-		CheckDestroy: testAccCheckComputeMachineImageDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckComputeMachineImageDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccComputeMachineImage_computeMachineImageKmsExample(context),
@@ -103,7 +104,7 @@ func testAccComputeMachineImage_computeMachineImageKmsExample(context map[string
 	return Nprintf(`
 resource "google_compute_instance" "vm" {
   provider     = google-beta
-  name         = "vm%{random_suffix}"
+  name         = "tf-test-my-vm%{random_suffix}"
   machine_type = "e2-medium"
 
   boot_disk {
@@ -119,12 +120,11 @@ resource "google_compute_instance" "vm" {
 
 resource "google_compute_machine_image" "image" {
   provider        = google-beta
-  name            = "image%{random_suffix}"
+  name            = "tf-test-my-image%{random_suffix}"
   source_instance = google_compute_instance.vm.self_link
   machine_image_encryption_key {
     kms_key_name = google_kms_crypto_key.crypto_key.id
   }
-  depends_on = [google_project_iam_member.kms-project-binding]
 }
 
 resource "google_kms_crypto_key" "crypto_key" {
@@ -137,17 +137,6 @@ resource "google_kms_key_ring" "key_ring" {
   provider = google-beta
   name     = "keyring%{random_suffix}"
   location = "us"
-}
-
-data "google_project" "project" {
-  provider = google-beta
-}
-
-resource "google_project_iam_member" "kms-project-binding" {
-  provider = google-beta
-  project  = data.google_project.project.project_id
-  role     = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-  member   = "serviceAccount:service-${data.google_project.project.number}@compute-system.iam.gserviceaccount.com"
 }
 `, context)
 }

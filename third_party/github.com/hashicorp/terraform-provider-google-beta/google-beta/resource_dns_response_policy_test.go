@@ -13,9 +13,9 @@ func TestAccDNSResponsePolicy_update(t *testing.T) {
 	responsePolicySuffix := RandString(t, 10)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProvidersOiCS,
-		CheckDestroy: testAccCheckDNSResponsePolicyDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckDNSResponsePolicyDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDnsResponsePolicy_privateUpdate(responsePolicySuffix, "network-1"),

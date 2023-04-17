@@ -120,7 +120,7 @@ func resourceActiveDirectoryPeeringCreate(d *schema.ResourceData, meta interface
 		obj["statusMessage"] = statusMessageProp
 	}
 
-	url, err := replaceVars(d, config, "{{ActiveDirectoryBasePath}}projects/{{project}}/locations/global/peerings?peeringId={{peering_id}}")
+	url, err := ReplaceVars(d, config, "{{ActiveDirectoryBasePath}}projects/{{project}}/locations/global/peerings?peeringId={{peering_id}}")
 	if err != nil {
 		return err
 	}
@@ -145,7 +145,7 @@ func resourceActiveDirectoryPeeringCreate(d *schema.ResourceData, meta interface
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "projects/{{project}}/locations/global/domains/{{peering_id}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/global/domains/{{peering_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -169,7 +169,7 @@ func resourceActiveDirectoryPeeringCreate(d *schema.ResourceData, meta interface
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = replaceVars(d, config, "projects/{{project}}/locations/global/domains/{{peering_id}}")
+	id, err = ReplaceVars(d, config, "projects/{{project}}/locations/global/domains/{{peering_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -187,7 +187,7 @@ func resourceActiveDirectoryPeeringRead(d *schema.ResourceData, meta interface{}
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{ActiveDirectoryBasePath}}{{name}}")
+	url, err := ReplaceVars(d, config, "{{ActiveDirectoryBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -259,7 +259,7 @@ func resourceActiveDirectoryPeeringUpdate(d *schema.ResourceData, meta interface
 		obj["statusMessage"] = statusMessageProp
 	}
 
-	url, err := replaceVars(d, config, "{{ActiveDirectoryBasePath}}{{name}}")
+	url, err := ReplaceVars(d, config, "{{ActiveDirectoryBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -305,7 +305,7 @@ func resourceActiveDirectoryPeeringDelete(d *schema.ResourceData, meta interface
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{ActiveDirectoryBasePath}}projects/{{project}}/locations/global/peerings/{{peering_id}}")
+	url, err := ReplaceVars(d, config, "{{ActiveDirectoryBasePath}}projects/{{project}}/locations/global/peerings/{{peering_id}}")
 	if err != nil {
 		return err
 	}

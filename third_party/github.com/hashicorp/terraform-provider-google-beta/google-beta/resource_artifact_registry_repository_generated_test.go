@@ -31,9 +31,9 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryBasicExample(t 
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckArtifactRegistryRepositoryDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckArtifactRegistryRepositoryDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccArtifactRegistryRepository_artifactRegistryRepositoryBasicExample(context),
@@ -59,6 +59,46 @@ resource "google_artifact_registry_repository" "my-repo" {
 `, context)
 }
 
+func TestAccArtifactRegistryRepository_artifactRegistryRepositoryDockerExample(t *testing.T) {
+	t.Parallel()
+
+	context := map[string]interface{}{
+		"random_suffix": RandString(t, 10),
+	}
+
+	VcrTest(t, resource.TestCase{
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckArtifactRegistryRepositoryDestroyProducer(t),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccArtifactRegistryRepository_artifactRegistryRepositoryDockerExample(context),
+			},
+			{
+				ResourceName:            "google_artifact_registry_repository.my-repo",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"repository_id", "location"},
+			},
+		},
+	})
+}
+
+func testAccArtifactRegistryRepository_artifactRegistryRepositoryDockerExample(context map[string]interface{}) string {
+	return Nprintf(`
+resource "google_artifact_registry_repository" "my-repo" {
+  location      = "us-central1"
+  repository_id = "tf-test-my-repository%{random_suffix}"
+  description   = "example docker repository%{random_suffix}"
+  format        = "DOCKER"
+
+  docker_config {
+    immutable_tags = true
+  }
+}
+`, context)
+}
+
 func TestAccArtifactRegistryRepository_artifactRegistryRepositoryCmekExample(t *testing.T) {
 	t.Parallel()
 
@@ -68,9 +108,9 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryCmekExample(t *
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckArtifactRegistryRepositoryDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckArtifactRegistryRepositoryDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccArtifactRegistryRepository_artifactRegistryRepositoryCmekExample(context),
@@ -116,9 +156,9 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryVirtualExample(
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProvidersOiCS,
-		CheckDestroy: testAccCheckArtifactRegistryRepositoryDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckArtifactRegistryRepositoryDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccArtifactRegistryRepository_artifactRegistryRepositoryVirtualExample(context),
@@ -136,7 +176,6 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryVirtualExample(
 func testAccArtifactRegistryRepository_artifactRegistryRepositoryVirtualExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_artifact_registry_repository" "my-repo-upstream" {
-  provider      = google-beta
   location      = "us-central1"
   repository_id = "tf-test-my-repository-upstream%{random_suffix}"
   description   = "example docker repository (upstream source)%{random_suffix}"
@@ -145,7 +184,6 @@ resource "google_artifact_registry_repository" "my-repo-upstream" {
 
 resource "google_artifact_registry_repository" "my-repo" {
   depends_on    = []
-  provider      = google-beta
   location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
   description   = "example virtual docker repository%{random_suffix}"
@@ -170,9 +208,9 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryRemoteExample(t
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProvidersOiCS,
-		CheckDestroy: testAccCheckArtifactRegistryRepositoryDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckArtifactRegistryRepositoryDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccArtifactRegistryRepository_artifactRegistryRepositoryRemoteExample(context),
@@ -190,7 +228,6 @@ func TestAccArtifactRegistryRepository_artifactRegistryRepositoryRemoteExample(t
 func testAccArtifactRegistryRepository_artifactRegistryRepositoryRemoteExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_artifact_registry_repository" "my-repo" {
-  provider      = google-beta
   location      = "us-central1"
   repository_id = "tf-test-my-repository%{random_suffix}"
   description   = "example remote docker repository%{random_suffix}"

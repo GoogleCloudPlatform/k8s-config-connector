@@ -118,7 +118,7 @@ func ResourceGoogleProjectService() *schema.Resource {
 
 func resourceGoogleProjectServiceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/services/(?P<service>[^/]+)",
 		"(?P<project>[^/]+)/(?P<service>[^/]+)",
 	}, d, config); err != nil {
@@ -126,7 +126,7 @@ func resourceGoogleProjectServiceImport(d *schema.ResourceData, meta interface{}
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "projects/{{project}}/services/{{name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/services/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -264,7 +264,7 @@ func disableServiceUsageProjectService(service, project string, d *schema.Resour
 			return waitErr
 		}
 		return nil
-	}, d.Timeout(schema.TimeoutDelete), serviceUsageServiceBeingActivated)
+	}, d.Timeout(schema.TimeoutDelete), ServiceUsageServiceBeingActivated)
 	if err != nil {
 		return fmt.Errorf("Error disabling service %q for project %q: %v", service, project, err)
 	}

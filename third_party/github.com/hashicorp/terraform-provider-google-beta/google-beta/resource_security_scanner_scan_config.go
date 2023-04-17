@@ -262,7 +262,7 @@ func resourceSecurityScannerScanConfigCreate(d *schema.ResourceData, meta interf
 		obj["exportToSecurityCommandCenter"] = exportToSecurityCommandCenterProp
 	}
 
-	url, err := replaceVars(d, config, "{{SecurityScannerBasePath}}projects/{{project}}/scanConfigs")
+	url, err := ReplaceVars(d, config, "{{SecurityScannerBasePath}}projects/{{project}}/scanConfigs")
 	if err != nil {
 		return err
 	}
@@ -290,7 +290,7 @@ func resourceSecurityScannerScanConfigCreate(d *schema.ResourceData, meta interf
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "{{name}}")
+	id, err := ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -326,7 +326,7 @@ func resourceSecurityScannerScanConfigRead(d *schema.ResourceData, meta interfac
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{SecurityScannerBasePath}}{{name}}")
+	url, err := ReplaceVars(d, config, "{{SecurityScannerBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -458,7 +458,7 @@ func resourceSecurityScannerScanConfigUpdate(d *schema.ResourceData, meta interf
 		obj["exportToSecurityCommandCenter"] = exportToSecurityCommandCenterProp
 	}
 
-	url, err := replaceVars(d, config, "{{SecurityScannerBasePath}}{{name}}")
+	url, err := ReplaceVars(d, config, "{{SecurityScannerBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -501,9 +501,9 @@ func resourceSecurityScannerScanConfigUpdate(d *schema.ResourceData, meta interf
 	if d.HasChange("export_to_security_command_center") {
 		updateMask = append(updateMask, "exportToSecurityCommandCenter")
 	}
-	// updateMask is a URL parameter but not present in the schema, so replaceVars
+	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = addQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -539,7 +539,7 @@ func resourceSecurityScannerScanConfigDelete(d *schema.ResourceData, meta interf
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{SecurityScannerBasePath}}{{name}}")
+	url, err := ReplaceVars(d, config, "{{SecurityScannerBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -566,7 +566,7 @@ func resourceSecurityScannerScanConfigImport(d *schema.ResourceData, meta interf
 	config := meta.(*Config)
 
 	// current import_formats can't import fields with forward slashes in their value
-	if err := parseImportId([]string{"(?P<project>[^ ]+) (?P<name>[^ ]+)", "(?P<name>[^ ]+)"}, d, config); err != nil {
+	if err := ParseImportId([]string{"(?P<project>[^ ]+) (?P<name>[^ ]+)", "(?P<name>[^ ]+)"}, d, config); err != nil {
 		return nil, err
 	}
 

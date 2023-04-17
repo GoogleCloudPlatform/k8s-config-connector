@@ -31,9 +31,9 @@ func TestAccDNSResponsePolicyRule_dnsResponsePolicyRuleBasicExample(t *testing.T
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProvidersOiCS,
-		CheckDestroy: testAccCheckDNSResponsePolicyRuleDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckDNSResponsePolicyRuleDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDNSResponsePolicyRule_dnsResponsePolicyRuleBasicExample(context),

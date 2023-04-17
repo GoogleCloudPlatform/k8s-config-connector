@@ -119,7 +119,7 @@ func ResourceCloudRunService() *schema.Resource {
 				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
-				Description: `Name must be unique within a namespace, within a Cloud Run region.
+				Description: `Name must be unique within a Google Cloud project and region.
 Is required when creating resources. Name is primarily intended
 for creation idempotence and configuration definition. Cannot be updated.
 More info: http://kubernetes.io/docs/user-guide/identifiers#names`,
@@ -154,30 +154,20 @@ responsible for materializing the container image from source.`,
 										Optional: true,
 										Description: `Container defines the unit of execution for this Revision.
 In the context of a Revision, we disallow a number of the fields of
-this Container, including: name, ports, and volumeMounts.
-The runtime contract is documented here:
-https://github.com/knative/serving/blob/main/docs/runtime-contract.md`,
+this Container, including: name, ports, and volumeMounts.`,
 										Elem: &schema.Resource{
 											Schema: map[string]*schema.Schema{
 												"image": {
 													Type:     schema.TypeString,
 													Required: true,
 													Description: `Docker image name. This is most often a reference to a container located
-in the container registry, such as gcr.io/cloudrun/hello
-More info: https://kubernetes.io/docs/concepts/containers/images`,
+in the container registry, such as gcr.io/cloudrun/hello`,
 												},
 												"args": {
 													Type:     schema.TypeList,
 													Optional: true,
 													Description: `Arguments to the entrypoint.
-The docker image's CMD is used if this is not provided.
-Variable references $(VAR_NAME) are expanded using the container's
-environment. If a variable cannot be resolved, the reference in the input
-string will be unchanged. The $(VAR_NAME) syntax can be escaped with a
-double $$, ie: $$(VAR_NAME). Escaped references will never be expanded,
-regardless of whether the variable exists or not.
-More info:
-https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell`,
+The docker image's CMD is used if this is not provided.`,
 													Elem: &schema.Schema{
 														Type: schema.TypeString,
 													},
@@ -186,14 +176,7 @@ https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument
 													Type:     schema.TypeList,
 													Optional: true,
 													Description: `Entrypoint array. Not executed within a shell.
-The docker image's ENTRYPOINT is used if this is not provided.
-Variable references $(VAR_NAME) are expanded using the container's
-environment. If a variable cannot be resolved, the reference in the input
-string will be unchanged. The $(VAR_NAME) syntax can be escaped with a
-double $$, ie: $$(VAR_NAME). Escaped references will never be expanded,
-regardless of whether the variable exists or not.
-More info:
-https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell`,
+The docker image's ENTRYPOINT is used if this is not provided.`,
 													Elem: &schema.Schema{
 														Type: schema.TypeString,
 													},
@@ -232,11 +215,9 @@ precedence.`,
 																			Elem: &schema.Resource{
 																				Schema: map[string]*schema.Schema{
 																					"name": {
-																						Type:     schema.TypeString,
-																						Required: true,
-																						Description: `Name of the referent.
-More info:
-https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names`,
+																						Type:        schema.TypeString,
+																						Required:    true,
+																						Description: `Name of the referent.`,
 																					},
 																				},
 																			},
@@ -269,11 +250,9 @@ https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names`,
 																			Elem: &schema.Resource{
 																				Schema: map[string]*schema.Schema{
 																					"name": {
-																						Type:     schema.TypeString,
-																						Required: true,
-																						Description: `Name of the referent.
-More info:
-https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names`,
+																						Type:        schema.TypeString,
+																						Required:    true,
+																						Description: `Name of the referent.`,
 																					},
 																				},
 																			},
@@ -290,11 +269,10 @@ https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names`,
 													},
 												},
 												"liveness_probe": {
-													Type:     schema.TypeList,
-													Optional: true,
-													Description: `Periodic probe of container liveness. Container will be restarted if the probe fails. More info:
-https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes`,
-													MaxItems: 1,
+													Type:        schema.TypeList,
+													Optional:    true,
+													Description: `Periodic probe of container liveness. Container will be restarted if the probe fails.`,
+													MaxItems:    1,
 													Elem: &schema.Resource{
 														Schema: map[string]*schema.Schema{
 															"failure_threshold": {
@@ -392,12 +370,10 @@ Must be smaller than period_seconds.`,
 													},
 												},
 												"ports": {
-													Type:     schema.TypeList,
-													Computed: true,
-													Optional: true,
-													Description: `List of open ports in the container.
-More Info:
-https://cloud.google.com/run/docs/reference/rest/v1/RevisionSpec#ContainerPort`,
+													Type:        schema.TypeList,
+													Computed:    true,
+													Optional:    true,
+													Description: `List of open ports in the container.`,
 													Elem: &schema.Resource{
 														Schema: map[string]*schema.Schema{
 															"container_port": {
@@ -420,13 +396,11 @@ https://cloud.google.com/run/docs/reference/rest/v1/RevisionSpec#ContainerPort`,
 													},
 												},
 												"resources": {
-													Type:     schema.TypeList,
-													Computed: true,
-													Optional: true,
-													Description: `Compute Resources required by this container. Used to set values such as max memory
-More info:
-https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits`,
-													MaxItems: 1,
+													Type:        schema.TypeList,
+													Computed:    true,
+													Optional:    true,
+													Description: `Compute Resources required by this container. Used to set values such as max memory`,
+													MaxItems:    1,
 													Elem: &schema.Resource{
 														Schema: map[string]*schema.Schema{
 															"limits": {
@@ -457,9 +431,7 @@ https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apimachi
 													Optional: true,
 													Description: `Startup probe of application within the container.
 All other probes are disabled if a startup probe is provided, until it
-succeeds. Container will not be added to service endpoints if the probe fails.
-More info:
-https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes`,
+succeeds. Container will not be added to service endpoints if the probe fails.`,
 													MaxItems: 1,
 													Elem: &schema.Resource{
 														Schema: map[string]*schema.Schema{
@@ -747,8 +719,7 @@ annotation key.`,
 										Optional:         true,
 										DiffSuppressFunc: cloudrunTemplateAnnotationDiffSuppress,
 										Description: `Annotations is a key value map stored with a resource that
-may be set by external tools to store and retrieve arbitrary metadata. More
-info: http://kubernetes.io/docs/user-guide/annotations
+may be set by external tools to store and retrieve arbitrary metadata.
 
 **Note**: The Cloud Run API may add additional annotations that were not provided in your config.
 If terraform plan shows a diff where a server-side annotation is added, you can add it to your config
@@ -759,19 +730,16 @@ or apply the lifecycle.ignore_changes rule to the metadata.0.annotations field.`
 										Type:     schema.TypeMap,
 										Optional: true,
 										Description: `Map of string keys and values that can be used to organize and categorize
-(scope and select) objects. May match selectors of replication controllers
-and routes.
-More info: http://kubernetes.io/docs/user-guide/labels`,
+(scope and select) objects.`,
 										Elem: &schema.Schema{Type: schema.TypeString},
 									},
 									"name": {
 										Type:     schema.TypeString,
 										Computed: true,
 										Optional: true,
-										Description: `Name must be unique within a namespace, within a Cloud Run region.
+										Description: `Name must be unique within a Google Cloud project and region.
 Is required when creating resources. Name is primarily intended
-for creation idempotence and configuration definition. Cannot be updated.
-More info: http://kubernetes.io/docs/user-guide/identifiers#names`,
+for creation idempotence and configuration definition. Cannot be updated.`,
 									},
 									"namespace": {
 										Type:     schema.TypeString,
@@ -792,10 +760,7 @@ project ID or project number. It will default to the resource's project.`,
 can be used by clients to determine when objects have changed. May be used
 for optimistic concurrency, change detection, and the watch operation on a
 resource or set of resources. They may only be valid for a
-particular resource or set of resources.
-
-More info:
-https://git.k8s.io/community/contributors/devel/api-conventions.md#concurrency-control-and-consistency`,
+particular resource or set of resources.`,
 									},
 									"self_link": {
 										Type:        schema.TypeString,
@@ -806,9 +771,7 @@ https://git.k8s.io/community/contributors/devel/api-conventions.md#concurrency-c
 										Type:     schema.TypeString,
 										Computed: true,
 										Description: `UID is a unique id generated by the server on successful creation of a resource and is not
-allowed to change on PUT operations.
-
-More info: http://kubernetes.io/docs/user-guide/identifiers#uids`,
+allowed to change on PUT operations.`,
 									},
 								},
 							},
@@ -893,8 +856,7 @@ Cloud Run (fully managed) uses the following annotation keys to configure featur
 							DiffSuppressFunc: cloudrunLabelDiffSuppress,
 							Description: `Map of string keys and values that can be used to organize and categorize
 (scope and select) objects. May match selectors of replication controllers
-and routes.
-More info: http://kubernetes.io/docs/user-guide/labels`,
+and routes.`,
 							Elem: &schema.Schema{Type: schema.TypeString},
 						},
 						"namespace": {
@@ -916,10 +878,7 @@ project ID or project number.`,
 can be used by clients to determine when objects have changed. May be used
 for optimistic concurrency, change detection, and the watch operation on a
 resource or set of resources. They may only be valid for a
-particular resource or set of resources.
-
-More info:
-https://git.k8s.io/community/contributors/devel/api-conventions.md#concurrency-control-and-consistency`,
+particular resource or set of resources.`,
 						},
 						"self_link": {
 							Type:        schema.TypeString,
@@ -930,9 +889,7 @@ https://git.k8s.io/community/contributors/devel/api-conventions.md#concurrency-c
 							Type:     schema.TypeString,
 							Computed: true,
 							Description: `UID is a unique id generated by the server on successful creation of a resource and is not
-allowed to change on PUT operations.
-
-More info: http://kubernetes.io/docs/user-guide/identifiers#uids`,
+allowed to change on PUT operations.`,
 						},
 					},
 				},
@@ -1035,16 +992,9 @@ func cloudrunServiceSpecTemplateSpecContainersContainersEnvSchema() *schema.Reso
 				Description: `Name of the environment variable.`,
 			},
 			"value": {
-				Type:     schema.TypeString,
-				Optional: true,
-				Description: `Variable references $(VAR_NAME) are expanded
-using the previous defined environment variables in the container and
-any route environment variables. If a variable cannot be resolved,
-the reference in the input string will be unchanged. The $(VAR_NAME)
-syntax can be escaped with a double $$, ie: $$(VAR_NAME). Escaped
-references will never be expanded, regardless of whether the variable
-exists or not.
-Defaults to "".`,
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: `Defaults to "".`,
 			},
 			"value_from": {
 				Type:        schema.TypeList,
@@ -1111,7 +1061,7 @@ func resourceCloudRunServiceCreate(d *schema.ResourceData, meta interface{}) err
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{CloudRunBasePath}}apis/serving.knative.dev/v1/namespaces/{{project}}/services")
+	url, err := ReplaceVars(d, config, "{{CloudRunBasePath}}apis/serving.knative.dev/v1/namespaces/{{project}}/services")
 	if err != nil {
 		return err
 	}
@@ -1130,13 +1080,13 @@ func resourceCloudRunServiceCreate(d *schema.ResourceData, meta interface{}) err
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate), isCloudRunCreationConflict)
+	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate), IsCloudRunCreationConflict)
 	if err != nil {
 		return fmt.Errorf("Error creating Service: %s", err)
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "locations/{{location}}/namespaces/{{project}}/services/{{name}}")
+	id, err := ReplaceVars(d, config, "locations/{{location}}/namespaces/{{project}}/services/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -1156,7 +1106,7 @@ func resourceCloudRunServicePollRead(d *schema.ResourceData, meta interface{}) P
 	return func() (map[string]interface{}, error) {
 		config := meta.(*Config)
 
-		url, err := replaceVars(d, config, "{{CloudRunBasePath}}apis/serving.knative.dev/v1/namespaces/{{project}}/services/{{name}}")
+		url, err := ReplaceVars(d, config, "{{CloudRunBasePath}}apis/serving.knative.dev/v1/namespaces/{{project}}/services/{{name}}")
 		if err != nil {
 			return nil, err
 		}
@@ -1179,7 +1129,7 @@ func resourceCloudRunServicePollRead(d *schema.ResourceData, meta interface{}) P
 			return nil, err
 		}
 
-		res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil, isCloudRunCreationConflict)
+		res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil, IsCloudRunCreationConflict)
 		if err != nil {
 			return res, err
 		}
@@ -1202,7 +1152,7 @@ func resourceCloudRunServiceRead(d *schema.ResourceData, meta interface{}) error
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{CloudRunBasePath}}apis/serving.knative.dev/v1/namespaces/{{project}}/services/{{name}}")
+	url, err := ReplaceVars(d, config, "{{CloudRunBasePath}}apis/serving.knative.dev/v1/namespaces/{{project}}/services/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -1220,7 +1170,7 @@ func resourceCloudRunServiceRead(d *schema.ResourceData, meta interface{}) error
 		billingProject = bp
 	}
 
-	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil, isCloudRunCreationConflict)
+	res, err := SendRequest(config, "GET", billingProject, url, userAgent, nil, IsCloudRunCreationConflict)
 	if err != nil {
 		return handleNotFoundError(err, d, fmt.Sprintf("CloudRunService %q", d.Id()))
 	}
@@ -1306,7 +1256,7 @@ func resourceCloudRunServiceUpdate(d *schema.ResourceData, meta interface{}) err
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{CloudRunBasePath}}apis/serving.knative.dev/v1/namespaces/{{project}}/services/{{name}}")
+	url, err := ReplaceVars(d, config, "{{CloudRunBasePath}}apis/serving.knative.dev/v1/namespaces/{{project}}/services/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -1318,7 +1268,7 @@ func resourceCloudRunServiceUpdate(d *schema.ResourceData, meta interface{}) err
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate), isCloudRunCreationConflict)
+	res, err := SendRequestWithTimeout(config, "PUT", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutUpdate), IsCloudRunCreationConflict)
 
 	if err != nil {
 		return fmt.Errorf("Error updating Service %q: %s", d.Id(), err)
@@ -1349,7 +1299,7 @@ func resourceCloudRunServiceDelete(d *schema.ResourceData, meta interface{}) err
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{CloudRunBasePath}}apis/serving.knative.dev/v1/namespaces/{{project}}/services/{{name}}")
+	url, err := ReplaceVars(d, config, "{{CloudRunBasePath}}apis/serving.knative.dev/v1/namespaces/{{project}}/services/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -1362,7 +1312,7 @@ func resourceCloudRunServiceDelete(d *schema.ResourceData, meta interface{}) err
 		billingProject = bp
 	}
 
-	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), isCloudRunCreationConflict)
+	res, err := SendRequestWithTimeout(config, "DELETE", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutDelete), IsCloudRunCreationConflict)
 	if err != nil {
 		return handleNotFoundError(err, d, "Service")
 	}
@@ -1373,7 +1323,7 @@ func resourceCloudRunServiceDelete(d *schema.ResourceData, meta interface{}) err
 
 func resourceCloudRunServiceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"locations/(?P<location>[^/]+)/namespaces/(?P<project>[^/]+)/services/(?P<name>[^/]+)",
 		"(?P<location>[^/]+)/(?P<project>[^/]+)/(?P<name>[^/]+)",
 		"(?P<location>[^/]+)/(?P<name>[^/]+)",
@@ -1382,7 +1332,7 @@ func resourceCloudRunServiceImport(d *schema.ResourceData, meta interface{}) ([]
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "locations/{{location}}/namespaces/{{project}}/services/{{name}}")
+	id, err := ReplaceVars(d, config, "locations/{{location}}/namespaces/{{project}}/services/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

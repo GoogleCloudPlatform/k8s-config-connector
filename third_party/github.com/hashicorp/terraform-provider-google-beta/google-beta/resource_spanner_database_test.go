@@ -17,9 +17,9 @@ func TestAccSpannerDatabase_basic(t *testing.T) {
 	databaseName := fmt.Sprintf("tfgen_%s", rnd)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckSpannerDatabaseDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSpannerDatabase_virtualUpdate(instanceName, databaseName),
@@ -155,9 +155,9 @@ func TestAccSpannerDatabase_postgres(t *testing.T) {
 	databaseName := fmt.Sprintf("tfgen_%s", rnd)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckSpannerDatabaseDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSpannerDatabase_postgres(instanceName, databaseName),
@@ -244,9 +244,9 @@ func TestAccSpannerDatabase_versionRetentionPeriod(t *testing.T) {
 	databaseName := fmt.Sprintf("tfgen_%s", rnd)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckSpannerDatabaseDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				// Test creating a database with `version_retention_period` set
@@ -533,7 +533,7 @@ func TestValidateDatabaseRetentionPeriod(t *testing.T) {
 
 	for tn, tc := range testCases {
 		t.Run(tn, func(t *testing.T) {
-			_, errs := validateDatabaseRetentionPeriod(tc.input, "foobar")
+			_, errs := ValidateDatabaseRetentionPeriod(tc.input, "foobar")
 			var wantErrCount string
 			if tc.expectError {
 				wantErrCount = "1+"
@@ -556,9 +556,9 @@ func TestAccSpannerDatabase_deletionProtection(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckSpannerDatabaseDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSpannerDatabase_deletionProtection(context),
@@ -609,9 +609,9 @@ func TestAccSpannerDatabase_cmek(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProvidersOiCS,
-		CheckDestroy: testAccCheckSpannerDatabaseDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckSpannerDatabaseDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSpannerDatabase_cmek(context),

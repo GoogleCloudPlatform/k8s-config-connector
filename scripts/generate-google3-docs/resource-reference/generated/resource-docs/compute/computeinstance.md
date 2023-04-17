@@ -235,6 +235,7 @@ scheduling:
   provisioningModel: string
 scratchDisk:
 - interface: string
+  size: integer
 serviceAccount:
   scopes:
   - string
@@ -1700,6 +1701,16 @@ Must be from 0 to 315,576,000,000 inclusive.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The disk interface used for attaching this disk. One of SCSI or NVME.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>scratchDisk[].size</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Immutable. The size of the disk in gigabytes. One of 375 or 3000.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

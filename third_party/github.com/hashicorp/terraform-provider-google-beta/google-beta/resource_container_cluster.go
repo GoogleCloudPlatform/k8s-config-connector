@@ -406,7 +406,7 @@ func ResourceContainerCluster() *schema.Resource {
 										Type:     schema.TypeString,
 										Optional: true,
 										// We can't use a Terraform-level default because it won't be true when the block is disabled: true
-										DiffSuppressFunc: emptyOrDefaultStringSuppress("AUTH_NONE"),
+										DiffSuppressFunc: EmptyOrDefaultStringSuppress("AUTH_NONE"),
 										ValidateFunc:     validation.StringInSlice([]string{"AUTH_NONE", "AUTH_MUTUAL_TLS"}, false),
 										Description:      `The authentication type between services in Istio. Available options include AUTH_MUTUAL_TLS.`,
 									},
@@ -540,7 +540,7 @@ func ResourceContainerCluster() *schema.Resource {
 									"min_cpu_platform": {
 										Type:             schema.TypeString,
 										Optional:         true,
-										DiffSuppressFunc: emptyOrDefaultStringSuppress("automatic"),
+										DiffSuppressFunc: EmptyOrDefaultStringSuppress("automatic"),
 										Description:      `Minimum CPU platform to be used by this instance. The instance may be scheduled on the specified or newer CPU platform. Applicable values are the friendly names of CPU platforms, such as Intel Haswell.`,
 									},
 									"boot_disk_kms_key": {
@@ -890,7 +890,7 @@ func ResourceContainerCluster() *schema.Resource {
 										Type:             schema.TypeString,
 										Required:         true,
 										ValidateFunc:     validateRFC3339Time,
-										DiffSuppressFunc: rfc3339TimeDiffSuppress,
+										DiffSuppressFunc: Rfc3339TimeDiffSuppress,
 									},
 									"duration": {
 										Type:     schema.TypeString,
@@ -977,7 +977,7 @@ func ResourceContainerCluster() *schema.Resource {
 				Optional:    true,
 				Computed:    true,
 				MaxItems:    1,
-				Description: `The notification config for sending cluster upgrade notifications`,
+				Description: `Enable/Disable Protect API features for the cluster.`,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"workload_config": {
@@ -985,13 +985,13 @@ func ResourceContainerCluster() *schema.Resource {
 							Optional:    true,
 							Computed:    true,
 							MaxItems:    1,
-							Description: `WorkloadConfig defines the flags to enable or disable the workload configurations for the cluster.`,
+							Description: `WorkloadConfig defines which actions are enabled for a cluster's workload configurations.`,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
 									"audit_mode": {
 										Type:        schema.TypeString,
 										Required:    true,
-										Description: `Mode defines how to audit the workload configs. Accepted values are MODE_UNSPECIFIED, DISABLED, BASIC.`,
+										Description: `Sets which mode of auditing should be used for the cluster's workloads. Accepted values are DISABLED, BASIC.`,
 									},
 								},
 							},
@@ -1004,7 +1004,7 @@ func ResourceContainerCluster() *schema.Resource {
 							Type:        schema.TypeString,
 							Optional:    true,
 							Computed:    true,
-							Description: `WorkloadVulnerabilityMode defines mode to perform vulnerability scanning. Accepted values are WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED, DISABLED, BASIC.`,
+							Description: `Sets which mode to use for Protect workload vulnerability scanning feature. Accepted values are DISABLED, BASIC.`,
 							AtLeastOneOf: []string{
 								"protect_config.0.workload_config",
 								"protect_config.0.workload_vulnerability_mode",
@@ -1242,7 +1242,7 @@ func ResourceContainerCluster() *schema.Resource {
 							Default:          "PROVIDER_UNSPECIFIED",
 							Optional:         true,
 							ValidateFunc:     validation.StringInSlice([]string{"PROVIDER_UNSPECIFIED", "CALICO"}, false),
-							DiffSuppressFunc: emptyOrDefaultStringSuppress("PROVIDER_UNSPECIFIED"),
+							DiffSuppressFunc: EmptyOrDefaultStringSuppress("PROVIDER_UNSPECIFIED"),
 							Description:      `The selected network policy provider. Defaults to PROVIDER_UNSPECIFIED.`,
 						},
 					},
@@ -1406,6 +1406,31 @@ func ResourceContainerCluster() *schema.Resource {
 							ForceNew:      true,
 							ConflictsWith: ipAllocationCidrBlockFields,
 							Description:   `The name of the existing secondary range in the cluster's subnetwork to use for service ClusterIPs. Alternatively, services_ipv4_cidr_block can be used to automatically create a GKE-managed one.`,
+						},
+
+						"stack_type": {
+							Type:         schema.TypeString,
+							Optional:     true,
+							ForceNew:     true,
+							Default:      "IPV4",
+							ValidateFunc: validation.StringInSlice([]string{"IPV4", "IPV4_IPV6"}, false),
+							Description:  `The IP Stack type of the cluster. Choose between IPV4 and IPV4_IPV6. Default type is IPV4 Only if not set`,
+						},
+						"pod_cidr_overprovision_config": {
+							Type:        schema.TypeList,
+							Optional:    true,
+							Computed:    true,
+							ForceNew:    true,
+							MaxItems:    1,
+							Description: `Configuration for cluster level pod cidr overprovision. Default is disabled=false.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"disabled": {
+										Type:     schema.TypeBool,
+										Required: true,
+									},
+								},
+							},
 						},
 					},
 				},
@@ -1712,7 +1737,7 @@ func ResourceContainerCluster() *schema.Resource {
 				Computed:         true,
 				Description:      `The desired datapath provider for this cluster. By default, uses the IPTables-based kube-proxy implementation.`,
 				ValidateFunc:     validation.StringInSlice([]string{"DATAPATH_PROVIDER_UNSPECIFIED", "LEGACY_DATAPATH", "ADVANCED_DATAPATH"}, false),
-				DiffSuppressFunc: emptyOrDefaultStringSuppress("DATAPATH_PROVIDER_UNSPECIFIED"),
+				DiffSuppressFunc: EmptyOrDefaultStringSuppress("DATAPATH_PROVIDER_UNSPECIFIED"),
 			},
 
 			"enable_intranode_visibility": {
@@ -2120,7 +2145,7 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 	d.SetId(containerClusterFullName(project, location, clusterName))
 
 	// Wait until it's created
-	waitErr := containerOperationWait(config, op, project, location, "creating GKE cluster", userAgent, d.Timeout(schema.TimeoutCreate))
+	waitErr := ContainerOperationWait(config, op, project, location, "creating GKE cluster", userAgent, d.Timeout(schema.TimeoutCreate))
 	if waitErr != nil {
 		// Check if the create operation failed because Terraform was prematurely terminated. If it was we can persist the
 		// operation id to state so that a subsequent refresh of this resource will wait until the operation has terminated
@@ -2173,7 +2198,7 @@ func resourceContainerClusterCreate(d *schema.ResourceData, meta interface{}) er
 		if err != nil {
 			return errwrap.Wrapf("Error deleting default node pool: {{err}}", err)
 		}
-		err = containerOperationWait(config, op, project, location, "removing default node pool", userAgent, d.Timeout(schema.TimeoutCreate))
+		err = ContainerOperationWait(config, op, project, location, "removing default node pool", userAgent, d.Timeout(schema.TimeoutCreate))
 		if err != nil {
 			return errwrap.Wrapf("Error while waiting to delete default node pool: {{err}}", err)
 		}
@@ -2223,7 +2248,7 @@ func resourceContainerClusterRead(d *schema.ResourceData, meta interface{}) erro
 		if err := d.Set("operation", ""); err != nil {
 			return fmt.Errorf("Error setting operation: %s", err)
 		}
-		waitErr := containerOperationWait(config, op, project, location, "resuming GKE cluster", userAgent, d.Timeout(schema.TimeoutRead))
+		waitErr := ContainerOperationWait(config, op, project, location, "resuming GKE cluster", userAgent, d.Timeout(schema.TimeoutRead))
 		if waitErr != nil {
 			// Try a GET on the cluster so we can see the state in debug logs. This will help classify error states.
 			clusterGetCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.Get(containerClusterFullName(project, location, clusterName))
@@ -2532,7 +2557,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 				return err
 			}
 			// Wait until it's updated
-			return containerOperationWait(config, op, project, location, updateDescription, userAgent, d.Timeout(schema.TimeoutUpdate))
+			return ContainerOperationWait(config, op, project, location, updateDescription, userAgent, d.Timeout(schema.TimeoutUpdate))
 		}
 	}
 
@@ -2700,7 +2725,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			}
 
 			// Wait until it's updated
-			err = containerOperationWait(config, op, project, location, "updating Release Channel", userAgent, d.Timeout(schema.TimeoutUpdate))
+			err = ContainerOperationWait(config, op, project, location, "updating Release Channel", userAgent, d.Timeout(schema.TimeoutUpdate))
 			log.Println("[DEBUG] done updating release_channel")
 			return err
 		}
@@ -2736,7 +2761,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			}
 
 			// Wait until it's updated
-			err = containerOperationWait(config, op, project, location, "updating GKE Intra Node Visibility", userAgent, d.Timeout(schema.TimeoutUpdate))
+			err = ContainerOperationWait(config, op, project, location, "updating GKE Intra Node Visibility", userAgent, d.Timeout(schema.TimeoutUpdate))
 			log.Println("[DEBUG] done updating enable_intranode_visibility")
 			return err
 		}
@@ -2768,7 +2793,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			}
 
 			// Wait until it's updated
-			err = containerOperationWait(config, op, project, location, "updating GKE Private IPv6 Google Access", userAgent, d.Timeout(schema.TimeoutUpdate))
+			err = ContainerOperationWait(config, op, project, location, "updating GKE Private IPv6 Google Access", userAgent, d.Timeout(schema.TimeoutUpdate))
 			log.Println("[DEBUG] done updating private_ipv6_google_access")
 			return err
 		}
@@ -2805,7 +2830,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			}
 
 			// Wait until it's updated
-			err = containerOperationWait(config, op, project, location, "updating L4", userAgent, d.Timeout(schema.TimeoutUpdate))
+			err = ContainerOperationWait(config, op, project, location, "updating L4", userAgent, d.Timeout(schema.TimeoutUpdate))
 			log.Println("[DEBUG] done updating enable_intranode_visibility")
 			return err
 		}
@@ -2869,7 +2894,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			}
 
 			// Wait until it's updated
-			err = containerOperationWait(config, op, project, location, "updating GKE Default SNAT status", userAgent, d.Timeout(schema.TimeoutUpdate))
+			err = ContainerOperationWait(config, op, project, location, "updating GKE Default SNAT status", userAgent, d.Timeout(schema.TimeoutUpdate))
 			log.Println("[DEBUG] done updating default_snat_status")
 			return err
 		}
@@ -2900,7 +2925,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			}
 
 			// Wait until it's updated
-			return containerOperationWait(config, op, project, location, "updating GKE cluster maintenance policy", userAgent, d.Timeout(schema.TimeoutUpdate))
+			return ContainerOperationWait(config, op, project, location, "updating GKE cluster maintenance policy", userAgent, d.Timeout(schema.TimeoutUpdate))
 		}
 
 		// Call update serially.
@@ -2978,7 +3003,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			}
 
 			// Wait until it's updated
-			err = containerOperationWait(config, op, project, location, "updating GKE legacy ABAC", userAgent, d.Timeout(schema.TimeoutUpdate))
+			err = ContainerOperationWait(config, op, project, location, "updating GKE legacy ABAC", userAgent, d.Timeout(schema.TimeoutUpdate))
 			log.Println("[DEBUG] done updating enable_legacy_abac")
 			return err
 		}
@@ -3013,7 +3038,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			}
 
 			// Wait until it's updated
-			return containerOperationWait(config, op, project, location, "updating GKE logging+monitoring service", userAgent, d.Timeout(schema.TimeoutUpdate))
+			return ContainerOperationWait(config, op, project, location, "updating GKE logging+monitoring service", userAgent, d.Timeout(schema.TimeoutUpdate))
 		}
 
 		// Call update serially.
@@ -3043,7 +3068,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			}
 
 			// Wait until it's updated
-			err = containerOperationWait(config, op, project, location, "updating GKE cluster network policy", userAgent, d.Timeout(schema.TimeoutUpdate))
+			err = ContainerOperationWait(config, op, project, location, "updating GKE cluster network policy", userAgent, d.Timeout(schema.TimeoutUpdate))
 			log.Println("[DEBUG] done updating network_policy")
 			return err
 		}
@@ -3154,7 +3179,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 				}
 
 				// Wait until it's updated
-				return containerOperationWait(config, op, project, location, "updating GKE image type", userAgent, d.Timeout(schema.TimeoutUpdate))
+				return ContainerOperationWait(config, op, project, location, "updating GKE image type", userAgent, d.Timeout(schema.TimeoutUpdate))
 			}
 
 			// Call update serially.
@@ -3185,7 +3210,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			}
 
 			// Wait until it's updated
-			err = containerOperationWait(config, op, project, location, "updating Notification Config", userAgent, d.Timeout(schema.TimeoutUpdate))
+			err = ContainerOperationWait(config, op, project, location, "updating Notification Config", userAgent, d.Timeout(schema.TimeoutUpdate))
 			log.Println("[DEBUG] done updating notification_config")
 			return err
 		}
@@ -3226,7 +3251,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			}
 
 			// Wait until it's updated
-			return containerOperationWait(config, op, project, location, "updating master auth", userAgent, d.Timeout(schema.TimeoutUpdate))
+			return ContainerOperationWait(config, op, project, location, "updating master auth", userAgent, d.Timeout(schema.TimeoutUpdate))
 		}
 
 		// Call update serially.
@@ -3274,7 +3299,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 				return err
 			}
 			// Wait until it's updated
-			return containerOperationWait(config, op, project, location, "updating GKE cluster service externalips config", userAgent, d.Timeout(schema.TimeoutUpdate))
+			return ContainerOperationWait(config, op, project, location, "updating GKE cluster service externalips config", userAgent, d.Timeout(schema.TimeoutUpdate))
 		}
 		if err := lockedCall(lockKey, updateF); err != nil {
 			return err
@@ -3301,7 +3326,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 				return err
 			}
 			// Wait until it's updated
-			return containerOperationWait(config, op, project, location, "updating GKE cluster mesh certificates config", userAgent, d.Timeout(schema.TimeoutUpdate))
+			return ContainerOperationWait(config, op, project, location, "updating GKE cluster mesh certificates config", userAgent, d.Timeout(schema.TimeoutUpdate))
 		}
 		if err := lockedCall(lockKey, updateF); err != nil {
 			return err
@@ -3328,7 +3353,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 				return err
 			}
 			// Wait until it's updated
-			return containerOperationWait(config, op, project, location, "updating GKE cluster database encryption config", userAgent, d.Timeout(schema.TimeoutUpdate))
+			return ContainerOperationWait(config, op, project, location, "updating GKE cluster database encryption config", userAgent, d.Timeout(schema.TimeoutUpdate))
 		}
 		if err := lockedCall(lockKey, updateF); err != nil {
 			return err
@@ -3355,7 +3380,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 				return err
 			}
 			// Wait until it's updated
-			return containerOperationWait(config, op, project, location, "updating GKE cluster pod security policy config", userAgent, d.Timeout(schema.TimeoutUpdate))
+			return ContainerOperationWait(config, op, project, location, "updating GKE cluster pod security policy config", userAgent, d.Timeout(schema.TimeoutUpdate))
 		}
 		if err := lockedCall(lockKey, updateF); err != nil {
 			return err
@@ -3462,7 +3487,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			}
 
 			// Wait until it's updated
-			return containerOperationWait(config, op, project, location, "updating GKE resource labels", userAgent, d.Timeout(schema.TimeoutUpdate))
+			return ContainerOperationWait(config, op, project, location, "updating GKE resource labels", userAgent, d.Timeout(schema.TimeoutUpdate))
 		}
 
 		// Call update serially.
@@ -3484,7 +3509,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			}
 			log.Printf("[WARN] Container cluster %q default node pool already removed, no change", d.Id())
 		} else {
-			err = containerOperationWait(config, op, project, location, "removing default node pool", userAgent, d.Timeout(schema.TimeoutUpdate))
+			err = ContainerOperationWait(config, op, project, location, "removing default node pool", userAgent, d.Timeout(schema.TimeoutUpdate))
 			if err != nil {
 				return errwrap.Wrapf("Error deleting default node pool: {{err}}", err)
 			}
@@ -3510,7 +3535,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 				return err
 			}
 			// Wait until it's updated
-			return containerOperationWait(config, op, project, location, "updating GKE cluster resource usage export config", userAgent, d.Timeout(schema.TimeoutUpdate))
+			return ContainerOperationWait(config, op, project, location, "updating GKE cluster resource usage export config", userAgent, d.Timeout(schema.TimeoutUpdate))
 		}
 		if err := lockedCall(lockKey, updateF); err != nil {
 			return err
@@ -3622,7 +3647,7 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 			}
 
 			// Wait until it's updated
-			err = containerOperationWait(config, op, project, location, "updating Cluster Telemetry", userAgent, d.Timeout(schema.TimeoutUpdate))
+			err = ContainerOperationWait(config, op, project, location, "updating Cluster Telemetry", userAgent, d.Timeout(schema.TimeoutUpdate))
 			log.Println("[DEBUG] done updating cluster_telemetry")
 			return err
 		}
@@ -3715,7 +3740,7 @@ func resourceContainerClusterDelete(d *schema.ResourceData, meta interface{}) er
 	}
 
 	// Wait until it's deleted
-	waitErr := containerOperationWait(config, op, project, location, "deleting GKE cluster", userAgent, d.Timeout(schema.TimeoutDelete))
+	waitErr := ContainerOperationWait(config, op, project, location, "deleting GKE cluster", userAgent, d.Timeout(schema.TimeoutDelete))
 	if waitErr != nil {
 		return waitErr
 	}
@@ -3763,7 +3788,7 @@ func cleanFailedContainerCluster(d *schema.ResourceData, meta interface{}) error
 	}
 
 	// Wait until it's deleted
-	waitErr := containerOperationWait(config, op, project, location, "deleting GKE cluster", userAgent, d.Timeout(schema.TimeoutDelete))
+	waitErr := ContainerOperationWait(config, op, project, location, "deleting GKE cluster", userAgent, d.Timeout(schema.TimeoutDelete))
 	if waitErr != nil {
 		return waitErr
 	}
@@ -3911,6 +3936,18 @@ func expandClusterAddonsConfig(configured interface{}) *container.AddonsConfig {
 	return ac
 }
 
+func expandPodCidrOverprovisionConfig(configured interface{}) *container.PodCIDROverprovisionConfig {
+	l := configured.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil
+	}
+	config := l[0].(map[string]interface{})
+	return &container.PodCIDROverprovisionConfig{
+		Disable:         config["disabled"].(bool),
+		ForceSendFields: []string{"Disable"},
+	}
+}
+
 func expandIPAllocationPolicy(configured interface{}, networkingMode string) (*container.IPAllocationPolicy, error) {
 	l := configured.([]interface{})
 	if len(l) == 0 || l[0] == nil {
@@ -3920,20 +3957,24 @@ func expandIPAllocationPolicy(configured interface{}, networkingMode string) (*c
 		return &container.IPAllocationPolicy{
 			UseIpAliases:    false,
 			UseRoutes:       networkingMode == "ROUTES",
+			StackType:       "IPV4",
 			ForceSendFields: []string{"UseIpAliases"},
 		}, nil
 	}
 
 	config := l[0].(map[string]interface{})
-	return &container.IPAllocationPolicy{
-		UseIpAliases:          networkingMode == "VPC_NATIVE" || networkingMode == "",
-		ClusterIpv4CidrBlock:  config["cluster_ipv4_cidr_block"].(string),
-		ServicesIpv4CidrBlock: config["services_ipv4_cidr_block"].(string),
+	stackType := config["stack_type"].(string)
 
+	return &container.IPAllocationPolicy{
+		UseIpAliases:               networkingMode == "VPC_NATIVE" || networkingMode == "",
+		ClusterIpv4CidrBlock:       config["cluster_ipv4_cidr_block"].(string),
+		ServicesIpv4CidrBlock:      config["services_ipv4_cidr_block"].(string),
 		ClusterSecondaryRangeName:  config["cluster_secondary_range_name"].(string),
 		ServicesSecondaryRangeName: config["services_secondary_range_name"].(string),
 		ForceSendFields:            []string{"UseIpAliases"},
 		UseRoutes:                  networkingMode == "ROUTES",
+		StackType:                  stackType,
+		PodCidrOverprovisionConfig: expandPodCidrOverprovisionConfig(config["pod_cidr_overprovision_config"]),
 	}, nil
 }
 
@@ -5041,6 +5082,18 @@ func flattenIdentityServiceConfig(c *container.IdentityServiceConfig, d *schema.
 	}
 }
 
+func flattenPodCidrOverprovisionConfig(c *container.PodCIDROverprovisionConfig) []map[string]interface{} {
+	if c == nil {
+		return nil
+	}
+
+	return []map[string]interface{}{
+		{
+			"disabled": c.Disable,
+		},
+	}
+}
+
 func flattenIPAllocationPolicy(c *container.Cluster, d *schema.ResourceData, config *Config) ([]map[string]interface{}, error) {
 	// If IP aliasing isn't enabled, none of the values in this block can be set.
 	if c == nil || c.IpAllocationPolicy == nil || !c.IpAllocationPolicy.UseIpAliases {
@@ -5054,12 +5107,22 @@ func flattenIPAllocationPolicy(c *container.Cluster, d *schema.ResourceData, con
 	}
 
 	p := c.IpAllocationPolicy
+
+	// handle older clusters that return JSON null
+	// corresponding to "STACK_TYPE_UNSPECIFIED" due to GKE declining to backfill
+	// equivalent to default_if_empty
+	if p.StackType == "" {
+		p.StackType = "IPV4"
+	}
+
 	return []map[string]interface{}{
 		{
 			"cluster_ipv4_cidr_block":       p.ClusterIpv4CidrBlock,
 			"services_ipv4_cidr_block":      p.ServicesIpv4CidrBlock,
 			"cluster_secondary_range_name":  p.ClusterSecondaryRangeName,
 			"services_secondary_range_name": p.ServicesSecondaryRangeName,
+			"stack_type":                    p.StackType,
+			"pod_cidr_overprovision_config": flattenPodCidrOverprovisionConfig(p.PodCidrOverprovisionConfig),
 		},
 	}, nil
 }
@@ -5443,10 +5506,10 @@ func flattenNodePoolAutoConfigNetworkTags(c *container.NetworkTags) []map[string
 func resourceContainerClusterStateImporter(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
 
-	// userAgent, err := generateUserAgentString(d, config.UserAgent)
-	// if err != nil {
-	// 	return nil, err
-	// }
+	//userAgent, err := generateUserAgentString(d, config.UserAgent)
+	//if err != nil {
+	//	return nil, err
+	//}
 
 	idRegexes := []string{
 		"projects/(?P<project>[^/]+)/zones/(?P<location>[^/]+)/clusters/(?P<name>[^/]+)",
@@ -5454,7 +5517,7 @@ func resourceContainerClusterStateImporter(d *schema.ResourceData, meta interfac
 		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)",
 		"(?P<location>[^/]+)/(?P<name>[^/]+)",
 	}
-	if err := parseImportId(idRegexes, d, config); err != nil {
+	if err := ParseImportId(idRegexes, d, config); err != nil {
 		return nil, err
 	}
 	project, err := getProject(d, config)
@@ -5472,9 +5535,9 @@ func resourceContainerClusterStateImporter(d *schema.ResourceData, meta interfac
 	if err := d.Set("location", location); err != nil {
 		return nil, fmt.Errorf("Error setting location: %s", err)
 	}
-	// if _, err := containerClusterAwaitRestingState(config, project, location, clusterName, userAgent, d.Timeout(schema.TimeoutCreate)); err != nil {
-	// 	return nil, err
-	// }
+	//if _, err := containerClusterAwaitRestingState(config, project, location, clusterName, userAgent, d.Timeout(schema.TimeoutCreate)); err != nil {
+	//	return nil, err
+	//}
 
 	d.SetId(containerClusterFullName(project, location, clusterName))
 

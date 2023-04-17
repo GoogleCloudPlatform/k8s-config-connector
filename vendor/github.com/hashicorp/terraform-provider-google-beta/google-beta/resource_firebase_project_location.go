@@ -72,7 +72,7 @@ func resourceFirebaseProjectLocationCreate(d *schema.ResourceData, meta interfac
 		obj["locationId"] = locationIdProp
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}/defaultLocation:finalize")
+	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}/defaultLocation:finalize")
 	if err != nil {
 		return err
 	}
@@ -97,7 +97,7 @@ func resourceFirebaseProjectLocationCreate(d *schema.ResourceData, meta interfac
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "projects/{{project}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -125,7 +125,7 @@ func resourceFirebaseProjectLocationRead(d *schema.ResourceData, meta interface{
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}")
 	if err != nil {
 		return err
 	}
@@ -182,7 +182,7 @@ func resourceFirebaseProjectLocationDelete(d *schema.ResourceData, meta interfac
 
 func resourceFirebaseProjectLocationImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)",
 		"(?P<project>[^/]+)",
 	}, d, config); err != nil {
@@ -190,7 +190,7 @@ func resourceFirebaseProjectLocationImport(d *schema.ResourceData, meta interfac
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "projects/{{project}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

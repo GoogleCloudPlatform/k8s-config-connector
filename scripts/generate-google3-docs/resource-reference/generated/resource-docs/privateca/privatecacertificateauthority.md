@@ -117,6 +117,7 @@ config:
     caOptions:
       isCa: boolean
       maxIssuerPathLength: integer
+      zeroMaxIssuerPathLength: boolean
     keyUsage:
       baseKeyUsage:
         certSign: boolean
@@ -588,6 +589,16 @@ Allowed value: The Google Cloud resource name of a `PrivateCACAPool` resource (f
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}Immutable. Optional. Refers to the path length restriction X.509 extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail. If this value is missing, the max path length will be omitted from the CA certificate.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>config.x509Config.caOptions.zeroMaxIssuerPathLength</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Immutable. Optional. When true, the "path length constraint" in Basic Constraints extension will be set to 0. if both max_issuer_path_length and zero_max_issuer_path_length are unset, the max path length will be omitted from the CA certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -112,7 +112,7 @@ index a024b8fa8..cec940a8f 100644
  		Environment: &env,
  	}
  
-+	id, err := replaceVars(d, config, "{{project}}/{{region}}/{{name}}")
++	id, err := ReplaceVars(d, config, "{{project}}/{{region}}/{{name}}")
 +	if err != nil {
 +		return fmt.Errorf("Error constructing id: %s", err)
 +	}
@@ -311,7 +311,7 @@ index a024b8fa8..cec940a8f 100644
 +	// Dataflow only respects the legacy compute base path with domain www.googleapis.com, not
 +	// compute.googleapis.com
 +	legacyComputeBasePath := "https://www.googleapis.com/compute/beta/"
-+	url, err := replaceVars(d, config, legacyComputeBasePath+fv.RelativeLink())
++	url, err := ReplaceVars(d, config, legacyComputeBasePath+fv.RelativeLink())
 +	if err != nil {
 +		return "", err
 +	}

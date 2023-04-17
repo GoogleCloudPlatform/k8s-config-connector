@@ -427,6 +427,9 @@ func CertificateAuthorityToUnstructured(r *dclService.CertificateAuthority) *uns
 				if r.Config.X509Config.CaOptions.MaxIssuerPathLength != nil {
 					rConfigX509ConfigCaOptions["maxIssuerPathLength"] = *r.Config.X509Config.CaOptions.MaxIssuerPathLength
 				}
+				if r.Config.X509Config.CaOptions.ZeroMaxIssuerPathLength != nil {
+					rConfigX509ConfigCaOptions["zeroMaxIssuerPathLength"] = *r.Config.X509Config.CaOptions.ZeroMaxIssuerPathLength
+				}
 				rConfigX509Config["caOptions"] = rConfigX509ConfigCaOptions
 			}
 			if r.Config.X509Config.KeyUsage != nil && r.Config.X509Config.KeyUsage != dclService.EmptyCertificateAuthorityConfigX509ConfigKeyUsage {
@@ -1430,6 +1433,13 @@ func UnstructuredToCertificateAuthority(u *unstructured.Resource) (*dclService.C
 									r.Config.X509Config.CaOptions.MaxIssuerPathLength = dcl.Int64(i)
 								} else {
 									return nil, fmt.Errorf("r.Config.X509Config.CaOptions.MaxIssuerPathLength: expected int64")
+								}
+							}
+							if _, ok := rConfigX509ConfigCaOptions["zeroMaxIssuerPathLength"]; ok {
+								if b, ok := rConfigX509ConfigCaOptions["zeroMaxIssuerPathLength"].(bool); ok {
+									r.Config.X509Config.CaOptions.ZeroMaxIssuerPathLength = dcl.Bool(b)
+								} else {
+									return nil, fmt.Errorf("r.Config.X509Config.CaOptions.ZeroMaxIssuerPathLength: expected bool")
 								}
 							}
 						} else {

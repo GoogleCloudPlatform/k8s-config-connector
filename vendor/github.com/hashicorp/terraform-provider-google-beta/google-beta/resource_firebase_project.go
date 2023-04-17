@@ -22,6 +22,28 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
+func getExistingFirebaseProjectId(config *Config, d *schema.ResourceData, billingProject string, userAgent string) (string, error) {
+	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}")
+	if err != nil {
+		return "", err
+	}
+
+	_, err = SendRequest(config, "GET", billingProject, url, userAgent, nil)
+	if err == nil {
+		id, err := ReplaceVars(d, config, "projects/{{project}}")
+		if err != nil {
+			return "", fmt.Errorf("Error constructing id: %s", err)
+		}
+		return id, nil
+	}
+
+	if !IsGoogleApiErrorWithCode(err, 404) {
+		return "", err
+	}
+
+	return "", nil
+}
+
 func ResourceFirebaseProject() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceFirebaseProjectCreate,
@@ -68,7 +90,7 @@ func resourceFirebaseProjectCreate(d *schema.ResourceData, meta interface{}) err
 
 	obj := make(map[string]interface{})
 
-	url, err := replaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}:addFirebase")
+	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}:addFirebase")
 	if err != nil {
 		return err
 	}
@@ -87,13 +109,24 @@ func resourceFirebaseProjectCreate(d *schema.ResourceData, meta interface{}) err
 		billingProject = bp
 	}
 
+	// Check if Firebase has already been enabled
+	existingId, err := getExistingFirebaseProjectId(config, d, billingProject, userAgent)
+	if err != nil {
+		return fmt.Errorf("Error checking if Firebase is already enabled: %s", err)
+	}
+
+	if existingId != "" {
+		log.Printf("[DEBUG] Firebase is already enabled for project %s", project)
+		d.SetId(existingId)
+		return resourceFirebaseProjectRead(d, meta)
+	}
 	res, err := SendRequestWithTimeout(config, "POST", billingProject, url, userAgent, obj, d.Timeout(schema.TimeoutCreate))
 	if err != nil {
 		return fmt.Errorf("Error creating Project: %s", err)
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "projects/{{project}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -121,7 +154,7 @@ func resourceFirebaseProjectRead(d *schema.ResourceData, meta interface{}) error
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseBasePath}}projects/{{project}}")
 	if err != nil {
 		return err
 	}
@@ -169,7 +202,7 @@ func resourceFirebaseProjectDelete(d *schema.ResourceData, meta interface{}) err
 
 func resourceFirebaseProjectImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)",
 		"(?P<project>[^/]+)",
 	}, d, config); err != nil {
@@ -177,7 +210,7 @@ func resourceFirebaseProjectImport(d *schema.ResourceData, meta interface{}) ([]
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "projects/{{project}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

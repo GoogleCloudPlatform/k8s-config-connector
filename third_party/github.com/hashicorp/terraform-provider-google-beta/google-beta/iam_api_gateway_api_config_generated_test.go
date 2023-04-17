@@ -29,8 +29,8 @@ func TestAccApiGatewayApiConfigIamBindingGenerated(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProvidersOiCS,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccApiGatewayApiConfigIamBinding_basicGenerated(context),
@@ -52,8 +52,8 @@ func TestAccApiGatewayApiConfigIamMemberGenerated(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProvidersOiCS,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -72,8 +72,8 @@ func TestAccApiGatewayApiConfigIamPolicyGenerated(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProvidersOiCS,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccApiGatewayApiConfigIamPolicy_basicGenerated(context),
@@ -89,13 +89,13 @@ func testAccApiGatewayApiConfigIamMember_basicGenerated(context map[string]inter
 	return Nprintf(`
 resource "google_api_gateway_api" "api_cfg" {
   provider = google-beta
-  api_id = "tf-test-api-cfg%{random_suffix}"
+  api_id = "tf-test-my-api%{random_suffix}"
 }
 
 resource "google_api_gateway_api_config" "api_cfg" {
   provider = google-beta
   api = google_api_gateway_api.api_cfg.api_id
-  api_config_id = "cfg%{random_suffix}"
+  api_config_id = "tf-test-my-config%{random_suffix}"
 
   openapi_documents {
     document {
@@ -122,13 +122,13 @@ func testAccApiGatewayApiConfigIamPolicy_basicGenerated(context map[string]inter
 	return Nprintf(`
 resource "google_api_gateway_api" "api_cfg" {
   provider = google-beta
-  api_id = "tf-test-api-cfg%{random_suffix}"
+  api_id = "tf-test-my-api%{random_suffix}"
 }
 
 resource "google_api_gateway_api_config" "api_cfg" {
   provider = google-beta
   api = google_api_gateway_api.api_cfg.api_id
-  api_config_id = "cfg%{random_suffix}"
+  api_config_id = "tf-test-my-config%{random_suffix}"
 
   openapi_documents {
     document {
@@ -162,13 +162,13 @@ func testAccApiGatewayApiConfigIamPolicy_emptyBinding(context map[string]interfa
 	return Nprintf(`
 resource "google_api_gateway_api" "api_cfg" {
   provider = google-beta
-  api_id = "tf-test-api-cfg%{random_suffix}"
+  api_id = "tf-test-my-api%{random_suffix}"
 }
 
 resource "google_api_gateway_api_config" "api_cfg" {
   provider = google-beta
   api = google_api_gateway_api.api_cfg.api_id
-  api_config_id = "cfg%{random_suffix}"
+  api_config_id = "tf-test-my-config%{random_suffix}"
 
   openapi_documents {
     document {
@@ -198,13 +198,13 @@ func testAccApiGatewayApiConfigIamBinding_basicGenerated(context map[string]inte
 	return Nprintf(`
 resource "google_api_gateway_api" "api_cfg" {
   provider = google-beta
-  api_id = "tf-test-api-cfg%{random_suffix}"
+  api_id = "tf-test-my-api%{random_suffix}"
 }
 
 resource "google_api_gateway_api_config" "api_cfg" {
   provider = google-beta
   api = google_api_gateway_api.api_cfg.api_id
-  api_config_id = "cfg%{random_suffix}"
+  api_config_id = "tf-test-my-config%{random_suffix}"
 
   openapi_documents {
     document {
@@ -231,13 +231,13 @@ func testAccApiGatewayApiConfigIamBinding_updateGenerated(context map[string]int
 	return Nprintf(`
 resource "google_api_gateway_api" "api_cfg" {
   provider = google-beta
-  api_id = "tf-test-api-cfg%{random_suffix}"
+  api_id = "tf-test-my-api%{random_suffix}"
 }
 
 resource "google_api_gateway_api_config" "api_cfg" {
   provider = google-beta
   api = google_api_gateway_api.api_cfg.api_id
-  api_config_id = "cfg%{random_suffix}"
+  api_config_id = "tf-test-my-config%{random_suffix}"
 
   openapi_documents {
     document {

@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC.
+// Copyright 2023 Google LLC.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -77,6 +77,7 @@ var _ = errors.New
 var _ = strings.Replace
 var _ = context.Canceled
 var _ = internaloption.WithDefaultEndpoint
+var _ = internal.Version
 
 const apiId = "bigquery:v2"
 const apiName = "bigquery"
@@ -962,6 +963,10 @@ func (s *BiEngineReason) MarshalJSON() ([]byte, error) {
 }
 
 type BiEngineStatistics struct {
+	// AccelerationMode: [Output-only] Specifies which mode of BI Engine
+	// acceleration was performed (if any).
+	AccelerationMode string `json:"accelerationMode,omitempty"`
+
 	// BiEngineMode: [Output-only] Specifies which mode of BI Engine
 	// acceleration was performed (if any).
 	BiEngineMode string `json:"biEngineMode,omitempty"`
@@ -972,7 +977,7 @@ type BiEngineStatistics struct {
 	// populated.
 	BiEngineReasons []*BiEngineReason `json:"biEngineReasons,omitempty"`
 
-	// ForceSendFields is a list of field names (e.g. "BiEngineMode") to
+	// ForceSendFields is a list of field names (e.g. "AccelerationMode") to
 	// unconditionally include in API requests. By default, fields with
 	// empty or default values are omitted from API requests. However, any
 	// non-pointer, non-interface field appearing in ForceSendFields will be
@@ -980,12 +985,13 @@ type BiEngineStatistics struct {
 	// This may be used to include empty fields in Patch requests.
 	ForceSendFields []string `json:"-"`
 
-	// NullFields is a list of field names (e.g. "BiEngineMode") to include
-	// in API requests with the JSON null value. By default, fields with
-	// empty values are omitted from API requests. However, any field with
-	// an empty value appearing in NullFields will be sent to the server as
-	// null. It is an error if a field in this list has a non-empty value.
-	// This may be used to include null fields in Patch requests.
+	// NullFields is a list of field names (e.g. "AccelerationMode") to
+	// include in API requests with the JSON null value. By default, fields
+	// with empty values are omitted from API requests. However, any field
+	// with an empty value appearing in NullFields will be sent to the
+	// server as null. It is an error if a field in this list has a
+	// non-empty value. This may be used to include null fields in Patch
+	// requests.
 	NullFields []string `json:"-"`
 }
 
@@ -1348,7 +1354,9 @@ type Binding struct {
 	// (https://cloud.google.com/kubernetes-engine/docs/how-to/kubernetes-service-accounts).
 	// For example, `my-project.svc.id.goog[my-namespace/my-kubernetes-sa]`.
 	// * `group:{emailid}`: An email address that represents a Google group.
-	// For example, `admins@example.com`. *
+	// For example, `admins@example.com`. * `domain:{domain}`: The G Suite
+	// domain (primary) that represents all the users of that domain. For
+	// example, `google.com` or `example.com`. *
 	// `deleted:user:{emailid}?uid={uniqueid}`: An email address (plus
 	// unique identifier) representing a user that has been recently
 	// deleted. For example, `alice@example.com?uid=123456789012345678901`.
@@ -1365,9 +1373,7 @@ type Binding struct {
 	// that has been recently deleted. For example,
 	// `admins@example.com?uid=123456789012345678901`. If the group is
 	// recovered, this value reverts to `group:{emailid}` and the recovered
-	// group retains the role in the binding. * `domain:{domain}`: The G
-	// Suite domain (primary) that represents all the users of that domain.
-	// For example, `google.com` or `example.com`.
+	// group retains the role in the binding.
 	Members []string `json:"members,omitempty"`
 
 	// Role: Role that is assigned to the list of `members`, or principals.
@@ -2120,6 +2126,10 @@ type Dataset struct {
 	// table, that value takes precedence over the default partition
 	// expiration time indicated by this property.
 	DefaultPartitionExpirationMs int64 `json:"defaultPartitionExpirationMs,omitempty,string"`
+
+	// DefaultRoundingMode: [Output-only] The default rounding mode of the
+	// dataset.
+	DefaultRoundingMode string `json:"defaultRoundingMode,omitempty"`
 
 	// DefaultTableExpirationMs: [Optional] The default lifetime of all
 	// tables in the dataset, in milliseconds. The minimum value is 3600000
@@ -4622,6 +4632,10 @@ type JobConfigurationQuery struct {
 	// ConnectionProperties: Connection properties.
 	ConnectionProperties []*ConnectionProperty `json:"connectionProperties,omitempty"`
 
+	// Continuous: [Optional] Specifies whether the query should be executed
+	// as a continuous query. The default value is false.
+	Continuous bool `json:"continuous,omitempty"`
+
 	// CreateDisposition: [Optional] Specifies whether the job is allowed to
 	// create new tables. The following values are supported:
 	// CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the
@@ -5544,7 +5558,7 @@ type ListRoutinesResponse struct {
 	// Routines: Routines in the requested dataset. Unless read_mask is set
 	// in the request, only the following fields are populated: etag,
 	// project_id, dataset_id, routine_id, routine_type, creation_time,
-	// last_modified_time, and language.
+	// last_modified_time, language, and remote_function_options.
 	Routines []*Routine `json:"routines,omitempty"`
 
 	// ServerResponse contains the HTTP response code and headers from the
@@ -5644,6 +5658,10 @@ func (s *LocationMetadata) MarshalJSON() ([]byte, error) {
 }
 
 type MaterializedViewDefinition struct {
+	// AllowNonIncrementalDefinition: [Optional] Allow non incremental
+	// materialized view definition. The default value is "false".
+	AllowNonIncrementalDefinition bool `json:"allow_non_incremental_definition,omitempty"`
+
 	// EnableRefresh: [Optional] [TrustedTester] Enable automatic refresh of
 	// the materialized view when the base table is updated. The default
 	// value is "true".
@@ -5666,20 +5684,22 @@ type MaterializedViewDefinition struct {
 	// is "1800000" (30 minutes).
 	RefreshIntervalMs int64 `json:"refreshIntervalMs,omitempty,string"`
 
-	// ForceSendFields is a list of field names (e.g. "EnableRefresh") to
-	// unconditionally include in API requests. By default, fields with
-	// empty or default values are omitted from API requests. However, any
-	// non-pointer, non-interface field appearing in ForceSendFields will be
-	// sent to the server regardless of whether the field is empty or not.
-	// This may be used to include empty fields in Patch requests.
+	// ForceSendFields is a list of field names (e.g.
+	// "AllowNonIncrementalDefinition") to unconditionally include in API
+	// requests. By default, fields with empty or default values are omitted
+	// from API requests. However, any non-pointer, non-interface field
+	// appearing in ForceSendFields will be sent to the server regardless of
+	// whether the field is empty or not. This may be used to include empty
+	// fields in Patch requests.
 	ForceSendFields []string `json:"-"`
 
-	// NullFields is a list of field names (e.g. "EnableRefresh") to include
-	// in API requests with the JSON null value. By default, fields with
-	// empty values are omitted from API requests. However, any field with
-	// an empty value appearing in NullFields will be sent to the server as
-	// null. It is an error if a field in this list has a non-empty value.
-	// This may be used to include null fields in Patch requests.
+	// NullFields is a list of field names (e.g.
+	// "AllowNonIncrementalDefinition") to include in API requests with the
+	// JSON null value. By default, fields with empty values are omitted
+	// from API requests. However, any field with an empty value appearing
+	// in NullFields will be sent to the server as null. It is an error if a
+	// field in this list has a non-empty value. This may be used to include
+	// null fields in Patch requests.
 	NullFields []string `json:"-"`
 }
 
@@ -6463,6 +6483,10 @@ type QueryRequest struct {
 	// ConnectionProperties: Connection properties.
 	ConnectionProperties []*ConnectionProperty `json:"connectionProperties,omitempty"`
 
+	// Continuous: [Optional] Specifies whether the query should be executed
+	// as a continuous query. The default value is false.
+	Continuous bool `json:"continuous,omitempty"`
+
 	// CreateSession: If true, creates a new session, where session id will
 	// be a server generated random id. If false, runs query with an
 	// existing session_id passed in ConnectionProperty, otherwise runs
@@ -7031,13 +7055,16 @@ type Routine struct {
 	// stores the path of the imported JAVASCRIPT libraries.
 	ImportedLibraries []string `json:"importedLibraries,omitempty"`
 
-	// Language: Optional. Defaults to "SQL".
+	// Language: Optional. Defaults to "SQL" if remote_function_options
+	// field is absent, not set otherwise.
 	//
 	// Possible values:
 	//   "LANGUAGE_UNSPECIFIED"
 	//   "SQL" - SQL language.
 	//   "JAVASCRIPT" - JavaScript language.
 	//   "PYTHON" - Python language.
+	//   "JAVA" - Java language.
+	//   "SCALA" - Scala language.
 	Language string `json:"language,omitempty"`
 
 	// LastModifiedTime: Output only. The time when this routine was last
@@ -7051,7 +7078,7 @@ type Routine struct {
 	// "TABLE_VALUED_FUNCTION". If absent, the return table type is inferred
 	// from definition_body at query time in each query that references this
 	// routine. If present, then the columns in the evaluated table result
-	// will be cast to match the column types specificed in return table
+	// will be cast to match the column types specified in return table
 	// type, at query time.
 	ReturnTableType *StandardSqlTableType `json:"returnTableType,omitempty"`
 
@@ -7576,14 +7603,23 @@ type SparkOptions struct {
 	// (https://spark.apache.org/docs/latest/index.html).
 	JarUris []string `json:"jarUris,omitempty"`
 
-	// MainFileUri: The main file URI of the Spark application. Exactly one
-	// of the definition_body field and the main_file_uri field must be set.
+	// MainClass: The fully qualified name of a class in jar_uris, for
+	// example, com.example.wordcount. Exactly one of main_class and
+	// main_jar_uri field should be set for Java/Scala language type.
+	MainClass string `json:"mainClass,omitempty"`
+
+	// MainFileUri: The main file/jar URI of the Spark application. Exactly
+	// one of the definition_body field and the main_file_uri field must be
+	// set for Python. Exactly one of main_class and main_file_uri field
+	// should be set for Java/Scala language type.
 	MainFileUri string `json:"mainFileUri,omitempty"`
 
 	// Properties: Configuration properties as a set of key/value pairs,
 	// which will be passed on to the Spark application. For more
 	// information, see Apache Spark
-	// (https://spark.apache.org/docs/latest/index.html).
+	// (https://spark.apache.org/docs/latest/index.html) and the procedure
+	// option list
+	// (https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#procedure_option_list).
 	Properties map[string]string `json:"properties,omitempty"`
 
 	// PyFileUris: Python files to be placed on the PYTHONPATH for PySpark
@@ -7675,7 +7711,7 @@ type StandardSqlDataType struct {
 	StructType *StandardSqlStructType `json:"structType,omitempty"`
 
 	// TypeKind: Required. The top level type of this field. Can be any
-	// standard SQL data type (e.g., "INT64", "DATE", "ARRAY").
+	// GoogleSQL data type (e.g., "INT64", "DATE", "ARRAY").
 	//
 	// Possible values:
 	//   "TYPE_KIND_UNSPECIFIED" - Invalid type.
@@ -7897,6 +7933,10 @@ type Table struct {
 
 	// DefaultCollation: [Output-only] The default collation of the table.
 	DefaultCollation string `json:"defaultCollation,omitempty"`
+
+	// DefaultRoundingMode: [Output-only] The default rounding mode of the
+	// table.
+	DefaultRoundingMode string `json:"defaultRoundingMode,omitempty"`
 
 	// Description: [Optional] A user-friendly description of this table.
 	Description string `json:"description,omitempty"`
@@ -8381,6 +8421,10 @@ type TableFieldSchema struct {
 	// ≤ precision ≤ 38. If scale is specified but not precision, then
 	// it is invalid.
 	Precision int64 `json:"precision,omitempty,string"`
+
+	// RoundingMode: Optional. Rounding Mode specification of the field. It
+	// only can be set on NUMERIC or BIGNUMERIC type fields.
+	RoundingMode string `json:"roundingMode,omitempty"`
 
 	// Scale: [Optional] See documentation for precision.
 	Scale int64 `json:"scale,omitempty,string"`

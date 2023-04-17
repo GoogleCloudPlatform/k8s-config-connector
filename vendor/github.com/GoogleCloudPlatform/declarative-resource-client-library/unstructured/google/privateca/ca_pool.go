@@ -103,6 +103,9 @@ func CaPoolToUnstructured(r *dclService.CaPool) *unstructured.Resource {
 				if r.IssuancePolicy.BaselineValues.CaOptions.MaxIssuerPathLength != nil {
 					rIssuancePolicyBaselineValuesCaOptions["maxIssuerPathLength"] = *r.IssuancePolicy.BaselineValues.CaOptions.MaxIssuerPathLength
 				}
+				if r.IssuancePolicy.BaselineValues.CaOptions.ZeroMaxIssuerPathLength != nil {
+					rIssuancePolicyBaselineValuesCaOptions["zeroMaxIssuerPathLength"] = *r.IssuancePolicy.BaselineValues.CaOptions.ZeroMaxIssuerPathLength
+				}
 				rIssuancePolicyBaselineValues["caOptions"] = rIssuancePolicyBaselineValuesCaOptions
 			}
 			if r.IssuancePolicy.BaselineValues.KeyUsage != nil && r.IssuancePolicy.BaselineValues.KeyUsage != dclService.EmptyCaPoolIssuancePolicyBaselineValuesKeyUsage {
@@ -415,6 +418,13 @@ func UnstructuredToCaPool(u *unstructured.Resource) (*dclService.CaPool, error) 
 									r.IssuancePolicy.BaselineValues.CaOptions.MaxIssuerPathLength = dcl.Int64(i)
 								} else {
 									return nil, fmt.Errorf("r.IssuancePolicy.BaselineValues.CaOptions.MaxIssuerPathLength: expected int64")
+								}
+							}
+							if _, ok := rIssuancePolicyBaselineValuesCaOptions["zeroMaxIssuerPathLength"]; ok {
+								if b, ok := rIssuancePolicyBaselineValuesCaOptions["zeroMaxIssuerPathLength"].(bool); ok {
+									r.IssuancePolicy.BaselineValues.CaOptions.ZeroMaxIssuerPathLength = dcl.Bool(b)
+								} else {
+									return nil, fmt.Errorf("r.IssuancePolicy.BaselineValues.CaOptions.ZeroMaxIssuerPathLength: expected bool")
 								}
 							}
 						} else {

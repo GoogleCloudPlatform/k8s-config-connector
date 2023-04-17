@@ -1,7 +1,6 @@
 package google
 
 import (
-	"encoding/json"
 	"reflect"
 	"testing"
 
@@ -1323,16 +1322,4 @@ func TestIamListFromIamAuditConfigsMap(t *testing.T) {
 				tc.input, debugPrintAuditConfigs(got), debugPrintAuditConfigs(tc.expect))
 		}
 	}
-}
-
-// Util to deref and print auditConfigs
-func debugPrintAuditConfigs(bs []*cloudresourcemanager.AuditConfig) string {
-	v, _ := json.MarshalIndent(bs, "", "\t")
-	return string(v)
-}
-
-// Util to deref and print bindings
-func debugPrintBindings(bs []*cloudresourcemanager.Binding) string {
-	v, _ := json.MarshalIndent(bs, "", "\t")
-	return string(v)
 }

@@ -1,27 +1,13 @@
-# Copyright 2022 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
-index dcd838cb2..326d7f716 100644
+index 441a1e206..d91dad2bf 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_container_cluster.go
-@@ -3031,7 +3031,7 @@ func expandIPAllocationPolicy(configured interface{}, networkingMode string) (*c
+@@ -3992,7 +3992,7 @@ func expandIPAllocationPolicy(configured interface{}, networkingMode string) (*c
  		}
  		return &container.IPAllocationPolicy{
  			UseIpAliases:    false,
 -			UseRoutes:       true,
 +			UseRoutes:       networkingMode == "ROUTES",
+ 			StackType:       "IPV4",
  			ForceSendFields: []string{"UseIpAliases"},
  		}, nil
- 	}

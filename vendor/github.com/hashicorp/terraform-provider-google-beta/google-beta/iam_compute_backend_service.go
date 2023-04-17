@@ -126,7 +126,7 @@ func (u *ComputeBackendServiceIamUpdater) GetResourceIamPolicy() (*cloudresource
 		return nil, err
 	}
 	var obj map[string]interface{}
-	url, err = addQueryParams(url, map[string]string{"optionsRequestedPolicyVersion": fmt.Sprintf("%d", IamPolicyVersion)})
+	url, err = AddQueryParams(url, map[string]string{"optionsRequestedPolicyVersion": fmt.Sprintf("%d", IamPolicyVersion)})
 	if err != nil {
 		return nil, err
 	}
@@ -183,7 +183,7 @@ func (u *ComputeBackendServiceIamUpdater) SetResourceIamPolicy(policy *cloudreso
 
 func (u *ComputeBackendServiceIamUpdater) qualifyBackendServiceUrl(methodIdentifier string) (string, error) {
 	urlTemplate := fmt.Sprintf("{{ComputeBasePath}}%s/%s", fmt.Sprintf("projects/%s/global/backendServices/%s", u.project, u.name), methodIdentifier)
-	url, err := replaceVars(u.d, u.Config, urlTemplate)
+	url, err := ReplaceVars(u.d, u.Config, urlTemplate)
 	if err != nil {
 		return "", err
 	}

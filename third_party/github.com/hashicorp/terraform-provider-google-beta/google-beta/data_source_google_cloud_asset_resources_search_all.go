@@ -104,7 +104,7 @@ func datasourceGoogleCloudAssetResourcesSearchAllRead(d *schema.ResourceData, me
 	}
 
 	for {
-		url, err := addQueryParams(url, params)
+		url, err := AddQueryParams(url, params)
 		if err != nil {
 			return err
 		}

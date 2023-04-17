@@ -2512,7 +2512,7 @@
       }
     }
   },
-  "revision": "20221031",
+  "revision": "20230322",
   "rootUrl": "https://container.googleapis.com/",
   "schemas": {
     "AcceleratorConfig": {
@@ -2542,6 +2542,12 @@
           "type": "string"
         }
       },
+      "type": "object"
+    },
+    "AdditionalPodRangesConfig": {
+      "description": "AdditionalPodRangesConfig is the configuration for additional pod secondary ranges supporting the ClusterUpdate message.",
+      "id": "AdditionalPodRangesConfig",
+      "properties": {},
       "type": "object"
     },
     "AddonsConfig": {
@@ -2670,7 +2676,7 @@
           "type": "string"
         },
         "imageType": {
-          "description": "The image type to use for NAP created node.",
+          "description": "The image type to use for NAP created node. Please see https://cloud.google.com/kubernetes-engine/docs/concepts/node-images for available image types.",
           "type": "string"
         },
         "management": {
@@ -2678,7 +2684,7 @@
           "description": "NodeManagement configuration for this NodePool."
         },
         "minCpuPlatform": {
-          "description": "Deprecated. Minimum CPU platform to be used for NAP created node pools. The instance may be scheduled on the specified or newer CPU platform. Applicable values are the friendly names of CPU platforms, such as minCpuPlatform: Intel Haswell or minCpuPlatform: Intel Sandy Bridge. For more information, read [how to specify min CPU platform](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform). This field is deprecated, min_cpu_platform should be specified using https://cloud.google.com/requested-min-cpu-platform label selector on the pod. To unset the min cpu platform field pass \"automatic\" as field value.",
+          "description": "Deprecated. Minimum CPU platform to be used for NAP created node pools. The instance may be scheduled on the specified or newer CPU platform. Applicable values are the friendly names of CPU platforms, such as minCpuPlatform: Intel Haswell or minCpuPlatform: Intel Sandy Bridge. For more information, read [how to specify min CPU platform](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform). This field is deprecated, min_cpu_platform should be specified using `cloud.google.com/requested-min-cpu-platform` label selector on the pod. To unset the min cpu platform field pass \"automatic\" as field value.",
           "type": "string"
         },
         "oauthScopes": {
@@ -2985,9 +2991,17 @@
           "description": "[Output only] The IP address of this cluster's master endpoint. The endpoint can be accessed from the internet at `https://username:password@endpoint/`. See the `masterAuth` property of this resource for username and password information.",
           "type": "string"
         },
+        "etag": {
+          "description": "This checksum is computed by the server based on the value of cluster fields, and may be sent on update requests to ensure the client has an up-to-date value before proceeding.",
+          "type": "string"
+        },
         "expireTime": {
           "description": "[Output only] The time the cluster will be automatically deleted in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.",
           "type": "string"
+        },
+        "fleet": {
+          "$ref": "Fleet",
+          "description": "Fleet information for the cluster."
         },
         "id": {
           "description": "Output only. Unique id for the cluster.",
@@ -3295,6 +3309,10 @@
       "description": "ClusterUpdate describes an update to the cluster. Exactly one update can be applied to a cluster with each request, so at most one field can be provided.",
       "id": "ClusterUpdate",
       "properties": {
+        "additionalPodRangesConfig": {
+          "$ref": "AdditionalPodRangesConfig",
+          "description": "The additional pod ranges to be added to the cluster. These pod ranges can be used by node pools to allocate pod IPs."
+        },
         "desiredAddonsConfig": {
           "$ref": "AddonsConfig",
           "description": "Configurations for the various addons available to run in the cluster."
@@ -3456,7 +3474,7 @@
             "Default value. Same as DISABLED",
             "No private access to or from Google Services",
             "Enables private IPv6 access to Google Services from GKE",
-            "Enables priate IPv6 access to and from Google Services"
+            "Enables private IPv6 access to and from Google Services"
           ],
           "type": "string"
         },
@@ -3480,6 +3498,20 @@
           "$ref": "ShieldedNodes",
           "description": "Configuration for Shielded Nodes."
         },
+        "desiredStackType": {
+          "description": "The desired stack type of the cluster. If a stack type is provided and does not match the current stack type of the cluster, update will attempt to change the stack type to the new type.",
+          "enum": [
+            "STACK_TYPE_UNSPECIFIED",
+            "IPV4",
+            "IPV4_IPV6"
+          ],
+          "enumDescriptions": [
+            "By default, the clusters will be IPV4 only",
+            "The value used if the cluster is a IPV4 only",
+            "The value used if the cluster is a dual stack cluster"
+          ],
+          "type": "string"
+        },
         "desiredTpuConfig": {
           "$ref": "TpuConfig",
           "description": "The desired Cloud TPU configuration."
@@ -3499,6 +3531,14 @@
         "desiredWorkloadIdentityConfig": {
           "$ref": "WorkloadIdentityConfig",
           "description": "Configuration for Workload Identity."
+        },
+        "etag": {
+          "description": "The current etag of the cluster. If an etag is provided and does not match the current etag of the cluster, update will be blocked and an ABORTED error will be returned.",
+          "type": "string"
+        },
+        "removedAdditionalPodRangesConfig": {
+          "$ref": "AdditionalPodRangesConfig",
+          "description": "The additional pod ranges that are to be removed from the cluster. The pod ranges specified here must have been specified earlier in the 'additional_pod_ranges_config' argument."
         }
       },
       "type": "object"
@@ -3767,6 +3807,18 @@
       },
       "type": "object"
     },
+    "EphemeralStorageLocalSsdConfig": {
+      "description": "EphemeralStorageLocalSsdConfig contains configuration for the node ephemeral storage using Local SSDs.",
+      "id": "EphemeralStorageLocalSsdConfig",
+      "properties": {
+        "localSsdCount": {
+          "description": "Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD is 375 GB in size. If zero, it means to disable using local SSDs as ephemeral storage. The limit for this value is dependent upon the maximum number of disks available on a machine per zone. See: https://cloud.google.com/compute/docs/disks/local-ssd for more information.",
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
     "FastSocket": {
       "description": "Configuration of Fast Socket feature.",
       "id": "FastSocket",
@@ -3800,6 +3852,25 @@
             "type": "string"
           },
           "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "Fleet": {
+      "description": "Fleet is the fleet configuration for the cluster.",
+      "id": "Fleet",
+      "properties": {
+        "membership": {
+          "description": "[Output only] The full resource name of the registered fleet membership of the cluster, in the format `//gkehub.googleapis.com/projects/*/locations/*/memberships/*`.",
+          "type": "string"
+        },
+        "preRegistered": {
+          "description": "[Output only] Whether the cluster has been registered through the fleet API.",
+          "type": "boolean"
+        },
+        "project": {
+          "description": "The Fleet host project(project ID or project number) where this cluster will be registered to. This field cannot be changed after the cluster has been registered.",
+          "type": "string"
         }
       },
       "type": "object"
@@ -4024,6 +4095,11 @@
       "description": "Configuration for controlling how IPs are allocated in the cluster.",
       "id": "IPAllocationPolicy",
       "properties": {
+        "additionalPodRangesConfig": {
+          "$ref": "AdditionalPodRangesConfig",
+          "description": "Output only. [Output only] The additional pod ranges that are added to the cluster. These pod ranges can be used by new node pools to allocate pod IPs automatically. Once the range is removed it will not show up in IPAllocationPolicy.",
+          "readOnly": true
+        },
         "allowRouteOverlap": {
           "description": "If true, allow allocation of cluster CIDR ranges that overlap with certain kinds of network routes. By default we do not allow cluster CIDR ranges to intersect with any user declared routes. With allow_route_overlap == true, we allow overlapping with CIDR ranges that are larger than the cluster CIDR range. If this field is set to true, then cluster and services CIDRs must be fully-specified (e.g. `10.96.0.0/14`, but not `/14`), which means: 1) When `use_ip_aliases` is true, `cluster_ipv4_cidr_block` and `services_ipv4_cidr_block` must be fully-specified. 2) When `use_ip_aliases` is false, `cluster.cluster_ipv4_cidr` muse be fully-specified.",
           "type": "boolean"
@@ -4065,6 +4141,10 @@
         "nodeIpv4CidrBlock": {
           "description": "The IP address range of the instance IPs in this cluster. This is applicable only if `create_subnetwork` is true. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. `/14`) to have a range chosen with a specific netmask. Set to a [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g. `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range to use.",
           "type": "string"
+        },
+        "podCidrOverprovisionConfig": {
+          "$ref": "PodCIDROverprovisionConfig",
+          "description": "[PRIVATE FIELD] Pod CIDR size overprovisioning config for the cluster. Pod CIDR size per node depends on max_pods_per_node. By default, the value of max_pods_per_node is doubled and then rounded off to next power of 2 to get the size of pod CIDR block per node. Example: max_pods_per_node of 30 would result in 64 IPs (/26). This config can disable the doubling of IPs (we still round off to next power of 2) Example: max_pods_per_node of 30 will result in 32 IPs (/27) when overprovisioning is disabled."
         },
         "servicesIpv4Cidr": {
           "description": "This field is deprecated, use services_ipv4_cidr_block.",
@@ -4358,6 +4438,18 @@
             "$ref": "UsableSubnetwork"
           },
           "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "LocalNvmeSsdBlockConfig": {
+      "description": "LocalNvmeSsdBlockConfig contains configuration for using raw-block local NVMe SSDs",
+      "id": "LocalNvmeSsdBlockConfig",
+      "properties": {
+        "localSsdCount": {
+          "description": "The number of raw-block local NVMe SSD disks to be attached to the node. Each local SSD is 375 GB in size. If zero, it means no raw-block local NVMe SSD disks to be attached to the node. The limit for this value is dependent upon the maximum number of disks available on a machine per zone. See: https://cloud.google.com/compute/docs/disks/local-ssd for more information.",
+          "format": "int32",
+          "type": "integer"
         }
       },
       "type": "object"
@@ -4727,7 +4819,7 @@
             "Default value. Same as DISABLED",
             "No private access to or from Google Services",
             "Enables private IPv6 access to Google Services from GKE",
-            "Enables priate IPv6 access to and from Google Services"
+            "Enables private IPv6 access to and from Google Services"
           ],
           "type": "string"
         },
@@ -4857,6 +4949,10 @@
           "$ref": "EphemeralStorageConfig",
           "description": "Parameters for the ephemeral storage filesystem. If unspecified, ephemeral storage is backed by the boot disk."
         },
+        "ephemeralStorageLocalSsdConfig": {
+          "$ref": "EphemeralStorageLocalSsdConfig",
+          "description": "Parameters for the node ephemeral storage using Local SSDs. If unspecified, ephemeral storage is backed by the boot disk. This field is functionally equivalent to the ephemeral_storage_config"
+        },
         "fastSocket": {
           "$ref": "FastSocket",
           "description": "Enable or disable NCCL fast socket for the node pool."
@@ -4870,7 +4966,7 @@
           "description": "Enable or disable gvnic on the node pool."
         },
         "imageType": {
-          "description": "The image type to use for this node. Note that for a given image type, the latest version of it will be used.",
+          "description": "The image type to use for this node. Note that for a given image type, the latest version of it will be used. Please see https://cloud.google.com/kubernetes-engine/docs/concepts/node-images for available image types.",
           "type": "string"
         },
         "kubeletConfig": {
@@ -4887,6 +4983,10 @@
         "linuxNodeConfig": {
           "$ref": "LinuxNodeConfig",
           "description": "Parameters that can be configured on Linux nodes."
+        },
+        "localNvmeSsdBlockConfig": {
+          "$ref": "LocalNvmeSsdBlockConfig",
+          "description": "Parameters for using raw-block Local NVMe SSDs."
         },
         "localSsdCount": {
           "description": "The number of local SSD disks to be attached to the node. The limit for this value is dependent upon the maximum number of disks available on a machine per zone. See: https://cloud.google.com/compute/docs/disks/local-ssd for more information.",
@@ -4967,6 +5067,10 @@
             "$ref": "NodeTaint"
           },
           "type": "array"
+        },
+        "windowsNodeConfig": {
+          "$ref": "WindowsNodeConfig",
+          "description": "Parameters that can be configured on Windows nodes."
         },
         "workloadMetadataConfig": {
           "$ref": "WorkloadMetadataConfig",
@@ -5063,6 +5167,10 @@
           "$ref": "NetworkPerformanceConfig",
           "description": "Network bandwidth tier configuration."
         },
+        "podCidrOverprovisionConfig": {
+          "$ref": "PodCIDROverprovisionConfig",
+          "description": "[PRIVATE FIELD] Pod CIDR size overprovisioning config for the nodepool. Pod CIDR size per node depends on max_pods_per_node. By default, the value of max_pods_per_node is rounded off to next power of 2 and we then double that to get the size of pod CIDR block per node. Example: max_pods_per_node of 30 would result in 64 IPs (/26). This config can disable the doubling of IPs (we still round off to next power of 2) Example: max_pods_per_node of 30 will result in 32 IPs (/27) when overprovisioning is disabled."
+        },
         "podIpv4CidrBlock": {
           "description": "The IP address range for pod IPs in this node pool. Only applicable if `create_pod_range` is true. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. `/14`) to have a range chosen with a specific netmask. Set to a [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) notation (e.g. `10.96.0.0/14`) to pick a specific range to use. Only applicable if `ip_allocation_policy.use_ip_aliases` is true. This field cannot be changed after the node pool has been created.",
           "type": "string"
@@ -5092,6 +5200,10 @@
         "config": {
           "$ref": "NodeConfig",
           "description": "The node configuration of the pool."
+        },
+        "etag": {
+          "description": "This checksum is computed by the server based on the value of node pool fields, and may be sent on update requests to ensure the client has an up-to-date value before proceeding.",
+          "type": "string"
         },
         "initialNodeCount": {
           "description": "The initial node count for the pool. You must ensure that your Compute Engine [resource quota](https://cloud.google.com/compute/quotas) is sufficient for this number of instances. You must also have available firewall and routes quota.",
@@ -5177,7 +5289,7 @@
           "description": "Upgrade settings control disruption and speed of the upgrade."
         },
         "version": {
-          "description": "The version of the Kubernetes of this node.",
+          "description": "The version of Kubernetes running on this NodePool's nodes. If unspecified, it defaults as described [here](https://cloud.google.com/kubernetes-engine/versioning#specifying_node_version).",
           "type": "string"
         }
       },
@@ -5266,7 +5378,7 @@
       "type": "object"
     },
     "NodeTaint": {
-      "description": "Kubernetes taint is comprised of three fields: key, value, and effect. Effect can only be one of three types: NoSchedule, PreferNoSchedule or NoExecute. See [here](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration) for more information, including usage and the valid values.",
+      "description": "Kubernetes taint is composed of three fields: key, value, and effect. Effect can only be one of three types: NoSchedule, PreferNoSchedule or NoExecute. See [here](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration) for more information, including usage and the valid values.",
       "id": "NodeTaint",
       "properties": {
         "effect": {
@@ -5506,6 +5618,17 @@
             "COMPACT specifies node placement in the same availability domain to ensure low communication latency."
           ],
           "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "PodCIDROverprovisionConfig": {
+      "description": "[PRIVATE FIELD] Config for pod CIDR size overprovisioning.",
+      "id": "PodCIDROverprovisionConfig",
+      "properties": {
+        "disable": {
+          "description": "Whether Pod CIDR overprovisioning is disabled. Note: Pod CIDR overprovisioning is enabled by default.",
+          "type": "boolean"
         }
       },
       "type": "object"
@@ -6610,6 +6733,10 @@
           "$ref": "ConfidentialNodes",
           "description": "Confidential nodes config. All the nodes in the node pool will be Confidential VM once enabled."
         },
+        "etag": {
+          "description": "The current etag of the node pool. If an etag is provided and does not match the current etag of the node pool, update will be blocked and an ABORTED error will be returned.",
+          "type": "string"
+        },
         "fastSocket": {
           "$ref": "FastSocket",
           "description": "Enable or disable NCCL fast socket for the node pool."
@@ -6623,7 +6750,7 @@
           "description": "Enable or disable gvnic on the node pool."
         },
         "imageType": {
-          "description": "Required. The desired image type for the node pool.",
+          "description": "Required. The desired image type for the node pool. Please see https://cloud.google.com/kubernetes-engine/docs/concepts/node-images for available image types.",
           "type": "string"
         },
         "kubeletConfig": {
@@ -6684,6 +6811,10 @@
         "upgradeSettings": {
           "$ref": "UpgradeSettings",
           "description": "Upgrade settings control disruption and speed of the upgrade."
+        },
+        "windowsNodeConfig": {
+          "$ref": "WindowsNodeConfig",
+          "description": "Parameters that can be configured on Windows nodes."
         },
         "workloadMetadataConfig": {
           "$ref": "WorkloadMetadataConfig",
@@ -6801,7 +6932,7 @@
             "SURGE"
           ],
           "enumDescriptions": [
-            "Default value.",
+            "Default value if unset. GKE internally defaults the update strategy to SURGE for unspecified strategies.",
             "blue-green upgrade.",
             "SURGE is the traditional way of upgrading a node pool. max_surge and max_unavailable determines the level of upgrade parallelism."
           ],
@@ -6891,6 +7022,27 @@
         "enabled": {
           "description": "Whether gVNIC features are enabled in the node pool.",
           "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "WindowsNodeConfig": {
+      "description": "Parameters that can be configured on Windows nodes. Windows Node Config that define the parameters that will be used to configure the Windows node pool settings",
+      "id": "WindowsNodeConfig",
+      "properties": {
+        "osVersion": {
+          "description": "OSVersion specifies the Windows node config to be used on the node",
+          "enum": [
+            "OS_VERSION_UNSPECIFIED",
+            "OS_VERSION_LTSC2019",
+            "OS_VERSION_LTSC2022"
+          ],
+          "enumDescriptions": [
+            "When OSVersion is not specified",
+            "LTSC2019 specifies to use LTSC2019 as the Windows Servercore Base Image",
+            "LTSC2022 specifies to use LTSC2022 as the Windows Servercore Base Image"
+          ],
+          "type": "string"
         }
       },
       "type": "object"

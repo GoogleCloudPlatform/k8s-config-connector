@@ -100,6 +100,11 @@ func (in *BigQueryDatasetSpec) DeepCopyInto(out *BigQueryDatasetSpec) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.DefaultCollation != nil {
+		in, out := &in.DefaultCollation, &out.DefaultCollation
+		*out = new(string)
+		**out = **in
+	}
 	if in.DefaultEncryptionConfiguration != nil {
 		in, out := &in.DefaultEncryptionConfiguration, &out.DefaultEncryptionConfiguration
 		*out = new(DatasetDefaultEncryptionConfiguration)
@@ -123,6 +128,11 @@ func (in *BigQueryDatasetSpec) DeepCopyInto(out *BigQueryDatasetSpec) {
 	if in.FriendlyName != nil {
 		in, out := &in.FriendlyName, &out.FriendlyName
 		*out = new(string)
+		**out = **in
+	}
+	if in.IsCaseInsensitive != nil {
+		in, out := &in.IsCaseInsensitive, &out.IsCaseInsensitive
+		*out = new(bool)
 		**out = **in
 	}
 	if in.Location != nil {

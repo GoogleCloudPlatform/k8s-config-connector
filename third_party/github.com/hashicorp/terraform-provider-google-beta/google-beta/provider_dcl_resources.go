@@ -53,7 +53,6 @@ var dclResources = map[string]*schema.Resource{
 	"google_firebaserules_ruleset":                              ResourceFirebaserulesRuleset(),
 	"google_gke_hub_feature":                                    ResourceGkeHubFeature(),
 	"google_gke_hub_feature_membership":                         ResourceGkeHubFeatureMembership(),
-	"google_logging_log_view":                                   ResourceLoggingLogView(),
 	"google_monitoring_monitored_project":                       ResourceMonitoringMonitoredProject(),
 	"google_network_connectivity_hub":                           ResourceNetworkConnectivityHub(),
 	"google_network_connectivity_spoke":                         ResourceNetworkConnectivitySpoke(),

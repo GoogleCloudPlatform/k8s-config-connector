@@ -5,13 +5,13 @@ DIR_NAME=google-beta
 
 default: build
 
-build: lint generate
+build: lint
 	go install
 
-test: lint generate
+test: lint
 	go test $(TESTARGS) -timeout=30s $(TEST)
 
-testacc: lint generate
+testacc: lint
 	TF_ACC=1 TF_SCHEMA_PANIC_ON_ERROR=1 go test $(TEST) -v $(TESTARGS) -timeout 240m -ldflags="-X=github.com/hashicorp/terraform-provider-google-beta/version.ProviderVersion=acc"
 
 fmt:
@@ -26,9 +26,6 @@ vet:
 	go vet
 
 lint: fmtcheck vet
-
-generate:
-	go generate  ./...
 
 test-compile:
 	@if [ "$(TEST)" = "./..." ]; then \
@@ -48,5 +45,5 @@ endif
 docscheck:
 	@sh -c "'$(CURDIR)/scripts/docscheck.sh'"
 
-.PHONY: build test testacc fmt fmtcheck vet lint  errcheck test-compile website website-test docscheck generate
+.PHONY: build test testacc fmt fmtcheck vet lint  errcheck test-compile website website-test docscheck
 

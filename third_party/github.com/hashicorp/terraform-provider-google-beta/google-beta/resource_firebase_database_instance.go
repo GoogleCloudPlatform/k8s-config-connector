@@ -24,7 +24,7 @@ import (
 )
 
 func enableRTDB(config *Config, d *schema.ResourceData, project string, billingProject string, userAgent string) error {
-	url, err := replaceVars(d, config, "{{FirebaseDatabaseBasePath}}projects/{{project}}/locations/{{region}}/instances/{{instance_id}}:reenable")
+	url, err := ReplaceVars(d, config, "{{FirebaseDatabaseBasePath}}projects/{{project}}/locations/{{region}}/instances/{{instance_id}}:reenable")
 	if err != nil {
 		return err
 	}
@@ -39,7 +39,7 @@ func enableRTDB(config *Config, d *schema.ResourceData, project string, billingP
 }
 
 func disableRTDB(config *Config, d *schema.ResourceData, project string, billingProject string, userAgent string) error {
-	url, err := replaceVars(d, config, "{{FirebaseDatabaseBasePath}}projects/{{project}}/locations/{{region}}/instances/{{instance_id}}:disable")
+	url, err := ReplaceVars(d, config, "{{FirebaseDatabaseBasePath}}projects/{{project}}/locations/{{region}}/instances/{{instance_id}}:disable")
 	if err != nil {
 		return err
 	}
@@ -147,7 +147,7 @@ func resourceFirebaseDatabaseInstanceCreate(d *schema.ResourceData, meta interfa
 		obj["type"] = typeProp
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseDatabaseBasePath}}projects/{{project}}/locations/{{region}}/instances?databaseId={{instance_id}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseDatabaseBasePath}}projects/{{project}}/locations/{{region}}/instances?databaseId={{instance_id}}")
 	if err != nil {
 		return err
 	}
@@ -175,7 +175,7 @@ func resourceFirebaseDatabaseInstanceCreate(d *schema.ResourceData, meta interfa
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "projects/{{project}}/locations/{{region}}/instances/{{instance_id}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/instances/{{instance_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -201,7 +201,7 @@ func resourceFirebaseDatabaseInstanceRead(d *schema.ResourceData, meta interface
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseDatabaseBasePath}}projects/{{project}}/locations/{{region}}/instances/{{instance_id}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseDatabaseBasePath}}projects/{{project}}/locations/{{region}}/instances/{{instance_id}}")
 	if err != nil {
 		return err
 	}
@@ -285,7 +285,7 @@ func resourceFirebaseDatabaseInstanceUpdate(d *schema.ResourceData, meta interfa
 		obj["type"] = typeProp
 	}
 
-	url, err := replaceVars(d, config, "{{FirebaseDatabaseBasePath}}projects/{{project}}/locations/{{region}}/instances/{{instance_id}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseDatabaseBasePath}}projects/{{project}}/locations/{{region}}/instances/{{instance_id}}")
 	if err != nil {
 		return err
 	}
@@ -344,7 +344,7 @@ func resourceFirebaseDatabaseInstanceDelete(d *schema.ResourceData, meta interfa
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{FirebaseDatabaseBasePath}}projects/{{project}}/locations/{{region}}/instances/{{instance_id}}")
+	url, err := ReplaceVars(d, config, "{{FirebaseDatabaseBasePath}}projects/{{project}}/locations/{{region}}/instances/{{instance_id}}")
 	if err != nil {
 		return err
 	}
@@ -380,7 +380,7 @@ func resourceFirebaseDatabaseInstanceDelete(d *schema.ResourceData, meta interfa
 
 func resourceFirebaseDatabaseInstanceImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*Config)
-	if err := parseImportId([]string{
+	if err := ParseImportId([]string{
 		"projects/(?P<project>[^/]+)/locations/(?P<region>[^/]+)/instances/(?P<instance_id>[^/]+)",
 		"(?P<project>[^/]+)/(?P<region>[^/]+)/(?P<instance_id>[^/]+)",
 		"(?P<region>[^/]+)/(?P<instance_id>[^/]+)",
@@ -390,7 +390,7 @@ func resourceFirebaseDatabaseInstanceImport(d *schema.ResourceData, meta interfa
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "projects/{{project}}/locations/{{region}}/instances/{{instance_id}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/instances/{{instance_id}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

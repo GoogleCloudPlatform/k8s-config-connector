@@ -45,7 +45,7 @@ func ResourceBigqueryReservationCapacityCommitment() *schema.Resource {
 			"plan": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: `Capacity commitment plan. Valid values are FLEX, TRIAL, MONTHLY, ANNUAL`,
+				Description: `Capacity commitment plan. Valid values are at https://cloud.google.com/bigquery/docs/reference/reservations/rpc/google.cloud.bigquery.reservation.v1#commitmentplan`,
 			},
 			"slot_count": {
 				Type:        schema.TypeInt,
@@ -61,6 +61,12 @@ func ResourceBigqueryReservationCapacityCommitment() *schema.Resource {
 empty. This field must only contain lower case alphanumeric characters or dashes. The first and last character
 cannot be a dash. Max length is 64 characters. NOTE: this ID won't be kept if the capacity commitment is split
 or merged.`,
+			},
+			"edition": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				ForceNew:    true,
+				Description: `The edition type. Valid values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS`,
 			},
 			"enforce_single_admin_project_per_org": {
 				Type:        schema.TypeString,
@@ -79,7 +85,7 @@ Examples: US, EU, asia-northeast1. The default value is US.`,
 			"renewal_plan": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: `The plan this capacity commitment is converted to after commitmentEndTime passes. Once the plan is changed, committed period is extended according to commitment plan. Only applicable for ANNUAL and TRIAL commitments.`,
+				Description: `The plan this capacity commitment is converted to after commitmentEndTime passes. Once the plan is changed, committed period is extended according to commitment plan. Only applicable some commitment plans.`,
 			},
 			"commitment_end_time": {
 				Type:        schema.TypeString,
@@ -138,8 +144,14 @@ func resourceBigqueryReservationCapacityCommitmentCreate(d *schema.ResourceData,
 	} else if v, ok := d.GetOkExists("renewal_plan"); !isEmptyValue(reflect.ValueOf(renewalPlanProp)) && (ok || !reflect.DeepEqual(v, renewalPlanProp)) {
 		obj["renewalPlan"] = renewalPlanProp
 	}
+	editionProp, err := expandBigqueryReservationCapacityCommitmentEdition(d.Get("edition"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("edition"); !isEmptyValue(reflect.ValueOf(editionProp)) && (ok || !reflect.DeepEqual(v, editionProp)) {
+		obj["edition"] = editionProp
+	}
 
-	url, err := replaceVars(d, config, "{{BigqueryReservationBasePath}}projects/{{project}}/locations/{{location}}/capacityCommitments?capacityCommitmentId={{capacity_commitment_id}}")
+	url, err := ReplaceVars(d, config, "{{BigqueryReservationBasePath}}projects/{{project}}/locations/{{location}}/capacityCommitments?capacityCommitmentId={{capacity_commitment_id}}")
 	if err != nil {
 		return err
 	}
@@ -167,7 +179,7 @@ func resourceBigqueryReservationCapacityCommitmentCreate(d *schema.ResourceData,
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "{{name}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/capacityCommitments/{{capacity_commitment_id}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -185,7 +197,7 @@ func resourceBigqueryReservationCapacityCommitmentRead(d *schema.ResourceData, m
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{BigqueryReservationBasePath}}{{name}}")
+	url, err := ReplaceVars(d, config, "{{BigqueryReservationBasePath}}projects/{{project}}/locations/{{location}}/capacityCommitments/{{capacity_commitment_id}}")
 	if err != nil {
 		return err
 	}
@@ -233,6 +245,9 @@ func resourceBigqueryReservationCapacityCommitmentRead(d *schema.ResourceData, m
 	if err := d.Set("renewal_plan", flattenBigqueryReservationCapacityCommitmentRenewalPlan(res["renewalPlan"], d, config)); err != nil {
 		return fmt.Errorf("Error reading CapacityCommitment: %s", err)
 	}
+	if err := d.Set("edition", flattenBigqueryReservationCapacityCommitmentEdition(res["edition"], d, config)); err != nil {
+		return fmt.Errorf("Error reading CapacityCommitment: %s", err)
+	}
 
 	return nil
 }
@@ -266,7 +281,7 @@ func resourceBigqueryReservationCapacityCommitmentUpdate(d *schema.ResourceData,
 		obj["renewalPlan"] = renewalPlanProp
 	}
 
-	url, err := replaceVars(d, config, "{{BigqueryReservationBasePath}}{{name}}")
+	url, err := ReplaceVars(d, config, "{{BigqueryReservationBasePath}}projects/{{project}}/locations/{{location}}/capacityCommitments/{{capacity_commitment_id}}")
 	if err != nil {
 		return err
 	}
@@ -281,9 +296,9 @@ func resourceBigqueryReservationCapacityCommitmentUpdate(d *schema.ResourceData,
 	if d.HasChange("renewal_plan") {
 		updateMask = append(updateMask, "renewalPlan")
 	}
-	// updateMask is a URL parameter but not present in the schema, so replaceVars
+	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = addQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -319,7 +334,7 @@ func resourceBigqueryReservationCapacityCommitmentDelete(d *schema.ResourceData,
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{BigqueryReservationBasePath}}{{name}}")
+	url, err := ReplaceVars(d, config, "{{BigqueryReservationBasePath}}projects/{{project}}/locations/{{location}}/capacityCommitments/{{capacity_commitment_id}}")
 	if err != nil {
 		return err
 	}
@@ -342,13 +357,21 @@ func resourceBigqueryReservationCapacityCommitmentDelete(d *schema.ResourceData,
 }
 
 func resourceBigqueryReservationCapacityCommitmentImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-
 	config := meta.(*Config)
-
-	// current import_formats can't import fields with forward slashes in their value
-	if err := parseImportId([]string{"(?P<project>[^ ]+) (?P<name>[^ ]+)", "(?P<name>[^ ]+)"}, d, config); err != nil {
+	if err := ParseImportId([]string{
+		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/capacityCommitments/(?P<capacity_commitment_id>[^/]+)",
+		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<capacity_commitment_id>[^/]+)",
+		"(?P<location>[^/]+)/(?P<capacity_commitment_id>[^/]+)",
+	}, d, config); err != nil {
 		return nil, err
 	}
+
+	// Replace import id for the resource id
+	id, err := ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/capacityCommitments/{{capacity_commitment_id}}")
+	if err != nil {
+		return nil, fmt.Errorf("Error constructing id: %s", err)
+	}
+	d.SetId(id)
 
 	return []*schema.ResourceData{d}, nil
 }
@@ -394,6 +417,10 @@ func flattenBigqueryReservationCapacityCommitmentRenewalPlan(v interface{}, d *s
 	return v
 }
 
+func flattenBigqueryReservationCapacityCommitmentEdition(v interface{}, d *schema.ResourceData, config *Config) interface{} {
+	return v
+}
+
 func expandBigqueryReservationCapacityCommitmentSlotCount(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }
@@ -403,5 +430,9 @@ func expandBigqueryReservationCapacityCommitmentPlan(v interface{}, d TerraformR
 }
 
 func expandBigqueryReservationCapacityCommitmentRenewalPlan(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandBigqueryReservationCapacityCommitmentEdition(v interface{}, d TerraformResourceData, config *Config) (interface{}, error) {
 	return v, nil
 }

@@ -46,7 +46,7 @@ func TestAccHealthcareHl7V2StoreIdParsing(t *testing.T) {
 	}
 
 	for tn, tc := range cases {
-		hl7V2StoreId, err := parseHealthcareHl7V2StoreId(tc.ImportId, tc.Config)
+		hl7V2StoreId, err := ParseHealthcareHl7V2StoreId(tc.ImportId, tc.Config)
 
 		if tc.ExpectedError && err == nil {
 			t.Fatalf("bad: %s, expected an error", tn)
@@ -59,12 +59,12 @@ func TestAccHealthcareHl7V2StoreIdParsing(t *testing.T) {
 			t.Fatalf("bad: %s, err: %#v", tn, err)
 		}
 
-		if hl7V2StoreId.terraformId() != tc.ExpectedTerraformId {
-			t.Fatalf("bad: %s, expected Terraform ID to be `%s` but is `%s`", tn, tc.ExpectedTerraformId, hl7V2StoreId.terraformId())
+		if hl7V2StoreId.TerraformId() != tc.ExpectedTerraformId {
+			t.Fatalf("bad: %s, expected Terraform ID to be `%s` but is `%s`", tn, tc.ExpectedTerraformId, hl7V2StoreId.TerraformId())
 		}
 
-		if hl7V2StoreId.hl7V2StoreId() != tc.ExpectedHl7V2StoreId {
-			t.Fatalf("bad: %s, expected Hl7V2Store ID to be `%s` but is `%s`", tn, tc.ExpectedHl7V2StoreId, hl7V2StoreId.hl7V2StoreId())
+		if hl7V2StoreId.Hl7V2StoreId() != tc.ExpectedHl7V2StoreId {
+			t.Fatalf("bad: %s, expected Hl7V2Store ID to be `%s` but is `%s`", tn, tc.ExpectedHl7V2StoreId, hl7V2StoreId.Hl7V2StoreId())
 		}
 	}
 }
@@ -78,9 +78,9 @@ func TestAccHealthcareHl7V2Store_basic(t *testing.T) {
 	resourceName := "google_healthcare_hl7_v2_store.default"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckHealthcareHl7V2StoreDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckHealthcareHl7V2StoreDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testGoogleHealthcareHl7V2Store_basic(hl7_v2StoreName, datasetName),
@@ -121,9 +121,9 @@ func TestAccHealthcareHl7V2Store_updateSchema(t *testing.T) {
 	resourceName := "google_healthcare_hl7_v2_store.default"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProvidersOiCS,
-		CheckDestroy: testAccCheckHealthcareHl7V2StoreDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckHealthcareHl7V2StoreDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testGoogleHealthcareHl7V2Store_basicSchema(hl7_v2StoreName, datasetName),

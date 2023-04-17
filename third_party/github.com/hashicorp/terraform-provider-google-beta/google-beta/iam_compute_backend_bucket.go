@@ -179,7 +179,7 @@ func (u *ComputeBackendBucketIamUpdater) SetResourceIamPolicy(policy *cloudresou
 
 func (u *ComputeBackendBucketIamUpdater) qualifyBackendBucketUrl(methodIdentifier string) (string, error) {
 	urlTemplate := fmt.Sprintf("{{ComputeBasePath}}%s/%s", fmt.Sprintf("projects/%s/global/backendBuckets/%s", u.project, u.name), methodIdentifier)
-	url, err := replaceVars(u.d, u.Config, urlTemplate)
+	url, err := ReplaceVars(u.d, u.Config, urlTemplate)
 	if err != nil {
 		return "", err
 	}

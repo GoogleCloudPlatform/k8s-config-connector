@@ -15,6 +15,7 @@
 package google
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"reflect"
@@ -23,6 +24,32 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
+
+// This customizeDiff allows updating the dictionary, regex, and large_custom_dictionary fields, but
+// it recreates the resource if changing between these fields. e.g., updating the regex field should
+// be allowed, while changing from regex to dictionary should trigger the recreation of the resource.
+func storedInfoTypeCustomizeDiffFunc(diff TerraformResourceDiff) error {
+	oldDict, newDict := diff.GetChange("dictionary")
+	oldRegex, newRegex := diff.GetChange("regex")
+	oldLargeCD, newLargeCD := diff.GetChange("large_custom_dictionary")
+	if !isEmptyValue(reflect.ValueOf(oldDict)) && isEmptyValue(reflect.ValueOf(newDict)) {
+		diff.ForceNew("dictionary")
+		return nil
+	}
+	if !isEmptyValue(reflect.ValueOf(oldRegex)) && isEmptyValue(reflect.ValueOf(newRegex)) {
+		diff.ForceNew("regex")
+		return nil
+	}
+	if !isEmptyValue(reflect.ValueOf(oldLargeCD)) && isEmptyValue(reflect.ValueOf(newLargeCD)) {
+		diff.ForceNew("large_custom_dictionary")
+		return nil
+	}
+	return nil
+}
+
+func storedInfoTypeCustomizeDiff(_ context.Context, diff *schema.ResourceDiff, v interface{}) error {
+	return storedInfoTypeCustomizeDiffFunc(diff)
+}
 
 func ResourceDataLossPreventionStoredInfoType() *schema.Resource {
 	return &schema.Resource{
@@ -40,6 +67,8 @@ func ResourceDataLossPreventionStoredInfoType() *schema.Resource {
 			Update: schema.DefaultTimeout(20 * time.Minute),
 			Delete: schema.DefaultTimeout(20 * time.Minute),
 		},
+
+		CustomizeDiff: storedInfoTypeCustomizeDiff,
 
 		Schema: map[string]*schema.Schema{
 			"parent": {
@@ -61,7 +90,6 @@ func ResourceDataLossPreventionStoredInfoType() *schema.Resource {
 			"dictionary": {
 				Type:        schema.TypeList,
 				Optional:    true,
-				ForceNew:    true,
 				Description: `Dictionary which defines the rule.`,
 				MaxItems:    1,
 				Elem: &schema.Resource{
@@ -114,7 +142,6 @@ phrase and every phrase must contain at least 2 characters that are letters or d
 			"large_custom_dictionary": {
 				Type:        schema.TypeList,
 				Optional:    true,
-				ForceNew:    true,
 				Description: `Dictionary which defines the rule.`,
 				MaxItems:    1,
 				Elem: &schema.Resource{
@@ -209,7 +236,6 @@ If any of these artifacts are modified, the dictionary is considered invalid and
 			"regex": {
 				Type:        schema.TypeList,
 				Optional:    true,
-				ForceNew:    true,
 				Description: `Regular expression which defines the rule.`,
 				MaxItems:    1,
 				Elem: &schema.Resource{
@@ -223,7 +249,6 @@ Its syntax (https://github.com/google/re2/wiki/Syntax) can be found under the go
 						"group_indexes": {
 							Type:        schema.TypeList,
 							Optional:    true,
-							ForceNew:    true,
 							Description: `The index of the submatch to extract as findings. When not specified, the entire match is returned. No more than 3 may be included.`,
 							Elem: &schema.Schema{
 								Type: schema.TypeInt,
@@ -287,7 +312,7 @@ func resourceDataLossPreventionStoredInfoTypeCreate(d *schema.ResourceData, meta
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{DataLossPreventionBasePath}}{{parent}}/storedInfoTypes")
+	url, err := ReplaceVars(d, config, "{{DataLossPreventionBasePath}}{{parent}}/storedInfoTypes")
 	if err != nil {
 		return err
 	}
@@ -309,7 +334,7 @@ func resourceDataLossPreventionStoredInfoTypeCreate(d *schema.ResourceData, meta
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "{{parent}}/storedInfoTypes/{{name}}")
+	id, err := ReplaceVars(d, config, "{{parent}}/storedInfoTypes/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -329,7 +354,7 @@ func resourceDataLossPreventionStoredInfoTypePollRead(d *schema.ResourceData, me
 	return func() (map[string]interface{}, error) {
 		config := meta.(*Config)
 
-		url, err := replaceVars(d, config, "{{DataLossPreventionBasePath}}{{parent}}/storedInfoTypes/{{name}}")
+		url, err := ReplaceVars(d, config, "{{DataLossPreventionBasePath}}{{parent}}/storedInfoTypes/{{name}}")
 		if err != nil {
 			return nil, err
 		}
@@ -369,7 +394,7 @@ func resourceDataLossPreventionStoredInfoTypeRead(d *schema.ResourceData, meta i
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{DataLossPreventionBasePath}}{{parent}}/storedInfoTypes/{{name}}")
+	url, err := ReplaceVars(d, config, "{{DataLossPreventionBasePath}}{{parent}}/storedInfoTypes/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -442,13 +467,31 @@ func resourceDataLossPreventionStoredInfoTypeUpdate(d *schema.ResourceData, meta
 	} else if v, ok := d.GetOkExists("display_name"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, displayNameProp)) {
 		obj["displayName"] = displayNameProp
 	}
+	regexProp, err := expandDataLossPreventionStoredInfoTypeRegex(d.Get("regex"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("regex"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, regexProp)) {
+		obj["regex"] = regexProp
+	}
+	dictionaryProp, err := expandDataLossPreventionStoredInfoTypeDictionary(d.Get("dictionary"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("dictionary"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, dictionaryProp)) {
+		obj["dictionary"] = dictionaryProp
+	}
+	largeCustomDictionaryProp, err := expandDataLossPreventionStoredInfoTypeLargeCustomDictionary(d.Get("large_custom_dictionary"), d, config)
+	if err != nil {
+		return err
+	} else if v, ok := d.GetOkExists("large_custom_dictionary"); !isEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, largeCustomDictionaryProp)) {
+		obj["largeCustomDictionary"] = largeCustomDictionaryProp
+	}
 
 	obj, err = resourceDataLossPreventionStoredInfoTypeEncoder(d, meta, obj)
 	if err != nil {
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{DataLossPreventionBasePath}}{{parent}}/storedInfoTypes/{{name}}")
+	url, err := ReplaceVars(d, config, "{{DataLossPreventionBasePath}}{{parent}}/storedInfoTypes/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -463,9 +506,21 @@ func resourceDataLossPreventionStoredInfoTypeUpdate(d *schema.ResourceData, meta
 	if d.HasChange("display_name") {
 		updateMask = append(updateMask, "displayName")
 	}
-	// updateMask is a URL parameter but not present in the schema, so replaceVars
+
+	if d.HasChange("regex") {
+		updateMask = append(updateMask, "regex")
+	}
+
+	if d.HasChange("dictionary") {
+		updateMask = append(updateMask, "dictionary")
+	}
+
+	if d.HasChange("large_custom_dictionary") {
+		updateMask = append(updateMask, "largeCustomDictionary")
+	}
+	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = addQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -495,7 +550,7 @@ func resourceDataLossPreventionStoredInfoTypeDelete(d *schema.ResourceData, meta
 
 	billingProject := ""
 
-	url, err := replaceVars(d, config, "{{DataLossPreventionBasePath}}{{parent}}/storedInfoTypes/{{name}}")
+	url, err := ReplaceVars(d, config, "{{DataLossPreventionBasePath}}{{parent}}/storedInfoTypes/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -521,7 +576,7 @@ func resourceDataLossPreventionStoredInfoTypeImport(d *schema.ResourceData, meta
 	config := meta.(*Config)
 
 	// Custom import to handle parent possibilities
-	if err := parseImportId([]string{"(?P<name>.+)"}, d, config); err != nil {
+	if err := ParseImportId([]string{"(?P<name>.+)"}, d, config); err != nil {
 		return nil, err
 	}
 	parts := strings.Split(d.Get("name").(string), "/")
@@ -543,7 +598,7 @@ func resourceDataLossPreventionStoredInfoTypeImport(d *schema.ResourceData, meta
 	}
 
 	// Replace import id for the resource id
-	id, err := replaceVars(d, config, "{{parent}}/storedInfoTypes/{{name}}")
+	id, err := ReplaceVars(d, config, "{{parent}}/storedInfoTypes/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}

@@ -17,8 +17,8 @@ func TestAccSpannerDatabaseIamBinding(t *testing.T) {
 	instance := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSpannerDatabaseIamBinding_basic(account, instance, database, role),
@@ -29,7 +29,7 @@ func TestAccSpannerDatabaseIamBinding(t *testing.T) {
 					Project:  project,
 					Instance: instance,
 					Database: database,
-				}.terraformId(), role),
+				}.TerraformId(), role),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -43,7 +43,7 @@ func TestAccSpannerDatabaseIamBinding(t *testing.T) {
 					Project:  project,
 					Instance: instance,
 					Database: database,
-				}.terraformId(), role),
+				}.TerraformId(), role),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -62,8 +62,8 @@ func TestAccSpannerDatabaseIamMember(t *testing.T) {
 	conditionTitle := "Access only database one"
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				// Test Iam Member creation (no update for member, no need to test)
@@ -75,7 +75,7 @@ func TestAccSpannerDatabaseIamMember(t *testing.T) {
 					Instance: instance,
 					Database: database,
 					Project:  project,
-				}.terraformId(), role, account, project, conditionTitle),
+				}.TerraformId(), role, account, project, conditionTitle),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -93,8 +93,8 @@ func TestAccSpannerDatabaseIamPolicy(t *testing.T) {
 	instance := fmt.Sprintf("tf-test-%s", RandString(t, 10))
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSpannerDatabaseIamPolicy_basic(account, instance, database, role),
@@ -106,7 +106,7 @@ func TestAccSpannerDatabaseIamPolicy(t *testing.T) {
 					Instance: instance,
 					Database: database,
 					Project:  project,
-				}.terraformId(),
+				}.TerraformId(),
 				ImportState:       true,
 				ImportStateVerify: true,
 			},

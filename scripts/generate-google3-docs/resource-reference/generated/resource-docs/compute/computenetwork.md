@@ -86,6 +86,7 @@ description: string
 enableUlaInternalIpv6: boolean
 internalIpv6Range: string
 mtu: integer
+networkFirewallPolicyEnforcementOrder: string
 resourceID: string
 routingMode: string
 ```
@@ -171,6 +172,16 @@ The minimum value for this field is 1300 and the maximum value is 8896 bytes (ju
 Note that packets larger than 1500 bytes (standard Ethernet) can be subject to TCP-MSS clamping or dropped
 with an ICMP 'Fragmentation-Needed' message if the packets are routed to the Internet or other VPCs 
 with varying MTUs.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkFirewallPolicyEnforcementOrder</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Set the order that Firewall Rules and Firewall Policies are evaluated. Needs to be either 'AFTER_CLASSIC_FIREWALL' or 'BEFORE_CLASSIC_FIREWALL' Default 'AFTER_CLASSIC_FIREWALL' Default value: "AFTER_CLASSIC_FIREWALL" Possible values: ["BEFORE_CLASSIC_FIREWALL", "AFTER_CLASSIC_FIREWALL"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

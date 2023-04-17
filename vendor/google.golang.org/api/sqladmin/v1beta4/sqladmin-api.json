@@ -1396,6 +1396,73 @@
       "resources": {
         "instances": {
           "methods": {
+            "getDiskShrinkConfig": {
+              "description": "Get Disk Shrink Config for a given instance.",
+              "flatPath": "sql/v1beta4/projects/{project}/instances/{instance}/getDiskShrinkConfig",
+              "httpMethod": "GET",
+              "id": "sql.projects.instances.getDiskShrinkConfig",
+              "parameterOrder": [
+                "project",
+                "instance"
+              ],
+              "parameters": {
+                "instance": {
+                  "description": "Cloud SQL instance ID. This does not include the project ID.",
+                  "location": "path",
+                  "required": true,
+                  "type": "string"
+                },
+                "project": {
+                  "description": "Project ID of the project that contains the instance.",
+                  "location": "path",
+                  "required": true,
+                  "type": "string"
+                }
+              },
+              "path": "sql/v1beta4/projects/{project}/instances/{instance}/getDiskShrinkConfig",
+              "response": {
+                "$ref": "SqlInstancesGetDiskShrinkConfigResponse"
+              },
+              "scopes": [
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/sqlservice.admin"
+              ]
+            },
+            "performDiskShrink": {
+              "description": "Perform Disk Shrink on primary instance.",
+              "flatPath": "sql/v1beta4/projects/{project}/instances/{instance}/performDiskShrink",
+              "httpMethod": "POST",
+              "id": "sql.projects.instances.performDiskShrink",
+              "parameterOrder": [
+                "project",
+                "instance"
+              ],
+              "parameters": {
+                "instance": {
+                  "description": "Cloud SQL instance ID. This does not include the project ID.",
+                  "location": "path",
+                  "required": true,
+                  "type": "string"
+                },
+                "project": {
+                  "description": "Project ID of the project that contains the instance.",
+                  "location": "path",
+                  "required": true,
+                  "type": "string"
+                }
+              },
+              "path": "sql/v1beta4/projects/{project}/instances/{instance}/performDiskShrink",
+              "request": {
+                "$ref": "PerformDiskShrinkContext"
+              },
+              "response": {
+                "$ref": "Operation"
+              },
+              "scopes": [
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/sqlservice.admin"
+              ]
+            },
             "rescheduleMaintenance": {
               "description": "Reschedules the maintenance on the given instance.",
               "flatPath": "sql/v1beta4/projects/{project}/instances/{instance}/rescheduleMaintenance",
@@ -1422,6 +1489,41 @@
               "path": "sql/v1beta4/projects/{project}/instances/{instance}/rescheduleMaintenance",
               "request": {
                 "$ref": "SqlInstancesRescheduleMaintenanceRequestBody"
+              },
+              "response": {
+                "$ref": "Operation"
+              },
+              "scopes": [
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/sqlservice.admin"
+              ]
+            },
+            "resetReplicaSize": {
+              "description": "Reset Replica Size to primary instance disk size.",
+              "flatPath": "sql/v1beta4/projects/{project}/instances/{instance}/resetReplicaSize",
+              "httpMethod": "POST",
+              "id": "sql.projects.instances.resetReplicaSize",
+              "parameterOrder": [
+                "project",
+                "instance"
+              ],
+              "parameters": {
+                "instance": {
+                  "description": "Cloud SQL read replica instance name.",
+                  "location": "path",
+                  "required": true,
+                  "type": "string"
+                },
+                "project": {
+                  "description": "ID of the project that contains the read replica.",
+                  "location": "path",
+                  "required": true,
+                  "type": "string"
+                }
+              },
+              "path": "sql/v1beta4/projects/{project}/instances/{instance}/resetReplicaSize",
+              "request": {
+                "$ref": "SqlInstancesResetReplicaSizeRequest"
               },
               "response": {
                 "$ref": "Operation"
@@ -1921,7 +2023,7 @@
       }
     }
   },
-  "revision": "20221116",
+  "revision": "20230403",
   "rootUrl": "https://sqladmin.googleapis.com/",
   "schemas": {
     "AclEntry": {
@@ -1944,6 +2046,18 @@
         "value": {
           "description": "The allowlisted value for the access control list.",
           "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "AdvancedMachineFeatures": {
+      "description": "Specifies options for controlling advanced machine features.",
+      "id": "AdvancedMachineFeatures",
+      "properties": {
+        "threadsPerCore": {
+          "description": "The number of threads per physical core.",
+          "format": "int32",
+          "type": "integer"
         }
       },
       "type": "object"
@@ -2312,6 +2426,8 @@
             "MYSQL_8_0_28",
             "MYSQL_8_0_29",
             "MYSQL_8_0_30",
+            "MYSQL_8_0_31",
+            "MYSQL_8_0_32",
             "SQLSERVER_2019_STANDARD",
             "SQLSERVER_2019_ENTERPRISE",
             "SQLSERVER_2019_EXPRESS",
@@ -2340,6 +2456,8 @@
             "The database major version is MySQL 8.0 and the minor version is 28.",
             "The database major version is MySQL 8.0 and the minor version is 29.",
             "The database major version is MySQL 8.0 and the minor version is 30.",
+            "The database major version is MySQL 8.0 and the minor version is 31.",
+            "The database major version is MySQL 8.0 and the minor version is 32.",
             "The database version is SQL Server 2019 Standard.",
             "The database version is SQL Server 2019 Enterprise.",
             "The database version is SQL Server 2019 Express.",
@@ -2431,10 +2549,11 @@
       "id": "DatabaseInstance",
       "properties": {
         "availableMaintenanceVersions": {
-          "description": "List all maintenance versions applicable on the instance",
+          "description": "Output only. List all maintenance versions applicable on the instance",
           "items": {
             "type": "string"
           },
+          "readOnly": true,
           "type": "array"
         },
         "backendType": {
@@ -2498,6 +2617,8 @@
             "MYSQL_8_0_28",
             "MYSQL_8_0_29",
             "MYSQL_8_0_30",
+            "MYSQL_8_0_31",
+            "MYSQL_8_0_32",
             "SQLSERVER_2019_STANDARD",
             "SQLSERVER_2019_ENTERPRISE",
             "SQLSERVER_2019_EXPRESS",
@@ -2526,6 +2647,8 @@
             "The database major version is MySQL 8.0 and the minor version is 28.",
             "The database major version is MySQL 8.0 and the minor version is 29.",
             "The database major version is MySQL 8.0 and the minor version is 30.",
+            "The database major version is MySQL 8.0 and the minor version is 31.",
+            "The database major version is MySQL 8.0 and the minor version is 32.",
             "The database version is SQL Server 2019 Standard.",
             "The database version is SQL Server 2019 Enterprise.",
             "The database version is SQL Server 2019 Express.",
@@ -3030,6 +3153,8 @@
               "MYSQL_8_0_28",
               "MYSQL_8_0_29",
               "MYSQL_8_0_30",
+              "MYSQL_8_0_31",
+              "MYSQL_8_0_32",
               "SQLSERVER_2019_STANDARD",
               "SQLSERVER_2019_ENTERPRISE",
               "SQLSERVER_2019_EXPRESS",
@@ -3058,6 +3183,8 @@
               "The database major version is MySQL 8.0 and the minor version is 28.",
               "The database major version is MySQL 8.0 and the minor version is 29.",
               "The database major version is MySQL 8.0 and the minor version is 30.",
+              "The database major version is MySQL 8.0 and the minor version is 31.",
+              "The database major version is MySQL 8.0 and the minor version is 32.",
               "The database version is SQL Server 2019 Standard.",
               "The database version is SQL Server 2019 Enterprise.",
               "The database version is SQL Server 2019 Express.",
@@ -3772,7 +3899,8 @@
             "RESCHEDULE_MAINTENANCE",
             "START_EXTERNAL_SYNC",
             "LOG_CLEANUP",
-            "AUTO_RESTART"
+            "AUTO_RESTART",
+            "REENCRYPT"
           ],
           "enumDescriptions": [
             "Unknown operation type.",
@@ -3811,7 +3939,8 @@
             "Reschedule maintenance to another time.",
             "Starts external sync of a Cloud SQL EM replica to an external primary instance.",
             "Recovers logs from an instance's old data disk.",
-            "Performs auto-restart of an HA-enabled Cloud SQL database for auto recovery."
+            "Performs auto-restart of an HA-enabled Cloud SQL database for auto recovery.",
+            "Re-encrypts CMEK instances with latest key version."
           ],
           "type": "string"
         },
@@ -3895,6 +4024,50 @@
       },
       "type": "object"
     },
+    "OperationMetadata": {
+      "description": "Represents the metadata of the long-running operation.",
+      "id": "OperationMetadata",
+      "properties": {
+        "apiVersion": {
+          "description": "Output only. API version used to start the operation.",
+          "readOnly": true,
+          "type": "string"
+        },
+        "cancelRequested": {
+          "description": "Output only. Identifies whether the user has requested cancellation of the operation. Operations that have been cancelled successfully have Operation.error value with a google.rpc.Status.code of 1, corresponding to `Code.CANCELLED`.",
+          "readOnly": true,
+          "type": "boolean"
+        },
+        "createTime": {
+          "description": "Output only. The time the operation was created.",
+          "format": "google-datetime",
+          "readOnly": true,
+          "type": "string"
+        },
+        "endTime": {
+          "description": "Output only. The time the operation finished running.",
+          "format": "google-datetime",
+          "readOnly": true,
+          "type": "string"
+        },
+        "statusDetail": {
+          "description": "Output only. Human-readable status of the operation, if any.",
+          "readOnly": true,
+          "type": "string"
+        },
+        "target": {
+          "description": "Output only. Server-defined resource path for the target of the operation.",
+          "readOnly": true,
+          "type": "string"
+        },
+        "verb": {
+          "description": "Output only. Name of the verb executed by the operation.",
+          "readOnly": true,
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
     "OperationsListResponse": {
       "description": "Operations list response.",
       "id": "OperationsListResponse",
@@ -3971,6 +4144,18 @@
           "description": "Number of previous passwords that cannot be reused.",
           "format": "int32",
           "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "PerformDiskShrinkContext": {
+      "description": "Perform disk shrink context.",
+      "id": "PerformDiskShrinkContext",
+      "properties": {
+        "targetSizeGb": {
+          "description": "The target disk shrink size in GigaBytes.",
+          "format": "int64",
+          "type": "string"
         }
       },
       "type": "object"
@@ -4083,6 +4268,10 @@
         "activeDirectoryConfig": {
           "$ref": "SqlActiveDirectoryConfig",
           "description": "Active Directory configuration, relevant only for Cloud SQL for SQL Server."
+        },
+        "advancedMachineFeatures": {
+          "$ref": "AdvancedMachineFeatures",
+          "description": "Specifies advance machine configuration for the instance relevant only for SQL Server."
         },
         "authorizedGaeApplications": {
           "description": "The App Engine app IDs that can access this instance. (Deprecated) Applied to First Generation instances only.",
@@ -4319,7 +4508,8 @@
             "UNSUPPORTED_BINLOG_FORMAT",
             "BINLOG_RETENTION_SETTING",
             "UNSUPPORTED_STORAGE_ENGINE",
-            "LIMITED_SUPPORT_TABLES"
+            "LIMITED_SUPPORT_TABLES",
+            "EXISTING_DATA_IN_REPLICA"
           ],
           "enumDescriptions": [
             "",
@@ -4349,8 +4539,25 @@
             "The primary instance has unsupported binary log format.",
             "The primary instance's binary log retention setting.",
             "The primary instance has tables with unsupported storage engine.",
-            "Source has tables with limited support eg: PostgreSQL tables without primary keys"
+            "Source has tables with limited support eg: PostgreSQL tables without primary keys.",
+            "The replica instance contains existing data."
           ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "SqlInstancesGetDiskShrinkConfigResponse": {
+      "description": "Instance get disk shrink config response.",
+      "id": "SqlInstancesGetDiskShrinkConfigResponse",
+      "properties": {
+        "kind": {
+          "description": "This is always `sql#getDiskShrinkConfig`.",
+          "type": "string"
+        },
+        "minimalTargetSizeGb": {
+          "description": "The minimum size to which a disk can be shrunk in GigaBytes.",
+          "format": "int64",
           "type": "string"
         }
       },
@@ -4365,6 +4572,12 @@
           "description": "Required. The type of the reschedule the user wants."
         }
       },
+      "type": "object"
+    },
+    "SqlInstancesResetReplicaSizeRequest": {
+      "description": "Instance reset replica size request.",
+      "id": "SqlInstancesResetReplicaSizeRequest",
+      "properties": {},
       "type": "object"
     },
     "SqlInstancesStartExternalSyncRequest": {
@@ -4886,7 +5099,7 @@
           "type": "string"
         },
         "nextPageToken": {
-          "description": "An identifier that uniquely identifies the operation. You can use this identifier to retrieve the Operations resource that has information about the operation.",
+          "description": "Unused.",
           "type": "string"
         }
       },

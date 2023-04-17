@@ -24,7 +24,7 @@ clone-terraform-google-provider-beta:
 	rm -rf github.com/hashicorp/terraform-provider-google-beta
 	mkdir -p github.com/hashicorp
 	cd github.com/hashicorp && git clone https://github.com/hashicorp/terraform-provider-google-beta
-	git -C github.com/hashicorp/terraform-provider-google-beta checkout v4.58.0
+	git -C github.com/hashicorp/terraform-provider-google-beta checkout v4.62.0
 	rm -rf github.com/hashicorp/terraform-provider-google-beta/.git
 
 .PHONY: apply-patches
@@ -217,8 +217,6 @@ apply-patches:
 	# because terraform will always set etag as empty in the old state.
 	# TODO(b/188205161): Upstream the change
 	git apply ../hack/terraform-overrides/iam_etag_diff_suppress.patch
-	# Keep initialNodeConfig field as immutable to be more in line with the GCP API.
-	git apply ../hack/terraform-overrides/cloud_identity_group_immutable_field.patch
 	# Remove the project Get request before enabling the given service; this Get request causes
 	# a chicken-and-egg problem when enabling `cloudresourcemanager.googleapis.com` API.
 	git apply ../hack/terraform-overrides/project_service_remove_project_read.patch

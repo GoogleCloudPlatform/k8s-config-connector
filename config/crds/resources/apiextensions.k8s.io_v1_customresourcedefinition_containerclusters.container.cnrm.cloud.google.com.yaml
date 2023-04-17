@@ -593,6 +593,15 @@ spec:
                       cluster_ipv4_cidr_block can be used to automatically create
                       a GKE-managed one.
                     type: string
+                  podCidrOverprovisionConfig:
+                    description: Immutable. Configuration for cluster level pod cidr
+                      overprovision. Default is disabled=false.
+                    properties:
+                      disabled:
+                        type: boolean
+                    required:
+                    - disabled
+                    type: object
                   servicesIpv4CidrBlock:
                     description: Immutable. The IP address range of the services IPs
                       in this cluster. Set to blank to have a range chosen with the
@@ -606,6 +615,11 @@ spec:
                       in the cluster's subnetwork to use for service ClusterIPs. Alternatively,
                       services_ipv4_cidr_block can be used to automatically create
                       a GKE-managed one.
+                    type: string
+                  stackType:
+                    description: Immutable. The IP Stack type of the cluster. Choose
+                      between IPV4 and IPV4_IPV6. Default type is IPV4 Only if not
+                      set.
                     type: string
                 type: object
               location:
@@ -893,6 +907,19 @@ spec:
               nodeConfig:
                 description: Immutable. The configuration of the nodepool.
                 properties:
+                  advancedMachineFeatures:
+                    description: Immutable. Specifies options for controlling advanced
+                      machine features.
+                    properties:
+                      threadsPerCore:
+                        description: Immutable. The number of threads per physical
+                          core. To disable simultaneous multithreading (SMT) set this
+                          to 1. If unset, the maximum number of threads supported
+                          per core by the underlying processor is assumed.
+                        type: integer
+                    required:
+                    - threadsPerCore
+                    type: object
                   bootDiskKMSCryptoKeyRef:
                     oneOf:
                     - not:
@@ -930,11 +957,26 @@ spec:
                     type: string
                   ephemeralStorageConfig:
                     description: Immutable. Parameters for the ephemeral storage filesystem.
+                      If unspecified, ephemeral storage is backed by the boot disk.
                     properties:
                       localSsdCount:
                         description: Immutable. Number of local SSDs to use to back
                           ephemeral storage. Uses NVMe interfaces. Each local SSD
-                          is 375 GB in size.
+                          must be 375 or 3000 GB in size, and all local SSDs must
+                          share the same size.
+                        type: integer
+                    required:
+                    - localSsdCount
+                    type: object
+                  ephemeralStorageLocalSsdConfig:
+                    description: Immutable. Parameters for the ephemeral storage filesystem.
+                      If unspecified, ephemeral storage is backed by the boot disk.
+                    properties:
+                      localSsdCount:
+                        description: Immutable. Number of local SSDs to use to back
+                          ephemeral storage. Uses NVMe interfaces. Each local SSD
+                          must be 375 or 3000 GB in size, and all local SSDs must
+                          share the same size.
                         type: integer
                     required:
                     - localSsdCount
@@ -1037,6 +1079,17 @@ spec:
                         type: object
                     required:
                     - sysctls
+                    type: object
+                  localNvmeSsdBlockConfig:
+                    description: Immutable. Parameters for raw-block local NVMe SSDs.
+                    properties:
+                      localSsdCount:
+                        description: Immutable. Number of raw-block local NVMe SSD
+                          disks to be attached to the node. Each local SSD is 375
+                          GB in size.
+                        type: integer
+                    required:
+                    - localSsdCount
                     type: object
                   localSsdCount:
                     description: Immutable. The number of local SSD disks to be attached
@@ -1428,23 +1481,22 @@ spec:
                   access will be via IPv4).
                 type: string
               protectConfig:
-                description: The notification config for sending cluster upgrade notifications.
+                description: Enable/Disable Protect API features for the cluster.
                 properties:
                   workloadConfig:
-                    description: WorkloadConfig defines the flags to enable or disable
-                      the workload configurations for the cluster.
+                    description: WorkloadConfig defines which actions are enabled
+                      for a cluster's workload configurations.
                     properties:
                       auditMode:
-                        description: Mode defines how to audit the workload configs.
-                          Accepted values are MODE_UNSPECIFIED, DISABLED, BASIC.
+                        description: Sets which mode of auditing should be used for
+                          the cluster's workloads. Accepted values are DISABLED, BASIC.
                         type: string
                     required:
                     - auditMode
                     type: object
                   workloadVulnerabilityMode:
-                    description: WorkloadVulnerabilityMode defines mode to perform
-                      vulnerability scanning. Accepted values are WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED,
-                      DISABLED, BASIC.
+                    description: Sets which mode to use for Protect workload vulnerability
+                      scanning feature. Accepted values are DISABLED, BASIC.
                     type: string
                 type: object
               releaseChannel:

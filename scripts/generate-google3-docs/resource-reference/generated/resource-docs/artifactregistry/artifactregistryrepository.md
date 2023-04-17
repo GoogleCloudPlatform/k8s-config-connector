@@ -98,6 +98,8 @@
 #### Schema
 ```yaml
 description: string
+dockerConfig:
+  immutableTags: boolean
 format: string
 kmsKeyRef:
   external: string
@@ -144,6 +146,26 @@ virtualRepositoryConfig:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The user-provided description of the repository.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>dockerConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Docker repository config contains repository level configuration for the repositories of docker type.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>dockerConfig.immutableTags</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}The repository which enabled this flag prevents all tags from being modified, moved or deleted. This does not prevent tags from being created.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -543,7 +565,7 @@ updateTime: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The name of the repository, for example:
-"projects/p1/locations/us-central1/repositories/repo1".{% endverbatim %}</p>
+"repo1".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

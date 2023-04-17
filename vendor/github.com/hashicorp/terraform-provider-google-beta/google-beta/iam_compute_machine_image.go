@@ -126,7 +126,7 @@ func (u *ComputeMachineImageIamUpdater) GetResourceIamPolicy() (*cloudresourcema
 		return nil, err
 	}
 	var obj map[string]interface{}
-	url, err = addQueryParams(url, map[string]string{"optionsRequestedPolicyVersion": fmt.Sprintf("%d", IamPolicyVersion)})
+	url, err = AddQueryParams(url, map[string]string{"optionsRequestedPolicyVersion": fmt.Sprintf("%d", IamPolicyVersion)})
 	if err != nil {
 		return nil, err
 	}
@@ -183,7 +183,7 @@ func (u *ComputeMachineImageIamUpdater) SetResourceIamPolicy(policy *cloudresour
 
 func (u *ComputeMachineImageIamUpdater) qualifyMachineImageUrl(methodIdentifier string) (string, error) {
 	urlTemplate := fmt.Sprintf("{{ComputeBasePath}}%s/%s", fmt.Sprintf("projects/%s/global/machineImages/%s", u.project, u.machineImage), methodIdentifier)
-	url, err := replaceVars(u.d, u.Config, urlTemplate)
+	url, err := ReplaceVars(u.d, u.Config, urlTemplate)
 	if err != nil {
 		return "", err
 	}

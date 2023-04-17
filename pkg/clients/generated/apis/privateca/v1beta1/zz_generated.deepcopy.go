@@ -221,6 +221,11 @@ func (in *CapoolCaOptions) DeepCopyInto(out *CapoolCaOptions) {
 		*out = new(int)
 		**out = **in
 	}
+	if in.ZeroMaxIssuerPathLength != nil {
+		in, out := &in.ZeroMaxIssuerPathLength, &out.ZeroMaxIssuerPathLength
+		*out = new(bool)
+		**out = **in
+	}
 	return
 }
 
@@ -1982,6 +1987,11 @@ func (in *CertificateauthorityCaOptions) DeepCopyInto(out *CertificateauthorityC
 	if in.MaxIssuerPathLength != nil {
 		in, out := &in.MaxIssuerPathLength, &out.MaxIssuerPathLength
 		*out = new(int)
+		**out = **in
+	}
+	if in.ZeroMaxIssuerPathLength != nil {
+		in, out := &in.ZeroMaxIssuerPathLength, &out.ZeroMaxIssuerPathLength
+		*out = new(bool)
 		**out = **in
 	}
 	return

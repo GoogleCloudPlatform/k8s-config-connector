@@ -97,7 +97,7 @@ func resourceServiceDirectoryNamespaceCreate(d *schema.ResourceData, meta interf
 		obj["labels"] = labelsProp
 	}
 
-	url, err := replaceVars(d, config, "{{ServiceDirectoryBasePath}}projects/{{project}}/locations/{{location}}/namespaces?namespaceId={{namespace_id}}")
+	url, err := ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}projects/{{project}}/locations/{{location}}/namespaces?namespaceId={{namespace_id}}")
 	if err != nil {
 		return err
 	}
@@ -125,7 +125,7 @@ func resourceServiceDirectoryNamespaceCreate(d *schema.ResourceData, meta interf
 	}
 
 	// Store the ID now
-	id, err := replaceVars(d, config, "{{name}}")
+	id, err := ReplaceVars(d, config, "{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -143,7 +143,7 @@ func resourceServiceDirectoryNamespaceRead(d *schema.ResourceData, meta interfac
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
+	url, err := ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -203,7 +203,7 @@ func resourceServiceDirectoryNamespaceUpdate(d *schema.ResourceData, meta interf
 		obj["labels"] = labelsProp
 	}
 
-	url, err := replaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
+	url, err := ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -214,9 +214,9 @@ func resourceServiceDirectoryNamespaceUpdate(d *schema.ResourceData, meta interf
 	if d.HasChange("labels") {
 		updateMask = append(updateMask, "labels")
 	}
-	// updateMask is a URL parameter but not present in the schema, so replaceVars
+	// updateMask is a URL parameter but not present in the schema, so ReplaceVars
 	// won't set it
-	url, err = addQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
+	url, err = AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -252,7 +252,7 @@ func resourceServiceDirectoryNamespaceDelete(d *schema.ResourceData, meta interf
 	}
 	billingProject = project
 
-	url, err := replaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
+	url, err := ReplaceVars(d, config, "{{ServiceDirectoryBasePath}}{{name}}")
 	if err != nil {
 		return err
 	}
@@ -278,7 +278,7 @@ func resourceServiceDirectoryNamespaceImport(d *schema.ResourceData, meta interf
 	config := meta.(*Config)
 
 	// current import_formats cannot import fields with forward slashes in their value
-	if err := parseImportId([]string{"(?P<name>.+)"}, d, config); err != nil {
+	if err := ParseImportId([]string{"(?P<name>.+)"}, d, config); err != nil {
 		return nil, err
 	}
 

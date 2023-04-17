@@ -48,7 +48,7 @@ func resourceProjectServiceIdentityCreate(d *schema.ResourceData, meta interface
 		return err
 	}
 
-	url, err := replaceVars(d, config, "{{ServiceUsageBasePath}}projects/{{project}}/services/{{service}}:generateServiceIdentity")
+	url, err := ReplaceVars(d, config, "{{ServiceUsageBasePath}}projects/{{project}}/services/{{service}}:generateServiceIdentity")
 	if err != nil {
 		return err
 	}
@@ -80,7 +80,7 @@ func resourceProjectServiceIdentityCreate(d *schema.ResourceData, meta interface
 
 	log.Printf("[DEBUG] Finished creating Service Identity %q: %#v", d.Id(), res)
 
-	id, err := replaceVars(d, config, "projects/{{project}}/services/{{service}}")
+	id, err := ReplaceVars(d, config, "projects/{{project}}/services/{{service}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}

@@ -31,9 +31,9 @@ func TestAccVPCAccessConnector_vpcAccessConnectorExample(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckVPCAccessConnectorDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckVPCAccessConnectorDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccVPCAccessConnector_vpcAccessConnectorExample(context),
@@ -58,7 +58,7 @@ resource "google_vpc_access_connector" "connector" {
 `, context)
 }
 
-func TestAccVPCAccessConnector_vpcAccessConnectorSharedVPCExample(t *testing.T) {
+func TestAccVPCAccessConnector_vpcAccessConnectorSharedVpcExample(t *testing.T) {
 	t.Parallel()
 
 	context := map[string]interface{}{
@@ -66,12 +66,12 @@ func TestAccVPCAccessConnector_vpcAccessConnectorSharedVPCExample(t *testing.T) 
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProviders,
-		CheckDestroy: testAccCheckVPCAccessConnectorDestroyProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+		CheckDestroy:             testAccCheckVPCAccessConnectorDestroyProducer(t),
 		Steps: []resource.TestStep{
 			{
-				Config: testAccVPCAccessConnector_vpcAccessConnectorSharedVPCExample(context),
+				Config: testAccVPCAccessConnector_vpcAccessConnectorSharedVpcExample(context),
 			},
 			{
 				ResourceName:            "google_vpc_access_connector.connector",
@@ -83,7 +83,7 @@ func TestAccVPCAccessConnector_vpcAccessConnectorSharedVPCExample(t *testing.T) 
 	})
 }
 
-func testAccVPCAccessConnector_vpcAccessConnectorSharedVPCExample(context map[string]interface{}) string {
+func testAccVPCAccessConnector_vpcAccessConnectorSharedVpcExample(context map[string]interface{}) string {
 	return Nprintf(`
 resource "google_vpc_access_connector" "connector" {
   name          = "tf-test-vpc-con%{random_suffix}"

@@ -10,6 +10,8 @@ import (
 )
 
 func TestAccFirebaseWebApp_firebaseWebAppFull(t *testing.T) {
+	// TODO: https://github.com/hashicorp/terraform-provider-google/issues/14158
+	SkipIfVcr(t)
 	t.Parallel()
 
 	context := map[string]interface{}{
@@ -19,14 +21,38 @@ func TestAccFirebaseWebApp_firebaseWebAppFull(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProvidersOiCS,
+		PreCheck: func() { AccTestPreCheck(t) },
 		Steps: []resource.TestStep{
 			{
+				ExternalProviders: map[string]resource.ExternalProvider{
+					"google": {
+						VersionConstraint: "4.58.0",
+						Source:            "hashicorp/google-beta",
+					},
+				},
 				Config: testAccFirebaseWebApp_firebaseWebAppFull(context, ""),
 			},
 			{
+				ExternalProviders: map[string]resource.ExternalProvider{
+					"google": {
+						VersionConstraint: "4.58.0",
+						Source:            "hashicorp/google-beta",
+					},
+				},
 				Config: testAccFirebaseWebApp_firebaseWebAppFull(context, "2"),
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttrSet("data.google_firebase_web_app_config.default", "api_key"),
+					resource.TestCheckResourceAttrSet("data.google_firebase_web_app_config.default", "auth_domain"),
+					resource.TestCheckResourceAttrSet("data.google_firebase_web_app_config.default", "storage_bucket"),
+				),
+			},
+			{
+				ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+				Config:                   testAccFirebaseWebApp_firebaseWebAppFull(context, ""),
+			},
+			{
+				ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
+				Config:                   testAccFirebaseWebApp_firebaseWebAppFull(context, "2"),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttrSet("data.google_firebase_web_app_config.default", "api_key"),
 					resource.TestCheckResourceAttrSet("data.google_firebase_web_app_config.default", "auth_domain"),
@@ -81,9 +107,9 @@ func TestAccFirebaseWebApp_firebaseWebAppSkipDelete(t *testing.T) {
 	}
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    TestAccProvidersOiCS,
-		CheckDestroy: testAccCheckFirebaseWebAppNotDestroyedProducer(t),
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderBetaFactories(t),
+		CheckDestroy:             testAccCheckFirebaseWebAppNotDestroyedProducer(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccFirebaseWebApp_firebaseWebAppSkipDelete(context, ""),

@@ -12,12 +12,12 @@ func TestAccDataSourceGoogleFolderOrganizationPolicy_basic(t *testing.T) {
 	org := GetTestOrgFromEnv(t)
 
 	VcrTest(t, resource.TestCase{
-		PreCheck:  func() { testAccPreCheck(t) },
-		Providers: TestAccProviders,
+		PreCheck:                 func() { AccTestPreCheck(t) },
+		ProtoV5ProviderFactories: ProtoV5ProviderFactories(t),
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceGoogleFolderOrganizationPolicy_basic(org, folder),
-				Check: checkDataSourceStateMatchesResourceState(
+				Check: CheckDataSourceStateMatchesResourceState(
 					"data.google_folder_organization_policy.data",
 					"google_folder_organization_policy.resource",
 				),

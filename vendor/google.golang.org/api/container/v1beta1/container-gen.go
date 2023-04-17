@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC.
+// Copyright 2023 Google LLC.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -71,6 +71,7 @@ var _ = errors.New
 var _ = strings.Replace
 var _ = context.Canceled
 var _ = internaloption.WithDefaultEndpoint
+var _ = internal.Version
 
 const apiId = "container:v1beta1"
 const apiName = "container"
@@ -326,6 +327,12 @@ func (s *AcceleratorConfig) MarshalJSON() ([]byte, error) {
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
 
+// AdditionalPodRangesConfig: AdditionalPodRangesConfig is the
+// configuration for additional pod secondary ranges supporting the
+// ClusterUpdate message.
+type AdditionalPodRangesConfig struct {
+}
+
 // AddonsConfig: Configuration for the addons that can be automatically
 // spun up in the cluster, enabling additional functionality.
 type AddonsConfig struct {
@@ -566,7 +573,9 @@ type AutoprovisioningNodePoolDefaults struct {
 	// 'pd-standard'
 	DiskType string `json:"diskType,omitempty"`
 
-	// ImageType: The image type to use for NAP created node.
+	// ImageType: The image type to use for NAP created node. Please see
+	// https://cloud.google.com/kubernetes-engine/docs/concepts/node-images
+	// for available image types.
 	ImageType string `json:"imageType,omitempty"`
 
 	// Management: NodeManagement configuration for this NodePool.
@@ -580,9 +589,9 @@ type AutoprovisioningNodePoolDefaults struct {
 	// platform
 	// (https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform).
 	// This field is deprecated, min_cpu_platform should be specified using
-	// https://cloud.google.com/requested-min-cpu-platform label selector on
-	// the pod. To unset the min cpu platform field pass "automatic" as
-	// field value.
+	// `cloud.google.com/requested-min-cpu-platform` label selector on the
+	// pod. To unset the min cpu platform field pass "automatic" as field
+	// value.
 	MinCpuPlatform string `json:"minCpuPlatform,omitempty"`
 
 	// OauthScopes: The set of Google API scopes to be made available on all
@@ -1072,10 +1081,18 @@ type Cluster struct {
 	// of this resource for username and password information.
 	Endpoint string `json:"endpoint,omitempty"`
 
+	// Etag: This checksum is computed by the server based on the value of
+	// cluster fields, and may be sent on update requests to ensure the
+	// client has an up-to-date value before proceeding.
+	Etag string `json:"etag,omitempty"`
+
 	// ExpireTime: [Output only] The time the cluster will be automatically
 	// deleted in RFC3339 (https://www.ietf.org/rfc/rfc3339.txt) text
 	// format.
 	ExpireTime string `json:"expireTime,omitempty"`
+
+	// Fleet: Fleet information for the cluster.
+	Fleet *Fleet `json:"fleet,omitempty"`
 
 	// Id: Output only. Unique id for the cluster.
 	Id string `json:"id,omitempty"`
@@ -1474,6 +1491,11 @@ func (s *ClusterTelemetry) MarshalJSON() ([]byte, error) {
 // Exactly one update can be applied to a cluster with each request, so
 // at most one field can be provided.
 type ClusterUpdate struct {
+	// AdditionalPodRangesConfig: The additional pod ranges to be added to
+	// the cluster. These pod ranges can be used by node pools to allocate
+	// pod IPs.
+	AdditionalPodRangesConfig *AdditionalPodRangesConfig `json:"additionalPodRangesConfig,omitempty"`
+
 	// DesiredAddonsConfig: Configurations for the various addons available
 	// to run in the cluster.
 	DesiredAddonsConfig *AddonsConfig `json:"desiredAddonsConfig,omitempty"`
@@ -1658,7 +1680,7 @@ type ClusterUpdate struct {
 	// from Google Services
 	//   "PRIVATE_IPV6_GOOGLE_ACCESS_TO_GOOGLE" - Enables private IPv6
 	// access to Google Services from GKE
-	//   "PRIVATE_IPV6_GOOGLE_ACCESS_BIDIRECTIONAL" - Enables priate IPv6
+	//   "PRIVATE_IPV6_GOOGLE_ACCESS_BIDIRECTIONAL" - Enables private IPv6
 	// access to and from Google Services
 	DesiredPrivateIpv6GoogleAccess string `json:"desiredPrivateIpv6GoogleAccess,omitempty"`
 
@@ -1680,6 +1702,18 @@ type ClusterUpdate struct {
 	// DesiredShieldedNodes: Configuration for Shielded Nodes.
 	DesiredShieldedNodes *ShieldedNodes `json:"desiredShieldedNodes,omitempty"`
 
+	// DesiredStackType: The desired stack type of the cluster. If a stack
+	// type is provided and does not match the current stack type of the
+	// cluster, update will attempt to change the stack type to the new
+	// type.
+	//
+	// Possible values:
+	//   "STACK_TYPE_UNSPECIFIED" - By default, the clusters will be IPV4
+	// only
+	//   "IPV4" - The value used if the cluster is a IPV4 only
+	//   "IPV4_IPV6" - The value used if the cluster is a dual stack cluster
+	DesiredStackType string `json:"desiredStackType,omitempty"`
+
 	// DesiredTpuConfig: The desired Cloud TPU configuration.
 	DesiredTpuConfig *TpuConfig `json:"desiredTpuConfig,omitempty"`
 
@@ -1698,21 +1732,33 @@ type ClusterUpdate struct {
 	// DesiredWorkloadIdentityConfig: Configuration for Workload Identity.
 	DesiredWorkloadIdentityConfig *WorkloadIdentityConfig `json:"desiredWorkloadIdentityConfig,omitempty"`
 
-	// ForceSendFields is a list of field names (e.g. "DesiredAddonsConfig")
-	// to unconditionally include in API requests. By default, fields with
-	// empty or default values are omitted from API requests. However, any
-	// non-pointer, non-interface field appearing in ForceSendFields will be
-	// sent to the server regardless of whether the field is empty or not.
-	// This may be used to include empty fields in Patch requests.
+	// Etag: The current etag of the cluster. If an etag is provided and
+	// does not match the current etag of the cluster, update will be
+	// blocked and an ABORTED error will be returned.
+	Etag string `json:"etag,omitempty"`
+
+	// RemovedAdditionalPodRangesConfig: The additional pod ranges that are
+	// to be removed from the cluster. The pod ranges specified here must
+	// have been specified earlier in the 'additional_pod_ranges_config'
+	// argument.
+	RemovedAdditionalPodRangesConfig *AdditionalPodRangesConfig `json:"removedAdditionalPodRangesConfig,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g.
+	// "AdditionalPodRangesConfig") to unconditionally include in API
+	// requests. By default, fields with empty or default values are omitted
+	// from API requests. However, any non-pointer, non-interface field
+	// appearing in ForceSendFields will be sent to the server regardless of
+	// whether the field is empty or not. This may be used to include empty
+	// fields in Patch requests.
 	ForceSendFields []string `json:"-"`
 
-	// NullFields is a list of field names (e.g. "DesiredAddonsConfig") to
-	// include in API requests with the JSON null value. By default, fields
-	// with empty values are omitted from API requests. However, any field
-	// with an empty value appearing in NullFields will be sent to the
-	// server as null. It is an error if a field in this list has a
-	// non-empty value. This may be used to include null fields in Patch
-	// requests.
+	// NullFields is a list of field names (e.g.
+	// "AdditionalPodRangesConfig") to include in API requests with the JSON
+	// null value. By default, fields with empty values are omitted from API
+	// requests. However, any field with an empty value appearing in
+	// NullFields will be sent to the server as null. It is an error if a
+	// field in this list has a non-empty value. This may be used to include
+	// null fields in Patch requests.
 	NullFields []string `json:"-"`
 }
 
@@ -2261,6 +2307,42 @@ func (s *EphemeralStorageConfig) MarshalJSON() ([]byte, error) {
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
 
+// EphemeralStorageLocalSsdConfig: EphemeralStorageLocalSsdConfig
+// contains configuration for the node ephemeral storage using Local
+// SSDs.
+type EphemeralStorageLocalSsdConfig struct {
+	// LocalSsdCount: Number of local SSDs to use to back ephemeral storage.
+	// Uses NVMe interfaces. Each local SSD is 375 GB in size. If zero, it
+	// means to disable using local SSDs as ephemeral storage. The limit for
+	// this value is dependent upon the maximum number of disks available on
+	// a machine per zone. See:
+	// https://cloud.google.com/compute/docs/disks/local-ssd for more
+	// information.
+	LocalSsdCount int64 `json:"localSsdCount,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "LocalSsdCount") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "LocalSsdCount") to include
+	// in API requests with the JSON null value. By default, fields with
+	// empty values are omitted from API requests. However, any field with
+	// an empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *EphemeralStorageLocalSsdConfig) MarshalJSON() ([]byte, error) {
+	type NoMethod EphemeralStorageLocalSsdConfig
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
 // FastSocket: Configuration of Fast Socket feature.
 type FastSocket struct {
 	// Enabled: Whether Fast Socket features are enabled in the node pool.
@@ -2323,6 +2405,45 @@ type Filter struct {
 
 func (s *Filter) MarshalJSON() ([]byte, error) {
 	type NoMethod Filter
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// Fleet: Fleet is the fleet configuration for the cluster.
+type Fleet struct {
+	// Membership: [Output only] The full resource name of the registered
+	// fleet membership of the cluster, in the format
+	// `//gkehub.googleapis.com/projects/*/locations/*/memberships/*`.
+	Membership string `json:"membership,omitempty"`
+
+	// PreRegistered: [Output only] Whether the cluster has been registered
+	// through the fleet API.
+	PreRegistered bool `json:"preRegistered,omitempty"`
+
+	// Project: The Fleet host project(project ID or project number) where
+	// this cluster will be registered to. This field cannot be changed
+	// after the cluster has been registered.
+	Project string `json:"project,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "Membership") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "Membership") to include in
+	// API requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *Fleet) MarshalJSON() ([]byte, error) {
+	type NoMethod Fleet
 	raw := NoMethod(*s)
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
@@ -2748,6 +2869,12 @@ func (s *ILBSubsettingConfig) MarshalJSON() ([]byte, error) {
 // IPAllocationPolicy: Configuration for controlling how IPs are
 // allocated in the cluster.
 type IPAllocationPolicy struct {
+	// AdditionalPodRangesConfig: Output only. [Output only] The additional
+	// pod ranges that are added to the cluster. These pod ranges can be
+	// used by new node pools to allocate pod IPs automatically. Once the
+	// range is removed it will not show up in IPAllocationPolicy.
+	AdditionalPodRangesConfig *AdditionalPodRangesConfig `json:"additionalPodRangesConfig,omitempty"`
+
 	// AllowRouteOverlap: If true, allow allocation of cluster CIDR ranges
 	// that overlap with certain kinds of network routes. By default we do
 	// not allow cluster CIDR ranges to intersect with any user declared
@@ -2814,6 +2941,17 @@ type IPAllocationPolicy struct {
 	// (e.g. `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a
 	// specific range to use.
 	NodeIpv4CidrBlock string `json:"nodeIpv4CidrBlock,omitempty"`
+
+	// PodCidrOverprovisionConfig: [PRIVATE FIELD] Pod CIDR size
+	// overprovisioning config for the cluster. Pod CIDR size per node
+	// depends on max_pods_per_node. By default, the value of
+	// max_pods_per_node is doubled and then rounded off to next power of 2
+	// to get the size of pod CIDR block per node. Example:
+	// max_pods_per_node of 30 would result in 64 IPs (/26). This config can
+	// disable the doubling of IPs (we still round off to next power of 2)
+	// Example: max_pods_per_node of 30 will result in 32 IPs (/27) when
+	// overprovisioning is disabled.
+	PodCidrOverprovisionConfig *PodCIDROverprovisionConfig `json:"podCidrOverprovisionConfig,omitempty"`
 
 	// ServicesIpv4Cidr: This field is deprecated, use
 	// services_ipv4_cidr_block.
@@ -2885,21 +3023,22 @@ type IPAllocationPolicy struct {
 	// false, then the server picks the default IP allocation mode
 	UseRoutes bool `json:"useRoutes,omitempty"`
 
-	// ForceSendFields is a list of field names (e.g. "AllowRouteOverlap")
-	// to unconditionally include in API requests. By default, fields with
-	// empty or default values are omitted from API requests. However, any
-	// non-pointer, non-interface field appearing in ForceSendFields will be
-	// sent to the server regardless of whether the field is empty or not.
-	// This may be used to include empty fields in Patch requests.
+	// ForceSendFields is a list of field names (e.g.
+	// "AdditionalPodRangesConfig") to unconditionally include in API
+	// requests. By default, fields with empty or default values are omitted
+	// from API requests. However, any non-pointer, non-interface field
+	// appearing in ForceSendFields will be sent to the server regardless of
+	// whether the field is empty or not. This may be used to include empty
+	// fields in Patch requests.
 	ForceSendFields []string `json:"-"`
 
-	// NullFields is a list of field names (e.g. "AllowRouteOverlap") to
-	// include in API requests with the JSON null value. By default, fields
-	// with empty values are omitted from API requests. However, any field
-	// with an empty value appearing in NullFields will be sent to the
-	// server as null. It is an error if a field in this list has a
-	// non-empty value. This may be used to include null fields in Patch
-	// requests.
+	// NullFields is a list of field names (e.g.
+	// "AdditionalPodRangesConfig") to include in API requests with the JSON
+	// null value. By default, fields with empty values are omitted from API
+	// requests. However, any field with an empty value appearing in
+	// NullFields will be sent to the server as null. It is an error if a
+	// field in this list has a non-empty value. This may be used to include
+	// null fields in Patch requests.
 	NullFields []string `json:"-"`
 }
 
@@ -3376,6 +3515,41 @@ type ListUsableSubnetworksResponse struct {
 
 func (s *ListUsableSubnetworksResponse) MarshalJSON() ([]byte, error) {
 	type NoMethod ListUsableSubnetworksResponse
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// LocalNvmeSsdBlockConfig: LocalNvmeSsdBlockConfig contains
+// configuration for using raw-block local NVMe SSDs
+type LocalNvmeSsdBlockConfig struct {
+	// LocalSsdCount: The number of raw-block local NVMe SSD disks to be
+	// attached to the node. Each local SSD is 375 GB in size. If zero, it
+	// means no raw-block local NVMe SSD disks to be attached to the node.
+	// The limit for this value is dependent upon the maximum number of
+	// disks available on a machine per zone. See:
+	// https://cloud.google.com/compute/docs/disks/local-ssd for more
+	// information.
+	LocalSsdCount int64 `json:"localSsdCount,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "LocalSsdCount") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "LocalSsdCount") to include
+	// in API requests with the JSON null value. By default, fields with
+	// empty values are omitted from API requests. However, any field with
+	// an empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *LocalNvmeSsdBlockConfig) MarshalJSON() ([]byte, error) {
+	type NoMethod LocalNvmeSsdBlockConfig
 	raw := NoMethod(*s)
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
@@ -4028,7 +4202,7 @@ type NetworkConfig struct {
 	// from Google Services
 	//   "PRIVATE_IPV6_GOOGLE_ACCESS_TO_GOOGLE" - Enables private IPv6
 	// access to Google Services from GKE
-	//   "PRIVATE_IPV6_GOOGLE_ACCESS_BIDIRECTIONAL" - Enables priate IPv6
+	//   "PRIVATE_IPV6_GOOGLE_ACCESS_BIDIRECTIONAL" - Enables private IPv6
 	// access to and from Google Services
 	PrivateIpv6GoogleAccess string `json:"privateIpv6GoogleAccess,omitempty"`
 
@@ -4246,6 +4420,12 @@ type NodeConfig struct {
 	// disk.
 	EphemeralStorageConfig *EphemeralStorageConfig `json:"ephemeralStorageConfig,omitempty"`
 
+	// EphemeralStorageLocalSsdConfig: Parameters for the node ephemeral
+	// storage using Local SSDs. If unspecified, ephemeral storage is backed
+	// by the boot disk. This field is functionally equivalent to the
+	// ephemeral_storage_config
+	EphemeralStorageLocalSsdConfig *EphemeralStorageLocalSsdConfig `json:"ephemeralStorageLocalSsdConfig,omitempty"`
+
 	// FastSocket: Enable or disable NCCL fast socket for the node pool.
 	FastSocket *FastSocket `json:"fastSocket,omitempty"`
 
@@ -4256,7 +4436,9 @@ type NodeConfig struct {
 	Gvnic *VirtualNIC `json:"gvnic,omitempty"`
 
 	// ImageType: The image type to use for this node. Note that for a given
-	// image type, the latest version of it will be used.
+	// image type, the latest version of it will be used. Please see
+	// https://cloud.google.com/kubernetes-engine/docs/concepts/node-images
+	// for available image types.
 	ImageType string `json:"imageType,omitempty"`
 
 	// KubeletConfig: Node kubelet configs.
@@ -4274,6 +4456,10 @@ type NodeConfig struct {
 
 	// LinuxNodeConfig: Parameters that can be configured on Linux nodes.
 	LinuxNodeConfig *LinuxNodeConfig `json:"linuxNodeConfig,omitempty"`
+
+	// LocalNvmeSsdBlockConfig: Parameters for using raw-block Local NVMe
+	// SSDs.
+	LocalNvmeSsdBlockConfig *LocalNvmeSsdBlockConfig `json:"localNvmeSsdBlockConfig,omitempty"`
 
 	// LocalSsdCount: The number of local SSD disks to be attached to the
 	// node. The limit for this value is dependent upon the maximum number
@@ -4376,6 +4562,10 @@ type NodeConfig struct {
 	// more information, including usage and the valid values, see:
 	// https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 	Taints []*NodeTaint `json:"taints,omitempty"`
+
+	// WindowsNodeConfig: Parameters that can be configured on Windows
+	// nodes.
+	WindowsNodeConfig *WindowsNodeConfig `json:"windowsNodeConfig,omitempty"`
 
 	// WorkloadMetadataConfig: The workload metadata configuration for this
 	// node.
@@ -4577,6 +4767,17 @@ type NodeNetworkConfig struct {
 	// NetworkPerformanceConfig: Network bandwidth tier configuration.
 	NetworkPerformanceConfig *NetworkPerformanceConfig `json:"networkPerformanceConfig,omitempty"`
 
+	// PodCidrOverprovisionConfig: [PRIVATE FIELD] Pod CIDR size
+	// overprovisioning config for the nodepool. Pod CIDR size per node
+	// depends on max_pods_per_node. By default, the value of
+	// max_pods_per_node is rounded off to next power of 2 and we then
+	// double that to get the size of pod CIDR block per node. Example:
+	// max_pods_per_node of 30 would result in 64 IPs (/26). This config can
+	// disable the doubling of IPs (we still round off to next power of 2)
+	// Example: max_pods_per_node of 30 will result in 32 IPs (/27) when
+	// overprovisioning is disabled.
+	PodCidrOverprovisionConfig *PodCIDROverprovisionConfig `json:"podCidrOverprovisionConfig,omitempty"`
+
 	// PodIpv4CidrBlock: The IP address range for pod IPs in this node pool.
 	// Only applicable if `create_pod_range` is true. Set to blank to have a
 	// range chosen with the default size. Set to /netmask (e.g. `/14`) to
@@ -4651,6 +4852,11 @@ type NodePool struct {
 
 	// Config: The node configuration of the pool.
 	Config *NodeConfig `json:"config,omitempty"`
+
+	// Etag: This checksum is computed by the server based on the value of
+	// node pool fields, and may be sent on update requests to ensure the
+	// client has an up-to-date value before proceeding.
+	Etag string `json:"etag,omitempty"`
 
 	// InitialNodeCount: The initial node count for the pool. You must
 	// ensure that your Compute Engine resource quota
@@ -4733,7 +4939,9 @@ type NodePool struct {
 	// upgrade.
 	UpgradeSettings *UpgradeSettings `json:"upgradeSettings,omitempty"`
 
-	// Version: The version of the Kubernetes of this node.
+	// Version: The version of Kubernetes running on this NodePool's nodes.
+	// If unspecified, it defaults as described here
+	// (https://cloud.google.com/kubernetes-engine/versioning#specifying_node_version).
 	Version string `json:"version,omitempty"`
 
 	// ServerResponse contains the HTTP response code and headers from the
@@ -4918,7 +5126,7 @@ func (s *NodePoolLoggingConfig) MarshalJSON() ([]byte, error) {
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
 
-// NodeTaint: Kubernetes taint is comprised of three fields: key, value,
+// NodeTaint: Kubernetes taint is composed of three fields: key, value,
 // and effect. Effect can only be one of three types: NoSchedule,
 // PreferNoSchedule or NoExecute. See here
 // (https://kubernetes.io/docs/concepts/configuration/taint-and-toleration)
@@ -5217,6 +5425,36 @@ type PlacementPolicy struct {
 
 func (s *PlacementPolicy) MarshalJSON() ([]byte, error) {
 	type NoMethod PlacementPolicy
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// PodCIDROverprovisionConfig: [PRIVATE FIELD] Config for pod CIDR size
+// overprovisioning.
+type PodCIDROverprovisionConfig struct {
+	// Disable: Whether Pod CIDR overprovisioning is disabled. Note: Pod
+	// CIDR overprovisioning is enabled by default.
+	Disable bool `json:"disable,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "Disable") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "Disable") to include in
+	// API requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *PodCIDROverprovisionConfig) MarshalJSON() ([]byte, error) {
+	type NoMethod PodCIDROverprovisionConfig
 	raw := NoMethod(*s)
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }
@@ -7201,6 +7439,11 @@ type UpdateNodePoolRequest struct {
 	// node pool will be Confidential VM once enabled.
 	ConfidentialNodes *ConfidentialNodes `json:"confidentialNodes,omitempty"`
 
+	// Etag: The current etag of the node pool. If an etag is provided and
+	// does not match the current etag of the node pool, update will be
+	// blocked and an ABORTED error will be returned.
+	Etag string `json:"etag,omitempty"`
+
 	// FastSocket: Enable or disable NCCL fast socket for the node pool.
 	FastSocket *FastSocket `json:"fastSocket,omitempty"`
 
@@ -7210,7 +7453,10 @@ type UpdateNodePoolRequest struct {
 	// Gvnic: Enable or disable gvnic on the node pool.
 	Gvnic *VirtualNIC `json:"gvnic,omitempty"`
 
-	// ImageType: Required. The desired image type for the node pool.
+	// ImageType: Required. The desired image type for the node pool. Please
+	// see
+	// https://cloud.google.com/kubernetes-engine/docs/concepts/node-images
+	// for available image types.
 	ImageType string `json:"imageType,omitempty"`
 
 	// KubeletConfig: Node kubelet configs.
@@ -7284,6 +7530,10 @@ type UpdateNodePoolRequest struct {
 	// UpgradeSettings: Upgrade settings control disruption and speed of the
 	// upgrade.
 	UpgradeSettings *UpgradeSettings `json:"upgradeSettings,omitempty"`
+
+	// WindowsNodeConfig: Parameters that can be configured on Windows
+	// nodes.
+	WindowsNodeConfig *WindowsNodeConfig `json:"windowsNodeConfig,omitempty"`
 
 	// WorkloadMetadataConfig: The desired workload metadata config for the
 	// node pool.
@@ -7456,7 +7706,9 @@ type UpgradeSettings struct {
 	// Strategy: Update strategy of the node pool.
 	//
 	// Possible values:
-	//   "NODE_POOL_UPDATE_STRATEGY_UNSPECIFIED" - Default value.
+	//   "NODE_POOL_UPDATE_STRATEGY_UNSPECIFIED" - Default value if unset.
+	// GKE internally defaults the update strategy to SURGE for unspecified
+	// strategies.
 	//   "BLUE_GREEN" - blue-green upgrade.
 	//   "SURGE" - SURGE is the traditional way of upgrading a node pool.
 	// max_surge and max_unavailable determines the level of upgrade
@@ -7643,6 +7895,44 @@ type VirtualNIC struct {
 
 func (s *VirtualNIC) MarshalJSON() ([]byte, error) {
 	type NoMethod VirtualNIC
+	raw := NoMethod(*s)
+	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
+}
+
+// WindowsNodeConfig: Parameters that can be configured on Windows
+// nodes. Windows Node Config that define the parameters that will be
+// used to configure the Windows node pool settings
+type WindowsNodeConfig struct {
+	// OsVersion: OSVersion specifies the Windows node config to be used on
+	// the node
+	//
+	// Possible values:
+	//   "OS_VERSION_UNSPECIFIED" - When OSVersion is not specified
+	//   "OS_VERSION_LTSC2019" - LTSC2019 specifies to use LTSC2019 as the
+	// Windows Servercore Base Image
+	//   "OS_VERSION_LTSC2022" - LTSC2022 specifies to use LTSC2022 as the
+	// Windows Servercore Base Image
+	OsVersion string `json:"osVersion,omitempty"`
+
+	// ForceSendFields is a list of field names (e.g. "OsVersion") to
+	// unconditionally include in API requests. By default, fields with
+	// empty or default values are omitted from API requests. However, any
+	// non-pointer, non-interface field appearing in ForceSendFields will be
+	// sent to the server regardless of whether the field is empty or not.
+	// This may be used to include empty fields in Patch requests.
+	ForceSendFields []string `json:"-"`
+
+	// NullFields is a list of field names (e.g. "OsVersion") to include in
+	// API requests with the JSON null value. By default, fields with empty
+	// values are omitted from API requests. However, any field with an
+	// empty value appearing in NullFields will be sent to the server as
+	// null. It is an error if a field in this list has a non-empty value.
+	// This may be used to include null fields in Patch requests.
+	NullFields []string `json:"-"`
+}
+
+func (s *WindowsNodeConfig) MarshalJSON() ([]byte, error) {
+	type NoMethod WindowsNodeConfig
 	raw := NoMethod(*s)
 	return gensupport.MarshalJSON(raw, s.ForceSendFields, s.NullFields)
 }

@@ -62,7 +62,7 @@ func testSweepBigqueryReservationCapacityCommitment(region string) error {
 	}
 
 	listTemplate := strings.Split("https://bigqueryreservation.googleapis.com/v1/projects/{{project}}/locations/{{location}}/capacityCommitments", "?")[0]
-	listUrl, err := replaceVars(d, config, listTemplate)
+	listUrl, err := ReplaceVars(d, config, listTemplate)
 	if err != nil {
 		log.Printf("[INFO][SWEEPER_LOG] error preparing sweeper list url: %s", err)
 		return nil
@@ -87,20 +87,24 @@ func testSweepBigqueryReservationCapacityCommitment(region string) error {
 	nonPrefixCount := 0
 	for _, ri := range rl {
 		obj := ri.(map[string]interface{})
-		if obj["name"] == nil {
-			log.Printf("[INFO][SWEEPER_LOG] %s resource name was nil", resourceName)
+		var name string
+		// Id detected in the delete URL, attempt to use id.
+		if obj["id"] != nil {
+			name = GetResourceNameFromSelfLink(obj["id"].(string))
+		} else if obj["name"] != nil {
+			name = GetResourceNameFromSelfLink(obj["name"].(string))
+		} else {
+			log.Printf("[INFO][SWEEPER_LOG] %s resource name and id were nil", resourceName)
 			return nil
 		}
-
-		name := GetResourceNameFromSelfLink(obj["name"].(string))
 		// Skip resources that shouldn't be sweeped
 		if !IsSweepableTestResource(name) {
 			nonPrefixCount++
 			continue
 		}
 
-		deleteTemplate := "https://bigqueryreservation.googleapis.com/v1/{{name}}"
-		deleteUrl, err := replaceVars(d, config, deleteTemplate)
+		deleteTemplate := "https://bigqueryreservation.googleapis.com/v1/projects/{{project}}/locations/{{location}}/capacityCommitments/{{capacity_commitment_id}}"
+		deleteUrl, err := ReplaceVars(d, config, deleteTemplate)
 		if err != nil {
 			log.Printf("[INFO][SWEEPER_LOG] error preparing delete url: %s", err)
 			return nil
