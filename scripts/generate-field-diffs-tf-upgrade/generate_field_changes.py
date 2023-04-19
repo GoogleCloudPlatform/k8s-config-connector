@@ -21,11 +21,13 @@ from deepdiff import DeepDiff
 def process_field_path(path, root):
     return path.replace("['", ".").replace("']", "").replace(".properties", "").replace("root", root)
 
-# Extract the CRD name from the file name.
-# ex: extract `bigtablegcpolicies` from
-# `apiextensions.k8s.io_v1_customresourcedefinition_bigtablegcpolicies.bigtable.cnrm.cloud.google.com.yaml`
-def extract_CRD_type(filename):
-    return filename.split("_")[3].split(".")[0]
+# Extract the kind name from the CRD file content.
+# Line #18 in the CRD file is usually (if not always) in the format of:
+# `singular: [KindName]`.
+def extract_kind_name(filename):
+    with open(filename, 'r') as fp:
+        row = fp.readlines()[17:18]
+        return row[0].split(": ")[1].rstrip()
 
 # has_description_changes_only returns true if there are description changes only.
 def has_description_changes_only(deep_diff_obj):
@@ -51,23 +53,29 @@ def print_diffs(deep_diff_obj, root):
     for item in deep_diff_obj.get('dictionary_item_added', []):
         field_path =  process_field_path(item, root)
         if "description" not in field_path:
-            print("* Added " + field_path)
+            print_addition(field_path)
     for item in deep_diff_obj.get('iterable_item_added', []):
         field_path =  process_field_path(item, root)
         if "description" not in field_path:
-            print("* Added " + field_path)
+            print_addition(field_path)
     for item in deep_diff_obj.get('dictionary_item_removed', []):
         field_path =  process_field_path(item, root)
         if "description" not in field_path:
-            print("* Removed " + field_path)
+            print_removal(field_path)
     for item in deep_diff_obj.get('iterable_item_removed', []):
         field_path =  process_field_path(item, root)
         if "description" not in field_path:
-            print("* Removed " + field_path)
+            print_removal(field_path)
     for key, value in deep_diff_obj.get('values_changed', {}).items():
         field_path =  process_field_path(key, root)
         if "description" not in field_path:
-            print("* Changed " + field_path + " from " + value['old_value'] + " to " + value['new_value'])
+            print("  * Changed " + field_path + " from " + value['old_value'] + " to " + value['new_value'])
+
+def print_addition(field_path):
+    print("  * Added `" + field_path + "` field.")
+
+def print_removal(field_path):
+    print("  * Removed `" + field_path + "` field.")
 
 # Create a git Repo object.
 repo_path = '.'
@@ -99,6 +107,6 @@ for file_diff in diff:
         if has_description_changes_only(spec_differences) and has_description_changes_only(status_differences):
             continue
         version = old_yaml_data["spec"]["versions"][0]["name"]
-        print("Resource " + extract_CRD_type(os.path.basename(file_path)) +"(" + version + ")")
+        print("* Resource " + extract_kind_name(file_path) +"(" + version + "):")
         print_diffs(spec_differences, "spec")
         print_diffs(status_differences, "status")
