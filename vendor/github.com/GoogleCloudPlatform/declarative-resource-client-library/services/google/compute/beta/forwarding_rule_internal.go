@@ -297,6 +297,11 @@ func newUpdateForwardingRuleUpdateRequest(ctx context.Context, f *ForwardingRule
 	} else if !dcl.IsEmptyValueIndirect(v) {
 		req["allowGlobalAccess"] = v
 	}
+	if v, err := dcl.FalseToNil(f.AllowPscGlobalAccess); err != nil {
+		return nil, fmt.Errorf("error expanding AllowPscGlobalAccess into allowPscGlobalAccess: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		req["allowPscGlobalAccess"] = v
+	}
 	return req, nil
 }
 
@@ -731,6 +736,16 @@ func canonicalizeForwardingRuleDesiredState(rawDesired, rawInitial *ForwardingRu
 		canonicalDesired.Location = rawDesired.Location
 	}
 	canonicalDesired.ServiceDirectoryRegistrations = canonicalizeForwardingRuleServiceDirectoryRegistrationsSlice(rawDesired.ServiceDirectoryRegistrations, rawInitial.ServiceDirectoryRegistrations, opts...)
+	if dcl.StringArrayCanonicalize(rawDesired.SourceIPRanges, rawInitial.SourceIPRanges) {
+		canonicalDesired.SourceIPRanges = rawInitial.SourceIPRanges
+	} else {
+		canonicalDesired.SourceIPRanges = rawDesired.SourceIPRanges
+	}
+	if dcl.BoolCanonicalize(rawDesired.AllowPscGlobalAccess, rawInitial.AllowPscGlobalAccess) {
+		canonicalDesired.AllowPscGlobalAccess = rawInitial.AllowPscGlobalAccess
+	} else {
+		canonicalDesired.AllowPscGlobalAccess = rawDesired.AllowPscGlobalAccess
+	}
 	return canonicalDesired, nil
 }
 
@@ -932,6 +947,30 @@ func canonicalizeForwardingRuleNewState(c *Client, rawNew, rawDesired *Forwardin
 	if dcl.IsEmptyValueIndirect(rawNew.PscConnectionStatus) && dcl.IsEmptyValueIndirect(rawDesired.PscConnectionStatus) {
 		rawNew.PscConnectionStatus = rawDesired.PscConnectionStatus
 	} else {
+	}
+
+	if dcl.IsEmptyValueIndirect(rawNew.SourceIPRanges) && dcl.IsEmptyValueIndirect(rawDesired.SourceIPRanges) {
+		rawNew.SourceIPRanges = rawDesired.SourceIPRanges
+	} else {
+		if dcl.StringArrayCanonicalize(rawDesired.SourceIPRanges, rawNew.SourceIPRanges) {
+			rawNew.SourceIPRanges = rawDesired.SourceIPRanges
+		}
+	}
+
+	if dcl.IsEmptyValueIndirect(rawNew.BaseForwardingRule) && dcl.IsEmptyValueIndirect(rawDesired.BaseForwardingRule) {
+		rawNew.BaseForwardingRule = rawDesired.BaseForwardingRule
+	} else {
+		if dcl.StringCanonicalize(rawDesired.BaseForwardingRule, rawNew.BaseForwardingRule) {
+			rawNew.BaseForwardingRule = rawDesired.BaseForwardingRule
+		}
+	}
+
+	if dcl.IsEmptyValueIndirect(rawNew.AllowPscGlobalAccess) && dcl.IsEmptyValueIndirect(rawDesired.AllowPscGlobalAccess) {
+		rawNew.AllowPscGlobalAccess = rawDesired.AllowPscGlobalAccess
+	} else {
+		if dcl.BoolCanonicalize(rawDesired.AllowPscGlobalAccess, rawNew.AllowPscGlobalAccess) {
+			rawNew.AllowPscGlobalAccess = rawDesired.AllowPscGlobalAccess
+		}
 	}
 
 	return rawNew, nil
@@ -1528,6 +1567,27 @@ func diffForwardingRule(c *Client, desired, actual *ForwardingRule, opts ...dcl.
 		newDiffs = append(newDiffs, ds...)
 	}
 
+	if ds, err := dcl.Diff(desired.SourceIPRanges, actual.SourceIPRanges, dcl.DiffInfo{OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("SourceIpRanges")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		newDiffs = append(newDiffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.BaseForwardingRule, actual.BaseForwardingRule, dcl.DiffInfo{OutputOnly: true, OperationSelector: dcl.RequiresRecreate()}, fn.AddNest("BaseForwardingRule")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		newDiffs = append(newDiffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.AllowPscGlobalAccess, actual.AllowPscGlobalAccess, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateForwardingRuleUpdateOperation")}, fn.AddNest("AllowPscGlobalAccess")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		newDiffs = append(newDiffs, ds...)
+	}
+
 	if len(newDiffs) > 0 {
 		c.Config.Logger.Infof("Diff function found diffs: %v", newDiffs)
 	}
@@ -1663,6 +1723,7 @@ func (r *ForwardingRule) urlNormalized() *ForwardingRule {
 	normalized.Project = dcl.SelfLinkToName(r.Project)
 	normalized.Location = dcl.SelfLinkToName(r.Location)
 	normalized.PscConnectionId = dcl.SelfLinkToName(r.PscConnectionId)
+	normalized.BaseForwardingRule = dcl.SelfLinkToName(r.BaseForwardingRule)
 	return &normalized
 }
 
@@ -1831,6 +1892,14 @@ func expandForwardingRule(c *Client, f *ForwardingRule) (map[string]interface{},
 	} else if v != nil {
 		m["serviceDirectoryRegistrations"] = v
 	}
+	if v := f.SourceIPRanges; v != nil {
+		m["sourceIpRanges"] = v
+	}
+	if v, err := dcl.FalseToNil(f.AllowPscGlobalAccess); err != nil {
+		return nil, fmt.Errorf("error expanding AllowPscGlobalAccess into allowPscGlobalAccess: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["allowPscGlobalAccess"] = v
+	}
 
 	return m, nil
 }
@@ -1876,6 +1945,9 @@ func flattenForwardingRule(c *Client, i interface{}, res *ForwardingRule) *Forwa
 	resultRes.ServiceDirectoryRegistrations = flattenForwardingRuleServiceDirectoryRegistrationsSlice(c, m["serviceDirectoryRegistrations"], res)
 	resultRes.PscConnectionId = dcl.FlattenString(m["pscConnectionId"])
 	resultRes.PscConnectionStatus = flattenForwardingRulePscConnectionStatusEnum(m["pscConnectionStatus"])
+	resultRes.SourceIPRanges = dcl.FlattenStringSlice(m["sourceIpRanges"])
+	resultRes.BaseForwardingRule = dcl.FlattenString(m["baseForwardingRule"])
+	resultRes.AllowPscGlobalAccess = dcl.FlattenBool(m["allowPscGlobalAccess"])
 
 	return resultRes
 }

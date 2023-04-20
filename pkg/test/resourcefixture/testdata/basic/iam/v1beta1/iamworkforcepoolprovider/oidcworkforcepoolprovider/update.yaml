@@ -25,3 +25,6 @@ spec:
   oidc:
     issuerUri: "https://test.google.com"
     clientId: "new-client-id"
+    webSsoConfig:
+      responseType: "ID_TOKEN"
+      assertionClaimsBehavior: "ONLY_ID_TOKEN_CLAIMS"

@@ -65,6 +65,16 @@ func WorkforcePoolProviderToUnstructured(r *dclService.WorkforcePoolProvider) *u
 		if r.Oidc.IssuerUri != nil {
 			rOidc["issuerUri"] = *r.Oidc.IssuerUri
 		}
+		if r.Oidc.WebSsoConfig != nil && r.Oidc.WebSsoConfig != dclService.EmptyWorkforcePoolProviderOidcWebSsoConfig {
+			rOidcWebSsoConfig := make(map[string]interface{})
+			if r.Oidc.WebSsoConfig.AssertionClaimsBehavior != nil {
+				rOidcWebSsoConfig["assertionClaimsBehavior"] = string(*r.Oidc.WebSsoConfig.AssertionClaimsBehavior)
+			}
+			if r.Oidc.WebSsoConfig.ResponseType != nil {
+				rOidcWebSsoConfig["responseType"] = string(*r.Oidc.WebSsoConfig.ResponseType)
+			}
+			rOidc["webSsoConfig"] = rOidcWebSsoConfig
+		}
 		u.Object["oidc"] = rOidc
 	}
 	if r.Saml != nil && r.Saml != dclService.EmptyWorkforcePoolProviderSaml {
@@ -155,6 +165,27 @@ func UnstructuredToWorkforcePoolProvider(u *unstructured.Resource) (*dclService.
 					r.Oidc.IssuerUri = dcl.String(s)
 				} else {
 					return nil, fmt.Errorf("r.Oidc.IssuerUri: expected string")
+				}
+			}
+			if _, ok := rOidc["webSsoConfig"]; ok {
+				if rOidcWebSsoConfig, ok := rOidc["webSsoConfig"].(map[string]interface{}); ok {
+					r.Oidc.WebSsoConfig = &dclService.WorkforcePoolProviderOidcWebSsoConfig{}
+					if _, ok := rOidcWebSsoConfig["assertionClaimsBehavior"]; ok {
+						if s, ok := rOidcWebSsoConfig["assertionClaimsBehavior"].(string); ok {
+							r.Oidc.WebSsoConfig.AssertionClaimsBehavior = dclService.WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnumRef(s)
+						} else {
+							return nil, fmt.Errorf("r.Oidc.WebSsoConfig.AssertionClaimsBehavior: expected string")
+						}
+					}
+					if _, ok := rOidcWebSsoConfig["responseType"]; ok {
+						if s, ok := rOidcWebSsoConfig["responseType"].(string); ok {
+							r.Oidc.WebSsoConfig.ResponseType = dclService.WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnumRef(s)
+						} else {
+							return nil, fmt.Errorf("r.Oidc.WebSsoConfig.ResponseType: expected string")
+						}
+					}
+				} else {
+					return nil, fmt.Errorf("r.Oidc.WebSsoConfig: expected map[string]interface{}")
 				}
 			}
 		} else {

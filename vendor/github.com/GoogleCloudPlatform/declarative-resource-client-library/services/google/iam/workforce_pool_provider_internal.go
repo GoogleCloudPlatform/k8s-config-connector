@@ -67,6 +67,23 @@ func (r *WorkforcePoolProviderOidc) validate() error {
 	if err := dcl.Required(r, "clientId"); err != nil {
 		return err
 	}
+	if err := dcl.Required(r, "webSsoConfig"); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(r.WebSsoConfig) {
+		if err := r.WebSsoConfig.validate(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (r *WorkforcePoolProviderOidcWebSsoConfig) validate() error {
+	if err := dcl.Required(r, "responseType"); err != nil {
+		return err
+	}
+	if err := dcl.Required(r, "assertionClaimsBehavior"); err != nil {
+		return err
+	}
 	return nil
 }
 func (r *WorkforcePoolProvider) basePath() string {
@@ -753,6 +770,7 @@ func canonicalizeWorkforcePoolProviderOidc(des, initial *WorkforcePoolProviderOi
 	} else {
 		cDes.ClientId = des.ClientId
 	}
+	cDes.WebSsoConfig = canonicalizeWorkforcePoolProviderOidcWebSsoConfig(des.WebSsoConfig, initial.WebSsoConfig, opts...)
 
 	return cDes
 }
@@ -805,6 +823,7 @@ func canonicalizeNewWorkforcePoolProviderOidc(c *Client, des, nw *WorkforcePoolP
 	if dcl.StringCanonicalize(des.ClientId, nw.ClientId) {
 		nw.ClientId = des.ClientId
 	}
+	nw.WebSsoConfig = canonicalizeNewWorkforcePoolProviderOidcWebSsoConfig(c, des.WebSsoConfig, nw.WebSsoConfig)
 
 	return nw
 }
@@ -850,6 +869,127 @@ func canonicalizeNewWorkforcePoolProviderOidcSlice(c *Client, des, nw []Workforc
 	for i, d := range des {
 		n := nw[i]
 		items = append(items, *canonicalizeNewWorkforcePoolProviderOidc(c, &d, &n))
+	}
+
+	return items
+}
+
+func canonicalizeWorkforcePoolProviderOidcWebSsoConfig(des, initial *WorkforcePoolProviderOidcWebSsoConfig, opts ...dcl.ApplyOption) *WorkforcePoolProviderOidcWebSsoConfig {
+	if des == nil {
+		return initial
+	}
+	if des.empty {
+		return des
+	}
+
+	if initial == nil {
+		return des
+	}
+
+	cDes := &WorkforcePoolProviderOidcWebSsoConfig{}
+
+	if dcl.IsZeroValue(des.ResponseType) || (dcl.IsEmptyValueIndirect(des.ResponseType) && dcl.IsEmptyValueIndirect(initial.ResponseType)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.ResponseType = initial.ResponseType
+	} else {
+		cDes.ResponseType = des.ResponseType
+	}
+	if dcl.IsZeroValue(des.AssertionClaimsBehavior) || (dcl.IsEmptyValueIndirect(des.AssertionClaimsBehavior) && dcl.IsEmptyValueIndirect(initial.AssertionClaimsBehavior)) {
+		// Desired and initial values are equivalent, so set canonical desired value to initial value.
+		cDes.AssertionClaimsBehavior = initial.AssertionClaimsBehavior
+	} else {
+		cDes.AssertionClaimsBehavior = des.AssertionClaimsBehavior
+	}
+
+	return cDes
+}
+
+func canonicalizeWorkforcePoolProviderOidcWebSsoConfigSlice(des, initial []WorkforcePoolProviderOidcWebSsoConfig, opts ...dcl.ApplyOption) []WorkforcePoolProviderOidcWebSsoConfig {
+	if dcl.IsEmptyValueIndirect(des) {
+		return initial
+	}
+
+	if len(des) != len(initial) {
+
+		items := make([]WorkforcePoolProviderOidcWebSsoConfig, 0, len(des))
+		for _, d := range des {
+			cd := canonicalizeWorkforcePoolProviderOidcWebSsoConfig(&d, nil, opts...)
+			if cd != nil {
+				items = append(items, *cd)
+			}
+		}
+		return items
+	}
+
+	items := make([]WorkforcePoolProviderOidcWebSsoConfig, 0, len(des))
+	for i, d := range des {
+		cd := canonicalizeWorkforcePoolProviderOidcWebSsoConfig(&d, &initial[i], opts...)
+		if cd != nil {
+			items = append(items, *cd)
+		}
+	}
+	return items
+
+}
+
+func canonicalizeNewWorkforcePoolProviderOidcWebSsoConfig(c *Client, des, nw *WorkforcePoolProviderOidcWebSsoConfig) *WorkforcePoolProviderOidcWebSsoConfig {
+
+	if des == nil {
+		return nw
+	}
+
+	if nw == nil {
+		if dcl.IsEmptyValueIndirect(des) {
+			c.Config.Logger.Info("Found explicitly empty value for WorkforcePoolProviderOidcWebSsoConfig while comparing non-nil desired to nil actual.  Returning desired object.")
+			return des
+		}
+		return nil
+	}
+
+	return nw
+}
+
+func canonicalizeNewWorkforcePoolProviderOidcWebSsoConfigSet(c *Client, des, nw []WorkforcePoolProviderOidcWebSsoConfig) []WorkforcePoolProviderOidcWebSsoConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Find the elements in des that are also in nw and canonicalize them. Remove matched elements from nw.
+	var items []WorkforcePoolProviderOidcWebSsoConfig
+	for _, d := range des {
+		matchedIndex := -1
+		for i, n := range nw {
+			if diffs, _ := compareWorkforcePoolProviderOidcWebSsoConfigNewStyle(&d, &n, dcl.FieldName{}); len(diffs) == 0 {
+				matchedIndex = i
+				break
+			}
+		}
+		if matchedIndex != -1 {
+			items = append(items, *canonicalizeNewWorkforcePoolProviderOidcWebSsoConfig(c, &d, &nw[matchedIndex]))
+			nw = append(nw[:matchedIndex], nw[matchedIndex+1:]...)
+		}
+	}
+	// Also include elements in nw that are not matched in des.
+	items = append(items, nw...)
+
+	return items
+}
+
+func canonicalizeNewWorkforcePoolProviderOidcWebSsoConfigSlice(c *Client, des, nw []WorkforcePoolProviderOidcWebSsoConfig) []WorkforcePoolProviderOidcWebSsoConfig {
+	if des == nil {
+		return nw
+	}
+
+	// Lengths are unequal. A diff will occur later, so we shouldn't canonicalize.
+	// Return the original array.
+	if len(des) != len(nw) {
+		return nw
+	}
+
+	var items []WorkforcePoolProviderOidcWebSsoConfig
+	for i, d := range des {
+		n := nw[i]
+		items = append(items, *canonicalizeNewWorkforcePoolProviderOidcWebSsoConfig(c, &d, &n))
 	}
 
 	return items
@@ -1012,6 +1152,49 @@ func compareWorkforcePoolProviderOidcNewStyle(d, a interface{}, fn dcl.FieldName
 	}
 
 	if ds, err := dcl.Diff(desired.ClientId, actual.ClientId, dcl.DiffInfo{OperationSelector: dcl.TriggersOperation("updateWorkforcePoolProviderUpdateWorkforcePoolProviderOperation")}, fn.AddNest("ClientId")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.WebSsoConfig, actual.WebSsoConfig, dcl.DiffInfo{ObjectFunction: compareWorkforcePoolProviderOidcWebSsoConfigNewStyle, EmptyObject: EmptyWorkforcePoolProviderOidcWebSsoConfig, OperationSelector: dcl.TriggersOperation("updateWorkforcePoolProviderUpdateWorkforcePoolProviderOperation")}, fn.AddNest("WebSsoConfig")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+	return diffs, nil
+}
+
+func compareWorkforcePoolProviderOidcWebSsoConfigNewStyle(d, a interface{}, fn dcl.FieldName) ([]*dcl.FieldDiff, error) {
+	var diffs []*dcl.FieldDiff
+
+	desired, ok := d.(*WorkforcePoolProviderOidcWebSsoConfig)
+	if !ok {
+		desiredNotPointer, ok := d.(WorkforcePoolProviderOidcWebSsoConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a WorkforcePoolProviderOidcWebSsoConfig or *WorkforcePoolProviderOidcWebSsoConfig", d)
+		}
+		desired = &desiredNotPointer
+	}
+	actual, ok := a.(*WorkforcePoolProviderOidcWebSsoConfig)
+	if !ok {
+		actualNotPointer, ok := a.(WorkforcePoolProviderOidcWebSsoConfig)
+		if !ok {
+			return nil, fmt.Errorf("obj %v is not a WorkforcePoolProviderOidcWebSsoConfig", a)
+		}
+		actual = &actualNotPointer
+	}
+
+	if ds, err := dcl.Diff(desired.ResponseType, actual.ResponseType, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateWorkforcePoolProviderUpdateWorkforcePoolProviderOperation")}, fn.AddNest("ResponseType")); len(ds) != 0 || err != nil {
+		if err != nil {
+			return nil, err
+		}
+		diffs = append(diffs, ds...)
+	}
+
+	if ds, err := dcl.Diff(desired.AssertionClaimsBehavior, actual.AssertionClaimsBehavior, dcl.DiffInfo{Type: "EnumType", OperationSelector: dcl.TriggersOperation("updateWorkforcePoolProviderUpdateWorkforcePoolProviderOperation")}, fn.AddNest("AssertionClaimsBehavior")); len(ds) != 0 || err != nil {
 		if err != nil {
 			return nil, err
 		}
@@ -1364,6 +1547,11 @@ func expandWorkforcePoolProviderOidc(c *Client, f *WorkforcePoolProviderOidc, re
 	if v := f.ClientId; !dcl.IsEmptyValueIndirect(v) {
 		m["clientId"] = v
 	}
+	if v, err := expandWorkforcePoolProviderOidcWebSsoConfig(c, f.WebSsoConfig, res); err != nil {
+		return nil, fmt.Errorf("error expanding WebSsoConfig into webSsoConfig: %w", err)
+	} else if !dcl.IsEmptyValueIndirect(v) {
+		m["webSsoConfig"] = v
+	}
 
 	return m, nil
 }
@@ -1383,6 +1571,125 @@ func flattenWorkforcePoolProviderOidc(c *Client, i interface{}, res *WorkforcePo
 	}
 	r.IssuerUri = dcl.FlattenString(m["issuerUri"])
 	r.ClientId = dcl.FlattenString(m["clientId"])
+	r.WebSsoConfig = flattenWorkforcePoolProviderOidcWebSsoConfig(c, m["webSsoConfig"], res)
+
+	return r
+}
+
+// expandWorkforcePoolProviderOidcWebSsoConfigMap expands the contents of WorkforcePoolProviderOidcWebSsoConfig into a JSON
+// request object.
+func expandWorkforcePoolProviderOidcWebSsoConfigMap(c *Client, f map[string]WorkforcePoolProviderOidcWebSsoConfig, res *WorkforcePoolProvider) (map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := make(map[string]interface{})
+	for k, item := range f {
+		i, err := expandWorkforcePoolProviderOidcWebSsoConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+		if i != nil {
+			items[k] = i
+		}
+	}
+
+	return items, nil
+}
+
+// expandWorkforcePoolProviderOidcWebSsoConfigSlice expands the contents of WorkforcePoolProviderOidcWebSsoConfig into a JSON
+// request object.
+func expandWorkforcePoolProviderOidcWebSsoConfigSlice(c *Client, f []WorkforcePoolProviderOidcWebSsoConfig, res *WorkforcePoolProvider) ([]map[string]interface{}, error) {
+	if f == nil {
+		return nil, nil
+	}
+
+	items := []map[string]interface{}{}
+	for _, item := range f {
+		i, err := expandWorkforcePoolProviderOidcWebSsoConfig(c, &item, res)
+		if err != nil {
+			return nil, err
+		}
+
+		items = append(items, i)
+	}
+
+	return items, nil
+}
+
+// flattenWorkforcePoolProviderOidcWebSsoConfigMap flattens the contents of WorkforcePoolProviderOidcWebSsoConfig from a JSON
+// response object.
+func flattenWorkforcePoolProviderOidcWebSsoConfigMap(c *Client, i interface{}, res *WorkforcePoolProvider) map[string]WorkforcePoolProviderOidcWebSsoConfig {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]WorkforcePoolProviderOidcWebSsoConfig{}
+	}
+
+	if len(a) == 0 {
+		return map[string]WorkforcePoolProviderOidcWebSsoConfig{}
+	}
+
+	items := make(map[string]WorkforcePoolProviderOidcWebSsoConfig)
+	for k, item := range a {
+		items[k] = *flattenWorkforcePoolProviderOidcWebSsoConfig(c, item.(map[string]interface{}), res)
+	}
+
+	return items
+}
+
+// flattenWorkforcePoolProviderOidcWebSsoConfigSlice flattens the contents of WorkforcePoolProviderOidcWebSsoConfig from a JSON
+// response object.
+func flattenWorkforcePoolProviderOidcWebSsoConfigSlice(c *Client, i interface{}, res *WorkforcePoolProvider) []WorkforcePoolProviderOidcWebSsoConfig {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []WorkforcePoolProviderOidcWebSsoConfig{}
+	}
+
+	if len(a) == 0 {
+		return []WorkforcePoolProviderOidcWebSsoConfig{}
+	}
+
+	items := make([]WorkforcePoolProviderOidcWebSsoConfig, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenWorkforcePoolProviderOidcWebSsoConfig(c, item.(map[string]interface{}), res))
+	}
+
+	return items
+}
+
+// expandWorkforcePoolProviderOidcWebSsoConfig expands an instance of WorkforcePoolProviderOidcWebSsoConfig into a JSON
+// request object.
+func expandWorkforcePoolProviderOidcWebSsoConfig(c *Client, f *WorkforcePoolProviderOidcWebSsoConfig, res *WorkforcePoolProvider) (map[string]interface{}, error) {
+	if dcl.IsEmptyValueIndirect(f) {
+		return nil, nil
+	}
+
+	m := make(map[string]interface{})
+	if v := f.ResponseType; !dcl.IsEmptyValueIndirect(v) {
+		m["responseType"] = v
+	}
+	if v := f.AssertionClaimsBehavior; !dcl.IsEmptyValueIndirect(v) {
+		m["assertionClaimsBehavior"] = v
+	}
+
+	return m, nil
+}
+
+// flattenWorkforcePoolProviderOidcWebSsoConfig flattens an instance of WorkforcePoolProviderOidcWebSsoConfig from a JSON
+// response object.
+func flattenWorkforcePoolProviderOidcWebSsoConfig(c *Client, i interface{}, res *WorkforcePoolProvider) *WorkforcePoolProviderOidcWebSsoConfig {
+	m, ok := i.(map[string]interface{})
+	if !ok {
+		return nil
+	}
+
+	r := &WorkforcePoolProviderOidcWebSsoConfig{}
+
+	if dcl.IsEmptyValueIndirect(i) {
+		return EmptyWorkforcePoolProviderOidcWebSsoConfig
+	}
+	r.ResponseType = flattenWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum(m["responseType"])
+	r.AssertionClaimsBehavior = flattenWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum(m["assertionClaimsBehavior"])
 
 	return r
 }
@@ -1436,6 +1743,108 @@ func flattenWorkforcePoolProviderStateEnum(i interface{}) *WorkforcePoolProvider
 	}
 
 	return WorkforcePoolProviderStateEnumRef(s)
+}
+
+// flattenWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnumMap flattens the contents of WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum from a JSON
+// response object.
+func flattenWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnumMap(c *Client, i interface{}, res *WorkforcePoolProvider) map[string]WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum{}
+	}
+
+	if len(a) == 0 {
+		return map[string]WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum{}
+	}
+
+	items := make(map[string]WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum)
+	for k, item := range a {
+		items[k] = *flattenWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum(item.(interface{}))
+	}
+
+	return items
+}
+
+// flattenWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnumSlice flattens the contents of WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum from a JSON
+// response object.
+func flattenWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnumSlice(c *Client, i interface{}, res *WorkforcePoolProvider) []WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum{}
+	}
+
+	if len(a) == 0 {
+		return []WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum{}
+	}
+
+	items := make([]WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum(item.(interface{})))
+	}
+
+	return items
+}
+
+// flattenWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum asserts that an interface is a string, and returns a
+// pointer to a *WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum with the same value as that string.
+func flattenWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum(i interface{}) *WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum {
+	s, ok := i.(string)
+	if !ok {
+		return nil
+	}
+
+	return WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnumRef(s)
+}
+
+// flattenWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnumMap flattens the contents of WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum from a JSON
+// response object.
+func flattenWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnumMap(c *Client, i interface{}, res *WorkforcePoolProvider) map[string]WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum {
+	a, ok := i.(map[string]interface{})
+	if !ok {
+		return map[string]WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum{}
+	}
+
+	if len(a) == 0 {
+		return map[string]WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum{}
+	}
+
+	items := make(map[string]WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum)
+	for k, item := range a {
+		items[k] = *flattenWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum(item.(interface{}))
+	}
+
+	return items
+}
+
+// flattenWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnumSlice flattens the contents of WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum from a JSON
+// response object.
+func flattenWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnumSlice(c *Client, i interface{}, res *WorkforcePoolProvider) []WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum {
+	a, ok := i.([]interface{})
+	if !ok {
+		return []WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum{}
+	}
+
+	if len(a) == 0 {
+		return []WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum{}
+	}
+
+	items := make([]WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum, 0, len(a))
+	for _, item := range a {
+		items = append(items, *flattenWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum(item.(interface{})))
+	}
+
+	return items
+}
+
+// flattenWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum asserts that an interface is a string, and returns a
+// pointer to a *WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum with the same value as that string.
+func flattenWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum(i interface{}) *WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum {
+	s, ok := i.(string)
+	if !ok {
+		return nil
+	}
+
+	return WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnumRef(s)
 }
 
 // This function returns a matcher that checks whether a serialized resource matches this resource
@@ -1560,6 +1969,20 @@ func extractWorkforcePoolProviderSamlFields(r *WorkforcePoolProvider, o *Workfor
 	return nil
 }
 func extractWorkforcePoolProviderOidcFields(r *WorkforcePoolProvider, o *WorkforcePoolProviderOidc) error {
+	vWebSsoConfig := o.WebSsoConfig
+	if vWebSsoConfig == nil {
+		// note: explicitly not the empty object.
+		vWebSsoConfig = &WorkforcePoolProviderOidcWebSsoConfig{}
+	}
+	if err := extractWorkforcePoolProviderOidcWebSsoConfigFields(r, vWebSsoConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vWebSsoConfig) {
+		o.WebSsoConfig = vWebSsoConfig
+	}
+	return nil
+}
+func extractWorkforcePoolProviderOidcWebSsoConfigFields(r *WorkforcePoolProvider, o *WorkforcePoolProviderOidcWebSsoConfig) error {
 	return nil
 }
 
@@ -1592,5 +2015,19 @@ func postReadExtractWorkforcePoolProviderSamlFields(r *WorkforcePoolProvider, o 
 	return nil
 }
 func postReadExtractWorkforcePoolProviderOidcFields(r *WorkforcePoolProvider, o *WorkforcePoolProviderOidc) error {
+	vWebSsoConfig := o.WebSsoConfig
+	if vWebSsoConfig == nil {
+		// note: explicitly not the empty object.
+		vWebSsoConfig = &WorkforcePoolProviderOidcWebSsoConfig{}
+	}
+	if err := extractWorkforcePoolProviderOidcWebSsoConfigFields(r, vWebSsoConfig); err != nil {
+		return err
+	}
+	if !dcl.IsEmptyValueIndirect(vWebSsoConfig) {
+		o.WebSsoConfig = vWebSsoConfig
+	}
+	return nil
+}
+func postReadExtractWorkforcePoolProviderOidcWebSsoConfigFields(r *WorkforcePoolProvider, o *WorkforcePoolProviderOidcWebSsoConfig) error {
 	return nil
 }

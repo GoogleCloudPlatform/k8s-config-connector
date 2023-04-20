@@ -69,6 +69,60 @@ func (v WorkforcePoolProviderStateEnum) Validate() error {
 	}
 }
 
+// The enum WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum.
+type WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum string
+
+// WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnumRef returns a *WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum with the value of string s
+// If the empty string is provided, nil is returned.
+func WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnumRef(s string) *WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum {
+	v := WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum(s)
+	return &v
+}
+
+func (v WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum) Validate() error {
+	if string(v) == "" {
+		// Empty enum is okay.
+		return nil
+	}
+	for _, s := range []string{"RESPONSE_TYPE_UNSPECIFIED", "ID_TOKEN"} {
+		if string(v) == s {
+			return nil
+		}
+	}
+	return &dcl.EnumInvalidError{
+		Enum:  "WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum",
+		Value: string(v),
+		Valid: []string{},
+	}
+}
+
+// The enum WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum.
+type WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum string
+
+// WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnumRef returns a *WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum with the value of string s
+// If the empty string is provided, nil is returned.
+func WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnumRef(s string) *WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum {
+	v := WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum(s)
+	return &v
+}
+
+func (v WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum) Validate() error {
+	if string(v) == "" {
+		// Empty enum is okay.
+		return nil
+	}
+	for _, s := range []string{"ASSERTION_CLAIMS_BEHAVIOR_UNSPECIFIED", "ONLY_ID_TOKEN_CLAIMS"} {
+		if string(v) == s {
+			return nil
+		}
+	}
+	return &dcl.EnumInvalidError{
+		Enum:  "WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum",
+		Value: string(v),
+		Valid: []string{},
+	}
+}
+
 type WorkforcePoolProviderSaml struct {
 	empty          bool    `json:"-"`
 	IdpMetadataXml *string `json:"idpMetadataXml"`
@@ -116,9 +170,10 @@ func (r *WorkforcePoolProviderSaml) HashCode() string {
 }
 
 type WorkforcePoolProviderOidc struct {
-	empty     bool    `json:"-"`
-	IssuerUri *string `json:"issuerUri"`
-	ClientId  *string `json:"clientId"`
+	empty        bool                                   `json:"-"`
+	IssuerUri    *string                                `json:"issuerUri"`
+	ClientId     *string                                `json:"clientId"`
+	WebSsoConfig *WorkforcePoolProviderOidcWebSsoConfig `json:"webSsoConfig"`
 }
 
 type jsonWorkforcePoolProviderOidc WorkforcePoolProviderOidc
@@ -140,6 +195,8 @@ func (r *WorkforcePoolProviderOidc) UnmarshalJSON(data []byte) error {
 
 		r.ClientId = res.ClientId
 
+		r.WebSsoConfig = res.WebSsoConfig
+
 	}
 	return nil
 }
@@ -158,6 +215,55 @@ func (r *WorkforcePoolProviderOidc) String() string {
 }
 
 func (r *WorkforcePoolProviderOidc) HashCode() string {
+	// Placeholder for a more complex hash method that handles ordering, etc
+	// Hash resource body for easy comparison later
+	hash := sha256.New().Sum([]byte(r.String()))
+	return fmt.Sprintf("%x", hash)
+}
+
+type WorkforcePoolProviderOidcWebSsoConfig struct {
+	empty                   bool                                                              `json:"-"`
+	ResponseType            *WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum            `json:"responseType"`
+	AssertionClaimsBehavior *WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum `json:"assertionClaimsBehavior"`
+}
+
+type jsonWorkforcePoolProviderOidcWebSsoConfig WorkforcePoolProviderOidcWebSsoConfig
+
+func (r *WorkforcePoolProviderOidcWebSsoConfig) UnmarshalJSON(data []byte) error {
+	var res jsonWorkforcePoolProviderOidcWebSsoConfig
+	if err := json.Unmarshal(data, &res); err != nil {
+		return err
+	}
+
+	var m map[string]interface{}
+	json.Unmarshal(data, &m)
+
+	if len(m) == 0 {
+		*r = *EmptyWorkforcePoolProviderOidcWebSsoConfig
+	} else {
+
+		r.ResponseType = res.ResponseType
+
+		r.AssertionClaimsBehavior = res.AssertionClaimsBehavior
+
+	}
+	return nil
+}
+
+// This object is used to assert a desired state where this WorkforcePoolProviderOidcWebSsoConfig is
+// empty. Go lacks global const objects, but this object should be treated
+// as one. Modifying this object will have undesirable results.
+var EmptyWorkforcePoolProviderOidcWebSsoConfig *WorkforcePoolProviderOidcWebSsoConfig = &WorkforcePoolProviderOidcWebSsoConfig{empty: true}
+
+func (r *WorkforcePoolProviderOidcWebSsoConfig) Empty() bool {
+	return r.empty
+}
+
+func (r *WorkforcePoolProviderOidcWebSsoConfig) String() string {
+	return dcl.SprintResource(r)
+}
+
+func (r *WorkforcePoolProviderOidcWebSsoConfig) HashCode() string {
 	// Placeholder for a more complex hash method that handles ordering, etc
 	// Hash resource body for easy comparison later
 	hash := sha256.New().Sum([]byte(r.String()))

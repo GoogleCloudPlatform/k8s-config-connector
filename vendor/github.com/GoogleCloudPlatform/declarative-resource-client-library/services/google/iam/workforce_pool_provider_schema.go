@@ -160,6 +160,7 @@ func DCLWorkforcePoolProviderSchema() *dcl.Schema {
 								Required: []string{
 									"issuerUri",
 									"clientId",
+									"webSsoConfig",
 								},
 								Properties: map[string]*dcl.Property{
 									"clientId": &dcl.Property{
@@ -171,6 +172,38 @@ func DCLWorkforcePoolProviderSchema() *dcl.Schema {
 										Type:        "string",
 										GoName:      "IssuerUri",
 										Description: "Required. The OIDC issuer URI. Must be a valid URI using the 'https' scheme.",
+									},
+									"webSsoConfig": &dcl.Property{
+										Type:        "object",
+										GoName:      "WebSsoConfig",
+										GoType:      "WorkforcePoolProviderOidcWebSsoConfig",
+										Description: "Required. Configuration for web single sign-on for the OIDC provider. Here, web sign-in refers to console sign-in and gcloud sign-in through the browser.",
+										Required: []string{
+											"responseType",
+											"assertionClaimsBehavior",
+										},
+										Properties: map[string]*dcl.Property{
+											"assertionClaimsBehavior": &dcl.Property{
+												Type:        "string",
+												GoName:      "AssertionClaimsBehavior",
+												GoType:      "WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum",
+												Description: "Required. The behavior for how OIDC Claims are included in the `assertion` object used for attribute mapping and attribute condition. Possible values: ASSERTION_CLAIMS_BEHAVIOR_UNSPECIFIED, ONLY_ID_TOKEN_CLAIMS",
+												Enum: []string{
+													"ASSERTION_CLAIMS_BEHAVIOR_UNSPECIFIED",
+													"ONLY_ID_TOKEN_CLAIMS",
+												},
+											},
+											"responseType": &dcl.Property{
+												Type:        "string",
+												GoName:      "ResponseType",
+												GoType:      "WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum",
+												Description: "Required. The Response Type to request for in the OIDC Authorization Request for web sign-in. Possible values: RESPONSE_TYPE_UNSPECIFIED, ID_TOKEN",
+												Enum: []string{
+													"RESPONSE_TYPE_UNSPECIFIED",
+													"ID_TOKEN",
+												},
+											},
+										},
 									},
 								},
 							},

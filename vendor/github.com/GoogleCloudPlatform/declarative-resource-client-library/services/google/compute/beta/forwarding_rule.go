@@ -54,6 +54,9 @@ type ForwardingRule struct {
 	ServiceDirectoryRegistrations []ForwardingRuleServiceDirectoryRegistrations `json:"serviceDirectoryRegistrations"`
 	PscConnectionId               *string                                       `json:"pscConnectionId"`
 	PscConnectionStatus           *ForwardingRulePscConnectionStatusEnum        `json:"pscConnectionStatus"`
+	SourceIPRanges                []string                                      `json:"sourceIPRanges"`
+	BaseForwardingRule            *string                                       `json:"baseForwardingRule"`
+	AllowPscGlobalAccess          *bool                                         `json:"allowPscGlobalAccess"`
 }
 
 func (r *ForwardingRule) String() string {
@@ -414,6 +417,9 @@ func (r *ForwardingRule) ID() (string, error) {
 		"service_directory_registrations": dcl.ValueOrEmptyString(nr.ServiceDirectoryRegistrations),
 		"psc_connection_id":               dcl.ValueOrEmptyString(nr.PscConnectionId),
 		"psc_connection_status":           dcl.ValueOrEmptyString(nr.PscConnectionStatus),
+		"source_ip_ranges":                dcl.ValueOrEmptyString(nr.SourceIPRanges),
+		"base_forwarding_rule":            dcl.ValueOrEmptyString(nr.BaseForwardingRule),
+		"allow_psc_global_access":         dcl.ValueOrEmptyString(nr.AllowPscGlobalAccess),
 	}
 	if dcl.IsRegion(nr.Location) {
 		return dcl.Nprintf("projects/{{project}}/regions/{{location}}/forwardingRules/{{name}}", params), nil

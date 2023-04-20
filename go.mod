@@ -8,7 +8,7 @@ require (
 	cloud.google.com/go/profiler v0.1.0
 	github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp v0.0.0-00010101000000-000000000000
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
-	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.37.0
+	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.39.0
 	github.com/Masterminds/sprig v2.22.0+incompatible
 	github.com/appscode/jsonpatch v0.0.0-20190108182946-7c0e3b262f30
 	github.com/blang/semver v3.5.1+incompatible

@@ -154,6 +154,7 @@ components:
           required:
           - issuerUri
           - clientId
+          - webSsoConfig
           properties:
             clientId:
               type: string
@@ -165,6 +166,38 @@ components:
               x-dcl-go-name: IssuerUri
               description: Required. The OIDC issuer URI. Must be a valid URI using
                 the 'https' scheme.
+            webSsoConfig:
+              type: object
+              x-dcl-go-name: WebSsoConfig
+              x-dcl-go-type: WorkforcePoolProviderOidcWebSsoConfig
+              description: Required. Configuration for web single sign-on for the
+                OIDC provider. Here, web sign-in refers to console sign-in and gcloud
+                sign-in through the browser.
+              required:
+              - responseType
+              - assertionClaimsBehavior
+              properties:
+                assertionClaimsBehavior:
+                  type: string
+                  x-dcl-go-name: AssertionClaimsBehavior
+                  x-dcl-go-type: WorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum
+                  description: 'Required. The behavior for how OIDC Claims are included
+                    in the `assertion` object used for attribute mapping and attribute
+                    condition. Possible values: ASSERTION_CLAIMS_BEHAVIOR_UNSPECIFIED,
+                    ONLY_ID_TOKEN_CLAIMS'
+                  enum:
+                  - ASSERTION_CLAIMS_BEHAVIOR_UNSPECIFIED
+                  - ONLY_ID_TOKEN_CLAIMS
+                responseType:
+                  type: string
+                  x-dcl-go-name: ResponseType
+                  x-dcl-go-type: WorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum
+                  description: 'Required. The Response Type to request for in the
+                    OIDC Authorization Request for web sign-in. Possible values: RESPONSE_TYPE_UNSPECIFIED,
+                    ID_TOKEN'
+                  enum:
+                  - RESPONSE_TYPE_UNSPECIFIED
+                  - ID_TOKEN
         saml:
           type: object
           x-dcl-go-name: Saml
