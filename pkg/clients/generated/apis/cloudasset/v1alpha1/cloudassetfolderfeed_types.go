@@ -94,7 +94,7 @@ type CloudAssetFolderFeedSpec struct {
 	// +optional
 	Condition *FolderfeedCondition `json:"condition,omitempty"`
 
-	/* Asset content type. If not specified, no content but the asset name and type will be returned. Possible values: ["CONTENT_TYPE_UNSPECIFIED", "RESOURCE", "IAM_POLICY", "ORG_POLICY", "ACCESS_POLICY"]. */
+	/* Asset content type. If not specified, no content but the asset name and type will be returned. Possible values: ["CONTENT_TYPE_UNSPECIFIED", "RESOURCE", "IAM_POLICY", "ORG_POLICY", "OS_INVENTORY", "ACCESS_POLICY"]. */
 	// +optional
 	ContentType *string `json:"contentType,omitempty"`
 

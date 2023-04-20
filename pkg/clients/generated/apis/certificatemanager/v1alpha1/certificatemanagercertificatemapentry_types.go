@@ -45,7 +45,7 @@ type CertificateManagerCertificateMapEntrySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* A Hostname (FQDN, e.g. example.com) or a wildcard hostname expression (*.example.com)
+	/* Immutable. A Hostname (FQDN, e.g. example.com) or a wildcard hostname expression (*.example.com)
 	for a set of hostnames with common suffix. Used as Server Name Indication (SNI) for
 	selecting a proper certificate. */
 	// +optional
@@ -54,7 +54,7 @@ type CertificateManagerCertificateMapEntrySpec struct {
 	/* Immutable. A map entry that is inputted into the cetrificate map. */
 	Map string `json:"map"`
 
-	/* A predefined matcher for particular cases, other than SNI selection. */
+	/* Immutable. A predefined matcher for particular cases, other than SNI selection. */
 	// +optional
 	Matcher *string `json:"matcher,omitempty"`
 

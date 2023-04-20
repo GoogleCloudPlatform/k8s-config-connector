@@ -291,7 +291,9 @@ spec:
                           be streamed.
                         properties:
                           datasetId:
-                            description: Dataset ID in the format projects/{project}/datasets/{dataset_id}.
+                            description: |-
+                              Dataset ID in the format projects/{project}/datasets/{dataset_id} or
+                              {project}:{dataset_id}.
                             type: string
                         required:
                         - datasetId

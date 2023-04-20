@@ -51,7 +51,7 @@ type EdgecacheoriginAwsV4Authentication struct {
 type EdgecacheoriginHeaderAction struct {
 	/* Describes a header to add.
 
-	You may add a maximum of 5 request headers. */
+	You may add a maximum of 25 request headers. */
 	// +optional
 	RequestHeadersToAdd []EdgecacheoriginRequestHeadersToAdd `json:"requestHeadersToAdd,omitempty"`
 }

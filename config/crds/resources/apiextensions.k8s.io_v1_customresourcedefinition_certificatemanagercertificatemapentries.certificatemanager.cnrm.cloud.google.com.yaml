@@ -71,7 +71,7 @@ spec:
                 type: string
               hostname:
                 description: |-
-                  A Hostname (FQDN, e.g. example.com) or a wildcard hostname expression (*.example.com)
+                  Immutable. A Hostname (FQDN, e.g. example.com) or a wildcard hostname expression (*.example.com)
                   for a set of hostnames with common suffix. Used as Server Name Indication (SNI) for
                   selecting a proper certificate.
                 type: string
@@ -80,8 +80,8 @@ spec:
                   map.
                 type: string
               matcher:
-                description: A predefined matcher for particular cases, other than
-                  SNI selection.
+                description: Immutable. A predefined matcher for particular cases,
+                  other than SNI selection.
                 type: string
               projectRef:
                 description: The project that this resource belongs to.

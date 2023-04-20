@@ -390,7 +390,8 @@ type StreamPostgresqlTables struct {
 }
 
 type StreamSingleTargetDataset struct {
-	/* Dataset ID in the format projects/{project}/datasets/{dataset_id}. */
+	/* Dataset ID in the format projects/{project}/datasets/{dataset_id} or
+	{project}:{dataset_id}. */
 	DatasetId string `json:"datasetId"`
 }
 

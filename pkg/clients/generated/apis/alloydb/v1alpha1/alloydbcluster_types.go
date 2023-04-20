@@ -64,7 +64,7 @@ type ClusterAutomatedBackupPolicy struct {
 	// +optional
 	TimeBasedRetention *ClusterTimeBasedRetention `json:"timeBasedRetention,omitempty"`
 
-	/* Immutable. Weekly schedule for the Backup. */
+	/* Weekly schedule for the Backup. */
 	// +optional
 	WeeklySchedule *ClusterWeeklySchedule `json:"weeklySchedule,omitempty"`
 }
@@ -145,7 +145,7 @@ type AlloyDBClusterSpec struct {
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
-	/* Immutable. Initial user to setup during cluster creation. */
+	/* Initial user to setup during cluster creation. */
 	// +optional
 	InitialUser *ClusterInitialUser `json:"initialUser,omitempty"`
 

@@ -103,7 +103,7 @@ spec:
                         type: string
                     type: object
                   weeklySchedule:
-                    description: Immutable. Weekly schedule for the Backup.
+                    description: Weekly schedule for the Backup.
                     properties:
                       daysOfWeek:
                         description: 'The days of the week to perform a backup. At
@@ -148,7 +148,7 @@ spec:
                   Cluster.
                 type: string
               initialUser:
-                description: Immutable. Initial user to setup during cluster creation.
+                description: Initial user to setup during cluster creation.
                 properties:
                   password:
                     description: The initial password for the user.

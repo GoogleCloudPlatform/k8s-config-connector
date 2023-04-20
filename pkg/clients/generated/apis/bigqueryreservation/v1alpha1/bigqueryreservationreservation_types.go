@@ -35,10 +35,28 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type ReservationAutoscale struct {
+	/* The slot capacity added to this reservation when autoscale happens. Will be between [0, max_slots]. */
+	// +optional
+	CurrentSlots *int `json:"currentSlots,omitempty"`
+
+	/* Number of slots to be scaled when needed. */
+	// +optional
+	MaxSlots *int `json:"maxSlots,omitempty"`
+}
+
 type BigQueryReservationReservationSpec struct {
+	/* The configuration parameters for the auto scaling feature. */
+	// +optional
+	Autoscale *ReservationAutoscale `json:"autoscale,omitempty"`
+
 	/* Maximum number of queries that are allowed to run concurrently in this reservation. This is a soft limit due to asynchronous nature of the system and various optimizations for small queries. Default value is 0 which means that concurrency will be automatically set based on the reservation size. */
 	// +optional
 	Concurrency *int `json:"concurrency,omitempty"`
+
+	/* Immutable. The edition type. Valid values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS. */
+	// +optional
+	Edition *string `json:"edition,omitempty"`
 
 	/* If false, any query using this reservation will use idle slots from other reservations within
 	the same admin project. If true, a query using this reservation will execute with the slot
