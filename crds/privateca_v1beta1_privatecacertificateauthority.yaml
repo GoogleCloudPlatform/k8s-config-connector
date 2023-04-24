@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.103.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -263,6 +263,13 @@ spec:
                               path length will be omitted from the CA certificate.
                             format: int64
                             type: integer
+                          zeroMaxIssuerPathLength:
+                            description: Immutable. Optional. When true, the "path
+                              length constraint" in Basic Constraints extension will
+                              be set to 0. if both max_issuer_path_length and zero_max_issuer_path_length
+                              are unset, the max path length will be omitted from
+                              the CA certificate.
+                            type: boolean
                         type: object
                       keyUsage:
                         description: Immutable. Optional. Indicates the intended use

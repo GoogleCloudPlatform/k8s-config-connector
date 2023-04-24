@@ -1,0 +1,613 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.103.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
+  name: datastreamconnectionprofiles.datastream.cnrm.cloud.google.com
+spec:
+  group: datastream.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: DatastreamConnectionProfile
+    plural: datastreamconnectionprofiles
+    shortNames:
+    - gcpdatastreamconnectionprofile
+    - gcpdatastreamconnectionprofiles
+    singular: datastreamconnectionprofile
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              bigqueryProfile:
+                description: BigQuery warehouse profile.
+                type: object
+                x-kubernetes-preserve-unknown-fields: true
+              displayName:
+                description: Display name.
+                type: string
+              forwardSshConnectivity:
+                description: Forward SSH tunnel connectivity.
+                properties:
+                  hostname:
+                    description: Hostname for the SSH tunnel.
+                    type: string
+                  password:
+                    description: Immutable. SSH password.
+                    oneOf:
+                    - not:
+                        required:
+                        - valueFrom
+                      required:
+                      - value
+                    - not:
+                        required:
+                        - value
+                      required:
+                      - valueFrom
+                    properties:
+                      value:
+                        description: Value of the field. Cannot be used if 'valueFrom'
+                          is specified.
+                        type: string
+                      valueFrom:
+                        description: Source for the field's value. Cannot be used
+                          if 'value' is specified.
+                        properties:
+                          secretKeyRef:
+                            description: Reference to a value with the given key in
+                              the given Secret in the resource's namespace.
+                            properties:
+                              key:
+                                description: Key that identifies the value to be extracted.
+                                type: string
+                              name:
+                                description: Name of the Secret to extract a value
+                                  from.
+                                type: string
+                            required:
+                            - name
+                            - key
+                            type: object
+                        type: object
+                    type: object
+                  port:
+                    description: Port for the SSH tunnel.
+                    type: integer
+                  privateKey:
+                    description: Immutable. SSH private key.
+                    oneOf:
+                    - not:
+                        required:
+                        - valueFrom
+                      required:
+                      - value
+                    - not:
+                        required:
+                        - value
+                      required:
+                      - valueFrom
+                    properties:
+                      value:
+                        description: Value of the field. Cannot be used if 'valueFrom'
+                          is specified.
+                        type: string
+                      valueFrom:
+                        description: Source for the field's value. Cannot be used
+                          if 'value' is specified.
+                        properties:
+                          secretKeyRef:
+                            description: Reference to a value with the given key in
+                              the given Secret in the resource's namespace.
+                            properties:
+                              key:
+                                description: Key that identifies the value to be extracted.
+                                type: string
+                              name:
+                                description: Name of the Secret to extract a value
+                                  from.
+                                type: string
+                            required:
+                            - name
+                            - key
+                            type: object
+                        type: object
+                    type: object
+                  username:
+                    description: Username for the SSH tunnel.
+                    type: string
+                required:
+                - hostname
+                - username
+                type: object
+              gcsProfile:
+                description: Cloud Storage bucket profile.
+                properties:
+                  bucket:
+                    description: The Cloud Storage bucket name.
+                    type: string
+                  rootPath:
+                    description: The root path inside the Cloud Storage bucket.
+                    type: string
+                required:
+                - bucket
+                type: object
+              location:
+                description: Immutable. The name of the location this connection profile
+                  is located in.
+                type: string
+              mysqlProfile:
+                description: MySQL database profile.
+                properties:
+                  hostname:
+                    description: Hostname for the MySQL connection.
+                    type: string
+                  password:
+                    description: Immutable. Password for the MySQL connection.
+                    oneOf:
+                    - not:
+                        required:
+                        - valueFrom
+                      required:
+                      - value
+                    - not:
+                        required:
+                        - value
+                      required:
+                      - valueFrom
+                    properties:
+                      value:
+                        description: Value of the field. Cannot be used if 'valueFrom'
+                          is specified.
+                        type: string
+                      valueFrom:
+                        description: Source for the field's value. Cannot be used
+                          if 'value' is specified.
+                        properties:
+                          secretKeyRef:
+                            description: Reference to a value with the given key in
+                              the given Secret in the resource's namespace.
+                            properties:
+                              key:
+                                description: Key that identifies the value to be extracted.
+                                type: string
+                              name:
+                                description: Name of the Secret to extract a value
+                                  from.
+                                type: string
+                            required:
+                            - name
+                            - key
+                            type: object
+                        type: object
+                    type: object
+                  port:
+                    description: Port for the MySQL connection.
+                    type: integer
+                  sslConfig:
+                    description: SSL configuration for the MySQL connection.
+                    properties:
+                      caCertificate:
+                        description: |-
+                          Immutable. PEM-encoded certificate of the CA that signed the source database
+                          server's certificate.
+                        oneOf:
+                        - not:
+                            required:
+                            - valueFrom
+                          required:
+                          - value
+                        - not:
+                            required:
+                            - value
+                          required:
+                          - valueFrom
+                        properties:
+                          value:
+                            description: Value of the field. Cannot be used if 'valueFrom'
+                              is specified.
+                            type: string
+                          valueFrom:
+                            description: Source for the field's value. Cannot be used
+                              if 'value' is specified.
+                            properties:
+                              secretKeyRef:
+                                description: Reference to a value with the given key
+                                  in the given Secret in the resource's namespace.
+                                properties:
+                                  key:
+                                    description: Key that identifies the value to
+                                      be extracted.
+                                    type: string
+                                  name:
+                                    description: Name of the Secret to extract a value
+                                      from.
+                                    type: string
+                                required:
+                                - name
+                                - key
+                                type: object
+                            type: object
+                        type: object
+                      caCertificateSet:
+                        description: Indicates whether the clientKey field is set.
+                        type: boolean
+                      clientCertificate:
+                        description: |-
+                          Immutable. PEM-encoded certificate that will be used by the replica to
+                          authenticate against the source database server. If this field
+                          is used then the 'clientKey' and the 'caCertificate' fields are
+                          mandatory.
+                        oneOf:
+                        - not:
+                            required:
+                            - valueFrom
+                          required:
+                          - value
+                        - not:
+                            required:
+                            - value
+                          required:
+                          - valueFrom
+                        properties:
+                          value:
+                            description: Value of the field. Cannot be used if 'valueFrom'
+                              is specified.
+                            type: string
+                          valueFrom:
+                            description: Source for the field's value. Cannot be used
+                              if 'value' is specified.
+                            properties:
+                              secretKeyRef:
+                                description: Reference to a value with the given key
+                                  in the given Secret in the resource's namespace.
+                                properties:
+                                  key:
+                                    description: Key that identifies the value to
+                                      be extracted.
+                                    type: string
+                                  name:
+                                    description: Name of the Secret to extract a value
+                                      from.
+                                    type: string
+                                required:
+                                - name
+                                - key
+                                type: object
+                            type: object
+                        type: object
+                      clientCertificateSet:
+                        description: Indicates whether the clientCertificate field
+                          is set.
+                        type: boolean
+                      clientKey:
+                        description: |-
+                          Immutable. PEM-encoded private key associated with the Client Certificate.
+                          If this field is used then the 'client_certificate' and the
+                          'ca_certificate' fields are mandatory.
+                        oneOf:
+                        - not:
+                            required:
+                            - valueFrom
+                          required:
+                          - value
+                        - not:
+                            required:
+                            - value
+                          required:
+                          - valueFrom
+                        properties:
+                          value:
+                            description: Value of the field. Cannot be used if 'valueFrom'
+                              is specified.
+                            type: string
+                          valueFrom:
+                            description: Source for the field's value. Cannot be used
+                              if 'value' is specified.
+                            properties:
+                              secretKeyRef:
+                                description: Reference to a value with the given key
+                                  in the given Secret in the resource's namespace.
+                                properties:
+                                  key:
+                                    description: Key that identifies the value to
+                                      be extracted.
+                                    type: string
+                                  name:
+                                    description: Name of the Secret to extract a value
+                                      from.
+                                    type: string
+                                required:
+                                - name
+                                - key
+                                type: object
+                            type: object
+                        type: object
+                      clientKeySet:
+                        description: Indicates whether the clientKey field is set.
+                        type: boolean
+                    type: object
+                  username:
+                    description: Username for the MySQL connection.
+                    type: string
+                required:
+                - hostname
+                - password
+                - username
+                type: object
+              oracleProfile:
+                description: Oracle database profile.
+                properties:
+                  connectionAttributes:
+                    additionalProperties:
+                      type: string
+                    description: Connection string attributes.
+                    type: object
+                  databaseService:
+                    description: Database for the Oracle connection.
+                    type: string
+                  hostname:
+                    description: Hostname for the Oracle connection.
+                    type: string
+                  password:
+                    description: Password for the Oracle connection.
+                    oneOf:
+                    - not:
+                        required:
+                        - valueFrom
+                      required:
+                      - value
+                    - not:
+                        required:
+                        - value
+                      required:
+                      - valueFrom
+                    properties:
+                      value:
+                        description: Value of the field. Cannot be used if 'valueFrom'
+                          is specified.
+                        type: string
+                      valueFrom:
+                        description: Source for the field's value. Cannot be used
+                          if 'value' is specified.
+                        properties:
+                          secretKeyRef:
+                            description: Reference to a value with the given key in
+                              the given Secret in the resource's namespace.
+                            properties:
+                              key:
+                                description: Key that identifies the value to be extracted.
+                                type: string
+                              name:
+                                description: Name of the Secret to extract a value
+                                  from.
+                                type: string
+                            required:
+                            - name
+                            - key
+                            type: object
+                        type: object
+                    type: object
+                  port:
+                    description: Port for the Oracle connection.
+                    type: integer
+                  username:
+                    description: Username for the Oracle connection.
+                    type: string
+                required:
+                - databaseService
+                - hostname
+                - password
+                - username
+                type: object
+              postgresqlProfile:
+                description: PostgreSQL database profile.
+                properties:
+                  database:
+                    description: Database for the PostgreSQL connection.
+                    type: string
+                  hostname:
+                    description: Hostname for the PostgreSQL connection.
+                    type: string
+                  password:
+                    description: Password for the PostgreSQL connection.
+                    oneOf:
+                    - not:
+                        required:
+                        - valueFrom
+                      required:
+                      - value
+                    - not:
+                        required:
+                        - value
+                      required:
+                      - valueFrom
+                    properties:
+                      value:
+                        description: Value of the field. Cannot be used if 'valueFrom'
+                          is specified.
+                        type: string
+                      valueFrom:
+                        description: Source for the field's value. Cannot be used
+                          if 'value' is specified.
+                        properties:
+                          secretKeyRef:
+                            description: Reference to a value with the given key in
+                              the given Secret in the resource's namespace.
+                            properties:
+                              key:
+                                description: Key that identifies the value to be extracted.
+                                type: string
+                              name:
+                                description: Name of the Secret to extract a value
+                                  from.
+                                type: string
+                            required:
+                            - name
+                            - key
+                            type: object
+                        type: object
+                    type: object
+                  port:
+                    description: Port for the PostgreSQL connection.
+                    type: integer
+                  username:
+                    description: Username for the PostgreSQL connection.
+                    type: string
+                required:
+                - database
+                - hostname
+                - password
+                - username
+                type: object
+              privateConnectivity:
+                description: Private connectivity.
+                properties:
+                  privateConnection:
+                    description: 'A reference to a private connection resource. Format:
+                      ''projects/{project}/locations/{location}/privateConnections/{name}''.'
+                    type: string
+                required:
+                - privateConnection
+                type: object
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              resourceID:
+                description: Immutable. Optional. The connectionProfileId of the resource.
+                  Used for creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
+                type: string
+            required:
+            - displayName
+            - location
+            - projectRef
+            type: object
+          status:
+            properties:
+              conditions:
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              name:
+                description: The resource's name.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

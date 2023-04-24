@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.102.0
+    cnrm.cloud.google.com/version: 1.103.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -79,8 +79,9 @@ spec:
                   if any. Set by the API if undefined.
                 type: string
               addressType:
-                description: 'Immutable. The type of address to reserve. Default value:
-                  "EXTERNAL" Possible values: ["INTERNAL", "EXTERNAL"].'
+                description: |-
+                  Immutable. The type of address to reserve.
+                  Note: if you set this argument's value as 'INTERNAL' you need to leave the 'network_tier' argument unset in that resource block. Default value: "EXTERNAL" Possible values: ["INTERNAL", "EXTERNAL"].
                 type: string
               description:
                 description: Immutable. An optional description of this resource.
@@ -131,7 +132,8 @@ spec:
               networkTier:
                 description: |-
                   Immutable. The networking tier used for configuring this address. If this field is not
-                  specified, it is assumed to be PREMIUM. Possible values: ["PREMIUM", "STANDARD"].
+                  specified, it is assumed to be PREMIUM.
+                  This argument should not be used when configuring Internal addresses, because [network tier cannot be set for internal traffic; it's always Premium](https://cloud.google.com/network-tiers/docs/overview). Possible values: ["PREMIUM", "STANDARD"].
                 type: string
               prefixLength:
                 description: Immutable. The prefix length if the resource represents
