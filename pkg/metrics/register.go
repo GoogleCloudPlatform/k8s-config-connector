@@ -18,8 +18,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	"contrib.go.opencensus.io/exporter/prometheus"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	"go.opencensus.io/stats/view"
 )
 
