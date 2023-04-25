@@ -323,25 +323,39 @@ func organizeSpecFieldDescriptions(descriptions []fielddesc.FieldDescription, r 
 	}
 }
 
+// isResourceReference checks if the field is a ResourceReference, or a slice of ResourceReferences values.
 func isResourceReference(d fielddesc.FieldDescription) bool {
-	if strings.HasSuffix(d.ShortName, "Ref") {
+	// If the field has a "Ref" suffix, and it's children exactly match the ResourceReferences struct,
+	// then it's almost definitely a ResourceReference.
+	if strings.HasSuffix(d.ShortName, "Ref") && hasOnlyRefFieldChildren(d) {
 		return true
 	}
-	if len(d.Children) == 3 {
-		for _, c := range d.Children {
-			r := regexp.MustCompile("external|name|namespace")
-			if r.MatchString(c.ShortName) {
-				continue
-			} else {
-				return false
-			}
-		}
-		return true
-	}
+
+	// If the field is a slice, we also need to check if the field is a slice of ResourceReferences.
 	if len(d.Children) == 1 && d.Children[0].ShortName == "[]" {
 		return isResourceReference(d.Children[0])
 	}
+
 	return false
+}
+
+// hasOnlyRefFieldChildren checks if the field has children that exactly match the ResourceReference struct fields.
+// refer to the v1alpha1.ResourceReference struct at pkg/apis/core/v1alpha1/krm_types.go
+func hasOnlyRefFieldChildren(d fielddesc.FieldDescription) bool {
+	if len(d.Children) != 3 {
+		// wrong number of fields, expected only 3
+		return false
+	}
+	r := regexp.MustCompile("external|name|namespace")
+	for _, c := range d.Children {
+		if r.MatchString(c.ShortName) {
+			continue
+		} else {
+			// field is not one of the expected 3 fields
+			return false
+		}
+	}
+	return true
 }
 
 func getChildrenFromDescription(d fielddesc.FieldDescription, r *resourceDefinition) []*fieldProperties {
