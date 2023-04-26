@@ -118,6 +118,9 @@ apply-patches:
 	# It was also causing diffs to be generated on every reconciliation,
 	# thereby triggering constant updates.
 	# 3) Set "zone" field as required since there is no default value from KCC
+	# 4) Temporary patch from 
+	# https://github.com/hashicorp/terraform-provider-google-beta/commit/cccc3952f7c32c38d8713d681d1ab592578746ff
+	# in order to unblock customer.
 	git apply ../hack/terraform-overrides/bigtable_instance.patch
 	# Enables service accounts to be imported by unique ID (in addition to
 	# email)
