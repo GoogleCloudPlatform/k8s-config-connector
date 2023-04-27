@@ -179,3 +179,17 @@ install: manifests
 .PHONY: deploy-controller
 deploy-controller: docker-build docker-push
 	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
+
+
+# Generate strong-typed definitions for existing CRDs
+.PHONY: client-types
+client-types:
+	go run ./scripts/generate-go-crd-clients
+	make fmt
+
+# Generate CRD go clients
+.PHONY: generate-go-client
+generate-go-client: client-types
+	go generate ./pkg/clients/generated/...
+	./scripts/generate-go-crd-clients/generate-clients.sh
+
