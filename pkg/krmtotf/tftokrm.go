@@ -408,7 +408,7 @@ func convertTFMapToKCCMap(state map[string]interface{}, prevSpec map[string]inte
 			continue
 		}
 		if isGCPManagedField(rc.Kind, qualifiedName) {
-			handleTFToKRMGCPManagedFields(rc.Kind, key, prevSpecVal, stateVal, ret)
+			ret[key] = stateVal
 			continue
 		}
 		switch schema.Type {

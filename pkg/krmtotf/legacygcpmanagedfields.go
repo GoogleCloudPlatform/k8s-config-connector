@@ -81,8 +81,6 @@ func isGCPManagedField(kind, field string) bool {
 		default:
 			return false
 		}
-	case "BigtableInstance":
-		return field == "cluster"
 	}
 	return false
 }
@@ -291,17 +289,6 @@ func removeNumNodesFromBigtableCluster(config map[string]interface{}, cluster st
 		return fmt.Errorf("error setting cluster list: %w", err)
 	}
 	return nil
-}
-
-func handleTFToKRMGCPManagedFields(kind, key string, prevSpecVal, stateVal interface{}, ret map[string]interface{}) {
-	switch kind {
-	case "BigtableInstance":
-		// For BigtableInstance, fully preserve the desired cluster list due to being
-		// unable to guarantee consistent ordering from the underlying API.
-		ret[key] = prevSpecVal
-	default:
-		ret[key] = stateVal
-	}
 }
 
 func getLastAppliedValue(r *Resource, path ...string) (val interface{}, found bool, err error) {
