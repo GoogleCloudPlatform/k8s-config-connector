@@ -174,7 +174,7 @@ type RedisInstanceSpec struct {
 	// +optional
 	AuthEnabled *bool `json:"authEnabled,omitempty"`
 
-	/* AUTH String set on the instance. This field will only be populated if auth_enabled is true. */
+	/* Output only. AUTH String set on the instance. This field will only be populated if auth_enabled is true. */
 	// +optional
 	AuthString *string `json:"authString,omitempty"`
 

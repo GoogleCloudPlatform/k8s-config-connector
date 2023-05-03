@@ -537,8 +537,8 @@ Write requests should target 'port'.`,
 			},
 			"auth_string": {
 				Type:        schema.TypeString,
-				Optional: true,
-				Description: "AUTH String set on the instance. This field will only be populated if auth_enabled is true.",
+				Optional:    true,
+				Description: "Output only. AUTH String set on the instance. This field will only be populated if auth_enabled is true.",
 				Computed:    true,
 			},
 			"project": {

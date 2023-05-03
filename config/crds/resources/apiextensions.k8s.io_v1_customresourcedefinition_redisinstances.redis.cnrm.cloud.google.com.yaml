@@ -72,8 +72,8 @@ spec:
                   Default value is "false" meaning AUTH is disabled.
                 type: boolean
               authString:
-                description: AUTH String set on the instance. This field will only
-                  be populated if auth_enabled is true.
+                description: Output only. AUTH String set on the instance. This field
+                  will only be populated if auth_enabled is true.
                 type: string
               authorizedNetworkRef:
                 description: |-

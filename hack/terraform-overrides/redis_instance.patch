@@ -1,27 +1,14 @@
-# Copyright 2022 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 diff --git a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_redis_instance.go b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_redis_instance.go
-index 37f5e6056..ac1cbcf0b 100644
+index c50f8b7f9..1ef415f31 100644
 --- a/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_redis_instance.go
 +++ b/third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/resource_redis_instance.go
-@@ -243,9 +243,9 @@ checked before each import/export operation.`,
+@@ -537,9 +537,9 @@ Write requests should target 'port'.`,
  			},
  			"auth_string": {
  				Type:        schema.TypeString,
-+				Optional: true,
- 				Description: "AUTH String set on the instance. This field will only be populated if auth_enabled is true.",
+-				Description: "AUTH String set on the instance. This field will only be populated if auth_enabled is true.",
++				Optional:    true,
++				Description: "Output only. AUTH String set on the instance. This field will only be populated if auth_enabled is true.",
  				Computed:    true,
 -				Sensitive:   true,
  			},

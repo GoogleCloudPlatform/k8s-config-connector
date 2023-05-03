@@ -168,7 +168,7 @@ Default value is "false" meaning AUTH is disabled.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}AUTH String set on the instance. This field will only be populated if auth_enabled is true.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. AUTH String set on the instance. This field will only be populated if auth_enabled is true.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
