@@ -12,27 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeAddress
-metadata:
-  name: computeaddress-${uniqueId}
-spec:
-  addressType: INTERNAL
-  network: ${data.google_compute_network.default.id}
-  prefixLength: 16
-  purpose: VPC_PEERING
-  resourceID: computeaddress${uniqueId}
----
-apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
-kind: ServiceNetworkingConnection
-metadata:
-  name: servicenetworkingconnection-${uniqueId}
-spec:
-  network: ${data.google_compute_network.default.id}
-  reservedPeeringRanges:
-  - ${google_compute_global_address.private_ip_alloc.name}
-  service: servicenetworking.googleapis.com
----
 apiVersion: alloydb.cnrm.cloud.google.com/v1alpha1
 kind: AlloyDBCluster
 metadata:
@@ -54,3 +33,24 @@ spec:
   - ${google_service_networking_connection.vpc_connection}
   instanceType: PRIMARY
   resourceID: alloydbinstance${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computeaddress-${uniqueId}
+spec:
+  addressType: INTERNAL
+  network: ${data.google_compute_network.default.id}
+  prefixLength: 16
+  purpose: VPC_PEERING
+  resourceID: computeaddress${uniqueId}
+---
+apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
+kind: ServiceNetworkingConnection
+metadata:
+  name: servicenetworkingconnection-${uniqueId}
+spec:
+  network: ${data.google_compute_network.default.id}
+  reservedPeeringRanges:
+  - ${google_compute_global_address.private_ip_alloc.name}
+  service: servicenetworking.googleapis.com
