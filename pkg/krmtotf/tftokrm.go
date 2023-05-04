@@ -78,9 +78,10 @@ func GetSpecAndStatusFromState(resource *Resource, state *terraform.InstanceStat
 		if val == nil {
 			continue
 		}
-		target := &status
-		if fieldSchema.Required || fieldSchema.Optional {
-			target = &spec
+		target := &spec
+		if !fieldSchema.Required && !fieldSchema.Optional {
+			target = &status
+			key = renameStatusFieldIfNeeded(resource.ResourceConfig.Name, key)
 		}
 		(*target)[key] = val
 	}
@@ -806,4 +807,12 @@ func isIgnoredField(field string, rc *corekccv1alpha1.ResourceConfig) bool {
 		}
 	}
 	return false
+}
+
+func renameStatusFieldIfNeeded(tfResourceName, key string) string {
+	reservedNames := k8s.ReservedStatusFieldNames()
+	if _, found := reservedNames[key]; found {
+		return k8s.RenameStatusFieldWithReservedNameIfResourceNotExcluded(tfResourceName, key)
+	}
+	return key
 }

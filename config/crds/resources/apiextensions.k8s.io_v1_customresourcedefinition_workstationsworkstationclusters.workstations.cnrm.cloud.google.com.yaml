@@ -143,22 +143,28 @@ spec:
           status:
             properties:
               conditions:
-                description: Status conditions describing the current resource state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
-                    code:
-                      description: The status code, which should be an enum value
-                        of google.rpc.Code.
-                      type: integer
-                    details:
-                      description: A list of messages that carry the error details.
-                      items:
-                        type: object
-                        x-kubernetes-preserve-unknown-fields: true
-                      type: array
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
                     message:
-                      description: Human readable message indicating details about
-                        the current status.
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
                       type: string
                   type: object
                 type: array
@@ -185,6 +191,26 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              resourceConditions:
+                description: Status conditions describing the current resource state.
+                items:
+                  properties:
+                    code:
+                      description: The status code, which should be an enum value
+                        of google.rpc.Code.
+                      type: integer
+                    details:
+                      description: A list of messages that carry the error details.
+                      items:
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      type: array
+                    message:
+                      description: Human readable message indicating details about
+                        the current status.
+                      type: string
+                  type: object
+                type: array
               uid:
                 description: The system-generated UID of the resource.
                 type: string

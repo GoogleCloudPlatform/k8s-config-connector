@@ -27,6 +27,7 @@ import (
 func TestRenameStatusFieldsWithReservedNames(t *testing.T) {
 	tests := []struct {
 		name           string
+		resourceName   string
 		originalStatus *apiextensions.JSONSchemaProps
 		expectedStatus *apiextensions.JSONSchemaProps
 		hasError       bool
@@ -76,6 +77,32 @@ func TestRenameStatusFieldsWithReservedNames(t *testing.T) {
 			},
 		},
 		{
+			name:         "fields that collide with reserved names but resource is in exclude list",
+			resourceName: "google_storage_default_object_access_control",
+			originalStatus: &apiextensions.JSONSchemaProps{
+				Type: "object",
+				Properties: map[string]apiextensions.JSONSchemaProps{
+					"conditions": {
+						Type: "string",
+					},
+					"observedGeneration": {
+						Type: "string",
+					},
+				},
+			},
+			expectedStatus: &apiextensions.JSONSchemaProps{
+				Type: "object",
+				Properties: map[string]apiextensions.JSONSchemaProps{
+					"conditions": {
+						Type: "string",
+					},
+					"observedGeneration": {
+						Type: "string",
+					},
+				},
+			},
+		},
+		{
 			name: "error if status has fields that collide with the renames of the reserved names",
 			originalStatus: &apiextensions.JSONSchemaProps{
 				Type: "object",
@@ -95,7 +122,7 @@ func TestRenameStatusFieldsWithReservedNames(t *testing.T) {
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			actualStatus, err := k8s.RenameStatusFieldsWithReservedNames(tc.originalStatus)
+			actualStatus, err := k8s.RenameStatusFieldsWithReservedNamesIfResourceNotExcluded(tc.resourceName, tc.originalStatus)
 			if tc.hasError {
 				if err == nil {
 					t.Fatalf("got nil error, want an error")

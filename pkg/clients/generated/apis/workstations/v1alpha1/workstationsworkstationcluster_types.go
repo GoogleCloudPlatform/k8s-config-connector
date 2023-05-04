@@ -87,6 +87,20 @@ type WorkstationsWorkstationClusterSpec struct {
 type WorkstationclusterDetailsStatus struct {
 }
 
+type WorkstationclusterResourceConditionsStatus struct {
+	/* The status code, which should be an enum value of google.rpc.Code. */
+	// +optional
+	Code *int `json:"code,omitempty"`
+
+	/* A list of messages that carry the error details. */
+	// +optional
+	Details []WorkstationclusterDetailsStatus `json:"details,omitempty"`
+
+	/* Human readable message indicating details about the current status. */
+	// +optional
+	Message *string `json:"message,omitempty"`
+}
+
 type WorkstationsWorkstationClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   WorkstationsWorkstationCluster's current state. */
@@ -112,6 +126,10 @@ type WorkstationsWorkstationClusterStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* Status conditions describing the current resource state. */
+	// +optional
+	ResourceConditions []WorkstationclusterResourceConditionsStatus `json:"resourceConditions,omitempty"`
 
 	/* The system-generated UID of the resource. */
 	// +optional
