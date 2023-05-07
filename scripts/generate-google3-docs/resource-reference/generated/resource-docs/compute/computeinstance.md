@@ -626,7 +626,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The image from which to initialize this disk.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -726,7 +726,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The source disk used to create this disk.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

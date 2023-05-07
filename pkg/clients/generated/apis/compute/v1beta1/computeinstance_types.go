@@ -122,6 +122,7 @@ type InstanceBootDisk struct {
 	// +optional
 	Mode *string `json:"mode,omitempty"`
 
+	/* Immutable. The source disk used to create this disk. */
 	// +optional
 	SourceDiskRef *v1alpha1.ResourceRef `json:"sourceDiskRef,omitempty"`
 }
@@ -158,6 +159,7 @@ type InstanceInitializeParams struct {
 	// +optional
 	Size *int `json:"size,omitempty"`
 
+	/* Immutable. The image from which to initialize this disk. */
 	// +optional
 	SourceImageRef *v1alpha1.ResourceRef `json:"sourceImageRef,omitempty"`
 

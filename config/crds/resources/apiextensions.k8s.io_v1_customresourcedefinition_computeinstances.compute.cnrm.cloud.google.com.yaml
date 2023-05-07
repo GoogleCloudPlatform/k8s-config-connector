@@ -272,6 +272,8 @@ spec:
                         description: Immutable. The size of the image in gigabytes.
                         type: integer
                       sourceImageRef:
+                        description: Immutable. The image from which to initialize
+                          this disk.
                         oneOf:
                         - not:
                             required:
@@ -335,6 +337,7 @@ spec:
                       or "READ_WRITE".
                     type: string
                   sourceDiskRef:
+                    description: Immutable. The source disk used to create this disk.
                     oneOf:
                     - not:
                         required:

@@ -830,6 +830,8 @@ spec:
           targetField: self_link
         - key: sourceDiskRef
           tfField: boot_disk.source
+          description: |-
+            Immutable. The source disk used to create this disk.
           gvk:
             kind: ComputeDisk
             version: v1beta1
@@ -837,6 +839,8 @@ spec:
           targetField: self_link
         - key: sourceImageRef # prefix with "source" as that's how it is in the underlying API
           tfField: boot_disk.initialize_params.image
+          description: |-
+            Immutable. The image from which to initialize this disk.
           gvk:
             kind: ComputeImage
             version: v1beta1
@@ -933,6 +937,8 @@ spec:
           targetField: self_link
         - key: sourceDiskRef
           tfField: boot_disk.source
+          description: |-
+            Immutable. The source disk used to create this disk.
           gvk:
             kind: ComputeDisk
             version: v1beta1
@@ -940,6 +946,8 @@ spec:
           targetField: self_link
         - key: sourceImageRef # prefix with "source" as that's how it is in the underlying API
           tfField: boot_disk.initialize_params.image
+          description: |-
+            Immutable. The image from which to initialize this disk.
           gvk:
             kind: ComputeImage
             version: v1beta1
