@@ -29,6 +29,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	dclextension "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/extension"
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
@@ -399,7 +400,10 @@ func testDriftCorrection(t *testing.T, testContext testrunner.TestContext, syste
 	if err := kubeClient.Get(context.TODO(), testContext.NamespacedName, testUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-
+	// For test cases with `cnrm.cloud.google.com/reconcile-interval-in-seconds` annotation set to 0, we should skip drift correction test.
+	if skip, _ := resourceactuation.ShouldSkip(testUnstruct); skip {
+		return
+	}
 	// Delete all events for the resource so that we can check later at the end
 	// of this test that the right events are recorded.
 	testcontroller.DeleteAllEventsForUnstruct(t, kubeClient, testUnstruct)
