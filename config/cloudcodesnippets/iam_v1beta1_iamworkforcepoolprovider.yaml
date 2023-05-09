@@ -12,5 +12,8 @@ insertText: |
     attributeMapping:
       google.subject: \${4:assertion.sub}
     oidc:
-      issuerUri: \${5:https://accounts.google.com}
+      issuerUri: \${5:https://example.com}
       clientId: \${6:client-id}
+      webSsoConfig:
+        responseType: \${7:ID_TOKEN}
+        assertionClaimsBehavior: \${8:ONLY_ID_TOKEN_CLAIMS}
