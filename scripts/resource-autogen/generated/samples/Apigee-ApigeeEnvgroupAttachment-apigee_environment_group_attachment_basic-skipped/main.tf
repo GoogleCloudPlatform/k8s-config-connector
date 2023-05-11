@@ -16,8 +16,8 @@
 
 ```hcl
 resource "google_project" "project" {
-  project_id      = "tf-test%{random_suffix}"
-  name            = "tf-test%{random_suffix}"
+  project_id      = "my-project"
+  name            = "my-project"
   org_id          = ""
   billing_account = ""
 }
@@ -71,15 +71,15 @@ resource "google_apigee_organization" "apigee_org" {
 
 resource "google_apigee_envgroup" "apigee_envgroup" {
   org_id    = google_apigee_organization.apigee_org.id
-  name      = "tf-test%{random_suffix}"
+  name      = "my-envgroup"
   hostnames = ["abc.foo.com"]
 }
 
 resource "google_apigee_environment" "apigee_env" {
   org_id       = google_apigee_organization.apigee_org.id
-  name         = "tf-test%{random_suffix}"
+  name         = "my-environment"
   description  = "Apigee Environment"
-  display_name = "tf-test%{random_suffix}"
+  display_name = "my-environment"
 }
 
 resource "google_apigee_envgroup_attachment" "" {

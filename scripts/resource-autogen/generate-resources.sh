@@ -89,9 +89,11 @@ MAKE_GENERATE_COMMAND="make generate"
 echo "${MAKE_GENERATE_COMMAND}"
 eval "${MAKE_GENERATE_COMMAND}"
 
+# It's possible to have errors when generating the testdata, but the errors
+# shouldn't block this script.
 CONVERT_SAMPLES_COMMAND="go run scripts/resource-autogen/main.go"
 echo "${CONVERT_SAMPLES_COMMAND}"
-eval "${CONVERT_SAMPLES_COMMAND}"
+eval "${CONVERT_SAMPLES_COMMAND} || true"
 
 echo "Generating CRDs for allowlisted resources..."
 GENERATE_CRDS_COMMAND="make manifests"

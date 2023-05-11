@@ -57,7 +57,8 @@ type VertexAIDatasetSpec struct {
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. The region of the dataset. eg us-central1. */
-	Region string `json:"region"`
+	// +optional
+	Region *string `json:"region,omitempty"`
 
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional

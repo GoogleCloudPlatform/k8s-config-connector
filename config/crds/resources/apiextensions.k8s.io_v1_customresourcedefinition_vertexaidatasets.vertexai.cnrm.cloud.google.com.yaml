@@ -118,7 +118,6 @@ spec:
             - displayName
             - metadataSchemaUri
             - projectRef
-            - region
             type: object
           status:
             properties:

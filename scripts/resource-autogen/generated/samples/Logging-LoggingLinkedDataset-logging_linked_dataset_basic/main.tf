@@ -15,18 +15,16 @@
  */
 
 ```hcl
-resource "google_compute_global_address" "default" {
-  provider      = google-beta
-  name          = "global-psconnect-ip"
-  address_type  = "INTERNAL"
-  purpose       = "PRIVATE_SERVICE_CONNECT"
-  network       = google_compute_network.network.id
-  address       = "100.100.100.105"
+resource "google_logging_project_bucket_config" "logging_linked_dataset" {
+  location         = "global"
+  project          = "my-project-name"
+  enable_analytics = true
+  bucket_id        = "tftest%{random_suffix}"
 }
 
-resource "google_compute_network" "network" {
-  provider      = google-beta
-  name          = "my-network-name"
-  auto_create_subnetworks = false
+resource "google_logging_linked_dataset" "logging_linked_dataset" {
+  link_id     = "tftest%{random_suffix}"
+  bucket      = google_logging_project_bucket_config.logging_linked_dataset.id
+  description = "Linked dataset test"
 }
 ```
