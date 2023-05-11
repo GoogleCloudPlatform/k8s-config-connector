@@ -34,7 +34,7 @@ RUN setcap cap_net_bind_service+eip deletiondefender
 RUN chown 1000 /configconnector
 
 # Copy the directory into a thin, distroless image (go/gke-distroless)
-FROM gke.gcr.io/gke-distroless/static:latest AS final
+FROM gcr.io/gke-release/gke-distroless/static:gke_distroless_20230307.00_p0 AS final
 WORKDIR /configconnector/
 COPY --from=packager /configconnector /configconnector
 ENV PATH="/configconnector/:${PATH}"
